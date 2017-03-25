@@ -495,6 +495,7 @@
    "blocklist-size"                 | number     | number of rules in the blocklist
    "cache-size-mb"                  | number     | maximum size of the disk cache (MB)
    "config-dir"                     | string     | location of transmission's configuration directory
+   "default-trackers"               | string     | a list of default trackers to be added to new public torrents (and existing ones, after a reload)
    "download-dir"                   | string     | default path to download torrents
    "download-queue-size"            | number     | max number of torrents to download at once (see download-queue-enabled)
    "download-queue-enabled"         | boolean    | if true, limit how many torrents can be downloaded at once

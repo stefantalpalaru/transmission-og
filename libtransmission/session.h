@@ -222,6 +222,9 @@ struct tr_session
 
     struct tr_bindinfo* public_ipv4;
     struct tr_bindinfo* public_ipv6;
+
+    struct tr_list* defaultTrackers;
+    char* defaultTrackersStr;
 };
 
 static inline tr_port tr_sessionGetPublicPeerPort(tr_session const* session)

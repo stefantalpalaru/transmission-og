@@ -2065,6 +2065,11 @@ static char const* sessionSet(tr_session* session, tr_variant* args_in, tr_varia
         tr_sessionSetQueueStalledEnabled(session, boolVal);
     }
 
+    if (tr_variantDictFindStr(args_in, TR_KEY_default_trackers, &str, NULL))
+    {
+        tr_sessionSetDefaultTrackers(session, str);
+    }
+
     if (tr_variantDictFindInt(args_in, TR_KEY_download_queue_size, &i))
     {
         tr_sessionSetQueueSize(session, TR_DOWN, i);
@@ -2324,6 +2329,10 @@ static void addSessionField(tr_session* s, tr_variant* d, tr_quark key)
 
     case TR_KEY_config_dir:
         tr_variantDictAddStr(d, key, tr_sessionGetConfigDir(s));
+        break;
+
+    case TR_KEY_default_trackers:
+        tr_variantDictAddStr(d, key, tr_sessionGetDefaultTrackers(s));
         break;
 
     case TR_KEY_download_dir:

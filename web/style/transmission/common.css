@@ -362,6 +362,10 @@ ul.torrent_list {
   .prefs-section #blocklist-info {
     font-size: smaller;
     margin-top: 3px; }
+  .prefs-section #default-trackers {
+    width: 100%;
+    height: 100px;
+    margin-top: 10px; }
 
 /***
 ****

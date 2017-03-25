@@ -79,6 +79,7 @@ static struct tr_key_struct const my_static[] =
     Q("current-stats"),
     Q("date"),
     Q("dateCreated"),
+    Q("default-trackers"),
     Q("delete-local-data"),
     Q("desiredAvailable"),
     Q("destination"),

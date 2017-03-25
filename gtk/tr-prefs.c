@@ -197,6 +197,44 @@ static GtkWidget* new_entry(tr_quark const key, gpointer core)
     return w;
 }
 
+static void text_buffer_changed_cb(GtkTextBuffer* buffer, gpointer core)
+{
+    tr_quark const key = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(buffer), PREF_KEY));
+    GtkTextIter start, end;
+    gtk_text_buffer_get_bounds(buffer, &start, &end);
+    char const* value = gtk_text_buffer_get_text(buffer, &start, &end, FALSE);
+
+    gtr_core_set_pref(TR_CORE(core), key, value);
+}
+
+static GtkWidget* new_text_view(tr_quark const key, gpointer core)
+{
+    GtkWidget* scroll = gtk_scrolled_window_new(NULL, NULL);
+    GtkWidget* w = gtk_text_view_new();
+    GtkTextBuffer* buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(w));
+    char const* value = gtr_pref_string_get(key);
+
+    if (value)
+    {
+        gtk_text_buffer_set_text(buffer, value, -1);
+    }
+
+    /* set up the scrolled window and put the text view in it */
+    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll),
+        GTK_POLICY_AUTOMATIC,
+        GTK_POLICY_AUTOMATIC);
+    gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scroll),
+        GTK_SHADOW_IN);
+    gtk_container_add(GTK_CONTAINER(scroll), w);
+    gtk_widget_set_size_request(scroll, -1, 200);
+
+    /* key and signal */
+    g_object_set_data(G_OBJECT(buffer), PREF_KEY, GINT_TO_POINTER(key));
+    g_signal_connect(buffer, "changed", G_CALLBACK(text_buffer_changed_cb), core);
+
+    return scroll;
+}
+
 static void chosen_cb(GtkFileChooser* w, gpointer core)
 {
     tr_quark const key = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(w), PREF_KEY));
@@ -1186,6 +1224,12 @@ static GtkWidget* networkPage(GObject* core)
     s = _("Use _Local Peer Discovery to find more peers");
     w = new_check_button(s, TR_KEY_lpd_enabled, core);
     s = _("LPD is a tool for finding peers on your local network.");
+    gtk_widget_set_tooltip_text(w, s);
+    hig_workarea_add_wide_control(t, &row, w);
+
+    hig_workarea_add_section_title(t, &row, _("Default Trackers"));
+    w = new_text_view(TR_KEY_default_trackers, core);
+    s = _("a list of default trackers to be added to new public torrents (and existing ones, after a reload)");
     gtk_widget_set_tooltip_text(w, s);
     hig_workarea_add_wide_control(t, &row, w);
 

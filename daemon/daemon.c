@@ -105,6 +105,7 @@ static struct tr_option const options[] =
     { 'C', "no-watch-dir", "Disable the watch-dir", "C", false, NULL },
     { 941, "incomplete-dir", "Where to store new torrents until they're complete", NULL, true, "<directory>" },
     { 942, "no-incomplete-dir", "Don't store incomplete torrents in a different location", NULL, false, NULL },
+    { 943, "default-trackers", "Default trackers to be automatically added to public torrents", NULL, true, "<list>" },
     { 'd', "dump-settings", "Dump the settings and exit", "d", false, NULL },
     { 'e', "logfile", "Dump the log messages to this filename", "e", true, "<filename>" },
     { 'f', "foreground", "Run in the foreground instead of daemonizing", "f", false, NULL },
@@ -406,6 +407,10 @@ static bool parse_args(int argc, char const** argv, tr_variant* settings, bool* 
 
         case 942:
             tr_variantDictAddBool(settings, TR_KEY_incomplete_dir_enabled, false);
+            break;
+
+        case 943:
+            tr_variantDictAddStr(settings, TR_KEY_default_trackers, optarg);
             break;
 
         case 'd':

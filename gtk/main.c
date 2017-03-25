@@ -1106,6 +1106,10 @@ static void on_prefs_changed(TrCore* core UNUSED, tr_quark const key, gpointer d
         tr_sessionSetEncryption(tr, gtr_pref_int_get(key));
         break;
 
+    case TR_KEY_default_trackers:
+        tr_sessionSetDefaultTrackers(tr, gtr_pref_string_get(key));
+        break;
+
     case TR_KEY_download_dir:
         tr_sessionSetDownloadDir(tr, gtr_pref_string_get(key));
         break;

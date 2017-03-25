@@ -193,6 +193,10 @@ bool PrefsDialog::updateWidgetValue(QWidget* widget, int prefKey)
     {
         prefWidget.as<FreeSpaceLabel>()->setPath(myPrefs.getString(prefKey));
     }
+    else if (prefWidget.is<QPlainTextEdit>())
+    {
+        prefWidget.as<QPlainTextEdit>()->setPlainText(myPrefs.getString(prefKey));
+    }
     else
     {
         return false;
@@ -228,6 +232,10 @@ void PrefsDialog::linkWidgetToPref(QWidget* widget, int prefKey)
     else if (prefWidget.is<QAbstractSpinBox>())
     {
         connect(widget, SIGNAL(editingFinished()), SLOT(spinBoxEditingFinished()));
+    }
+    else if (prefWidget.is<QPlainTextEdit>())
+    {
+        connect(widget, SIGNAL(textChanged()), SLOT(plainTextChanged()));
     }
 }
 
@@ -287,6 +295,22 @@ void PrefsDialog::pathChanged(QString const& path)
     if (prefWidget.is<PathButton>())
     {
         setPref(prefWidget.getPrefKey(), path);
+    }
+}
+
+void PrefsDialog::plainTextChanged()
+{
+    PreferenceWidget const prefWidget(sender());
+
+    if (prefWidget.is<QPlainTextEdit>())
+    {
+        QPlainTextEdit const* const plainTextEdit = prefWidget.as<QPlainTextEdit>();
+
+        if (plainTextEdit->document()->isModified())
+        {
+            myPrefs.set(prefWidget.getPrefKey(), plainTextEdit->toPlainText());
+            // we avoid using setPref() because the included refreshPref() call would reset the cursor while we're editing
+        }
     }
 }
 
@@ -417,6 +441,7 @@ void PrefsDialog::initNetworkTab()
     linkWidgetToPref(ui.enablePexCheck, Prefs::PEX_ENABLED);
     linkWidgetToPref(ui.enableDhtCheck, Prefs::DHT_ENABLED);
     linkWidgetToPref(ui.enableLpdCheck, Prefs::LPD_ENABLED);
+    linkWidgetToPref(ui.defaultTrackersPlainTextEdit, Prefs::DEFAULT_TRACKERS);
 
     ColumnResizer* cr(new ColumnResizer(this));
     cr->addLayout(ui.incomingPeersSectionLayout);
@@ -741,6 +766,8 @@ void PrefsDialog::refreshPref(int key)
     {
         QWidget* w(it.value());
 
+        w->blockSignals(true);
+
         if (!updateWidgetValue(w, key))
         {
             if (key == Prefs::ENCRYPTION)
@@ -750,5 +777,7 @@ void PrefsDialog::refreshPref(int key)
                 comboBox->setCurrentIndex(index);
             }
         }
+
+        w->blockSignals(false);
     }
 }

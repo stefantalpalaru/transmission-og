@@ -34,6 +34,7 @@
 #include "fdlimit.h" /* tr_fdTorrentClose */
 #include "file.h"
 #include "inout.h" /* tr_ioTestPiece() */
+#include "list.h"
 #include "log.h"
 #include "magnet.h"
 #include "metainfo.h"
@@ -1133,6 +1134,72 @@ static tr_parse_result torrentParseImpl(tr_ctor const* ctor, tr_info* setmeInfo,
     return result;
 }
 
+static void tr_torrentAddDefaultTrackers(tr_torrent* tor)
+{
+    tr_list* l;
+    int tier;
+    int i;
+    tr_tracker_info* trackers;
+    int numExistingTrackers = tor->info.trackerCount;
+    int numNewTrackers = tr_list_size(tor->session->defaultTrackers);
+    bool changed = false;
+
+    if (!numNewTrackers || tr_torrentIsPrivate(tor))
+    {
+        return;
+    }
+
+    // copy existing trackers
+    trackers = tr_new0(tr_tracker_info, numExistingTrackers + numNewTrackers);
+    for (i = 0, tier = -1; i < numExistingTrackers; ++i)
+    {
+        trackers[i].tier = tor->info.trackers[i].tier;
+        trackers[i].announce = tr_strdup(tor->info.trackers[i].announce);
+        tier = MAX(tier, tor->info.trackers[i].tier);
+    }
+
+    // add the new ones
+    for (l = tor->session->defaultTrackers; l != NULL; l = l->next)
+    {
+        char const* url = l->data;
+        if (tr_urlIsValidTracker(url))
+        {
+            // check for duplicates
+            bool duplicate = false;
+            for (i = 0; i < numExistingTrackers; ++i)
+            {
+                if (strcmp(trackers[i].announce, url) == 0)
+                {
+                    duplicate = true;
+                    break;
+                }
+            }
+
+            if (duplicate)
+            {
+                continue;
+            }
+
+            trackers[numExistingTrackers].tier = ++tier; /* add a new tier */
+            trackers[numExistingTrackers].announce = tr_strdup(url);
+            ++numExistingTrackers;
+            changed = true;
+        }
+    }
+
+    if (changed)
+    {
+        tr_torrentSetAnnounceList(tor, trackers, numExistingTrackers);
+    }
+
+    for (i = 0; i < numExistingTrackers; ++i)
+    {
+        tr_free(trackers[i].announce);
+    }
+
+    tr_free(trackers);
+}
+
 tr_parse_result tr_torrentParse(tr_ctor const* ctor, tr_info* setmeInfo)
 {
     return torrentParseImpl(ctor, setmeInfo, NULL, NULL, NULL);
@@ -1162,6 +1229,7 @@ tr_torrent* tr_torrentNew(tr_ctor const* ctor, int* setme_error, int* setme_dupl
         }
 
         torrentInit(tor, ctor);
+        tr_torrentAddDefaultTrackers(tor);
     }
     else
     {
