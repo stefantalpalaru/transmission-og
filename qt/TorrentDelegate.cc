@@ -545,7 +545,7 @@ void TorrentDelegate::drawTorrent(QPainter* painter, QStyleOptionViewItem const&
         progressBarState = QStyle::State_None;
     }
 
-    progressBarState |= QStyle::State_Small;
+    progressBarState |= QStyle::State_Horizontal | QStyle::State_Small;
 
     QIcon::Mode const emblemIm = isItemSelected ? QIcon::Selected : QIcon::Normal;
     QIcon const emblemIcon = tor.hasError() ? getWarningEmblem() : QIcon();
