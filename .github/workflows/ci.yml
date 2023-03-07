@@ -72,6 +72,10 @@ jobs:
           echo "NCPU=${NCPU}" >> $GITHUB_ENV
           echo "MAKE_CMD=${MAKE_CMD}" >> $GITHUB_ENV
 
+      - name: Fix the GitHub Actions image (Linux i386)
+        if: runner.os == 'Linux' && matrix.target.cpu == 'i386'
+        uses: devopsx/gha-focal-i386-fix@master
+
       - name: Install build dependencies (Linux i386)
         if: runner.os == 'Linux' && matrix.target.cpu == 'i386'
         run: |
