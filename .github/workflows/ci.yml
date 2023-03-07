@@ -24,7 +24,7 @@ jobs:
         include:
           - target:
               os: linux
-            builder: ubuntu-20.04
+            builder: ubuntu-22.04
             shell: bash
           - target:
               os: macos
@@ -72,16 +72,12 @@ jobs:
           echo "NCPU=${NCPU}" >> $GITHUB_ENV
           echo "MAKE_CMD=${MAKE_CMD}" >> $GITHUB_ENV
 
-      - name: Fix the GitHub Actions image (Linux i386)
-        if: runner.os == 'Linux' && matrix.target.cpu == 'i386'
-        uses: devopsx/gha-focal-i386-fix@master
-
       - name: Install build dependencies (Linux i386)
         if: runner.os == 'Linux' && matrix.target.cpu == 'i386'
         run: |
           sudo -E dpkg --add-architecture i386
           sudo -E apt-get update -qq
-          sudo -E apt-get install --no-install-recommends -yq gcc-multilib \
+          sudo -E eatmydata apt-get install --no-install-recommends -yq gcc-multilib \
             libcurl4-openssl-dev:i386 gettext:i386 \
             libevent-dev:i386 libglib2.0-dev:i386 libgtk-3-dev:i386 \
             libnotify-dev:i386 libssl-dev:i386 libsystemd-dev:i386 \
@@ -102,7 +98,7 @@ jobs:
         if: runner.os == 'Linux' && matrix.target.cpu == 'amd64'
         run: |
           sudo -E apt-get update -qq
-          sudo -E apt-get install --no-install-recommends -yq \
+          sudo -E eatmydata apt-get install --no-install-recommends -yq \
             build-essential libayatana-appindicator3-dev libcurl4-openssl-dev \
             libevent-dev libglib2.0-dev libgtk-3-dev libminiupnpc-dev \
             libnatpmp-dev libnotify-dev libssl-dev libsystemd-dev \
@@ -152,6 +148,8 @@ jobs:
             cmake -G "MinGW Makefiles" ..
           elif [[ '${{ runner.os }}' == 'macOS' ]]; then
             cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl ..
+          elif [[ '${{ runner.os }}' == 'Linux' && '${{ matrix.target.cpu }}' == 'i386' ]]; then
+            cmake -DCMAKE_FIND_ROOT_PATH=/usr/lib32 ..
           else
             cmake ..
           fi
