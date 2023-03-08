@@ -87,7 +87,7 @@ jobs:
             libcurl4-openssl-dev:i386 gettext:i386 \
             libevent-dev:i386 libglib2.0-dev:i386 libgtk-3-dev:i386 \
             libnotify-dev:i386 libssl-dev:i386 libsystemd-dev:i386 \
-            qtbase5-dev:i386 zlib1g-dev:i386
+            qtbase5-dev:i386 qtbase5-dev-tools:i386 zlib1g-dev:i386
 
       - name: Install build dependencies (Linux AMD64)
         if: runner.os == 'Linux' && matrix.target.cpu == 'amd64'
@@ -97,7 +97,7 @@ jobs:
             build-essential libayatana-appindicator3-dev libcurl4-openssl-dev \
             libevent-dev libglib2.0-dev libgtk-3-dev libminiupnpc-dev \
             libnatpmp-dev libnotify-dev libssl-dev libsystemd-dev \
-            qtbase5-dev zlib1g-dev gettext
+            qtbase5-dev qtbase5-dev-tools zlib1g-dev gettext
 
       - name: Select the Xcode version
         if: runner.os == 'macOS'
@@ -148,13 +148,22 @@ jobs:
             -DENABLE_QT=ON
           )
           if [[ '${{ runner.os }}' == 'Windows' ]]; then
-            cmake "${CMAKE_COMMON_ARGS[@]}" -G "MinGW Makefiles" ..
+            cmake "${CMAKE_COMMON_ARGS[@]}" \
+              -G "MinGW Makefiles" \
+              ..
           elif [[ '${{ runner.os }}' == 'macOS' ]]; then
-            cmake "${CMAKE_COMMON_ARGS[@]}" -DENABLE_MAC=ON -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl ..
+            cmake "${CMAKE_COMMON_ARGS[@]}" \
+              -DENABLE_MAC=ON \
+              -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl \
+              -DQt5_DIR=$(brew --prefix qt)/lib/cmake/Qt5 \
+              ..
           elif [[ '${{ runner.os }}' == 'Linux' && '${{ matrix.target.cpu }}' == 'i386' ]]; then
-            cmake "${CMAKE_COMMON_ARGS[@]}" -DCMAKE_LIBRARY_PATH=/usr/lib/i386-linux-gnu/ -DCMAKE_INCLUDE_PATH=/usr/include/i386-linux-gnu/ ..
+            cmake "${CMAKE_COMMON_ARGS[@]}" \
+              -DCMAKE_LIBRARY_PATH=/usr/lib/i386-linux-gnu/ \
+              -DCMAKE_INCLUDE_PATH=/usr/include/i386-linux-gnu/ \
+              ..
           else
             cmake "${CMAKE_COMMON_ARGS[@]}" ..
           fi
           ${MAKE_CMD} -j${NCPU} VERBOSE=1
-          ${MAKE_CMD} test
+          ${MAKE_CMD} ARGS="-rerun-failed --output-on-failure" test
