@@ -108,7 +108,7 @@ jobs:
       - name: Install build dependencies (macOS)
         if: runner.os == 'macOS'
         run: |
-          brew install cmake gettext pkg-config libevent openssl
+          brew install cmake gettext gtk+3 pkg-config qt@5 libevent openssl
 
       - name: MSYS2 (Windows amd64)
         if: runner.os == 'Windows' && matrix.target.cpu == 'amd64'
@@ -133,20 +133,28 @@ jobs:
             mingw-w64-x86_64-openssl
             mingw-w64-x86_64-qt5-base
             mingw-w64-x86_64-qt5-tools
+            mingw-w64-x86_64-qt5-winextras
             mingw-w64-x86_64-zlib
 
       - name: Build binaries and run tests
         run: |
           mkdir build
           cd build
+          CMAKE_COMMON_ARGS=(
+            -DENABLE_DAEMON=ON
+            -DENABLE_UTILS=ON
+            -DENABLE_CLI=ON
+            -DENABLE_GTK=ON
+            -DENABLE_QT=ON
+          )
           if [[ '${{ runner.os }}' == 'Windows' ]]; then
-            cmake -G "MinGW Makefiles" ..
+            cmake "${CMAKE_COMMON_ARGS[@]}" -G "MinGW Makefiles" ..
           elif [[ '${{ runner.os }}' == 'macOS' ]]; then
-            cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl ..
+            cmake "${CMAKE_COMMON_ARGS[@]}" -DENABLE_MAC=ON -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl ..
           elif [[ '${{ runner.os }}' == 'Linux' && '${{ matrix.target.cpu }}' == 'i386' ]]; then
-            cmake -DCMAKE_LIBRARY_PATH=/usr/lib/i386-linux-gnu/ -DCMAKE_INCLUDE_PATH=/usr/include/i386-linux-gnu/ ..
+            cmake "${CMAKE_COMMON_ARGS[@]}" -DCMAKE_LIBRARY_PATH=/usr/lib/i386-linux-gnu/ -DCMAKE_INCLUDE_PATH=/usr/include/i386-linux-gnu/ ..
           else
-            cmake ..
+            cmake "${CMAKE_COMMON_ARGS[@]}" ..
           fi
-          ${MAKE_CMD} -j${NCPU}
+          ${MAKE_CMD} -j${NCPU} VERBOSE=1
           ${MAKE_CMD} test
