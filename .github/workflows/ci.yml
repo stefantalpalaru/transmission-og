@@ -140,6 +140,7 @@ jobs:
         run: |
           mkdir build
           cd build
+
           CMAKE_COMMON_ARGS=(
             -DENABLE_DAEMON=ON
             -DENABLE_UTILS=ON
@@ -147,15 +148,17 @@ jobs:
             -DENABLE_GTK=ON
             -DENABLE_QT=ON
           )
+
           if [[ '${{ runner.os }}' == 'Windows' ]]; then
             cmake "${CMAKE_COMMON_ARGS[@]}" \
               -G "MinGW Makefiles" \
               ..
           elif [[ '${{ runner.os }}' == 'macOS' ]]; then
+            export PATH="/usr/local/opt/qt@5/bin:${PATH}"
+            export PKG_CONFIG_PATH="/usr/local/opt/qt@5/lib/pkgconfig"
             cmake "${CMAKE_COMMON_ARGS[@]}" \
               -DENABLE_MAC=ON \
               -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl \
-              -DQt5_DIR=$(brew --prefix qt)/lib/cmake/Qt5 \
               ..
           elif [[ '${{ runner.os }}' == 'Linux' && '${{ matrix.target.cpu }}' == 'i386' ]]; then
             export PKG_CONFIG_PATH="/usr/lib/i386-linux-gnu/pkgconfig"
@@ -166,5 +169,6 @@ jobs:
           else
             cmake "${CMAKE_COMMON_ARGS[@]}" ..
           fi
+
           ${MAKE_CMD} -j${NCPU} VERBOSE=1
-          ${MAKE_CMD} ARGS="-rerun-failed --output-on-failure" test
+          ${MAKE_CMD} ARGS="--rerun-failed --output-on-failure" test
