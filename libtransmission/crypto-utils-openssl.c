@@ -185,11 +185,36 @@ static void openssl_evp_cipher_context_free(EVP_CIPHER_CTX* handle)
 
 #endif
 
+#if OPENSSL_VERSION_MAJOR >= 3
+bool tr_openssl_providers_loaded = false;
+#endif
+
 tr_rc4_ctx_t tr_rc4_new(void)
 {
 #if OPENSSL_VERSION_MAJOR >= 3
-    OSSL_PROVIDER_load(NULL, "default");
-    OSSL_PROVIDER_load(NULL, "legacy");
+    // https://github.com/openssl/openssl/blob/master/README-PROVIDERS.md#loading-providers
+    if (!tr_openssl_providers_loaded)
+    {
+        OSSL_PROVIDER *legacy, *deflt;
+
+        legacy = OSSL_PROVIDER_load(NULL, "legacy");
+        if (legacy == NULL)
+        {
+            printf("OpenSSL error: failed to load 'Legacy' provider.\n");
+            log_error();
+            exit(EXIT_FAILURE);
+        }
+
+        deflt = OSSL_PROVIDER_load(NULL, "default");
+        if (deflt == NULL)
+        {
+            printf("OpenSSL error: failed to load 'Default' provider.\n");
+            log_error();
+            exit(EXIT_FAILURE);
+        }
+
+        tr_openssl_providers_loaded = true;
+    }
 #endif
     EVP_CIPHER_CTX* handle = EVP_CIPHER_CTX_new();
 

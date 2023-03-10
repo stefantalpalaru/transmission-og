@@ -150,6 +150,8 @@ jobs:
           )
 
           if [[ '${{ runner.os }}' == 'Windows' ]]; then
+            # https://github.com/msys2/MINGW-packages/issues/16129
+            export OPENSSL_MODULES='C:\msys64\mingw64\lib\ossl-modules'
             cmake "${CMAKE_COMMON_ARGS[@]}" \
               -G "MinGW Makefiles" \
               ..
@@ -171,4 +173,4 @@ jobs:
           fi
 
           ${MAKE_CMD} -j${NCPU} VERBOSE=1
-          ${MAKE_CMD} ARGS="--rerun-failed --output-on-failure" test
+          ${MAKE_CMD} test || ${MAKE_CMD} VERBOSE=1 ARGS="--rerun-failed --output-on-failure" test
