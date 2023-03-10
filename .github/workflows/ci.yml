@@ -24,7 +24,7 @@ jobs:
         include:
           - target:
               os: linux
-            builder: ubuntu-20.04
+            builder: ubuntu-22.04
             shell: bash
           - target:
               os: macos
@@ -44,11 +44,14 @@ jobs:
     steps:
       - name: Git checkout
         uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
 
       - name: Environment variables
+        shell: bash
         run: |
-          echo "CFLAGS=-O3 -march=native -pipe" >> $GITHUB_ENV
-          echo "CXXFLAGS=-O3 -march=native -pipe" >> $GITHUB_ENV
+          CFLAGS="-O3 -march=native -pipe"
+          CXXFLAGS="-O3 -march=native -pipe"
           NCPU=""
           MAKE_CMD="make"
           case "${{ runner.os }}" in
@@ -56,15 +59,21 @@ jobs:
             NCPU="$(nproc)"
             echo "DEBIAN_FRONTEND=noninteractive" >> $GITHUB_ENV
             echo "TZ=Etc/UTC" >> $GITHUB_ENV
+            if [[ '${{ matrix.target.cpu }}' == 'i386' ]]; then
+              CFLAGS="${CFLAGS} -m32"
+              CXXFLAGS="${CXXFLAGS} -m32"
+            fi
             ;;
           "macOS")
-            NCPU="$(sysctl -n hw.NCPU)"
+            NCPU="$(sysctl -n hw.logicalcpu)"
             ;;
           "Windows")
             NCPU="${NUMBER_OF_PROCESSORS}"
             MAKE_CMD="mingw32-make"
             ;;
           esac
+          echo "CFLAGS=${CFLAGS}" >> $GITHUB_ENV
+          echo "CXXFLAGS=${CXXFLAGS}" >> $GITHUB_ENV
           [[ -z "${NCPU}" || ${NCPU} -le 0 ]] && NCPU="1"
           echo "NCPU=${NCPU}" >> $GITHUB_ENV
           echo "MAKE_CMD=${MAKE_CMD}" >> $GITHUB_ENV
@@ -74,38 +83,32 @@ jobs:
         run: |
           sudo -E dpkg --add-architecture i386
           sudo -E apt-get update -qq
-          sudo -E apt-get install --no-install-recommends -yq gcc-multilib \
-            build-essential:i386 libayatana-appindicator3-dev:i386 libcurl-dev:i386 \
-            libevent-dev:i386 libglib2.0-dev:i386 libgtk-3-dev:i386 libminiupnpc-dev:i386 \
-            libnatpmp-dev:i386 libnotify-dev:i386 libssl-dev:i386 libsystemd-dev:i386 \
-            qtbase5-dev:i386 zlib1g-dev:i386
-          mkdir -p external/bin
-          cat << EOF > external/bin/gcc
-          #!/bin/bash
-          exec $(which gcc) -m32 -mno-adx "\$@"
-          EOF
-          cat << EOF > external/bin/g++
-          #!/bin/bash
-          exec $(which g++) -m32 -mno-adx "\$@"
-          EOF
-          chmod 755 external/bin/gcc external/bin/g++
-          echo "${{ github.workspace }}/external/bin" >> $GITHUB_PATH
+          sudo -E eatmydata apt-get install --no-install-recommends -yq gcc-multilib g++-multilib \
+            libcurl4-openssl-dev:i386 gettext:i386 \
+            libevent-dev:i386 libglib2.0-dev:i386 libgtk-3-dev:i386 \
+            libnotify-dev:i386 libssl-dev:i386 libsystemd-dev:i386 \
+            qttools5-dev:i386 zlib1g-dev:i386
 
       - name: Install build dependencies (Linux AMD64)
         if: runner.os == 'Linux' && matrix.target.cpu == 'amd64'
         run: |
           sudo -E apt-get update -qq
-          sudo -E apt-get install --no-install-recommends -yq \
-            build-essential libayatana-appindicator3-dev libcurl-dev \
+          sudo -E eatmydata apt-get install --no-install-recommends -yq \
+            build-essential libayatana-appindicator3-dev libcurl4-openssl-dev \
             libevent-dev libglib2.0-dev libgtk-3-dev libminiupnpc-dev \
             libnatpmp-dev libnotify-dev libssl-dev libsystemd-dev \
-            qtbase5-dev zlib1g-dev
+            qttools5-dev zlib1g-dev gettext
 
       - name: Select the Xcode version
         if: runner.os == 'macOS'
         uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: '13' # 14 seems buggy: https://github.com/actions/runner-images/issues/6642
+
+      - name: Install build dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew install cmake gettext gtk+3 pkg-config qt@5 libevent openssl
 
       - name: MSYS2 (Windows amd64)
         if: runner.os == 'Windows' && matrix.target.cpu == 'amd64'
@@ -114,18 +117,60 @@ jobs:
           path-type: inherit
           install: >-
             base-devel
-            git
+            intltool
             mingw-w64-x86_64-toolchain
             mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-curl
+            mingw-w64-x86_64-dht
+            mingw-w64-x86_64-gettext
+            mingw-w64-x86_64-gtk3
+            mingw-w64-x86_64-libb64
+            mingw-w64-x86_64-libevent
+            mingw-w64-x86_64-libnatpmp
+            mingw-w64-x86_64-libnotify
+            mingw-w64-x86_64-libutp
+            mingw-w64-x86_64-miniupnpc
+            mingw-w64-x86_64-openssl
+            mingw-w64-x86_64-qt5-base
+            mingw-w64-x86_64-qt5-tools
+            mingw-w64-x86_64-qt5-winextras
+            mingw-w64-x86_64-zlib
 
       - name: Build binaries and run tests
         run: |
           mkdir build
           cd build
+
+          CMAKE_COMMON_ARGS=(
+            -DENABLE_DAEMON=ON
+            -DENABLE_UTILS=ON
+            -DENABLE_CLI=ON
+            -DENABLE_GTK=ON
+            -DENABLE_QT=ON
+          )
+
           if [[ '${{ runner.os }}' == 'Windows' ]]; then
-            cmake -G "MinGW Makefiles" ..
+            # https://github.com/msys2/MINGW-packages/issues/16129
+            export OPENSSL_MODULES='C:\msys64\mingw64\lib\ossl-modules'
+            cmake "${CMAKE_COMMON_ARGS[@]}" \
+              -G "MinGW Makefiles" \
+              ..
+          elif [[ '${{ runner.os }}' == 'macOS' ]]; then
+            export PATH="/usr/local/opt/qt@5/bin:${PATH}"
+            export PKG_CONFIG_PATH="/usr/local/opt/qt@5/lib/pkgconfig"
+            cmake "${CMAKE_COMMON_ARGS[@]}" \
+              -DENABLE_MAC=ON \
+              -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl \
+              ..
+          elif [[ '${{ runner.os }}' == 'Linux' && '${{ matrix.target.cpu }}' == 'i386' ]]; then
+            export PKG_CONFIG_PATH="/usr/lib/i386-linux-gnu/pkgconfig"
+            cmake "${CMAKE_COMMON_ARGS[@]}" \
+              -DCMAKE_LIBRARY_PATH=/usr/lib/i386-linux-gnu/ \
+              -DCMAKE_INCLUDE_PATH=/usr/include/i386-linux-gnu/ \
+              ..
           else
-            cmake ..
+            cmake "${CMAKE_COMMON_ARGS[@]}" ..
           fi
-          ${MAKE_CMD} -j${NCPU}
-          ${MAKE_CMD} test
+
+          ${MAKE_CMD} -j${NCPU} VERBOSE=1
+          ${MAKE_CMD} test || ${MAKE_CMD} VERBOSE=1 ARGS="--rerun-failed --output-on-failure" test

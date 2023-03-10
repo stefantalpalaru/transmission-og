@@ -148,7 +148,7 @@ tr_win32_app_info(${PROJECT_NAME}_WIN32_RC_FILE
     "Transmission GTK+ Client"
     "${TR_NAME}-gtk"
     "${TR_NAME}-gtk.exe"
-    "${TR_NAME}.ico")
+    "gtk/${TR_NAME}.ico")
 
 add_executable(${TR_NAME}-gtk WIN32
     ${${PROJECT_NAME}_SOURCES}
