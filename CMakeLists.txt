@@ -322,7 +322,8 @@ tr_add_external_auto_library(DHT dht dht)
 if(ENABLE_UTP)
     tr_add_external_auto_library(UTP libutp utp
         CMAKE_ARGS
-            -DLIBUTP_BUILD_PROGRAMS=OFF)
+            -DLIBUTP_BUILD_PROGRAMS=OFF
+            -DLIBUTP_ENABLE_WERROR=OFF)
 
     if(UTP_UPSTREAM_TARGET)
         # Use C++ linker for anything that depends on static libutp
