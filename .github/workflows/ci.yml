@@ -147,6 +147,7 @@ jobs:
             -DENABLE_CLI=ON
             -DENABLE_GTK=ON
             -DENABLE_QT=ON
+            -DUSE_SYSTEM_UTP=OFF # latest version redefines "bool" for C compilers
           )
 
           if [[ '${{ runner.os }}' == 'Windows' ]]; then
