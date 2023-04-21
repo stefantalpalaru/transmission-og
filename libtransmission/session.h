@@ -14,6 +14,8 @@
 
 #define TR_NAME "Transmission"
 
+#include <libutp/utp.h>
+
 #include "bandwidth.h"
 #include "bitfield.h"
 #include "net.h"
@@ -155,6 +157,7 @@ struct tr_session
     struct event* udp_event;
     struct event* udp6_event;
 
+    utp_context* utp_context;
     struct event* utp_timer;
 
     /* The open port on the local machine for incoming peer requests */

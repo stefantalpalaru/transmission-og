@@ -320,7 +320,9 @@ endif()
 tr_add_external_auto_library(DHT dht dht)
 
 if(ENABLE_UTP)
-    tr_add_external_auto_library(UTP libutp utp)
+    tr_add_external_auto_library(UTP libutp utp
+        CMAKE_ARGS
+            -DLIBUTP_BUILD_PROGRAMS=OFF)
 
     if(UTP_UPSTREAM_TARGET)
         # Use C++ linker for anything that depends on static libutp
@@ -377,11 +379,11 @@ endif()
 
 if(CMAKE_VERSION VERSION_LESS "3.1")
     if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++17")
     endif()
 else()
-    set(CMAKE_C_STANDARD 99)
+    set(CMAKE_C_STANDARD 11)
     set(CMAKE_C_STANDARD_REQUIRED ON)
     set(CMAKE_CXX_STANDARD 17)
     set(CMAKE_CXX_STANDARD_REQUIRED ON)

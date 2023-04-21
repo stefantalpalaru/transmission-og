@@ -358,15 +358,22 @@ struct tr_peer_socket tr_netOpenPeerUTPSocket(tr_session* session, tr_address co
 {
     struct tr_peer_socket ret = TR_PEER_SOCKET_INIT;
 
-    if (tr_address_is_valid_for_peers(addr, port))
+    if (session->utp_context != NULL && tr_address_is_valid_for_peers(addr, port))
     {
         struct sockaddr_storage ss;
         socklen_t const sslen = setup_sockaddr(addr, port, &ss);
-        struct UTPSocket* const socket = UTP_Create(tr_utpSendTo, session, (struct sockaddr*)&ss, sslen);
+        utp_socket* const socket = utp_create_socket(session->utp_context);
 
         if (socket != NULL)
         {
-            ret = tr_peer_socket_utp_create(socket);
+            if (utp_connect(socket, (struct sockaddr*)&ss, sslen) != -1)
+            {
+                ret = tr_peer_socket_utp_create(socket);
+            }
+            else
+            {
+                utp_close(socket);
+            }
         }
     }
 
