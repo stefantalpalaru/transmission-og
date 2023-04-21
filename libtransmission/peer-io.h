@@ -17,8 +17,10 @@
 **/
 
 #include <assert.h>
+#include <libutp/utp.h>
 
 #include "transmission.h"
+
 #include "bandwidth.h"
 #include "crypto.h"
 #include "net.h" /* tr_address */
@@ -108,6 +110,8 @@ tr_peerIo;
 /**
 ***
 **/
+
+void tr_peerIoUtpInit(utp_context* ctx);
 
 tr_peerIo* tr_peerIoNewOutgoing(tr_session* session, struct tr_bandwidth* parent, struct tr_address const* addr, tr_port port,
     uint8_t const* torrentHash, bool isSeed, bool utp);

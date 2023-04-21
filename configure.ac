@@ -20,6 +20,9 @@ AM_INIT_AUTOMAKE([1.9 tar-pax no-dist-gzip dist-xz foreign])
 LT_INIT
 LT_LIB_M
 
+CFLAGS="$CFLAGS -std=gnu11"
+CXXFLAGS="$CXXFLAGS -std=gnu++17"
+
 if test m4_substr(peer_id_prefix,6,1) = "0"; then
   supported_build=yes
   CPPFLAGS="$CPPFLAGS -DNDEBUG"
@@ -82,8 +85,7 @@ AC_PROG_CC
 AC_PROG_CXX
 AC_C_INLINE
 if test "x$GCC" = "xyes" ; then
-
-    CFLAGS="$CFLAGS -std=gnu99 -ggdb3 -Wall -W -Wpointer-arith -Wformat-security -Wundef -Wcast-align -Wstrict-prototypes -Wmissing-declarations -Wmissing-format-attribute -Wredundant-decls -Wnested-externs -Wunused-parameter -Wwrite-strings -Winline -Wfloat-equal"
+    CFLAGS="$CFLAGS -ggdb3 -Wall -W -Wpointer-arith -Wformat-security -Wundef -Wcast-align -Wstrict-prototypes -Wmissing-declarations -Wmissing-format-attribute -Wredundant-decls -Wnested-externs -Wunused-parameter -Wwrite-strings -Winline -Wfloat-equal"
 
     dnl figure out gcc version
     AC_MSG_CHECKING([gcc version])
