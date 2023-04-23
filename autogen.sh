@@ -34,13 +34,3 @@ if test "$GETTEXTIZE"; then
   echo "Running intltoolize..."
   intltoolize --copy --force --automake
 fi
-
-cd "$ORIGDIR" || exit $?
-
-if test -z "$AUTOGEN_SUBDIR_MODE"; then
-  echo Running $srcdir/configure "$@"
-  $srcdir/configure "$@"
-
-  echo
-  echo "Now type 'make' to compile $PROJECT."
-fi

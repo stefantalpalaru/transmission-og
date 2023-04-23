@@ -11,6 +11,7 @@ bin_PROGRAMS = transmission-cli
 dist_man_MANS = transmission-cli.1
 
 transmission_cli_SOURCES = cli.c
+nodist_EXTRA_transmission_cli_SOURCES = dummy.cxx # force C++ linking
 
 transmission_cli_LDADD = \
     $(top_builddir)/libtransmission/libtransmission.a \

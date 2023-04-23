@@ -343,8 +343,12 @@ bool gtr_file_trash_or_remove(char const* filename, tr_error** error)
 
         if (err != NULL)
         {
-            g_message("Unable to trash file \"%s\": %s", filename, err->message);
-            tr_error_set_literal(error, err->code, err->message);
+            if (error != NULL)
+            {
+                g_message("Unable to trash file \"%s\": %s", filename, err->message);
+                tr_error_clear(error);
+                tr_error_set_literal(error, err->code, err->message);
+            }
             g_clear_error(&err);
         }
     }
@@ -356,9 +360,12 @@ bool gtr_file_trash_or_remove(char const* filename, tr_error** error)
 
         if (err != NULL)
         {
-            g_message("Unable to delete file \"%s\": %s", filename, err->message);
-            tr_error_clear(error);
-            tr_error_set_literal(error, err->code, err->message);
+            if (error != NULL)
+            {
+                g_message("Unable to delete file \"%s\": %s", filename, err->message);
+                tr_error_clear(error);
+                tr_error_set_literal(error, err->code, err->message);
+            }
             g_clear_error(&err);
             result = false;
         }

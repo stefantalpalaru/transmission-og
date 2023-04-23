@@ -75,6 +75,8 @@ transmission_gtk_SOURCES = \
     tr-window.c \
     util.c
 
+nodist_EXTRA_transmission_gtk_SOURCES = dummy.cxx # force C++ linking
+
 dist_man_MANS = transmission-gtk.1
 
 transmission_gtk_LDADD = \

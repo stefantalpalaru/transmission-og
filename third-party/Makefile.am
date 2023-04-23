@@ -1,6 +1,9 @@
 if BUILD_DHT
   DHT_DIR = dht
 endif
+if BUILD_EVENT
+  EVENT_DIR = libevent
+endif
 if BUILD_B64
   B64_DIR = libb64
 endif
@@ -16,6 +19,7 @@ endif
 
 SUBDIRS = \
   $(DHT_DIR) \
+  $(EVENT_DIR) \
   $(B64_DIR) \
   $(NATPMP_DIR) \
   $(MINIUPNP_DIR) \
