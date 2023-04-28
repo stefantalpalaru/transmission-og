@@ -159,7 +159,14 @@ jobs:
               CMAKE_ARGS+=(
                 -DUSE_SYSTEM_EVENT2=ON
                 -DUSE_SYSTEM_MINIUPNPC=ON
-                -DUSE_SYSTEM_NATPMP=ON
+              )
+            else # force vendored libs
+              CMAKE_ARGS+=(
+                -DUSE_SYSTEM_B64=OFF
+                -DUSE_SYSTEM_DHT=OFF
+                -DUSE_SYSTEM_EVENT2=OFF
+                -DUSE_SYSTEM_MINIUPNPC=OFF
+                -DUSE_SYSTEM_NATPMP=OFF
               )
             fi
 
@@ -171,11 +178,13 @@ jobs:
                 CMAKE_ARGS+=(
                   -DUSE_SYSTEM_B64=ON
                   -DUSE_SYSTEM_DHT=ON
+                  -DUSE_SYSTEM_NATPMP=ON
                 )
               fi
             elif [[ "${{ runner.os }}" == "macOS" ]]; then
               export PATH="/usr/local/opt/qt@5/bin:${PATH}"
               export PKG_CONFIG_PATH="/usr/local/opt/qt@5/lib/pkgconfig"
+              # enable libnatpmp when this is fixed: https://github.com/Homebrew/homebrew-core/issues/129653
               CMAKE_ARGS+=(
                 -DENABLE_MAC=ON
                 -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl
@@ -186,6 +195,11 @@ jobs:
                 -DCMAKE_LIBRARY_PATH=/usr/lib/i386-linux-gnu/
                 -DCMAKE_INCLUDE_PATH=/usr/include/i386-linux-gnu/
               )
+              if [[ "${{ matrix.libs }}" == "system" ]]; then
+                CMAKE_ARGS+=(
+                  -DUSE_SYSTEM_NATPMP=ON
+                )
+              fi
             fi
 
             cmake "${CMAKE_ARGS[@]}" ..
@@ -208,7 +222,6 @@ jobs:
               CONFIGURE_ARGS+=(
                 --enable-external-libevent
                 --enable-external-miniupnpc
-                --enable-external-natpmp
               )
             fi
 
@@ -217,11 +230,13 @@ jobs:
                 CONFIGURE_ARGS+=(
                   --enable-external-b64
                   --enable-external-dht
+                  --enable-external-natpmp
                 )
               fi
             elif [[ "${{ runner.os }}" == "macOS" ]]; then
               export PATH="/usr/local/opt/qt@5/bin:${PATH}"
               export PKG_CONFIG_PATH="/usr/local/opt/qt@5/lib/pkgconfig"
+              # enable libnatpmp when this is fixed: https://github.com/Homebrew/homebrew-core/issues/129653
               CONFIGURE_ARGS+=(
                 --enable-mac
               )
@@ -229,6 +244,11 @@ jobs:
               export PKG_CONFIG_PATH="/usr/lib/i386-linux-gnu/pkgconfig"
               export LDFLAGS="${LDFLAGS} -L/usr/lib/i386-linux-gnu/"
               export CPPFLAGS="${CPPFLAGS} -I/usr/include/i386-linux-gnu/"
+              if [[ "${{ matrix.libs }}" == "system" ]]; then
+                CONFIGURE_ARGS+=(
+                  --enable-external-natpmp
+                )
+              fi
             fi
 
             ./configure "${CONFIGURE_ARGS[@]}"
