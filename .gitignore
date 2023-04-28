@@ -107,7 +107,6 @@ daemon/transmission-proxy
 daemon/transmission-remote
 gtk/defines.h
 gtk/transmission-gtk
-libtransmission/version.h
 macosx/Info.plist
 macosx/Transmission.app
 macosx/en.lproj/*~.nib

@@ -111,7 +111,7 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew install cmake gettext gtk+3 pkg-config qt@5 libevent openssl@1.1 \
-            miniupnpc libnatpmp intltool
+            miniupnpc libnatpmp intltool automake autoconf
 
       - name: MSYS2 (Windows amd64)
         if: runner.os == 'Windows' && matrix.target.cpu == 'amd64'
@@ -121,11 +121,10 @@ jobs:
           install: >-
             base-devel
             intltool
-            mingw-w64-x86_64-toolchain
+            mingw-w64-x86_64-autotools
             mingw-w64-x86_64-cmake
             mingw-w64-x86_64-curl
             mingw-w64-x86_64-dht
-            mingw-w64-x86_64-gettext
             mingw-w64-x86_64-gtk3
             mingw-w64-x86_64-libb64
             mingw-w64-x86_64-libevent
@@ -137,6 +136,7 @@ jobs:
             mingw-w64-x86_64-qt5-base
             mingw-w64-x86_64-qt5-tools
             mingw-w64-x86_64-qt5-winextras
+            mingw-w64-x86_64-toolchain
             mingw-w64-x86_64-zlib
 
       - name: Build binaries and run tests
@@ -183,12 +183,10 @@ jobs:
               fi
             elif [[ "${{ runner.os }}" == "macOS" ]]; then
               export PATH="/usr/local/opt/qt@5/bin:${PATH}"
-              export PKG_CONFIG_PATH="/usr/local/opt/qt@5/lib/pkgconfig"
+              export PKG_CONFIG_PATH="/usr/local/opt/qt@5/lib/pkgconfig:/usr/local/opt/openssl@1.1/lib/pkgconfig"
               CMAKE_ARGS+=(
                 -DENABLE_MAC=ON
                 -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl
-                # enable libnatpmp when this is fixed: https://github.com/Homebrew/homebrew-core/issues/129653
-                -DUSE_SYSTEM_NATPMP=OFF
               )
             elif [[ "${{ runner.os }}" == "Linux" ]]; then
               if [[ "${{ matrix.libs }}" == "system" ]]; then
@@ -198,7 +196,7 @@ jobs:
               fi
 
               if [[ "${{ matrix.target.cpu }}" == "i386" ]]; then
-                export PKG_CONFIG_PATH="/usr/lib/i386-linux-gnu/pkgconfig"
+              export PKG_CONFIG_PATH="/usr/lib/i386-linux-gnu/pkgconfig:"
                 CMAKE_ARGS+=(
                   -DCMAKE_LIBRARY_PATH=/usr/lib/i386-linux-gnu/
                   -DCMAKE_INCLUDE_PATH=/usr/include/i386-linux-gnu/
@@ -242,8 +240,7 @@ jobs:
               fi
             elif [[ "${{ runner.os }}" == "macOS" ]]; then
               export PATH="/usr/local/opt/qt@5/bin:${PATH}"
-              export PKG_CONFIG_PATH="/usr/local/opt/qt@5/lib/pkgconfig"
-              # enable libnatpmp when this is fixed: https://github.com/Homebrew/homebrew-core/issues/129653
+              export PKG_CONFIG_PATH="/usr/local/opt/qt@5/lib/pkgconfig:/usr/local/opt/openssl@1.1/lib/pkgconfig"
               CONFIGURE_ARGS+=(
                 --enable-mac
               )
