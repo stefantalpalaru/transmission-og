@@ -247,13 +247,22 @@ jobs:
               CONFIGURE_ARGS+=(
                 --enable-mac
               )
-            elif [[ "${{ runner.os }}" == "Linux" && "${{ matrix.target.cpu }}" == "i386" ]]; then
-              export PKG_CONFIG_PATH="/usr/lib/i386-linux-gnu/pkgconfig"
-              export LDFLAGS="${LDFLAGS} -L/usr/lib/i386-linux-gnu/"
-              export CPPFLAGS="${CPPFLAGS} -I/usr/include/i386-linux-gnu/"
+            elif [[ "${{ runner.os }}" == "Linux" ]]; then
               if [[ "${{ matrix.libs }}" == "system" ]]; then
                 CONFIGURE_ARGS+=(
                   --enable-external-natpmp
+                )
+              fi
+
+              if [[ "${{ matrix.target.cpu }}" == "i386" ]]; then
+                export PKG_CONFIG_PATH="/usr/lib/i386-linux-gnu/pkgconfig"
+                export LDFLAGS="${LDFLAGS} -L/usr/lib/i386-linux-gnu/"
+                export CPPFLAGS="${CPPFLAGS} -I/usr/include/i386-linux-gnu/"
+
+                # packages not available for i386:
+                CONFIGURE_ARGS+=(
+                  --disable-external-miniupnpc
+                  --disable-external-natpmp
                 )
               fi
             fi

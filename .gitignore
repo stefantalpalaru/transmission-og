@@ -59,8 +59,7 @@ Makefile
 /stamp-h1
 /libtool
 /config.status
-/config.h*
-/test-driver
+/config.h
 /test-suite.log
 .libs
 .deps
