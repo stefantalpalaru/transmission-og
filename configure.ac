@@ -111,8 +111,7 @@ fi
 AC_PROG_LN_S
 AC_PROG_MKDIR_P
 
-AC_HEADER_STDC
-AC_HEADER_TIME
+AC_CHECK_HEADERS_ONCE([sys/time.h])
 
 AC_CHECK_HEADERS([xlocale.h])
 AC_CHECK_FUNCS([iconv pread pwrite lrintf strlcpy daemon dirname basename canonicalize_file_name strcasecmp localtime_r fallocate64 posix_fallocate memmem strsep strtold syslog valloc getpagesize posix_memalign statvfs htonll ntohll mkdtemp uselocale _configthreadlocale strcasestr])

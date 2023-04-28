@@ -110,7 +110,7 @@ jobs:
       - name: Install build dependencies (macOS)
         if: runner.os == 'macOS'
         run: |
-          brew install cmake gettext gtk+3 pkg-config qt@5 libevent openssl \
+          brew install cmake gettext gtk+3 pkg-config qt@5 libevent openssl@1.1 \
             miniupnpc libnatpmp intltool
 
       - name: MSYS2 (Windows amd64)
@@ -184,20 +184,27 @@ jobs:
             elif [[ "${{ runner.os }}" == "macOS" ]]; then
               export PATH="/usr/local/opt/qt@5/bin:${PATH}"
               export PKG_CONFIG_PATH="/usr/local/opt/qt@5/lib/pkgconfig"
-              # enable libnatpmp when this is fixed: https://github.com/Homebrew/homebrew-core/issues/129653
               CMAKE_ARGS+=(
                 -DENABLE_MAC=ON
                 -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl
+                # enable libnatpmp when this is fixed: https://github.com/Homebrew/homebrew-core/issues/129653
+                -DUSE_SYSTEM_NATPMP=OFF
               )
-            elif [[ "${{ runner.os }}" == "Linux" && "${{ matrix.target.cpu }}" == "i386" ]]; then
-              export PKG_CONFIG_PATH="/usr/lib/i386-linux-gnu/pkgconfig"
-              CMAKE_ARGS+=(
-                -DCMAKE_LIBRARY_PATH=/usr/lib/i386-linux-gnu/
-                -DCMAKE_INCLUDE_PATH=/usr/include/i386-linux-gnu/
-              )
+            elif [[ "${{ runner.os }}" == "Linux" ]]; then
               if [[ "${{ matrix.libs }}" == "system" ]]; then
                 CMAKE_ARGS+=(
                   -DUSE_SYSTEM_NATPMP=ON
+                )
+              fi
+
+              if [[ "${{ matrix.target.cpu }}" == "i386" ]]; then
+                export PKG_CONFIG_PATH="/usr/lib/i386-linux-gnu/pkgconfig"
+                CMAKE_ARGS+=(
+                  -DCMAKE_LIBRARY_PATH=/usr/lib/i386-linux-gnu/
+                  -DCMAKE_INCLUDE_PATH=/usr/include/i386-linux-gnu/
+                  # packages not available for i386:
+                  -DUSE_SYSTEM_MINIUPNPC=OFF
+                  -DUSE_SYSTEM_NATPMP=OFF
                 )
               fi
             fi
