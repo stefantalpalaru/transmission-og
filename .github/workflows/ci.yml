@@ -157,7 +157,6 @@ jobs:
             if [[ "${{ matrix.libs }}" == "system" ]]; then
               CMAKE_ARGS+=(
                 -DUSE_SYSTEM_B64=ON
-                -DUSE_SYSTEM_DHT=ON
                 -DUSE_SYSTEM_EVENT2=ON
                 -DUSE_SYSTEM_MINIUPNPC=ON
                 -DUSE_SYSTEM_NATPMP=ON
@@ -168,6 +167,11 @@ jobs:
               CMAKE_ARGS+=(
                 -G "MinGW Makefiles"
               )
+              if [[ "${{ matrix.libs }}" == "system" ]]; then
+                CMAKE_ARGS+=(
+                  -DUSE_SYSTEM_DHT=ON
+                )
+              fi
             elif [[ "${{ runner.os }}" == "macOS" ]]; then
               export PATH="/usr/local/opt/qt@5/bin:${PATH}"
               export PKG_CONFIG_PATH="/usr/local/opt/qt@5/lib/pkgconfig"
@@ -189,7 +193,7 @@ jobs:
             ${MAKE_CMD} test || ${MAKE_CMD} VERBOSE=1 ARGS="--rerun-failed --output-on-failure" test
           fi # CMake
 
-          if [[ "S{{ matrix.build-system }}" == "autotools" ]]; then
+          if [[ "${{ matrix.build-system }}" == "autotools" ]]; then
             CONFIGURE_ARGS=(
               --enable-utp
               --enable-cli
@@ -202,14 +206,19 @@ jobs:
             if [[ "${{ matrix.libs }}" == "system" ]]; then
               CONFIGURE_ARGS+=(
                 --enable-external-b64
-                --enable-external-dht
                 --enable-external-libevent
                 --enable-external-miniupnpc
                 --enable-external-natpmp
               )
             fi
 
-            if [[ "${{ runner.os }}" == "macOS" ]]; then
+            if [[ "${{ runner.os }}" == "Windows" ]]; then
+              if [[ "${{ matrix.libs }}" == "system" ]]; then
+                CONFIGURE_ARGS+=(
+                  --enable-external-dht
+                )
+              fi
+            elif [[ "${{ runner.os }}" == "macOS" ]]; then
               export PATH="/usr/local/opt/qt@5/bin:${PATH}"
               export PKG_CONFIG_PATH="/usr/local/opt/qt@5/lib/pkgconfig"
               CONFIGURE_ARGS+=(
