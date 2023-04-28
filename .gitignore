@@ -59,9 +59,9 @@ Makefile.in
 Makefile.in.in
 /autom4te.cache
 /stamp-h1
-/config.*
 /libtool
-/ltmain.sh
+/config.status
+/config.h*
 /test-driver
 /test-suite.log
 .libs

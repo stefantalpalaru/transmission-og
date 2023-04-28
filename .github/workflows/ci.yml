@@ -156,7 +156,6 @@ jobs:
 
             if [[ "${{ matrix.libs }}" == "system" ]]; then
               CMAKE_ARGS+=(
-                -DUSE_SYSTEM_B64=ON
                 -DUSE_SYSTEM_EVENT2=ON
                 -DUSE_SYSTEM_MINIUPNPC=ON
                 -DUSE_SYSTEM_NATPMP=ON
@@ -169,6 +168,7 @@ jobs:
               )
               if [[ "${{ matrix.libs }}" == "system" ]]; then
                 CMAKE_ARGS+=(
+                  -DUSE_SYSTEM_B64=ON
                   -DUSE_SYSTEM_DHT=ON
                 )
               fi
@@ -205,7 +205,6 @@ jobs:
 
             if [[ "${{ matrix.libs }}" == "system" ]]; then
               CONFIGURE_ARGS+=(
-                --enable-external-b64
                 --enable-external-libevent
                 --enable-external-miniupnpc
                 --enable-external-natpmp
@@ -215,6 +214,7 @@ jobs:
             if [[ "${{ runner.os }}" == "Windows" ]]; then
               if [[ "${{ matrix.libs }}" == "system" ]]; then
                 CONFIGURE_ARGS+=(
+                  --enable-external-b64
                   --enable-external-dht
                 )
               fi
