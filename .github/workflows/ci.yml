@@ -41,13 +41,13 @@ jobs:
       run:
         shell: ${{ matrix.shell }}
 
-    name: "${{ matrix.target.os }}-${{ matrix.target.cpu }} (${{ matrix.build-system }}, ${{ matrix.libs }} libs)"
+    name: '${{ matrix.target.os }}-${{ matrix.target.cpu }} (${{ matrix.build-system }}, ${{ matrix.libs }} libs)'
     runs-on: ${{ matrix.builder }}
     steps:
       - name: Git checkout
         uses: actions/checkout@v3
         with:
-          submodules: "recursive"
+          submodules: 'recursive'
 
       - name: Environment variables
         shell: bash
@@ -81,7 +81,7 @@ jobs:
           echo "MAKE_CMD=${MAKE_CMD}" >> $GITHUB_ENV
 
       - name: Install build dependencies (Linux i386)
-        if: runner.os == "Linux" && matrix.target.cpu == "i386"
+        if: runner.os == 'Linux' && matrix.target.cpu == 'i386'
         run: |
           sudo -E dpkg --add-architecture i386
           sudo -E apt-get update -qq
@@ -92,7 +92,7 @@ jobs:
             qttools5-dev:i386 zlib1g-dev:i386
 
       - name: Install build dependencies (Linux AMD64)
-        if: runner.os == "Linux" && matrix.target.cpu == "amd64"
+        if: runner.os == 'Linux' && matrix.target.cpu == 'amd64'
         run: |
           sudo -E apt-get update -qq
           sudo -E eatmydata apt-get install --no-install-recommends -yq \
@@ -102,18 +102,18 @@ jobs:
             qttools5-dev zlib1g-dev gettext
 
       - name: Select the Xcode version
-        if: runner.os == "macOS"
+        if: runner.os == 'macOS'
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: "13" # 14 seems buggy: https://github.com/actions/runner-images/issues/6642
+          xcode-version: '13' # 14 seems buggy: https://github.com/actions/runner-images/issues/6642
 
       - name: Install build dependencies (macOS)
-        if: runner.os == "macOS"
+        if: runner.os == 'macOS'
         run: |
           brew install cmake gettext gtk+3 pkg-config qt@5 libevent openssl
 
       - name: MSYS2 (Windows amd64)
-        if: runner.os == "Windows" && matrix.target.cpu == "amd64"
+        if: runner.os == 'Windows' && matrix.target.cpu == 'amd64'
         uses: msys2/setup-msys2@v2
         with:
           path-type: inherit
@@ -140,7 +140,7 @@ jobs:
 
       - name: Build binaries and run tests
         run: |
-          if [[ "S{{ matrix.build-system }}" == "cmake" ]]; then
+          if [[ "${{ matrix.build-system }}" == "cmake" ]]; then
             mkdir build
             cd build
 
