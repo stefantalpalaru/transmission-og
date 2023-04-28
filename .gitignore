@@ -55,8 +55,6 @@ watchdir-test
 
 # autotools
 Makefile
-Makefile.in
-Makefile.in.in
 /autom4te.cache
 /stamp-h1
 /libtool
