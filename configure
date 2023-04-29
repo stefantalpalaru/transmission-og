@@ -24757,6 +24757,7 @@ fi
 
   *darwin*)
     have_darwin="yes"
+    LIBS="${LIBS} -framework Cocoa"
     ;;
 
 esac

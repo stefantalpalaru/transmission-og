@@ -258,6 +258,7 @@ jobs:
                 export PKG_CONFIG_PATH="/usr/lib/i386-linux-gnu/pkgconfig"
                 export LDFLAGS="${LDFLAGS} -L/usr/lib/i386-linux-gnu/"
                 export CPPFLAGS="${CPPFLAGS} -I/usr/include/i386-linux-gnu/"
+                export QMAKE_ARGS="-spec linux-g++-32"
 
                 # packages not available for i386:
                 CONFIGURE_ARGS+=(
@@ -271,7 +272,7 @@ jobs:
             ${MAKE_CMD} -j${NCPU} V=1
             # Qt client
             cd qt
-            qmake qtr.pro
+            qmake ${QMAKE_ARGS} qtr.pro
             ${MAKE_CMD} -j${NCPU}
             cd - &>/dev/null
             # tests

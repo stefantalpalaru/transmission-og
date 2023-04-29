@@ -516,6 +516,7 @@ case $host_os in
 
   *darwin*)
     have_darwin="yes"
+    LIBS="${LIBS} -framework Cocoa"
     ;;
 
 esac
