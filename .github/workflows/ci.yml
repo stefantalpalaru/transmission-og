@@ -225,7 +225,9 @@ jobs:
               --with-gtk
               --disable-external-utp # latest version redefines "bool" for C compilers
             )
-            QMAKE_ARGS=()
+            QMAKE_ARGS=(
+              -early
+            )
 
             if [[ "${{ matrix.libs }}" == "system" ]]; then
               CONFIGURE_ARGS+=(
@@ -284,7 +286,6 @@ jobs:
             ${MAKE_CMD} -j${NCPU} V=1
             # Qt client
             cd qt
-            echo qmake "${QMAKE_ARGS[@]}" qtr.pro
             qmake "${QMAKE_ARGS[@]}" qtr.pro
             ${MAKE_CMD} -j${NCPU}
             cd - &>/dev/null
