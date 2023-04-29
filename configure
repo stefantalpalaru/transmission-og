@@ -24644,7 +24644,7 @@ case $host_os in
      CXXFLAGS="$CXXFLAGS -mms-bitfields -mwin32 -mwindows"
      CPPFLAGS="$CPPFLAGS -DWINVER=0x0600 -D_WIN32_WINNT=0x0600 -DWIN32_LEAN_AND_MEAN"
      # CPPFLAGS="$CPPFLAGS -D__USE_MINGW_ANSI_STDIO=1 -D__STDC_FORMAT_MACROS=1"
-     LIBS="$LIBS -liphlpapi -lshell32 -lws2_32"
+     LIBS="${LIBS} -liphlpapi -lshell32 -lws2_32"
      transmissionlocaledir="locale"
      if test -z "$host_alias"; then
        hostaliaswindres=
@@ -24830,20 +24830,7 @@ fi
 if test "x$build_mac" = "xyes" ; then
    printf "%s\n" "#define BUILD_MAC_CLIENT 1" >>confdefs.h
 
-    # Make sure the proper Mac SDK is installed
-    if test ! -d /Developer/SDKs/MacOSX10.5.sdk; then
-      cat << EOF
-You need to install the Mac OS X 10.5 SDK in order to build Transmission
-with --enable-mac:
-  Get your Xcode CD or package
-  Restart the install
-  When it gets to "Installation Type", select "Customize"
-  Select "Mac OS X 10.5 SDK" under "Cross Development"
-  Finish the install.
-EOF
-      exit 1
-    fi
-fi
+                                  fi
  if test "x$have_msw" = "xyes"; then
   WIN32_TRUE=
   WIN32_FALSE='#'

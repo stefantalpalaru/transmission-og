@@ -504,7 +504,7 @@ case $host_os in
      CXXFLAGS="$CXXFLAGS -mms-bitfields -mwin32 -mwindows"
      CPPFLAGS="$CPPFLAGS -DWINVER=0x0600 -D_WIN32_WINNT=0x0600 -DWIN32_LEAN_AND_MEAN"
      # CPPFLAGS="$CPPFLAGS -D__USE_MINGW_ANSI_STDIO=1 -D__STDC_FORMAT_MACROS=1"
-     LIBS="$LIBS -liphlpapi -lshell32 -lws2_32"
+     LIBS="${LIBS} -liphlpapi -lshell32 -lws2_32"
      transmissionlocaledir="locale"
      if test -z "$host_alias"; then
        hostaliaswindres=
@@ -549,19 +549,19 @@ AM_CONDITIONAL([BUILD_DAEMON],[test "x$build_daemon" = "xyes"])
 
 if test "x$build_mac" = "xyes" ; then
    AC_DEFINE([BUILD_MAC_CLIENT], 1)
-    # Make sure the proper Mac SDK is installed
-    if test ! -d /Developer/SDKs/MacOSX10.5.sdk; then
-      cat << EOF
-You need to install the Mac OS X 10.5 SDK in order to build Transmission
-with --enable-mac:
-  Get your Xcode CD or package
-  Restart the install
-  When it gets to "Installation Type", select "Customize"
-  Select "Mac OS X 10.5 SDK" under "Cross Development"
-  Finish the install.
-EOF
-      exit 1
-    fi
+    dnl # Make sure the proper Mac SDK is installed
+    dnl if test ! -d /Developer/SDKs/MacOSX10.5.sdk; then
+      dnl cat << EOF
+dnl You need to install the Mac OS X 10.5 SDK in order to build Transmission
+dnl with --enable-mac:
+  dnl Get your Xcode CD or package
+  dnl Restart the install
+  dnl When it gets to "Installation Type", select "Customize"
+  dnl Select "Mac OS X 10.5 SDK" under "Cross Development"
+  dnl Finish the install.
+dnl EOF
+      dnl exit 1
+    dnl fi
 fi
 AM_CONDITIONAL(WIN32, test "x$have_msw" = "xyes")
 

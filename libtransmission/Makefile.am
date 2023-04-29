@@ -15,6 +15,9 @@ AM_CFLAGS = \
   @PTHREAD_CFLAGS@ \
   @ZLIB_CFLAGS@
 
+# so we can append to it later
+AM_LDFLAGS =
+
 noinst_LIBRARIES = libtransmission.a
 
 libtransmission_a_SOURCES = \
@@ -92,6 +95,7 @@ endif
 
 if WIN32
 libtransmission_a_SOURCES += file-win32.c subprocess-win32.c watchdir-win32.c
+AM_LDFLAGS += -lcrypt32 -lshlwapi
 else
 libtransmission_a_SOURCES += file-posix.c subprocess-posix.c
 endif

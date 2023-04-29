@@ -95,12 +95,13 @@ host_triplet = @host@
 @USE_KQUEUE_TRUE@am__append_3 = watchdir-kqueue.c
 @USE_KQUEUE_TRUE@am__append_4 = -DWITH_KQUEUE
 @WIN32_TRUE@am__append_5 = file-win32.c subprocess-win32.c watchdir-win32.c
-@WIN32_FALSE@am__append_6 = file-posix.c subprocess-posix.c
-@CRYPTO_USE_OPENSSL_TRUE@am__append_7 = crypto-utils-openssl.c
-@CRYPTO_USE_CYASSL_TRUE@am__append_8 = crypto-utils-cyassl.c
-@CRYPTO_USE_CYASSL_TRUE@@CYASSL_IS_WOLFSSL_TRUE@am__append_9 = -DCYASSL_IS_WOLFSSL
-@CRYPTO_USE_POLARSSL_TRUE@am__append_10 = crypto-utils-polarssl.c
-@CRYPTO_USE_POLARSSL_TRUE@@POLARSSL_IS_MBEDTLS_TRUE@am__append_11 = -DPOLARSSL_IS_MBEDTLS
+@WIN32_TRUE@am__append_6 = -lcrypt32 -lshlwapi
+@WIN32_FALSE@am__append_7 = file-posix.c subprocess-posix.c
+@CRYPTO_USE_OPENSSL_TRUE@am__append_8 = crypto-utils-openssl.c
+@CRYPTO_USE_CYASSL_TRUE@am__append_9 = crypto-utils-cyassl.c
+@CRYPTO_USE_CYASSL_TRUE@@CYASSL_IS_WOLFSSL_TRUE@am__append_10 = -DCYASSL_IS_WOLFSSL
+@CRYPTO_USE_POLARSSL_TRUE@am__append_11 = crypto-utils-polarssl.c
+@CRYPTO_USE_POLARSSL_TRUE@@POLARSSL_IS_MBEDTLS_TRUE@am__append_12 = -DPOLARSSL_IS_MBEDTLS
 TESTS = bitfield-test$(EXEEXT) blocklist-test$(EXEEXT) \
 	clients-test$(EXEEXT) crypto-test$(EXEEXT) error-test$(EXEEXT) \
 	file-test$(EXEEXT) history-test$(EXEEXT) json-test$(EXEEXT) \
@@ -950,7 +951,7 @@ top_srcdir = @top_srcdir@
 transmissionlocaledir = @transmissionlocaledir@
 AM_CPPFLAGS = -I$(top_srcdir) -D__TRANSMISSION__ \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" $(am__append_2) \
-	$(am__append_4) $(am__append_9) $(am__append_11)
+	$(am__append_4) $(am__append_10) $(am__append_12)
 AM_CFLAGS = \
   @DHT_CFLAGS@ \
   @LIBB64_CFLAGS@ \
@@ -963,6 +964,9 @@ AM_CFLAGS = \
   @PTHREAD_CFLAGS@ \
   @ZLIB_CFLAGS@
 
+
+# so we can append to it later
+AM_LDFLAGS = $(am__append_6)
 noinst_LIBRARIES = libtransmission.a
 libtransmission_a_SOURCES = announcer.c announcer-http.c \
 	announcer-udp.c bandwidth.c bitfield.c blocklist.c cache.c \
@@ -977,8 +981,8 @@ libtransmission_a_SOURCES = announcer.c announcer-http.c \
 	utils.c variant.c variant-benc.c variant-json.c verify.c \
 	watchdir.c watchdir-generic.c web.c webseed.c wildmat.c \
 	$(am__append_1) $(am__append_3) $(am__append_5) \
-	$(am__append_6) $(am__append_7) $(am__append_8) \
-	$(am__append_10)
+	$(am__append_7) $(am__append_8) $(am__append_9) \
+	$(am__append_11)
 noinst_HEADERS = \
   announcer.h \
   announcer-common.h \
