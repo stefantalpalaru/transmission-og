@@ -728,6 +728,7 @@ GTK_CFLAGS
 BUILD_GTK_FALSE
 BUILD_GTK_TRUE
 LIBEVENT_LIBS_QT
+LIBEVENT_INCLUDEPATH_QT
 BUILD_EVENT_FALSE
 BUILD_EVENT_TRUE
 subdirs
@@ -735,11 +736,13 @@ LIBEVENT_LIBS
 LIBEVENT_CFLAGS
 LIBNATPMP_LIBS_QT
 LIBNATPMP_LIBS
+LIBNATPMP_INCLUDEPATH_QT
 LIBNATPMP_CFLAGS
 BUILD_NATPMP_FALSE
 BUILD_NATPMP_TRUE
 LIBUPNP_LIBS_QT
 LIBUPNP_LIBS
+LIBUPNP_INCLUDEPATH_QT
 LIBUPNP_CFLAGS
 BUILD_MINIUPNP_FALSE
 BUILD_MINIUPNP_TRUE
@@ -747,14 +750,17 @@ BUILD_UTP_FALSE
 BUILD_UTP_TRUE
 LIBUTP_LIBS_QT
 LIBUTP_LIBS
+LIBUTP_INCLUDEPATH_QT
 LIBUTP_CFLAGS
 LIBB64_LIBS_QT
 LIBB64_LIBS
+LIBB64_INCLUDEPATH_QT
 LIBB64_CFLAGS
 BUILD_B64_FALSE
 BUILD_B64_TRUE
 DHT_LIBS_QT
 DHT_LIBS
+DHT_INCLUDEPATH_QT
 DHT_CFLAGS
 BUILD_DHT_FALSE
 BUILD_DHT_TRUE
@@ -22361,12 +22367,14 @@ if test "x${enable_external_dht}" = "xyes"
 then :
 
        DHT_CFLAGS=""
+       DHT_INCLUDEPATH_QT=""
        DHT_LIBS="-ldht"
        DHT_LIBS_QT="-ldht"
 
 else $as_nop
 
            DHT_CFLAGS="-I\$(top_builddir)/third-party/dht/include"
+           DHT_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/dht/include"
            DHT_LIBS="\$(top_builddir)/third-party/dht/libdht.a"
            DHT_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/dht/libdht.a"
 
@@ -22379,6 +22387,7 @@ else
   BUILD_DHT_TRUE='#'
   BUILD_DHT_FALSE=
 fi
+
 
 
 
@@ -22465,12 +22474,14 @@ else $as_nop
 fi
 
        LIBB64_CFLAGS="-DUSE_SYSTEM_B64"
+       LIBB64_INCLUDEPATH_QT=""
        LIBB64_LIBS="-lb64"
        LIBB64_LIBS_QT="-lb64"
 
 else $as_nop
 
            LIBB64_CFLAGS="-I\$(top_srcdir)/third-party/libb64/include"
+           LIBB64_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/libb64/include"
            LIBB64_LIBS="\$(top_builddir)/third-party/libb64/libb64.a"
            LIBB64_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libb64/libb64.a"
 
@@ -22483,6 +22494,7 @@ else
   BUILD_B64_TRUE='#'
   BUILD_B64_FALSE=
 fi
+
 
 
 
@@ -22629,18 +22641,21 @@ else $as_nop
 fi
 
               LIBUTP_CFLAGS=""
+              LIBUTP_INCLUDEPATH_QT=""
               LIBUTP_LIBS="-lutp ${libutp_extra_libs}"
               LIBUTP_LIBS_QT="-lutp ${libutp_extra_libs}"
 
 else $as_nop
 
                   LIBUTP_CFLAGS="-I\$(top_builddir)/third-party/libutp/include"
+                  LIBUTP_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/libutp/include"
                   LIBUTP_LIBS="\$(top_builddir)/third-party/libutp/libutp.a ${libutp_extra_libs}"
                   LIBUTP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libutp/libutp.a ${libutp_extra_libs}"
 
 fi
 
 fi
+
 
 
 
@@ -22736,12 +22751,14 @@ fi
        printf "%s\n" "#define SYSTEM_MINIUPNP 1" >>confdefs.h
 
        LIBUPNP_CFLAGS=""
+       LIBUPNP_INCLUDEPATH_QT=""
        LIBUPNP_LIBS="-lminiupnpc"
        LIBUPNP_LIBS_QT="-lminiupnpc"
 
 else $as_nop
 
            LIBUPNP_CFLAGS="-I\$(top_builddir)/third-party/miniupnpc/include"
+           LIBUPNP_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/miniupnpc/include"
            LIBUPNP_LIBS="\$(top_builddir)/third-party/miniupnpc/libminiupnp.a"
            LIBUPNP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/miniupnpc/libminiupnp.a"
 
@@ -22754,6 +22771,7 @@ else
   BUILD_MINIUPNP_TRUE='#'
   BUILD_MINIUPNP_FALSE=
 fi
+
 
 
 
@@ -22839,12 +22857,14 @@ else $as_nop
 fi
 
        LIBNATPMP_CFLAGS=""
+       LIBNATPMP_INCLUDEPATH_QT=""
        LIBNATPMP_LIBS="-lnatpmp"
        LIBNATPMP_LIBS_QT="-lnatpmp"
 
 else $as_nop
 
            LIBNATPMP_CFLAGS="-I\$(top_srcdir)/third-party/libnatpmp/"
+           LIBNATPMP_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/libnatpmp/"
            LIBNATPMP_LIBS="\$(top_builddir)/third-party/libnatpmp/libnatpmp.a"
            LIBNATPMP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libnatpmp/libnatpmp.a"
 
@@ -22857,6 +22877,7 @@ else
   BUILD_NATPMP_TRUE='#'
   BUILD_NATPMP_FALSE=
 fi
+
 
 
 
@@ -22965,11 +22986,13 @@ else
 printf "%s\n" "yes" >&6; }
 	:
 fi
+       LIBEVENT_INCLUDEPATH_QT=""
        LIBEVENT_LIBS_QT="${LIBEVENT_LIBS}"
 
 else $as_nop
 
            LIBEVENT_CFLAGS="-I\$(top_srcdir)/third-party/libevent/include"
+           LIBEVENT_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/libevent/include"
            LIBEVENT_LIBS="\$(top_builddir)/third-party/libevent/.libs/libevent.a"
            LIBEVENT_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libevent/.libs/libevent.a"
            subdirs="$subdirs third-party/libevent"
@@ -22984,6 +23007,7 @@ else
   BUILD_EVENT_TRUE='#'
   BUILD_EVENT_FALSE=
 fi
+
 
 
 

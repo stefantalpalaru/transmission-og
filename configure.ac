@@ -273,16 +273,19 @@ AC_ARG_ENABLE([external-dht],
               AS_HELP_STRING([--enable-external-dht], [use system libdht]))
 AS_IF([test "x${enable_external_dht}" = "xyes"], [
        DHT_CFLAGS=""
+       DHT_INCLUDEPATH_QT=""
        DHT_LIBS="-ldht"
        DHT_LIBS_QT="-ldht"
        ], [
            DHT_CFLAGS="-I\$(top_builddir)/third-party/dht/include"
+           DHT_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/dht/include"
            DHT_LIBS="\$(top_builddir)/third-party/dht/libdht.a"
            DHT_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/dht/libdht.a"
            ])
 
 AM_CONDITIONAL([BUILD_DHT], [test "x${enable_external_dht}" != "xyes"])
 AC_SUBST(DHT_CFLAGS)
+AC_SUBST(DHT_INCLUDEPATH_QT)
 AC_SUBST(DHT_LIBS)
 AC_SUBST(DHT_LIBS_QT)
 
@@ -298,16 +301,19 @@ AS_IF([test "x${enable_external_b64}" = "xyes"], [
                        AC_MSG_ERROR([unable to find the "b64" library])
                        ])
        LIBB64_CFLAGS="-DUSE_SYSTEM_B64"
+       LIBB64_INCLUDEPATH_QT=""
        LIBB64_LIBS="-lb64"
        LIBB64_LIBS_QT="-lb64"
        ], [
            LIBB64_CFLAGS="-I\$(top_srcdir)/third-party/libb64/include"
+           LIBB64_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/libb64/include"
            LIBB64_LIBS="\$(top_builddir)/third-party/libb64/libb64.a"
            LIBB64_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libb64/libb64.a"
            ])
 
 AM_CONDITIONAL([BUILD_B64], [test "x${enable_external_b64}" != "xyes"])
 AC_SUBST(LIBB64_CFLAGS)
+AC_SUBST(LIBB64_INCLUDEPATH_QT)
 AC_SUBST(LIBB64_LIBS)
 AC_SUBST(LIBB64_LIBS_QT)
 
@@ -332,16 +338,19 @@ AS_IF([test "x${enable_utp}" != "xno"], [
                               AC_MSG_ERROR([unable to find the "utp" library])
                               ])
               LIBUTP_CFLAGS=""
+              LIBUTP_INCLUDEPATH_QT=""
               LIBUTP_LIBS="-lutp ${libutp_extra_libs}"
               LIBUTP_LIBS_QT="-lutp ${libutp_extra_libs}"
               ], [
                   LIBUTP_CFLAGS="-I\$(top_builddir)/third-party/libutp/include"
+                  LIBUTP_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/libutp/include"
                   LIBUTP_LIBS="\$(top_builddir)/third-party/libutp/libutp.a ${libutp_extra_libs}"
                   LIBUTP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libutp/libutp.a ${libutp_extra_libs}"
                   ])
        ])
 
 AC_SUBST(LIBUTP_CFLAGS)
+AC_SUBST(LIBUTP_INCLUDEPATH_QT)
 AC_SUBST(LIBUTP_LIBS)
 AC_SUBST(LIBUTP_LIBS_QT)
 AM_CONDITIONAL([BUILD_UTP],[test "x${enable_external_utp}" != "xyes"])
@@ -358,16 +367,19 @@ AS_IF([test "x${enable_external_miniupnpc}" = "xyes"], [
                        ])
        AC_DEFINE([SYSTEM_MINIUPNP])
        LIBUPNP_CFLAGS=""
+       LIBUPNP_INCLUDEPATH_QT=""
        LIBUPNP_LIBS="-lminiupnpc"
        LIBUPNP_LIBS_QT="-lminiupnpc"
        ], [
            LIBUPNP_CFLAGS="-I\$(top_builddir)/third-party/miniupnpc/include"
+           LIBUPNP_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/miniupnpc/include"
            LIBUPNP_LIBS="\$(top_builddir)/third-party/miniupnpc/libminiupnp.a"
            LIBUPNP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/miniupnpc/libminiupnp.a"
            ])
 
 AM_CONDITIONAL([BUILD_MINIUPNP], [test "x${enable_external_miniupnpc}" != "xyes"])
 AC_SUBST(LIBUPNP_CFLAGS)
+AC_SUBST(LIBUPNP_INCLUDEPATH_QT)
 AC_SUBST(LIBUPNP_LIBS)
 AC_SUBST(LIBUPNP_LIBS_QT)
 
@@ -382,16 +394,19 @@ AS_IF([test "x${enable_external_natpmp}" = "xyes"], [
                        AC_MSG_ERROR([unable to find the "natpmp" library])
                        ])
        LIBNATPMP_CFLAGS=""
+       LIBNATPMP_INCLUDEPATH_QT=""
        LIBNATPMP_LIBS="-lnatpmp"
        LIBNATPMP_LIBS_QT="-lnatpmp"
        ], [
            LIBNATPMP_CFLAGS="-I\$(top_srcdir)/third-party/libnatpmp/"
+           LIBNATPMP_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/libnatpmp/"
            LIBNATPMP_LIBS="\$(top_builddir)/third-party/libnatpmp/libnatpmp.a"
            LIBNATPMP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libnatpmp/libnatpmp.a"
            ])
 
 AM_CONDITIONAL([BUILD_NATPMP], [test "x${enable_external_natpmp}" != "xyes"])
 AC_SUBST(LIBNATPMP_CFLAGS)
+AC_SUBST(LIBNATPMP_INCLUDEPATH_QT)
 AC_SUBST(LIBNATPMP_LIBS)
 AC_SUBST(LIBNATPMP_LIBS_QT)
 
@@ -404,9 +419,11 @@ AC_ARG_ENABLE([external-libevent],
               AS_HELP_STRING([--enable-external-libevent], [use system libevent]))
 AS_IF([test "x${enable_external_libevent}" = "xyes"], [
        PKG_CHECK_MODULES(LIBEVENT, [libevent >= ${LIBEVENT_MINIMUM}])
+       LIBEVENT_INCLUDEPATH_QT=""
        LIBEVENT_LIBS_QT="${LIBEVENT_LIBS}"
        ], [
            LIBEVENT_CFLAGS="-I\$(top_srcdir)/third-party/libevent/include"
+           LIBEVENT_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/libevent/include"
            LIBEVENT_LIBS="\$(top_builddir)/third-party/libevent/.libs/libevent.a"
            LIBEVENT_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libevent/.libs/libevent.a"
            AC_CONFIG_SUBDIRS([third-party/libevent])
@@ -414,6 +431,7 @@ AS_IF([test "x${enable_external_libevent}" = "xyes"], [
 
 AM_CONDITIONAL([BUILD_EVENT], [test "x${enable_external_libevent}" != "xyes"])
 AC_SUBST(LIBEVENT_CFLAGS)
+AC_SUBST(LIBEVENT_INCLUDEPATH_QT)
 AC_SUBST(LIBEVENT_LIBS)
 AC_SUBST(LIBEVENT_LIBS_QT)
 
