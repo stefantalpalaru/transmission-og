@@ -20446,7 +20446,7 @@ if test "x$ac_cv_func_strtold" != "xyes" ; then
     CPPFLAGS="$CPPFLAGS -Dstrtold=strtod"
 fi
 
-if "x${ac_cv_func_flock}" = "xyes"
+if test "x${ac_cv_func_flock}" = "xyes"
 then :
 
        printf "%s\n" "#define HAVE_FLOCK 1" >>confdefs.h

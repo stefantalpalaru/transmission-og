@@ -123,7 +123,7 @@ if test "x$ac_cv_func_strtold" != "xyes" ; then
     CPPFLAGS="$CPPFLAGS -Dstrtold=strtod"
 fi
 
-AS_IF(["x${ac_cv_func_flock}" = "xyes"], [
+AS_IF([test "x${ac_cv_func_flock}" = "xyes"], [
        AC_DEFINE([HAVE_FLOCK], 1)
        ])
 

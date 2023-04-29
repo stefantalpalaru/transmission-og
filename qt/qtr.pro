@@ -34,6 +34,7 @@ INCLUDEPATH = \
 	$${LIBUPNP_INCLUDEPATH} \
 	$${LIBNATPMP_INCLUDEPATH} \
 	$${LIBEVENT_INCLUDEPATH} \
+	/usr/local/include \
 	$${INCLUDEPATH}
 INCLUDEPATH += $${TRANSMISSION_TOP}
 LIBS += $${TRANSMISSION_TOP}/libtransmission/libtransmission.a

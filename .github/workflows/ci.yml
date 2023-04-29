@@ -225,6 +225,7 @@ jobs:
               --with-gtk
               --disable-external-utp # latest version redefines "bool" for C compilers
             )
+            QMAKE_ARGS=()
 
             if [[ "${{ matrix.libs }}" == "system" ]]; then
               CONFIGURE_ARGS+=(
@@ -259,7 +260,14 @@ jobs:
                 export PKG_CONFIG_PATH="/usr/lib/i386-linux-gnu/pkgconfig"
                 export LDFLAGS="${LDFLAGS} -L/usr/lib/i386-linux-gnu/"
                 export CPPFLAGS="${CPPFLAGS} -I/usr/include/i386-linux-gnu/"
-                export QMAKE_ARGS="-spec linux-g++-32"
+                QMAKE_ARGS=(
+                  QMAKE_CC=gcc
+                  QMAKE_CXX=g++
+                  QMAKE_LINK=g++
+                  PKG_CONFIG=pkg-config
+                  QMAKE_LFLAGS="-m32 -L/usr/lib/i386-linux-gnu"
+                  QMAKE_CXXFLAGS="${CXXFLAGS}"
+                )
 
                 # packages not available for i386:
                 CONFIGURE_ARGS+=(
@@ -273,7 +281,7 @@ jobs:
             ${MAKE_CMD} -j${NCPU} V=1
             # Qt client
             cd qt
-            qmake ${QMAKE_ARGS} qtr.pro
+            qmake "${QMAKE_ARGS[@]}" qtr.pro
             ${MAKE_CMD} -j${NCPU}
             cd - &>/dev/null
             # tests
