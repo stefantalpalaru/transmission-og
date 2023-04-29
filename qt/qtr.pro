@@ -43,7 +43,7 @@ LIBS += $${LIBB64_LIBS}
 LIBS += $${LIBUPNP_LIBS}
 LIBS += $${LIBNATPMP_LIBS}
 LIBS += $${LIBEVENT_LIBS}
-unix: LIBS += -lz -lrt
+unix: LIBS += -lz
 win32:LIBS += -lws2_32 -lintl
 win32:LIBS += -lidn -liconv -lwldap32 -liphlpapi
 
