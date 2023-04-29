@@ -114,7 +114,7 @@ AC_PROG_MKDIR_P
 AC_CHECK_HEADERS_ONCE([sys/time.h])
 
 AC_CHECK_HEADERS([xlocale.h])
-AC_CHECK_FUNCS([iconv pread pwrite lrintf strlcpy daemon dirname basename canonicalize_file_name strcasecmp localtime_r fallocate64 posix_fallocate memmem strsep strtold syslog valloc getpagesize posix_memalign statvfs htonll ntohll mkdtemp uselocale _configthreadlocale strcasestr])
+AC_CHECK_FUNCS([iconv pread pwrite lrintf strlcpy daemon dirname basename canonicalize_file_name strcasecmp localtime_r fallocate64 posix_fallocate memmem strsep strtold syslog valloc getpagesize posix_memalign statvfs htonll ntohll mkdtemp uselocale _configthreadlocale strcasestr flock])
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 ACX_PTHREAD
@@ -122,6 +122,10 @@ ACX_PTHREAD
 if test "x$ac_cv_func_strtold" != "xyes" ; then
     CPPFLAGS="$CPPFLAGS -Dstrtold=strtod"
 fi
+
+AS_IF(["x${ac_cv_func_flock}" = "xyes"], [
+       AC_DEFINE([HAVE_FLOCK], 1)
+       ])
 
 AC_SEARCH_LIBS(cos, [m])
 AC_SEARCH_LIBS([socket], [socket net])

@@ -20041,6 +20041,12 @@ then :
   printf "%s\n" "#define HAVE_STRCASESTR 1" >>confdefs.h
 
 fi
+ac_fn_c_check_func "$LINENO" "flock" "ac_cv_func_flock"
+if test "x$ac_cv_func_flock" = xyes
+then :
+  printf "%s\n" "#define HAVE_FLOCK 1" >>confdefs.h
+
+fi
 
 
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether ${MAKE-make} sets \$(MAKE)" >&5
@@ -20438,6 +20444,14 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 if test "x$ac_cv_func_strtold" != "xyes" ; then
     CPPFLAGS="$CPPFLAGS -Dstrtold=strtod"
+fi
+
+if "x${ac_cv_func_flock}" = "xyes"
+then :
+
+       printf "%s\n" "#define HAVE_FLOCK 1" >>confdefs.h
+
+
 fi
 
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for library containing cos" >&5
