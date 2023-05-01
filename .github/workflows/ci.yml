@@ -286,5 +286,6 @@ jobs:
             ${MAKE_CMD} -j${NCPU}
             cd - &>/dev/null
             # tests
-            ${MAKE_CMD} -j${NCPU} -C libtransmission check
+            # (random failure on Windows if we enable Make's parallelism here)
+            ${MAKE_CMD} -C libtransmission check
           fi # Autotools
