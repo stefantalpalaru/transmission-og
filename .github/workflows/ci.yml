@@ -59,8 +59,8 @@ jobs:
           case "${{ runner.os }}" in
           "Linux")
             NCPU="$(nproc)"
-            echo "DEBIAN_FRONTEND=noninteractive" >> $GITHUB_ENV
-            echo "TZ=Etc/UTC" >> $GITHUB_ENV
+            echo "DEBIAN_FRONTEND=noninteractive" >> ${GITHUB_ENV}
+            echo "TZ=Etc/UTC" >> ${GITHUB_ENV}
             if [[ "${{ matrix.target.cpu }}" == "i386" ]]; then
               CFLAGS="${CFLAGS} -m32"
               CXXFLAGS="${CXXFLAGS} -m32"
@@ -70,21 +70,21 @@ jobs:
           "macOS")
             NCPU="$(sysctl -n hw.logicalcpu)"
             echo "/usr/local/opt/qt@5/bin" >> ${GITHUB_PATH}
-            echo PKG_CONFIG_PATH=\"/usr/local/opt/qt@5/lib/pkgconfig:/usr/local/opt/openssl@1.1/lib/pkgconfig\" >> ${GITHUB_ENV}
+            echo "PKG_CONFIG_PATH=/usr/local/opt/qt@5/lib/pkgconfig:/usr/local/opt/openssl@1.1/lib/pkgconfig" >> ${GITHUB_ENV}
             ;;
           "Windows")
             NCPU="${NUMBER_OF_PROCESSORS}"
             MAKE_CMD="mingw32-make"
             if [[ "${{ matrix.target.cpu }}" == "i386" ]]; then
-              echo PKG_CONFIG_PATH=\"/usr/lib/i386-linux-gnu/pkgconfig\" >> ${GITHUB_ENV}
+              echo "PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig" >> ${GITHUB_ENV}
             fi
             ;;
           esac
-          echo "CFLAGS=\"${CFLAGS}\"" >> $GITHUB_ENV
-          echo "CXXFLAGS=\"${CXXFLAGS}\"" >> $GITHUB_ENV
+          echo "CFLAGS=${CFLAGS}" >> ${GITHUB_ENV}
+          echo "CXXFLAGS=${CXXFLAGS}" >> ${GITHUB_ENV}
           [[ -z "${NCPU}" || ${NCPU} -le 0 ]] && NCPU="1"
-          echo "NCPU=${NCPU}" >> $GITHUB_ENV
-          echo "MAKE_CMD=${MAKE_CMD}" >> $GITHUB_ENV
+          echo "NCPU=${NCPU}" >> ${GITHUB_ENV}
+          echo "MAKE_CMD=${MAKE_CMD}" >> ${GITHUB_ENV}
 
       - name: Install build dependencies (Linux i386)
         if: runner.os == 'Linux' && matrix.target.cpu == 'i386'
