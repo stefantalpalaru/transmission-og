@@ -378,6 +378,7 @@ AS_IF([test "x${enable_external_miniupnpc}" = "xyes"], [
            LIBUPNP_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/miniupnpc/include"
            LIBUPNP_LIBS="\$(top_builddir)/third-party/miniupnpc/libminiupnp.a"
            LIBUPNP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/miniupnpc/libminiupnp.a"
+	   AC_DEFINE([MINIUPNP_STATICLIB])
            ])
 
 AM_CONDITIONAL([BUILD_MINIUPNP], [test "x${enable_external_miniupnpc}" != "xyes"])
@@ -405,6 +406,7 @@ AS_IF([test "x${enable_external_natpmp}" = "xyes"], [
            LIBNATPMP_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/libnatpmp/"
            LIBNATPMP_LIBS="\$(top_builddir)/third-party/libnatpmp/libnatpmp.a"
            LIBNATPMP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libnatpmp/libnatpmp.a"
+	   AC_DEFINE([NATPMP_STATICLIB])
            ])
 
 AM_CONDITIONAL([BUILD_NATPMP], [test "x${enable_external_natpmp}" != "xyes"])
@@ -443,8 +445,7 @@ dnl
 dnl  detection for the GTK+ client
 
 AC_ARG_ENABLE([nls],
-              [AS_HELP_STRING([--enable-nls],[enable native language support])],,
-              [enable_nls=yes])
+              [AS_HELP_STRING([--disable-nls],[disable native language support])])
 PKG_CHECK_EXISTS([gtk+-3.0 >= $GTK_MINIMUM
                   glib-2.0 >= $GLIB_MINIMUM
                   gio-2.0 >= $GIO_MINIMUM,
@@ -457,11 +458,10 @@ AC_ARG_WITH([gtk], AS_HELP_STRING([--with-gtk],[with Gtk]),
             [with_gtk=$have_gtk])
 AM_CONDITIONAL([BUILD_GTK],[test "x$with_gtk" = "xyes"])
 use_libappindicator=no
-if test "x$with_gtk" = "xyes" ; then
-
-    if test "x$enable_nls" = "xno" ; then
+AS_IF([test "x$with_gtk" = "xyes"], [
+    AS_IF([test "x${enable_nls}" = "xno"], [
         AC_MSG_ERROR("The gtk client cannot be built without nls support.  Try adding either --enable-nls or --without-gtk" )
-    fi
+    ])
 
     PKG_CHECK_MODULES([GTK], [gtk+-3.0 >= $GTK_MINIMUM
                               glib-2.0 >= $GLIB_MINIMUM
@@ -472,14 +472,14 @@ if test "x$with_gtk" = "xyes" ; then
                       [appindicator3-0.1 >= $LIBAPPINDICATOR_MINIMUM],
                       [have_libappindicator=yes],
                       [have_libappindicator=no])
-    if test "x$have_libappindicator" = "xyes"; then
+    AS_IF([test "x${have_libappindicator}" = "xyes"], [
         use_libappindicator=yes
         AC_DEFINE([HAVE_LIBAPPINDICATOR], 1)
-    else
+    ], [
         LIBAPPINDICATOR_CFLAGS=
         LIBAPPINDICATOR_LIBS=
-    fi
-fi
+    ])
+])
 
 dnl This section is only used for internationalization.
 dnl If you don't need translations and this section gives you trouble --
@@ -491,15 +491,15 @@ dnl a "make check" failure on some systems.  if upgrading to 0.40 is
 dnl a problem and the old version was working fine for you,
 dnl it should be safe to re-edit 0.40 back down to 0.23
 
-use_nls=no
-if test "x$enable_nls" = "xyes" ; then
-    use_nls=yes
+AS_IF([test "x${enable_nls}" != "xno"], [
     m4_ifdef([IT_PROG_INTLTOOL],
              [
 dnl intltoolize needs this at the start of a line:
 IT_PROG_INTLTOOL([0.35.0],[no-xml])
-],
-             [AC_MSG_ERROR("--enable-nls requires intltool to be installed.")])
+             ], [
+             AC_MSG_ERROR("--enable-nls requires intltool to be installed.")
+	     ])
+
     AC_CHECK_HEADERS([libintl.h])
     GETTEXT_PACKAGE=transmission-gtk
     AC_SUBST(GETTEXT_PACKAGE)
@@ -507,7 +507,7 @@ IT_PROG_INTLTOOL([0.35.0],[no-xml])
     AM_GLIB_GNU_GETTEXT
     transmissionlocaledir='${prefix}/${DATADIRNAME}/locale'
     AC_SUBST(transmissionlocaledir)
-fi
+])
 AC_SUBST(INTLLIBS)
 
 

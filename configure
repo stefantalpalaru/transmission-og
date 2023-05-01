@@ -1658,7 +1658,7 @@ Optional Features:
                           use system natpmp
   --enable-external-libevent
                           use system libevent
-  --enable-nls            enable native language support
+  --disable-nls           disable native language support
   --disable-nls           do not use Native Language Support
   --enable-lightweight    optimize libtransmission for low-resource systems:
                           smaller cache size, prefer unencrypted peer
@@ -22773,6 +22773,8 @@ else $as_nop
            LIBUPNP_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/miniupnpc/include"
            LIBUPNP_LIBS="\$(top_builddir)/third-party/miniupnpc/libminiupnp.a"
            LIBUPNP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/miniupnpc/libminiupnp.a"
+	   printf "%s\n" "#define MINIUPNP_STATICLIB 1" >>confdefs.h
+
 
 fi
 
@@ -22879,6 +22881,8 @@ else $as_nop
            LIBNATPMP_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/libnatpmp/"
            LIBNATPMP_LIBS="\$(top_builddir)/third-party/libnatpmp/libnatpmp.a"
            LIBNATPMP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libnatpmp/libnatpmp.a"
+	   printf "%s\n" "#define NATPMP_STATICLIB 1" >>confdefs.h
+
 
 fi
 
@@ -23030,8 +23034,6 @@ fi
 if test ${enable_nls+y}
 then :
   enableval=$enable_nls;
-else $as_nop
-  enable_nls=yes
 fi
 
 if test -n "$PKG_CONFIG" && \
@@ -23070,11 +23072,15 @@ else
 fi
 
 use_libappindicator=no
-if test "x$with_gtk" = "xyes" ; then
+if test "x$with_gtk" = "xyes"
+then :
 
-    if test "x$enable_nls" = "xno" ; then
+    if test "x${enable_nls}" = "xno"
+then :
+
         as_fn_error $? "\"The gtk client cannot be built without nls support.  Try adding either --enable-nls or --without-gtk\" " "$LINENO" 5
-    fi
+
+fi
 
 
 pkg_failed=no
@@ -23273,20 +23279,22 @@ else
 printf "%s\n" "yes" >&6; }
 	have_libappindicator=yes
 fi
-    if test "x$have_libappindicator" = "xyes"; then
+    if test "x${have_libappindicator}" = "xyes"
+then :
+
         use_libappindicator=yes
         printf "%s\n" "#define HAVE_LIBAPPINDICATOR 1" >>confdefs.h
 
-    else
+
+else $as_nop
+
         LIBAPPINDICATOR_CFLAGS=
         LIBAPPINDICATOR_LIBS=
-    fi
+
 fi
 
+fi
 
-use_nls=no
-if test "x$enable_nls" = "xyes" ; then
-    use_nls=yes
 
 
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether NLS is requested" >&5
@@ -23301,6 +23309,87 @@ fi
 
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $USE_NLS" >&5
 printf "%s\n" "$USE_NLS" >&6; }
+
+
+# Autoupdate added the next two lines to ensure that your configure
+# script's behavior did not change.  They are probably safe to remove.
+
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for egrep" >&5
+printf %s "checking for egrep... " >&6; }
+if test ${ac_cv_path_EGREP+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  if echo a | $GREP -E '(a|b)' >/dev/null 2>&1
+   then ac_cv_path_EGREP="$GREP -E"
+   else
+     if test -z "$EGREP"; then
+  ac_path_EGREP_found=false
+  # Loop through the user's path and test for each of PROGNAME-LIST
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH$PATH_SEPARATOR/usr/xpg4/bin
+do
+  IFS=$as_save_IFS
+  case $as_dir in #(((
+    '') as_dir=./ ;;
+    */) ;;
+    *) as_dir=$as_dir/ ;;
+  esac
+    for ac_prog in egrep
+   do
+    for ac_exec_ext in '' $ac_executable_extensions; do
+      ac_path_EGREP="$as_dir$ac_prog$ac_exec_ext"
+      as_fn_executable_p "$ac_path_EGREP" || continue
+# Check for GNU ac_path_EGREP and select it if it is found.
+  # Check for GNU $ac_path_EGREP
+case `"$ac_path_EGREP" --version 2>&1` in
+*GNU*)
+  ac_cv_path_EGREP="$ac_path_EGREP" ac_path_EGREP_found=:;;
+*)
+  ac_count=0
+  printf %s 0123456789 >"conftest.in"
+  while :
+  do
+    cat "conftest.in" "conftest.in" >"conftest.tmp"
+    mv "conftest.tmp" "conftest.in"
+    cp "conftest.in" "conftest.nl"
+    printf "%s\n" 'EGREP' >> "conftest.nl"
+    "$ac_path_EGREP" 'EGREP$' < "conftest.nl" >"conftest.out" 2>/dev/null || break
+    diff "conftest.out" "conftest.nl" >/dev/null 2>&1 || break
+    as_fn_arith $ac_count + 1 && ac_count=$as_val
+    if test $ac_count -gt ${ac_path_EGREP_max-0}; then
+      # Best one so far, save it but keep looking for a better one
+      ac_cv_path_EGREP="$ac_path_EGREP"
+      ac_path_EGREP_max=$ac_count
+    fi
+    # 10*(2^10) chars as input seems more than enough
+    test $ac_count -gt 10 && break
+  done
+  rm -f conftest.in conftest.tmp conftest.nl conftest.out;;
+esac
+
+      $ac_path_EGREP_found && break 3
+    done
+  done
+  done
+IFS=$as_save_IFS
+  if test -z "$ac_cv_path_EGREP"; then
+    as_fn_error $? "no acceptable egrep could be found in $PATH$PATH_SEPARATOR/usr/xpg4/bin" "$LINENO" 5
+  fi
+else
+  ac_cv_path_EGREP=$EGREP
+fi
+
+   fi
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_path_EGREP" >&5
+printf "%s\n" "$ac_cv_path_EGREP" >&6; }
+ EGREP="$ac_cv_path_EGREP"
+
+
+
+if test "x${enable_nls}" != "xno"
+then :
 
 
 
@@ -23871,6 +23960,7 @@ fi
 
 
 
+
     ac_fn_c_check_header_compile "$LINENO" "libintl.h" "ac_cv_header_libintl_h" "$ac_includes_default"
 if test "x$ac_cv_header_libintl_h" = xyes
 then :
@@ -23882,83 +23972,6 @@ fi
 
 
 printf "%s\n" "#define GETTEXT_PACKAGE \"$GETTEXT_PACKAGE\"" >>confdefs.h
-
-    # Autoupdate added the next two lines to ensure that your configure
-# script's behavior did not change.  They are probably safe to remove.
-
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for egrep" >&5
-printf %s "checking for egrep... " >&6; }
-if test ${ac_cv_path_EGREP+y}
-then :
-  printf %s "(cached) " >&6
-else $as_nop
-  if echo a | $GREP -E '(a|b)' >/dev/null 2>&1
-   then ac_cv_path_EGREP="$GREP -E"
-   else
-     if test -z "$EGREP"; then
-  ac_path_EGREP_found=false
-  # Loop through the user's path and test for each of PROGNAME-LIST
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH$PATH_SEPARATOR/usr/xpg4/bin
-do
-  IFS=$as_save_IFS
-  case $as_dir in #(((
-    '') as_dir=./ ;;
-    */) ;;
-    *) as_dir=$as_dir/ ;;
-  esac
-    for ac_prog in egrep
-   do
-    for ac_exec_ext in '' $ac_executable_extensions; do
-      ac_path_EGREP="$as_dir$ac_prog$ac_exec_ext"
-      as_fn_executable_p "$ac_path_EGREP" || continue
-# Check for GNU ac_path_EGREP and select it if it is found.
-  # Check for GNU $ac_path_EGREP
-case `"$ac_path_EGREP" --version 2>&1` in
-*GNU*)
-  ac_cv_path_EGREP="$ac_path_EGREP" ac_path_EGREP_found=:;;
-*)
-  ac_count=0
-  printf %s 0123456789 >"conftest.in"
-  while :
-  do
-    cat "conftest.in" "conftest.in" >"conftest.tmp"
-    mv "conftest.tmp" "conftest.in"
-    cp "conftest.in" "conftest.nl"
-    printf "%s\n" 'EGREP' >> "conftest.nl"
-    "$ac_path_EGREP" 'EGREP$' < "conftest.nl" >"conftest.out" 2>/dev/null || break
-    diff "conftest.out" "conftest.nl" >/dev/null 2>&1 || break
-    as_fn_arith $ac_count + 1 && ac_count=$as_val
-    if test $ac_count -gt ${ac_path_EGREP_max-0}; then
-      # Best one so far, save it but keep looking for a better one
-      ac_cv_path_EGREP="$ac_path_EGREP"
-      ac_path_EGREP_max=$ac_count
-    fi
-    # 10*(2^10) chars as input seems more than enough
-    test $ac_count -gt 10 && break
-  done
-  rm -f conftest.in conftest.tmp conftest.nl conftest.out;;
-esac
-
-      $ac_path_EGREP_found && break 3
-    done
-  done
-  done
-IFS=$as_save_IFS
-  if test -z "$ac_cv_path_EGREP"; then
-    as_fn_error $? "no acceptable egrep could be found in $PATH$PATH_SEPARATOR/usr/xpg4/bin" "$LINENO" 5
-  fi
-else
-  ac_cv_path_EGREP=$EGREP
-fi
-
-   fi
-fi
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_path_EGREP" >&5
-printf "%s\n" "$ac_cv_path_EGREP" >&6; }
- EGREP="$ac_cv_path_EGREP"
-
-
 
 
    ac_fn_c_check_header_compile "$LINENO" "locale.h" "ac_cv_header_locale_h" "$ac_includes_default"
@@ -24664,6 +24677,7 @@ printf "%s\n" "$LINGUAS" >&6; }
 	< $srcdir/po/POTFILES.in > po/POTFILES
 
     transmissionlocaledir='${prefix}/${DATADIRNAME}/locale'
+
 
 fi
 
