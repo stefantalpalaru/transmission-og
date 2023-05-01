@@ -523,10 +523,10 @@ case $host_os in
 
    *mingw32*)
      have_msw="yes"
-     CXXFLAGS="$CXXFLAGS -mms-bitfields -mwin32 -mwindows"
-     CPPFLAGS="$CPPFLAGS -DWINVER=0x0600 -D_WIN32_WINNT=0x0600 -DWIN32_LEAN_AND_MEAN"
+     CXXFLAGS="${CXXFLAGS} -mms-bitfields -mwin32 -mwindows"
+     CPPFLAGS="${CPPFLAGS} -DWINVER=0x0600 -D_WIN32_WINNT=0x0600 -DWIN32_LEAN_AND_MEAN"
      # CPPFLAGS="$CPPFLAGS -D__USE_MINGW_ANSI_STDIO=1 -D__STDC_FORMAT_MACROS=1"
-     LIBS="${LIBS} -liphlpapi -lshell32 -lws2_32 -lcrypt32 -lshlwapi"
+     LIBS="${LIBS} -liphlpapi -lshell32 -lws2_32 -lcrypt32 -lshlwapi -luuid -lole32"
      transmissionlocaledir="locale"
      if test -z "$host_alias"; then
        hostaliaswindres=

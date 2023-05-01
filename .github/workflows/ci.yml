@@ -65,6 +65,7 @@ jobs:
               CFLAGS="${CFLAGS} -m32"
               CXXFLAGS="${CXXFLAGS} -m32"
               echo "/usr/lib/i386-linux-gnu/qt5/bin" >> ${GITHUB_PATH}
+              echo "PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig" >> ${GITHUB_ENV}
             fi
             ;;
           "macOS")
@@ -75,9 +76,6 @@ jobs:
           "Windows")
             NCPU="${NUMBER_OF_PROCESSORS}"
             MAKE_CMD="mingw32-make"
-            if [[ "${{ matrix.target.cpu }}" == "i386" ]]; then
-              echo "PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig" >> ${GITHUB_ENV}
-            fi
             ;;
           esac
           echo "CFLAGS=${CFLAGS}" >> ${GITHUB_ENV}
