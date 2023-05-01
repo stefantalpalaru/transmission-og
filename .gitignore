@@ -84,6 +84,7 @@ po/stamp-it
 config.pri
 *.appdata.xml
 *.desktop
+*.res
 gtk/transmission-resources.c
 gtk/transmission-resources.h
 qt/moc_*
