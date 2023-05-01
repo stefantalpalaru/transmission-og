@@ -1664,7 +1664,7 @@ Optional Features:
                           smaller cache size, prefer unencrypted peer
                           connections, etc.
   --enable-cli            build command-line client
-  --enable-mac            build Mac client
+  --enable-mac            build Mac client (broken, use CMake instead)
   --enable-daemon         build daemon
 
 Optional Packages:
@@ -24836,7 +24836,7 @@ if test ${enable_mac+y}
 then :
   enableval=$enable_mac; build_mac=${enableval}
 else $as_nop
-  build_mac=${have_darwin}
+  build_mac="no"
 fi
 
  if test "x$build_mac" = "xyes"; then
@@ -24869,7 +24869,7 @@ fi
 if test "x$build_mac" = "xyes" ; then
    printf "%s\n" "#define BUILD_MAC_CLIENT 1" >>confdefs.h
 
-                                  fi
+fi
  if test "x$have_msw" = "xyes"; then
   WIN32_TRUE=
   WIN32_FALSE='#'

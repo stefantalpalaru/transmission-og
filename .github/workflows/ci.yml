@@ -64,23 +64,27 @@ jobs:
             if [[ "${{ matrix.target.cpu }}" == "i386" ]]; then
               CFLAGS="${CFLAGS} -m32"
               CXXFLAGS="${CXXFLAGS} -m32"
-              PATH="/usr/lib/i386-linux-gnu/qt5/bin:${PATH}"
+              echo "/usr/lib/i386-linux-gnu/qt5/bin" >> ${GITHUB_PATH}
             fi
             ;;
           "macOS")
             NCPU="$(sysctl -n hw.logicalcpu)"
+            echo "/usr/local/opt/qt@5/bin" >> ${GITHUB_PATH}
+            echo PKG_CONFIG_PATH=\"/usr/local/opt/qt@5/lib/pkgconfig:/usr/local/opt/openssl@1.1/lib/pkgconfig\" >> ${GITHUB_ENV}
             ;;
           "Windows")
             NCPU="${NUMBER_OF_PROCESSORS}"
             MAKE_CMD="mingw32-make"
+            if [[ "${{ matrix.target.cpu }}" == "i386" ]]; then
+              echo PKG_CONFIG_PATH=\"/usr/lib/i386-linux-gnu/pkgconfig\" >> ${GITHUB_ENV}
+            fi
             ;;
           esac
-          echo "CFLAGS=${CFLAGS}" >> $GITHUB_ENV
-          echo "CXXFLAGS=${CXXFLAGS}" >> $GITHUB_ENV
+          echo "CFLAGS=\"${CFLAGS}\"" >> $GITHUB_ENV
+          echo "CXXFLAGS=\"${CXXFLAGS}\"" >> $GITHUB_ENV
           [[ -z "${NCPU}" || ${NCPU} -le 0 ]] && NCPU="1"
           echo "NCPU=${NCPU}" >> $GITHUB_ENV
           echo "MAKE_CMD=${MAKE_CMD}" >> $GITHUB_ENV
-          echo "PATH=${PATH}" >> $GITHUB_ENV
 
       - name: Install build dependencies (Linux i386)
         if: runner.os == 'Linux' && matrix.target.cpu == 'i386'
@@ -185,8 +189,6 @@ jobs:
                 )
               fi
             elif [[ "${{ runner.os }}" == "macOS" ]]; then
-              export PATH="/usr/local/opt/qt@5/bin:${PATH}"
-              export PKG_CONFIG_PATH="/usr/local/opt/qt@5/lib/pkgconfig:/usr/local/opt/openssl@1.1/lib/pkgconfig"
               CMAKE_ARGS+=(
                 -DENABLE_MAC=ON
                 -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl
@@ -199,7 +201,6 @@ jobs:
               fi
 
               if [[ "${{ matrix.target.cpu }}" == "i386" ]]; then
-              export PKG_CONFIG_PATH="/usr/lib/i386-linux-gnu/pkgconfig:"
                 CMAKE_ARGS+=(
                   -DCMAKE_LIBRARY_PATH=/usr/lib/i386-linux-gnu/
                   -DCMAKE_INCLUDE_PATH=/usr/include/i386-linux-gnu/
@@ -245,8 +246,6 @@ jobs:
                 )
               fi
             elif [[ "${{ runner.os }}" == "macOS" ]]; then
-              export PATH="/usr/local/opt/qt@5/bin:${PATH}"
-              export PKG_CONFIG_PATH="/usr/local/opt/qt@5/lib/pkgconfig:/usr/local/opt/openssl@1.1/lib/pkgconfig"
               CONFIGURE_ARGS+=(
                 # broken
                 --disable-mac
@@ -262,7 +261,6 @@ jobs:
               fi
 
               if [[ "${{ matrix.target.cpu }}" == "i386" ]]; then
-                export PKG_CONFIG_PATH="/usr/lib/i386-linux-gnu/pkgconfig"
                 export LDFLAGS="${LDFLAGS} -L/usr/lib/i386-linux-gnu/"
                 export CPPFLAGS="${CPPFLAGS} -I/usr/include/i386-linux-gnu/"
                 QMAKE_ARGS+=(

@@ -558,9 +558,9 @@ AC_ARG_ENABLE([cli],
 AM_CONDITIONAL([BUILD_CLI],[test "x$build_cli" = "xyes"])
 
 AC_ARG_ENABLE([mac],
-              [AS_HELP_STRING([--enable-mac],[build Mac client])],
+              [AS_HELP_STRING([--enable-mac],[build Mac client (broken, use CMake instead)])],
               [build_mac=${enableval}],
-              [build_mac=${have_darwin}])
+              [build_mac="no"])
 AM_CONDITIONAL([BUILD_MAC],[test "x$build_mac" = "xyes"])
 
 AC_ARG_ENABLE([daemon],
@@ -572,19 +572,6 @@ AM_CONDITIONAL([BUILD_DAEMON],[test "x$build_daemon" = "xyes"])
 
 if test "x$build_mac" = "xyes" ; then
    AC_DEFINE([BUILD_MAC_CLIENT], 1)
-    dnl # Make sure the proper Mac SDK is installed
-    dnl if test ! -d /Developer/SDKs/MacOSX10.5.sdk; then
-      dnl cat << EOF
-dnl You need to install the Mac OS X 10.5 SDK in order to build Transmission
-dnl with --enable-mac:
-  dnl Get your Xcode CD or package
-  dnl Restart the install
-  dnl When it gets to "Installation Type", select "Customize"
-  dnl Select "Mac OS X 10.5 SDK" under "Cross Development"
-  dnl Finish the install.
-dnl EOF
-      dnl exit 1
-    dnl fi
 fi
 AM_CONDITIONAL(WIN32, test "x$have_msw" = "xyes")
 
