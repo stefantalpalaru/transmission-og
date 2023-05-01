@@ -369,7 +369,6 @@ AS_IF([test "x${enable_external_miniupnpc}" = "xyes"], [
        AC_SEARCH_LIBS([upnpDiscover], [miniupnpc], [], [
                        AC_MSG_ERROR([unable to find the "miniupnpc" library])
                        ])
-       AC_DEFINE([SYSTEM_MINIUPNP])
        LIBUPNP_CFLAGS=""
        LIBUPNP_INCLUDEPATH_QT=""
        LIBUPNP_LIBS="-lminiupnpc"
@@ -524,8 +523,17 @@ case $host_os in
    *mingw32*)
      have_msw="yes"
      CXXFLAGS="${CXXFLAGS} -mms-bitfields -mwin32 -mwindows"
+     dnl Target version (Vista and up)
      CPPFLAGS="${CPPFLAGS} -DWINVER=0x0600 -D_WIN32_WINNT=0x0600 -DWIN32_LEAN_AND_MEAN"
-     # CPPFLAGS="$CPPFLAGS -D__USE_MINGW_ANSI_STDIO=1 -D__STDC_FORMAT_MACROS=1"
+     dnl Use Unicode API (although we always use W or A names explicitly)
+     CPPFLAGS="${CPPFLAGS} -DUNICODE -D_UNICODE"
+     dnl Ignore various deprecation and security warnings (at least for now)
+     CPPFLAGS="${CPPFLAGS} -D_CRT_SECURE_NO_DEPRECATE -D_CRT_NONSTDC_NO_DEPRECATE -D_SCL_SECURE_NO_WARNINGS -D_WINSOCK_DEPRECATED_NO_WARNINGS"
+     dnl Increase maximum FD_SET size
+     CPPFLAGS="${CPPFLAGS} -DFD_SETSIZE=1024"
+     dnl Use MinGW versions of all the printf-family functions
+     CPPFLAGS="${CPPFLAGS} -D__USE_MINGW_ANSI_STDIO=1"
+     dnl Windows specific libraries
      LIBS="${LIBS} -liphlpapi -lshell32 -lws2_32 -lcrypt32 -lshlwapi -luuid -lole32"
      transmissionlocaledir="locale"
      if test -z "$host_alias"; then

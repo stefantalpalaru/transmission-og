@@ -22762,8 +22762,6 @@ else $as_nop
 
 fi
 
-       printf "%s\n" "#define SYSTEM_MINIUPNP 1" >>confdefs.h
-
        LIBUPNP_CFLAGS=""
        LIBUPNP_INCLUDEPATH_QT=""
        LIBUPNP_LIBS="-lminiupnpc"
@@ -24680,9 +24678,12 @@ case $host_os in
    *mingw32*)
      have_msw="yes"
      CXXFLAGS="${CXXFLAGS} -mms-bitfields -mwin32 -mwindows"
-     CPPFLAGS="${CPPFLAGS} -DWINVER=0x0600 -D_WIN32_WINNT=0x0600 -DWIN32_LEAN_AND_MEAN"
-     # CPPFLAGS="$CPPFLAGS -D__USE_MINGW_ANSI_STDIO=1 -D__STDC_FORMAT_MACROS=1"
-     LIBS="${LIBS} -liphlpapi -lshell32 -lws2_32 -lcrypt32 -lshlwapi -luuid -lole32"
+          CPPFLAGS="${CPPFLAGS} -DWINVER=0x0600 -D_WIN32_WINNT=0x0600 -DWIN32_LEAN_AND_MEAN"
+          CPPFLAGS="${CPPFLAGS} -DUNICODE -D_UNICODE"
+          CPPFLAGS="${CPPFLAGS} -D_CRT_SECURE_NO_DEPRECATE -D_CRT_NONSTDC_NO_DEPRECATE -D_SCL_SECURE_NO_WARNINGS -D_WINSOCK_DEPRECATED_NO_WARNINGS"
+          CPPFLAGS="${CPPFLAGS} -DFD_SETSIZE=1024"
+          CPPFLAGS="${CPPFLAGS} -D__USE_MINGW_ANSI_STDIO=1"
+          LIBS="${LIBS} -liphlpapi -lshell32 -lws2_32 -lcrypt32 -lshlwapi -luuid -lole32"
      transmissionlocaledir="locale"
      if test -z "$host_alias"; then
        hostaliaswindres=

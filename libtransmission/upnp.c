@@ -8,13 +8,8 @@
 
 #include <errno.h>
 
-#ifdef SYSTEM_MINIUPNP
 #include <miniupnpc/miniupnpc.h>
 #include <miniupnpc/upnpcommands.h>
-#else
-#include <miniupnp/miniupnpc.h>
-#include <miniupnp/upnpcommands.h>
-#endif
 
 #include "transmission.h"
 #include "log.h"
