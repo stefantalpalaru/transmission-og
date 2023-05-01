@@ -389,7 +389,7 @@ int main(int argc, char** argv)
     if (!tr_sys_path_exists(self_path, NULL))
     {
         // our test binary ended up in a ".libs" subdir
-        strcpy(self_path + strlen(self_path) - 10, ".cmd\0");
+        strcpy(self_path + strlen(self_path) - 25, "subprocess-test.cmd\0");
     }
     check(tr_sys_path_exists(self_path, NULL));
 
