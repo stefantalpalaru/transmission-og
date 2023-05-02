@@ -76,6 +76,8 @@ jobs:
           "Windows")
             NCPU="${NUMBER_OF_PROCESSORS}"
             MAKE_CMD="mingw32-make"
+            # avoid random failure: "aclocal-1.16: error: aclocal: file '/a/_temp/msys64/usr/share/aclocal/tcl.m4' does not exist"
+            echo "ACLOCAL_PATH=/d/a/_temp/msys64/usr/share/aclocal/:${ACLOCAL_PATH}" >> ${GITHUB_ENV}
             ;;
           esac
           echo "CFLAGS=${CFLAGS}" >> ${GITHUB_ENV}
