@@ -92,6 +92,10 @@ qt/.qmake.stash
 qt/*.moc
 qt/qrc_*
 qt/ui_*
+qt/*.Debug
+qt/*.Release
+qt/release
+qt/debug
 
 # orig
 .depend
