@@ -16,12 +16,15 @@ AC_CONFIG_MACRO_DIR([m4])
 
 dnl AM_CONFIG_HEADER(config.h)
 AC_CONFIG_SRCDIR(libtransmission/transmission.h)
-AM_INIT_AUTOMAKE([1.9 tar-pax no-dist-gzip dist-xz foreign])
+AM_INIT_AUTOMAKE([1.9 tar-pax no-dist-gzip dist-xz foreign subdir-objects])
 LT_INIT
 LT_LIB_M
 
 CFLAGS="$CFLAGS -std=gnu11"
 CXXFLAGS="$CXXFLAGS -std=gnu++17"
+
+AC_PROG_CC
+AC_PROG_CXX
 
 if test m4_substr(peer_id_prefix,6,1) = "0"; then
   supported_build=yes
@@ -29,8 +32,8 @@ if test m4_substr(peer_id_prefix,6,1) = "0"; then
 else
   supported_build=no
   if test "x$GCC" = "xyes" ; then
-    CFLAGS="$CFLAGS -g -O0"
-    CXXFLAGS="$CXXFLAGS -g -O0"
+    CFLAGS="$CFLAGS -g"
+    CXXFLAGS="$CXXFLAGS -g"
   fi
 fi
 AM_CONDITIONAL(TR_UNSTABLE, test "x$supported_build" = "xno")
@@ -108,11 +111,10 @@ fi
 AC_PROG_LN_S
 AC_PROG_MKDIR_P
 
-AC_HEADER_STDC
-AC_HEADER_TIME
+AC_CHECK_HEADERS_ONCE([sys/time.h])
 
 AC_CHECK_HEADERS([xlocale.h])
-AC_CHECK_FUNCS([iconv pread pwrite lrintf strlcpy daemon dirname basename canonicalize_file_name strcasecmp localtime_r fallocate64 posix_fallocate memmem strsep strtold syslog valloc getpagesize posix_memalign statvfs htonll ntohll mkdtemp uselocale _configthreadlocale strcasestr])
+AC_CHECK_FUNCS([iconv pread pwrite lrintf strlcpy daemon dirname basename canonicalize_file_name strcasecmp localtime_r fallocate64 posix_fallocate memmem strsep strtold syslog valloc getpagesize posix_memalign statvfs htonll ntohll mkdtemp uselocale _configthreadlocale strcasestr flock])
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 ACX_PTHREAD
@@ -121,17 +123,20 @@ if test "x$ac_cv_func_strtold" != "xyes" ; then
     CPPFLAGS="$CPPFLAGS -Dstrtold=strtod"
 fi
 
+AS_IF([test "x${ac_cv_func_flock}" = "xyes"], [
+       AC_DEFINE([HAVE_FLOCK], 1)
+       ])
+
 AC_SEARCH_LIBS(cos, [m])
 AC_SEARCH_LIBS([socket], [socket net])
 AC_SEARCH_LIBS([gethostbyname], [nsl bind])
 AC_SEARCH_LIBS([quotacursor_skipidtype], [quota])
 PKG_CHECK_MODULES(LIBCURL, [libcurl >= $CURL_MINIMUM])
-PKG_CHECK_MODULES(LIBEVENT, [libevent >= $LIBEVENT_MINIMUM])
 PKG_CHECK_MODULES(ZLIB, [zlib >= $ZLIB_MINIMUM])
 
 
 AC_ARG_WITH([crypto], AS_HELP_STRING([--with-crypto=PKG],
-            [Use specified crypto library: auto (default), openssl, cyassl, polarssl]),
+            [use specified crypto library: auto (default), openssl, cyassl, polarssl]),
             [want_crypto=$withval], [want_crypto=auto])
 
 AS_IF([test "x$want_crypto" = "xauto" -o "x$want_crypto" = "xopenssl"], [
@@ -215,7 +220,7 @@ dnl
 dnl file monitoring for the daemon
 
 AC_ARG_WITH([inotify],
-            [AS_HELP_STRING([--with-inotify], [Enable inotify support (default=auto)])],
+            [AS_HELP_STRING([--with-inotify], [enable inotify support (default=auto)])],
             [WANT_INOTIFY=${withval}],
             [WANT_INOTIFY=auto])
 HAVE_INOTIFY=0
@@ -228,7 +233,7 @@ AS_IF([test "x$WANT_INOTIFY" != "xno"],
 AM_CONDITIONAL([USE_INOTIFY], [test "x$WANT_INOTIFY" != "xno" -a $HAVE_INOTIFY -eq 1])
 
 AC_ARG_WITH([kqueue],
-            [AS_HELP_STRING([--with-kqueue],[Enable kqueue support (default=auto)])],
+            [AS_HELP_STRING([--with-kqueue],[enable kqueue support (default=auto)])],
             [WANT_KQUEUE=${withval}],
             [WANT_KQUEUE=auto])
 HAVE_KQUEUE=0
@@ -256,7 +261,7 @@ AC_ARG_WITH([systemd], AS_HELP_STRING([--with-systemd],
             [USE_SYSTEMD=$withval], [USE_SYSTEMD=auto])
 AS_IF([test "x$USE_SYSTEMD" != "xno"], [
     PKG_CHECK_MODULES([SYSTEMD], [libsystemd],
-        [AC_DEFINE(USE_SYSTEMD,1,[Use systemd startup notification])],
+        [AC_DEFINE(USE_SYSTEMD,1,[use systemd startup notification])],
         [AS_IF([test "x$USE_SYSTEMD" = "xyes"],
             [AC_MSG_ERROR([systemd startup notification support requested, but libsystemd not found.])]
         )]
@@ -268,24 +273,23 @@ dnl ----------------------------------------------------------------------------
 dnl
 dnl  dht
 
-DHT_CFLAGS="-I\$(top_builddir)/third-party/dht/include"
-DHT_LIBS="\$(top_builddir)/third-party/dht/libdht.a"
-DHT_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/dht/libdht.a"
-build_bundled_dht="yes"
 AC_ARG_ENABLE([external-dht],
-              AS_HELP_STRING([--enable-external-dht],[Use system external-dht]),
-              [want_external_dht=${enableval}],
-              [want_external_dht=no])
-if test "x$want_external_dht" != "xno" ; then
-       dnl Would be lovely if it had pkgconfig
+              AS_HELP_STRING([--enable-external-dht], [use system libdht]))
+AS_IF([test "x${enable_external_dht}" = "xyes"], [
        DHT_CFLAGS=""
+       DHT_INCLUDEPATH_QT=""
        DHT_LIBS="-ldht"
        DHT_LIBS_QT="-ldht"
-       build_bundled_dht="no"
-fi
+       ], [
+           DHT_CFLAGS="-I\$(top_builddir)/third-party/dht/include"
+           DHT_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/dht/include"
+           DHT_LIBS="\$(top_builddir)/third-party/dht/libdht.a"
+           DHT_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/dht/libdht.a"
+           ])
 
-AM_CONDITIONAL([BUILD_DHT],[test "x$build_bundled_dht" = "xyes"])
+AM_CONDITIONAL([BUILD_DHT], [test "x${enable_external_dht}" != "xyes"])
 AC_SUBST(DHT_CFLAGS)
+AC_SUBST(DHT_INCLUDEPATH_QT)
 AC_SUBST(DHT_LIBS)
 AC_SUBST(DHT_LIBS_QT)
 
@@ -294,23 +298,26 @@ dnl ----------------------------------------------------------------------------
 dnl
 dnl  libb64
 
-LIBB64_CFLAGS="-I\$(top_srcdir)/third-party/libb64/include"
-LIBB64_LIBS="\$(top_builddir)/third-party/libb64/libb64.a"
-LIBB64_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libb64/libb64.a"
-build_bundled_b64="yes"
 AC_ARG_ENABLE([external-b64],
-              AS_HELP_STRING([--enable-external-b64],[Use system libb64]),
-              [want_external_b64=${enableval}],
-              [want_external_b64=no])
-if test "x$want_external_b64" != "xno" ; then
-    LIBB64_CFLAGS="-DUSE_SYSTEM_B64"
-    LIBB64_LIBS="-lb64"
-    LIBB64_LIBS_QT="-lb64"
-    build_bundled_b64="no"
-fi
+              AS_HELP_STRING([--enable-external-b64], [use system libb64]))
+AS_IF([test "x${enable_external_b64}" = "xyes"], [
+       AC_SEARCH_LIBS([base64_init_encodestate], [b64], [], [
+                       AC_MSG_ERROR([unable to find the "b64" library])
+                       ])
+       LIBB64_CFLAGS="-DUSE_SYSTEM_B64"
+       LIBB64_INCLUDEPATH_QT=""
+       LIBB64_LIBS="-lb64"
+       LIBB64_LIBS_QT="-lb64"
+       ], [
+           LIBB64_CFLAGS="-I\$(top_srcdir)/third-party/libb64/include"
+           LIBB64_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/libb64/include"
+           LIBB64_LIBS="\$(top_builddir)/third-party/libb64/libb64.a"
+           LIBB64_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libb64/libb64.a"
+           ])
 
-AM_CONDITIONAL([BUILD_B64],[test "x$build_bundled_b64" = "xyes"])
+AM_CONDITIONAL([BUILD_B64], [test "x${enable_external_b64}" != "xyes"])
 AC_SUBST(LIBB64_CFLAGS)
+AC_SUBST(LIBB64_INCLUDEPATH_QT)
 AC_SUBST(LIBB64_LIBS)
 AC_SUBST(LIBB64_LIBS_QT)
 
@@ -324,190 +331,121 @@ AC_CHECK_LIB([rt],
              [libutp_extra_libs="-lrt"],
              [libutp_extra_libs=""])
 
-AC_MSG_CHECKING([µTP])
-build_utp="no"
-
-ac_save_LIBS="$LIBS"
-LIBS="-lutp"
-AC_LINK_IFELSE(
-  [AC_LANG_PROGRAM([#include <libutp/utp.h>],
-                   [struct UTPFunctionTable func;])],
-  [have_utp="yes"],
-  [have_utp="no"]
-)
-LIBS="$ac_save_LIBS"
-
-if test "x$have_utp" = "xyes" -o "x$CXX" != "x"; then
-    want_utp_default="yes"
-else
-    want_utp_default="no"
-fi
-
 AC_ARG_ENABLE([utp],
-              AS_HELP_STRING([--enable-utp],[build µTP support]),
-              [want_utp=${enableval}],
-              [want_utp=${want_utp_default}])
-if test "x$want_utp" = "xyes"; then
-    if test "x$have_utp" = "xyes"; then
-        dnl Would be lovely if it had pkgconfig
-        LIBUTP_CFLAGS=""
-        LIBUTP_LIBS="-lutp $libutp_extra_libs"
-        LIBUTP_LIBS_QT="-lutp $libutp_extra_libs"
-        AC_DEFINE([WITH_UTP],[1])
-        build_utp="system"
-    elif test "x$CXX" != "x"; then
-        LIBUTP_CFLAGS="-I\$(top_builddir)/third-party/libutp/include"
-        LIBUTP_LIBS="\$(top_builddir)/third-party/libutp/libutp.a"
-        LIBUTP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libutp/libutp.a"
-        if test "x$libutp_extra_libs" != "x" ; then
-            LIBUTP_LIBS="$LIBUTP_LIBS $libutp_extra_libs"
-            LIBUTP_LIBS_QT="$LIBUTP_LIBS_QT $libutp_extra_libs"
-        fi
-        AC_DEFINE([WITH_UTP],[1])
-        build_utp="yes"
-    else
-      AC_MSG_ERROR("Unable to build uTP support -- C++ compiler not found")
-    fi
-fi
+              AS_HELP_STRING([--disable-utp], [disable µTP support]))
+AC_ARG_ENABLE([external-utp],
+              AS_HELP_STRING([--enable-external-utp], [use system libutp]))
+AS_IF([test "x${enable_utp}" != "xno"], [
+       AC_DEFINE([WITH_UTP], [1])
+       AS_IF([test "x${enable_external_utp}" = "xyes"], [
+              AC_SEARCH_LIBS([utp_close], [utp], [], [
+                              AC_MSG_ERROR([unable to find the "utp" library])
+                              ])
+              LIBUTP_CFLAGS=""
+              LIBUTP_INCLUDEPATH_QT=""
+              LIBUTP_LIBS="-lutp ${libutp_extra_libs}"
+              LIBUTP_LIBS_QT="-lutp ${libutp_extra_libs}"
+              ], [
+                  LIBUTP_CFLAGS="-I\$(top_builddir)/third-party/libutp/include"
+                  LIBUTP_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/libutp/include"
+                  LIBUTP_LIBS="\$(top_builddir)/third-party/libutp/libutp.a ${libutp_extra_libs}"
+                  LIBUTP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libutp/libutp.a ${libutp_extra_libs}"
+                  ])
+       ])
+
 AC_SUBST(LIBUTP_CFLAGS)
+AC_SUBST(LIBUTP_INCLUDEPATH_QT)
 AC_SUBST(LIBUTP_LIBS)
 AC_SUBST(LIBUTP_LIBS_QT)
-AM_CONDITIONAL([BUILD_UTP],[test "x$build_utp" = "xyes"])
-AC_MSG_RESULT([$build_utp])
-
+AM_CONDITIONAL([BUILD_UTP],[test "x${enable_external_utp}" != "xyes"])
 
 dnl
-dnl  look for preinstalled miniupnpc...
+dnl  miniupnpc
 dnl
 
-ac_save_LIBS="$LIBS"
-LIBS="-lminiupnpc"
-AC_MSG_CHECKING([system miniupnpc library])
+AC_ARG_ENABLE([external-miniupnpc],
+              AS_HELP_STRING([--enable-external-miniupnpc], [use system miniupnpc]))
+AS_IF([test "x${enable_external_miniupnpc}" = "xyes"], [
+       AC_SEARCH_LIBS([upnpDiscover], [miniupnpc], [], [
+                       AC_MSG_ERROR([unable to find the "miniupnpc" library])
+                       ])
+       LIBUPNP_CFLAGS=""
+       LIBUPNP_INCLUDEPATH_QT=""
+       LIBUPNP_LIBS="-lminiupnpc"
+       LIBUPNP_LIBS_QT="-lminiupnpc"
+       ], [
+           LIBUPNP_CFLAGS="-I\$(top_builddir)/third-party/miniupnpc/include"
+           LIBUPNP_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/miniupnpc/include"
+           LIBUPNP_LIBS="\$(top_builddir)/third-party/miniupnpc/libminiupnp.a"
+           LIBUPNP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/miniupnpc/libminiupnp.a"
+	   AC_DEFINE([MINIUPNP_STATICLIB])
+           ])
 
-dnl See if ANY version of miniupnpc is installed
-AC_LINK_IFELSE(
-  [AC_LANG_PROGRAM([#include <miniupnpc/miniupnpc.h>],
-                   [struct UPNPDev dev;])],
-  [upnp_version="unknown"],
-  [upnp_version="none"]
-)
-
-dnl Let's hope it's 1.7 or higher, since it provides
-dnl MINIUPNPC_API_VERSION and we won't have to figure
-dnl it out on our own
-if test "x$upnp_version" = "xunknown" ; then
-  AC_COMPILE_IFELSE(
-    [AC_LANG_PROGRAM(
-      [#include <stdlib.h>
-       #include <miniupnpc/miniupnpc.h>],
-      [#ifndef MINIUPNPC_API_VERSION
-       #error MINIUPNPC_API_VERSION undefined
-       #endif]
-    )],
-    [upnp_version=">= 1.7"]
-  )
-fi
-
-dnl Or maybe it's miniupnp 1.6
-if test "x$upnp_version" = "xunknown" ; then
-  AC_LINK_IFELSE([AC_LANG_PROGRAM([[
-    #include <stdlib.h>
-    #include <errno.h>
-    #include <miniupnpc/miniupnpc.h>
-    #include <miniupnpc/upnpcommands.h>
-  ]], [[
-    struct UPNPDev * devlist;
-    struct UPNPUrls urls;
-    struct IGDdatas data;
-    char lanaddr[16];
-    char portStr[8];
-    char intPort[8];
-    char intClient[16];
-    upnpDiscover( 2000, NULL, NULL, 0, 0, &errno );
-    UPNP_GetValidIGD( devlist, &urls, &data, lanaddr, sizeof( lanaddr ) ); 
-    UPNP_GetSpecificPortMappingEntry( urls.controlURL, data.first.servicetype,
-                        portStr, "TCP", intClient, intPort, NULL, NULL, NULL );
-  ]])],[
-  AC_DEFINE(MINIUPNPC_API_VERSION, 8, [miniupnpc 1.6 has API version 8])
-  upnp_version="1.6"])
-fi
-
-dnl Or maybe it's miniupnp 1.5
-if test "x$upnp_version" = "xunknown" ; then
-  AC_LINK_IFELSE([AC_LANG_PROGRAM([[
-    #include <stdlib.h>
-    #include <miniupnpc/miniupnpc.h>
-    #include <miniupnpc/upnpcommands.h>
-  ]], [[
-    struct UPNPDev * devlist;
-    struct UPNPUrls urls;
-    struct IGDdatas data;
-    char lanaddr[16];
-    char portStr[8];
-    char intPort[8];
-    char intClient[16];
-    upnpDiscover( 2000, NULL, NULL, 0 );
-    UPNP_GetValidIGD( devlist, &urls, &data, lanaddr, sizeof( lanaddr ) ); 
-    UPNP_GetSpecificPortMappingEntry( urls.controlURL, data.first.servicetype,
-                        portStr, "TCP", intClient, intPort );
-  ]])],[
-  AC_DEFINE(MINIUPNPC_API_VERSION, 5, [miniupnpc 1.5 has API version 5])
-  upnp_version="1.5"])
-fi
-
-# ... and the results of our tests
-LIBS="$ac_save_LIBS"
-AC_MSG_RESULT([$upnp_version])
-AM_CONDITIONAL([BUILD_MINIUPNP],[test "x$upnp_version" = "xnone"])
-if test "x$upnp_version" = "xnone" ; then
-    LIBUPNP_CFLAGS="-I\$(top_builddir)/third-party/miniupnpc/include"
-    LIBUPNP_LIBS="\$(top_builddir)/third-party/miniupnpc/libminiupnp.a"
-    LIBUPNP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/miniupnpc/libminiupnp.a"
-else
-    AC_DEFINE([SYSTEM_MINIUPNP])
-    LIBUPNP_CFLAGS="" 
-    LIBUPNP_LIBS="-lminiupnpc"
-    LIBUPNP_LIBS_QT="-lminiupnpc"
-fi
+AM_CONDITIONAL([BUILD_MINIUPNP], [test "x${enable_external_miniupnpc}" != "xyes"])
 AC_SUBST(LIBUPNP_CFLAGS)
+AC_SUBST(LIBUPNP_INCLUDEPATH_QT)
 AC_SUBST(LIBUPNP_LIBS)
 AC_SUBST(LIBUPNP_LIBS_QT)
 
+dnl ----------------------------------------------------------------------------
+dnl
+dnl  Allow usage of system natpmp library
 
- 
+AC_ARG_ENABLE([external-natpmp],
+              AS_HELP_STRING([--enable-external-natpmp], [use system natpmp]))
+AS_IF([test "x${enable_external_natpmp}" = "xyes"], [
+       AC_SEARCH_LIBS([initnatpmp], [natpmp], [], [
+                       AC_MSG_ERROR([unable to find the "natpmp" library])
+                       ])
+       LIBNATPMP_CFLAGS=""
+       LIBNATPMP_INCLUDEPATH_QT=""
+       LIBNATPMP_LIBS="-lnatpmp"
+       LIBNATPMP_LIBS_QT="-lnatpmp"
+       ], [
+           LIBNATPMP_CFLAGS="-I\$(top_srcdir)/third-party/libnatpmp/"
+           LIBNATPMP_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/libnatpmp/"
+           LIBNATPMP_LIBS="\$(top_builddir)/third-party/libnatpmp/libnatpmp.a"
+           LIBNATPMP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libnatpmp/libnatpmp.a"
+	   AC_DEFINE([NATPMP_STATICLIB])
+           ])
+
+AM_CONDITIONAL([BUILD_NATPMP], [test "x${enable_external_natpmp}" != "xyes"])
+AC_SUBST(LIBNATPMP_CFLAGS)
+AC_SUBST(LIBNATPMP_INCLUDEPATH_QT)
+AC_SUBST(LIBNATPMP_LIBS)
+AC_SUBST(LIBNATPMP_LIBS_QT)
 
 dnl ----------------------------------------------------------------------------
 dnl
-dnl  Allow usage of system natpmp library 
+dnl  libevent
 
-LIBNATPMP_CFLAGS="-I\$(top_srcdir)/third-party/libnatpmp/" 
-LIBNATPMP_LIBS="\$(top_builddir)/third-party/libnatpmp/libnatpmp.a" 
-LIBNATPMP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libnatpmp/libnatpmp.a" 
-build_bundled_natpmp="yes" 
-AC_ARG_ENABLE([external-natpmp], 
-              AS_HELP_STRING([--enable-external-natpmp],[Use system external-natpmp]), 
-              [want_external_natpmp=${enableval}], 
-              [want_external_natpmp=no]) 
-if test "x$want_external_natpmp" != "xno" ; then 
-	dnl Would be lovely if it had pkgconfig 
-	LIBNATPMP_CFLAGS=""  
-	LIBNATPMP_LIBS="-lnatpmp" 
-	LIBNATPMP_LIBS_QT="-lnatpmp" 
-	build_bundled_natpmp="no" 
-fi 
-AM_CONDITIONAL([BUILD_NATPMP],[test "x$build_bundled_natpmp" = "xyes"]) 
-AC_SUBST(LIBNATPMP_CFLAGS) 
-AC_SUBST(LIBNATPMP_LIBS) 
-AC_SUBST(LIBNATPMP_LIBS_QT) 
 
+AC_ARG_ENABLE([external-libevent],
+              AS_HELP_STRING([--enable-external-libevent], [use system libevent]))
+AS_IF([test "x${enable_external_libevent}" = "xyes"], [
+       PKG_CHECK_MODULES(LIBEVENT, [libevent >= ${LIBEVENT_MINIMUM}])
+       LIBEVENT_INCLUDEPATH_QT=""
+       LIBEVENT_LIBS_QT="${LIBEVENT_LIBS}"
+       ], [
+           LIBEVENT_CFLAGS="-I\$(top_srcdir)/third-party/libevent/include"
+           LIBEVENT_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/libevent/include"
+           LIBEVENT_LIBS="\$(top_builddir)/third-party/libevent/.libs/libevent.a"
+           LIBEVENT_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libevent/.libs/libevent.a"
+           AC_CONFIG_SUBDIRS([third-party/libevent])
+           ])
+
+AM_CONDITIONAL([BUILD_EVENT], [test "x${enable_external_libevent}" != "xyes"])
+AC_SUBST(LIBEVENT_CFLAGS)
+AC_SUBST(LIBEVENT_INCLUDEPATH_QT)
+AC_SUBST(LIBEVENT_LIBS)
+AC_SUBST(LIBEVENT_LIBS_QT)
 
 dnl ----------------------------------------------------------------------------
 dnl
 dnl  detection for the GTK+ client
 
 AC_ARG_ENABLE([nls],
-              [AS_HELP_STRING([--enable-nls],[enable native language support])],,
-              [enable_nls=yes])
+              [AS_HELP_STRING([--disable-nls],[disable native language support])])
 PKG_CHECK_EXISTS([gtk+-3.0 >= $GTK_MINIMUM
                   glib-2.0 >= $GLIB_MINIMUM
                   gio-2.0 >= $GIO_MINIMUM,
@@ -520,11 +458,10 @@ AC_ARG_WITH([gtk], AS_HELP_STRING([--with-gtk],[with Gtk]),
             [with_gtk=$have_gtk])
 AM_CONDITIONAL([BUILD_GTK],[test "x$with_gtk" = "xyes"])
 use_libappindicator=no
-if test "x$with_gtk" = "xyes" ; then
-
-    if test "x$enable_nls" = "xno" ; then
+AS_IF([test "x$with_gtk" = "xyes"], [
+    AS_IF([test "x${enable_nls}" = "xno"], [
         AC_MSG_ERROR("The gtk client cannot be built without nls support.  Try adding either --enable-nls or --without-gtk" )
-    fi
+    ])
 
     PKG_CHECK_MODULES([GTK], [gtk+-3.0 >= $GTK_MINIMUM
                               glib-2.0 >= $GLIB_MINIMUM
@@ -535,14 +472,14 @@ if test "x$with_gtk" = "xyes" ; then
                       [appindicator3-0.1 >= $LIBAPPINDICATOR_MINIMUM],
                       [have_libappindicator=yes],
                       [have_libappindicator=no])
-    if test "x$have_libappindicator" = "xyes"; then
+    AS_IF([test "x${have_libappindicator}" = "xyes"], [
         use_libappindicator=yes
         AC_DEFINE([HAVE_LIBAPPINDICATOR], 1)
-    else
+    ], [
         LIBAPPINDICATOR_CFLAGS=
         LIBAPPINDICATOR_LIBS=
-    fi
-fi
+    ])
+])
 
 dnl This section is only used for internationalization.
 dnl If you don't need translations and this section gives you trouble --
@@ -554,12 +491,15 @@ dnl a "make check" failure on some systems.  if upgrading to 0.40 is
 dnl a problem and the old version was working fine for you,
 dnl it should be safe to re-edit 0.40 back down to 0.23
 
-use_nls=no
-if test "x$enable_nls" = "xyes" ; then
-    use_nls=yes
+AS_IF([test "x${enable_nls}" != "xno"], [
     m4_ifdef([IT_PROG_INTLTOOL],
-             [IT_PROG_INTLTOOL([0.35.0],[no-xml])],
-             [AC_MSG_ERROR("--enable-nls requires intltool to be installed.")])
+             [
+dnl intltoolize needs this at the start of a line:
+IT_PROG_INTLTOOL([0.35.0],[no-xml])
+             ], [
+             AC_MSG_ERROR("--enable-nls requires intltool to be installed.")
+	     ])
+
     AC_CHECK_HEADERS([libintl.h])
     GETTEXT_PACKAGE=transmission-gtk
     AC_SUBST(GETTEXT_PACKAGE)
@@ -567,7 +507,7 @@ if test "x$enable_nls" = "xyes" ; then
     AM_GLIB_GNU_GETTEXT
     transmissionlocaledir='${prefix}/${DATADIRNAME}/locale'
     AC_SUBST(transmissionlocaledir)
-fi
+])
 AC_SUBST(INTLLIBS)
 
 
@@ -582,10 +522,19 @@ case $host_os in
 
    *mingw32*)
      have_msw="yes"
-     CXXFLAGS="$CXXFLAGS -mms-bitfields -mwin32 -mwindows"
-     CPPFLAGS="$CPPFLAGS -DWINVER=0x0600 -D_WIN32_WINNT=0x0600 -DWIN32_LEAN_AND_MEAN"
-     # CPPFLAGS="$CPPFLAGS -D__USE_MINGW_ANSI_STDIO=1 -D__STDC_FORMAT_MACROS=1"
-     LIBS="$LIBS -liphlpapi -lshell32 -lws2_32"
+     CXXFLAGS="${CXXFLAGS} -mms-bitfields -mwin32 -mwindows"
+     dnl Target version (Vista and up)
+     CPPFLAGS="${CPPFLAGS} -DWINVER=0x0600 -D_WIN32_WINNT=0x0600 -DWIN32_LEAN_AND_MEAN"
+     dnl Use Unicode API (although we always use W or A names explicitly)
+     CPPFLAGS="${CPPFLAGS} -DUNICODE -D_UNICODE"
+     dnl Ignore various deprecation and security warnings (at least for now)
+     CPPFLAGS="${CPPFLAGS} -D_CRT_SECURE_NO_DEPRECATE -D_CRT_NONSTDC_NO_DEPRECATE -D_SCL_SECURE_NO_WARNINGS -D_WINSOCK_DEPRECATED_NO_WARNINGS"
+     dnl Increase maximum FD_SET size
+     CPPFLAGS="${CPPFLAGS} -DFD_SETSIZE=1024"
+     dnl Use MinGW versions of all the printf-family functions
+     CPPFLAGS="${CPPFLAGS} -D__USE_MINGW_ANSI_STDIO=1"
+     dnl Windows specific libraries
+     LIBS="${LIBS} -liphlpapi -lshell32 -lws2_32 -lcrypt32 -lshlwapi -luuid -lole32"
      transmissionlocaledir="locale"
      if test -z "$host_alias"; then
        hostaliaswindres=
@@ -597,6 +546,7 @@ case $host_os in
 
   *darwin*)
     have_darwin="yes"
+    LIBS="${LIBS} -framework Cocoa"
     ;;
 
 esac
@@ -616,9 +566,9 @@ AC_ARG_ENABLE([cli],
 AM_CONDITIONAL([BUILD_CLI],[test "x$build_cli" = "xyes"])
 
 AC_ARG_ENABLE([mac],
-              [AS_HELP_STRING([--enable-mac],[build Mac client])],
+              [AS_HELP_STRING([--enable-mac],[build Mac client (broken, use CMake instead)])],
               [build_mac=${enableval}],
-              [build_mac=${have_darwin}])
+              [build_mac="no"])
 AM_CONDITIONAL([BUILD_MAC],[test "x$build_mac" = "xyes"])
 
 AC_ARG_ENABLE([daemon],
@@ -630,19 +580,6 @@ AM_CONDITIONAL([BUILD_DAEMON],[test "x$build_daemon" = "xyes"])
 
 if test "x$build_mac" = "xyes" ; then
    AC_DEFINE([BUILD_MAC_CLIENT], 1)
-    # Make sure the proper Mac SDK is installed
-    if test ! -d /Developer/SDKs/MacOSX10.5.sdk; then
-      cat << EOF
-You need to install the Mac OS X 10.5 SDK in order to build Transmission
-with --enable-mac:
-  Get your Xcode CD or package
-  Restart the install
-  When it gets to "Installation Type", select "Customize"
-  Select "Mac OS X 10.5 SDK" under "Cross Development"
-  Finish the install.
-EOF
-      exit 1
-    fi
 fi
 AM_CONDITIONAL(WIN32, test "x$have_msw" = "xyes")
 
@@ -660,7 +597,6 @@ AC_CONFIG_FILES([Makefile
                  third-party/Makefile
                  third-party/dht/Makefile
                  third-party/libb64/Makefile
-                 third-party/libutp/Makefile
                  third-party/libnatpmp/Makefile
                  third-party/miniupnpc/Makefile
                  macosx/Makefile
@@ -690,7 +626,7 @@ Configuration:
 
    Build libtransmission:                             yes
       * optimized for low-resource systems:           ${enable_lightweight}
-      * µTP enabled:                                  ${build_utp}
+      * µTP enabled:                                  ${enable_utp:-yes}
       * crypto library:                               ${CRYPTO_PKG}
 
    Build Command-Line client:                         ${build_cli}

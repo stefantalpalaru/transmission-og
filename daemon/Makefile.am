@@ -35,6 +35,7 @@ LDADD = \
 noinst_HEADERS = daemon.h
 
 transmission_daemon_SOURCES = daemon.c
+nodist_EXTRA_transmission_daemon_SOURCES = dummy.cxx # force C++ linking
 
 if WIN32
 transmission_daemon_SOURCES += daemon-win32.c

@@ -14,7 +14,7 @@ man.files = transmission-qt.1
 CONFIG += qt thread link_pkgconfig c++1z warn_on
 QT += network dbus
 win32:QT += winextras
-PKGCONFIG = fontconfig libcurl openssl libevent
+PKGCONFIG = fontconfig libcurl openssl
 
 greaterThan(QT_MAJOR_VERSION, 4) {
     QT += widgets
@@ -27,7 +27,15 @@ TRANSMISSION_TOP = ..
 
 include(config.pri)
 
-INCLUDEPATH = $${EVENT_TOP}/include $${INCLUDEPATH}
+INCLUDEPATH = \
+	$${DHT_INCLUDEPATH} \
+	$${LIBB64_INCLUDEPATH} \
+	$${LIBUTP_INCLUDEPATH} \
+	$${LIBUPNP_INCLUDEPATH} \
+	$${LIBNATPMP_INCLUDEPATH} \
+	$${LIBEVENT_INCLUDEPATH} \
+	/usr/local/include \
+	$${INCLUDEPATH}
 INCLUDEPATH += $${TRANSMISSION_TOP}
 LIBS += $${TRANSMISSION_TOP}/libtransmission/libtransmission.a
 LIBS += $${LIBUTP_LIBS}
@@ -35,9 +43,9 @@ LIBS += $${DHT_LIBS}
 LIBS += $${LIBB64_LIBS}
 LIBS += $${LIBUPNP_LIBS}
 LIBS += $${LIBNATPMP_LIBS}
-unix: LIBS += -L$${EVENT_TOP}/lib -lz -lrt
-win32:LIBS += -levent-2.0 -lws2_32 -lintl
-win32:LIBS += -lidn -liconv -lwldap32 -liphlpapi
+LIBS += $${LIBEVENT_LIBS}
+LIBS += -lz
+win32:LIBS += -lws2_32 -lintl -lcrypt32 -luuid -lole32 -liconv -lwldap32 -liphlpapi
 
 TRANSLATIONS += translations/transmission_de.ts \
                 translations/transmission_en.ts \

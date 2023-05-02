@@ -2,23 +2,29 @@
 	path = third-party/dht
 	url = https://github.com/stefantalpalaru/dht
 	branch = post-0.25-transmission
+	ignore = dirty
 [submodule "third-party/libb64"]
 	path = third-party/libb64
 	url = https://github.com/stefantalpalaru/libb64
 	branch = post-1.2.1-transmission
+	ignore = dirty
 [submodule "third-party/libevent"]
 	path = third-party/libevent
 	url = https://github.com/stefantalpalaru/libevent
 	branch = post-2.0.22-transmission
+	ignore = dirty
 [submodule "third-party/libnatpmp"]
 	path = third-party/libnatpmp
 	url = https://github.com/stefantalpalaru/libnatpmp
 	branch = post-20151025-transmission
+	ignore = dirty
 [submodule "third-party/libutp"]
 	path = third-party/libutp
 	url = https://github.com/stefantalpalaru/libutp
 	branch = post-3.4-transmission
+	ignore = dirty
 [submodule "third-party/miniupnpc"]
 	path = third-party/miniupnpc
 	url = https://github.com/stefantalpalaru/miniupnpc
 	branch = post-2.0.20170509-transmission
+	ignore = dirty

@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    timeout-minutes: 20
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
@@ -21,6 +21,8 @@ jobs:
             cpu: amd64
           - os: windows
             cpu: amd64
+        build-system: [cmake, autotools]
+        libs: [system, vendored]
         include:
           - target:
               os: linux
@@ -39,7 +41,7 @@ jobs:
       run:
         shell: ${{ matrix.shell }}
 
-    name: '${{ matrix.target.os }}-${{ matrix.target.cpu }}'
+    name: '${{ matrix.target.os }}-${{ matrix.target.cpu }} (${{ matrix.build-system }}, ${{ matrix.libs }} libs)'
     runs-on: ${{ matrix.builder }}
     steps:
       - name: Git checkout
@@ -57,26 +59,30 @@ jobs:
           case "${{ runner.os }}" in
           "Linux")
             NCPU="$(nproc)"
-            echo "DEBIAN_FRONTEND=noninteractive" >> $GITHUB_ENV
-            echo "TZ=Etc/UTC" >> $GITHUB_ENV
-            if [[ '${{ matrix.target.cpu }}' == 'i386' ]]; then
+            echo "DEBIAN_FRONTEND=noninteractive" >> ${GITHUB_ENV}
+            echo "TZ=Etc/UTC" >> ${GITHUB_ENV}
+            if [[ "${{ matrix.target.cpu }}" == "i386" ]]; then
               CFLAGS="${CFLAGS} -m32"
               CXXFLAGS="${CXXFLAGS} -m32"
+              echo "/usr/lib/i386-linux-gnu/qt5/bin" >> ${GITHUB_PATH}
+              echo "PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig" >> ${GITHUB_ENV}
             fi
             ;;
           "macOS")
             NCPU="$(sysctl -n hw.logicalcpu)"
+            echo "/usr/local/opt/qt@5/bin" >> ${GITHUB_PATH}
+            echo "PKG_CONFIG_PATH=/usr/local/opt/qt@5/lib/pkgconfig:/usr/local/opt/openssl@1.1/lib/pkgconfig" >> ${GITHUB_ENV}
             ;;
           "Windows")
             NCPU="${NUMBER_OF_PROCESSORS}"
             MAKE_CMD="mingw32-make"
             ;;
           esac
-          echo "CFLAGS=${CFLAGS}" >> $GITHUB_ENV
-          echo "CXXFLAGS=${CXXFLAGS}" >> $GITHUB_ENV
+          echo "CFLAGS=${CFLAGS}" >> ${GITHUB_ENV}
+          echo "CXXFLAGS=${CXXFLAGS}" >> ${GITHUB_ENV}
           [[ -z "${NCPU}" || ${NCPU} -le 0 ]] && NCPU="1"
-          echo "NCPU=${NCPU}" >> $GITHUB_ENV
-          echo "MAKE_CMD=${MAKE_CMD}" >> $GITHUB_ENV
+          echo "NCPU=${NCPU}" >> ${GITHUB_ENV}
+          echo "MAKE_CMD=${MAKE_CMD}" >> ${GITHUB_ENV}
 
       - name: Install build dependencies (Linux i386)
         if: runner.os == 'Linux' && matrix.target.cpu == 'i386'
@@ -87,7 +93,7 @@ jobs:
             libcurl4-openssl-dev:i386 gettext:i386 \
             libevent-dev:i386 libglib2.0-dev:i386 libgtk-3-dev:i386 \
             libnotify-dev:i386 libssl-dev:i386 libsystemd-dev:i386 \
-            qttools5-dev:i386 zlib1g-dev:i386
+            qttools5-dev:i386 zlib1g-dev:i386 intltool:i386
 
       - name: Install build dependencies (Linux AMD64)
         if: runner.os == 'Linux' && matrix.target.cpu == 'amd64'
@@ -97,7 +103,7 @@ jobs:
             build-essential libayatana-appindicator3-dev libcurl4-openssl-dev \
             libevent-dev libglib2.0-dev libgtk-3-dev libminiupnpc-dev \
             libnatpmp-dev libnotify-dev libssl-dev libsystemd-dev \
-            qttools5-dev zlib1g-dev gettext
+            qttools5-dev zlib1g-dev gettext intltool
 
       - name: Select the Xcode version
         if: runner.os == 'macOS'
@@ -108,7 +114,9 @@ jobs:
       - name: Install build dependencies (macOS)
         if: runner.os == 'macOS'
         run: |
-          brew install cmake gettext gtk+3 pkg-config qt@5 libevent openssl
+          brew update
+          brew install cmake gettext gtk+3 pkg-config qt@5 libevent openssl@1.1 \
+            miniupnpc libnatpmp intltool automake autoconf
 
       - name: MSYS2 (Windows amd64)
         if: runner.os == 'Windows' && matrix.target.cpu == 'amd64'
@@ -118,11 +126,10 @@ jobs:
           install: >-
             base-devel
             intltool
-            mingw-w64-x86_64-toolchain
+            mingw-w64-x86_64-autotools
             mingw-w64-x86_64-cmake
             mingw-w64-x86_64-curl
             mingw-w64-x86_64-dht
-            mingw-w64-x86_64-gettext
             mingw-w64-x86_64-gtk3
             mingw-w64-x86_64-libb64
             mingw-w64-x86_64-libevent
@@ -134,44 +141,151 @@ jobs:
             mingw-w64-x86_64-qt5-base
             mingw-w64-x86_64-qt5-tools
             mingw-w64-x86_64-qt5-winextras
+            mingw-w64-x86_64-toolchain
             mingw-w64-x86_64-zlib
 
       - name: Build binaries and run tests
         run: |
-          mkdir build
-          cd build
+          if [[ "${{ matrix.build-system }}" == "cmake" ]]; then
+            mkdir build
+            cd build
 
-          CMAKE_COMMON_ARGS=(
-            -DENABLE_DAEMON=ON
-            -DENABLE_UTILS=ON
-            -DENABLE_CLI=ON
-            -DENABLE_GTK=ON
-            -DENABLE_QT=ON
-            -DUSE_SYSTEM_UTP=OFF # latest version redefines "bool" for C compilers
-          )
+            CMAKE_ARGS=(
+              -DENABLE_DAEMON=ON
+              -DENABLE_UTILS=ON
+              -DENABLE_CLI=ON
+              -DENABLE_GTK=ON
+              -DENABLE_QT=ON
+              -DWITH_CRYPTO=openssl
+              -DUSE_SYSTEM_UTP=OFF # latest version redefines "bool" for C compilers
+            )
 
-          if [[ '${{ runner.os }}' == 'Windows' ]]; then
-            # https://github.com/msys2/MINGW-packages/issues/16129
-            export OPENSSL_MODULES='C:\msys64\mingw64\lib\ossl-modules'
-            cmake "${CMAKE_COMMON_ARGS[@]}" \
-              -G "MinGW Makefiles" \
-              ..
-          elif [[ '${{ runner.os }}' == 'macOS' ]]; then
-            export PATH="/usr/local/opt/qt@5/bin:${PATH}"
-            export PKG_CONFIG_PATH="/usr/local/opt/qt@5/lib/pkgconfig"
-            cmake "${CMAKE_COMMON_ARGS[@]}" \
-              -DENABLE_MAC=ON \
-              -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl \
-              ..
-          elif [[ '${{ runner.os }}' == 'Linux' && '${{ matrix.target.cpu }}' == 'i386' ]]; then
-            export PKG_CONFIG_PATH="/usr/lib/i386-linux-gnu/pkgconfig"
-            cmake "${CMAKE_COMMON_ARGS[@]}" \
-              -DCMAKE_LIBRARY_PATH=/usr/lib/i386-linux-gnu/ \
-              -DCMAKE_INCLUDE_PATH=/usr/include/i386-linux-gnu/ \
-              ..
-          else
-            cmake "${CMAKE_COMMON_ARGS[@]}" ..
-          fi
+            if [[ "${{ matrix.libs }}" == "system" ]]; then
+              CMAKE_ARGS+=(
+                -DUSE_SYSTEM_EVENT2=ON
+                -DUSE_SYSTEM_MINIUPNPC=ON
+              )
+            else # force vendored libs
+              CMAKE_ARGS+=(
+                -DUSE_SYSTEM_B64=OFF
+                -DUSE_SYSTEM_DHT=OFF
+                -DUSE_SYSTEM_EVENT2=OFF
+                -DUSE_SYSTEM_MINIUPNPC=OFF
+                -DUSE_SYSTEM_NATPMP=OFF
+              )
+            fi
 
-          ${MAKE_CMD} -j${NCPU} VERBOSE=1
-          ${MAKE_CMD} test || ${MAKE_CMD} VERBOSE=1 ARGS="--rerun-failed --output-on-failure" test
+            if [[ "${{ runner.os }}" == "Windows" ]]; then
+              CMAKE_ARGS+=(
+                -G "MinGW Makefiles"
+              )
+              if [[ "${{ matrix.libs }}" == "system" ]]; then
+                CMAKE_ARGS+=(
+                  -DUSE_SYSTEM_B64=ON
+                  -DUSE_SYSTEM_DHT=ON
+                  -DUSE_SYSTEM_NATPMP=ON
+                )
+              fi
+            elif [[ "${{ runner.os }}" == "macOS" ]]; then
+              CMAKE_ARGS+=(
+                -DENABLE_MAC=ON
+                -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl
+              )
+            elif [[ "${{ runner.os }}" == "Linux" ]]; then
+              if [[ "${{ matrix.libs }}" == "system" ]]; then
+                CMAKE_ARGS+=(
+                  -DUSE_SYSTEM_NATPMP=ON
+                )
+              fi
+
+              if [[ "${{ matrix.target.cpu }}" == "i386" ]]; then
+                CMAKE_ARGS+=(
+                  -DCMAKE_LIBRARY_PATH=/usr/lib/i386-linux-gnu/
+                  -DCMAKE_INCLUDE_PATH=/usr/include/i386-linux-gnu/
+                  # packages not available for i386:
+                  -DUSE_SYSTEM_MINIUPNPC=OFF
+                  -DUSE_SYSTEM_NATPMP=OFF
+                )
+              fi
+            fi
+
+            cmake "${CMAKE_ARGS[@]}" ..
+
+            ${MAKE_CMD} -j${NCPU} VERBOSE=1
+            ${MAKE_CMD} test || ${MAKE_CMD} VERBOSE=1 ARGS="--rerun-failed --output-on-failure" test
+          fi # CMake
+
+          if [[ "${{ matrix.build-system }}" == "autotools" ]]; then
+            CONFIGURE_ARGS=(
+              --enable-utp
+              --enable-cli
+              --enable-daemon
+              --with-crypto=openssl
+              --with-gtk
+              --disable-external-utp # latest version redefines "bool" for C compilers
+            )
+            QMAKE_ARGS=(
+              -early
+            )
+
+            if [[ "${{ matrix.libs }}" == "system" ]]; then
+              CONFIGURE_ARGS+=(
+                --enable-external-libevent
+                --enable-external-miniupnpc
+              )
+            fi
+
+            if [[ "${{ runner.os }}" == "Windows" ]]; then
+              if [[ "${{ matrix.libs }}" == "system" ]]; then
+                CONFIGURE_ARGS+=(
+                  --enable-external-b64
+                  --enable-external-dht
+                  --enable-external-natpmp
+                )
+              fi
+            elif [[ "${{ runner.os }}" == "macOS" ]]; then
+              CONFIGURE_ARGS+=(
+                # broken
+                --disable-mac
+              )
+              QMAKE_ARGS+=(
+                QMAKE_LIBDIR+="/usr/local/opt/miniupnpc/lib"
+              )
+            elif [[ "${{ runner.os }}" == "Linux" ]]; then
+              if [[ "${{ matrix.libs }}" == "system" ]]; then
+                CONFIGURE_ARGS+=(
+                  --enable-external-natpmp
+                )
+              fi
+
+              if [[ "${{ matrix.target.cpu }}" == "i386" ]]; then
+                export LDFLAGS="${LDFLAGS} -L/usr/lib/i386-linux-gnu/"
+                export CPPFLAGS="${CPPFLAGS} -I/usr/include/i386-linux-gnu/"
+                QMAKE_ARGS+=(
+                  QMAKE_CC=gcc
+                  QMAKE_CXX=g++
+                  QMAKE_LINK=g++
+                  PKG_CONFIG=pkg-config
+                  QMAKE_LFLAGS="-m32 -L/usr/lib/i386-linux-gnu"
+                  QMAKE_CXXFLAGS="${CXXFLAGS}"
+                )
+
+                # packages not available for i386:
+                CONFIGURE_ARGS+=(
+                  --disable-external-miniupnpc
+                  --disable-external-natpmp
+                )
+              fi
+            fi
+
+            ./configure "${CONFIGURE_ARGS[@]}"
+            ${MAKE_CMD} -j${NCPU} V=1
+            # Qt client
+            cd qt
+            qmake "${QMAKE_ARGS[@]}" qtr.pro
+            ${MAKE_CMD} -j${NCPU}
+            cd - &>/dev/null
+            # tests
+            # (random failure on Windows if we enable Make's parallelism here)
+            ${MAKE_CMD} -C libtransmission check
+          fi # Autotools

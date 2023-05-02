@@ -22,11 +22,11 @@ export LIBTOOLIZE
 
 ./update-version-h.sh
 
-autoreconf -fi || exit 1
-
 if test "$GETTEXTIZE"; then
-  echo "Creating aclocal.m4 ..."
-  test -r aclocal.m4 || touch aclocal.m4
+  if [[ ! -r aclocal.m4 ]]; then
+    echo "Creating aclocal.m4 ..."
+    touch aclocal.m4
+  fi
   echo "Running $GETTEXTIZE...  Ignore non-fatal messages."
   echo "no" | $GETTEXTIZE --force --copy
   echo "Making aclocal.m4 writable ..."
@@ -35,12 +35,4 @@ if test "$GETTEXTIZE"; then
   intltoolize --copy --force --automake
 fi
 
-cd "$ORIGDIR" || exit $?
-
-if test -z "$AUTOGEN_SUBDIR_MODE"; then
-  echo Running $srcdir/configure "$@"
-  $srcdir/configure "$@"
-
-  echo
-  echo "Now type 'make' to compile $PROJECT."
-fi
+autoreconf -fi || exit 1

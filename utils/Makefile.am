@@ -13,9 +13,13 @@ bin_PROGRAMS = \
     transmission-show
 
 transmission_create_SOURCES = create.c
+nodist_EXTRA_transmission_create_SOURCES = dummy.cxx # force C++ linking
 transmission_edit_SOURCES = edit.c
+nodist_EXTRA_transmission_edit_SOURCES = dummy.cxx # force C++ linking
 transmission_remote_SOURCES = remote.c
+nodist_EXTRA_transmission_remote_SOURCES = dummy.cxx # force C++ linking
 transmission_show_SOURCES = show.c
+nodist_EXTRA_transmission_show_SOURCES = dummy.cxx # force C++ linking
 
 noinst_HEADERS = \
     units.h

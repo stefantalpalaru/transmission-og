@@ -386,6 +386,12 @@ int main(int argc, char** argv)
 #ifdef _WIN32
 
     strcpy(self_path + strlen(self_path) - 4, ".cmd");
+    if (!tr_sys_path_exists(self_path, NULL))
+    {
+        // our test binary ended up in a ".libs" subdir
+        strcpy(self_path + strlen(self_path) - 25, "subprocess-test.cmd\0");
+    }
+    check(tr_sys_path_exists(self_path, NULL));
 
     int ret2 = runTests(tests, NUM_TESTS(tests));
 

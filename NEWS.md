@@ -3,6 +3,7 @@
 ### All Platforms
 - Default trackers for public torrents (not on the Mac client) ([#229](https://github.com/transmission/transmission/pull/229))
 - OpenSSL-3: load "legacy" provider for RC4 ([#4716](https://github.com/transmission/transmission/issues/4716))
+- Autotools improvements
 
 ### Qt Client
 - fix download percentage bar glitch ([#3150](https://github.com/transmission/transmission/issues/3150))

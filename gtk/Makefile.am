@@ -75,6 +75,8 @@ transmission_gtk_SOURCES = \
     tr-window.c \
     util.c
 
+nodist_EXTRA_transmission_gtk_SOURCES = dummy.cxx # force C++ linking
+
 dist_man_MANS = transmission-gtk.1
 
 transmission_gtk_LDADD = \
@@ -95,14 +97,20 @@ transmission_gtk_LDADD = \
 
 DESKTOP_IN_FILES=transmission-gtk.desktop.in
 DESKTOP_FILES=$(DESKTOP_IN_FILES:.desktop.in=.desktop)
-@INTLTOOL_DESKTOP_RULE@
+MAINTAINERCLEANFILES = $(DESKTOP_FILES)
+# "mingw32-make" cannot deal with an absolute UNIX path in a rule dependency
+# (INTLTOOL_MERGE is "/usr/bin/intltool-merge"), so we copy the relevant
+# rules from intltool.m4 and remove that useless dep.
+#INTLTOOL_DESKTOP_RULE
+%.desktop:   %.desktop.in   $(wildcard $(top_srcdir)/po/*.po) ; $(INTLTOOL_V_MERGE)LC_ALL=C $(INTLTOOL_MERGE) $(INTLTOOL_V_MERGE_OPTIONS) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
 
 Productivitydir = $(datadir)/applications
 Productivity_DATA = $(DESKTOP_FILES)
 
 APPDATA_IN_FILES=transmission-gtk.appdata.xml.in
 APPDATA_FILES=$(APPDATA_IN_FILES:.xml.in=.xml)
-@INTLTOOL_XML_RULE@
+#INTLTOOL_XML_RULE
+%.xml:       %.xml.in       $(wildcard $(top_srcdir)/po/*.po) ; $(INTLTOOL_V_MERGE)LC_ALL=C $(INTLTOOL_MERGE) $(INTLTOOL_V_MERGE_OPTIONS) -x -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
 
 appdatadir = $(datadir)/appdata
 appdata_DATA = $(APPDATA_FILES)
