@@ -5,12 +5,12 @@
     <name>AboutDialog</name>
     <message>
         <location filename="../AboutDialog.ui" line="+14"/>
-        <source>About Transmission</source>
+        <source>About Transmission OG</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../AboutDialog.cc" line="+28"/>
-        <source>&lt;b style=&apos;font-size:x-large&apos;&gt;Transmission %1&lt;/b&gt;</source>
+        <source>&lt;b style=&apos;font-size:x-large&apos;&gt;Transmission OG %1&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -20,7 +20,7 @@
     </message>
     <message>
         <location line="+10"/>
-        <source>Copyright (c) The Transmission Project</source>
+        <source>Copyright (c) The Transmission OG Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -43,7 +43,7 @@
     <name>Application</name>
     <message>
         <location filename="../Application.cc" line="+343"/>
-        <source>&lt;b&gt;Transmission is a file sharing program.&lt;/b&gt;</source>
+        <source>&lt;b&gt;Transmission OG is a file sharing program.&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -856,7 +856,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../MainWindow.ui" line="+14"/>
-        <source>Transmission</source>
+        <source>Transmission OG</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1272,7 +1272,7 @@
     <message>
         <location line="-406"/>
         <source> - %1:%2</source>
-        <extracomment>Second (optional) part of main window title &quot;Transmission - host:port&quot; (added when connected to remote session); notice that leading space (before the dash) is included here</extracomment>
+        <extracomment>Second (optional) part of main window title &quot;Transmission OG - host:port&quot; (added when connected to remote session); notice that leading space (before the dash) is included here</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1860,7 +1860,7 @@ To add another primary URL, add it after a blank line.</source>
     </message>
     <message>
         <location filename="../PrefsDialog.ui" line="-287"/>
-        <source>Pick a &amp;random port every time Transmission is started</source>
+        <source>Pick a &amp;random port every time Transmission OG is started</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1934,7 +1934,7 @@ To add another primary URL, add it after a blank line.</source>
     </message>
     <message>
         <location line="+12"/>
-        <source>Show Transmission icon in the &amp;notification area</source>
+        <source>Show Transmission OG icon in the &amp;notification area</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2140,7 +2140,7 @@ To add another primary URL, add it after a blank line.</source>
     </message>
     <message>
         <location line="-557"/>
-        <source>Transmission Preferences</source>
+        <source>Transmission OG Preferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

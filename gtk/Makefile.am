@@ -48,9 +48,9 @@ noinst_HEADERS = \
     tr-window.h \
     util.h
 
-bin_PROGRAMS = transmission-gtk
+bin_PROGRAMS = transmission-og-gtk
 
-transmission_gtk_SOURCES = \
+transmission_og_gtk_SOURCES = \
     actions.c \
     conf.c \
     details.c \
@@ -75,11 +75,11 @@ transmission_gtk_SOURCES = \
     tr-window.c \
     util.c
 
-nodist_EXTRA_transmission_gtk_SOURCES = dummy.cxx # force C++ linking
+nodist_EXTRA_transmission_og_gtk_SOURCES = dummy.cxx # force C++ linking
 
-dist_man_MANS = transmission-gtk.1
+dist_man_MANS = transmission-og-gtk.1
 
-transmission_gtk_LDADD = \
+transmission_og_gtk_LDADD = \
     $(top_builddir)/libtransmission/libtransmission.a \
     @LIBUPNP_LIBS@ \
     @LIBNATPMP_LIBS@ \
@@ -95,7 +95,7 @@ transmission_gtk_LDADD = \
     @PTHREAD_LIBS@ \
     ${LIBM}
 
-DESKTOP_IN_FILES=transmission-gtk.desktop.in
+DESKTOP_IN_FILES=transmission-og-gtk.desktop.in
 DESKTOP_FILES=$(DESKTOP_IN_FILES:.desktop.in=.desktop)
 MAINTAINERCLEANFILES = $(DESKTOP_FILES)
 # "mingw32-make" cannot deal with an absolute UNIX path in a rule dependency
@@ -107,15 +107,15 @@ MAINTAINERCLEANFILES = $(DESKTOP_FILES)
 Productivitydir = $(datadir)/applications
 Productivity_DATA = $(DESKTOP_FILES)
 
-APPDATA_IN_FILES=transmission-gtk.appdata.xml.in
+APPDATA_IN_FILES=transmission-og-gtk.appdata.xml.in
 APPDATA_FILES=$(APPDATA_IN_FILES:.xml.in=.xml)
 #INTLTOOL_XML_RULE
 %.xml:       %.xml.in       $(wildcard $(top_srcdir)/po/*.po) ; $(INTLTOOL_V_MERGE)LC_ALL=C $(INTLTOOL_MERGE) $(INTLTOOL_V_MERGE_OPTIONS) -x -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
 
-appdatadir = $(datadir)/appdata
+appdatadir = $(datadir)/metainfo
 appdata_DATA = $(APPDATA_FILES)
 
-icon_DATA = transmission.png
+icon_DATA = transmission-og.png
 icondir = $(datadir)/pixmaps
 
 UI_FILES = transmission-ui.xml
@@ -153,7 +153,7 @@ transmission.res: transmission.rc
 
 BUILT_SOURCES += transmission.res
 CLEANFILES += transmission.res
-transmission_gtk_LDADD += transmission.res
-transmission_gtk_LDFLAGS = -mwindows
+transmission_og_gtk_LDADD += transmission.res
+transmission_og_gtk_LDFLAGS = -mwindows
 
 endif

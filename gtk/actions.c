@@ -50,7 +50,7 @@ static void sort_changed_cb(GtkAction* action UNUSED, GtkRadioAction* current, g
 
 static GtkToggleActionEntry show_toggle_entries[] =
 {
-    { "toggle-main-window", NULL, N_("_Show Transmission"), NULL, NULL, G_CALLBACK(action_cb), TRUE },
+    { "toggle-main-window", NULL, N_("_Show Transmission OG"), NULL, NULL, G_CALLBACK(action_cb), TRUE },
     { "toggle-message-log", NULL, N_("Message _Log"), NULL, NULL, G_CALLBACK(action_cb), FALSE }
 };
 
@@ -89,7 +89,6 @@ static GtkActionEntry entries[] =
     { "torrent-start-now", GTK_STOCK_MEDIA_PLAY, N_("Start _Now"), "<shift><control>S", N_("Start torrent now"),
         G_CALLBACK(action_cb) },
     { "show-stats", NULL, N_("_Statistics"), NULL, NULL, G_CALLBACK(action_cb) },
-    { "donate", NULL, N_("_Donate"), NULL, NULL, G_CALLBACK(action_cb) },
     { "torrent-verify", NULL, N_("_Verify Local Data"), "<control>V", NULL, G_CALLBACK(action_cb) },
     { "torrent-stop", GTK_STOCK_MEDIA_PAUSE, N_("_Pause"), "<control>P", N_("Pause torrent"), G_CALLBACK(action_cb) },
     { "pause-all-torrents", GTK_STOCK_MEDIA_PAUSE, N_("_Pause All"), NULL, N_("Pause all torrents"), G_CALLBACK(action_cb) },

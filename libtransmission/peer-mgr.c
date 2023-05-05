@@ -2992,7 +2992,7 @@ static void rechokeDownloads(tr_swarm* s)
          *    -how many- peers to be interested in.
          *
          * We're working on 2. here, so we need to ignore unresponsive
-         * peers in our calculations lest they confuse Transmission into
+         * peers in our calculations lest they confuse Transmission OG into
          * thinking it's hit its bandwidth cap.
          */
         for (int i = 0; i < peerCount; ++i)

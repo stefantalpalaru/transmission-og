@@ -1,11 +1,11 @@
 .Dd July 21, 2008
-.Dt TRANSMISSION-DAEMON 1
+.Dt TRANSMISSION-OG-DAEMON 1
 .Sh NAME
-.Nm transmission-daemon
+.Nm transmission-og-daemon
 .Nd a bittorrent client
 .Sh SYNOPSIS
 .Bk -words
-.Nm transmission-daemon
+.Nm transmission-og-daemon
 .Fl h
 .Nm
 .Op Fl a Ar x.x.x.x,...
@@ -33,9 +33,9 @@
 .Ek
 .Sh DESCRIPTION
 .Nm
-is a daemon-based Transmission session that can be controlled
+is a daemon-based Transmission OG session that can be controlled
 via RPC commands from transmission's web interface or
-.Xr transmission-remote 1 .
+.Xr transmission-og-remote 1 .
 .Sh OPTIONS
 .Bl -tag -width Ds
 .It Fl a Fl -allowed Ar x.x.x.x,...
@@ -44,17 +44,17 @@ Wildcards can be specified in an address by using '*'.
 Default: "127.0.0.1,::1"
 Example: "127.0.0.*,192.168.1.*"
 .It Fl b Fl -blocklist
-Enable peer blocklists. Transmission understands the bluetack blocklist file format.
+Enable peer blocklists. Transmission OG understands the bluetack blocklist file format.
 New blocklists can be added by copying them into the config-dir's "blocklists" subdirectory.
 .It Fl c Ar directory
 Directory to watch for new .torrent files to be added. As they are added to this directory,
-the daemon will load them into Transmission.
+the daemon will load them into Transmission OG.
 .It Fl C
 Do not watch for new .torrent files.
 .It Fl B Fl -no-blocklist
 Disble blocklists.
 .It Fl d
-Dump transmission-daemon's settings to stderr.
+Dump transmission-og-daemon's settings to stderr.
 .It Fl f Fl -foreground
 Run in the foreground and print errors to stderr.
 .It Fl g Fl -config-dir Ar directory
@@ -142,7 +142,7 @@ Sets the default config-dir.
 .El
 .Sh FILES
 .Bl -tag -width Ds -compact
-.It ~/.config/transmission-daemon
+.It ~/.config/transmission-og-daemon
 The config-dir used when neither
 .Op Ev TRANSMISSION_HOME
 nor
@@ -159,12 +159,12 @@ See https://github.com/transmission/transmission/wiki/Configuration-Files for mo
 and
 .An Mike Gelfand .
 .Sh SEE ALSO
-.Xr transmission-create 1 ,
-.Xr transmission-daemon 1 ,
-.Xr transmission-edit 1 ,
-.Xr transmission-gtk 1 ,
-.Xr transmission-qt 1 ,
-.Xr transmission-remote 1 ,
-.Xr transmission-show 1
+.Xr transmission-og-create 1 ,
+.Xr transmission-og-daemon 1 ,
+.Xr transmission-og-edit 1 ,
+.Xr transmission-og-gtk 1 ,
+.Xr transmission-og-qt 1 ,
+.Xr transmission-og-remote 1 ,
+.Xr transmission-og-show 1
 .Pp
-https://transmissionbt.com/
+https://github.com/stefantalpalaru/transmission-og

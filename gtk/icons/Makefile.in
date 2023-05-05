@@ -350,9 +350,9 @@ public_icons_themes = \
 	$(NULL)
 
 public_icons = \
-	hicolor_apps_scalable_transmission.svg \
-	hicolor_apps_scalable_transmission-devel.svg \
-	hicolor_apps_symbolic_transmission-symbolic.svg \
+	hicolor_apps_scalable_transmission-og.svg \
+	hicolor_apps_scalable_transmission-og-devel.svg \
+	hicolor_apps_symbolic_transmission-og-symbolic.svg \
 	$(NULL)
 
 private_icons = \

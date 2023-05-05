@@ -1,11 +1,11 @@
 [Unit]
-Description=Transmission BitTorrent Daemon
+Description=Transmission OG BitTorrent Daemon
 After=network.target
 
 [Service]
 User=transmission
 Type=notify
-ExecStart=/usr/bin/transmission-daemon -f --log-error
+ExecStart=/usr/bin/transmission-og-daemon -f --log-error
 ExecReload=/bin/kill -s HUP $MAINPID
 NoNewPrivileges=true
 

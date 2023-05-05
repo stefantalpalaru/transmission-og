@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Transmission Preferences</string>
+   <string>Transmission OG Preferences</string>
   </property>
   <layout class="QVBoxLayout" name="dialogLayout">
    <item>
@@ -788,7 +788,7 @@
          <item row="2" column="0" colspan="3">
           <widget class="QCheckBox" name="randomPeerPortCheck">
            <property name="text">
-            <string>Pick a &amp;random port every time Transmission is started</string>
+            <string>Pick a &amp;random port every time Transmission OG is started</string>
            </property>
           </widget>
          </item>
@@ -1011,7 +1011,7 @@
          <item>
           <widget class="QCheckBox" name="showTrayIconCheck">
            <property name="text">
-            <string>Show Transmission icon in the &amp;notification area</string>
+            <string>Show Transmission OG icon in the &amp;notification area</string>
            </property>
           </widget>
          </item>

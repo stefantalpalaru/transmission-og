@@ -7,30 +7,30 @@ AM_CFLAGS = \
     @PTHREAD_CFLAGS@
 
 bin_PROGRAMS = \
-    transmission-create \
-    transmission-edit \
-    transmission-remote \
-    transmission-show
+    transmission-og-create \
+    transmission-og-edit \
+    transmission-og-remote \
+    transmission-og-show
 
-transmission_create_SOURCES = create.c
-nodist_EXTRA_transmission_create_SOURCES = dummy.cxx # force C++ linking
-transmission_edit_SOURCES = edit.c
-nodist_EXTRA_transmission_edit_SOURCES = dummy.cxx # force C++ linking
-transmission_remote_SOURCES = remote.c
-nodist_EXTRA_transmission_remote_SOURCES = dummy.cxx # force C++ linking
-transmission_show_SOURCES = show.c
-nodist_EXTRA_transmission_show_SOURCES = dummy.cxx # force C++ linking
+transmission_og_create_SOURCES = create.c
+nodist_EXTRA_transmission_og_create_SOURCES = dummy.cxx # force C++ linking
+transmission_og_edit_SOURCES = edit.c
+nodist_EXTRA_transmission_og_edit_SOURCES = dummy.cxx # force C++ linking
+transmission_og_remote_SOURCES = remote.c
+nodist_EXTRA_transmission_og_remote_SOURCES = dummy.cxx # force C++ linking
+transmission_og_show_SOURCES = show.c
+nodist_EXTRA_transmission_og_show_SOURCES = dummy.cxx # force C++ linking
 
 noinst_HEADERS = \
     units.h
 
 dist_man_MANS = \
-    transmission-create.1 \
-    transmission-edit.1 \
-    transmission-remote.1 \
-    transmission-show.1
+    transmission-og-create.1 \
+    transmission-og-edit.1 \
+    transmission-og-remote.1 \
+    transmission-og-show.1
 
-transmission_create_LDADD = \
+transmission_og_create_LDADD = \
     $(top_builddir)/libtransmission/libtransmission.a \
     @LIBUPNP_LIBS@ \
     @LIBNATPMP_LIBS@ \
@@ -44,6 +44,6 @@ transmission_create_LDADD = \
     @ZLIB_LIBS@ \
     @PTHREAD_LIBS@ \
     ${LIBM}
-transmission_edit_LDADD = $(transmission_create_LDADD)
-transmission_remote_LDADD = $(transmission_create_LDADD)
-transmission_show_LDADD = $(transmission_create_LDADD)
+transmission_og_edit_LDADD = $(transmission_og_create_LDADD)
+transmission_og_remote_LDADD = $(transmission_og_create_LDADD)
+transmission_og_show_LDADD = $(transmission_og_create_LDADD)

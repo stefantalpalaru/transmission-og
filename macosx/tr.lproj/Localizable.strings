@@ -625,7 +625,7 @@
    Torrent disk space alert -> button
    Torrent download failed -> button
    Torrent file copy alert -> button
-   Transmission already running alert -> button */
+   Transmission OG already running alert -> button */
 "OK" = "Tamam";
 
 /* Remove completed confirm panel -> message */
@@ -636,10 +636,10 @@
 "Once removed, continuing the transfers will require the torrent files or magnet links." = "Kaldırıldıktan sonra aktarımları sürdürmek torrent dosyası veya mıknatıs bağı gerektirir.";
 
 /* Remove trackers alert -> message */
-"Once removed, Transmission will no longer attempt to contact it. This cannot be undone." = "Kaldırıldıktan sonra Transmission izleyiciye bağlanmayacak. Bu geri alınamaz.";
+"Once removed, Transmission OG will no longer attempt to contact it. This cannot be undone." = "Kaldırıldıktan sonra Transmission OG izleyiciye bağlanmayacak. Bu geri alınamaz.";
 
 /* Remove trackers alert -> message */
-"Once removed, Transmission will no longer attempt to contact them. This cannot be undone." = "Kaldırıldıktan sonra Transmission izleyicilere bağlanmayacak. Bu geri alınamaz.";
+"Once removed, Transmission OG will no longer attempt to contact them. This cannot be undone." = "Kaldırıldıktan sonra Transmission OG izleyicilere bağlanmayacak. Bu geri alınamaz.";
 
 /* File Outline -> Menu */
 "Only Check Selected" = "Yalnızca Seçiliyi Denetle";
@@ -1004,8 +1004,8 @@
 /* Create torrent -> blank address -> title */
 "There are no tracker addresses." = "İzleyici adresi yok.";
 
-/* Transmission already running alert -> message */
-"There is already a copy of Transmission running. This copy cannot be opened until that instance is quit." = "Bir Transmission kopyası zaten açık. Var olan oturum kapatılmadan bu kopyayı açamazsınız.";
+/* Transmission OG already running alert -> message */
+"There is already a copy of Transmission OG running. This copy cannot be opened until that instance is quit." = "Bir Transmission OG kopyası zaten açık. Var olan oturum kapatılmadan bu kopyayı açamazsınız.";
 
 /* Confirm Quit panel -> message */
 "There is an active transfer that will be paused on quit. The transfer will automatically resume on the next launch." = "Devam eden aktarımlar uygulamadan çıkarken duraklatılacaktır. Uygulamayı yeniden açtığınızda aktarım sürecektir.";
@@ -1029,7 +1029,7 @@
 "This transfer is active. Once removed, continuing the transfer will require the torrent file or magnet link." = "Bu aktarım şu anda etkin. Kaldırıldıktan sonra yeniden başlatmak için torrent dosyası veya mıknatıs bağı gerekecek.";
 
 /* Stats reset -> message */
-"This will clear the global statistics displayed by Transmission. Individual transfer statistics will not be affected." = "Genel Transmission istatistikleri silinecektir. Bireysel istatistikler bundan etkilenmeyecek.";
+"This will clear the global statistics displayed by Transmission OG. Individual transfer statistics will not be affected." = "Genel Transmission OG istatistikleri silinecektir. Bireysel istatistikler bundan etkilenmeyecek.";
 
 /* Inspector -> tracker table */
 "Tier %d" = "%d. sıra";
@@ -1094,13 +1094,13 @@
 "Transfers Not Active" = "Aktarımlar Etkin Değil";
 
 /* Legal alert -> message */
-"Transmission is a file-sharing program. When you run a torrent, its data will be made available to others by means of upload. You and you alone are fully responsible for exercising proper judgement and abiding by your local laws." = "Transmission bir dosya paylaşım uygulamasıdır. Bir torrenti çalıştırdığınizda torrent verisi diğer herkese açık olacaktır. Bunun yerel kanunlarla olan uyumundan yalnız ve yalnız siz sorumlusunuz.";
+"Transmission OG is a file-sharing program. When you run a torrent, its data will be made available to others by means of upload. You and you alone are fully responsible for exercising proper judgement and abiding by your local laws." = "Transmission OG bir dosya paylaşım uygulamasıdır. Bir torrenti çalıştırdığınizda torrent verisi diğer herkese açık olacaktır. Bunun yerel kanunlarla olan uyumundan yalnız ve yalnız siz sorumlusunuz.";
 
 /* Donation beg -> message */
-"Transmission is a full-featured torrent application. A lot of time and effort have gone into development, coding, and refinement. If you enjoy using it, please consider showing your love with a donation." = "Transmission tam donanımlı bir torrent uygulamasıdır. Geliştirme, kodlama ve ince ayarlarına çok fazla emek ve zaman harcadık. Eğer kullanmaktan memnunsanız, memnuniyetinizi ufak bir bağış ile gösterebilirsiniz.";
+"Transmission OG is a full-featured torrent application. A lot of time and effort have gone into development, coding, and refinement. If you enjoy using it, please consider showing your love with a donation." = "Transmission OG tam donanımlı bir torrent uygulamasıdır. Geliştirme, kodlama ve ince ayarlarına çok fazla emek ve zaman harcadık. Eğer kullanmaktan memnunsanız, memnuniyetinizi ufak bir bağış ile gösterebilirsiniz.";
 
-/* Transmission already running alert -> title */
-"Transmission is already running." = "Transmission zaten çalışıyor.";
+/* Transmission OG already running alert -> title */
+"Transmission OG is already running." = "Transmission OG zaten çalışıyor.";
 
 /* inspector -> peer table -> header
    status bar -> status label
@@ -1153,7 +1153,7 @@
 "Web Seeds" = "Web Beslemeleri";
 
 /* Legal alert -> title */
-"Welcome to Transmission" = "Transmission'a hoş geldiniz";
+"Welcome to Transmission OG" = "Transmission OG'a hoş geldiniz";
 
 /* Groups -> Name */
 "Yellow" = "Sarı";

@@ -71,7 +71,7 @@ struct tr_band
  *
  * HIERARCHY
  *
- *   Transmission's bandwidth hierarchy is a tree.
+ *   Transmission OG's bandwidth hierarchy is a tree.
  *   At the top is the global bandwidth object owned by tr_session.
  *   Its children are per-torrent bandwidth objects owned by tr_torrent.
  *   Underneath those are per-peer bandwidth objects owned by tr_peer.
@@ -83,7 +83,7 @@ struct tr_band
  * MEASURING
  *
  *   When you ask a bandwidth object for its speed, it gives the speed of the
- *   subtree underneath it as well. So you can get Transmission's overall
+ *   subtree underneath it as well. So you can get Transmission OG's overall
  *   speed by quering tr_session's bandwidth, per-torrent speeds by asking
  *   tr_torrent's bandwidth, and per-peer speeds by asking tr_peer's bandwidth.
  *

@@ -89,8 +89,9 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-bin_PROGRAMS = transmission-create$(EXEEXT) transmission-edit$(EXEEXT) \
-	transmission-remote$(EXEEXT) transmission-show$(EXEEXT)
+bin_PROGRAMS = transmission-og-create$(EXEEXT) \
+	transmission-og-edit$(EXEEXT) transmission-og-remote$(EXEEXT) \
+	transmission-og-show$(EXEEXT)
 subdir = utils
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/acx-pthread.m4 \
@@ -108,28 +109,28 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(man1dir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_transmission_create_OBJECTS = create.$(OBJEXT)
-transmission_create_OBJECTS = $(am_transmission_create_OBJECTS)
+am_transmission_og_create_OBJECTS = create.$(OBJEXT)
+transmission_og_create_OBJECTS = $(am_transmission_og_create_OBJECTS)
 am__DEPENDENCIES_1 =
-transmission_create_DEPENDENCIES =  \
+transmission_og_create_DEPENDENCIES =  \
 	$(top_builddir)/libtransmission/libtransmission.a \
 	$(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
-am_transmission_edit_OBJECTS = edit.$(OBJEXT)
-transmission_edit_OBJECTS = $(am_transmission_edit_OBJECTS)
+am_transmission_og_edit_OBJECTS = edit.$(OBJEXT)
+transmission_og_edit_OBJECTS = $(am_transmission_og_edit_OBJECTS)
 am__DEPENDENCIES_2 =  \
 	$(top_builddir)/libtransmission/libtransmission.a \
 	$(am__DEPENDENCIES_1)
-transmission_edit_DEPENDENCIES = $(am__DEPENDENCIES_2)
-am_transmission_remote_OBJECTS = remote.$(OBJEXT)
-transmission_remote_OBJECTS = $(am_transmission_remote_OBJECTS)
-transmission_remote_DEPENDENCIES = $(am__DEPENDENCIES_2)
-am_transmission_show_OBJECTS = show.$(OBJEXT)
-transmission_show_OBJECTS = $(am_transmission_show_OBJECTS)
-transmission_show_DEPENDENCIES = $(am__DEPENDENCIES_2)
+transmission_og_edit_DEPENDENCIES = $(am__DEPENDENCIES_2)
+am_transmission_og_remote_OBJECTS = remote.$(OBJEXT)
+transmission_og_remote_OBJECTS = $(am_transmission_og_remote_OBJECTS)
+transmission_og_remote_DEPENDENCIES = $(am__DEPENDENCIES_2)
+am_transmission_og_show_OBJECTS = show.$(OBJEXT)
+transmission_og_show_OBJECTS = $(am_transmission_og_show_OBJECTS)
+transmission_og_show_DEPENDENCIES = $(am__DEPENDENCIES_2)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -184,17 +185,18 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(transmission_create_SOURCES) \
-	$(nodist_EXTRA_transmission_create_SOURCES) \
-	$(transmission_edit_SOURCES) \
-	$(nodist_EXTRA_transmission_edit_SOURCES) \
-	$(transmission_remote_SOURCES) \
-	$(nodist_EXTRA_transmission_remote_SOURCES) \
-	$(transmission_show_SOURCES) \
-	$(nodist_EXTRA_transmission_show_SOURCES)
-DIST_SOURCES = $(transmission_create_SOURCES) \
-	$(transmission_edit_SOURCES) $(transmission_remote_SOURCES) \
-	$(transmission_show_SOURCES)
+SOURCES = $(transmission_og_create_SOURCES) \
+	$(nodist_EXTRA_transmission_og_create_SOURCES) \
+	$(transmission_og_edit_SOURCES) \
+	$(nodist_EXTRA_transmission_og_edit_SOURCES) \
+	$(transmission_og_remote_SOURCES) \
+	$(nodist_EXTRA_transmission_og_remote_SOURCES) \
+	$(transmission_og_show_SOURCES) \
+	$(nodist_EXTRA_transmission_og_show_SOURCES)
+DIST_SOURCES = $(transmission_og_create_SOURCES) \
+	$(transmission_og_edit_SOURCES) \
+	$(transmission_og_remote_SOURCES) \
+	$(transmission_og_show_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -477,24 +479,24 @@ AM_CFLAGS = \
     @ZLIB_CFLAGS@ \
     @PTHREAD_CFLAGS@
 
-transmission_create_SOURCES = create.c
-nodist_EXTRA_transmission_create_SOURCES = dummy.cxx # force C++ linking
-transmission_edit_SOURCES = edit.c
-nodist_EXTRA_transmission_edit_SOURCES = dummy.cxx # force C++ linking
-transmission_remote_SOURCES = remote.c
-nodist_EXTRA_transmission_remote_SOURCES = dummy.cxx # force C++ linking
-transmission_show_SOURCES = show.c
-nodist_EXTRA_transmission_show_SOURCES = dummy.cxx # force C++ linking
+transmission_og_create_SOURCES = create.c
+nodist_EXTRA_transmission_og_create_SOURCES = dummy.cxx # force C++ linking
+transmission_og_edit_SOURCES = edit.c
+nodist_EXTRA_transmission_og_edit_SOURCES = dummy.cxx # force C++ linking
+transmission_og_remote_SOURCES = remote.c
+nodist_EXTRA_transmission_og_remote_SOURCES = dummy.cxx # force C++ linking
+transmission_og_show_SOURCES = show.c
+nodist_EXTRA_transmission_og_show_SOURCES = dummy.cxx # force C++ linking
 noinst_HEADERS = \
     units.h
 
 dist_man_MANS = \
-    transmission-create.1 \
-    transmission-edit.1 \
-    transmission-remote.1 \
-    transmission-show.1
+    transmission-og-create.1 \
+    transmission-og-edit.1 \
+    transmission-og-remote.1 \
+    transmission-og-show.1
 
-transmission_create_LDADD = \
+transmission_og_create_LDADD = \
     $(top_builddir)/libtransmission/libtransmission.a \
     @LIBUPNP_LIBS@ \
     @LIBNATPMP_LIBS@ \
@@ -509,9 +511,9 @@ transmission_create_LDADD = \
     @PTHREAD_LIBS@ \
     ${LIBM}
 
-transmission_edit_LDADD = $(transmission_create_LDADD)
-transmission_remote_LDADD = $(transmission_create_LDADD)
-transmission_show_LDADD = $(transmission_create_LDADD)
+transmission_og_edit_LDADD = $(transmission_og_create_LDADD)
+transmission_og_remote_LDADD = $(transmission_og_create_LDADD)
+transmission_og_show_LDADD = $(transmission_og_create_LDADD)
 all: all-am
 
 .SUFFIXES:
@@ -595,21 +597,21 @@ clean-binPROGRAMS:
 	echo " rm -f" $$list; \
 	rm -f $$list
 
-transmission-create$(EXEEXT): $(transmission_create_OBJECTS) $(transmission_create_DEPENDENCIES) $(EXTRA_transmission_create_DEPENDENCIES) 
-	@rm -f transmission-create$(EXEEXT)
-	$(AM_V_CXXLD)$(CXXLINK) $(transmission_create_OBJECTS) $(transmission_create_LDADD) $(LIBS)
+transmission-og-create$(EXEEXT): $(transmission_og_create_OBJECTS) $(transmission_og_create_DEPENDENCIES) $(EXTRA_transmission_og_create_DEPENDENCIES) 
+	@rm -f transmission-og-create$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(transmission_og_create_OBJECTS) $(transmission_og_create_LDADD) $(LIBS)
 
-transmission-edit$(EXEEXT): $(transmission_edit_OBJECTS) $(transmission_edit_DEPENDENCIES) $(EXTRA_transmission_edit_DEPENDENCIES) 
-	@rm -f transmission-edit$(EXEEXT)
-	$(AM_V_CXXLD)$(CXXLINK) $(transmission_edit_OBJECTS) $(transmission_edit_LDADD) $(LIBS)
+transmission-og-edit$(EXEEXT): $(transmission_og_edit_OBJECTS) $(transmission_og_edit_DEPENDENCIES) $(EXTRA_transmission_og_edit_DEPENDENCIES) 
+	@rm -f transmission-og-edit$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(transmission_og_edit_OBJECTS) $(transmission_og_edit_LDADD) $(LIBS)
 
-transmission-remote$(EXEEXT): $(transmission_remote_OBJECTS) $(transmission_remote_DEPENDENCIES) $(EXTRA_transmission_remote_DEPENDENCIES) 
-	@rm -f transmission-remote$(EXEEXT)
-	$(AM_V_CXXLD)$(CXXLINK) $(transmission_remote_OBJECTS) $(transmission_remote_LDADD) $(LIBS)
+transmission-og-remote$(EXEEXT): $(transmission_og_remote_OBJECTS) $(transmission_og_remote_DEPENDENCIES) $(EXTRA_transmission_og_remote_DEPENDENCIES) 
+	@rm -f transmission-og-remote$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(transmission_og_remote_OBJECTS) $(transmission_og_remote_LDADD) $(LIBS)
 
-transmission-show$(EXEEXT): $(transmission_show_OBJECTS) $(transmission_show_DEPENDENCIES) $(EXTRA_transmission_show_DEPENDENCIES) 
-	@rm -f transmission-show$(EXEEXT)
-	$(AM_V_CXXLD)$(CXXLINK) $(transmission_show_OBJECTS) $(transmission_show_LDADD) $(LIBS)
+transmission-og-show$(EXEEXT): $(transmission_og_show_OBJECTS) $(transmission_og_show_DEPENDENCIES) $(EXTRA_transmission_og_show_DEPENDENCIES) 
+	@rm -f transmission-og-show$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(transmission_og_show_OBJECTS) $(transmission_og_show_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)

@@ -4,7 +4,6 @@ test -z "$srcdir" && srcdir=.
 
 ORIGDIR=$(pwd)
 cd "$srcdir" || exit 1
-PROJECT=Transmission
 
 GETTEXTIZE="glib-gettextize"
 $GETTEXTIZE --version < /dev/null > /dev/null 2>&1

@@ -127,7 +127,7 @@
                 <button verticalHuggingPriority="750" id="1932">
                     <rect key="frame" x="187" y="66" width="321" height="32"/>
                     <autoresizingMask key="autoresizingMask"/>
-                    <buttonCell key="cell" type="push" title="Transmission als Standardprogramm nutzen" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="1933">
+                    <buttonCell key="cell" type="push" title="Transmission OG als Standardprogramm nutzen" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="1933">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -2036,7 +2036,7 @@
                 <textField verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="YES" id="1644">
                     <rect key="frame" x="95" y="400" width="383" height="14"/>
                     <autoresizingMask key="autoresizingMask"/>
-                    <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" title="Hierdurch kann Transmission mit einem Web-Browser bedient werden." id="1645">
+                    <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" title="Hierdurch kann Transmission OG mit einem Web-Browser bedient werden." id="1645">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>

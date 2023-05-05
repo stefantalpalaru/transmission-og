@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Transmission</string>
+   <string>Transmission OG</string>
   </property>
   <property name="unifiedTitleAndToolBarOnMac">
    <bool>true</bool>
@@ -230,8 +230,6 @@
      <string>&amp;Help</string>
     </property>
     <addaction name="action_Statistics"/>
-    <addaction name="separator"/>
-    <addaction name="action_Donate"/>
     <addaction name="separator"/>
     <addaction name="action_Contents"/>
     <addaction name="action_About"/>
@@ -723,11 +721,6 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+U</string>
-   </property>
-  </action>
-  <action name="action_Donate">
-   <property name="text">
-    <string>&amp;Donate</string>
    </property>
   </action>
   <action name="action_StartNow">

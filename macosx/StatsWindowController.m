@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2007-2012 Transmission authors and contributors
+ * Copyright (c) 2007-2012 Transmission OG authors and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -138,7 +138,7 @@ tr_session * fLib = NULL;
 
     NSAlert * alert = [[NSAlert alloc] init];
     [alert setMessageText: NSLocalizedString(@"Are you sure you want to reset usage statistics?", "Stats reset -> title")];
-    [alert setInformativeText: NSLocalizedString(@"This will clear the global statistics displayed by Transmission."
+    [alert setInformativeText: NSLocalizedString(@"This will clear the global statistics displayed by Transmission OG."
                                 " Individual transfer statistics will not be affected.", "Stats reset -> message")];
     [alert setAlertStyle: NSWarningAlertStyle];
     [alert addButtonWithTitle: NSLocalizedString(@"Reset", "Stats reset -> button")];

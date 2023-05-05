@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2010-2012 Transmission authors and contributors
+ * Copyright (c) 2010-2012 Transmission OG authors and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -359,13 +359,13 @@
         {
             [alert setMessageText: [NSString stringWithFormat: NSLocalizedString(@"Are you sure you want to remove %d trackers?",
                                                                 "Remove trackers alert -> title"), removeTrackerCount]];
-            [alert setInformativeText: NSLocalizedString(@"Once removed, Transmission will no longer attempt to contact them."
+            [alert setInformativeText: NSLocalizedString(@"Once removed, Transmission OG will no longer attempt to contact them."
                                         " This cannot be undone.", "Remove trackers alert -> message")];
         }
         else
         {
             [alert setMessageText: NSLocalizedString(@"Are you sure you want to remove this tracker?", "Remove trackers alert -> title")];
-            [alert setInformativeText: NSLocalizedString(@"Once removed, Transmission will no longer attempt to contact it."
+            [alert setInformativeText: NSLocalizedString(@"Once removed, Transmission OG will no longer attempt to contact it."
                                         " This cannot be undone.", "Remove trackers alert -> message")];
         }
 

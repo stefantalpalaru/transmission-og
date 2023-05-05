@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2005-2019 Transmission authors and contributors
+ * Copyright (c) 2005-2019 Transmission OG authors and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -257,9 +257,7 @@ typedef enum
 - (void) toggleQuickLook: (id) sender;
 
 - (void) linkHomepage: (id) sender;
-- (void) linkForums: (id) sender;
 - (void) linkGitHub: (id) sender;
-- (void) linkDonate: (id) sender;
 
 - (void) rpcCallback: (tr_rpc_callback_type) type forTorrentStruct: (struct tr_torrent *) torrentStruct;
 - (void) rpcAddTorrentStruct: (struct tr_torrent *) torrentStruct;

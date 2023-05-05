@@ -6,7 +6,7 @@ dnl these should be the only two lines you need to change
 m4_define([user_agent_prefix],[3.01+])
 m4_define([peer_id_prefix],[-TR301Z-])
 
-AC_INIT([transmission],[user_agent_prefix],[https://github.com/transmission/transmission])
+AC_INIT([transmission-og],[user_agent_prefix],[https://github.com/stefantalpalaru/transmission-og])
 AC_SUBST(USERAGENT_PREFIX,[user_agent_prefix])
 AC_SUBST(PEERID_PREFIX,[peer_id_prefix])
 

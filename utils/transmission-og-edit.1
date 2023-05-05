@@ -1,8 +1,8 @@
 .Dd June 9, 2010
-.Dt TRANSMISSION-EDIT 1
+.Dt TRANSMISSION-OG-EDIT 1
 .Os
 .Sh NAME
-.Nm transmission-edit
+.Nm transmission-og-edit
 .Nd command-line utility to modify .torrent files' announce URLs
 .Sh SYNOPSIS
 .Bk -words
@@ -30,7 +30,7 @@ Substring search-and-replace inside a torrent's announce URLs. This can be used 
 .Sh EXAMPLES
 Update a tracker passcode in all your torrents:
 .Bd -literal -offset indent
-$ transmission-edit -r old-passcode new-passcode ~/.config/transmission/torrents/*\\.torrent
+$ transmission-og-edit -r old-passcode new-passcode ~/.config/transmission/torrents/*\\.torrent
 .Ed
 .Sh AUTHORS
 .An -nosplit
@@ -38,12 +38,12 @@ $ transmission-edit -r old-passcode new-passcode ~/.config/transmission/torrents
 and
 .An Mike Gelfand .
 .Sh SEE ALSO
-.Xr transmission-create 1 ,
-.Xr transmission-daemon 1 ,
-.Xr transmission-edit 1 ,
-.Xr transmission-gtk 1 ,
-.Xr transmission-qt 1 ,
-.Xr transmission-remote 1 ,
-.Xr transmission-show 1
+.Xr transmission-og-create 1 ,
+.Xr transmission-og-daemon 1 ,
+.Xr transmission-og-edit 1 ,
+.Xr transmission-og-gtk 1 ,
+.Xr transmission-og-qt 1 ,
+.Xr transmission-og-remote 1 ,
+.Xr transmission-og-show 1
 .Pp
-https://transmissionbt.com/
+https://github.com/stefantalpalaru/transmission-og

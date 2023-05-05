@@ -63,7 +63,7 @@ msgid "Sort by Si_ze"
 msgstr "Поређај по ве_личини"
 
 #: ../gtk/actions.c:53
-msgid "_Show Transmission"
+msgid "_Show Transmission OG"
 msgstr "Прикажи _Трансмисију"
 
 #: ../gtk/actions.c:54
@@ -881,7 +881,7 @@ msgstr "При_кажи %'d од:"
 
 #: ../gtk/main.c:314
 #, c-format
-msgid "Error registering Transmission as a %s handler: %s"
+msgid "Error registering Transmission OG as a %s handler: %s"
 msgstr "Грешка при постављању Трансмисије као руководиоца за %s: %s"
 
 #: ../gtk/main.c:480
@@ -906,7 +906,7 @@ msgid "Show version number and exit"
 msgstr "Приказује број издања и излази"
 
 #: ../gtk/main.c:637 ../gtk/transmission-gtk.appdata.xml.in:11 ../gtk/transmission-gtk.desktop.in:3
-msgid "Transmission"
+msgid "Transmission OG"
 msgstr "Трансмисија"
 
 #. parse the command line
@@ -924,7 +924,7 @@ msgstr ""
 "Покрените „%s --help“ да ​​видите потпун списак доступних могућности линије наредби.\n"
 
 #: ../gtk/main.c:746
-msgid "Transmission is a file sharing program. When you run a torrent, its data will be made available to others by means of upload. Any content you share is your sole responsibility."
+msgid "Transmission OG is a file sharing program. When you run a torrent, its data will be made available to others by means of upload. Any content you share is your sole responsibility."
 msgstr "Трансмисија је програм за дељење датотека. Када покренете торент, биће другима омогућен приступ тим подацима преко отпремања. Било који садржај, који будете делили, иде на вашу одговорност."
 
 #: ../gtk/main.c:749
@@ -962,7 +962,7 @@ msgid "A fast and easy BitTorrent client"
 msgstr "Брз и једноставан програм БитТорента"
 
 #: ../gtk/main.c:1364
-msgid "Copyright (c) The Transmission Project"
+msgid "Copyright (c) The Transmission OG Project"
 msgstr "Ауторска права © Пројекат Трансмисије"
 
 #. Translators: translate "translator-credits" as your name
@@ -1432,7 +1432,7 @@ msgstr " (Ограничење: %s)"
 #: ../gtk/tr-icon.c:109
 #, c-format
 msgid ""
-"Transmission\n"
+"Transmission OG\n"
 "Up: %1$s %2$s\n"
 "Down: %3$s %4$s"
 msgstr ""
@@ -1510,7 +1510,7 @@ msgid "_Inhibit hibernation when torrents are active"
 msgstr "_Забрани замрзавање када су торенти активни"
 
 #: ../gtk/tr-prefs.c:371
-msgid "Show Transmission icon in the _notification area"
+msgid "Show Transmission OG icon in the _notification area"
 msgstr "Прикажи _иконицу Трансмисије у области за обавештења"
 
 #: ../gtk/tr-prefs.c:376
@@ -1755,7 +1755,7 @@ msgid "Te_st Port"
 msgstr "_Испробај прикључник"
 
 #: ../gtk/tr-prefs.c:1147
-msgid "Pick a _random port every time Transmission is started"
+msgid "Pick a _random port every time Transmission OG is started"
 msgstr "_Изабери насумичан прикључник при сваком покретању Трансмисије"
 
 #: ../gtk/tr-prefs.c:1151
@@ -1807,7 +1807,7 @@ msgid "LPD is a tool for finding peers on your local network."
 msgstr "ЛОП је алат за проналажење парњака на вашој локалној мрежи."
 
 #: ../gtk/tr-prefs.c:1244
-msgid "Transmission Preferences"
+msgid "Transmission OG Preferences"
 msgstr "Подешавања Трансмисије"
 
 #: ../gtk/tr-prefs.c:1254
@@ -1927,11 +1927,11 @@ msgid "BitTorrent is a peer-to-peer file-sharing protocol that is commonly used 
 msgstr "БитТорен је парњачки протокол за дељење датотека који се обично користи за дистрибуцију великих количина података између више корисника."
 
 #: ../gtk/transmission-gtk.appdata.xml.in:20
-msgid "Transmission is a BitTorrent client with an easy-to-use frontend on top a cross-platform backend. Native frontends are available for OS X and Windows, as well as command line and web frontends."
+msgid "Transmission OG is a BitTorrent client with an easy-to-use frontend on top a cross-platform backend. Native frontends are available for OS X and Windows, as well as command line and web frontends."
 msgstr "Трансмисија је БитТорент протокол са лако употребљивим предњим делом који радњи са позадинцима на више платформи. Домаћи предњи делови су доступни за Мек-ОС, Виндоус као и предњи делови за веб и командну линију."
 
 #: ../gtk/transmission-gtk.appdata.xml.in:26
-msgid "Notable features of Transmission include support for Local Peer Discovery, encryption, DHT, µTP, PEX and Magnet Link."
+msgid "Notable features of Transmission OG include support for Local Peer Discovery, encryption, DHT, µTP, PEX and Magnet Link."
 msgstr "У издвојене могућности Трансмисије спада подршка за откривање локалних парњака, шифровање, DHT,  µTP, PEX и магнетне везе."
 
 #: ../gtk/transmission-gtk.desktop.in:4
@@ -1944,11 +1944,11 @@ msgid "torrents;downloading;uploading;share;sharing;"
 msgstr "torrents;downloading;uploading;share;sharing;торенти;преузимање;даунлоудовање;отпремање;аплоудовање;дељење;шеровање;preuzimanje;daunloudovanje;otpremanje;aploudovanje;deljenje;šerovanje;"
 
 #: ../gtk/transmission-gtk.desktop.in:21
-msgid "Start Transmission with All Torrents Paused"
+msgid "Start Transmission OG with All Torrents Paused"
 msgstr "Покрени Трансмисију и заустави све торенте"
 
 #: ../gtk/transmission-gtk.desktop.in:25
-msgid "Start Transmission Minimized"
+msgid "Start Transmission OG Minimized"
 msgstr "Покрени умањену Трансмисију"
 
 #: ../gtk/util.c:36
@@ -2056,7 +2056,7 @@ msgstr "Непозната адреса"
 
 #: ../gtk/util.c:596
 #, c-format
-msgid "Transmission doesn't know how to use \"%s\""
+msgid "Transmission OG doesn't know how to use \"%s\""
 msgstr "Трансмисија не зна како да користи „%s“"
 
 #: ../gtk/util.c:601
@@ -2223,7 +2223,7 @@ msgid "Couldn't connect socket %<PRIdMAX> to %s, port %d (errno %d - %s)"
 msgstr "Не могу да повежем сокет %<PRIdMAX> на %s, порт %d (бр. греш. %d - %s)"
 
 #: ../libtransmission/net.c:436
-msgid "Is another copy of Transmission already running?"
+msgid "Is another copy of Transmission OG already running?"
 msgstr "Да ли је Трансмисија већ покренута?"
 
 #: ../libtransmission/net.c:445
@@ -2347,7 +2347,7 @@ msgid "Removing torrent"
 msgstr "Уклањам торент"
 
 #. Translators: this is a minor point that's safe to skip over, but FYI:
-#. "Complete" and "Done" are specific, different terms in Transmission:
+#. "Complete" and "Done" are specific, different terms in Transmission OG:
 #. "Complete" means we've downloaded every file in the torrent.
 #. "Done" means we're done downloading the files we wanted, but NOT all
 #. that exist

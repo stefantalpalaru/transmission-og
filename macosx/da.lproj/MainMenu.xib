@@ -13,7 +13,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="Transmission" allowsToolTipsWhenApplicationIsInactive="NO" restorable="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="TransmissionWindow" animationBehavior="default" tabbingMode="disallowed" id="21" userLabel="Transmission">
+        <window title="Transmission OG" allowsToolTipsWhenApplicationIsInactive="NO" restorable="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="Transmission OGWindow" animationBehavior="default" tabbingMode="disallowed" id="21" userLabel="Transmission OG">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" unifiedTitleAndToolbar="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" topStrut="YES"/>
             <rect key="contentRect" x="71" y="712" width="515" height="248"/>
@@ -180,24 +180,13 @@
         </window>
         <menu title="MainMenu" systemMenu="main" id="29" userLabel="MainMenu">
             <items>
-                <menuItem title="Transmission" id="56">
-                    <menu key="submenu" title="Transmission" systemMenu="apple" id="57">
+                <menuItem title="Transmission OG" id="56">
+                    <menu key="submenu" title="Transmission OG" systemMenu="apple" id="57">
                         <items>
-                            <menuItem title="Om Transmission" id="58">
+                            <menuItem title="Om Transmission OG" id="58">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="showAboutWindow:" target="206" id="1927"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Søg efter opdateringer..." tag="1234" id="975">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="checkForUpdates:" target="1812" id="1814"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Donér..." tag="5678" id="3212">
-                                <connections>
-                                    <action selector="linkDonate:" target="206" id="3213"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="196">
@@ -217,7 +206,7 @@
                             <menuItem isSeparatorItem="YES" id="144">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Skjul Transmission" keyEquivalent="h" id="134">
+                            <menuItem title="Skjul Transmission OG" keyEquivalent="h" id="134">
                                 <connections>
                                     <action selector="hide:" target="-2" id="152"/>
                                 </connections>
@@ -236,7 +225,7 @@
                             <menuItem isSeparatorItem="YES" id="149">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Slut Transmission" keyEquivalent="q" id="136">
+                            <menuItem title="Slut Transmission OG" keyEquivalent="q" id="136">
                                 <connections>
                                     <action selector="terminate:" target="-2" id="614"/>
                                 </connections>
@@ -647,7 +636,7 @@ CA
                             <menuItem isSeparatorItem="YES" id="1799">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Transmission" keyEquivalent="1" id="1696">
+                            <menuItem title="Transmission OG" keyEquivalent="1" id="1696">
                                 <connections>
                                     <action selector="showMainWindow:" target="206" id="1702"/>
                                 </connections>
@@ -676,7 +665,7 @@ CA
                 <menuItem title="Hjælp" id="103">
                     <menu key="submenu" title="Hjælp" autoenablesItems="NO" id="106">
                         <items>
-                            <menuItem title="Hjælp til Transmission" keyEquivalent="?" id="1561">
+                            <menuItem title="Hjælp til Transmission OG" keyEquivalent="?" id="1561">
                                 <connections>
                                     <action selector="showHelp:" target="-1" id="1562"/>
                                 </connections>
@@ -687,11 +676,6 @@ CA
                             <menuItem title="Hjemmeside" id="1558">
                                 <connections>
                                     <action selector="linkHomepage:" target="206" id="1560"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Forum" id="418">
-                                <connections>
-                                    <action selector="linkForums:" target="206" id="421"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Support og udvikling" id="3170">

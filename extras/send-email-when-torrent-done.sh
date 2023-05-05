@@ -48,6 +48,6 @@ SMTP_SERVER=your.smtp.server
 SUBJECT="Torrent Done!"
 FROM_ADDR="transmission@localhost.localdomain"
 TMPFILE=$(mktemp -t transmission.XXXXXXXXXX)
-echo "Transmission finished downloading \"$TR_TORRENT_NAME\" on $TR_TIME_LOCALTIME" > "$TMPFILE"
+echo "Transmission OG finished downloading \"$TR_TORRENT_NAME\" on $TR_TIME_LOCALTIME" > "$TMPFILE"
 $NAIL -v -S from="$FROM_ADDR" -S smtp -s "$SUBJECT" -S smtp=$SMTP_SERVER "$TO_ADDR" < "$TMPFILE"
 rm "$TMPFILE"

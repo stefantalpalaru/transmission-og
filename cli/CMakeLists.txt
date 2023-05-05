@@ -3,7 +3,7 @@ project(trcli)
 include_directories(${CMAKE_SOURCE_DIR})
 
 tr_win32_app_info(${PROJECT_NAME}_WIN32_RC_FILE
-    "Transmission Utility ('cli', obsolete)"
+    "Transmission OG Utility ('cli', obsolete)"
     "${TR_NAME}-cli"
     "${TR_NAME}-cli.exe")
 

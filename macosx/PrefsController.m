@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2005-2019 Transmission authors and contributors
+ * Copyright (c) 2005-2019 Transmission OG authors and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -729,7 +729,6 @@
     [fDefaults removeObjectForKey: @"WarningRemoveTrackers"];
     [fDefaults removeObjectForKey: @"WarningInvalidOpen"];
     [fDefaults removeObjectForKey: @"WarningRemoveCompleted"];
-    [fDefaults removeObjectForKey: @"WarningDonate"];
     //[fDefaults removeObjectForKey: @"WarningLegal"];
 }
 

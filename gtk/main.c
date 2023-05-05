@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) Transmission authors and contributors
+ * Copyright (c) Transmission OG authors and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -55,13 +55,13 @@
 #include "util.h"
 
 #define MY_CONFIG_NAME "transmission"
-#define MY_READABLE_NAME "transmission-gtk"
+#define MY_READABLE_NAME "transmission-og-gtk"
 
 #define SHOW_LICENSE
 static char const* LICENSE =
-    "Copyright 2005-2020. All code is copyrighted by the respective authors.\n"
+    "Copyright 2005-2023. All code is copyrighted by the respective authors.\n"
     "\n"
-    "Transmission can be redistributed and/or modified under the terms of the "
+    "Transmission OG can be redistributed and/or modified under the terms of the "
     "GNU GPL versions 2 or 3 or by any future license endorsed by Mnemosyne LLC.\n"
     "\n"
     "In addition, linking to and/or using OpenSSL is allowed.\n"
@@ -70,7 +70,7 @@ static char const* LICENSE =
     "but WITHOUT ANY WARRANTY; without even the implied warranty of "
     "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
     "\n"
-    "Some of Transmission's source files have more permissive licenses. "
+    "Some of Transmission OG's source files have more permissive licenses. "
     "Those files may, of course, be used on their own under their own terms.\n";
 
 struct cbdata
@@ -311,7 +311,7 @@ static void register_magnet_link_handler(void)
 
     if (error != NULL)
     {
-        g_warning(_("Error registering Transmission as a %s handler: %s"), content_type, error->message);
+        g_warning(_("Error registering Transmission OG as a %s handler: %s"), content_type, error->message);
         g_error_free(error);
     }
 
@@ -563,7 +563,7 @@ static void on_activate(GApplication* app UNUSED, struct cbdata* cbdata)
 
     /* GApplication emits an 'activate' signal when bootstrapping the primary.
      * Ordinarily we handle that by presenting the main window, but if the user
-     * user started Transmission minimized, ignore that initial signal... */
+     * user started Transmission OG minimized, ignore that initial signal... */
     if (cbdata->is_iconified && cbdata->activation_count == 1)
     {
         return;
@@ -634,7 +634,7 @@ int main(int argc, char** argv)
 #if !GLIB_CHECK_VERSION(2, 35, 4)
     g_type_init();
 #endif
-    g_set_application_name(_("Transmission"));
+    g_set_application_name(_("Transmission OG"));
 
     /* parse the command line */
     option_context = g_option_context_new(_("[torrent files or urls]"));
@@ -675,7 +675,7 @@ int main(int argc, char** argv)
 
     /* init the application for the specified config dir */
     stat(cbdata.config_dir, &sb);
-    application_id = g_strdup_printf("com.transmissionbt.transmission_%lu_%lu", (unsigned long)sb.st_dev,
+    application_id = g_strdup_printf("com.transmissionbt.transmission_og_%lu_%lu", (unsigned long)sb.st_dev,
         (unsigned long)sb.st_ino);
     app = gtk_application_new(application_id, G_APPLICATION_HANDLES_OPEN);
     g_signal_connect(app, "open", G_CALLBACK(on_open), &cbdata);
@@ -743,7 +743,7 @@ static void app_setup(GtkWindow* wind, struct cbdata* cbdata)
     if (!gtr_pref_flag_get(TR_KEY_user_has_given_informed_consent))
     {
         GtkWidget* w = gtk_message_dialog_new(GTK_WINDOW(wind), GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_OTHER,
-            GTK_BUTTONS_NONE, "%s", _("Transmission is a file sharing program. When you run a torrent, its data will be "
+            GTK_BUTTONS_NONE, "%s", _("Transmission OG is a file sharing program. When you run a torrent, its data will be "
             "made available to others by means of upload. Any content you share is your sole responsibility."));
         gtk_dialog_add_button(GTK_DIALOG(w), GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT);
         gtk_dialog_add_button(GTK_DIALOG(w), _("I _Agree"), GTK_RESPONSE_ACCEPT);
@@ -898,7 +898,11 @@ static gboolean on_session_closed(gpointer gdata)
         gtk_widget_destroy(GTK_WIDGET(cbdata->wind));
     }
 
-    g_object_unref(cbdata->core);
+    // triggers this error on exit:
+    // (transmission-og-gtk:16327): GLib-GObject-CRITICAL **: 02:06:12.420: instance with invalid (NULL) class pointer
+    // (transmission-og-gtk:16327): GLib-GObject-CRITICAL **: 02:06:12.428: g_signal_handler_disconnect: assertion 'G_TYPE_CHECK_INSTANCE (instance)' failed
+    //
+    // g_object_unref(cbdata->core);
 
     if (cbdata->icon != NULL)
     {
@@ -1353,7 +1357,7 @@ static gboolean update_model_loop(gpointer gdata)
 
 static void show_about_dialog(GtkWindow* parent)
 {
-    char const* uri = "https://transmissionbt.com/";
+    char const* uri = "https://github.com/stefantalpalaru/transmission-og";
     char const* authors[] =
     {
         "Charles Kerr (Backend; GTK+)",
@@ -1365,7 +1369,7 @@ static void show_about_dialog(GtkWindow* parent)
     gtk_show_about_dialog(parent,
         "authors", authors,
         "comments", _("A fast and easy BitTorrent client"),
-        "copyright", _("Copyright (c) The Transmission Project"),
+        "copyright", _("Copyright (c) The Transmission OG Project"),
         "logo-icon-name", MY_CONFIG_NAME,
         "name", g_get_application_name(),
         /* Translators: translate "translator-credits" as your name
@@ -1532,10 +1536,6 @@ void gtr_actions_handler(char const* action_name, gpointer user_data)
     {
         GtkWidget* dialog = gtr_stats_dialog_new(data->wind, data->core);
         gtk_widget_show(dialog);
-    }
-    else if (g_strcmp0(action_name, "donate") == 0)
-    {
-        gtr_open_uri("https://transmissionbt.com/donate/");
     }
     else if (g_strcmp0(action_name, "pause-all-torrents") == 0)
     {

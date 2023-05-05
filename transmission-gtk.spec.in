@@ -1,14 +1,14 @@
-%define name transmission
+%define name transmission-og
 %define version @VERSION@
 %define release 1
 
-Summary:   Transmission BitTorrent Client
+Summary:   Transmission OG BitTorrent Client
 Name:      %{name}
 Version:   %{version}
 Release:   %{release}
 License:   MIT
 Group:     Applications/Internet
-URL:       https://transmissionbt.com/
+URL:       https://github.com/stefantalpalaru/transmission-og
 Epoch:     1
 Source0:   %{name}-%{version}.tar.bz2
 

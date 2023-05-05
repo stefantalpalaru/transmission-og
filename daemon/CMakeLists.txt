@@ -27,7 +27,7 @@ set(${PROJECT_NAME}_HEADERS
 )
 
 tr_win32_app_info(${PROJECT_NAME}_WIN32_RC_FILE
-    "Transmission Daemon"
+    "Transmission OG Daemon"
     "${TR_NAME}-daemon"
     "${TR_NAME}-daemon.exe")
 

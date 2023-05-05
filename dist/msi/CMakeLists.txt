@@ -41,17 +41,17 @@ endif()
 
 set(ICONS_DIR "${CMAKE_SOURCE_DIR}/qt/icons/hicolor")
 png2ico(Transmission.ico
-    "${ICONS_DIR}/16x16/transmission-qt.png"
-    "${ICONS_DIR}/22x22/transmission-qt.png"
-    "${ICONS_DIR}/24x24/transmission-qt.png"
-    "${ICONS_DIR}/32x32/transmission-qt.png"
-    "${ICONS_DIR}/48x48/transmission-qt.png"
-    "${ICONS_DIR}/64x64/transmission-qt.png"
-    "${ICONS_DIR}/72x72/transmission-qt.png"
-    "${ICONS_DIR}/96x96/transmission-qt.png"
-    "${ICONS_DIR}/128x128/transmission-qt.png"
-    "${ICONS_DIR}/192x192/transmission-qt.png"
-    "${ICONS_DIR}/256x256/transmission-qt.png")
+    "${ICONS_DIR}/16x16/transmission-og-qt.png"
+    "${ICONS_DIR}/22x22/transmission-og-qt.png"
+    "${ICONS_DIR}/24x24/transmission-og-qt.png"
+    "${ICONS_DIR}/32x32/transmission-og-qt.png"
+    "${ICONS_DIR}/48x48/transmission-og-qt.png"
+    "${ICONS_DIR}/64x64/transmission-og-qt.png"
+    "${ICONS_DIR}/72x72/transmission-og-qt.png"
+    "${ICONS_DIR}/96x96/transmission-og-qt.png"
+    "${ICONS_DIR}/128x128/transmission-og-qt.png"
+    "${ICONS_DIR}/192x192/transmission-og-qt.png"
+    "${ICONS_DIR}/256x256/transmission-og-qt.png")
 
 set(WEBSRCDIR "${CMAKE_INSTALL_PREFIX}/share/transmission/web")
 set(TRQMSRCDIR "${CMAKE_INSTALL_PREFIX}/share/transmission/translations")
@@ -94,7 +94,7 @@ wix_candle(${PROJECT_NAME}_OBJS
 
 wix_light(${PROJECT_NAME}_OUTPUT
     NAME
-        transmission-${MSI_FILENAME_VERSION}-${ARCH}
+        transmission-og-${MSI_FILENAME_VERSION}-${ARCH}
     OBJECTS
         ${${PROJECT_NAME}_OBJS}
     EXTENSIONS

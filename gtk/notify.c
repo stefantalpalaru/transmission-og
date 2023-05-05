@@ -213,7 +213,7 @@ void gtr_notify_torrent_completed(TrCore* core, int torrent_id)
         }
     }
 
-    g_dbus_proxy_call(proxy, "Notify", g_variant_new("(susssasa{sv}i)", "Transmission", n->id, "transmission",
+    g_dbus_proxy_call(proxy, "Notify", g_variant_new("(susssasa{sv}i)", "Transmission OG", n->id, "transmission",
         _("Torrent Complete"), tr_torrentName(tor), &actions_builder, NULL, -1), G_DBUS_CALL_FLAGS_NONE, -1, NULL,
         notify_callback, n);
 }
@@ -230,6 +230,6 @@ void gtr_notify_torrent_added(char const* name)
     }
 
     n = g_new0(TrNotification, 1);
-    g_dbus_proxy_call(proxy, "Notify", g_variant_new("(susssasa{sv}i)", "Transmission", 0, "transmission", _("Torrent Added"),
+    g_dbus_proxy_call(proxy, "Notify", g_variant_new("(susssasa{sv}i)", "Transmission OG", 0, "transmission", _("Torrent Added"),
         name, NULL, NULL, -1), G_DBUS_CALL_FLAGS_NONE, -1, NULL, notify_callback, n);
 }

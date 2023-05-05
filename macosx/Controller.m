@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2005-2019 Transmission authors and contributors
+ * Copyright (c) 2005-2019 Transmission OG authors and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -127,12 +127,8 @@ typedef enum
 
 #define TRANSFER_PLIST  @"Transfers.plist"
 
-#define WEBSITE_URL @"https://transmissionbt.com/"
-#define FORUM_URL   @"https://forum.transmissionbt.com/"
-#define GITHUB_URL  @"https://github.com/transmission/transmission"
-#define DONATE_URL  @"https://transmissionbt.com/donate/"
-
-#define DONATE_NAG_TIME (60 * 60 * 24 * 7)
+#define WEBSITE_URL @"https://github.com/stefantalpalaru/transmission-og"
+#define GITHUB_URL  @"https://github.com/stefantalpalaru/transmission-og"
 
 static void altSpeedToggledCallback(tr_session * handle UNUSED, bool active, bool byUser, void * controller)
 {
@@ -240,16 +236,16 @@ static void removeKeRangerRansomware()
 {
     removeKeRangerRansomware();
 
-    //make sure another Transmission.app isn't running already
+    //make sure another TransmissionOG.app isn't running already
     NSArray * apps = [NSRunningApplication runningApplicationsWithBundleIdentifier: [[NSBundle mainBundle] bundleIdentifier]];
     if ([apps count] > 1)
     {
         NSAlert * alert = [[NSAlert alloc] init];
-        [alert addButtonWithTitle: NSLocalizedString(@"OK", "Transmission already running alert -> button")];
-        [alert setMessageText: NSLocalizedString(@"Transmission is already running.",
-                                                "Transmission already running alert -> title")];
-        [alert setInformativeText: NSLocalizedString(@"There is already a copy of Transmission running. "
-            "This copy cannot be opened until that instance is quit.", "Transmission already running alert -> message")];
+        [alert addButtonWithTitle: NSLocalizedString(@"OK", "Transmission OG already running alert -> button")];
+        [alert setMessageText: NSLocalizedString(@"Transmission OG is already running.",
+                                                "Transmission OG already running alert -> title")];
+        [alert setInformativeText: NSLocalizedString(@"There is already a copy of Transmission OG running. "
+            "This copy cannot be opened until that instance is quit.", "Transmission OG already running alert -> message")];
         [alert setAlertStyle: NSCriticalAlertStyle];
 
         [alert runModal];
@@ -274,8 +270,8 @@ static void removeKeRangerRansomware()
         NSAlert * alert = [[NSAlert alloc] init];
         [alert addButtonWithTitle: NSLocalizedString(@"I Accept", "Legal alert -> button")];
         [alert addButtonWithTitle: NSLocalizedString(@"Quit", "Legal alert -> button")];
-        [alert setMessageText: NSLocalizedString(@"Welcome to Transmission", "Legal alert -> title")];
-        [alert setInformativeText: NSLocalizedString(@"Transmission is a file-sharing program."
+        [alert setMessageText: NSLocalizedString(@"Welcome to Transmission OG", "Legal alert -> title")];
+        [alert setInformativeText: NSLocalizedString(@"Transmission OG is a file-sharing program."
             " When you run a torrent, its data will be made available to others by means of upload."
             " You and you alone are fully responsible for exercising proper judgement and abiding by your local laws.",
             "Legal alert -> message")];
@@ -420,7 +416,7 @@ static void removeKeRangerRansomware()
                                     [gbString UTF8String],
                                     [tbString UTF8String]);
 
-        const char * configDir = tr_getDefaultConfigDir("Transmission");
+        const char * configDir = tr_getDefaultConfigDir("Transmission OG");
         fLib = tr_sessionInit(configDir, YES, &settings);
         tr_variantFree(&settings);
 
@@ -665,50 +661,6 @@ static void removeKeRangerRansomware()
     //registering the Web UI to Bonjour
     if ([fDefaults boolForKey: @"RPC"] && [fDefaults boolForKey: @"RPCWebDiscovery"])
         [[BonjourController defaultController] startWithPort: [fDefaults integerForKey: @"RPCPort"]];
-
-    //shamelessly ask for donations
-    if ([fDefaults boolForKey: @"WarningDonate"])
-    {
-        tr_session_stats stats;
-        tr_sessionGetCumulativeStats(fLib, &stats);
-        const BOOL firstLaunch = stats.sessionCount <= 1;
-
-        NSDate * lastDonateDate = [fDefaults objectForKey: @"DonateAskDate"];
-        const BOOL timePassed = !lastDonateDate || (-1 * [lastDonateDate timeIntervalSinceNow]) >= DONATE_NAG_TIME;
-
-        if (!firstLaunch && timePassed)
-        {
-            [fDefaults setObject: [NSDate date] forKey: @"DonateAskDate"];
-
-            NSAlert * alert = [[NSAlert alloc] init];
-            [alert setMessageText: NSLocalizedString(@"Support open-source indie software", "Donation beg -> title")];
-
-            NSString * donateMessage = [NSString stringWithFormat: @"%@\n\n%@",
-                NSLocalizedString(@"Transmission is a full-featured torrent application."
-                    " A lot of time and effort have gone into development, coding, and refinement."
-                    " If you enjoy using it, please consider showing your love with a donation.", "Donation beg -> message"),
-                NSLocalizedString(@"Donate or not, there will be no difference to your torrenting experience.", "Donation beg -> message")];
-
-            [alert setInformativeText: donateMessage];
-            [alert setAlertStyle: NSInformationalAlertStyle];
-
-            [alert addButtonWithTitle: [NSLocalizedString(@"Donate", "Donation beg -> button") stringByAppendingEllipsis]];
-            NSButton * noDonateButton = [alert addButtonWithTitle: NSLocalizedString(@"Nope", "Donation beg -> button")];
-            [noDonateButton setKeyEquivalent: @"\e"]; //escape key
-
-            const BOOL allowNeverAgain = lastDonateDate != nil; //hide the "don't show again" check the first time - give them time to try the app
-            [alert setShowsSuppressionButton: allowNeverAgain];
-            if (allowNeverAgain)
-                [[alert suppressionButton] setTitle: NSLocalizedString(@"Don't bug me about this ever again.", "Donation beg -> button")];
-
-            const NSInteger donateResult = [alert runModal];
-            if (donateResult == NSAlertFirstButtonReturn)
-                [self linkDonate: self];
-
-            if (allowNeverAgain)
-                [fDefaults setBool: ([[alert suppressionButton] state] != NSOnState) forKey: @"WarningDonate"];
-        }
-    }
 }
 
 - (BOOL) applicationShouldHandleReopen: (NSApplication *) app hasVisibleWindows: (BOOL) visibleWindows
@@ -4494,19 +4446,9 @@ static void removeKeRangerRansomware()
     [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: WEBSITE_URL]];
 }
 
-- (void) linkForums: (id) sender
-{
-    [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: FORUM_URL]];
-}
-
 - (void) linkGitHub: (id) sender
 {
     [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: GITHUB_URL]];
-}
-
-- (void) linkDonate: (id) sender
-{
-    [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: DONATE_URL]];
 }
 
 - (void) updaterWillRelaunchApplication: (SUUpdater *) updater

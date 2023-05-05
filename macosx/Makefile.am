@@ -183,16 +183,16 @@ clean-local:
 endif
 
 define PACKAGE_RULE1
-	$(RM) tmp "Transmission $(VERSION_PACKAGE)" \
-	  Transmission-$(VERSION_PACKAGE).dmg
+	$(RM) tmp "TransmissionOG $(VERSION_PACKAGE)" \
+	  TransmissionOG-$(VERSION_PACKAGE).dmg
 	mkdir -p tmp
-	cp -R macosx/Transmission.app tmp/
+	cp -R macosx/TransmissionOG.app tmp/
 endef
 define PACKAGE_RULE2
-	mv tmp "Transmission $(VERSION_PACKAGE)"
+	mv tmp "TransmissionOG $(VERSION_PACKAGE)"
 	hdiutil create -format UDZO -imagekey zlib-level=9 -srcfolder \
-	  "Transmission $(VERSION_PACKAGE)" Transmission-$(VERSION_PACKAGE).dmg
-	rm -rf "Transmission $(VERSION_PACKAGE)"
+	  "TransmissionOG $(VERSION_PACKAGE)" TransmissionOG-$(VERSION_PACKAGE).dmg
+	rm -rf "TransmissionOG $(VERSION_PACKAGE)"
 endef
 
 package:
@@ -201,5 +201,5 @@ package:
 
 package-release:
 	$(PACKAGE_RULE1)
-	strip -S tmp/Transmission.app/Contents/MacOS/Transmission
+	strip -S tmp/TransmissionOG.app/Contents/MacOS/TransmissionOG
 	$(PACKAGE_RULE2)

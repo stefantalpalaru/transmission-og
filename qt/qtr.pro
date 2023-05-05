@@ -1,7 +1,7 @@
-TARGET = transmission-qt
-NAME = "Transmission"
-DESCRIPTION = "Transmission: a fast, easy, and free BitTorrent client"
-VERSION = 2.81
+TARGET = transmission-og-qt
+NAME = "Transmission OG"
+DESCRIPTION = "Transmission OG: a fast, easy, and free BitTorrent client"
+VERSION = 3.01
 LICENSE = "GPL"
 
 target.path = /bin
@@ -9,7 +9,7 @@ INSTALLS += target
 
 unix: INSTALLS += man
 man.path = /share/man/man1/
-man.files = transmission-qt.1
+man.files = transmission-og-qt.1
 
 CONFIG += qt thread link_pkgconfig c++1z warn_on
 QT += network dbus

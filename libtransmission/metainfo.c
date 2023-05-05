@@ -741,7 +741,7 @@ static char const* tr_metainfoParseImpl(tr_session const* session, tr_info* inf,
     /* get the url-list */
     geturllist(inf, meta);
 
-    /* filename of Transmission's copy */
+    /* filename of Transmission OG's copy */
     tr_free(inf->torrent);
     inf->torrent = session != NULL ? getTorrentFilename(session, inf, TR_METAINFO_BASENAME_HASH) : NULL;
 

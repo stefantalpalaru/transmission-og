@@ -89,7 +89,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-bin_PROGRAMS = transmission-daemon$(EXEEXT)
+bin_PROGRAMS = transmission-og-daemon$(EXEEXT)
 @WIN32_TRUE@am__append_1 = daemon-win32.c
 @WIN32_FALSE@am__append_2 = daemon-posix.c
 subdir = daemon
@@ -109,16 +109,16 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(man1dir)"
 PROGRAMS = $(bin_PROGRAMS)
-am__transmission_daemon_SOURCES_DIST = daemon.c daemon-win32.c \
+am__transmission_og_daemon_SOURCES_DIST = daemon.c daemon-win32.c \
 	daemon-posix.c
 @WIN32_TRUE@am__objects_1 = daemon-win32.$(OBJEXT)
 @WIN32_FALSE@am__objects_2 = daemon-posix.$(OBJEXT)
-am_transmission_daemon_OBJECTS = daemon.$(OBJEXT) $(am__objects_1) \
+am_transmission_og_daemon_OBJECTS = daemon.$(OBJEXT) $(am__objects_1) \
 	$(am__objects_2)
-transmission_daemon_OBJECTS = $(am_transmission_daemon_OBJECTS)
-transmission_daemon_LDADD = $(LDADD)
+transmission_og_daemon_OBJECTS = $(am_transmission_og_daemon_OBJECTS)
+transmission_og_daemon_LDADD = $(LDADD)
 am__DEPENDENCIES_1 =
-transmission_daemon_DEPENDENCIES =  \
+transmission_og_daemon_DEPENDENCIES =  \
 	$(top_builddir)/libtransmission/libtransmission.a \
 	$(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -180,9 +180,9 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(transmission_daemon_SOURCES) \
-	$(nodist_EXTRA_transmission_daemon_SOURCES)
-DIST_SOURCES = $(am__transmission_daemon_SOURCES_DIST)
+SOURCES = $(transmission_og_daemon_SOURCES) \
+	$(nodist_EXTRA_transmission_og_daemon_SOURCES)
+DIST_SOURCES = $(am__transmission_og_daemon_SOURCES_DIST)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -467,10 +467,10 @@ AM_CFLAGS = \
     @PTHREAD_CFLAGS@
 
 EXTRA_DIST = \
-    transmission-daemon.service
+    transmission-og-daemon.service
 
 dist_man_MANS = \
-    transmission-daemon.1
+    transmission-og-daemon.1
 
 LDADD = \
     $(top_builddir)/libtransmission/libtransmission.a \
@@ -489,8 +489,9 @@ LDADD = \
     ${LIBM}
 
 noinst_HEADERS = daemon.h
-transmission_daemon_SOURCES = daemon.c $(am__append_1) $(am__append_2)
-nodist_EXTRA_transmission_daemon_SOURCES = dummy.cxx # force C++ linking
+transmission_og_daemon_SOURCES = daemon.c $(am__append_1) \
+	$(am__append_2)
+nodist_EXTRA_transmission_og_daemon_SOURCES = dummy.cxx # force C++ linking
 all: all-am
 
 .SUFFIXES:
@@ -574,9 +575,9 @@ clean-binPROGRAMS:
 	echo " rm -f" $$list; \
 	rm -f $$list
 
-transmission-daemon$(EXEEXT): $(transmission_daemon_OBJECTS) $(transmission_daemon_DEPENDENCIES) $(EXTRA_transmission_daemon_DEPENDENCIES) 
-	@rm -f transmission-daemon$(EXEEXT)
-	$(AM_V_CXXLD)$(CXXLINK) $(transmission_daemon_OBJECTS) $(transmission_daemon_LDADD) $(LIBS)
+transmission-og-daemon$(EXEEXT): $(transmission_og_daemon_OBJECTS) $(transmission_og_daemon_DEPENDENCIES) $(EXTRA_transmission_og_daemon_DEPENDENCIES) 
+	@rm -f transmission-og-daemon$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(transmission_og_daemon_OBJECTS) $(transmission_og_daemon_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)

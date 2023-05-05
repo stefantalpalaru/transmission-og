@@ -61,8 +61,6 @@
       <menuitem action='toggle-message-log'/> 
       <menuitem action='show-stats'/> 
       <separator/> 
-      <menuitem action='donate'/> 
-      <separator/> 
       <menuitem action='help'/> 
       <menuitem action='show-about-dialog'/> 
     </menu> 

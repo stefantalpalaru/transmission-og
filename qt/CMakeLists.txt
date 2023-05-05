@@ -188,7 +188,7 @@ include_directories(
 )
 
 tr_win32_app_info(${PROJECT_NAME}_WIN32_RC_FILE
-    "Transmission Qt Client"
+    "Transmission OG Qt Client"
     "transmission-qt"
     "transmission-qt.exe"
     "qtr.ico")
@@ -242,7 +242,7 @@ if(INSTALL_DOC)
     install(FILES ${TR_NAME}-qt.1 DESTINATION ${CMAKE_INSTALL_MANDIR}/man1)
 endif()
 
-install(FILES transmission-qt.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
+install(FILES transmission-og-qt.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
 
 if(ENABLE_NLS)
     install(FILES ${${PROJECT_NAME}_QM_FILES} DESTINATION ${CMAKE_INSTALL_DATADIR}/${TR_NAME}/translations)

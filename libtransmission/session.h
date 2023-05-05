@@ -12,7 +12,7 @@
 #error only libtransmission should #include this header.
 #endif
 
-#define TR_NAME "Transmission"
+#define TR_NAME "Transmission OG"
 
 #include <libutp/utp.h>
 
@@ -167,7 +167,7 @@ struct tr_session
      * The open port on the public device for incoming peer requests.
      * This is usually the same as private_peer_port but can differ
      * if the public device is a router and it decides to use a different
-     * port than the one requested by Transmission.
+     * port than the one requested by Transmission OG.
      */
     tr_port public_peer_port;
 
