@@ -23,7 +23,7 @@ class InteropObject : public QObject
     Q_CLASSINFO("InterfaceID", "{9402f54f-4906-4f20-ad73-afcfeb5b228d}")
     Q_CLASSINFO("RegisterObject", "yes")
     Q_CLASSINFO("CoClassAlias", "QtClient")
-    Q_CLASSINFO("Description", "Transmission Qt Client Class")
+    Q_CLASSINFO("Description", "Transmission OG Qt Client Class")
 #endif
 
 public:

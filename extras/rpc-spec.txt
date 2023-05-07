@@ -817,9 +817,9 @@
    These features will be removed three months after 2.80's release:
 
    1. session-get's 'download-dir-free-space' argument will be removed.
-      Its functionality has been superceded by the 'free-space' method.
+      Its functionality has been superseded by the 'free-space' method.
 
    2. HTTP POSTs to http://server:port/transmission/upload will fail.
       This was an undocumented hack to allow web clients to add files without
-      client-side access to the file. This functionality is superceded by
+      client-side access to the file. This functionality is superseded by
       using HTML5's FileReader object + the documented 'torrent-add' method.

@@ -6,14 +6,14 @@ AM_CFLAGS = \
     @ZLIB_CFLAGS@ \
     @PTHREAD_CFLAGS@
 
-bin_PROGRAMS = transmission-cli
+bin_PROGRAMS = transmission-og-cli
 
-dist_man_MANS = transmission-cli.1
+dist_man_MANS = transmission-og-cli.1
 
-transmission_cli_SOURCES = cli.c
-nodist_EXTRA_transmission_cli_SOURCES = dummy.cxx # force C++ linking
+transmission_og_cli_SOURCES = cli.c
+nodist_EXTRA_transmission_og_cli_SOURCES = dummy.cxx # force C++ linking
 
-transmission_cli_LDADD = \
+transmission_og_cli_LDADD = \
     $(top_builddir)/libtransmission/libtransmission.a \
     @LIBNATPMP_LIBS@ \
     @LIBUPNP_LIBS@ \

@@ -183,7 +183,7 @@ Application::Application(int& argc, char** argv) :
         }
     }
 
-    // try to delegate the work to an existing copy of Transmission
+    // try to delegate the work to an existing copy of Transmission OG
     // before starting ourselves...
     InteropHelper interopClient;
 
@@ -340,7 +340,7 @@ Application::Application(int& argc, char** argv) :
     if (!myPrefs->getBool(Prefs::USER_HAS_GIVEN_INFORMED_CONSENT))
     {
         QMessageBox* dialog = new QMessageBox(QMessageBox::Information, QString(),
-            tr("<b>Transmission is a file sharing program.</b>"), QMessageBox::Ok | QMessageBox::Cancel, myWindow);
+            tr("<b>Transmission OG is a file sharing program.</b>"), QMessageBox::Ok | QMessageBox::Cancel, myWindow);
         dialog->setInformativeText(tr("When you run a torrent, its data will be made available to others by means of upload. "
             "Any content you share is your sole responsibility."));
         dialog->button(QMessageBox::Ok)->setText(tr("I &Agree"));
@@ -603,7 +603,7 @@ bool Application::notifyApp(QString const& title, QString const& body) const
     {
         QDBusMessage m = QDBusMessage::createMethodCall(dbusServiceName, dbusPath, dbusInterfaceName, QLatin1String("Notify"));
         QVariantList args;
-        args.append(QLatin1String("Transmission")); // app_name
+        args.append(QLatin1String("Transmission OG")); // app_name
         args.append(0U); // replaces_id
         args.append(QLatin1String("transmission")); // icon
         args.append(title); // summary

@@ -59,8 +59,8 @@ msgid "Sort by Si_ze"
 msgstr "Susun mengikut Sa_iz"
 
 #: ../gtk/actions.c:53
-msgid "_Show Transmission"
-msgstr "_Papar Transmission"
+msgid "_Show Transmission OG"
+msgstr "_Papar Transmission OG"
 
 #: ../gtk/actions.c:54
 msgid "Message _Log"
@@ -859,7 +859,7 @@ msgstr ""
 
 #: ../gtk/main.c:314
 #, c-format
-msgid "Error registering Transmission as a %s handler: %s"
+msgid "Error registering Transmission OG as a %s handler: %s"
 msgstr ""
 
 #: ../gtk/main.c:480
@@ -884,8 +884,8 @@ msgid "Show version number and exit"
 msgstr "Papar nombor versi dan keluar"
 
 #: ../gtk/main.c:637 ../gtk/transmission-gtk.appdata.xml.in:11 ../gtk/transmission-gtk.desktop.in:3
-msgid "Transmission"
-msgstr "Transmission"
+msgid "Transmission OG"
+msgstr "Transmission OG"
 
 #. parse the command line
 #: ../gtk/main.c:640
@@ -902,7 +902,7 @@ msgstr ""
 "Jalankan '%s --help' untuk melihat senarai penuh pilihan baris perintah yang tersedia.\n"
 
 #: ../gtk/main.c:746
-msgid "Transmission is a file sharing program. When you run a torrent, its data will be made available to others by means of upload. Any content you share is your sole responsibility."
+msgid "Transmission OG is a file sharing program. When you run a torrent, its data will be made available to others by means of upload. Any content you share is your sole responsibility."
 msgstr ""
 
 #: ../gtk/main.c:749
@@ -936,8 +936,8 @@ msgid "A fast and easy BitTorrent client"
 msgstr "Klien BitTorrent yang mudah dan pantas"
 
 #: ../gtk/main.c:1364
-msgid "Copyright (c) The Transmission Project"
-msgstr "Hakcipta (c) Projek Transmission"
+msgid "Copyright (c) The Transmission OG Project"
+msgstr "Hakcipta (c) Projek Transmission OG"
 
 #. Translators: translate "translator-credits" as your name
 #. to have it appear in the credits in the "About"
@@ -1387,7 +1387,7 @@ msgstr ""
 #: ../gtk/tr-icon.c:109
 #, c-format
 msgid ""
-"Transmission\n"
+"Transmission OG\n"
 "Up: %1$s %2$s\n"
 "Down: %3$s %4$s"
 msgstr ""
@@ -1465,8 +1465,8 @@ msgid "_Inhibit hibernation when torrents are active"
 msgstr "_rencatkan hibernasi bila torrent aktif"
 
 #: ../gtk/tr-prefs.c:371
-msgid "Show Transmission icon in the _notification area"
-msgstr "Papar ikon Transmission didalam kawasan _pemberitahuan"
+msgid "Show Transmission OG icon in the _notification area"
+msgstr "Papar ikon Transmission OG didalam kawasan _pemberitahuan"
 
 #: ../gtk/tr-prefs.c:376
 msgid "Notification"
@@ -1706,8 +1706,8 @@ msgid "Te_st Port"
 msgstr "U_ji Port"
 
 #: ../gtk/tr-prefs.c:1147
-msgid "Pick a _random port every time Transmission is started"
-msgstr "Ambil port _rawak setiap kali Transmission dimulakan"
+msgid "Pick a _random port every time Transmission OG is started"
+msgstr "Ambil port _rawak setiap kali Transmission OG dimulakan"
 
 #: ../gtk/tr-prefs.c:1151
 msgid "Use UPnP or NAT-PMP port _forwarding from my router"
@@ -1758,8 +1758,8 @@ msgid "LPD is a tool for finding peers on your local network."
 msgstr "LDP adalah alat untuk mencari rakan didalam rangkaian setempat anda."
 
 #: ../gtk/tr-prefs.c:1244
-msgid "Transmission Preferences"
-msgstr "Keutamaan Transmission"
+msgid "Transmission OG Preferences"
+msgstr "Keutamaan Transmission OG"
 
 #: ../gtk/tr-prefs.c:1254
 msgctxt "Gerund"
@@ -1874,11 +1874,11 @@ msgid "BitTorrent is a peer-to-peer file-sharing protocol that is commonly used 
 msgstr ""
 
 #: ../gtk/transmission-gtk.appdata.xml.in:20
-msgid "Transmission is a BitTorrent client with an easy-to-use frontend on top a cross-platform backend. Native frontends are available for OS X and Windows, as well as command line and web frontends."
+msgid "Transmission OG is a BitTorrent client with an easy-to-use frontend on top a cross-platform backend. Native frontends are available for OS X and Windows, as well as command line and web frontends."
 msgstr ""
 
 #: ../gtk/transmission-gtk.appdata.xml.in:26
-msgid "Notable features of Transmission include support for Local Peer Discovery, encryption, DHT, µTP, PEX and Magnet Link."
+msgid "Notable features of Transmission OG include support for Local Peer Discovery, encryption, DHT, µTP, PEX and Magnet Link."
 msgstr ""
 
 #: ../gtk/transmission-gtk.desktop.in:4
@@ -1891,11 +1891,11 @@ msgid "torrents;downloading;uploading;share;sharing;"
 msgstr ""
 
 #: ../gtk/transmission-gtk.desktop.in:21
-msgid "Start Transmission with All Torrents Paused"
+msgid "Start Transmission OG with All Torrents Paused"
 msgstr ""
 
 #: ../gtk/transmission-gtk.desktop.in:25
-msgid "Start Transmission Minimized"
+msgid "Start Transmission OG Minimized"
 msgstr ""
 
 #: ../gtk/util.c:36
@@ -1995,8 +1995,8 @@ msgstr "URL tidak dikenalpasti"
 
 #: ../gtk/util.c:596
 #, c-format
-msgid "Transmission doesn't know how to use \"%s\""
-msgstr "Transmission tidak tahu bagaimana hendak gunakan \"%s\""
+msgid "Transmission OG doesn't know how to use \"%s\""
+msgstr "Transmission OG tidak tahu bagaimana hendak gunakan \"%s\""
 
 #: ../gtk/util.c:601
 #, c-format
@@ -2162,8 +2162,8 @@ msgid "Couldn't connect socket %<PRIdMAX> to %s, port %d (errno %d - %s)"
 msgstr ""
 
 #: ../libtransmission/net.c:436
-msgid "Is another copy of Transmission already running?"
-msgstr "Adakah Transmission sudah dijalankan?"
+msgid "Is another copy of Transmission OG already running?"
+msgstr "Adakah Transmission OG sudah dijalankan?"
 
 #: ../libtransmission/net.c:445
 #, c-format
@@ -2286,7 +2286,7 @@ msgid "Removing torrent"
 msgstr "Membuang torrent"
 
 #. Translators: this is a minor point that's safe to skip over, but FYI:
-#. "Complete" and "Done" are specific, different terms in Transmission:
+#. "Complete" and "Done" are specific, different terms in Transmission OG:
 #. "Complete" means we've downloaded every file in the torrent.
 #. "Done" means we're done downloading the files we wanted, but NOT all
 #. that exist
@@ -2367,8 +2367,8 @@ msgstr "Mengesahkan torrent"
 #~ msgid "Server returned \"%1$ld %2$s\""
 #~ msgstr "Pelayan mengembalikan \"%1$ld %2$s\""
 
-#~ msgid "Transmission BitTorrent Client"
-#~ msgstr "Klien BitTorrent Transmission"
+#~ msgid "Transmission OG BitTorrent Client"
+#~ msgstr "Klien BitTorrent Transmission OG"
 
 #, c-format
 #~ msgid "Error opening \"%s\""

@@ -202,15 +202,15 @@ char* tr_clientForId(char* buf, size_t buflen, void const* id_in)
         {
             if (strncmp(chid + 3, "000", 3) == 0) /* very old client style: -TR0006- is 0.6 */
             {
-                tr_snprintf(buf, buflen, "Transmission 0.%c", id[6]);
+                tr_snprintf(buf, buflen, "Transmission OG 0.%c", id[6]);
             }
             else if (strncmp(chid + 3, "00", 2) == 0) /* previous client style: -TR0072- is 0.72 */
             {
-                tr_snprintf(buf, buflen, "Transmission 0.%02d", strint(id + 5, 2));
+                tr_snprintf(buf, buflen, "Transmission OG 0.%02d", strint(id + 5, 2));
             }
             else /* current client style: -TR111Z- is 1.11+ */
             {
-                tr_snprintf(buf, buflen, "Transmission %d.%02d%s", strint(id + 3, 1), strint(id + 4, 2),
+                tr_snprintf(buf, buflen, "Transmission OG %d.%02d%s", strint(id + 3, 1), strint(id + 4, 2),
                     (id[6] == 'Z' || id[6] == 'X') ? "+" : "");
             }
         }

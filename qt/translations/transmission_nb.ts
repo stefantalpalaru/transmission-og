@@ -5,13 +5,13 @@
     <name>AboutDialog</name>
     <message>
         <location filename="../AboutDialog.ui" line="+14"/>
-        <source>About Transmission</source>
+        <source>About Transmission OG</source>
         <translation>Om Overføring</translation>
     </message>
     <message>
         <location filename="../AboutDialog.cc" line="+28"/>
-        <source>&lt;b style=&apos;font-size:x-large&apos;&gt;Transmission %1&lt;/b&gt;</source>
-        <translation>&lt;b style=&apos;font-size:x-large&apos;&gt;Transmission %1&lt;/b&gt;</translation>
+        <source>&lt;b style=&apos;font-size:x-large&apos;&gt;Transmission OG %1&lt;/b&gt;</source>
+        <translation>&lt;b style=&apos;font-size:x-large&apos;&gt;Transmission OG %1&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../AboutDialog.ui" line="+29"/>
@@ -20,8 +20,8 @@
     </message>
     <message>
         <location line="+10"/>
-        <source>Copyright (c) The Transmission Project</source>
-        <translation>Opphavsrett (o) The Transmission Project</translation>
+        <source>Copyright (c) The Transmission OG Project</source>
+        <translation>Opphavsrett (o) The Transmission OG Project</translation>
     </message>
     <message>
         <location filename="../AboutDialog.cc" line="+4"/>
@@ -43,8 +43,8 @@
     <name>Application</name>
     <message>
         <location filename="../Application.cc" line="+343"/>
-        <source>&lt;b&gt;Transmission is a file sharing program.&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Transmission er et fildelingsprogram.&lt;/b&gt;</translation>
+        <source>&lt;b&gt;Transmission OG is a file sharing program.&lt;/b&gt;</source>
+        <translation>&lt;b&gt;Transmission OG er et fildelingsprogram.&lt;/b&gt;</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -856,7 +856,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../MainWindow.ui" line="+14"/>
-        <source>Transmission</source>
+        <source>Transmission OG</source>
         <translation>Overføring</translation>
     </message>
     <message>
@@ -1272,7 +1272,7 @@
     <message>
         <location line="-406"/>
         <source> - %1:%2</source>
-        <extracomment>Second (optional) part of main window title &quot;Transmission - host:port&quot; (added when connected to remote session); notice that leading space (before the dash) is included here</extracomment>
+        <extracomment>Second (optional) part of main window title &quot;Transmission OG - host:port&quot; (added when connected to remote session); notice that leading space (before the dash) is included here</extracomment>
         <translation> - %1:%2</translation>
     </message>
     <message>
@@ -1863,8 +1863,8 @@ For å legge til en primær URL, legg den til etter en tom linje.</translation>
     </message>
     <message>
         <location filename="../PrefsDialog.ui" line="-287"/>
-        <source>Pick a &amp;random port every time Transmission is started</source>
-        <translation>Velg en &amp;tilfeldig port hver gang Transmission startes</translation>
+        <source>Pick a &amp;random port every time Transmission OG is started</source>
+        <translation>Velg en &amp;tilfeldig port hver gang Transmission OG startes</translation>
     </message>
     <message>
         <location line="-252"/>
@@ -1937,8 +1937,8 @@ For å legge til en primær URL, legg den til etter en tom linje.</translation>
     </message>
     <message>
         <location line="+12"/>
-        <source>Show Transmission icon in the &amp;notification area</source>
-        <translation>Vis Transmission-ikon i &amp;merknadsområde</translation>
+        <source>Show Transmission OG icon in the &amp;notification area</source>
+        <translation>Vis Transmission OG-ikon i &amp;merknadsområde</translation>
     </message>
     <message>
         <location line="-213"/>
@@ -2143,8 +2143,8 @@ For å legge til en primær URL, legg den til etter en tom linje.</translation>
     </message>
     <message>
         <location line="-557"/>
-        <source>Transmission Preferences</source>
-        <translation>Transmission-innstillinger</translation>
+        <source>Transmission OG Preferences</source>
+        <translation>Transmission OG-innstillinger</translation>
     </message>
     <message>
         <location line="+16"/>

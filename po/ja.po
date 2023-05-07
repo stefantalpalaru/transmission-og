@@ -63,8 +63,8 @@ msgid "Sort by Si_ze"
 msgstr "サイズ順に並び替え(_Z)"
 
 #: ../gtk/actions.c:53
-msgid "_Show Transmission"
-msgstr "Transmission ウインドウを表示(_S)"
+msgid "_Show Transmission OG"
+msgstr "Transmission OG ウインドウを表示(_S)"
 
 #: ../gtk/actions.c:54
 msgid "Message _Log"
@@ -863,8 +863,8 @@ msgstr "%'d 個の表示(_S):"
 
 #: ../gtk/main.c:314
 #, c-format
-msgid "Error registering Transmission as a %s handler: %s"
-msgstr "Transmission を %s のハンドラとして登録時にエラー: %s"
+msgid "Error registering Transmission OG as a %s handler: %s"
+msgstr "Transmission OG を %s のハンドラとして登録時にエラー: %s"
 
 #: ../gtk/main.c:480
 #, c-format
@@ -888,8 +888,8 @@ msgid "Show version number and exit"
 msgstr "バージョンを表示して終了"
 
 #: ../gtk/main.c:637 ../gtk/transmission-gtk.appdata.xml.in:11 ../gtk/transmission-gtk.desktop.in:3
-msgid "Transmission"
-msgstr "Transmission"
+msgid "Transmission OG"
+msgstr "Transmission OG"
 
 #. parse the command line
 #: ../gtk/main.c:640
@@ -906,8 +906,8 @@ msgstr ""
 "'%s --help' で利用できるすべてのコマンドラインのオプションが表示されます。\n"
 
 #: ../gtk/main.c:746
-msgid "Transmission is a file sharing program. When you run a torrent, its data will be made available to others by means of upload. Any content you share is your sole responsibility."
-msgstr "Transmission はファイル共有プログラムです。トレントを利用すると、アップロードを通じてそのデータを他者が入手できるようになります。あなたが共有するコンテンツは、すべてあなた自身の責任です。"
+msgid "Transmission OG is a file sharing program. When you run a torrent, its data will be made available to others by means of upload. Any content you share is your sole responsibility."
+msgstr "Transmission OG はファイル共有プログラムです。トレントを利用すると、アップロードを通じてそのデータを他者が入手できるようになります。あなたが共有するコンテンツは、すべてあなた自身の責任です。"
 
 #: ../gtk/main.c:749
 msgid "I _Agree"
@@ -940,8 +940,8 @@ msgid "A fast and easy BitTorrent client"
 msgstr "高速で簡単な BitTorrent クライアント"
 
 #: ../gtk/main.c:1364
-msgid "Copyright (c) The Transmission Project"
-msgstr "Copyright (c) The Transmission Project"
+msgid "Copyright (c) The Transmission OG Project"
+msgstr "Copyright (c) The Transmission OG Project"
 
 #. Translators: translate "translator-credits" as your name
 #. to have it appear in the credits in the "About"
@@ -1417,11 +1417,11 @@ msgstr " (制限: %s)"
 #: ../gtk/tr-icon.c:109
 #, c-format
 msgid ""
-"Transmission\n"
+"Transmission OG\n"
 "Up: %1$s %2$s\n"
 "Down: %3$s %4$s"
 msgstr ""
-"Transmission\n"
+"Transmission OG\n"
 "上り: %1$s %2$s\n"
 "下り: %3$s %4$s"
 
@@ -1495,8 +1495,8 @@ msgid "_Inhibit hibernation when torrents are active"
 msgstr "トレント稼働中は休止状態を抑制(_I)"
 
 #: ../gtk/tr-prefs.c:371
-msgid "Show Transmission icon in the _notification area"
-msgstr "通知領域に Transmission のアイコンを表示(_N)"
+msgid "Show Transmission OG icon in the _notification area"
+msgstr "通知領域に Transmission OG のアイコンを表示(_N)"
 
 #: ../gtk/tr-prefs.c:376
 msgid "Notification"
@@ -1736,8 +1736,8 @@ msgid "Te_st Port"
 msgstr "ポートのテスト(_S)"
 
 #: ../gtk/tr-prefs.c:1147
-msgid "Pick a _random port every time Transmission is started"
-msgstr "Transmission の起動ごとにランダムにポートを変更(_R)"
+msgid "Pick a _random port every time Transmission OG is started"
+msgstr "Transmission OG の起動ごとにランダムにポートを変更(_R)"
 
 #: ../gtk/tr-prefs.c:1151
 msgid "Use UPnP or NAT-PMP port _forwarding from my router"
@@ -1788,8 +1788,8 @@ msgid "LPD is a tool for finding peers on your local network."
 msgstr "LPD はローカル・ネットワーク上のピアを検索するツールです。"
 
 #: ../gtk/tr-prefs.c:1244
-msgid "Transmission Preferences"
-msgstr "Transmission 設定"
+msgid "Transmission OG Preferences"
+msgstr "Transmission OG 設定"
 
 #: ../gtk/tr-prefs.c:1254
 msgctxt "Gerund"
@@ -1908,12 +1908,12 @@ msgid "BitTorrent is a peer-to-peer file-sharing protocol that is commonly used 
 msgstr "BitTorrent は多数のユーザー間で大量のデータを配信するために一般的に使用されるピアツーピアのファイル共有プロトコルです。"
 
 #: ../gtk/transmission-gtk.appdata.xml.in:20
-msgid "Transmission is a BitTorrent client with an easy-to-use frontend on top a cross-platform backend. Native frontends are available for OS X and Windows, as well as command line and web frontends."
-msgstr "Transmission は、クロスプラットフォームのバックエンド層上にお手軽なフロントエンドを備えた BitTorrent クライアントです。用意されたフロントエンドは、OS X と Windows のほか、コマンドラインやウェブでも利用できます。"
+msgid "Transmission OG is a BitTorrent client with an easy-to-use frontend on top a cross-platform backend. Native frontends are available for OS X and Windows, as well as command line and web frontends."
+msgstr "Transmission OG は、クロスプラットフォームのバックエンド層上にお手軽なフロントエンドを備えた BitTorrent クライアントです。用意されたフロントエンドは、OS X と Windows のほか、コマンドラインやウェブでも利用できます。"
 
 #: ../gtk/transmission-gtk.appdata.xml.in:26
-msgid "Notable features of Transmission include support for Local Peer Discovery, encryption, DHT, µTP, PEX and Magnet Link."
-msgstr "Transmission の特徴的な機能には、ローカルピア探索、暗号化、DHT、μTP、PEX、およびマグネットリンクへの対応が含まれます。"
+msgid "Notable features of Transmission OG include support for Local Peer Discovery, encryption, DHT, µTP, PEX and Magnet Link."
+msgstr "Transmission OG の特徴的な機能には、ローカルピア探索、暗号化、DHT、μTP、PEX、およびマグネットリンクへの対応が含まれます。"
 
 #: ../gtk/transmission-gtk.desktop.in:4
 msgid "BitTorrent Client"
@@ -1925,12 +1925,12 @@ msgid "torrents;downloading;uploading;share;sharing;"
 msgstr "トレント;ダウンロード中;アップロード中;共有;共有中;"
 
 #: ../gtk/transmission-gtk.desktop.in:21
-msgid "Start Transmission with All Torrents Paused"
-msgstr "全トレントを停止状態で Transmission を起動"
+msgid "Start Transmission OG with All Torrents Paused"
+msgstr "全トレントを停止状態で Transmission OG を起動"
 
 #: ../gtk/transmission-gtk.desktop.in:25
-msgid "Start Transmission Minimized"
-msgstr "最小化して Transmission を起動"
+msgid "Start Transmission OG Minimized"
+msgstr "最小化して Transmission OG を起動"
 
 #: ../gtk/util.c:36
 msgid "KiB"
@@ -2029,8 +2029,8 @@ msgstr "認識できない URL"
 
 #: ../gtk/util.c:596
 #, c-format
-msgid "Transmission doesn't know how to use \"%s\""
-msgstr "Transmission は「%s」を認識できません"
+msgid "Transmission OG doesn't know how to use \"%s\""
+msgstr "Transmission OG は「%s」を認識できません"
 
 #: ../gtk/util.c:601
 #, c-format
@@ -2196,8 +2196,8 @@ msgid "Couldn't connect socket %<PRIdMAX> to %s, port %d (errno %d - %s)"
 msgstr "ソケット %<PRIdMAX>に接続できません  %s, ポート %d (エラー番号 %d - %s)"
 
 #: ../libtransmission/net.c:436
-msgid "Is another copy of Transmission already running?"
-msgstr "他の Transmission プログラムをすでに実行していませんか?"
+msgid "Is another copy of Transmission OG already running?"
+msgstr "他の Transmission OG プログラムをすでに実行していませんか?"
 
 #: ../libtransmission/net.c:445
 #, c-format
@@ -2320,7 +2320,7 @@ msgid "Removing torrent"
 msgstr "トレントの削除"
 
 #. Translators: this is a minor point that's safe to skip over, but FYI:
-#. "Complete" and "Done" are specific, different terms in Transmission:
+#. "Complete" and "Done" are specific, different terms in Transmission OG:
 #. "Complete" means we've downloaded every file in the torrent.
 #. "Done" means we're done downloading the files we wanted, but NOT all
 #. that exist

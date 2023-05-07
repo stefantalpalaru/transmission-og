@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2008-2012 Transmission authors and contributors
+ * Copyright (c) 2008-2012 Transmission OG authors and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -47,7 +47,7 @@ BonjourController * fDefaultController = nil;
 {
     [self stop];
 
-    NSMutableString * serviceName = [NSMutableString stringWithFormat: @"Transmission (%@ - %@)", NSUserName(), [[NSHost currentHost] localizedName]];
+    NSMutableString * serviceName = [NSMutableString stringWithFormat: @"Transmission OG (%@ - %@)", NSUserName(), [[NSHost currentHost] localizedName]];
     if ([serviceName length] > BONJOUR_SERVICE_NAME_MAX_LENGTH)
         [serviceName deleteCharactersInRange: NSMakeRange(BONJOUR_SERVICE_NAME_MAX_LENGTH, [serviceName length] - BONJOUR_SERVICE_NAME_MAX_LENGTH)];
 

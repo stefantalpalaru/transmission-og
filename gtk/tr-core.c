@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) Transmission authors and contributors
+ * Copyright (c) Transmission OG authors and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -1588,7 +1588,7 @@ static gboolean gtr_inhibit_hibernation(guint* cookie)
     GVariant* response;
     GDBusConnection* connection;
     GError* err = NULL;
-    char const* application = "Transmission BitTorrent Client";
+    char const* application = "Transmission OG BitTorrent Client";
     char const* reason = "BitTorrent Activity";
     int const toplevel_xid = 0;
     int const flags = 4; /* Inhibit suspending the session or computer */

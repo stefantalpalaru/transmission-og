@@ -59,7 +59,7 @@ msgid "Sort by Si_ze"
 msgstr "పరిమాణాన్ని బట్టి క్రమబద్దీకరించు(_z)"
 
 #: ../gtk/actions.c:53
-msgid "_Show Transmission"
+msgid "_Show Transmission OG"
 msgstr "ట్రాన్స్​మిషన్ను చూపించు (_S)"
 
 #: ../gtk/actions.c:54
@@ -868,7 +868,7 @@ msgstr ""
 
 #: ../gtk/main.c:314
 #, c-format
-msgid "Error registering Transmission as a %s handler: %s"
+msgid "Error registering Transmission OG as a %s handler: %s"
 msgstr ""
 
 #: ../gtk/main.c:480
@@ -893,7 +893,7 @@ msgid "Show version number and exit"
 msgstr "వెర్షన్ సంఖ్యను చూపించు మరియు నిష్క్రమించు"
 
 #: ../gtk/main.c:637 ../gtk/transmission-gtk.appdata.xml.in:11 ../gtk/transmission-gtk.desktop.in:3
-msgid "Transmission"
+msgid "Transmission OG"
 msgstr "ట్రాన్స్‍మిషన్"
 
 #. parse the command line
@@ -911,7 +911,7 @@ msgstr ""
 "అందుబాటులో వున్న ఆదేశ వరుస ఐచ్చికముల పూర్తి జాబితా కొరకు '%s --help' నడుపండి.\n"
 
 #: ../gtk/main.c:746
-msgid "Transmission is a file sharing program. When you run a torrent, its data will be made available to others by means of upload. Any content you share is your sole responsibility."
+msgid "Transmission OG is a file sharing program. When you run a torrent, its data will be made available to others by means of upload. Any content you share is your sole responsibility."
 msgstr ""
 
 #: ../gtk/main.c:749
@@ -947,8 +947,8 @@ msgid "A fast and easy BitTorrent client"
 msgstr "ఒక వేగవంతమైన & సులభమైన బిట్ టోరెంట్ క్లైంట్"
 
 #: ../gtk/main.c:1364
-msgid "Copyright (c) The Transmission Project"
-msgstr "నకలుహక్కులు (c) The Transmission Project"
+msgid "Copyright (c) The Transmission OG Project"
+msgstr "నకలుహక్కులు (c) The Transmission OG Project"
 
 #. Translators: translate "translator-credits" as your name
 #. to have it appear in the credits in the "About"
@@ -1406,7 +1406,7 @@ msgstr ""
 #: ../gtk/tr-icon.c:109
 #, c-format
 msgid ""
-"Transmission\n"
+"Transmission OG\n"
 "Up: %1$s %2$s\n"
 "Down: %3$s %4$s"
 msgstr ""
@@ -1484,7 +1484,7 @@ msgid "_Inhibit hibernation when torrents are active"
 msgstr "టోరెంట్లు నడుస్తున్నప్పుడు కంప్యూటర్ని సుప్తావస్థలోకి వెళ్ళనియ్యకు(_I)"
 
 #: ../gtk/tr-prefs.c:371
-msgid "Show Transmission icon in the _notification area"
+msgid "Show Transmission OG icon in the _notification area"
 msgstr "గమనికల ప్రాంతంలో ట్రాన్స్ మిషన్ ఐకాన్ను చూపించు(_n)"
 
 #: ../gtk/tr-prefs.c:376
@@ -1727,7 +1727,7 @@ msgid "Te_st Port"
 msgstr "మార్గాన్ని పరీక్షించు(_s)"
 
 #: ../gtk/tr-prefs.c:1147
-msgid "Pick a _random port every time Transmission is started"
+msgid "Pick a _random port every time Transmission OG is started"
 msgstr "ప్రతీసారి ట్రాన్స్ మిషన్ ప్రారంభించబడినపుడు ఒక యాదృచ్ఛిక మార్గాన్ని  ఎన్నుకొను(_r)"
 
 #: ../gtk/tr-prefs.c:1151
@@ -1779,7 +1779,7 @@ msgid "LPD is a tool for finding peers on your local network."
 msgstr "మీ స్థానిక నెట్వర్కు నందు పీర్లను కనుగొనుట కొరకు LPD అనేది ఒక సాధనం."
 
 #: ../gtk/tr-prefs.c:1244
-msgid "Transmission Preferences"
+msgid "Transmission OG Preferences"
 msgstr "ట్రాన్స్​మిషన్ అభిరుచులు"
 
 #: ../gtk/tr-prefs.c:1254
@@ -1895,11 +1895,11 @@ msgid "BitTorrent is a peer-to-peer file-sharing protocol that is commonly used 
 msgstr ""
 
 #: ../gtk/transmission-gtk.appdata.xml.in:20
-msgid "Transmission is a BitTorrent client with an easy-to-use frontend on top a cross-platform backend. Native frontends are available for OS X and Windows, as well as command line and web frontends."
+msgid "Transmission OG is a BitTorrent client with an easy-to-use frontend on top a cross-platform backend. Native frontends are available for OS X and Windows, as well as command line and web frontends."
 msgstr ""
 
 #: ../gtk/transmission-gtk.appdata.xml.in:26
-msgid "Notable features of Transmission include support for Local Peer Discovery, encryption, DHT, µTP, PEX and Magnet Link."
+msgid "Notable features of Transmission OG include support for Local Peer Discovery, encryption, DHT, µTP, PEX and Magnet Link."
 msgstr ""
 
 #: ../gtk/transmission-gtk.desktop.in:4
@@ -1912,11 +1912,11 @@ msgid "torrents;downloading;uploading;share;sharing;"
 msgstr ""
 
 #: ../gtk/transmission-gtk.desktop.in:21
-msgid "Start Transmission with All Torrents Paused"
+msgid "Start Transmission OG with All Torrents Paused"
 msgstr ""
 
 #: ../gtk/transmission-gtk.desktop.in:25
-msgid "Start Transmission Minimized"
+msgid "Start Transmission OG Minimized"
 msgstr ""
 
 #: ../gtk/util.c:36
@@ -2020,7 +2020,7 @@ msgstr "గుర్తుపట్టని URL"
 
 #: ../gtk/util.c:596
 #, c-format
-msgid "Transmission doesn't know how to use \"%s\""
+msgid "Transmission OG doesn't know how to use \"%s\""
 msgstr "\"%s\" ని ఎలా వాడాలో ట్రాన్స్ మిషన్ కు తెలియదు"
 
 #: ../gtk/util.c:601
@@ -2187,7 +2187,7 @@ msgid "Couldn't connect socket %<PRIdMAX> to %s, port %d (errno %d - %s)"
 msgstr ""
 
 #: ../libtransmission/net.c:436
-msgid "Is another copy of Transmission already running?"
+msgid "Is another copy of Transmission OG already running?"
 msgstr "మరొక ట్రాన్స్ మిషన్ నకలు ఇంతకు ముందు నుంచే నడుచుచున్నదా?"
 
 #: ../libtransmission/net.c:445
@@ -2311,7 +2311,7 @@ msgid "Removing torrent"
 msgstr "టోరెంటు తొలగించబడుతోంది"
 
 #. Translators: this is a minor point that's safe to skip over, but FYI:
-#. "Complete" and "Done" are specific, different terms in Transmission:
+#. "Complete" and "Done" are specific, different terms in Transmission OG:
 #. "Complete" means we've downloaded every file in the torrent.
 #. "Done" means we're done downloading the files we wanted, but NOT all
 #. that exist
@@ -2392,7 +2392,7 @@ msgstr "టోరెంట్ని తనిఖీచేస్తున్న�
 #~ msgid "Server returned \"%1$ld %2$s\""
 #~ msgstr "\"%1$ld %2$s\" సేవిక తిరిగియిచ్చింది"
 
-#~ msgid "Transmission BitTorrent Client"
+#~ msgid "Transmission OG BitTorrent Client"
 #~ msgstr "ట్రాన్స్​మిషన్ బిట్ టోరెంట్ క్లయింటు"
 
 #, c-format

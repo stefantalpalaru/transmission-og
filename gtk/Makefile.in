@@ -90,7 +90,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-bin_PROGRAMS = transmission-gtk$(EXEEXT)
+bin_PROGRAMS = transmission-og-gtk$(EXEEXT)
 @WIN32_TRUE@am__append_1 = transmission.res
 @WIN32_TRUE@am__append_2 = transmission.res
 @WIN32_TRUE@am__append_3 = transmission.res
@@ -113,7 +113,7 @@ am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(man1dir)" \
 	"$(DESTDIR)$(Productivitydir)" "$(DESTDIR)$(appdatadir)" \
 	"$(DESTDIR)$(icondir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_transmission_gtk_OBJECTS = actions.$(OBJEXT) conf.$(OBJEXT) \
+am_transmission_og_gtk_OBJECTS = actions.$(OBJEXT) conf.$(OBJEXT) \
 	details.$(OBJEXT) dialogs.$(OBJEXT) favicon.$(OBJEXT) \
 	file-list.$(OBJEXT) filter.$(OBJEXT) hig.$(OBJEXT) \
 	icons.$(OBJEXT) main.$(OBJEXT) makemeta-ui.$(OBJEXT) \
@@ -123,18 +123,18 @@ am_transmission_gtk_OBJECTS = actions.$(OBJEXT) conf.$(OBJEXT) \
 	transmission-resources.$(OBJEXT) tr-core.$(OBJEXT) \
 	tr-icon.$(OBJEXT) tr-prefs.$(OBJEXT) tr-window.$(OBJEXT) \
 	util.$(OBJEXT)
-transmission_gtk_OBJECTS = $(am_transmission_gtk_OBJECTS)
+transmission_og_gtk_OBJECTS = $(am_transmission_og_gtk_OBJECTS)
 am__DEPENDENCIES_1 =
-transmission_gtk_DEPENDENCIES =  \
+transmission_og_gtk_DEPENDENCIES =  \
 	$(top_builddir)/libtransmission/libtransmission.a \
 	$(am__DEPENDENCIES_1) $(am__append_3)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
-transmission_gtk_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
+transmission_og_gtk_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
-	$(AM_CXXFLAGS) $(CXXFLAGS) $(transmission_gtk_LDFLAGS) \
+	$(AM_CXXFLAGS) $(CXXFLAGS) $(transmission_og_gtk_LDFLAGS) \
 	$(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -200,9 +200,9 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(transmission_gtk_SOURCES) \
-	$(nodist_EXTRA_transmission_gtk_SOURCES)
-DIST_SOURCES = $(transmission_gtk_SOURCES)
+SOURCES = $(transmission_og_gtk_SOURCES) \
+	$(nodist_EXTRA_transmission_og_gtk_SOURCES)
+DIST_SOURCES = $(transmission_og_gtk_SOURCES)
 RECURSIVE_TARGETS = all-recursive check-recursive cscopelist-recursive \
 	ctags-recursive dvi-recursive html-recursive info-recursive \
 	install-data-recursive install-dvi-recursive \
@@ -570,7 +570,7 @@ noinst_HEADERS = \
     tr-window.h \
     util.h
 
-transmission_gtk_SOURCES = \
+transmission_og_gtk_SOURCES = \
     actions.c \
     conf.c \
     details.c \
@@ -595,24 +595,24 @@ transmission_gtk_SOURCES = \
     tr-window.c \
     util.c
 
-nodist_EXTRA_transmission_gtk_SOURCES = dummy.cxx # force C++ linking
-dist_man_MANS = transmission-gtk.1
-transmission_gtk_LDADD =  \
+nodist_EXTRA_transmission_og_gtk_SOURCES = dummy.cxx # force C++ linking
+dist_man_MANS = transmission-og-gtk.1
+transmission_og_gtk_LDADD =  \
 	$(top_builddir)/libtransmission/libtransmission.a \
 	@LIBUPNP_LIBS@ @LIBNATPMP_LIBS@ @DHT_LIBS@ @LIBB64_LIBS@ \
 	@LIBUTP_LIBS@ @GTK_LIBS@ @LIBAPPINDICATOR_LIBS@ \
 	@LIBEVENT_LIBS@ @LIBCURL_LIBS@ @CRYPTO_LIBS@ @ZLIB_LIBS@ \
 	@PTHREAD_LIBS@ ${LIBM} $(am__append_3)
-DESKTOP_IN_FILES = transmission-gtk.desktop.in
+DESKTOP_IN_FILES = transmission-og-gtk.desktop.in
 DESKTOP_FILES = $(DESKTOP_IN_FILES:.desktop.in=.desktop)
 MAINTAINERCLEANFILES = $(DESKTOP_FILES)
 Productivitydir = $(datadir)/applications
 Productivity_DATA = $(DESKTOP_FILES)
-APPDATA_IN_FILES = transmission-gtk.appdata.xml.in
+APPDATA_IN_FILES = transmission-og-gtk.appdata.xml.in
 APPDATA_FILES = $(APPDATA_IN_FILES:.xml.in=.xml)
-appdatadir = $(datadir)/appdata
+appdatadir = $(datadir)/metainfo
 appdata_DATA = $(APPDATA_FILES)
-icon_DATA = transmission.png
+icon_DATA = transmission-og.png
 icondir = $(datadir)/pixmaps
 UI_FILES = transmission-ui.xml
 EXTRA_DIST = \
@@ -626,7 +626,7 @@ DISTCLEANFILES = \
 	$(DESKTOP_FILES) \
 	$(APPDATA_FILES)
 
-@WIN32_TRUE@transmission_gtk_LDFLAGS = -mwindows
+@WIN32_TRUE@transmission_og_gtk_LDFLAGS = -mwindows
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -711,9 +711,9 @@ clean-binPROGRAMS:
 	echo " rm -f" $$list; \
 	rm -f $$list
 
-transmission-gtk$(EXEEXT): $(transmission_gtk_OBJECTS) $(transmission_gtk_DEPENDENCIES) $(EXTRA_transmission_gtk_DEPENDENCIES) 
-	@rm -f transmission-gtk$(EXEEXT)
-	$(AM_V_CXXLD)$(transmission_gtk_LINK) $(transmission_gtk_OBJECTS) $(transmission_gtk_LDADD) $(LIBS)
+transmission-og-gtk$(EXEEXT): $(transmission_og_gtk_OBJECTS) $(transmission_og_gtk_DEPENDENCIES) $(EXTRA_transmission_og_gtk_DEPENDENCIES) 
+	@rm -f transmission-og-gtk$(EXEEXT)
+	$(AM_V_CXXLD)$(transmission_og_gtk_LINK) $(transmission_og_gtk_OBJECTS) $(transmission_og_gtk_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)

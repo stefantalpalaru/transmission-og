@@ -537,7 +537,7 @@ char const* tr_getWebClientDir(tr_session const* session UNUSED)
             for (size_t i = 0; s == NULL && i < TR_N_ELEMENTS(known_folder_ids); ++i)
             {
                 char* dir = win32_get_known_folder(known_folder_ids[i]);
-                s = tr_buildPath(dir, "Transmission", "Web", NULL);
+                s = tr_buildPath(dir, "TransmissionOG", "Web", NULL);
                 tr_free(dir);
 
                 if (!isWebClientDir(s))
@@ -624,7 +624,7 @@ char const* tr_getWebClientDir(tr_session const* session UNUSED)
             /* walk through the candidates & look for a match */
             for (tr_list* l = candidates; l != NULL; l = l->next)
             {
-                char* path = tr_buildPath(l->data, "transmission", "web", NULL);
+                char* path = tr_buildPath(l->data, PACKAGE_NAME, "web", NULL);
                 bool const found = isWebClientDir(path);
 
                 if (found)
@@ -654,7 +654,7 @@ char* tr_getSessionIdDir(void)
 #else
 
     char* program_data_dir = win32_get_known_folder_ex(&FOLDERID_ProgramData, KF_FLAG_CREATE);
-    char* result = tr_buildPath(program_data_dir, "Transmission", NULL);
+    char* result = tr_buildPath(program_data_dir, "TransmissionOG", NULL);
     tr_free(program_data_dir);
     tr_sys_dir_create(result, 0, 0, NULL);
     return result;

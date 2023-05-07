@@ -18,7 +18,7 @@
 # INTLTOOL_MAKEFILE
 
 GETTEXT_PACKAGE = transmission-gtk
-PACKAGE = transmission
+PACKAGE = transmission-og
 VERSION = 3.01+
 
 SHELL = /bin/sh

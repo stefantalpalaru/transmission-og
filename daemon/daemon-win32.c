@@ -31,7 +31,7 @@
 static dtr_callbacks const* callbacks = NULL;
 static void* callback_arg = NULL;
 
-static LPCWSTR const service_name = L"TransmissionDaemon";
+static LPCWSTR const service_name = L"TransmissionOGDaemon";
 
 static SERVICE_STATUS_HANDLE status_handle = NULL;
 static DWORD current_state = SERVICE_STOPPED;

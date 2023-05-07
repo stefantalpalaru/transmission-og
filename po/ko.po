@@ -64,7 +64,7 @@ msgid "Sort by Si_ze"
 msgstr "크기로 정렬(_Z)"
 
 #: ../gtk/actions.c:53
-msgid "_Show Transmission"
+msgid "_Show Transmission OG"
 msgstr "트랜스미션 보이기(_S)"
 
 #: ../gtk/actions.c:54
@@ -864,7 +864,7 @@ msgstr ""
 
 #: ../gtk/main.c:314
 #, c-format
-msgid "Error registering Transmission as a %s handler: %s"
+msgid "Error registering Transmission OG as a %s handler: %s"
 msgstr ""
 
 #: ../gtk/main.c:480
@@ -889,7 +889,7 @@ msgid "Show version number and exit"
 msgstr "버전 번호를 보여주고 마침"
 
 #: ../gtk/main.c:637 ../gtk/transmission-gtk.appdata.xml.in:11 ../gtk/transmission-gtk.desktop.in:3
-msgid "Transmission"
+msgid "Transmission OG"
 msgstr "트랜스미션"
 
 #. parse the command line
@@ -907,7 +907,7 @@ msgstr ""
 "사용할 수 있는 명령행 옵션을 모두 보려면 '%s --help' 명령을 실행하십시오.\n"
 
 #: ../gtk/main.c:746
-msgid "Transmission is a file sharing program. When you run a torrent, its data will be made available to others by means of upload. Any content you share is your sole responsibility."
+msgid "Transmission OG is a file sharing program. When you run a torrent, its data will be made available to others by means of upload. Any content you share is your sole responsibility."
 msgstr "트랜스미션은 파일 공유 프로그램입니다. 토렌트를 실행하면 토렌트의 데이터는 업로드를 통해 다른 사람들이 사용할 수 있게 됩니다. 당신이 공유하는 모든 내용에 대해 자신이 직접 책임을 지셔야 합니다."
 
 #: ../gtk/main.c:749
@@ -941,8 +941,8 @@ msgid "A fast and easy BitTorrent client"
 msgstr "빠르고 간편한 비트토렌트 클라이언트"
 
 #: ../gtk/main.c:1364
-msgid "Copyright (c) The Transmission Project"
-msgstr "Copyright (c) The Transmission Project"
+msgid "Copyright (c) The Transmission OG Project"
+msgstr "Copyright (c) The Transmission OG Project"
 
 #. Translators: translate "translator-credits" as your name
 #. to have it appear in the credits in the "About"
@@ -1406,7 +1406,7 @@ msgstr "(제한: %s)"
 #: ../gtk/tr-icon.c:109
 #, c-format
 msgid ""
-"Transmission\n"
+"Transmission OG\n"
 "Up: %1$s %2$s\n"
 "Down: %3$s %4$s"
 msgstr ""
@@ -1484,7 +1484,7 @@ msgid "_Inhibit hibernation when torrents are active"
 msgstr "토렌트를 전송하고 있을 때 최대 절전 모드를 사용하지 않음(_I)"
 
 #: ../gtk/tr-prefs.c:371
-msgid "Show Transmission icon in the _notification area"
+msgid "Show Transmission OG icon in the _notification area"
 msgstr "트랜스미션 아이콘을 시스템 알림 영역에 표시(_N)"
 
 #: ../gtk/tr-prefs.c:376
@@ -1725,7 +1725,7 @@ msgid "Te_st Port"
 msgstr "포트 검사(_S)"
 
 #: ../gtk/tr-prefs.c:1147
-msgid "Pick a _random port every time Transmission is started"
+msgid "Pick a _random port every time Transmission OG is started"
 msgstr "시작할 때 임의의 포트를 선택(_R)"
 
 #: ../gtk/tr-prefs.c:1151
@@ -1777,7 +1777,7 @@ msgid "LPD is a tool for finding peers on your local network."
 msgstr "LPD는 로컬 네트워크에서 피어를 찾는 도구입니다."
 
 #: ../gtk/tr-prefs.c:1244
-msgid "Transmission Preferences"
+msgid "Transmission OG Preferences"
 msgstr "트랜스미션 기본 설정"
 
 #: ../gtk/tr-prefs.c:1254
@@ -1893,11 +1893,11 @@ msgid "BitTorrent is a peer-to-peer file-sharing protocol that is commonly used 
 msgstr ""
 
 #: ../gtk/transmission-gtk.appdata.xml.in:20
-msgid "Transmission is a BitTorrent client with an easy-to-use frontend on top a cross-platform backend. Native frontends are available for OS X and Windows, as well as command line and web frontends."
+msgid "Transmission OG is a BitTorrent client with an easy-to-use frontend on top a cross-platform backend. Native frontends are available for OS X and Windows, as well as command line and web frontends."
 msgstr "트랜스미션은 크로스 플랫폼 백엔드 위에서 동작하는 쉽게 사용가능한 프론트엔드인 비트토렌트 클라이언트입니다. 네이티브 프론트엔드는 OS X와 Windows, 커멘드라인 및 웹 프론트엔드가 존재합니다."
 
 #: ../gtk/transmission-gtk.appdata.xml.in:26
-msgid "Notable features of Transmission include support for Local Peer Discovery, encryption, DHT, µTP, PEX and Magnet Link."
+msgid "Notable features of Transmission OG include support for Local Peer Discovery, encryption, DHT, µTP, PEX and Magnet Link."
 msgstr "트랜스미션의 주목할만한 기능에는 로컬 피어 검색, 암호화, DHT, μTP, PEX 및 마그넷 링크에 대한 지원이 포함되어 있습니다."
 
 #: ../gtk/transmission-gtk.desktop.in:4
@@ -1910,11 +1910,11 @@ msgid "torrents;downloading;uploading;share;sharing;"
 msgstr ""
 
 #: ../gtk/transmission-gtk.desktop.in:21
-msgid "Start Transmission with All Torrents Paused"
+msgid "Start Transmission OG with All Torrents Paused"
 msgstr "모든 토렌트를 멈춘 상태로 시작"
 
 #: ../gtk/transmission-gtk.desktop.in:25
-msgid "Start Transmission Minimized"
+msgid "Start Transmission OG Minimized"
 msgstr "시작시 트랜스미션을 최소화 하여 시작"
 
 #: ../gtk/util.c:36
@@ -2014,7 +2014,7 @@ msgstr "인식할 수 없는 주소"
 
 #: ../gtk/util.c:596
 #, c-format
-msgid "Transmission doesn't know how to use \"%s\""
+msgid "Transmission OG doesn't know how to use \"%s\""
 msgstr "트랜스미션이 \"%s\"의 사용 방법을 알지 못합니다"
 
 #: ../gtk/util.c:601
@@ -2181,7 +2181,7 @@ msgid "Couldn't connect socket %<PRIdMAX> to %s, port %d (errno %d - %s)"
 msgstr ""
 
 #: ../libtransmission/net.c:436
-msgid "Is another copy of Transmission already running?"
+msgid "Is another copy of Transmission OG already running?"
 msgstr "이미 실행 중인 트랜스미션이 있는 것은 아닙니까?"
 
 #: ../libtransmission/net.c:445
@@ -2305,7 +2305,7 @@ msgid "Removing torrent"
 msgstr "토렌트 제거"
 
 #. Translators: this is a minor point that's safe to skip over, but FYI:
-#. "Complete" and "Done" are specific, different terms in Transmission:
+#. "Complete" and "Done" are specific, different terms in Transmission OG:
 #. "Complete" means we've downloaded every file in the torrent.
 #. "Done" means we're done downloading the files we wanted, but NOT all
 #. that exist

@@ -88,7 +88,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-bin_PROGRAMS = transmission-cli$(EXEEXT)
+bin_PROGRAMS = transmission-og-cli$(EXEEXT)
 subdir = cli
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/acx-pthread.m4 \
@@ -105,10 +105,10 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(man1dir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_transmission_cli_OBJECTS = cli.$(OBJEXT)
-transmission_cli_OBJECTS = $(am_transmission_cli_OBJECTS)
+am_transmission_og_cli_OBJECTS = cli.$(OBJEXT)
+transmission_og_cli_OBJECTS = $(am_transmission_og_cli_OBJECTS)
 am__DEPENDENCIES_1 =
-transmission_cli_DEPENDENCIES =  \
+transmission_og_cli_DEPENDENCIES =  \
 	$(top_builddir)/libtransmission/libtransmission.a \
 	$(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -168,9 +168,9 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(transmission_cli_SOURCES) \
-	$(nodist_EXTRA_transmission_cli_SOURCES)
-DIST_SOURCES = $(transmission_cli_SOURCES)
+SOURCES = $(transmission_og_cli_SOURCES) \
+	$(nodist_EXTRA_transmission_og_cli_SOURCES)
+DIST_SOURCES = $(transmission_og_cli_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -452,10 +452,10 @@ AM_CFLAGS = \
     @ZLIB_CFLAGS@ \
     @PTHREAD_CFLAGS@
 
-dist_man_MANS = transmission-cli.1
-transmission_cli_SOURCES = cli.c
-nodist_EXTRA_transmission_cli_SOURCES = dummy.cxx # force C++ linking
-transmission_cli_LDADD = \
+dist_man_MANS = transmission-og-cli.1
+transmission_og_cli_SOURCES = cli.c
+nodist_EXTRA_transmission_og_cli_SOURCES = dummy.cxx # force C++ linking
+transmission_og_cli_LDADD = \
     $(top_builddir)/libtransmission/libtransmission.a \
     @LIBNATPMP_LIBS@ \
     @LIBUPNP_LIBS@ \
@@ -553,9 +553,9 @@ clean-binPROGRAMS:
 	echo " rm -f" $$list; \
 	rm -f $$list
 
-transmission-cli$(EXEEXT): $(transmission_cli_OBJECTS) $(transmission_cli_DEPENDENCIES) $(EXTRA_transmission_cli_DEPENDENCIES) 
-	@rm -f transmission-cli$(EXEEXT)
-	$(AM_V_CXXLD)$(CXXLINK) $(transmission_cli_OBJECTS) $(transmission_cli_LDADD) $(LIBS)
+transmission-og-cli$(EXEEXT): $(transmission_og_cli_OBJECTS) $(transmission_og_cli_DEPENDENCIES) $(EXTRA_transmission_og_cli_DEPENDENCIES) 
+	@rm -f transmission-og-cli$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(transmission_og_cli_OBJECTS) $(transmission_og_cli_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)

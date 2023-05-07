@@ -2899,7 +2899,6 @@ static gboolean periodic_refresh(gpointer data)
 
 static void on_details_window_size_allocated(GtkWidget* gtk_window, GtkAllocation* alloc UNUSED, gpointer gdata UNUSED)
 {
-    GdkWindow* gdk_window = gtk_widget_get_window(gtk_window);
     int w, h;
     gtk_window_get_size(GTK_WINDOW(gtk_window), &w, &h);
     gtr_pref_int_set(TR_KEY_details_window_width, w);
@@ -2945,7 +2944,7 @@ GtkWidget* gtr_torrent_details_dialog_new(GtkWindow* parent, TrCore* core)
     gtk_window_set_role(GTK_WINDOW(d), "tr-info");
 
     /* return saved window size */
-    gtk_window_resize(d, gtr_pref_int_get(TR_KEY_details_window_width), gtr_pref_int_get(TR_KEY_details_window_height));
+    gtk_window_resize(GTK_WINDOW(d), gtr_pref_int_get(TR_KEY_details_window_width), gtr_pref_int_get(TR_KEY_details_window_height));
     g_signal_connect(d, "size-allocate", G_CALLBACK(on_details_window_size_allocated), NULL);
 
     g_signal_connect_swapped(d, "response", G_CALLBACK(gtk_widget_destroy), d);

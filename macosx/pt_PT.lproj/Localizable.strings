@@ -625,7 +625,7 @@
    Torrent disk space alert -> button
    Torrent download failed -> button
    Torrent file copy alert -> button
-   Transmission already running alert -> button */
+   Transmission OG already running alert -> button */
 "OK" = "OK";
 
 /* Remove completed confirm panel -> message */
@@ -636,10 +636,10 @@
 "Once removed, continuing the transfers will require the torrent files or magnet links." = "Uma vez removidas, para continuar as tranferências serão necessários os ficheiros torrent ou as ligações magnet.";
 
 /* Remove trackers alert -> message */
-"Once removed, Transmission will no longer attempt to contact it. This cannot be undone." = "Uma vez removido o tracker, o Transmission deixará de tentar contactá-lo. Isto não pode ser desfeito.";
+"Once removed, Transmission OG will no longer attempt to contact it. This cannot be undone." = "Uma vez removido o tracker, o Transmission OG deixará de tentar contactá-lo. Isto não pode ser desfeito.";
 
 /* Remove trackers alert -> message */
-"Once removed, Transmission will no longer attempt to contact them. This cannot be undone." = "Uma vez removidos os trackers, o Transmission deixará de tentar contactá-los. Isto não pode ser desfeito.";
+"Once removed, Transmission OG will no longer attempt to contact them. This cannot be undone." = "Uma vez removidos os trackers, o Transmission OG deixará de tentar contactá-los. Isto não pode ser desfeito.";
 
 /* File Outline -> Menu */
 "Only Check Selected" = "Marcar apenas os seleccionados";
@@ -999,16 +999,16 @@
 "There are %@ transfers (%@ active)." = "Existem %1$@ transferências (%2$@ activas).";
 
 /* Confirm Quit panel -> message */
-"There are %d active transfers that will be paused on quit. The transfers will automatically resume on the next launch." = "Existem %d transferências activas que serão colocadas em pausa ao sair. As transferências serão retomadas automaticamente quando voltar a iniciar o Transmission";
+"There are %d active transfers that will be paused on quit. The transfers will automatically resume on the next launch." = "Existem %d transferências activas que serão colocadas em pausa ao sair. As transferências serão retomadas automaticamente quando voltar a iniciar o Transmission OG";
 
 /* Create torrent -> blank address -> title */
 "There are no tracker addresses." = "Não existem endereços de trackers.";
 
-/* Transmission already running alert -> message */
-"There is already a copy of Transmission running. This copy cannot be opened until that instance is quit." = "Já existe uma cópia do Transmission iniciada. Esta cópia não pode ser iniciada até que essa instância seja terminada.";
+/* Transmission OG already running alert -> message */
+"There is already a copy of Transmission OG running. This copy cannot be opened until that instance is quit." = "Já existe uma cópia do Transmission OG iniciada. Esta cópia não pode ser iniciada até que essa instância seja terminada.";
 
 /* Confirm Quit panel -> message */
-"There is an active transfer that will be paused on quit. The transfer will automatically resume on the next launch." = "Existe uma transferência activa que será colocada em pausa ao sair. A transferência será retomada automaticamente quando voltar a iniciar o Transmission.";
+"There is an active transfer that will be paused on quit. The transfer will automatically resume on the next launch." = "Existe uma transferência activa que será colocada em pausa ao sair. A transferência será retomada automaticamente quando voltar a iniciar o Transmission OG.";
 
 /* Create torrent -> no files -> warning */
 "There must be at least one file in a folder to create a torrent file." = "É necessário existir pelo menos um ficheiro na pasta para criar um ficheiro torrent.";
@@ -1029,7 +1029,7 @@
 "This transfer is active. Once removed, continuing the transfer will require the torrent file or magnet link." = "Esta transferência está activa. Uma vez removida, será necessário o ficheiro torrent ou a ligação magnet para continuar a transferência.";
 
 /* Stats reset -> message */
-"This will clear the global statistics displayed by Transmission. Individual transfer statistics will not be affected." = "Isto irá limpar as estatísticas globais mostradas pelo Transmission. As estatísticas individuais das tranferências não serão afectadas.";
+"This will clear the global statistics displayed by Transmission OG. Individual transfer statistics will not be affected." = "Isto irá limpar as estatísticas globais mostradas pelo Transmission OG. As estatísticas individuais das tranferências não serão afectadas.";
 
 /* Inspector -> tracker table */
 "Tier %d" = "Nível %d";
@@ -1094,13 +1094,13 @@
 "Transfers Not Active" = "Transferências não activas";
 
 /* Legal alert -> message */
-"Transmission is a file-sharing program. When you run a torrent, its data will be made available to others by means of upload. You and you alone are fully responsible for exercising proper judgement and abiding by your local laws." = "O Transmission é uma aplicação de partilha de ficheiros. Quando inicia um torrent, esses dados serão disponibilizados para outros através do envio de informação. Você, e apenas você, é totalmente responsável por exercer bom senso e cumprir as suas leis locais.";
+"Transmission OG is a file-sharing program. When you run a torrent, its data will be made available to others by means of upload. You and you alone are fully responsible for exercising proper judgement and abiding by your local laws." = "O Transmission OG é uma aplicação de partilha de ficheiros. Quando inicia um torrent, esses dados serão disponibilizados para outros através do envio de informação. Você, e apenas você, é totalmente responsável por exercer bom senso e cumprir as suas leis locais.";
 
 /* Donation beg -> message */
-"Transmission is a full-featured torrent application. A lot of time and effort have gone into development, coding, and refinement. If you enjoy using it, please consider showing your love with a donation." = "O Transmission é uma aplicação para torrents completa em funcionalidades. Foi dedicado muito tempo e esforço ao seu desenvolvimento e aperfeiçoamento. Se gosta de o usar, por favor considere mostrar o seu apreço com um donativo.";
+"Transmission OG is a full-featured torrent application. A lot of time and effort have gone into development, coding, and refinement. If you enjoy using it, please consider showing your love with a donation." = "O Transmission OG é uma aplicação para torrents completa em funcionalidades. Foi dedicado muito tempo e esforço ao seu desenvolvimento e aperfeiçoamento. Se gosta de o usar, por favor considere mostrar o seu apreço com um donativo.";
 
-/* Transmission already running alert -> title */
-"Transmission is already running." = "O Transmission já está iniciado.";
+/* Transmission OG already running alert -> title */
+"Transmission OG is already running." = "O Transmission OG já está iniciado.";
 
 /* inspector -> peer table -> header
    status bar -> status label
@@ -1153,7 +1153,7 @@
 "Web Seeds" = "Seeds da web";
 
 /* Legal alert -> title */
-"Welcome to Transmission" = "Bem-vindo ao Transmission";
+"Welcome to Transmission OG" = "Bem-vindo ao Transmission OG";
 
 /* Groups -> Name */
 "Yellow" = "Amarelo";

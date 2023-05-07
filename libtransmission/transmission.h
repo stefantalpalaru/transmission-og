@@ -1,5 +1,5 @@
 /*
- * This file Copyright (C) Transmission authors and contributors
+ * This file Copyright (C) Transmission OG authors and contributors
  *
  * It may be used under the 3-Clause BSD License, the GNU Public License v2,
  * or v3, or any future license endorsed by Mnemosyne LLC.
@@ -87,7 +87,7 @@ tr_encryption_mode;
  */
 
 /**
- * @brief returns Transmission's default configuration file directory.
+ * @brief returns Transmission OG's default configuration file directory.
  *
  * The default configuration directory is determined this way:
  * -# If the TRANSMISSION_HOME environment variable is set, its value is used.
@@ -198,7 +198,7 @@ void tr_sessionSaveSettings(tr_session* session, char const* configDir, struct t
  *     tr_variantFree(&settings);
  * @endcode
  *
- * @param configDir where Transmission will look for resume files, blocklists, etc.
+ * @param configDir where Transmission OG will look for resume files, blocklists, etc.
  * @param messageQueueingEnabled if false, messages will be dumped to stderr
  * @param settings libtransmission settings
  * @see tr_sessionGetDefaultSettings()
@@ -295,7 +295,7 @@ bool tr_sessionIsIncompleteDirEnabled(tr_session const* session);
  *        to their filename until the file is fully downloaded
  *
  * This is not retroactive -- toggling this will not rename existing files.
- * It only applies to new files created by Transmission after this API call.
+ * It only applies to new files created by Transmission OG after this API call.
  *
  * @see tr_sessionIsIncompleteFileNamingEnabled()
  */
@@ -767,7 +767,7 @@ void tr_logFreeQueue(tr_log_message* freeme);
     @{ */
 
 /**
- * Specify a range of IPs for Transmission to block.
+ * Specify a range of IPs for Transmission OG to block.
  *
  * Filename must be an uncompressed ascii file.
  *
@@ -814,7 +814,7 @@ char const* tr_blocklistGetURL(tr_session const*);
     To remedy this, a Torrent Constructor (struct tr_ctor) has been introduced:
     - Simplifies the API to two functions: tr_torrentParse() and tr_torrentNew()
     - You can set the fields you want; the system sets defaults for the rest.
-    - You can specify whether or not your fields should supercede resume's.
+    - You can specify whether or not your fields should supersede resume's.
     - We can add new features to tr_ctor without breaking tr_torrentNew()'s API.
 
     All the tr_ctor{Get,Set}* () functions with a return value return
@@ -1432,7 +1432,7 @@ typedef struct
     /* the full scrape URL */
     char scrape[1024];
 
-    /* Transmission uses one tracker per tier,
+    /* Transmission OG uses one tracker per tier,
      * and the others are kept as backups */
     bool isBackup;
 
@@ -1606,7 +1606,7 @@ struct tr_info
     /* The torrent's name. */
     char* name;
 
-    /* Path to torrent Transmission's internal copy of the .torrent file. */
+    /* Path to torrent Transmission OG's internal copy of the .torrent file. */
     char* torrent;
 
     char** webseeds;

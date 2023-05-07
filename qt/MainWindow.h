@@ -121,7 +121,6 @@ private slots:
     void onSortModeChanged(QAction* action);
     void onStatsModeChanged(QAction* action);
     void openAbout();
-    void openDonate();
     void openFolder();
     void openHelp();
     void openPreferences();

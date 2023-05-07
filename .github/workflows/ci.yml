@@ -250,9 +250,11 @@ jobs:
                 # broken
                 --disable-mac
               )
-              QMAKE_ARGS+=(
-                QMAKE_LIBDIR+="/usr/local/opt/miniupnpc/lib"
-              )
+              if [[ "${{ matrix.libs }}" == "system" ]]; then
+                QMAKE_ARGS+=(
+                  QMAKE_LIBDIR+="/usr/local/opt/miniupnpc/lib"
+                )
+              fi
             elif [[ "${{ runner.os }}" == "Linux" ]]; then
               if [[ "${{ matrix.libs }}" == "system" ]]; then
                 CONFIGURE_ARGS+=(

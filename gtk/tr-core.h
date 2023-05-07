@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) Transmission authors and contributors
+ * Copyright (c) Transmission OG authors and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -32,7 +32,7 @@ G_BEGIN_DECLS
 #define TR_CORE_TYPE (tr_core_get_type())
 #define TR_CORE(o) (G_TYPE_CHECK_INSTANCE_CAST((o), TR_CORE_TYPE, TrCore))
 
-#define TR_RESOURCE_PATH "/com/transmissionbt/transmission/"
+#define TR_RESOURCE_PATH "/com/transmissionbt/transmission-og/"
 
 typedef struct _TrCore
 {

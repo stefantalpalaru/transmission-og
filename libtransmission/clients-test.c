@@ -21,9 +21,9 @@ int main(void)
 
     TEST_CLIENT("-FC1013-", "FileCroc 1.0.1.3");
     TEST_CLIENT("-MR1100-", "Miro 1.1.0.0");
-    TEST_CLIENT("-TR0006-", "Transmission 0.6");
-    TEST_CLIENT("-TR0072-", "Transmission 0.72");
-    TEST_CLIENT("-TR111Z-", "Transmission 1.11+");
+    TEST_CLIENT("-TR0006-", "Transmission OG 0.6");
+    TEST_CLIENT("-TR0072-", "Transmission OG 0.72");
+    TEST_CLIENT("-TR111Z-", "Transmission OG 1.11+");
     TEST_CLIENT("O1008132", "Osprey 1.0.0");
     TEST_CLIENT("TIX0193-", "Tixati 1.93");
     TEST_CLIENT("-UT341\0-", "\xc2\xb5Torrent 3.4.1");

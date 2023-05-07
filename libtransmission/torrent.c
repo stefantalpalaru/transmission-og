@@ -1939,7 +1939,7 @@ static void torrentStart(tr_torrent* tor, bool bypass_queue)
 
     /* corresponds to the peer_id sent as a tracker request parameter.
      * one tracker admin says: "When the same torrent is opened and
-     * closed and opened again without quitting Transmission ...
+     * closed and opened again without quitting Transmission OG ...
      * change the peerid. It would help sometimes if a stopped event
      * was missed to ensure that we didn't think someone was cheating. */
     tr_torrentUnsetPeerId(tor);
@@ -2225,7 +2225,7 @@ static char const* getCompletionString(int type)
     {
     case TR_PARTIAL_SEED:
         /* Translators: this is a minor point that's safe to skip over, but FYI:
-           "Complete" and "Done" are specific, different terms in Transmission:
+           "Complete" and "Done" are specific, different terms in Transmission OG:
            "Complete" means we've downloaded every file in the torrent.
            "Done" means we're done downloading the files we wanted, but NOT all
            that exist */

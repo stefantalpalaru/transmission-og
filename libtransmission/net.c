@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) Transmission authors and contributors
+ * Copyright (c) Transmission OG authors and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -440,7 +440,7 @@ static tr_socket_t tr_netBindTCPImpl(tr_address const* addr, tr_port port, bool 
 
             if (err == EADDRINUSE)
             {
-                hint = _("Is another copy of Transmission already running?");
+                hint = _("Is another copy of Transmission OG already running?");
             }
             else
             {

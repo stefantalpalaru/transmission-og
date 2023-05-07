@@ -406,7 +406,7 @@ static GtkWidget* desktopPage(GObject* core)
     w = new_check_button(s, TR_KEY_inhibit_desktop_hibernation, core);
     hig_workarea_add_wide_control(t, &row, w);
 
-    s = _("Show Transmission icon in the _notification area");
+    s = _("Show Transmission OG icon in the _notification area");
     w = new_check_button(s, TR_KEY_show_notification_area_icon, core);
     hig_workarea_add_wide_control(t, &row, w);
 
@@ -1182,7 +1182,7 @@ static GtkWidget* networkPage(GObject* core)
     data->prefsTag = g_signal_connect(TR_CORE(core), "prefs-changed", G_CALLBACK(onCorePrefsChanged), data);
     g_object_weak_ref(G_OBJECT(t), networkPageDestroyed, data);
 
-    s = _("Pick a _random port every time Transmission is started");
+    s = _("Pick a _random port every time Transmission OG is started");
     w = new_check_button(s, TR_KEY_peer_port_random_on_start, core);
     hig_workarea_add_wide_control(t, &row, w);
 
@@ -1285,7 +1285,7 @@ GtkWidget* gtr_prefs_dialog_new(GtkWindow* parent, GObject* core)
     data->core = TR_CORE(core);
     data->core_prefs_tag = g_signal_connect(TR_CORE(core), "prefs-changed", G_CALLBACK(on_core_prefs_changed), data);
 
-    d = gtk_dialog_new_with_buttons(_("Transmission Preferences"), parent, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_STOCK_HELP,
+    d = gtk_dialog_new_with_buttons(_("Transmission OG Preferences"), parent, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_STOCK_HELP,
         GTK_RESPONSE_HELP, GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
     g_object_weak_ref(G_OBJECT(d), on_prefs_dialog_destroyed, data);
     gtk_window_set_role(GTK_WINDOW(d), "transmission-preferences-dialog");

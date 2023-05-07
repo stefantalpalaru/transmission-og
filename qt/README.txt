@@ -1,13 +1,13 @@
 VOLUNTEERS WANTED
 
    - Qt developers and translators are needed
-   - If you find a bug, please report it at https://github.com/transmission/transmission
+   - If you find a bug, please report it at https://github.com/stefantalpalaru/transmission-og
 
-ABOUT TRANSMISSION-QT
+ABOUT TRANSMISSION-OG-QT
 
-   Transmission-qt is a GUI for Transmission loosely based on the GTK+ client.
+   Transmission-og-qt is a GUI for Transmission OG loosely based on the GTK+ client.
 
-   This is the only Transmission client that can act as its own self-contained
+   This is the only Transmission OG client that can act as its own self-contained
    session (as the GTK+ and Mac clients do), and can also connect to a remote
    session (as the web client and transmission-remote terminal client do).
 
@@ -26,18 +26,18 @@ ABOUT TRANSMISSION-QT
 
 BUILDING ON WINDOWS
 
-   rb07 has a writeup of this on the Transmission wiki:
+   rb07 has a writeup of this on the original Transmission wiki:
    https://trac.transmissionbt.com/wiki/BuildingTransmissionQtWindows
 
 BUILDING ON OS X
 
-   nnc has a writeup of this on the Transmission wiki:
+   nnc has a writeup of this on the original Transmission wiki:
    https://trac.transmissionbt.com/wiki/BuildingTransmissionQtMac
 
 BUILDING ON UNIX
 
    1. Prerequisites: Qt >= 4.8 and its development packages
-   2. Build Transmission as normal
+   2. Build Transmission OG as normal
    3. In the qt/ directory, type "qmake qtr.pro" (or "qmake-qt4 qtr.pro", or "qmake-qt5 qtr.pro")
    4. In the qt/ directory, type "make"
    5. In the qt/ directory, as root, type "INSTALL_ROOT=/usr make install"

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>About Transmission</string>
+   <string>About Transmission OG</string>
   </property>
   <layout class="QVBoxLayout" name="dialogLayout">
    <property name="sizeConstraint">
@@ -50,7 +50,7 @@
    <item>
     <widget class="QLabel" name="copyrightsLabel">
      <property name="text">
-      <string>Copyright (c) The Transmission Project</string>
+      <string>Copyright (c) The Transmission OG Project</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -60,7 +60,7 @@
    <item>
     <widget class="QLabel" name="linkLabel">
      <property name="text">
-      <string notr="true">&lt;a href=&quot;https://transmissionbt.com/&quot;&gt;https://transmissionbt.com/&lt;/a&gt;</string>
+      <string notr="true">&lt;a href=&quot;https://github.com/stefantalpalaru/transmission-og&quot;&gt;https://github.com/stefantalpalaru/transmission-og&lt;/a&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

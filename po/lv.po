@@ -59,7 +59,7 @@ msgid "Sort by Si_ze"
 msgstr "Kārtot pēc i_zmēra"
 
 #: ../gtk/actions.c:53
-msgid "_Show Transmission"
+msgid "_Show Transmission OG"
 msgstr "Rādīt Tran_smission"
 
 #: ../gtk/actions.c:54
@@ -877,7 +877,7 @@ msgstr ""
 
 #: ../gtk/main.c:314
 #, c-format
-msgid "Error registering Transmission as a %s handler: %s"
+msgid "Error registering Transmission OG as a %s handler: %s"
 msgstr ""
 
 #: ../gtk/main.c:480
@@ -902,8 +902,8 @@ msgid "Show version number and exit"
 msgstr "Rādīt versijas numuru un iziet"
 
 #: ../gtk/main.c:637 ../gtk/transmission-gtk.appdata.xml.in:11 ../gtk/transmission-gtk.desktop.in:3
-msgid "Transmission"
-msgstr "Transmission"
+msgid "Transmission OG"
+msgstr "Transmission OG"
 
 #. parse the command line
 #: ../gtk/main.c:640
@@ -920,7 +920,7 @@ msgstr ""
 "Palaidiet “%s --help”, lai redzētu pilnu sarakstu ar pieejamajām komandrindas opcijām.\n"
 
 #: ../gtk/main.c:746
-msgid "Transmission is a file sharing program. When you run a torrent, its data will be made available to others by means of upload. Any content you share is your sole responsibility."
+msgid "Transmission OG is a file sharing program. When you run a torrent, its data will be made available to others by means of upload. Any content you share is your sole responsibility."
 msgstr ""
 
 #: ../gtk/main.c:749
@@ -958,8 +958,8 @@ msgid "A fast and easy BitTorrent client"
 msgstr "Ātrs un vienkāršs BitTorrent klients"
 
 #: ../gtk/main.c:1364
-msgid "Copyright (c) The Transmission Project"
-msgstr "Autortiesības (c) The Transmission Project"
+msgid "Copyright (c) The Transmission OG Project"
+msgstr "Autortiesības (c) The Transmission OG Project"
 
 #. Translators: translate "translator-credits" as your name
 #. to have it appear in the credits in the "About"
@@ -1428,11 +1428,11 @@ msgstr ""
 #: ../gtk/tr-icon.c:109
 #, c-format
 msgid ""
-"Transmission\n"
+"Transmission OG\n"
 "Up: %1$s %2$s\n"
 "Down: %3$s %4$s"
 msgstr ""
-"Transmission\n"
+"Transmission OG\n"
 "Augšup: %1$s %2$s\n"
 "Lejup: %3$s %4$s"
 
@@ -1506,8 +1506,8 @@ msgid "_Inhibit hibernation when torrents are active"
 msgstr "Nomākt iemidzināšanu, kad torenti ir aktīvi"
 
 #: ../gtk/tr-prefs.c:371
-msgid "Show Transmission icon in the _notification area"
-msgstr "Rādīt Transmission ikonu _paziņojumu laukā"
+msgid "Show Transmission OG icon in the _notification area"
+msgstr "Rādīt Transmission OG ikonu _paziņojumu laukā"
 
 #: ../gtk/tr-prefs.c:376
 msgid "Notification"
@@ -1751,8 +1751,8 @@ msgid "Te_st Port"
 msgstr "_Pārbaudīt portu"
 
 #: ../gtk/tr-prefs.c:1147
-msgid "Pick a _random port every time Transmission is started"
-msgstr "Izvēlēties _patvaļīgu portu katrā Transmission palaišanas reizē"
+msgid "Pick a _random port every time Transmission OG is started"
+msgstr "Izvēlēties _patvaļīgu portu katrā Transmission OG palaišanas reizē"
 
 #: ../gtk/tr-prefs.c:1151
 msgid "Use UPnP or NAT-PMP port _forwarding from my router"
@@ -1803,8 +1803,8 @@ msgid "LPD is a tool for finding peers on your local network."
 msgstr "LPD ir rīks, vairāk dalībnieku atrašanai lokālajā tīkla."
 
 #: ../gtk/tr-prefs.c:1244
-msgid "Transmission Preferences"
-msgstr "Transmission iestatījumi"
+msgid "Transmission OG Preferences"
+msgstr "Transmission OG iestatījumi"
 
 #: ../gtk/tr-prefs.c:1254
 msgctxt "Gerund"
@@ -1919,11 +1919,11 @@ msgid "BitTorrent is a peer-to-peer file-sharing protocol that is commonly used 
 msgstr ""
 
 #: ../gtk/transmission-gtk.appdata.xml.in:20
-msgid "Transmission is a BitTorrent client with an easy-to-use frontend on top a cross-platform backend. Native frontends are available for OS X and Windows, as well as command line and web frontends."
+msgid "Transmission OG is a BitTorrent client with an easy-to-use frontend on top a cross-platform backend. Native frontends are available for OS X and Windows, as well as command line and web frontends."
 msgstr ""
 
 #: ../gtk/transmission-gtk.appdata.xml.in:26
-msgid "Notable features of Transmission include support for Local Peer Discovery, encryption, DHT, µTP, PEX and Magnet Link."
+msgid "Notable features of Transmission OG include support for Local Peer Discovery, encryption, DHT, µTP, PEX and Magnet Link."
 msgstr ""
 
 #: ../gtk/transmission-gtk.desktop.in:4
@@ -1936,11 +1936,11 @@ msgid "torrents;downloading;uploading;share;sharing;"
 msgstr ""
 
 #: ../gtk/transmission-gtk.desktop.in:21
-msgid "Start Transmission with All Torrents Paused"
+msgid "Start Transmission OG with All Torrents Paused"
 msgstr ""
 
 #: ../gtk/transmission-gtk.desktop.in:25
-msgid "Start Transmission Minimized"
+msgid "Start Transmission OG Minimized"
 msgstr ""
 
 #: ../gtk/util.c:36
@@ -2048,8 +2048,8 @@ msgstr "Neatpazīts URL"
 
 #: ../gtk/util.c:596
 #, c-format
-msgid "Transmission doesn't know how to use \"%s\""
-msgstr "Transmission nezina, kā izmantot “%s”"
+msgid "Transmission OG doesn't know how to use \"%s\""
+msgstr "Transmission OG nezina, kā izmantot “%s”"
 
 #: ../gtk/util.c:601
 #, c-format
@@ -2215,8 +2215,8 @@ msgid "Couldn't connect socket %<PRIdMAX> to %s, port %d (errno %d - %s)"
 msgstr ""
 
 #: ../libtransmission/net.c:436
-msgid "Is another copy of Transmission already running?"
-msgstr "Vai ir palaista cita Transmission instance?"
+msgid "Is another copy of Transmission OG already running?"
+msgstr "Vai ir palaista cita Transmission OG instance?"
 
 #: ../libtransmission/net.c:445
 #, c-format
@@ -2339,7 +2339,7 @@ msgid "Removing torrent"
 msgstr "Izņem torentu"
 
 #. Translators: this is a minor point that's safe to skip over, but FYI:
-#. "Complete" and "Done" are specific, different terms in Transmission:
+#. "Complete" and "Done" are specific, different terms in Transmission OG:
 #. "Complete" means we've downloaded every file in the torrent.
 #. "Done" means we're done downloading the files we wanted, but NOT all
 #. that exist
@@ -2420,8 +2420,8 @@ msgstr "Pārbauda torentu"
 #~ msgid "Server returned \"%1$ld %2$s\""
 #~ msgstr "Serveris atgrieza “%1$ld %2$s”"
 
-#~ msgid "Transmission BitTorrent Client"
-#~ msgstr "Transmission BitTorrent klients"
+#~ msgid "Transmission OG BitTorrent Client"
+#~ msgstr "Transmission OG BitTorrent klients"
 
 #, c-format
 #~ msgid "Error opening \"%s\""

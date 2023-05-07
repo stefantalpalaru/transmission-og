@@ -4,7 +4,7 @@ include_directories(${CMAKE_SOURCE_DIR})
 
 foreach(P create edit remote show)
     tr_win32_app_info(${PROJECT_NAME}_${P}_WIN32_RC_FILE
-        "Transmission Utility ('${P}')"
+        "Transmission OG Utility ('${P}')"
         "${TR_NAME}-${P}"
         "${TR_NAME}-${P}.exe")
 

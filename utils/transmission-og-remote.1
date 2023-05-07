@@ -1,10 +1,10 @@
 .Dd July 21, 2008
-.Dt TRANSMISSION-REMOTE 1
+.Dt TRANSMISSION-OG-REMOTE 1
 .Os
 .Sh NAME
-.Nm transmission-remote
+.Nm transmission-og-remote
 .Nd a remote control utility for
-.Xr transmission-daemon 1
+.Xr transmission-og-daemon 1
 and
 .Xr transmission 1
 .Sh SYNOPSIS
@@ -74,7 +74,7 @@ and
 is a remote control utility for
 .Xr transmission 1
 and
-.Xr transmission-daemon 1 .
+.Xr transmission-og-daemon 1 .
 .Pp
 By default,
 .Nm
@@ -141,7 +141,7 @@ Prefer encrypted peer connections.
 .It Fl et Fl -encryption-tolerated
 Prefer unencrypted peer connections.
 .It Fl -exit
-Tell the Transmission to initiate a shutdown.
+Tell Transmission OG to initiate a shutdown.
 .It Fl f Fl -files
 Get a file list for the current torrent(s)
 .It Fl g Fl -get Ar all | file-index | files
@@ -238,7 +238,7 @@ Reannounce the current torrent(s). This is the same as the GUI's "ask tracker fo
 .It Fl -move
 Move the current torrents' data from their current locations to the specified directory.
 .It Fl -find
-Tell Transmission where to look for the current torrents' data.
+Tell Transmission OG where to look for the current torrents' data.
 .It Fl sr Fl -seedratio Ar ratio
 Let the current torrent(s) seed until a specific
 .Ar ratio
@@ -326,68 +326,68 @@ key.
 .Sh EXAMPLES
 List all torrents:
 .Bd -literal -offset indent
-$ transmission-remote \-l
+$ transmission-og-remote \-l
 .Ed
 List all active torrents:
 .Bd -literal -offset indent
-$ transmission-remote \-tactive \-l
+$ transmission-og-remote \-tactive \-l
 .Ed
 Set download and upload limits to 400 kB/sec and 60 kB/sec:
 .Bd -literal -offset indent
-$ transmission-remote \-d400 \-u60
-$ transmission-remote \-\-downlimit=400 \-\-uplimit=60
+$ transmission-og-remote \-d400 \-u60
+$ transmission-og-remote \-\-downlimit=400 \-\-uplimit=60
 .Ed
 Set alternate download and upload limits to 100 kB/sec and 20 kB/sec:
 .Bd -literal -offset indent
-$ transmission-remote \-asd100 \-asu20
-$ transmission-remote \-\-alt-speed-downlimit=100 \-\-alt-speed-uplimit=20
+$ transmission-og-remote \-asd100 \-asu20
+$ transmission-og-remote \-\-alt-speed-downlimit=100 \-\-alt-speed-uplimit=20
 .Ed
 Set the scheduler to use the alternate speed limits on weekdays between 10AM and 11PM
 .Bd -literal -offset indent
-$ transmission-remote \-\-alt-speed-time-begin=1000
-$ transmission-remote \-\-alt-speed-time-end=2300
-$ transmission-remote \-\-alt-speed-days=1-5
-$ transmission-remote \-\-alt-speed-scheduler
+$ transmission-og-remote \-\-alt-speed-time-begin=1000
+$ transmission-og-remote \-\-alt-speed-time-end=2300
+$ transmission-og-remote \-\-alt-speed-days=1-5
+$ transmission-og-remote \-\-alt-speed-scheduler
 .Ed
 List all torrents' IDs and states:
 .Bd -literal -offset indent
-$ transmission-remote \-l
+$ transmission-og-remote \-l
 .Ed
 List all torrents from a remote session that requires authentication:
 .Bd -literal -offset indent
-$ transmission-remote host:9091 \-\-auth=username:password \-l
+$ transmission-og-remote host:9091 \-\-auth=username:password \-l
 .Ed
 Start all torrents:
 .Bd -literal -offset indent
-$ transmission-remote \-tall \-\-start
+$ transmission-og-remote \-tall \-\-start
 .Ed
 Add two torrents:
 .Bd -literal -offset indent
-$ transmission-remote \-a one.torrent two.torrent
+$ transmission-og-remote \-a one.torrent two.torrent
 .Ed
 Add all torrents in ~/Desktop:
 .Bd -literal -offset indent
-$ transmission-remote \-a ~/Desktop/*torrent
+$ transmission-og-remote \-a ~/Desktop/*torrent
 .Ed
 Get detailed information on the torrent whose ID is '1':
 .Bd -literal -offset indent
-$ transmission-remote \-t1 \-i
+$ transmission-og-remote \-t1 \-i
 .Ed
 Get a list of a torrent's files:
 .Bd -literal -offset indent
-$ transmission-remote \-t1 \-f
+$ transmission-og-remote \-t1 \-f
 .Ed
 Download only its second and fourth files:
 .Bd -literal -offset indent
-$ transmission-remote \-t1 \-Gall \-g2,4
+$ transmission-og-remote \-t1 \-Gall \-g2,4
 .Ed
 Set all torrents' first two files' priorities to high:
 .Bd -literal -offset indent
-$ transmission-remote \-tall \-ph1,2
+$ transmission-og-remote \-tall \-ph1,2
 .Ed
 Set all torrents' files' priorities to normal:
 .Bd -literal -offset indent
-$ transmission-remote \-tall \-pnall
+$ transmission-og-remote \-tall \-pnall
 .Ed
 .Sh ENVIRONMENT
 .Bl -tag -width Fl
@@ -403,12 +403,12 @@ Sets the proxy to use for http tracker announces.
 and
 .An Mike Gelfand .
 .Sh SEE ALSO
-.Xr transmission-create 1 ,
-.Xr transmission-daemon 1 ,
-.Xr transmission-edit 1 ,
-.Xr transmission-gtk 1 ,
-.Xr transmission-qt 1 ,
-.Xr transmission-remote 1 ,
-.Xr transmission-show 1
+.Xr transmission-og-create 1 ,
+.Xr transmission-og-daemon 1 ,
+.Xr transmission-og-edit 1 ,
+.Xr transmission-og-gtk 1 ,
+.Xr transmission-og-qt 1 ,
+.Xr transmission-og-remote 1 ,
+.Xr transmission-og-show 1
 .Pp
-https://transmissionbt.com/
+https://github.com/stefantalpalaru/transmission-og

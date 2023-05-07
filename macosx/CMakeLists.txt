@@ -417,11 +417,11 @@ target_link_libraries(${TR_NAME}-mac
     "-framework Security"
 )
 
-set(MAC_BUNDLE_NAME Transmission)
+set(MAC_BUNDLE_NAME TransmissionOG)
 
 set_target_properties(${TR_NAME}-mac PROPERTIES
     OUTPUT_NAME ${MAC_BUNDLE_NAME}
-    MACOSX_BUNDLE_GUI_IDENTIFIER "org.m0k.transmission"
+    MACOSX_BUNDLE_GUI_IDENTIFIER "org.m0k.transmissionog"
     MACOSX_BUNDLE_INFO_PLIST ${PROJECT_SOURCE_DIR}/Info.plist.in
     INSTALL_RPATH "@executable_path;@executable_path/../Frameworks"
 )

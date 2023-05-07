@@ -269,10 +269,10 @@ void tr_hex_to_binary(char const* input, void* output, size_t byte_length) TR_GN
 /** @brief convenience function to determine if an address is an IP address (IPv4 or IPv6) */
 bool tr_addressIsIP(char const* address);
 
-/** @brief return true if the url is a http or https or UDP url that Transmission understands */
+/** @brief return true if the url is a http or https or UDP url that Transmission OG understands */
 bool tr_urlIsValidTracker(char const* url);
 
-/** @brief return true if the url is a [ http, https, ftp, sftp ] url that Transmission understands */
+/** @brief return true if the url is a [ http, https, ftp, sftp ] url that Transmission OG understands */
 bool tr_urlIsValid(char const* url, size_t url_len);
 
 /** @brief parse a URL into its component parts

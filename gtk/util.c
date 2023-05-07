@@ -600,7 +600,7 @@ void gtr_unrecognized_url_dialog(GtkWidget* parent, char const* url)
 
     GtkWidget* w = gtk_message_dialog_new(window, 0, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, "%s", _("Unrecognized URL"));
 
-    g_string_append_printf(gstr, _("Transmission doesn't know how to use \"%s\""), url);
+    g_string_append_printf(gstr, _("Transmission OG doesn't know how to use \"%s\""), url);
 
     if (gtr_is_magnet_link(url) && strstr(url, xt) == NULL)
     {

@@ -1,9 +1,9 @@
 //
 //  InfoTabMatrix.m
-//  Transmission
+//  Transmission OG
 //
 //  Created by Mitchell Livingston on 12/21/18.
-//  Copyright © 2018 The Transmission Project. All rights reserved.
+//  Copyright © 2018 The Transmission OG Project. All rights reserved.
 //
 
 #import "InfoTabMatrix.h"

@@ -433,8 +433,8 @@ static void handle_web_client(struct evhttp_request* req, struct tr_rpc_server* 
     if (tr_str_is_empty(webClientDir))
     {
         send_simple_response(req, HTTP_NOTFOUND,
-            "<p>Couldn't find Transmission's web interface files!</p>"
-            "<p>Users: to tell Transmission where to look, "
+            "<p>Couldn't find Transmission OG's web interface files!</p>"
+            "<p>Users: to tell Transmission OG where to look, "
             "set the TRANSMISSION_WEB_HOME environment "
             "variable to the folder where the web interface's "
             "index.html is located.</p>"
@@ -703,7 +703,7 @@ static void handle_request(struct evhttp_request* req, void* arg)
         else if (!isHostnameAllowed(server, req))
         {
             char* const tmp = tr_strdup_printf(
-                "<p>Transmission received your request, but the hostname was unrecognized.</p>"
+                "<p>Transmission OG received your request, but the hostname was unrecognized.</p>"
                 "<p>To fix this, choose one of the following options:"
                 "<ul>"
                 "<li>Enable password authentication, then any hostname is allowed.</li>"

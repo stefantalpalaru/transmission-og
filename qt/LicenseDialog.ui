@@ -20,15 +20,15 @@
       <bool>true</bool>
      </property>
      <property name="plainText">
-      <string notr="true">Copyright 2005-2020. All code is copyrighted by the respective authors.
+      <string notr="true">Copyright 2005-2023. All code is copyrighted by the respective authors.
 
-Transmission can be redistributed and/or modified under the terms of the GNU GPL versions 2 or 3 or by any future license endorsed by Mnemosyne LLC.
+Transmission OG can be redistributed and/or modified under the terms of the GNU GPL versions 2 or 3 or by any future license endorsed by Mnemosyne LLC.
 
 In addition, linking to and/or using OpenSSL is allowed.
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-Some of Transmission's source files have more permissive licenses. Those files may, of course, be used on their own under their own terms.</string>
+Some of Transmission OG's source files have more permissive licenses. Those files may, of course, be used on their own under their own terms.</string>
      </property>
     </widget>
    </item>

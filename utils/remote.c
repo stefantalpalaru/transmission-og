@@ -240,7 +240,7 @@ static char const* getUsage(void)
 {
     return MY_NAME " " LONG_VERSION_STRING "\n"
         "A fast and easy BitTorrent client\n"
-        "https://transmissionbt.com/\n"
+        "https://github.com/stefantalpalaru/transmission-og\n"
         "\n"
         "Usage: " MY_NAME " [host] [options]\n"
         "       " MY_NAME " [port] [options]\n"
@@ -293,7 +293,7 @@ static tr_option opts[] =
     { 'l', "list", "List all torrents", "l", false, NULL },
     { 'L', "labels", "Set the current torrents' labels", "L", true, "<label[,label...]>" },
     { 960, "move", "Move current torrent's data to a new folder", NULL, true, "<path>" },
-    { 961, "find", "Tell Transmission where to find a torrent's data", NULL, true, "<path>" },
+    { 961, "find", "Tell Transmission OG where to find a torrent's data", NULL, true, "<path>" },
     { 'm', "portmap", "Enable portmapping via NAT-PMP or UPnP", "m", false, NULL },
     { 'M', "no-portmap", "Disable portmapping", "M", false, NULL },
     { 'n', "auth", "Set username and password", "n", true, "<user:pw>" },

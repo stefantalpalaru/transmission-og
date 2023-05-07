@@ -8,13 +8,13 @@ AM_CFLAGS = \
     @PTHREAD_CFLAGS@
 
 EXTRA_DIST = \
-    transmission-daemon.service
+    transmission-og-daemon.service
 
 dist_man_MANS = \
-    transmission-daemon.1
+    transmission-og-daemon.1
 
 bin_PROGRAMS = \
-    transmission-daemon
+    transmission-og-daemon
 
 LDADD = \
     $(top_builddir)/libtransmission/libtransmission.a \
@@ -34,11 +34,11 @@ LDADD = \
 
 noinst_HEADERS = daemon.h
 
-transmission_daemon_SOURCES = daemon.c
-nodist_EXTRA_transmission_daemon_SOURCES = dummy.cxx # force C++ linking
+transmission_og_daemon_SOURCES = daemon.c
+nodist_EXTRA_transmission_og_daemon_SOURCES = dummy.cxx # force C++ linking
 
 if WIN32
-transmission_daemon_SOURCES += daemon-win32.c
+transmission_og_daemon_SOURCES += daemon-win32.c
 else
-transmission_daemon_SOURCES += daemon-posix.c
+transmission_og_daemon_SOURCES += daemon-posix.c
 endif

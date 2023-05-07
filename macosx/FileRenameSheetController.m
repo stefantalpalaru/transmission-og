@@ -1,9 +1,9 @@
 //
 //  FileRenameSheetController.m
-//  Transmission
+//  Transmission OG
 //
 //  Created by Mitchell Livingston on 1/20/13.
-//  Copyright (c) 2013 The Transmission Project. All rights reserved.
+//  Copyright (c) 2013 The Transmission OG Project. All rights reserved.
 //
 
 #import "FileRenameSheetController.h"
