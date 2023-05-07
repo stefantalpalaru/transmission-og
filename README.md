@@ -1,6 +1,8 @@
+[![CI](https://github.com/stefantalpalaru/transmission-og/actions/workflows/ci.yml/badge.svg)](https://github.com/stefantalpalaru/transmission-og/actions/workflows/ci.yml)
+
 ## About
 
-Transmission OG (Old Generation) is a fork of [Transmission][https://github.com/transmission/transmission/] 3.00 (fast, easy, and free BitTorrent client). It comes in several flavors:
+Transmission OG (Old Generation) is a fork of [Transmission](https://github.com/transmission/transmission/) 3.00 (fast, easy, and free BitTorrent client). It comes in several flavors:
   * GTK+ and Qt GUI applications for Linux, BSD, macOS, Windows, etc.
   * A headless daemon for servers and routers
   * A native macOS GUI application (a bit lagging on features, help welcome)
