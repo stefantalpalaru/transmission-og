@@ -160,14 +160,12 @@ jobs:
               -DENABLE_QT=ON
               -DWITH_CRYPTO=openssl
               -DUSE_SYSTEM_UTP=OFF # latest version redefines "bool" for C compilers
-              -DENABLE_NLS=ON
             )
 
             if [[ "${{ matrix.libs }}" == "system" ]]; then
               CMAKE_ARGS+=(
                 -DUSE_SYSTEM_EVENT2=ON
                 -DUSE_SYSTEM_MINIUPNPC=ON
-                -DENABLE_NLS=OFF # not related to system libs, but worth testing
               )
             else # force vendored libs
               CMAKE_ARGS+=(
@@ -227,7 +225,6 @@ jobs:
               --with-crypto=openssl
               --with-gtk
               --disable-external-utp # latest version redefines "bool" for C compilers
-              --enable-nls
             )
             QMAKE_ARGS=(
               -early
@@ -237,7 +234,6 @@ jobs:
               CONFIGURE_ARGS+=(
                 --enable-external-libevent
                 --enable-external-miniupnpc
-                --disable-nls # not related to system libs, but worth testing
               )
             fi
 
