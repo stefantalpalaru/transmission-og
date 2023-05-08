@@ -219,6 +219,11 @@ char* tr_clientForId(char* buf, size_t buflen, void const* id_in)
             tr_snprintf(buf, buflen, "\xc2\xb5Torrent %d.%d.%d%s", strint(id + 3, 1), strint(id + 4, 1), strint(id + 5, 1),
                 getMnemonicEnd(id[6]));
         }
+        else if (strncmp(chid + 1, "UW", 2) == 0)
+        {
+            tr_snprintf(buf, buflen, "\xc2\xb5Torrent Web %d.%d.%d%s", strint(id + 3, 1), strint(id + 4, 1), strint(id + 5, 1),
+                getMnemonicEnd(id[6]));
+        }
         else if (strncmp(chid + 1, "BT", 2) == 0)
         {
             tr_snprintf(buf, buflen, "BitTorrent %d.%d.%d%s", strint(id + 3, 1), strint(id + 4, 1), strint(id + 5, 1),
