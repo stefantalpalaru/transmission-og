@@ -724,6 +724,8 @@ static ReadState readPeerId(tr_handshake* handshake, struct evbuffer* inbuf)
     tr_clientForId(client, sizeof(client), peer_id);
     dbgmsg(handshake, "peer-id is [%s] ... isIncoming is %d", client, tr_peerIoIsIncoming(handshake->io));
 
+    /*fprintf(stderr, "peer-id is [%s] (%20.20s)\n", client, peer_id);*/
+
     /* if we've somehow connected to ourselves, don't keep the connection */
     tor = tr_torrentFindFromHash(handshake->session, tr_peerIoGetTorrentHash(handshake->io));
     connected_to_self = tor != NULL && memcmp(peer_id, tr_torrentGetPeerId(tor), PEER_ID_LEN) == 0;

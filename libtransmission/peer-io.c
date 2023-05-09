@@ -1000,11 +1000,11 @@ void tr_peerIoSetPeersId(tr_peerIo* io, uint8_t const* peer_id)
 
     if ((io->peerIdIsSet = peer_id != NULL))
     {
-        memcpy(io->peerId, peer_id, 20);
+        memcpy(io->peerId, peer_id, PEER_ID_LEN);
     }
     else
     {
-        memset(io->peerId, '\0', 20);
+        memset(io->peerId, '\0', PEER_ID_LEN);
     }
 }
 

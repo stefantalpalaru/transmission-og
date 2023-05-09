@@ -19,16 +19,24 @@ int main(void)
 {
     char buf[128];
 
+    TEST_CLIENT("-ADB560-", "Advanced Download Manager 11.5.6");
+    TEST_CLIENT("-BL246326", "BitLord 2.4.6-326"); // Style used after BitLord 0.59
+    TEST_CLIENT("-BT791B-", "BitTorrent 7.9.1 (Beta)");
+    TEST_CLIENT("-BT791\0-", "BitTorrent 7.9.1");
+    TEST_CLIENT("-BW1293-", "BitTorrent Web 1.2.9"); // BitTorrent Web 1.2.9.4938 (9924)
     TEST_CLIENT("-FC1013-", "FileCroc 1.0.1.3");
+    TEST_CLIENT("-FW6830-", "FrostWire 6.8.3");
+    TEST_CLIENT("-Lr10X0-", "LibreTorrent 1.0.33");
     TEST_CLIENT("-MR1100-", "Miro 1.1.0.0");
     TEST_CLIENT("-TR0006-", "Transmission 0.6");
     TEST_CLIENT("-TR0072-", "Transmission 0.72");
     TEST_CLIENT("-TR111Z-", "Transmission 1.11+");
+    TEST_CLIENT("-TR311Z-", "Transmission OG 3.11+");
+    TEST_CLIENT("-UT341\0-", "\xc2\xb5Torrent 3.4.1");
+    TEST_CLIENT("-WS1000-", "HTTP Seed");
+    TEST_CLIENT("-WW0007-", "WebTorrent 0.0.0.7");
     TEST_CLIENT("O1008132", "Osprey 1.0.0");
     TEST_CLIENT("TIX0193-", "Tixati 1.93");
-    TEST_CLIENT("-UT341\0-", "\xc2\xb5Torrent 3.4.1");
-    TEST_CLIENT("-BT791\0-", "BitTorrent 7.9.1");
-    TEST_CLIENT("-BT791B-", "BitTorrent 7.9.1 (Beta)");
 
     /* Xfplay 9.9.92 to 9.9.94 uses "-XF9992-" */
     TEST_CLIENT("-XF9992-", "Xfplay 9.9.92");
@@ -44,6 +52,7 @@ int main(void)
     TEST_CLIENT("-FD51R\xFF-", "Free Download Manager 5.1.27");
     TEST_CLIENT("-FD51W\xFF-", "Free Download Manager 5.1.32");
     TEST_CLIENT("-FD51@\xFF-", "Free Download Manager 5.1.x"); /* Negative test case */
+    TEST_CLIENT("FD6k4SYy9BOU4U4rk3-J", "Free Download Manager 6"); // Free Download Manager 6.17.0.4792 (9a17ce2)
 
     /* Folx */
     TEST_CLIENT("-FL51FF-", "Folx 5.x"); /* Folx v5.2.1.13690 */
