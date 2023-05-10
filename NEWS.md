@@ -1,10 +1,11 @@
 ## (next)
 
 ### All Platforms
-- Default trackers for public torrents (not on the Mac client) ([#229](https://github.com/transmission/transmission/pull/229))
+- Default trackers for public torrents (not on the native Mac client) ([#229](https://github.com/transmission/transmission/pull/229))
 - OpenSSL-3: load "legacy" provider for RC4 ([#4716](https://github.com/transmission/transmission/issues/4716))
-- Autotools improvements
-- Rename project from "Transmission" to "Transmission OG"
+- Autotools fixes and improvements ([#3](https://github.com/stefantalpalaru/transmission-og/pull/3))
+- Rename project from "Transmission" to "Transmission OG" ([#5](https://github.com/stefantalpalaru/transmission-og/pull/5))
+- Add more client IDs ([#7](https://github.com/stefantalpalaru/transmission-og/pull/7))
 
 ### Qt Client
 - Fix download percentage bar glitch ([#3150](https://github.com/transmission/transmission/issues/3150))
