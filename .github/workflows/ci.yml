@@ -91,6 +91,7 @@ jobs:
         run: |
           sudo -E dpkg --add-architecture i386
           sudo -E apt-get update -qq
+          sudo -E apt-get upgrade -yq
           sudo -E eatmydata apt-get install --no-install-recommends --allow-downgrades -yq \
             gcc-multilib g++-multilib \
             libcurl4-openssl-dev:i386 gettext:i386 \
