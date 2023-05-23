@@ -6,6 +6,7 @@
 - Autotools fixes and improvements ([#3](https://github.com/stefantalpalaru/transmission-og/pull/3))
 - Rename project from "Transmission" to "Transmission OG" ([#5](https://github.com/stefantalpalaru/transmission-og/pull/5))
 - Add more client IDs ([#7](https://github.com/stefantalpalaru/transmission-og/pull/7))
+- "scrape-paused-torrents-enabled" now defaults to "false" (no effect on existing installations, because it's "true" in "settings.json")
 
 ### Qt Client
 - Fix download percentage bar glitch ([#3150](https://github.com/transmission/transmission/issues/3150))
