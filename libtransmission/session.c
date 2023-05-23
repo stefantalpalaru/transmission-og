@@ -376,7 +376,7 @@ void tr_sessionGetDefaultSettings(tr_variant* d)
     tr_variantDictAddBool(d, TR_KEY_rpc_host_whitelist_enabled, true);
     tr_variantDictAddInt(d, TR_KEY_rpc_port, atoi(TR_DEFAULT_RPC_PORT_STR));
     tr_variantDictAddStr(d, TR_KEY_rpc_url, TR_DEFAULT_RPC_URL_STR);
-    tr_variantDictAddBool(d, TR_KEY_scrape_paused_torrents_enabled, true);
+    tr_variantDictAddBool(d, TR_KEY_scrape_paused_torrents_enabled, false);
     tr_variantDictAddStr(d, TR_KEY_script_torrent_done_filename, "");
     tr_variantDictAddBool(d, TR_KEY_script_torrent_done_enabled, false);
     tr_variantDictAddInt(d, TR_KEY_seed_queue_size, 10);

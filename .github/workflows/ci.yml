@@ -91,8 +91,9 @@ jobs:
         run: |
           sudo -E dpkg --add-architecture i386
           sudo -E apt-get update -qq
-          sudo -E eatmydata apt-get install --no-install-recommends -yq gcc-multilib g++-multilib \
-            libcurl4-openssl-dev:i386 gettext:i386 \
+          sudo -E eatmydata apt-get install --no-install-recommends --allow-downgrades -yq \
+            libc6:i386 libgcc-s1:i386 libstdc++6:i386 libgomp1:i386 libatomic1:i386 \
+            gcc-multilib g++-multilib libcurl4-openssl-dev:i386 gettext:i386 \
             libevent-dev:i386 libglib2.0-dev:i386 libgtk-3-dev:i386 \
             libnotify-dev:i386 libssl-dev:i386 libsystemd-dev:i386 \
             qttools5-dev:i386 zlib1g-dev:i386 intltool:i386

@@ -1244,9 +1244,12 @@ static void on_announce_done(tr_announce_response const* response, void* vdata)
                then a separate scrape isn't needed */
             if (scrape_fields >= 3 || (scrape_fields >= 1 && tracker->scrape_info == NULL))
             {
-                tr_logAddTorDbg(tier->tor, "Announce response contained scrape info; "
-                    "rescheduling next scrape to %d seconds from now.", tier->scrapeIntervalSec);
                 tier->scrapeAt = get_next_scrape_time(announcer->session, tier, tier->scrapeIntervalSec);
+                if (tier->scrapeAt != 0)
+                {
+                    tr_logAddTorDbg(tier->tor, "Announce response contained scrape info; "
+                        "rescheduling next scrape to %d seconds from now.", tier->scrapeIntervalSec);
+                }
                 tier->lastScrapeTime = now;
                 tier->lastScrapeSucceeded = true;
             }
@@ -1397,10 +1400,13 @@ static void on_scrape_error(tr_session* session, tr_tier* tier, char const* errm
 
     /* schedule a rescrape */
     interval = getRetryInterval(tier->currentTracker);
-    dbgmsg(tier, "Retrying scrape in %zu seconds.", (size_t)interval);
-    tr_logAddTorInfo(tier->tor, "Retrying scrape in %zu seconds.", (size_t)interval);
     tier->lastScrapeSucceeded = false;
     tier->scrapeAt = get_next_scrape_time(session, tier, interval);
+    if (tier->scrapeAt != 0)
+    {
+        dbgmsg(tier, "Retrying scrape in %zu seconds.", (size_t)interval);
+        tr_logAddTorInfo(tier->tor, "Retrying scrape in %zu seconds.", (size_t)interval);
+    }
 }
 
 static tr_tier* find_tier(tr_torrent* tor, char const* scrape)
@@ -1579,6 +1585,11 @@ static void multiscrape(tr_announcer* announcer, tr_ptrArray* tiers)
     for (int i = 0; i < tier_count; ++i)
     {
         tr_tier* tier = tr_ptrArrayNth(tiers, i);
+        if (!tier->isRunning && !announcer->session->scrapePausedTorrents)
+        {
+            // skip the paused torrent
+            continue;
+        }
         struct tr_scrape_info* const scrape_info = tier->currentTracker->scrape_info;
         uint8_t const* hash = tier->tor->info.hash;
         bool found = false;
