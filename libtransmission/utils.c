@@ -125,24 +125,57 @@ int tr_gettimeofday(struct timeval* tv)
 
 void* tr_malloc(size_t size)
 {
-    return size != 0 ? malloc(size) : NULL;
+    void* res = NULL;
+
+    if (size != 0)
+    {
+        res = malloc(size);
+        if (res == NULL)
+        {
+            fprintf(stderr, "Out of memory. Aborting.\n");
+            abort();
+        }
+    }
+
+    return res;
 }
 
 void* tr_malloc0(size_t size)
 {
-    return size != 0 ? calloc(1, size) : NULL;
+    void* res = NULL;
+
+    if (size != 0)
+    {
+        res = calloc(1, size);
+        if (res == NULL)
+        {
+            fprintf(stderr, "Out of memory. Aborting.\n");
+            abort();
+        }
+    }
+
+    return res;
 }
 
 void* tr_realloc(void* p, size_t size)
 {
-    void* result = size != 0 ? realloc(p, size) : NULL;
+    void* res = NULL;
 
-    if (result == NULL)
+    if (size != 0)
+    {
+        res = realloc(p, size);
+        if (res == NULL)
+        {
+            fprintf(stderr, "Out of memory. Aborting.\n");
+            abort();
+        }
+    }
+    else
     {
         tr_free(p);
     }
 
-    return result;
+    return res;
 }
 
 void tr_free(void* p)

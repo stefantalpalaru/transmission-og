@@ -206,17 +206,27 @@ static int readOrWritePiece(tr_torrent* tor, int ioMode, tr_piece_index_t pieceI
         uint64_t const bytesThisPass = MIN(buflen, file->length - fileOffset);
 
         err = readOrWriteBytes(tor->session, tor, ioMode, fileIndex, fileOffset, buf, bytesThisPass);
-        buf += bytesThisPass;
-        buflen -= bytesThisPass;
-        fileIndex++;
-        fileOffset = 0;
-
         if (err != 0 && ioMode == TR_IO_WRITE && tor->error != TR_STAT_LOCAL_ERROR)
         {
             char* path = tr_buildPath(tor->downloadDir, file->name, NULL);
             tr_torrentSetLocalError(tor, "%s (%s)", tr_strerror(err), path);
             tr_free(path);
         }
+
+        if (buf != NULL) // a NULL buffer is used for prefetching
+        {
+            buf += bytesThisPass;
+        }
+
+        buflen -= bytesThisPass;
+        fileIndex++;
+        if (fileIndex >= info->fileCount)
+        {
+            tr_logAddTorErr(tor, "tried to read or write past fileCount");
+            break;
+        }
+        fileOffset = 0;
+        file = &info->files[fileIndex];
     }
 
     return err;

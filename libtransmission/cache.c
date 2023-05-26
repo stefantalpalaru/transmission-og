@@ -7,12 +7,14 @@
  */
 
 #include <stdlib.h> /* qsort() */
+#include <string.h> /* memcmp() */
 
 #include <event2/buffer.h>
 
 #include "transmission.h"
 #include "cache.h"
 #include "inout.h"
+#include "list.h"
 #include "log.h"
 #include "peer-common.h" /* MAX_BLOCK_SIZE */
 #include "ptrarray.h"
@@ -125,7 +127,7 @@ enum
     SESSIONFLAG = 0x4000
 };
 
-/* Calculte runs
+/* Calculate runs
  *   - Stale runs, runs sitting in cache for a long time or runs not growing, get priority.
  *     Returns number of runs.
  */
@@ -367,6 +369,47 @@ int tr_cacheReadBlock(tr_cache* cache, tr_torrent* torrent, tr_piece_index_t pie
     return err;
 }
 
+// We prefetch these many pieces from all torrents, before assuming they are
+// out of the filesystem cache and need to be prefetched again.
+//
+// We could let the kernel deal with it, but with a 16 MiB piece and 16 KiB
+// blocks it gets into silly territory.
+#define TR_MAX_PREFETCHED_PIECES 100
+
+// Fixed-size FIFO queue using a doubly linked list.
+struct tr_prefetched_pieces
+{
+    tr_list* list;
+    tr_list* tail;
+    size_t size;
+};
+
+static struct tr_prefetched_pieces prefetched_pieces = {0};
+
+struct tr_prefetch_piece_data
+{
+    uint8_t torrent_hash[SHA_DIGEST_LENGTH];
+    tr_piece_index_t piece;
+};
+
+// We only care about equality here, because we only use this in tr_list_find().
+static int tr_prefetched_pieces_compare(void const* lhs, void const* rhs)
+{
+    int res = 1;
+    struct tr_prefetch_piece_data const *left = lhs, *right = rhs;
+
+    if (lhs != NULL && rhs != NULL)
+    {
+        res = memcmp(left->torrent_hash, right->torrent_hash, SHA_DIGEST_LENGTH);
+        if (res == 0)
+        {
+            res = (left->piece != right->piece);
+        }
+    }
+
+    return res;
+}
+
 int tr_cachePrefetchBlock(tr_cache* cache, tr_torrent* torrent, tr_piece_index_t piece, uint32_t offset, uint32_t len)
 {
     int err = 0;
@@ -374,7 +417,36 @@ int tr_cachePrefetchBlock(tr_cache* cache, tr_torrent* torrent, tr_piece_index_t
 
     if (cb == NULL)
     {
-        err = tr_ioPrefetch(torrent, piece, offset, len);
+        // Construct the corresponding piece data.
+        struct tr_prefetch_piece_data data, *data_copy;
+        memcpy(data.torrent_hash, torrent->info.hash, SHA_DIGEST_LENGTH);
+        data.piece = piece;
+
+        // Did we prefetch it recently?
+        tr_list* found = tr_list_find(prefetched_pieces.list, &data, tr_prefetched_pieces_compare);
+        if (found == NULL)
+        {
+            // Prefetch the whole piece.
+            err = tr_ioPrefetch(torrent, piece, 0, MAX(len, torrent->info.pieceSize));
+
+            // Add the related data to our ring buffer (need to copy the stack data to the heap, first).
+            data_copy = tr_memdup(&data, sizeof(struct tr_prefetch_piece_data));
+            tr_list_prepend(&prefetched_pieces.list, data_copy);
+            if (prefetched_pieces.tail == NULL)
+            {
+                prefetched_pieces.tail = prefetched_pieces.list;
+            }
+            prefetched_pieces.size++;
+            if (prefetched_pieces.size > TR_MAX_PREFETCHED_PIECES)
+            {
+                // Discard the last node.
+                tr_list* new_tail = prefetched_pieces.tail->prev;
+                new_tail->next = NULL;
+                tr_list_free(&prefetched_pieces.tail, tr_free);
+                prefetched_pieces.tail = new_tail;
+                prefetched_pieces.size--;
+            }
+        }
     }
 
     return err;
