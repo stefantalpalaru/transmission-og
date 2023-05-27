@@ -8,6 +8,10 @@
 - Add more client IDs ([#7](https://github.com/stefantalpalaru/transmission-og/pull/7))
 - "scrape-paused-torrents-enabled" now defaults to "false" (no effect on existing installations, because it's "true" in "settings.json")
 - Prefetch whole pieces instead on individual blocks
+- UPnP pinhole punching (IPv6 equivalent of port forwarding)
+
+### GTK+ Client
+- Stop eating the last message at each refresh of the Message Log
 
 ### Qt Client
 - Fix download percentage bar glitch ([#3150](https://github.com/transmission/transmission/issues/3150))

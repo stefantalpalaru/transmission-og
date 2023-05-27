@@ -111,16 +111,16 @@ static void natPulse(tr_shared* s, bool do_check)
 static void set_evtimer_from_status(tr_shared* s)
 {
     int sec = 0;
-    int msec = 0;
+    int usec = 0;
 
     /* when to wake up again */
     switch (tr_sharedTraversalStatus(s))
     {
     case TR_PORT_MAPPED:
-        /* if we're mapped, everything is fine... check back in 20 minutes
+        /* if we're mapped, everything is fine... check back in 10 minutes
          * to renew the port forwarding if it's expired */
         s->doPortCheck = true;
-        sec = 60 * 20;
+        sec = 60 * 10;
         break;
 
     case TR_PORT_ERROR:
@@ -130,13 +130,13 @@ static void set_evtimer_from_status(tr_shared* s)
 
     default:
         /* in progress. pulse frequently. */
-        msec = 333000;
+        usec = 333000;
         break;
     }
 
     if (s->timer != NULL)
     {
-        tr_timerAdd(s->timer, sec, msec);
+        tr_timerAdd(s->timer, sec, usec);
     }
 }
 
@@ -167,17 +167,6 @@ tr_shared* tr_sharedInit(tr_session* session)
     s->isEnabled = false;
     s->upnpStatus = TR_PORT_UNMAPPED;
     s->natpmpStatus = TR_PORT_UNMAPPED;
-
-#if 0
-
-    if (isEnabled)
-    {
-        s->timer = tr_new0(struct event, 1);
-        evtimer_set(s->timer, onTimer, s);
-        tr_timerAdd(s->timer, 0, 333000);
-    }
-
-#endif
 
     return s;
 }

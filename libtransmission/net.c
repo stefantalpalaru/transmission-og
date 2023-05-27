@@ -705,8 +705,8 @@ unsigned char const* tr_globalIPv6(void)
     static bool have_ipv6 = false;
     time_t const now = tr_time();
 
-    /* Re-check every half hour */
-    if (last_time < now - 1800)
+    /* Re-check every ten minutes */
+    if (last_time < now - 600)
     {
         int addrlen = 16;
         int const rc = tr_globalAddress(AF_INET6, ipv6, &addrlen);

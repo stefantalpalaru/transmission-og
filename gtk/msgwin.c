@@ -358,7 +358,7 @@ static tr_log_message* addMessages(GtkListStore* store, struct tr_log_message* h
     static unsigned int sequence = 0;
     char const* default_name = g_get_application_name();
 
-    for (i = head; i != NULL && i->next != NULL; i = i->next)
+    for (i = head; i != NULL; i = i->next)
     {
         char const* name = i->name != NULL ? i->name : default_name;
 

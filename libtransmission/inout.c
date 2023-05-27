@@ -222,7 +222,7 @@ static int readOrWritePiece(tr_torrent* tor, int ioMode, tr_piece_index_t pieceI
         fileIndex++;
         if (fileIndex >= info->fileCount)
         {
-            tr_logAddTorErr(tor, "tried to read or write past fileCount");
+            tr_logAddTorDbg(tor, "tried to read or write past fileCount");
             break;
         }
         fileOffset = 0;

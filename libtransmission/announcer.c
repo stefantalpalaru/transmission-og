@@ -1082,7 +1082,7 @@ static void on_announce_error(tr_tier* tier, char const* err, tr_announce_event 
 
     /* set the error message */
     dbgmsg(tier, "%s", err);
-    tr_logAddTorInfo(tier->tor, "%s", err);
+    tr_logAddTorDbg(tier->tor, "%s", err);
     tr_strlcpy(tier->lastAnnounceStr, err, sizeof(tier->lastAnnounceStr));
 
     /* switch to the next tracker */
@@ -1091,7 +1091,7 @@ static void on_announce_error(tr_tier* tier, char const* err, tr_announce_event 
     /* schedule a reannounce */
     interval = getRetryInterval(tier->currentTracker);
     dbgmsg(tier, "Retrying announce in %d seconds.", interval);
-    tr_logAddTorInfo(tier->tor, "Retrying announce in %d seconds.", interval);
+    tr_logAddTorDbg(tier->tor, "Retrying announce in %d seconds.", interval);
     tier_announce_event_push(tier, e, tr_time() + interval);
 }
 
@@ -1392,7 +1392,7 @@ static void on_scrape_error(tr_session* session, tr_tier* tier, char const* errm
 
     /* set the error message */
     dbgmsg(tier, "Scrape error: %s", errmsg);
-    tr_logAddTorInfo(tier->tor, "Scrape error: %s", errmsg);
+    tr_logAddTorDbg(tier->tor, "Scrape error: %s", errmsg);
     tr_strlcpy(tier->lastScrapeStr, errmsg, sizeof(tier->lastScrapeStr));
 
     /* switch to the next tracker */
@@ -1405,7 +1405,7 @@ static void on_scrape_error(tr_session* session, tr_tier* tier, char const* errm
     if (tier->scrapeAt != 0)
     {
         dbgmsg(tier, "Retrying scrape in %zu seconds.", (size_t)interval);
-        tr_logAddTorInfo(tier->tor, "Retrying scrape in %zu seconds.", (size_t)interval);
+        tr_logAddTorDbg(tier->tor, "Retrying scrape in %zu seconds.", (size_t)interval);
     }
 }
 
