@@ -866,7 +866,7 @@
         <translation>&amp;Yardım</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+9"/>
         <source>&amp;View</source>
         <translation>&amp;Göster</translation>
     </message>
@@ -901,12 +901,12 @@
         <translation>Klasörden torrent dosyası aç</translation>
     </message>
     <message>
-        <location line="-161"/>
+        <location line="-159"/>
         <source>Queue</source>
         <translation>Sıralama</translation>
     </message>
     <message>
-        <location line="+122"/>
+        <location line="+120"/>
         <source>&amp;Open...</source>
         <translation>&amp;Aç...</translation>
     </message>
@@ -1183,12 +1183,11 @@
         <translation>&amp;URL Aç...</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>&amp;Donate</source>
-        <translation>&amp;Bağış</translation>
+        <translation type="vanished">&amp;Bağış</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+8"/>
         <source>Start &amp;Now</source>
         <translation>Şimdi &amp;Başlat</translation>
     </message>
@@ -1223,7 +1222,7 @@
         <translation>Kuyruğa göre Sırala</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cc" line="+465"/>
+        <location filename="../MainWindow.cc" line="+464"/>
         <source>Limit Download Speed</source>
         <translation>İndirme Hızını Sınırla</translation>
     </message>
@@ -1234,13 +1233,13 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+734"/>
+        <location line="+729"/>
         <location line="+8"/>
         <source>Limited at %1</source>
         <translation>Sınırlı %1</translation>
     </message>
     <message>
-        <location line="-693"/>
+        <location line="-688"/>
         <source>Limit Upload Speed</source>
         <translation>Gönderme Hızını Sınırla</translation>
     </message>
@@ -1256,7 +1255,7 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+721"/>
+        <location line="+716"/>
         <source>Stop at Ratio (%1)</source>
         <translation>(%1) Oranında Durdur</translation>
     </message>
@@ -1299,12 +1298,12 @@
         <translation>Torrent Aç</translation>
     </message>
     <message>
-        <location line="-988"/>
+        <location line="-983"/>
         <source>Speed Limits</source>
         <translation>Hız Sınırları</translation>
     </message>
     <message>
-        <location line="+490"/>
+        <location line="+485"/>
         <source>Network Error</source>
         <translation>Ağ Hatası</translation>
     </message>
@@ -1636,7 +1635,7 @@ Başka bir öncelikli web adresi eklemek için, boş bir satırdan sonra ekleyin
 <context>
     <name>PrefsDialog</name>
     <message>
-        <location filename="../PrefsDialog.ui" line="+1139"/>
+        <location filename="../PrefsDialog.ui" line="+1159"/>
         <source>Use &amp;authentication</source>
         <translation>&amp;Yetkilendirme kullan</translation>
     </message>
@@ -1661,7 +1660,7 @@ Başka bir öncelikli web adresi eklemek için, boş bir satırdan sonra ekleyin
         <translation>Adresler:</translation>
     </message>
     <message>
-        <location line="-1150"/>
+        <location line="-1170"/>
         <source>Speed Limits</source>
         <translation>Hız Sınırları</translation>
     </message>
@@ -1681,7 +1680,7 @@ Başka bir öncelikli web adresi eklemek için, boş bir satırdan sonra ekleyin
         <translation>&amp;Şu günler:</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+359"/>
         <source>Every Day</source>
         <translation>Hergün</translation>
     </message>
@@ -1696,7 +1695,7 @@ Başka bir öncelikli web adresi eklemek için, boş bir satırdan sonra ekleyin
         <translation>Hafta sonu</translation>
     </message>
     <message>
-        <location line="-183"/>
+        <location line="-207"/>
         <source>Sunday</source>
         <translation>Pazar</translation>
     </message>
@@ -1731,7 +1730,7 @@ Başka bir öncelikli web adresi eklemek için, boş bir satırdan sonra ekleyin
         <translation>Cumartesi</translation>
     </message>
     <message>
-        <location line="+244"/>
+        <location line="+268"/>
         <source>Port is &lt;b&gt;open&lt;/b&gt;</source>
         <translation>Port &lt;b&gt;açık&lt;/b&gt;</translation>
     </message>
@@ -1747,7 +1746,7 @@ Başka bir öncelikli web adresi eklemek için, boş bir satırdan sonra ekleyin
     </message>
     <message>
         <location line="+32"/>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+336"/>
         <source>Status unknown</source>
         <translation>Durum bilinmiyor </translation>
     </message>
@@ -1833,7 +1832,7 @@ Başka bir öncelikli web adresi eklemek için, boş bir satırdan sonra ekleyin
         <translation>Gönderiliyor</translation>
     </message>
     <message>
-        <location line="+548"/>
+        <location line="+568"/>
         <source>Remote</source>
         <translation>Kontrol</translation>
     </message>
@@ -1845,7 +1844,7 @@ Başka bir öncelikli web adresi eklemek için, boş bir satırdan sonra ekleyin
         </translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-287"/>
+        <location filename="../PrefsDialog.ui" line="-307"/>
         <source>Pick a &amp;random port every time Transmission OG is started</source>
         <translation>Transmission OG her başlatıldığında &amp;rastgele bir bağlantı noktası seç.</translation>
     </message>
@@ -1912,7 +1911,7 @@ Başka bir öncelikli web adresi eklemek için, boş bir satırdan sonra ekleyin
         <translation>&amp;e</translation>
     </message>
     <message>
-        <location line="+763"/>
+        <location line="+783"/>
         <location line="+9"/>
         <source>Desktop</source>
         <translation>Masaüstü</translation>
@@ -1923,7 +1922,7 @@ Başka bir öncelikli web adresi eklemek için, boş bir satırdan sonra ekleyin
         <translation>Transmission OG simgesini &amp;bildirim alanında göster</translation>
     </message>
     <message>
-        <location line="-213"/>
+        <location line="-233"/>
         <source>Te&amp;st Port</source>
         <translation>Bağlantı Noktasını Sı&amp;na</translation>
     </message>
@@ -1943,7 +1942,7 @@ Başka bir öncelikli web adresi eklemek için, boş bir satırdan sonra ekleyin
         <translation>&amp;Şifreleme kipi:</translation>
     </message>
     <message>
-        <location line="+453"/>
+        <location line="+473"/>
         <source>Remote Control</source>
         <translation>Uzaktan Denetim</translation>
     </message>
@@ -1963,7 +1962,7 @@ Başka bir öncelikli web adresi eklemek için, boş bir satırdan sonra ekleyin
         <translation>Sadece şu IP a&amp;dreslerine izni ver:</translation>
     </message>
     <message>
-        <location line="-1128"/>
+        <location line="-1148"/>
         <source>&amp;Upload:</source>
         <translation>&amp;Yükleme:</translation>
     </message>
@@ -1988,7 +1987,17 @@ Başka bir öncelikli web adresi eklemek için, boş bir satırdan sonra ekleyin
         <translation>&amp;İndirme:</translation>
     </message>
     <message>
-        <location line="+836"/>
+        <location line="+792"/>
+        <source>a list of default trackers to be added to new public torrents (and existing ones, after a reload)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Default Trackers:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+61"/>
         <source>Start &amp;minimized in notification area</source>
         <translation>Bildirim alanında &amp;küçültülmüş olarak başlat</translation>
     </message>
@@ -2013,12 +2022,12 @@ Başka bir öncelikli web adresi eklemek için, boş bir satırdan sonra ekleyin
         <translation>Torrent indiğinde bir &amp;ses çal</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="-73"/>
+        <location filename="../PrefsDialog.cc" line="-74"/>
         <source>Testing TCP Port...</source>
         <translation>TCP bağlantı noktası sınanıyor…</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-229"/>
+        <location filename="../PrefsDialog.ui" line="-249"/>
         <source>Peer Limits</source>
         <translation>Eş Sınırları</translation>
     </message>
@@ -2058,7 +2067,7 @@ Başka bir öncelikli web adresi eklemek için, boş bir satırdan sonra ekleyin
         <translation>Şifreleme</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+141"/>
+        <location filename="../PrefsDialog.cc" line="+142"/>
         <source>Select &quot;Torrent Done&quot; Script</source>
         <translation>&quot;Torrent Tamamlandı&quot; Betiğini Seç</translation>
     </message>
@@ -2188,7 +2197,7 @@ Başka bir öncelikli web adresi eklemek için, boş bir satırdan sonra ekleyin
 <context>
     <name>Session</name>
     <message>
-        <location filename="../Session.cc" line="+531"/>
+        <location filename="../Session.cc" line="+532"/>
         <source>Error Renaming Path</source>
         <translation>Yolu Yeniden Adlandırırken Hata</translation>
     </message>

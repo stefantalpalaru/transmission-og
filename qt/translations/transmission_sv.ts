@@ -875,7 +875,7 @@
         <translation>&amp;Hjälp</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+9"/>
         <source>&amp;View</source>
         <translation>&amp;Visa</translation>
     </message>
@@ -910,12 +910,12 @@
         <translation>Öppna torrentmappen</translation>
     </message>
     <message>
-        <location line="-161"/>
+        <location line="-159"/>
         <source>Queue</source>
         <translation>Kö</translation>
     </message>
     <message>
-        <location line="+122"/>
+        <location line="+120"/>
         <source>&amp;Open...</source>
         <translation>&amp;Öppna...</translation>
     </message>
@@ -1192,12 +1192,11 @@
         <translation>Öppna &amp;webbadress...</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>&amp;Donate</source>
-        <translation>&amp;Donera</translation>
+        <translation type="vanished">&amp;Donera</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+8"/>
         <source>Start &amp;Now</source>
         <translation>Starta &amp;nu</translation>
     </message>
@@ -1232,7 +1231,7 @@
         <translation>Sortera efter &amp;kö</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cc" line="+465"/>
+        <location filename="../MainWindow.cc" line="+464"/>
         <source>Limit Download Speed</source>
         <translation>Begränsa hämtningshastighet</translation>
     </message>
@@ -1243,13 +1242,13 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+734"/>
+        <location line="+729"/>
         <location line="+8"/>
         <source>Limited at %1</source>
         <translation>Begränsat till %1</translation>
     </message>
     <message>
-        <location line="-693"/>
+        <location line="-688"/>
         <source>Limit Upload Speed</source>
         <translation>Begränsa sändningshastighet</translation>
     </message>
@@ -1265,7 +1264,7 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+721"/>
+        <location line="+716"/>
         <source>Stop at Ratio (%1)</source>
         <translation>Sluta vid förhållande (%1)</translation>
     </message>
@@ -1308,12 +1307,12 @@
         <translation>Öppna torrent</translation>
     </message>
     <message>
-        <location line="-988"/>
+        <location line="-983"/>
         <source>Speed Limits</source>
         <translation>Delningsbegränsningar</translation>
     </message>
     <message>
-        <location line="+490"/>
+        <location line="+485"/>
         <source>Network Error</source>
         <translation>Nätverksfel</translation>
     </message>
@@ -1650,7 +1649,7 @@ För att lägga till en till primär webbadress, lägg den efter en tom rad.</tr
 <context>
     <name>PrefsDialog</name>
     <message>
-        <location filename="../PrefsDialog.ui" line="+1139"/>
+        <location filename="../PrefsDialog.ui" line="+1159"/>
         <source>Use &amp;authentication</source>
         <translation>Använd &amp;autentisering</translation>
     </message>
@@ -1675,7 +1674,7 @@ För att lägga till en till primär webbadress, lägg den efter en tom rad.</tr
         <translation>Adresser:</translation>
     </message>
     <message>
-        <location line="-1150"/>
+        <location line="-1170"/>
         <source>Speed Limits</source>
         <translation>Delningsbegränsningar</translation>
     </message>
@@ -1695,7 +1694,7 @@ För att lägga till en till primär webbadress, lägg den efter en tom rad.</tr
         <translation>&amp;På dagar:</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+359"/>
         <source>Every Day</source>
         <translation>Varje Dag</translation>
     </message>
@@ -1710,7 +1709,7 @@ För att lägga till en till primär webbadress, lägg den efter en tom rad.</tr
         <translation>Helger</translation>
     </message>
     <message>
-        <location line="-183"/>
+        <location line="-207"/>
         <source>Sunday</source>
         <translation>Söndag</translation>
     </message>
@@ -1745,7 +1744,7 @@ För att lägga till en till primär webbadress, lägg den efter en tom rad.</tr
         <translation>Lördag</translation>
     </message>
     <message>
-        <location line="+244"/>
+        <location line="+268"/>
         <source>Port is &lt;b&gt;open&lt;/b&gt;</source>
         <translation>Porten är &lt;b&gt;öppen&lt;/b&gt;</translation>
     </message>
@@ -1761,7 +1760,7 @@ För att lägga till en till primär webbadress, lägg den efter en tom rad.</tr
     </message>
     <message>
         <location line="+32"/>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+336"/>
         <source>Status unknown</source>
         <translation>Okänd status</translation>
     </message>
@@ -1849,7 +1848,7 @@ För att lägga till en till primär webbadress, lägg den efter en tom rad.</tr
         <translation>Delar</translation>
     </message>
     <message>
-        <location line="+548"/>
+        <location line="+568"/>
         <source>Remote</source>
         <translation>Fjärr</translation>
     </message>
@@ -1862,7 +1861,7 @@ För att lägga till en till primär webbadress, lägg den efter en tom rad.</tr
         </translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-287"/>
+        <location filename="../PrefsDialog.ui" line="-307"/>
         <source>Pick a &amp;random port every time Transmission OG is started</source>
         <translation>Välj en &amp;slumpad port varje gång Transmission OG startas</translation>
     </message>
@@ -1930,7 +1929,7 @@ För att lägga till en till primär webbadress, lägg den efter en tom rad.</tr
         <translation>&amp;till</translation>
     </message>
     <message>
-        <location line="+763"/>
+        <location line="+783"/>
         <location line="+9"/>
         <source>Desktop</source>
         <translation>Skrivbord</translation>
@@ -1941,7 +1940,7 @@ För att lägga till en till primär webbadress, lägg den efter en tom rad.</tr
         <translation>Visa Transmission OG-ikon i &amp;meddelandefältet</translation>
     </message>
     <message>
-        <location line="-213"/>
+        <location line="-233"/>
         <source>Te&amp;st Port</source>
         <translation>Te&amp;sta port</translation>
     </message>
@@ -1961,7 +1960,7 @@ För att lägga till en till primär webbadress, lägg den efter en tom rad.</tr
         <translation>&amp;Krypteringsläge:</translation>
     </message>
     <message>
-        <location line="+453"/>
+        <location line="+473"/>
         <source>Remote Control</source>
         <translation>Fjärrstyrning</translation>
     </message>
@@ -1981,7 +1980,7 @@ För att lägga till en till primär webbadress, lägg den efter en tom rad.</tr
         <translation>Tillåt bara dessa IP-a&amp;dresser:</translation>
     </message>
     <message>
-        <location line="-1128"/>
+        <location line="-1148"/>
         <source>&amp;Upload:</source>
         <translation>&amp;Skickat:</translation>
     </message>
@@ -2006,7 +2005,17 @@ För att lägga till en till primär webbadress, lägg den efter en tom rad.</tr
         <translation>Ne&amp;dladdning:</translation>
     </message>
     <message>
-        <location line="+836"/>
+        <location line="+792"/>
+        <source>a list of default trackers to be added to new public torrents (and existing ones, after a reload)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Default Trackers:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+61"/>
         <source>Start &amp;minimized in notification area</source>
         <translation>Starta &amp;minimerad i meddelandefältet</translation>
     </message>
@@ -2031,12 +2040,12 @@ För att lägga till en till primär webbadress, lägg den efter en tom rad.</tr
         <translation>Spela ett &amp;ljud när torrenter är slutförda</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="-73"/>
+        <location filename="../PrefsDialog.cc" line="-74"/>
         <source>Testing TCP Port...</source>
         <translation>Testar TCP-port...</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-229"/>
+        <location filename="../PrefsDialog.ui" line="-249"/>
         <source>Peer Limits</source>
         <translation>Nodbegränsningar</translation>
     </message>
@@ -2076,7 +2085,7 @@ För att lägga till en till primär webbadress, lägg den efter en tom rad.</tr
         <translation>Kryptering</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+141"/>
+        <location filename="../PrefsDialog.cc" line="+142"/>
         <source>Select &quot;Torrent Done&quot; Script</source>
         <translation>Välj &quot;Torrent slutförd&quot; Skript</translation>
     </message>
@@ -2206,7 +2215,7 @@ För att lägga till en till primär webbadress, lägg den efter en tom rad.</tr
 <context>
     <name>Session</name>
     <message>
-        <location filename="../Session.cc" line="+531"/>
+        <location filename="../Session.cc" line="+532"/>
         <source>Error Renaming Path</source>
         <translation>Fel när sökväg döptes om</translation>
     </message>

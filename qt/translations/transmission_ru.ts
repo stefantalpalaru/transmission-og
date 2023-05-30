@@ -884,7 +884,7 @@
         <translation>&amp;Справка</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+9"/>
         <source>&amp;View</source>
         <translation>&amp;Вид</translation>
     </message>
@@ -919,12 +919,12 @@
         <translation>Открыть папку торрента</translation>
     </message>
     <message>
-        <location line="-161"/>
+        <location line="-159"/>
         <source>Queue</source>
         <translation>Очередь</translation>
     </message>
     <message>
-        <location line="+122"/>
+        <location line="+120"/>
         <source>&amp;Open...</source>
         <translation>&amp;Открыть…</translation>
     </message>
@@ -1201,12 +1201,11 @@
         <translation>О&amp;ткрыть URL…</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>&amp;Donate</source>
-        <translation>&amp;Пожертвовать</translation>
+        <translation type="vanished">&amp;Пожертвовать</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+8"/>
         <source>Start &amp;Now</source>
         <translation>Запустить сейчас</translation>
     </message>
@@ -1241,7 +1240,7 @@
         <translation>Сортировать по очерёдности</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cc" line="+465"/>
+        <location filename="../MainWindow.cc" line="+464"/>
         <source>Limit Download Speed</source>
         <translation>Ограничить скорость загрузки</translation>
     </message>
@@ -1252,13 +1251,13 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+734"/>
+        <location line="+729"/>
         <location line="+8"/>
         <source>Limited at %1</source>
         <translation>Ограничено до %1</translation>
     </message>
     <message>
-        <location line="-693"/>
+        <location line="-688"/>
         <source>Limit Upload Speed</source>
         <translation>Ограничить скорость раздачи</translation>
     </message>
@@ -1274,7 +1273,7 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+721"/>
+        <location line="+716"/>
         <source>Stop at Ratio (%1)</source>
         <translation>Остановить при рейтинге (%1)</translation>
     </message>
@@ -1317,12 +1316,12 @@
         <translation>Открыть торрент</translation>
     </message>
     <message>
-        <location line="-988"/>
+        <location line="-983"/>
         <source>Speed Limits</source>
         <translation>Ограничения скорости</translation>
     </message>
     <message>
-        <location line="+490"/>
+        <location line="+485"/>
         <source>Network Error</source>
         <translation>Ошибка сети</translation>
     </message>
@@ -1664,7 +1663,7 @@ To add another primary URL, add it after a blank line.</source>
 <context>
     <name>PrefsDialog</name>
     <message>
-        <location filename="../PrefsDialog.ui" line="+1139"/>
+        <location filename="../PrefsDialog.ui" line="+1159"/>
         <source>Use &amp;authentication</source>
         <translation>Испол&amp;ьзовать проверку подлинности</translation>
     </message>
@@ -1689,7 +1688,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>Адреса:</translation>
     </message>
     <message>
-        <location line="-1150"/>
+        <location line="-1170"/>
         <source>Speed Limits</source>
         <translation>Ограничения скорости</translation>
     </message>
@@ -1709,7 +1708,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>В указанные &amp;дни:</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+359"/>
         <source>Every Day</source>
         <translation>Ежедневно</translation>
     </message>
@@ -1724,7 +1723,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>Выходные</translation>
     </message>
     <message>
-        <location line="-183"/>
+        <location line="-207"/>
         <source>Sunday</source>
         <translation>Воскресенье</translation>
     </message>
@@ -1759,7 +1758,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>Суббота</translation>
     </message>
     <message>
-        <location line="+244"/>
+        <location line="+268"/>
         <source>Port is &lt;b&gt;open&lt;/b&gt;</source>
         <translation>Порт &lt;b&gt;открыт&lt;/b&gt;</translation>
     </message>
@@ -1775,7 +1774,7 @@ To add another primary URL, add it after a blank line.</source>
     </message>
     <message>
         <location line="+32"/>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+336"/>
         <source>Status unknown</source>
         <translation>Статус неизвестен</translation>
     </message>
@@ -1865,7 +1864,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>Раздача</translation>
     </message>
     <message>
-        <location line="+548"/>
+        <location line="+568"/>
         <source>Remote</source>
         <translation>Удалённый доступ</translation>
     </message>
@@ -1879,7 +1878,7 @@ To add another primary URL, add it after a blank line.</source>
         </translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-287"/>
+        <location filename="../PrefsDialog.ui" line="-307"/>
         <source>Pick a &amp;random port every time Transmission OG is started</source>
         <translation>Выбирать &amp;случайный порт при каждом запуске программы</translation>
     </message>
@@ -1948,7 +1947,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>&amp;до</translation>
     </message>
     <message>
-        <location line="+763"/>
+        <location line="+783"/>
         <location line="+9"/>
         <source>Desktop</source>
         <translation>Рабочий стол</translation>
@@ -1959,7 +1958,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>Показать значок Transmission OG в о&amp;бласти уведомлений</translation>
     </message>
     <message>
-        <location line="-213"/>
+        <location line="-233"/>
         <source>Te&amp;st Port</source>
         <translation>Про&amp;верить порт</translation>
     </message>
@@ -1979,7 +1978,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>&amp;Режим шифрования:</translation>
     </message>
     <message>
-        <location line="+453"/>
+        <location line="+473"/>
         <source>Remote Control</source>
         <translation>Удалённый доступ</translation>
     </message>
@@ -1999,7 +1998,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>Разрешить только эти IP-адреса:</translation>
     </message>
     <message>
-        <location line="-1128"/>
+        <location line="-1148"/>
         <source>&amp;Upload:</source>
         <translation>Отдача:</translation>
     </message>
@@ -2024,7 +2023,17 @@ To add another primary URL, add it after a blank line.</source>
         <translation>Загрузка:</translation>
     </message>
     <message>
-        <location line="+836"/>
+        <location line="+792"/>
+        <source>a list of default trackers to be added to new public torrents (and existing ones, after a reload)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Default Trackers:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+61"/>
         <source>Start &amp;minimized in notification area</source>
         <translation>Запускать с&amp;вёрнутым в область уведомлений</translation>
     </message>
@@ -2049,12 +2058,12 @@ To add another primary URL, add it after a blank line.</source>
         <translation>Звуковое уведомление при завершении торрента</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="-73"/>
+        <location filename="../PrefsDialog.cc" line="-74"/>
         <source>Testing TCP Port...</source>
         <translation>Проверка TCP-порта…</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-229"/>
+        <location filename="../PrefsDialog.ui" line="-249"/>
         <source>Peer Limits</source>
         <translation>Ограничения участников</translation>
     </message>
@@ -2094,7 +2103,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>Шифрование</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+141"/>
+        <location filename="../PrefsDialog.cc" line="+142"/>
         <source>Select &quot;Torrent Done&quot; Script</source>
         <translation>Выбор скрипта, запускаемого по завершении торрента</translation>
     </message>
@@ -2224,7 +2233,7 @@ To add another primary URL, add it after a blank line.</source>
 <context>
     <name>Session</name>
     <message>
-        <location filename="../Session.cc" line="+531"/>
+        <location filename="../Session.cc" line="+532"/>
         <source>Error Renaming Path</source>
         <translation>Ошибка переименования</translation>
     </message>

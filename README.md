@@ -61,13 +61,13 @@ For a more detailed description, and dependencies, visit the original wiki: http
 
 ## Contributing
 
-### Code Style
+### Updating translations
 
-You would want to setup your editor to make use of uncrustify.cfg and .jsbeautifyrc configuration files located in the root of this repository.
+```text
+cd po
+make update-po
 
-If for some reason you are unwilling or unable to do so, there is a shell script which you could run either directly or via docker-compose:
+cd ../qt
+/usr/lib64/qt5/bin/lupdate qtr.pro
+```
 
-    $ ./code_style.sh
-    or
-    $ docker-compose build --pull
-    $ docker-compose run --rm code_style
