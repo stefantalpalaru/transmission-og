@@ -73,6 +73,7 @@ Makefile
 po/.intltool-merge-cache
 po/POTFILES
 po/stamp-it
+*.pot
 
 # editors
 *.swp

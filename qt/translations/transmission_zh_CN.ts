@@ -866,7 +866,7 @@
         <translation>帮助(&amp;H)</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+9"/>
         <source>&amp;View</source>
         <translation>查看(&amp;V)</translation>
     </message>
@@ -901,12 +901,12 @@
         <translation>打开 Torrent 的文件夹</translation>
     </message>
     <message>
-        <location line="-161"/>
+        <location line="-159"/>
         <source>Queue</source>
         <translation>队列</translation>
     </message>
     <message>
-        <location line="+122"/>
+        <location line="+120"/>
         <source>&amp;Open...</source>
         <translation>打开(&amp;O)...</translation>
     </message>
@@ -1183,12 +1183,11 @@
         <translation>打开链接(&amp;U)...</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>&amp;Donate</source>
-        <translation>捐赠(&amp;D)</translation>
+        <translation type="vanished">捐赠(&amp;D)</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+8"/>
         <source>Start &amp;Now</source>
         <translation>立刻开始(&amp;N)</translation>
     </message>
@@ -1223,7 +1222,7 @@
         <translation>按队列排序(&amp;Q)</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cc" line="+465"/>
+        <location filename="../MainWindow.cc" line="+464"/>
         <source>Limit Download Speed</source>
         <translation>限制下载速度</translation>
     </message>
@@ -1234,13 +1233,13 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+734"/>
+        <location line="+729"/>
         <location line="+8"/>
         <source>Limited at %1</source>
         <translation>限制在 %1</translation>
     </message>
     <message>
-        <location line="-693"/>
+        <location line="-688"/>
         <source>Limit Upload Speed</source>
         <translation>限制上传速度</translation>
     </message>
@@ -1256,7 +1255,7 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+721"/>
+        <location line="+716"/>
         <source>Stop at Ratio (%1)</source>
         <translation>停止当分享率达到 (%1)</translation>
     </message>
@@ -1299,12 +1298,12 @@
         <translation>打开 Torrent</translation>
     </message>
     <message>
-        <location line="-988"/>
+        <location line="-983"/>
         <source>Speed Limits</source>
         <translation>速度限制</translation>
     </message>
     <message>
-        <location line="+490"/>
+        <location line="+485"/>
         <source>Network Error</source>
         <translation>网络错误</translation>
     </message>
@@ -1636,7 +1635,7 @@ To add another primary URL, add it after a blank line.</source>
 <context>
     <name>PrefsDialog</name>
     <message>
-        <location filename="../PrefsDialog.ui" line="+1139"/>
+        <location filename="../PrefsDialog.ui" line="+1159"/>
         <source>Use &amp;authentication</source>
         <translation>使用身份验证(&amp;A)</translation>
     </message>
@@ -1661,7 +1660,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>地址:</translation>
     </message>
     <message>
-        <location line="-1150"/>
+        <location line="-1170"/>
         <source>Speed Limits</source>
         <translation>速度限制</translation>
     </message>
@@ -1681,7 +1680,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>天数(&amp;O):</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+359"/>
         <source>Every Day</source>
         <translation>每天</translation>
     </message>
@@ -1696,7 +1695,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>周末</translation>
     </message>
     <message>
-        <location line="-183"/>
+        <location line="-207"/>
         <source>Sunday</source>
         <translation>星期天</translation>
     </message>
@@ -1731,7 +1730,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>星期六</translation>
     </message>
     <message>
-        <location line="+244"/>
+        <location line="+268"/>
         <source>Port is &lt;b&gt;open&lt;/b&gt;</source>
         <translation>端口是 &lt;b&gt;打开的&lt;/b&gt;</translation>
     </message>
@@ -1747,7 +1746,7 @@ To add another primary URL, add it after a blank line.</source>
     </message>
     <message>
         <location line="+32"/>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+336"/>
         <source>Status unknown</source>
         <translation>状态未知</translation>
     </message>
@@ -1833,7 +1832,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>做种</translation>
     </message>
     <message>
-        <location line="+548"/>
+        <location line="+568"/>
         <source>Remote</source>
         <translation>远程</translation>
     </message>
@@ -1845,7 +1844,7 @@ To add another primary URL, add it after a blank line.</source>
         </translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-287"/>
+        <location filename="../PrefsDialog.ui" line="-307"/>
         <source>Pick a &amp;random port every time Transmission OG is started</source>
         <translation>Transmission OG 每次启动时随机选择端口(&amp;R)</translation>
     </message>
@@ -1912,7 +1911,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>到(&amp;T)</translation>
     </message>
     <message>
-        <location line="+763"/>
+        <location line="+783"/>
         <location line="+9"/>
         <source>Desktop</source>
         <translation>桌面</translation>
@@ -1923,7 +1922,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>在通知区域显示 Transmission OG 图标(&amp;N)</translation>
     </message>
     <message>
-        <location line="-213"/>
+        <location line="-233"/>
         <source>Te&amp;st Port</source>
         <translation>测试端口(&amp;S)</translation>
     </message>
@@ -1943,7 +1942,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>加密模式(&amp;E):</translation>
     </message>
     <message>
-        <location line="+453"/>
+        <location line="+473"/>
         <source>Remote Control</source>
         <translation>远程控制</translation>
     </message>
@@ -1963,7 +1962,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>只允许这些 IP 地址(&amp;D):</translation>
     </message>
     <message>
-        <location line="-1128"/>
+        <location line="-1148"/>
         <source>&amp;Upload:</source>
         <translation>上传(&amp;U):</translation>
     </message>
@@ -1988,7 +1987,17 @@ To add another primary URL, add it after a blank line.</source>
         <translation>下载(&amp;W):</translation>
     </message>
     <message>
-        <location line="+836"/>
+        <location line="+792"/>
+        <source>a list of default trackers to be added to new public torrents (and existing ones, after a reload)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Default Trackers:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+61"/>
         <source>Start &amp;minimized in notification area</source>
         <translation>启动时最小化到通知区域(&amp;M)</translation>
     </message>
@@ -2013,12 +2022,12 @@ To add another primary URL, add it after a blank line.</source>
         <translation>当 Torrent 完成时播放提示音(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="-73"/>
+        <location filename="../PrefsDialog.cc" line="-74"/>
         <source>Testing TCP Port...</source>
         <translation>正在测试 TCP 端口...</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-229"/>
+        <location filename="../PrefsDialog.ui" line="-249"/>
         <source>Peer Limits</source>
         <translation>用户限制</translation>
     </message>
@@ -2058,7 +2067,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>加密</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+141"/>
+        <location filename="../PrefsDialog.cc" line="+142"/>
         <source>Select &quot;Torrent Done&quot; Script</source>
         <translation>选择 &quot;Torrent 完成&quot; 脚本</translation>
     </message>
@@ -2188,7 +2197,7 @@ To add another primary URL, add it after a blank line.</source>
 <context>
     <name>Session</name>
     <message>
-        <location filename="../Session.cc" line="+531"/>
+        <location filename="../Session.cc" line="+532"/>
         <source>Error Renaming Path</source>
         <translation>重命名路径错误</translation>
     </message>

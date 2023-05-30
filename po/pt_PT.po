@@ -897,7 +897,7 @@ msgstr "Iniciar minimizado na área de notificações"
 msgid "Show version number and exit"
 msgstr "Mostrar número da versão e sair"
 
-#: ../gtk/main.c:637 ../gtk/transmission-gtk.appdata.xml.in:11 ../gtk/transmission-gtk.desktop.in:3
+#: ../gtk/main.c:637 ../gtk/transmission-og-gtk.appdata.xml.in:11 ../gtk/transmission-og-gtk.desktop.in:3
 msgid "Transmission OG"
 msgstr "Transmission OG"
 
@@ -1890,37 +1890,37 @@ msgstr "Receb: %1$s, Env: %2$s"
 msgid "size|Down: %1$s, Up: %2$s"
 msgstr "Receb: %1$s, Env: %2$s"
 
-#: ../gtk/transmission-gtk.appdata.xml.in:12 ../gtk/transmission-gtk.desktop.in:5
+#: ../gtk/transmission-og-gtk.appdata.xml.in:12 ../gtk/transmission-og-gtk.desktop.in:5
 msgid "Download and share files over BitTorrent"
 msgstr "Descarregar e partilhar ficheiros pelo BitTorrent"
 
 #. Translators: these are the application description paragraphs in the AppData file.
-#: ../gtk/transmission-gtk.appdata.xml.in:16
+#: ../gtk/transmission-og-gtk.appdata.xml.in:16
 msgid "BitTorrent is a peer-to-peer file-sharing protocol that is commonly used to distribute large amounts of data between multiple users."
 msgstr "O BitTorrent é um protocolo de partilha de ficheiros ponto-a-ponto que é comum utilizar para distribuir grandes quantidades de dados entre vários utilizadores."
 
-#: ../gtk/transmission-gtk.appdata.xml.in:20
+#: ../gtk/transmission-og-gtk.appdata.xml.in:20
 msgid "Transmission OG is a BitTorrent client with an easy-to-use frontend on top a cross-platform backend. Native frontends are available for OS X and Windows, as well as command line and web frontends."
 msgstr "O Transmission OG é um cliente BitTorrent com uma interface fácil de utilizar sobre um código multi-plataforma. Existem várias interfaces nativas para OS X e Windows, assim como em linha de comandos e baseado na web."
 
-#: ../gtk/transmission-gtk.appdata.xml.in:26
+#: ../gtk/transmission-og-gtk.appdata.xml.in:26
 msgid "Notable features of Transmission OG include support for Local Peer Discovery, encryption, DHT, µTP, PEX and Magnet Link."
 msgstr "O Transmission OG tem funcionalidaes notáveis como , descoberta de pares locais (LPD), encriptação, tabelas de hash distribuídas (DHT), protocolo de transporte micro (µTP), troca de pares (PEX) e links magnéticos."
 
-#: ../gtk/transmission-gtk.desktop.in:4
+#: ../gtk/transmission-og-gtk.desktop.in:4
 msgid "BitTorrent Client"
 msgstr "Cliente BitTorrent"
 
 #. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: ../gtk/transmission-gtk.desktop.in:7
+#: ../gtk/transmission-og-gtk.desktop.in:7
 msgid "torrents;downloading;uploading;share;sharing;"
 msgstr "torrents;descarregar;baixar;transferir;transferência;enviar;partilhar;partilha;"
 
-#: ../gtk/transmission-gtk.desktop.in:21
+#: ../gtk/transmission-og-gtk.desktop.in:21
 msgid "Start Transmission OG with All Torrents Paused"
 msgstr "Iniciar o Transmission OG com todos os torrents em pausa"
 
-#: ../gtk/transmission-gtk.desktop.in:25
+#: ../gtk/transmission-og-gtk.desktop.in:25
 msgid "Start Transmission OG Minimized"
 msgstr "Iniciar o Transmission OG minimizado"
 

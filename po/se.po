@@ -890,7 +890,7 @@ msgstr ""
 msgid "Show version number and exit"
 msgstr ""
 
-#: ../gtk/main.c:637 ../gtk/transmission-gtk.appdata.xml.in:11 ../gtk/transmission-gtk.desktop.in:3
+#: ../gtk/main.c:637 ../gtk/transmission-og-gtk.appdata.xml.in:11 ../gtk/transmission-og-gtk.desktop.in:3
 msgid "Transmission OG"
 msgstr ""
 
@@ -1873,37 +1873,37 @@ msgstr ""
 msgid "size|Down: %1$s, Up: %2$s"
 msgstr ""
 
-#: ../gtk/transmission-gtk.appdata.xml.in:12 ../gtk/transmission-gtk.desktop.in:5
+#: ../gtk/transmission-og-gtk.appdata.xml.in:12 ../gtk/transmission-og-gtk.desktop.in:5
 msgid "Download and share files over BitTorrent"
 msgstr ""
 
 #. Translators: these are the application description paragraphs in the AppData file.
-#: ../gtk/transmission-gtk.appdata.xml.in:16
+#: ../gtk/transmission-og-gtk.appdata.xml.in:16
 msgid "BitTorrent is a peer-to-peer file-sharing protocol that is commonly used to distribute large amounts of data between multiple users."
 msgstr ""
 
-#: ../gtk/transmission-gtk.appdata.xml.in:20
+#: ../gtk/transmission-og-gtk.appdata.xml.in:20
 msgid "Transmission OG is a BitTorrent client with an easy-to-use frontend on top a cross-platform backend. Native frontends are available for OS X and Windows, as well as command line and web frontends."
 msgstr ""
 
-#: ../gtk/transmission-gtk.appdata.xml.in:26
+#: ../gtk/transmission-og-gtk.appdata.xml.in:26
 msgid "Notable features of Transmission OG include support for Local Peer Discovery, encryption, DHT, µTP, PEX and Magnet Link."
 msgstr ""
 
-#: ../gtk/transmission-gtk.desktop.in:4
+#: ../gtk/transmission-og-gtk.desktop.in:4
 msgid "BitTorrent Client"
 msgstr ""
 
 #. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: ../gtk/transmission-gtk.desktop.in:7
+#: ../gtk/transmission-og-gtk.desktop.in:7
 msgid "torrents;downloading;uploading;share;sharing;"
 msgstr ""
 
-#: ../gtk/transmission-gtk.desktop.in:21
+#: ../gtk/transmission-og-gtk.desktop.in:21
 msgid "Start Transmission OG with All Torrents Paused"
 msgstr ""
 
-#: ../gtk/transmission-gtk.desktop.in:25
+#: ../gtk/transmission-og-gtk.desktop.in:25
 msgid "Start Transmission OG Minimized"
 msgstr ""
 

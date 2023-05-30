@@ -867,7 +867,7 @@
         <translation>도움말 (&amp;H)</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+9"/>
         <source>&amp;View</source>
         <translation>보기 (&amp;V)</translation>
     </message>
@@ -902,12 +902,12 @@
         <translation>Torrent 폴더 열기</translation>
     </message>
     <message>
-        <location line="-161"/>
+        <location line="-159"/>
         <source>Queue</source>
         <translation>큐</translation>
     </message>
     <message>
-        <location line="+122"/>
+        <location line="+120"/>
         <source>&amp;Open...</source>
         <translation>열기 (&amp;O)</translation>
     </message>
@@ -1184,12 +1184,11 @@
         <translation>URL 열기 (&amp;U)</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>&amp;Donate</source>
-        <translation>기부 (&amp;D)</translation>
+        <translation type="vanished">기부 (&amp;D)</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+8"/>
         <source>Start &amp;Now</source>
         <translation>바로 시작 (&amp;N)</translation>
     </message>
@@ -1224,7 +1223,7 @@
         <translation>큐 순서에 따라 정렬 (&amp;Q)</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cc" line="+465"/>
+        <location filename="../MainWindow.cc" line="+464"/>
         <source>Limit Download Speed</source>
         <translation>다운로드 속도 제한</translation>
     </message>
@@ -1235,13 +1234,13 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+734"/>
+        <location line="+729"/>
         <location line="+8"/>
         <source>Limited at %1</source>
         <translation>%1 에 한정</translation>
     </message>
     <message>
-        <location line="-693"/>
+        <location line="-688"/>
         <source>Limit Upload Speed</source>
         <translation>업로드 속도 제한</translation>
     </message>
@@ -1257,7 +1256,7 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+721"/>
+        <location line="+716"/>
         <source>Stop at Ratio (%1)</source>
         <translation>비율에 따라 정지 (%1)</translation>
     </message>
@@ -1300,12 +1299,12 @@
         <translation>Torrent 열기</translation>
     </message>
     <message>
-        <location line="-988"/>
+        <location line="-983"/>
         <source>Speed Limits</source>
         <translation>속도 제한</translation>
     </message>
     <message>
-        <location line="+490"/>
+        <location line="+485"/>
         <source>Network Error</source>
         <translation>네트워크 오류</translation>
     </message>
@@ -1637,7 +1636,7 @@ To add another primary URL, add it after a blank line.</source>
 <context>
     <name>PrefsDialog</name>
     <message>
-        <location filename="../PrefsDialog.ui" line="+1139"/>
+        <location filename="../PrefsDialog.ui" line="+1159"/>
         <source>Use &amp;authentication</source>
         <translation>인증 사용 (&amp;A)</translation>
     </message>
@@ -1662,7 +1661,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>주소:</translation>
     </message>
     <message>
-        <location line="-1150"/>
+        <location line="-1170"/>
         <source>Speed Limits</source>
         <translation>속도 제한속도 제한</translation>
     </message>
@@ -1682,7 +1681,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>날들 중에 (&amp;O): </translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+359"/>
         <source>Every Day</source>
         <translation>모든 날</translation>
     </message>
@@ -1697,7 +1696,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>주말</translation>
     </message>
     <message>
-        <location line="-183"/>
+        <location line="-207"/>
         <source>Sunday</source>
         <translation>일요일</translation>
     </message>
@@ -1732,7 +1731,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>토요일</translation>
     </message>
     <message>
-        <location line="+244"/>
+        <location line="+268"/>
         <source>Port is &lt;b&gt;open&lt;/b&gt;</source>
         <translation>포트가 &lt;b&gt;열려있습니다&lt;/b&gt;</translation>
     </message>
@@ -1748,7 +1747,7 @@ To add another primary URL, add it after a blank line.</source>
     </message>
     <message>
         <location line="+32"/>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+336"/>
         <source>Status unknown</source>
         <translation>상태 알수 없음</translation>
     </message>
@@ -1834,7 +1833,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>시딩중</translation>
     </message>
     <message>
-        <location line="+548"/>
+        <location line="+568"/>
         <source>Remote</source>
         <translation>리모트</translation>
     </message>
@@ -1846,7 +1845,7 @@ To add another primary URL, add it after a blank line.</source>
         </translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-287"/>
+        <location filename="../PrefsDialog.ui" line="-307"/>
         <source>Pick a &amp;random port every time Transmission OG is started</source>
         <translation>항상 Transmission OG 시작시 무작위 포트 선택 (&amp;R)</translation>
     </message>
@@ -1913,7 +1912,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>에게 (&amp;T)</translation>
     </message>
     <message>
-        <location line="+763"/>
+        <location line="+783"/>
         <location line="+9"/>
         <source>Desktop</source>
         <translation>데스크탑</translation>
@@ -1924,7 +1923,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>알람 영역에 Transmission OG 아이콘 보이기 (&amp;N)</translation>
     </message>
     <message>
-        <location line="-213"/>
+        <location line="-233"/>
         <source>Te&amp;st Port</source>
         <translation>포트 테스트 (&amp;S)</translation>
     </message>
@@ -1944,7 +1943,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>암호화 모드 (&amp;E): </translation>
     </message>
     <message>
-        <location line="+453"/>
+        <location line="+473"/>
         <source>Remote Control</source>
         <translation>원격 조종</translation>
     </message>
@@ -1964,7 +1963,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>이 IP 주소들만 허용 (&amp;D): </translation>
     </message>
     <message>
-        <location line="-1128"/>
+        <location line="-1148"/>
         <source>&amp;Upload:</source>
         <translation>업로드 (&amp;U): </translation>
     </message>
@@ -1989,7 +1988,17 @@ To add another primary URL, add it after a blank line.</source>
         <translation>다운로드 (&amp;W):</translation>
     </message>
     <message>
-        <location line="+836"/>
+        <location line="+792"/>
+        <source>a list of default trackers to be added to new public torrents (and existing ones, after a reload)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Default Trackers:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+61"/>
         <source>Start &amp;minimized in notification area</source>
         <translation>시작시 알람 영역에 최소화</translation>
     </message>
@@ -2014,12 +2023,12 @@ To add another primary URL, add it after a blank line.</source>
         <translation>Torrent 완료시 소리 재생하기 (&amp;S)</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="-73"/>
+        <location filename="../PrefsDialog.cc" line="-74"/>
         <source>Testing TCP Port...</source>
         <translation>TCP 포트 시험중...</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-229"/>
+        <location filename="../PrefsDialog.ui" line="-249"/>
         <source>Peer Limits</source>
         <translation>피어 제한</translation>
     </message>
@@ -2059,7 +2068,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>암호화</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+141"/>
+        <location filename="../PrefsDialog.cc" line="+142"/>
         <source>Select &quot;Torrent Done&quot; Script</source>
         <translation>&quot;Torrent Done&quot; 스크립트 선택</translation>
     </message>
@@ -2189,7 +2198,7 @@ To add another primary URL, add it after a blank line.</source>
 <context>
     <name>Session</name>
     <message>
-        <location filename="../Session.cc" line="+531"/>
+        <location filename="../Session.cc" line="+532"/>
         <source>Error Renaming Path</source>
         <translation>이름변경 위치 오류</translation>
     </message>

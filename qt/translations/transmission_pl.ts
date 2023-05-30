@@ -884,7 +884,7 @@
         <translation>Pomo&amp;c</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+9"/>
         <source>&amp;View</source>
         <translation>&amp;Widok</translation>
     </message>
@@ -919,12 +919,12 @@
         <translation>Otwiera katalog torrenta</translation>
     </message>
     <message>
-        <location line="-161"/>
+        <location line="-159"/>
         <source>Queue</source>
         <translation>Kolejka</translation>
     </message>
     <message>
-        <location line="+122"/>
+        <location line="+120"/>
         <source>&amp;Open...</source>
         <translation>&amp;Otwórz…</translation>
     </message>
@@ -1201,12 +1201,11 @@
         <translation>Otwórz adres &amp;URL…</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>&amp;Donate</source>
-        <translation>&amp;Wsparcie finansowe</translation>
+        <translation type="vanished">&amp;Wsparcie finansowe</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+8"/>
         <source>Start &amp;Now</source>
         <translation>Rozpocz&amp;nij teraz</translation>
     </message>
@@ -1241,7 +1240,7 @@
         <translation>Według &amp;kolejki</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cc" line="+465"/>
+        <location filename="../MainWindow.cc" line="+464"/>
         <source>Limit Download Speed</source>
         <translation>Ograniczenie prędkości pobierania</translation>
     </message>
@@ -1252,13 +1251,13 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+734"/>
+        <location line="+729"/>
         <location line="+8"/>
         <source>Limited at %1</source>
         <translation>Ograniczenie na %1</translation>
     </message>
     <message>
-        <location line="-693"/>
+        <location line="-688"/>
         <source>Limit Upload Speed</source>
         <translation>Ograniczenie prędkości wysyłania</translation>
     </message>
@@ -1274,7 +1273,7 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+721"/>
+        <location line="+716"/>
         <source>Stop at Ratio (%1)</source>
         <translation>Zatrzymanie przy udziale (%1)</translation>
     </message>
@@ -1317,12 +1316,12 @@
         <translation>Otwórz torrent</translation>
     </message>
     <message>
-        <location line="-988"/>
+        <location line="-983"/>
         <source>Speed Limits</source>
         <translation>Ograniczenia</translation>
     </message>
     <message>
-        <location line="+490"/>
+        <location line="+485"/>
         <source>Network Error</source>
         <translation>Błąd sieci</translation>
     </message>
@@ -1664,7 +1663,7 @@ Kolejny podstawowy adres URL należy dodać po pustym wierszu.</translation>
 <context>
     <name>PrefsDialog</name>
     <message>
-        <location filename="../PrefsDialog.ui" line="+1139"/>
+        <location filename="../PrefsDialog.ui" line="+1159"/>
         <source>Use &amp;authentication</source>
         <translation>Uwierzytelni&amp;anie</translation>
     </message>
@@ -1689,7 +1688,7 @@ Kolejny podstawowy adres URL należy dodać po pustym wierszu.</translation>
         <translation>Adresy:</translation>
     </message>
     <message>
-        <location line="-1150"/>
+        <location line="-1170"/>
         <source>Speed Limits</source>
         <translation>Ograniczenia</translation>
     </message>
@@ -1709,7 +1708,7 @@ Kolejny podstawowy adres URL należy dodać po pustym wierszu.</translation>
         <translation>W&#xa0;d&amp;niach:</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+359"/>
         <source>Every Day</source>
         <translation>Codziennie</translation>
     </message>
@@ -1724,7 +1723,7 @@ Kolejny podstawowy adres URL należy dodać po pustym wierszu.</translation>
         <translation>Weekendy</translation>
     </message>
     <message>
-        <location line="-183"/>
+        <location line="-207"/>
         <source>Sunday</source>
         <translation>Niedziela</translation>
     </message>
@@ -1759,7 +1758,7 @@ Kolejny podstawowy adres URL należy dodać po pustym wierszu.</translation>
         <translation>Sobota</translation>
     </message>
     <message>
-        <location line="+244"/>
+        <location line="+268"/>
         <source>Port is &lt;b&gt;open&lt;/b&gt;</source>
         <translation>Port jest &lt;b&gt;otwarty&lt;/b&gt;</translation>
     </message>
@@ -1775,7 +1774,7 @@ Kolejny podstawowy adres URL należy dodać po pustym wierszu.</translation>
     </message>
     <message>
         <location line="+32"/>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+336"/>
         <source>Status unknown</source>
         <translation>Nieznany stan</translation>
     </message>
@@ -1865,7 +1864,7 @@ Kolejny podstawowy adres URL należy dodać po pustym wierszu.</translation>
         <translation>Wysyłanie</translation>
     </message>
     <message>
-        <location line="+548"/>
+        <location line="+568"/>
         <source>Remote</source>
         <translation>Zdalnie</translation>
     </message>
@@ -1879,7 +1878,7 @@ Kolejny podstawowy adres URL należy dodać po pustym wierszu.</translation>
         </translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-287"/>
+        <location filename="../PrefsDialog.ui" line="-307"/>
         <source>Pick a &amp;random port every time Transmission OG is started</source>
         <translation>&amp;Losowanie portu po każdym uruchomieniu programu</translation>
     </message>
@@ -1948,7 +1947,7 @@ Kolejny podstawowy adres URL należy dodać po pustym wierszu.</translation>
         <translation>&amp;do</translation>
     </message>
     <message>
-        <location line="+763"/>
+        <location line="+783"/>
         <location line="+9"/>
         <source>Desktop</source>
         <translation>Pulpit</translation>
@@ -1959,7 +1958,7 @@ Kolejny podstawowy adres URL należy dodać po pustym wierszu.</translation>
         <translation>Ikona programu w&#xa0;obszarze p&amp;owiadamiania</translation>
     </message>
     <message>
-        <location line="-213"/>
+        <location line="-233"/>
         <source>Te&amp;st Port</source>
         <translation>Przete&amp;stuj port</translation>
     </message>
@@ -1979,7 +1978,7 @@ Kolejny podstawowy adres URL należy dodać po pustym wierszu.</translation>
         <translation>&amp;Tryb:</translation>
     </message>
     <message>
-        <location line="+453"/>
+        <location line="+473"/>
         <source>Remote Control</source>
         <translation>Zdalne sterowanie</translation>
     </message>
@@ -1999,7 +1998,7 @@ Kolejny podstawowy adres URL należy dodać po pustym wierszu.</translation>
         <translation>&amp;Zezwolenie tylko podanym adresom IP:</translation>
     </message>
     <message>
-        <location line="-1128"/>
+        <location line="-1148"/>
         <source>&amp;Upload:</source>
         <translation>&amp;Wysyłanie:</translation>
     </message>
@@ -2024,7 +2023,17 @@ Kolejny podstawowy adres URL należy dodać po pustym wierszu.</translation>
         <translation>Po&amp;bieranie:</translation>
     </message>
     <message>
-        <location line="+836"/>
+        <location line="+792"/>
+        <source>a list of default trackers to be added to new public torrents (and existing ones, after a reload)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Default Trackers:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+61"/>
         <source>Start &amp;minimized in notification area</source>
         <translation>Uruchamianie z&amp;minimalizowanego programu w&#xa0;obszarze powiadamiania</translation>
     </message>
@@ -2049,12 +2058,12 @@ Kolejny podstawowy adres URL należy dodać po pustym wierszu.</translation>
         <translation>&amp;Dźwięk po ukończeniu torrenta</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="-73"/>
+        <location filename="../PrefsDialog.cc" line="-74"/>
         <source>Testing TCP Port...</source>
         <translation>Testowanie portu TCP…</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-229"/>
+        <location filename="../PrefsDialog.ui" line="-249"/>
         <source>Peer Limits</source>
         <translation>Ograniczenia partnerów</translation>
     </message>
@@ -2094,7 +2103,7 @@ Kolejny podstawowy adres URL należy dodać po pustym wierszu.</translation>
         <translation>Szyfrowanie</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+141"/>
+        <location filename="../PrefsDialog.cc" line="+142"/>
         <source>Select &quot;Torrent Done&quot; Script</source>
         <translation>Wybór skryptu „Ukończono torrenta”</translation>
     </message>
@@ -2224,7 +2233,7 @@ Kolejny podstawowy adres URL należy dodać po pustym wierszu.</translation>
 <context>
     <name>Session</name>
     <message>
-        <location filename="../Session.cc" line="+531"/>
+        <location filename="../Session.cc" line="+532"/>
         <source>Error Renaming Path</source>
         <translation>Błąd podczas zmieniania nazwy ścieżki</translation>
     </message>

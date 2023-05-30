@@ -897,7 +897,7 @@ msgstr "Begin verklein in kennisgewingarea"
 msgid "Show version number and exit"
 msgstr "Wys weergawenommer en sluit af"
 
-#: ../gtk/main.c:637 ../gtk/transmission-gtk.appdata.xml.in:11 ../gtk/transmission-gtk.desktop.in:3
+#: ../gtk/main.c:637 ../gtk/transmission-og-gtk.appdata.xml.in:11 ../gtk/transmission-og-gtk.desktop.in:3
 msgid "Transmission OG"
 msgstr "Transmission OG"
 
@@ -1895,37 +1895,37 @@ msgstr "Af: %1$s, Op: %2$s"
 msgid "size|Down: %1$s, Up: %2$s"
 msgstr "grootte|Af: %1$s, Op: %2$s"
 
-#: ../gtk/transmission-gtk.appdata.xml.in:12 ../gtk/transmission-gtk.desktop.in:5
+#: ../gtk/transmission-og-gtk.appdata.xml.in:12 ../gtk/transmission-og-gtk.desktop.in:5
 msgid "Download and share files over BitTorrent"
 msgstr "Laai lêers af en deel dit d.m.v. BitTorrent"
 
 #. Translators: these are the application description paragraphs in the AppData file.
-#: ../gtk/transmission-gtk.appdata.xml.in:16
+#: ../gtk/transmission-og-gtk.appdata.xml.in:16
 msgid "BitTorrent is a peer-to-peer file-sharing protocol that is commonly used to distribute large amounts of data between multiple users."
 msgstr "BitTorrent is ’n eweknielêerdeelprotokol wat algemeen gebruik word om groot hoeveelhede data onder meerdere gebruikers te versprei."
 
-#: ../gtk/transmission-gtk.appdata.xml.in:20
+#: ../gtk/transmission-og-gtk.appdata.xml.in:20
 msgid "Transmission OG is a BitTorrent client with an easy-to-use frontend on top a cross-platform backend. Native frontends are available for OS X and Windows, as well as command line and web frontends."
 msgstr "Transmission OG is ’n BitTorrent-kliënt met ’n maklikgebruikbare tussenvlak op ’n kruisplatform agterkant. Inheemse tussenvlakke vir macOS en Windows, asook bevellyn- en webtussenvlakke, is beskikbaar."
 
-#: ../gtk/transmission-gtk.appdata.xml.in:26
+#: ../gtk/transmission-og-gtk.appdata.xml.in:26
 msgid "Notable features of Transmission OG include support for Local Peer Discovery, encryption, DHT, µTP, PEX and Magnet Link."
 msgstr "Noemenswaardige funksies van Transmission OG sluit ondersteuning vir Lokaleëweknie-ontdekking, enkripsie, DHT, µTP, PEX en Magneetskakel in."
 
-#: ../gtk/transmission-gtk.desktop.in:4
+#: ../gtk/transmission-og-gtk.desktop.in:4
 msgid "BitTorrent Client"
 msgstr "BitTorrent-kliënt"
 
 #. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: ../gtk/transmission-gtk.desktop.in:7
+#: ../gtk/transmission-og-gtk.desktop.in:7
 msgid "torrents;downloading;uploading;share;sharing;"
 msgstr "torrents;aflaai;oplaai;deel;deling;"
 
-#: ../gtk/transmission-gtk.desktop.in:21
+#: ../gtk/transmission-og-gtk.desktop.in:21
 msgid "Start Transmission OG with All Torrents Paused"
 msgstr "Begin Transmission OG met Alle Torrents in Wagtoestand"
 
-#: ../gtk/transmission-gtk.desktop.in:25
+#: ../gtk/transmission-og-gtk.desktop.in:25
 msgid "Start Transmission OG Minimized"
 msgstr "Begin Transmission OG Geminimeer"
 

@@ -875,7 +875,7 @@
         <translation>&amp;დახმარება</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+9"/>
         <source>&amp;View</source>
         <translation>&amp;ხედი</translation>
     </message>
@@ -910,12 +910,12 @@
         <translation>ტორენტის საქაღალდის გახსნა</translation>
     </message>
     <message>
-        <location line="-161"/>
+        <location line="-159"/>
         <source>Queue</source>
         <translation>რიგი</translation>
     </message>
     <message>
-        <location line="+122"/>
+        <location line="+120"/>
         <source>&amp;Open...</source>
         <translation>&amp;გახსნა...</translation>
     </message>
@@ -1192,12 +1192,11 @@
         <translation>&amp;URL-ს გახსნა...</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>&amp;Donate</source>
-        <translation>შე&amp;წირვა</translation>
+        <translation type="vanished">შე&amp;წირვა</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+8"/>
         <source>Start &amp;Now</source>
         <translation>&amp;ახლავე დაწყება</translation>
     </message>
@@ -1232,7 +1231,7 @@
         <translation>დალაგება &amp;რიგით</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cc" line="+465"/>
+        <location filename="../MainWindow.cc" line="+464"/>
         <source>Limit Download Speed</source>
         <translation>ჩამოტვირთვის სიჩქარის შეზღუდვა</translation>
     </message>
@@ -1243,13 +1242,13 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+734"/>
+        <location line="+729"/>
         <location line="+8"/>
         <source>Limited at %1</source>
         <translation>შეზღუდული %1-ზე</translation>
     </message>
     <message>
-        <location line="-693"/>
+        <location line="-688"/>
         <source>Limit Upload Speed</source>
         <translation>ატვირთვის სიჩქარის შეზღუდვა</translation>
     </message>
@@ -1265,7 +1264,7 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+721"/>
+        <location line="+716"/>
         <source>Stop at Ratio (%1)</source>
         <translation>შეჩერება ამ შეფარდებაზე (%1)</translation>
     </message>
@@ -1308,12 +1307,12 @@
         <translation>ტორენტის გახსნა</translation>
     </message>
     <message>
-        <location line="-988"/>
+        <location line="-983"/>
         <source>Speed Limits</source>
         <translation>სიჩქარის ლიმიტები</translation>
     </message>
     <message>
-        <location line="+490"/>
+        <location line="+485"/>
         <source>Network Error</source>
         <translation>ქსელის შეცდომა</translation>
     </message>
@@ -1654,7 +1653,7 @@ To add another primary URL, add it after a blank line.</source>
 <context>
     <name>PrefsDialog</name>
     <message>
-        <location filename="../PrefsDialog.ui" line="+1139"/>
+        <location filename="../PrefsDialog.ui" line="+1159"/>
         <source>Use &amp;authentication</source>
         <translation>&amp;ავთენტიფიკაციის გამოყენება</translation>
     </message>
@@ -1679,7 +1678,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>მისამართები:</translation>
     </message>
     <message>
-        <location line="-1150"/>
+        <location line="-1170"/>
         <source>Speed Limits</source>
         <translation>სიჩქარის შეზღუდვები</translation>
     </message>
@@ -1699,7 +1698,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>&amp;დღეებში:</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+359"/>
         <source>Every Day</source>
         <translation>ყოველდღე</translation>
     </message>
@@ -1714,7 +1713,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>შაბათ-კვირას</translation>
     </message>
     <message>
-        <location line="-183"/>
+        <location line="-207"/>
         <source>Sunday</source>
         <translation>კვირას</translation>
     </message>
@@ -1749,7 +1748,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>შაბათს</translation>
     </message>
     <message>
-        <location line="+244"/>
+        <location line="+268"/>
         <source>Port is &lt;b&gt;open&lt;/b&gt;</source>
         <translation>პორტი &lt;b&gt;გახსნილია&lt;/b&gt;</translation>
     </message>
@@ -1765,7 +1764,7 @@ To add another primary URL, add it after a blank line.</source>
     </message>
     <message>
         <location line="+32"/>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+336"/>
         <source>Status unknown</source>
         <translation>მდგომარეობა უცნობია</translation>
     </message>
@@ -1853,7 +1852,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>სიდირება</translation>
     </message>
     <message>
-        <location line="+548"/>
+        <location line="+568"/>
         <source>Remote</source>
         <translation>დისტანციური</translation>
     </message>
@@ -1866,7 +1865,7 @@ To add another primary URL, add it after a blank line.</source>
         </translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-287"/>
+        <location filename="../PrefsDialog.ui" line="-307"/>
         <source>Pick a &amp;random port every time Transmission OG is started</source>
         <translation>&amp;შემთხვევითი პორტის არჩევა Transmission OG-ის ყოველ გაშვებაზე</translation>
     </message>
@@ -1934,7 +1933,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>&amp;სად</translation>
     </message>
     <message>
-        <location line="+763"/>
+        <location line="+783"/>
         <location line="+9"/>
         <source>Desktop</source>
         <translation>სამუშაო მაგიდა</translation>
@@ -1945,7 +1944,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>Transmission OG-ის ხატულის ჩვენება &amp;შეტყობინებების არეში</translation>
     </message>
     <message>
-        <location line="-213"/>
+        <location line="-233"/>
         <source>Te&amp;st Port</source>
         <translation>პორტის შე&amp;მოწმება</translation>
     </message>
@@ -1965,7 +1964,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>&amp;დაშიფვირის სახეობა:</translation>
     </message>
     <message>
-        <location line="+453"/>
+        <location line="+473"/>
         <source>Remote Control</source>
         <translation>დისტანციური მართვა</translation>
     </message>
@@ -1985,7 +1984,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>მხოლოდ ამ IP მი&amp;სამართების დაშვება:</translation>
     </message>
     <message>
-        <location line="-1128"/>
+        <location line="-1148"/>
         <source>&amp;Upload:</source>
         <translation>&amp;ატვირთვა:</translation>
     </message>
@@ -2010,7 +2009,17 @@ To add another primary URL, add it after a blank line.</source>
         <translation>ჩა&amp;მოტვირთვა:</translation>
     </message>
     <message>
-        <location line="+836"/>
+        <location line="+792"/>
+        <source>a list of default trackers to be added to new public torrents (and existing ones, after a reload)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Default Trackers:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+61"/>
         <source>Start &amp;minimized in notification area</source>
         <translation>შეტყობინებების არეში &amp;ჩაკეცილ მდგომარეობაში გაშვება</translation>
     </message>
@@ -2035,12 +2044,12 @@ To add another primary URL, add it after a blank line.</source>
         <translation>&amp;ხმის დაკვრა ტორენტის დასრულებისას</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="-73"/>
+        <location filename="../PrefsDialog.cc" line="-74"/>
         <source>Testing TCP Port...</source>
         <translation>მოწმდება TCP პორტი...</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-229"/>
+        <location filename="../PrefsDialog.ui" line="-249"/>
         <source>Peer Limits</source>
         <translation>პირის შეზღუდვები</translation>
     </message>
@@ -2080,7 +2089,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>დაშიფვრა</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+141"/>
+        <location filename="../PrefsDialog.cc" line="+142"/>
         <source>Select &quot;Torrent Done&quot; Script</source>
         <translation>შეარჩიეთ &quot;ტორენტის დასრულების&quot; სკრიპტი</translation>
     </message>
@@ -2210,7 +2219,7 @@ To add another primary URL, add it after a blank line.</source>
 <context>
     <name>Session</name>
     <message>
-        <location filename="../Session.cc" line="+531"/>
+        <location filename="../Session.cc" line="+532"/>
         <source>Error Renaming Path</source>
         <translation>ბილიკის გადარქმევის შეცდომა</translation>
     </message>

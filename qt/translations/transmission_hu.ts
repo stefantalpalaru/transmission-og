@@ -866,7 +866,7 @@
         <translation>&amp;Súgó</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+9"/>
         <source>&amp;View</source>
         <translation>&amp;Nézet</translation>
     </message>
@@ -901,12 +901,12 @@
         <translation>Torrent mappájának megnyitása</translation>
     </message>
     <message>
-        <location line="-161"/>
+        <location line="-159"/>
         <source>Queue</source>
         <translation>Sorrend</translation>
     </message>
     <message>
-        <location line="+122"/>
+        <location line="+120"/>
         <source>&amp;Open...</source>
         <translation>&amp;Megnyitás…</translation>
     </message>
@@ -1183,12 +1183,11 @@
         <translation>&amp;URL megnyitása…</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>&amp;Donate</source>
-        <translation>&amp;Adakozás</translation>
+        <translation type="vanished">&amp;Adakozás</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+8"/>
         <source>Start &amp;Now</source>
         <translation>Indítás a&amp;zonnal</translation>
     </message>
@@ -1223,7 +1222,7 @@
         <translation>&amp;Sorrend szerint rendezés</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cc" line="+465"/>
+        <location filename="../MainWindow.cc" line="+464"/>
         <source>Limit Download Speed</source>
         <translation>Letöltési sebességkorlát</translation>
     </message>
@@ -1234,13 +1233,13 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+734"/>
+        <location line="+729"/>
         <location line="+8"/>
         <source>Limited at %1</source>
         <translation>Korlátozva: %1</translation>
     </message>
     <message>
-        <location line="-693"/>
+        <location line="-688"/>
         <source>Limit Upload Speed</source>
         <translation>Feltöltési sebességkorlát</translation>
     </message>
@@ -1256,7 +1255,7 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+721"/>
+        <location line="+716"/>
         <source>Stop at Ratio (%1)</source>
         <translation>Seedelés befejezése ha elérte a %1 arányt</translation>
     </message>
@@ -1299,12 +1298,12 @@
         <translation>Torrent megnyitása</translation>
     </message>
     <message>
-        <location line="-988"/>
+        <location line="-983"/>
         <source>Speed Limits</source>
         <translation>Ideiglenes sebesség korlátok</translation>
     </message>
     <message>
-        <location line="+490"/>
+        <location line="+485"/>
         <source>Network Error</source>
         <translation>Hálózati hiba</translation>
     </message>
@@ -1636,7 +1635,7 @@ Másik elsődleges URL-t új sorba írva adhatsz hozzá.</translation>
 <context>
     <name>PrefsDialog</name>
     <message>
-        <location filename="../PrefsDialog.ui" line="+1139"/>
+        <location filename="../PrefsDialog.ui" line="+1159"/>
         <source>Use &amp;authentication</source>
         <translation>&amp;Hitelesítés szükséges</translation>
     </message>
@@ -1661,7 +1660,7 @@ Másik elsődleges URL-t új sorba írva adhatsz hozzá.</translation>
         <translation>Címek:</translation>
     </message>
     <message>
-        <location line="-1150"/>
+        <location line="-1170"/>
         <source>Speed Limits</source>
         <translation>Sebességkorlátok</translation>
     </message>
@@ -1681,7 +1680,7 @@ Másik elsődleges URL-t új sorba írva adhatsz hozzá.</translation>
         <translation>Megadott &amp;napokon:</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+359"/>
         <source>Every Day</source>
         <translation>Minden nap</translation>
     </message>
@@ -1696,7 +1695,7 @@ Másik elsődleges URL-t új sorba írva adhatsz hozzá.</translation>
         <translation>Hétvégén</translation>
     </message>
     <message>
-        <location line="-183"/>
+        <location line="-207"/>
         <source>Sunday</source>
         <translation>Vasárnap</translation>
     </message>
@@ -1731,7 +1730,7 @@ Másik elsődleges URL-t új sorba írva adhatsz hozzá.</translation>
         <translation>Szombat</translation>
     </message>
     <message>
-        <location line="+244"/>
+        <location line="+268"/>
         <source>Port is &lt;b&gt;open&lt;/b&gt;</source>
         <translation>A port &lt;b&gt;nyitva&lt;/b&gt;</translation>
     </message>
@@ -1747,7 +1746,7 @@ Másik elsődleges URL-t új sorba írva adhatsz hozzá.</translation>
     </message>
     <message>
         <location line="+32"/>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+336"/>
         <source>Status unknown</source>
         <translation>Állapot ismeretlen</translation>
     </message>
@@ -1833,7 +1832,7 @@ Másik elsődleges URL-t új sorba írva adhatsz hozzá.</translation>
         <translation>Megosztás</translation>
     </message>
     <message>
-        <location line="+548"/>
+        <location line="+568"/>
         <source>Remote</source>
         <translation>Távoli</translation>
     </message>
@@ -1845,7 +1844,7 @@ Másik elsődleges URL-t új sorba írva adhatsz hozzá.</translation>
         </translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-287"/>
+        <location filename="../PrefsDialog.ui" line="-307"/>
         <source>Pick a &amp;random port every time Transmission OG is started</source>
         <translation>&amp;Véletlen port választása minden indításnál</translation>
     </message>
@@ -1912,7 +1911,7 @@ Másik elsődleges URL-t új sorba írva adhatsz hozzá.</translation>
         <translation>&amp;ide</translation>
     </message>
     <message>
-        <location line="+763"/>
+        <location line="+783"/>
         <location line="+9"/>
         <source>Desktop</source>
         <translation>Asztal</translation>
@@ -1923,7 +1922,7 @@ Másik elsődleges URL-t új sorba írva adhatsz hozzá.</translation>
         <translation>Ikon mutatása a &amp;tálcán</translation>
     </message>
     <message>
-        <location line="-213"/>
+        <location line="-233"/>
         <source>Te&amp;st Port</source>
         <translation>P&amp;ort tesztelése</translation>
     </message>
@@ -1943,7 +1942,7 @@ Másik elsődleges URL-t új sorba írva adhatsz hozzá.</translation>
         <translation>&amp;Titkosítás módja:</translation>
     </message>
     <message>
-        <location line="+453"/>
+        <location line="+473"/>
         <source>Remote Control</source>
         <translation>Távvezérlés</translation>
     </message>
@@ -1963,7 +1962,7 @@ Másik elsődleges URL-t új sorba írva adhatsz hozzá.</translation>
         <translation>Csak a következő IP cí&amp;mek engedélyezése:</translation>
     </message>
     <message>
-        <location line="-1128"/>
+        <location line="-1148"/>
         <source>&amp;Upload:</source>
         <translation>&amp;Feltöltés:</translation>
     </message>
@@ -1988,7 +1987,17 @@ Másik elsődleges URL-t új sorba írva adhatsz hozzá.</translation>
         <translation>Le&amp;töltés:</translation>
     </message>
     <message>
-        <location line="+836"/>
+        <location line="+792"/>
+        <source>a list of default trackers to be added to new public torrents (and existing ones, after a reload)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Default Trackers:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+61"/>
         <source>Start &amp;minimized in notification area</source>
         <translation>&amp;Indítás az értesítési területen, kis méretben</translation>
     </message>
@@ -2013,12 +2022,12 @@ Másik elsődleges URL-t új sorba írva adhatsz hozzá.</translation>
         <translation>Hang leját&amp;szása torrentek befejeződésekor</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="-73"/>
+        <location filename="../PrefsDialog.cc" line="-74"/>
         <source>Testing TCP Port...</source>
         <translation>TCP port tesztelése...</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-229"/>
+        <location filename="../PrefsDialog.ui" line="-249"/>
         <source>Peer Limits</source>
         <translation>Partner korlátok</translation>
     </message>
@@ -2058,7 +2067,7 @@ Másik elsődleges URL-t új sorba írva adhatsz hozzá.</translation>
         <translation>Titkosítás</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+141"/>
+        <location filename="../PrefsDialog.cc" line="+142"/>
         <source>Select &quot;Torrent Done&quot; Script</source>
         <translation>Válassza ki a torrent befejezésekor lefuttatni kívánt szkriptet</translation>
     </message>
@@ -2188,7 +2197,7 @@ Másik elsődleges URL-t új sorba írva adhatsz hozzá.</translation>
 <context>
     <name>Session</name>
     <message>
-        <location filename="../Session.cc" line="+531"/>
+        <location filename="../Session.cc" line="+532"/>
         <source>Error Renaming Path</source>
         <translation>Hiba az útvonal átnevezésekor</translation>
     </message>

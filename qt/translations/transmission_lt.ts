@@ -884,7 +884,7 @@
         <translation>&amp;Pagalba</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+9"/>
         <source>&amp;View</source>
         <translation>&amp;Rodymas</translation>
     </message>
@@ -919,12 +919,12 @@
         <translation>Atverti torento aplanką</translation>
     </message>
     <message>
-        <location line="-161"/>
+        <location line="-159"/>
         <source>Queue</source>
         <translation>&amp;Eilė</translation>
     </message>
     <message>
-        <location line="+122"/>
+        <location line="+120"/>
         <source>&amp;Open...</source>
         <translation>&amp;Atverti…</translation>
     </message>
@@ -1201,12 +1201,11 @@
         <translation>Atverti &amp;URL…</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>&amp;Donate</source>
-        <translation>&amp;Paaukoti</translation>
+        <translation type="vanished">&amp;Paaukoti</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+8"/>
         <source>Start &amp;Now</source>
         <translation>Paleisti da&amp;bar</translation>
     </message>
@@ -1241,7 +1240,7 @@
         <translation>Rikiuoti pagal &amp;eilę</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cc" line="+465"/>
+        <location filename="../MainWindow.cc" line="+464"/>
         <source>Limit Download Speed</source>
         <translation>Apriboti atsiuntimo greitį</translation>
     </message>
@@ -1252,13 +1251,13 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+734"/>
+        <location line="+729"/>
         <location line="+8"/>
         <source>Limited at %1</source>
         <translation>Ribojama iki %1</translation>
     </message>
     <message>
-        <location line="-693"/>
+        <location line="-688"/>
         <source>Limit Upload Speed</source>
         <translation>Apriboti išsiuntimo greitį</translation>
     </message>
@@ -1274,7 +1273,7 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+721"/>
+        <location line="+716"/>
         <source>Stop at Ratio (%1)</source>
         <translation>Nebeskleisti esant santykiui (%1)</translation>
     </message>
@@ -1317,12 +1316,12 @@
         <translation>Atverti torentą</translation>
     </message>
     <message>
-        <location line="-988"/>
+        <location line="-983"/>
         <source>Speed Limits</source>
         <translation>Greičio ribojimai</translation>
     </message>
     <message>
-        <location line="+490"/>
+        <location line="+485"/>
         <source>Network Error</source>
         <translation>Tinklo Klaida</translation>
     </message>
@@ -1664,7 +1663,7 @@ Papildomą pirminį URL adresą galite įvesti, palikę prieš jį tuščią eil
 <context>
     <name>PrefsDialog</name>
     <message>
-        <location filename="../PrefsDialog.ui" line="+1139"/>
+        <location filename="../PrefsDialog.ui" line="+1159"/>
         <source>Use &amp;authentication</source>
         <translation>Reikalauti &amp;tapatybės nustatymo</translation>
     </message>
@@ -1689,7 +1688,7 @@ Papildomą pirminį URL adresą galite įvesti, palikę prieš jį tuščią eil
         <translation>Ad&amp;resai:</translation>
     </message>
     <message>
-        <location line="-1150"/>
+        <location line="-1170"/>
         <source>Speed Limits</source>
         <translation>Greičio ribojimai</translation>
     </message>
@@ -1709,7 +1708,7 @@ Papildomą pirminį URL adresą galite įvesti, palikę prieš jį tuščią eil
         <translation>Šiomis &amp;dienomis:</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+359"/>
         <source>Every Day</source>
         <translation>kasdien</translation>
     </message>
@@ -1724,7 +1723,7 @@ Papildomą pirminį URL adresą galite įvesti, palikę prieš jį tuščią eil
         <translation>savaitgaliais</translation>
     </message>
     <message>
-        <location line="-183"/>
+        <location line="-207"/>
         <source>Sunday</source>
         <translation>sekmadieniais</translation>
     </message>
@@ -1759,7 +1758,7 @@ Papildomą pirminį URL adresą galite įvesti, palikę prieš jį tuščią eil
         <translation>šeštadieniais</translation>
     </message>
     <message>
-        <location line="+244"/>
+        <location line="+268"/>
         <source>Port is &lt;b&gt;open&lt;/b&gt;</source>
         <translation>Prievadas yra &lt;b&gt;atviras&lt;/b&gt;</translation>
     </message>
@@ -1775,7 +1774,7 @@ Papildomą pirminį URL adresą galite įvesti, palikę prieš jį tuščią eil
     </message>
     <message>
         <location line="+32"/>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+336"/>
         <source>Status unknown</source>
         <translation>Būsena nežinoma</translation>
     </message>
@@ -1865,7 +1864,7 @@ Papildomą pirminį URL adresą galite įvesti, palikę prieš jį tuščią eil
         <translation>Skleidimas</translation>
     </message>
     <message>
-        <location line="+548"/>
+        <location line="+568"/>
         <source>Remote</source>
         <translation>Nuotoliniai</translation>
     </message>
@@ -1879,7 +1878,7 @@ Papildomą pirminį URL adresą galite įvesti, palikę prieš jį tuščią eil
         </translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-287"/>
+        <location filename="../PrefsDialog.ui" line="-307"/>
         <source>Pick a &amp;random port every time Transmission OG is started</source>
         <translation>Pasirinkti &amp;atsitiktinį prievadą kaskart paleidus „Transmission OG“</translation>
     </message>
@@ -1948,7 +1947,7 @@ Papildomą pirminį URL adresą galite įvesti, palikę prieš jį tuščią eil
         <translation>i&amp;ki</translation>
     </message>
     <message>
-        <location line="+763"/>
+        <location line="+783"/>
         <location line="+9"/>
         <source>Desktop</source>
         <translation>Aplinka</translation>
@@ -1959,7 +1958,7 @@ Papildomą pirminį URL adresą galite įvesti, palikę prieš jį tuščią eil
         <translation>Rodyti „Transmission OG“ piktogramą pranešimų &amp;srityje</translation>
     </message>
     <message>
-        <location line="-213"/>
+        <location line="-233"/>
         <source>Te&amp;st Port</source>
         <translation>&amp;Tikrinti prievadą</translation>
     </message>
@@ -1979,7 +1978,7 @@ Papildomą pirminį URL adresą galite įvesti, palikę prieš jį tuščią eil
         <translation>Pozicija dėl &amp;šifravimo:</translation>
     </message>
     <message>
-        <location line="+453"/>
+        <location line="+473"/>
         <source>Remote Control</source>
         <translation>Nuotolinis Valdymas</translation>
     </message>
@@ -1999,7 +1998,7 @@ Papildomą pirminį URL adresą galite įvesti, palikę prieš jį tuščią eil
         <translation>Leisti tik šiuos IP a&amp;dresus:</translation>
     </message>
     <message>
-        <location line="-1128"/>
+        <location line="-1148"/>
         <source>&amp;Upload:</source>
         <translation>Išsi&amp;untimo:</translation>
     </message>
@@ -2024,7 +2023,17 @@ Papildomą pirminį URL adresą galite įvesti, palikę prieš jį tuščią eil
         <translation>A&amp;tsiuntimo:</translation>
     </message>
     <message>
-        <location line="+836"/>
+        <location line="+792"/>
+        <source>a list of default trackers to be added to new public torrents (and existing ones, after a reload)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Default Trackers:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+61"/>
         <source>Start &amp;minimized in notification area</source>
         <translation>Paleisti su&amp;mažintą pranešimų srityje</translation>
     </message>
@@ -2049,12 +2058,12 @@ Papildomą pirminį URL adresą galite įvesti, palikę prieš jį tuščią eil
         <translation>Groti gar&amp;są, kai torentai yra užbaigiami</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="-73"/>
+        <location filename="../PrefsDialog.cc" line="-74"/>
         <source>Testing TCP Port...</source>
         <translation>Tikrinamas TCP prievadas…</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-229"/>
+        <location filename="../PrefsDialog.ui" line="-249"/>
         <source>Peer Limits</source>
         <translation>Ryšių ribojimai</translation>
     </message>
@@ -2094,7 +2103,7 @@ Papildomą pirminį URL adresą galite įvesti, palikę prieš jį tuščią eil
         <translation>Šifravimas</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+141"/>
+        <location filename="../PrefsDialog.cc" line="+142"/>
         <source>Select &quot;Torrent Done&quot; Script</source>
         <translation>Parinkite „torentas baigtas“ scenarijų</translation>
     </message>
@@ -2224,7 +2233,7 @@ Papildomą pirminį URL adresą galite įvesti, palikę prieš jį tuščią eil
 <context>
     <name>Session</name>
     <message>
-        <location filename="../Session.cc" line="+531"/>
+        <location filename="../Session.cc" line="+532"/>
         <source>Error Renaming Path</source>
         <translation>Klaida, pervadinant kelią</translation>
     </message>
