@@ -23969,7 +23969,7 @@ then :
 
 fi
 
-    GETTEXT_PACKAGE=transmission-gtk
+    GETTEXT_PACKAGE=transmission-og-gtk
 
 
 printf "%s\n" "#define GETTEXT_PACKAGE \"$GETTEXT_PACKAGE\"" >>confdefs.h
@@ -24896,7 +24896,7 @@ fi
 
 
 
-ac_config_files="$ac_config_files Makefile transmission-gtk.spec cli/Makefile daemon/Makefile extras/Makefile libtransmission/Makefile utils/Makefile third-party/Makefile third-party/dht/Makefile third-party/libb64/Makefile third-party/libnatpmp/Makefile third-party/miniupnpc/Makefile macosx/Makefile gtk/Makefile gtk/icons/Makefile qt/config.pri web/Makefile web/images/Makefile web/style/Makefile web/style/jqueryui/Makefile web/style/jqueryui/images/Makefile web/style/transmission/Makefile web/style/transmission/images/Makefile web/style/transmission/images/buttons/Makefile web/javascript/Makefile web/javascript/jquery/Makefile po/Makefile.in"
+ac_config_files="$ac_config_files Makefile transmission-og-gtk.spec cli/Makefile daemon/Makefile extras/Makefile libtransmission/Makefile utils/Makefile third-party/Makefile third-party/dht/Makefile third-party/libb64/Makefile third-party/libnatpmp/Makefile third-party/miniupnpc/Makefile macosx/Makefile gtk/Makefile gtk/icons/Makefile qt/config.pri web/Makefile web/images/Makefile web/style/Makefile web/style/jqueryui/Makefile web/style/jqueryui/images/Makefile web/style/transmission/Makefile web/style/transmission/images/Makefile web/style/transmission/images/buttons/Makefile web/javascript/Makefile web/javascript/jquery/Makefile po/Makefile.in"
 
 
 cat >confcache <<\_ACEOF
@@ -26123,7 +26123,7 @@ do
     "libtool") CONFIG_COMMANDS="$CONFIG_COMMANDS libtool" ;;
     "default-1") CONFIG_COMMANDS="$CONFIG_COMMANDS default-1" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
-    "transmission-gtk.spec") CONFIG_FILES="$CONFIG_FILES transmission-gtk.spec" ;;
+    "transmission-og-gtk.spec") CONFIG_FILES="$CONFIG_FILES transmission-og-gtk.spec" ;;
     "cli/Makefile") CONFIG_FILES="$CONFIG_FILES cli/Makefile" ;;
     "daemon/Makefile") CONFIG_FILES="$CONFIG_FILES daemon/Makefile" ;;
     "extras/Makefile") CONFIG_FILES="$CONFIG_FILES extras/Makefile" ;;

@@ -7,7 +7,7 @@
     <DirectoryRef Id="INSTALLDIR" FileSource="$(var.SrcDir)\bin">
 
       <Component Id="exe.transmission.qt">
-        <File DiskId="1" Id="exe.transmission.qt" KeyPath="yes" Name="transmission-qt.exe">
+        <File DiskId="1" Id="exe.transmission-og.qt" KeyPath="yes" Name="transmission-og-qt.exe">
           <Shortcut Id="exe.transmission.qt.startMenu" Directory="ProgramMenuFolder" Name="Transmission Qt Client" WorkingDirectory="INSTALLDIR" Icon="Tr.ico" Advertise="yes" />
           <Shortcut Id="exe.transmission.qt.desktop" Directory="DesktopFolder" Name="Transmission Qt Client" WorkingDirectory="INSTALLDIR" Icon="Tr.ico" Advertise="yes" />
 
@@ -36,14 +36,14 @@
           <RegistryValue Key="RegisteredApplications" Name="Transmission.$(var.TrVersionMsi)" Value="SOFTWARE\Transmission\Capabilities" Type="string" />
         </RegistryKey>
 
-        <RegistryKey Root="HKCR" Key="Applications\transmission-qt.exe">
+        <RegistryKey Root="HKCR" Key="Applications\transmission-og-qt.exe">
           <RegistryValue Key="SupportedTypes" Name=".torrent" Value="" Type="string" />
           <RegistryValue Key="shell\open\command" Value="&quot;[#exe.transmission.qt]&quot; &quot;%1&quot;" Type="string" />
         </RegistryKey>
 
         <RegistryKey Root="HKCR" Key=".torrent">
           <RegistryValue Name="ContentType" Value="application/x-bittorrent" Type="string" />
-          <RegistryValue Key="OpenWithList\transmission-qt.exe" Value="" Type="string" />
+          <RegistryValue Key="OpenWithList\transmission-og-qt.exe" Value="" Type="string" />
         </RegistryKey>
         <RegistryKey Root="HKCR" Key="MIME\Database\Content Type\application/x-bittorrent">
           <RegistryValue Name="Extension" Value=".torrent" Type="string" />
@@ -58,7 +58,7 @@
         <RegistryKey Root="HKCR" Key="magnet">
           <RegistryValue Value="URL:magnet" Type="string" />
           <RegistryValue Name="URL Protocol" Value="" Type="string" />
-          <RegistryValue Key="OpenWithList\transmission-qt.exe" Value="" Type="string" />
+          <RegistryValue Key="OpenWithList\transmission-og-qt.exe" Value="" Type="string" />
         </RegistryKey>
         <RegistryKey Root="HKCR" Key="Transmission.MagnetUri.1">
           <RegistryValue Value="Magnet URI" Type="string" />
@@ -68,7 +68,7 @@
           <RegistryValue Key="shell\open\command" Value="&quot;[#exe.transmission.qt]&quot; &quot;%1&quot;" Type="string" />
         </RegistryKey>
 
-        <RegistryKey Root="HKCR" Key="AppID\transmission-qt.exe">
+        <RegistryKey Root="HKCR" Key="AppID\transmission-og-qt.exe">
           <RegistryValue Name="AppID" Value="{792D1AAC-53CC-4DC9-BC29-E5295FDB93A9}" Type="string" />
         </RegistryKey>
       </Component>

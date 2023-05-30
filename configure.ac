@@ -501,7 +501,7 @@ IT_PROG_INTLTOOL([0.35.0],[no-xml])
 	     ])
 
     AC_CHECK_HEADERS([libintl.h])
-    GETTEXT_PACKAGE=transmission-gtk
+    GETTEXT_PACKAGE=transmission-og-gtk
     AC_SUBST(GETTEXT_PACKAGE)
     AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],["$GETTEXT_PACKAGE"],[Gettext package])
     AM_GLIB_GNU_GETTEXT
@@ -588,7 +588,7 @@ dnl
 dnl  Generate the output
 
 AC_CONFIG_FILES([Makefile
-                 transmission-gtk.spec
+                 transmission-og-gtk.spec
                  cli/Makefile
                  daemon/Makefile
                  extras/Makefile

@@ -39,7 +39,7 @@
 #include "util.h"
 
 #define MY_CONFIG_NAME "transmission"
-#define MY_READABLE_NAME "transmission-gtk"
+#define MY_READABLE_NAME "transmission-og-gtk"
 
 static char* gl_confdir = NULL;
 

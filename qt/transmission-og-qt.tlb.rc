@@ -3,4 +3,4 @@
 #pragma code_page(1252)
 
 LANGUAGE 0, 0
-1 TYPELIB "transmission-qt.tlb"
+1 TYPELIB "transmission-og-qt.tlb"
