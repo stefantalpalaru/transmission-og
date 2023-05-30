@@ -72,7 +72,7 @@ static void getProgressString(GString* gstr, tr_torrent const* tor, tr_info cons
                    %4$s is how much we've uploaded,
                    %5$s is our upload-to-download ratio,
                    %6$s is the ratio we want to reach before we stop uploading */
-                _("%1$s of %2$s (%3$s%%), uploaded %4$s (Ratio: %5$s Goal: %6$s)"),
+                _("%1$s of %2$s (%3$s%%), uploaded %4$s (Ratio: <b>%5$s</b> Goal: %6$s)"),
                 tr_strlsize(buf1, haveTotal, sizeof(buf1)),
                 tr_strlsize(buf2, info->totalSize, sizeof(buf2)),
                 tr_strlpercent(buf3, st->percentComplete * 100.0, sizeof(buf3)),
@@ -88,7 +88,7 @@ static void getProgressString(GString* gstr, tr_torrent const* tor, tr_info cons
                    %3$s%% is a percentage of the two,
                    %4$s is how much we've uploaded,
                    %5$s is our upload-to-download ratio */
-                _("%1$s of %2$s (%3$s%%), uploaded %4$s (Ratio: %5$s)"),
+                _("%1$s of %2$s (%3$s%%), uploaded %4$s (Ratio: <b>%5$s</b>)"),
                 tr_strlsize(buf1, haveTotal, sizeof(buf1)),
                 tr_strlsize(buf2, info->totalSize, sizeof(buf2)),
                 tr_strlpercent(buf3, st->percentComplete * 100.0, sizeof(buf3)),
@@ -105,7 +105,7 @@ static void getProgressString(GString* gstr, tr_torrent const* tor, tr_info cons
                    %2$s is how much we've uploaded,
                    %3$s is our upload-to-download ratio,
                    %4$s is the ratio we want to reach before we stop uploading */
-                _("%1$s, uploaded %2$s (Ratio: %3$s Goal: %4$s)"),
+                _("%1$s, uploaded %2$s (Ratio: <b>%3$s</b> Goal: %4$s)"),
                 tr_strlsize(buf1, info->totalSize, sizeof(buf1)),
                 tr_strlsize(buf2, st->uploadedEver, sizeof(buf2)),
                 tr_strlratio(buf3, st->ratio, sizeof(buf3)),
@@ -117,7 +117,7 @@ static void getProgressString(GString* gstr, tr_torrent const* tor, tr_info cons
                 /* %1$s is the torrent's total size,
                    %2$s is how much we've uploaded,
                    %3$s is our upload-to-download ratio */
-                _("%1$s, uploaded %2$s (Ratio: %3$s)"),
+                _("%1$s, uploaded %2$s (Ratio: <b>%3$s</b>)"),
                 tr_strlsize(buf1, info->totalSize, sizeof(buf1)),
                 tr_strlsize(buf2, st->uploadedEver, sizeof(buf2)),
                 tr_strlratio(buf3, st->ratio, sizeof(buf3)));
@@ -216,7 +216,7 @@ static void getShortStatusString(GString* gstr, tr_torrent const* tor, tr_stat c
             tr_strlratio(ratioStr, st->ratio, sizeof(ratioStr));
             getShortTransferString(tor, st, uploadSpeed_KBps, downloadSpeed_KBps, speedStr, sizeof(speedStr));
             /* download/upload speed, ratio */
-            g_string_append_printf(gstr, "%1$s  Ratio: %2$s", speedStr, ratioStr);
+            g_string_append_printf(gstr, "%1$s  Ratio: <b>%2$s</b>", speedStr, ratioStr);
             break;
         }
 
@@ -397,7 +397,7 @@ static void get_size_compact(TorrentCellRenderer* cell, GtkWidget* widget, gint*
     gtr_cell_renderer_get_preferred_size(p->icon_renderer, widget, NULL, &icon_size);
     g_object_set(p->text_renderer, "text", name, "ellipsize", PANGO_ELLIPSIZE_NONE, "scale", 1.0, NULL);
     gtr_cell_renderer_get_preferred_size(p->text_renderer, widget, NULL, &name_size);
-    g_object_set(p->text_renderer, "text", gstr_stat->str, "scale", SMALL_SCALE, NULL);
+    g_object_set(p->text_renderer, "markup", gstr_stat->str, "scale", SMALL_SCALE, NULL);
     gtr_cell_renderer_get_preferred_size(p->text_renderer, widget, NULL, &stat_size);
 
     /**
@@ -452,9 +452,9 @@ static void get_size_full(TorrentCellRenderer* cell, GtkWidget* widget, gint* wi
     g_object_set(p->text_renderer, "text", name, "weight", PANGO_WEIGHT_BOLD, "scale", 1.0, "ellipsize", PANGO_ELLIPSIZE_NONE,
         NULL);
     gtr_cell_renderer_get_preferred_size(p->text_renderer, widget, NULL, &name_size);
-    g_object_set(p->text_renderer, "text", gstr_prog->str, "weight", PANGO_WEIGHT_NORMAL, "scale", SMALL_SCALE, NULL);
+    g_object_set(p->text_renderer, "markup", gstr_prog->str, "weight", PANGO_WEIGHT_NORMAL, "scale", SMALL_SCALE, NULL);
     gtr_cell_renderer_get_preferred_size(p->text_renderer, widget, NULL, &prog_size);
-    g_object_set(p->text_renderer, "text", gstr_stat->str, NULL);
+    g_object_set(p->text_renderer, "markup", gstr_stat->str, NULL);
     gtr_cell_renderer_get_preferred_size(p->text_renderer, widget, NULL, &stat_size);
 
     /**
@@ -614,7 +614,7 @@ static void render_compact(TorrentCellRenderer* cell, GtrDrawable* window, GtkWi
     g_object_set(p->text_renderer, "text", name, "ellipsize", PANGO_ELLIPSIZE_NONE, "scale", 1.0, NULL);
     gtr_cell_renderer_get_preferred_size(p->text_renderer, widget, NULL, &size);
     name_area.width = size.width;
-    g_object_set(p->text_renderer, "text", gstr_stat->str, "scale", SMALL_SCALE, NULL);
+    g_object_set(p->text_renderer, "markup", gstr_stat->str, "scale", SMALL_SCALE, NULL);
     gtr_cell_renderer_get_preferred_size(p->text_renderer, widget, NULL, &size);
     stat_area.width = size.width;
 
@@ -634,7 +634,7 @@ static void render_compact(TorrentCellRenderer* cell, GtrDrawable* window, GtkWi
     gtr_cell_renderer_render(p->icon_renderer, window, widget, &icon_area, flags);
     g_object_set(p->progress_renderer, "value", (int)(percentDone * 100.0), "text", NULL, "sensitive", sensitive, NULL);
     gtr_cell_renderer_render(p->progress_renderer, window, widget, &prog_area, flags);
-    g_object_set(p->text_renderer, "text", gstr_stat->str, "scale", SMALL_SCALE, "ellipsize", PANGO_ELLIPSIZE_END,
+    g_object_set(p->text_renderer, "markup", gstr_stat->str, "scale", SMALL_SCALE, "ellipsize", PANGO_ELLIPSIZE_END,
         FOREGROUND_COLOR_KEY, &text_color, NULL);
     gtr_cell_renderer_render(p->text_renderer, window, widget, &stat_area, flags);
     g_object_set(p->text_renderer, "text", name, "scale", 1.0, FOREGROUND_COLOR_KEY, &text_color, NULL);
@@ -691,11 +691,11 @@ static void render_full(TorrentCellRenderer* cell, GtrDrawable* window, GtkWidge
     gtr_cell_renderer_get_preferred_size(p->text_renderer, widget, NULL, &size);
     name_area.width = size.width;
     name_area.height = size.height;
-    g_object_set(p->text_renderer, "text", gstr_prog->str, "weight", PANGO_WEIGHT_NORMAL, "scale", SMALL_SCALE, NULL);
+    g_object_set(p->text_renderer, "markup", gstr_prog->str, "weight", PANGO_WEIGHT_NORMAL, "scale", SMALL_SCALE, NULL);
     gtr_cell_renderer_get_preferred_size(p->text_renderer, widget, NULL, &size);
     prog_area.width = size.width;
     prog_area.height = size.height;
-    g_object_set(p->text_renderer, "text", gstr_stat->str, NULL);
+    g_object_set(p->text_renderer, "markup", gstr_stat->str, NULL);
     gtr_cell_renderer_get_preferred_size(p->text_renderer, widget, NULL, &size);
     stat_area.width = size.width;
     stat_area.height = size.height;
@@ -724,16 +724,16 @@ static void render_full(TorrentCellRenderer* cell, GtrDrawable* window, GtkWidge
     prog_area.y = name_area.y + name_area.height;
     prog_area.width = name_area.width;
 
-    /* progressbar */
-    prct_area.x = prog_area.x;
-    prct_area.y = prog_area.y + prog_area.height + GUI_PAD_SMALL;
-    prct_area.width = prog_area.width;
-    prct_area.height = p->bar_height;
-
     /* status */
-    stat_area.x = prct_area.x;
-    stat_area.y = prct_area.y + prct_area.height + GUI_PAD_SMALL;
-    stat_area.width = prct_area.width;
+    stat_area.x = prog_area.x;
+    stat_area.y = prog_area.y + prog_area.height + GUI_PAD_SMALL;
+    stat_area.width = prog_area.width;
+
+    /* progressbar */
+    prct_area.x = stat_area.x;
+    prct_area.y = stat_area.y + stat_area.height + GUI_PAD_SMALL;
+    prct_area.width = stat_area.width;
+    prct_area.height = p->bar_height;
 
     /**
     *** RENDER
@@ -744,11 +744,11 @@ static void render_full(TorrentCellRenderer* cell, GtrDrawable* window, GtkWidge
     g_object_set(p->text_renderer, "text", name, "scale", 1.0, FOREGROUND_COLOR_KEY, &text_color, "ellipsize",
         PANGO_ELLIPSIZE_END, "weight", PANGO_WEIGHT_BOLD, NULL);
     gtr_cell_renderer_render(p->text_renderer, window, widget, &name_area, flags);
-    g_object_set(p->text_renderer, "text", gstr_prog->str, "scale", SMALL_SCALE, "weight", PANGO_WEIGHT_NORMAL, NULL);
+    g_object_set(p->text_renderer, "markup", gstr_prog->str, "scale", SMALL_SCALE, "weight", PANGO_WEIGHT_NORMAL, NULL);
     gtr_cell_renderer_render(p->text_renderer, window, widget, &prog_area, flags);
     g_object_set(p->progress_renderer, "value", (int)(percentDone * 100.0), "text", "", "sensitive", sensitive, NULL);
     gtr_cell_renderer_render(p->progress_renderer, window, widget, &prct_area, flags);
-    g_object_set(p->text_renderer, "text", gstr_stat->str, FOREGROUND_COLOR_KEY, &text_color, NULL);
+    g_object_set(p->text_renderer, "markup", gstr_stat->str, FOREGROUND_COLOR_KEY, &text_color, NULL);
     gtr_cell_renderer_render(p->text_renderer, window, widget, &stat_area, flags);
 
     /* cleanup */

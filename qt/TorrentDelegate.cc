@@ -117,8 +117,8 @@ ItemLayout::ItemLayout(QString const& nameText, QString const& statusText, QStri
 
     nameRect = baseRect.adjusted(0, 0, 0, nameSize.height());
     statusRect = nameRect.adjusted(0, nameRect.height() + 1, 0, statusSize.height() + 1);
-    barRect = statusRect.adjusted(0, statusRect.height() + 1, 0, BAR_HEIGHT + 1);
-    progressRect = barRect.adjusted(0, barRect.height() + 1, 0, progressSize.height() + 1);
+    progressRect = statusRect.adjusted(0, statusRect.height() + 1, 0, progressSize.height() + 1);
+    barRect = progressRect.adjusted(0, progressRect.height() + 1, 0, BAR_HEIGHT + 1);
     iconRect = style->alignedRect(direction, Qt::AlignLeft | Qt::AlignVCenter, QSize(iconSize, iconSize),
         QRect(topLeft, QSize(width, progressRect.bottom() - nameRect.top())));
     emblemRect = style->alignedRect(direction, Qt::AlignRight | Qt::AlignBottom,
