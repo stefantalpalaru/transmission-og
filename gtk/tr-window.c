@@ -122,6 +122,10 @@ static GtkWidget* makeview(PrivateData* p)
     gtk_tree_view_set_headers_visible(tree_view, FALSE);
     gtk_tree_view_set_fixed_height_mode(tree_view, TRUE);
 
+    GtkCssProvider *provider = gtk_css_provider_new();
+    gtk_css_provider_load_from_data(provider, ".view {border: 1px solid #d0d0d0;}", -1, NULL);
+    gtk_style_context_add_provider(gtk_widget_get_style_context(view), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
     p->selection = gtk_tree_view_get_selection(tree_view);
 
     p->column = col = GTK_TREE_VIEW_COLUMN(g_object_new(GTK_TYPE_TREE_VIEW_COLUMN, "title", _("Torrent"), "resizable", TRUE,

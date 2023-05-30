@@ -12,9 +12,11 @@
 
 ### GTK+ Client
 - Stop eating the last message at each refresh of the Message Log
+- UI: better visual torrent separation
 
 ### Qt Client
 - Fix download percentage bar glitch ([#3150](https://github.com/transmission/transmission/issues/3150))
+- UI: move the status line above the progress bar
 
 
 ## [Transmission 3.00](https://github.com/transmission/transmission/releases/tag/3.00) (2020-05-03)
