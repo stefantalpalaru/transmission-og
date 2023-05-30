@@ -103,7 +103,7 @@ DIST_COMMON = $(srcdir)/Makefile.am $(top_srcdir)/configure \
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno config.status.lineno
 mkinstalldirs = $(install_sh) -d
-CONFIG_CLEAN_FILES = transmission-gtk.spec qt/config.pri
+CONFIG_CLEAN_FILES = transmission-og-gtk.spec qt/config.pri
 CONFIG_CLEAN_VPATH_FILES =
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -160,7 +160,7 @@ am__define_uniq_tagged_files = \
 DIST_SUBDIRS = extras third-party libtransmission utils daemon cli gtk \
 	po macosx web
 am__DIST_COMMON = $(srcdir)/Makefile.in \
-	$(srcdir)/transmission-gtk.spec.in \
+	$(srcdir)/transmission-og-gtk.spec.in \
 	$(top_srcdir)/qt/config.pri.in AUTHORS COPYING ChangeLog \
 	NEWS.md README.md compile config.guess config.sub install-sh \
 	ltmain.sh missing
@@ -490,7 +490,7 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	$(am__cd) $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 $(am__aclocal_m4_deps):
-transmission-gtk.spec: $(top_builddir)/config.status $(srcdir)/transmission-gtk.spec.in
+transmission-og-gtk.spec: $(top_builddir)/config.status $(srcdir)/transmission-og-gtk.spec.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 qt/config.pri: $(top_builddir)/config.status $(top_srcdir)/qt/config.pri.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@

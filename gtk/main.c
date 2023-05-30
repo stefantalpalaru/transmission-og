@@ -306,7 +306,7 @@ static void register_magnet_link_handler(void)
     char const* const content_type = "x-scheme-handler/magnet";
 
     error = NULL;
-    app = g_app_info_create_from_commandline("transmission-gtk", "transmission-gtk", G_APP_INFO_CREATE_SUPPORTS_URIS, &error);
+    app = g_app_info_create_from_commandline("transmission-og-gtk", "transmission-og-gtk", G_APP_INFO_CREATE_SUPPORTS_URIS, &error);
     g_app_info_set_as_default_for_type(app, content_type, &error);
 
     if (error != NULL)

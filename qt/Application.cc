@@ -42,7 +42,7 @@ namespace
 {
 
 QLatin1String const MY_CONFIG_NAME("transmission");
-QLatin1String const MY_READABLE_NAME("transmission-qt");
+QLatin1String const MY_READABLE_NAME("transmission-og-qt");
 
 tr_option const opts[] =
 {

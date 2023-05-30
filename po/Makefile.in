@@ -17,7 +17,7 @@
 # We have the following line for use by intltoolize:
 # INTLTOOL_MAKEFILE
 
-GETTEXT_PACKAGE = transmission-gtk
+GETTEXT_PACKAGE = transmission-og-gtk
 PACKAGE = transmission-og
 VERSION = 3.01+
 
