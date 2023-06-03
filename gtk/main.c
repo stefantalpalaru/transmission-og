@@ -693,7 +693,7 @@ static void on_core_busy(TrCore* core UNUSED, gboolean busy, struct cbdata* c)
 }
 
 static void on_core_error(TrCore*, guint, char const*, struct cbdata*);
-static void on_add_torrent(TrCore*, tr_ctor*, gpointer);
+static void on_add_prompt(TrCore*, tr_ctor*, gpointer);
 static void on_prefs_changed(TrCore* core, tr_quark const key, gpointer);
 static void main_window_setup(struct cbdata* cbdata, GtkWindow* wind);
 static gboolean update_model_loop(gpointer gdata);
@@ -711,7 +711,7 @@ static void app_setup(GtkWindow* wind, struct cbdata* cbdata)
     /* set up core handlers */
     g_signal_connect(cbdata->core, "busy", G_CALLBACK(on_core_busy), cbdata);
     g_signal_connect(cbdata->core, "add-error", G_CALLBACK(on_core_error), cbdata);
-    g_signal_connect(cbdata->core, "add-prompt", G_CALLBACK(on_add_torrent), cbdata);
+    g_signal_connect(cbdata->core, "add-prompt", G_CALLBACK(on_add_prompt), cbdata);
     g_signal_connect(cbdata->core, "prefs-changed", G_CALLBACK(on_prefs_changed), cbdata);
 
     /* add torrents from command-line and saved state */
@@ -1084,7 +1084,7 @@ static gboolean on_main_window_focus_in(GtkWidget* widget UNUSED, GdkEventFocus*
     return FALSE;
 }
 
-static void on_add_torrent(TrCore* core, tr_ctor* ctor, gpointer gdata)
+static void on_add_prompt(TrCore* core, tr_ctor* ctor, gpointer gdata)
 {
     struct cbdata* cbdata = gdata;
     GtkWidget* w = gtr_torrent_options_dialog_new(cbdata->wind, core, ctor);

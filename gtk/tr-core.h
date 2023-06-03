@@ -60,6 +60,7 @@ typedef struct _TrCoreClass
     void (* busy)(TrCore*, gboolean is_busy);
     void (* prefs_changed)(TrCore*, tr_quark const key);
     void (* port_tested)(TrCore*, gboolean is_open);
+    void (* torrent_added)(TrCore*, int);
     void (* quit)(TrCore*);
 }
 TrCoreClass;
@@ -69,6 +70,8 @@ GType tr_core_get_type(void) G_GNUC_CONST;
 TrCore* gtr_core_new(tr_session*);
 
 tr_session* gtr_core_close(TrCore*);
+
+gboolean gtr_find_row_from_torrent_id(GtkTreeModel* model, int id, GtkTreeIter* setme);
 
 /* Return the model used without incrementing the reference count */
 GtkTreeModel* gtr_core_model(TrCore* self);
