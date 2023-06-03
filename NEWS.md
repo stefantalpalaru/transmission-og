@@ -13,6 +13,7 @@
 ### GTK+ Client
 - Stop eating the last message at each refresh of the Message Log
 - UI: better visual torrent separation
+- Scroll the main window to a newly added torrent
 
 ### Qt Client
 - Fix download percentage bar glitch ([#3150](https://github.com/transmission/transmission/issues/3150))

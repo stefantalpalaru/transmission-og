@@ -54,6 +54,7 @@ enum
     BUSY_SIGNAL,
     PORT_SIGNAL,
     PREFS_SIGNAL,
+    TORRENT_ADDED_SIGNAL,
     LAST_SIGNAL
 };
 
@@ -138,6 +139,9 @@ static void tr_core_class_init(TrCoreClass* core_class)
 
     signals[PREFS_SIGNAL] = g_signal_new("prefs-changed", core_type, G_SIGNAL_RUN_LAST, G_STRUCT_OFFSET(TrCoreClass,
         prefs_changed), NULL, NULL, g_cclosure_marshal_VOID__INT, G_TYPE_NONE, 1, G_TYPE_INT);
+
+    signals[TORRENT_ADDED_SIGNAL] = g_signal_new("torrent-added", core_type, G_SIGNAL_RUN_LAST, G_STRUCT_OFFSET(TrCoreClass,
+        torrent_added), NULL, NULL, g_cclosure_marshal_VOID__INT, G_TYPE_NONE, 1, G_TYPE_INT);
 }
 
 static void tr_core_init(TrCore* core)
@@ -187,7 +191,7 @@ static void tr_core_init(TrCore* core)
 ****  EMIT SIGNALS
 ***/
 
-static inline void core_emit_blocklist_udpated(TrCore* core, int ruleCount)
+static inline void core_emit_blocklist_updated(TrCore* core, int ruleCount)
 {
     g_signal_emit(core, signals[BLOCKLIST_SIGNAL], 0, ruleCount);
 }
@@ -988,7 +992,7 @@ struct metadata_callback_data
     int torrent_id;
 };
 
-static gboolean find_row_from_torrent_id(GtkTreeModel* model, int id, GtkTreeIter* setme)
+gboolean gtr_find_row_from_torrent_id(GtkTreeModel* model, int id, GtkTreeIter* setme)
 {
     GtkTreeIter iter;
     gboolean match = FALSE;
@@ -1024,7 +1028,7 @@ static gboolean on_torrent_metadata_changed_idle(gpointer gdata)
         GtkTreeIter iter;
         GtkTreeModel* model = core_raw_model(data->core);
 
-        if (find_row_from_torrent_id(model, data->torrent_id, &iter))
+        if (gtr_find_row_from_torrent_id(model, data->torrent_id, &iter))
         {
             char const* collated = get_collated_name(data->core, tor);
             GtkListStore* store = GTK_LIST_STORE(model);
@@ -1080,13 +1084,14 @@ void gtr_core_add_torrent(TrCore* core, tr_torrent* tor, gboolean do_notify)
 {
     if (tor != NULL)
     {
-        GtkTreeIter unused;
+        GtkTreeIter iter;
         tr_stat const* st = tr_torrentStat(tor);
         char const* collated = get_collated_name(core, tor);
         unsigned int const trackers_hash = build_torrent_trackers_hash(tor);
-        GtkListStore* store = GTK_LIST_STORE(core_raw_model(core));
+        GtkTreeModel* model = core_raw_model(core);
+        GtkListStore* store = GTK_LIST_STORE(model);
 
-        gtk_list_store_insert_with_values(store, &unused, 0,
+        gtk_list_store_insert_with_values(store, &iter, 0,
             MC_NAME_COLLATED, collated,
             MC_TORRENT, tor,
             MC_TORRENT_ID, tr_torrentId(tor),
@@ -1107,6 +1112,9 @@ void gtr_core_add_torrent(TrCore* core, tr_torrent* tor, gboolean do_notify)
         {
             gtr_notify_torrent_added(tr_torrentName(tor));
         }
+
+        // Get the main window to scroll to the newly added torrent.
+        g_signal_emit(core, signals[TORRENT_ADDED_SIGNAL], 0, tr_torrentId(tor));
 
         tr_torrentSetMetadataCallback(tor, on_torrent_metadata_changed, core);
         tr_torrentSetCompletenessCallback(tor, on_torrent_completeness_changed, core);
@@ -1377,7 +1385,7 @@ void gtr_core_torrent_changed(TrCore* self, int id)
     GtkTreeIter iter;
     GtkTreeModel* model = core_raw_model(self);
 
-    if (find_row_from_torrent_id(model, id, &iter))
+    if (gtr_find_row_from_torrent_id(model, id, &iter))
     {
         GtkTreePath* path = gtk_tree_model_get_path(model, &iter);
         gtk_tree_model_row_changed(model, path, &iter);
@@ -1394,7 +1402,7 @@ void gtr_core_remove_torrent(TrCore* core, int id, gboolean delete_local_data)
         GtkTreeIter iter;
         GtkTreeModel* model = core_raw_model(core);
 
-        if (find_row_from_torrent_id(model, id, &iter))
+        if (gtr_find_row_from_torrent_id(model, id, &iter))
         {
             gtk_list_store_remove(GTK_LIST_STORE(model), &iter);
         }
@@ -1887,7 +1895,7 @@ static void on_blocklist_response(TrCore* core, tr_variant* response, gpointer d
         gtr_pref_int_set(TR_KEY_blocklist_date, tr_time());
     }
 
-    core_emit_blocklist_udpated(core, ruleCount);
+    core_emit_blocklist_updated(core, ruleCount);
 }
 
 void gtr_core_blocklist_update(TrCore* core)

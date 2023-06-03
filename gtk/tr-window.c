@@ -61,6 +61,7 @@ typedef struct
     GtkTreeModel* filter_model;
     TrCore* core;
     gulong pref_handler_id;
+    gulong torrent_added_handler_id;
 }
 PrivateData;
 
@@ -205,6 +206,7 @@ static void privateFree(gpointer vprivate)
 {
     PrivateData* p = vprivate;
     g_signal_handler_disconnect(p->core, p->pref_handler_id);
+    g_signal_handler_disconnect(p->core, p->torrent_added_handler_id);
     g_free(p);
 }
 
@@ -548,6 +550,18 @@ static void onOptionsClicked(GtkButton* button, gpointer vp)
 #endif
 }
 
+static void on_torrent_added(TrCore* core, int torrent_id, PrivateData* p)
+{
+    GtkTreeModel* model = gtr_core_model(core);
+
+    // Find the torrent row.
+    GtkTreeIter iter;
+    gtr_find_row_from_torrent_id(model, torrent_id, &iter);
+
+    // Scroll to the newly added torrent.
+    gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(p->view), gtk_tree_model_get_path(model, &iter), NULL, FALSE, 0.0, 0.0);
+}
+
 /***
 ****  PUBLIC
 ***/
@@ -740,6 +754,9 @@ GtkWidget* gtr_window_new(GtkApplication* app, GtkUIManager* ui_mgr, TrCore* cor
     p->pref_handler_id = g_signal_connect(core, "prefs-changed", G_CALLBACK(prefsChanged), self);
 
     tr_sessionSetAltSpeedFunc(gtr_core_session(core), onAltSpeedToggled, p);
+
+    // Window-related reactions to torrents being added.
+    p->torrent_added_handler_id = g_signal_connect(core, "torrent-added", G_CALLBACK(on_torrent_added), p);
 
     gtr_window_refresh(GTK_WINDOW(self));
     return self;
