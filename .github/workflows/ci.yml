@@ -117,7 +117,6 @@ jobs:
       - name: Install build dependencies (macOS)
         if: runner.os == 'macOS'
         run: |
-          brew update
           brew install cmake gettext gtk+3 pkg-config qt@5 libevent openssl@1.1 \
             miniupnpc libnatpmp intltool automake autoconf
 

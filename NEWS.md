@@ -9,6 +9,7 @@
 - "scrape-paused-torrents-enabled" now defaults to "false" (no effect on existing installations, because it's "true" in "settings.json")
 - Prefetch whole pieces instead on individual blocks
 - UPnP pinhole punching (IPv6 equivalent of port forwarding)
+- Port forwarding: recover from errors
 
 ### GTK+ Client
 - Stop eating the last message at each refresh of the Message Log
