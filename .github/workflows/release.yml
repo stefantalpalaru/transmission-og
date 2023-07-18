@@ -1,0 +1,136 @@
+name: Create release draft
+on:
+  push:
+    tags:
+    - '*'
+  workflow_dispatch:
+
+jobs:
+  source-archive:
+    name: Source archive asset
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+
+      - name: Environment variables
+        shell: bash
+        run: |
+          CFLAGS="-O3 -march=native -pipe"
+          CXXFLAGS="-O3 -march=native -pipe"
+          NCPU="$(nproc)"
+          echo "DEBIAN_FRONTEND=noninteractive" >> ${GITHUB_ENV}
+          echo "TZ=Etc/UTC" >> ${GITHUB_ENV}
+          echo "CFLAGS=${CFLAGS}" >> ${GITHUB_ENV}
+          echo "CXXFLAGS=${CXXFLAGS}" >> ${GITHUB_ENV}
+          [[ -z "${NCPU}" || ${NCPU} -le 0 ]] && NCPU="1"
+          echo "NCPU=${NCPU}" >> ${GITHUB_ENV}
+
+      - name: Install build dependencies
+        run: |
+          sudo -E dpkg --add-architecture i386
+          sudo -E apt-get update -qq
+          sudo -E eatmydata apt-get install --no-install-recommends -yq \
+            build-essential \
+            libayatana-appindicator3-dev \
+            libc6:i386 \
+            libcurl4-openssl-dev \
+            libgcc-s1:i386 \
+            libglib2.0-dev \
+            libgtk-3-dev \
+            libnotify-dev \
+            libssl-dev \
+            libstdc++6:i386 \
+            libsystemd-dev \
+            qttools5-dev \
+            wine-stable \
+            wine32 \
+            xz-utils \
+            zlib1g-dev
+
+      - name: make distcheck
+        run: |
+          ./configure
+          make -j${NCPU} XZ_OPT="-e -T0" V=1 distcheck
+
+      - name: Upload source archive
+        uses: actions/upload-artifact@v3
+        with:
+          name: source_archive
+          path: *.tar.xz
+          retention-days: 2
+
+  build-win64:
+    name: Windows AMD64 release asset
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+
+      - name: Build installer
+        run: |
+          ./configure
+          make bindist-win64
+          cd tmp_install/bin
+          sha256sum transmission-og-* > win64.sha256sum
+
+      - name: Upload installer artefact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Windows_amd64_installer
+          path: ./installers/installer/*.exe
+          retention-days: 2
+
+      - name: Upload checksum artefact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Windows_amd64_checksum
+          path: ./tmp_install/bin/win64.sha256sum
+          retention-days: 2
+
+  prepare-release:
+    name: Prepare release draft
+    needs: [source-archive build-win64]
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Download artefacts
+        uses: actions/download-artifact@v3
+
+      - name: Create release notes
+        run: |
+          cat > release_notes.md <<EOF
+          ## Release notes
+
+
+          ## SHA256 checksums
+
+          \`\`\`text
+          EOF
+          echo '# Windows 64-bit' >> release_notes.md
+          cat Windows_amd64_checksum/* >> release_notes.md
+          echo '```' >> release_notes.md
+
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          draft: true
+          prerelease: false
+          body_path: release_notes.md
+          files: |
+            Windows_amd64_installer/*
+            source_archive/*
+
+      - name: Delete artefacts
+        uses: geekyeggo/delete-artifact@v2
+        with:
+          failOnError: false
+          name: |
+            source_archive
+            Windows_amd64_installer
+            Windows_amd64_checksum

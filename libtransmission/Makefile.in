@@ -15,7 +15,6 @@
 @SET_MAKE@
 
 
-
 VPATH = @srcdir@
 am__is_gnu_make = { \
   if test -z '$(MAKELEVEL)'; then \
@@ -111,10 +110,11 @@ TESTS = bitfield-test$(EXEEXT) blocklist-test$(EXEEXT) \
 	subprocess-test$(EXEEXT) tr-getopt-test$(EXEEXT) \
 	utils-test$(EXEEXT) variant-test$(EXEEXT) \
 	watchdir-test$(EXEEXT) watchdir-generic-test$(EXEEXT)
-noinst_PROGRAMS = $(am__EXEEXT_1)
+check_PROGRAMS = $(am__EXEEXT_1)
 subdir = libtransmission
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/acx-pthread.m4 \
+	$(top_srcdir)/m4/ax_have_qt.m4 \
 	$(top_srcdir)/m4/glib-gettext.m4 $(top_srcdir)/m4/intltool.m4 \
 	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
 	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
@@ -126,7 +126,7 @@ DIST_COMMON = $(srcdir)/Makefile.am $(noinst_HEADERS) \
 	$(am__DIST_COMMON)
 mkinstalldirs = $(install_sh) -d
 CONFIG_CLEAN_FILES =
-CONFIG_CLEAN_VPATH_FILES =
+CONFIG_CLEAN_VPATH_FILES = subprocess-test.cmd
 am__EXEEXT_1 = bitfield-test$(EXEEXT) blocklist-test$(EXEEXT) \
 	clients-test$(EXEEXT) crypto-test$(EXEEXT) error-test$(EXEEXT) \
 	file-test$(EXEEXT) history-test$(EXEEXT) json-test$(EXEEXT) \
@@ -137,16 +137,38 @@ am__EXEEXT_1 = bitfield-test$(EXEEXT) blocklist-test$(EXEEXT) \
 	subprocess-test$(EXEEXT) tr-getopt-test$(EXEEXT) \
 	utils-test$(EXEEXT) variant-test$(EXEEXT) \
 	watchdir-test$(EXEEXT) watchdir-generic-test$(EXEEXT)
-PROGRAMS = $(noinst_PROGRAMS)
-LIBRARIES = $(noinst_LIBRARIES)
-ARFLAGS = cru
-AM_V_AR = $(am__v_AR_@AM_V@)
-am__v_AR_ = $(am__v_AR_@AM_DEFAULT_V@)
-am__v_AR_0 = @echo "  AR      " $@;
-am__v_AR_1 = 
-libtransmission_a_AR = $(AR) $(ARFLAGS)
-libtransmission_a_LIBADD =
-am__libtransmission_a_SOURCES_DIST = announcer.c announcer-http.c \
+am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
+am__vpath_adj = case $$p in \
+    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
+    *) f=$$p;; \
+  esac;
+am__strip_dir = f=`echo $$p | sed -e 's|^.*/||'`;
+am__install_max = 40
+am__nobase_strip_setup = \
+  srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*|]/\\\\&/g'`
+am__nobase_strip = \
+  for p in $$list; do echo "$$p"; done | sed -e "s|$$srcdirstrip/||"
+am__nobase_list = $(am__nobase_strip_setup); \
+  for p in $$list; do echo "$$p $$p"; done | \
+  sed "s| $$srcdirstrip/| |;"' / .*\//!s/ .*/ ./; s,\( .*\)/[^/]*$$,\1,' | \
+  $(AWK) 'BEGIN { files["."] = "" } { files[$$2] = files[$$2] " " $$1; \
+    if (++n[$$2] == $(am__install_max)) \
+      { print $$2, files[$$2]; n[$$2] = 0; files[$$2] = "" } } \
+    END { for (dir in files) print dir, files[dir] }'
+am__base_list = \
+  sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
+  sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
+am__uninstall_files_from_dir = { \
+  test -z "$$files" \
+    || { test ! -d "$$dir" && test ! -f "$$dir" && test ! -r "$$dir"; } \
+    || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
+         $(am__cd) "$$dir" && rm -f $$files; }; \
+  }
+am__installdirs = "$(DESTDIR)$(libdir)"
+LTLIBRARIES = $(lib_LTLIBRARIES)
+am__DEPENDENCIES_1 =
+libtransmission_og_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
+am__libtransmission_og_la_SOURCES_DIST = announcer.c announcer-http.c \
 	announcer-udp.c bandwidth.c bitfield.c blocklist.c cache.c \
 	clients.c completion.c ConvertUTF.c crypto.c crypto-utils.c \
 	crypto-utils-fallback.c error.c fdlimit.c file.c handshake.c \
@@ -157,59 +179,62 @@ am__libtransmission_a_SOURCES_DIST = announcer.c announcer-http.c \
 	torrent.c torrent-ctor.c torrent-magnet.c tr-assert.c tr-dht.c \
 	tr-lpd.c tr-udp.c tr-utp.c tr-getopt.c trevent.c upnp.c \
 	utils.c variant.c variant-benc.c variant-json.c verify.c \
-	watchdir.c watchdir-generic.c web.c webseed.c wildmat.c \
-	watchdir-inotify.c watchdir-kqueue.c file-win32.c \
+	watchdir.c watchdir-generic.c web.c webseed.c whereami.c \
+	wildmat.c watchdir-inotify.c watchdir-kqueue.c file-win32.c \
 	subprocess-win32.c watchdir-win32.c file-posix.c \
 	subprocess-posix.c crypto-utils-openssl.c \
-	crypto-utils-cyassl.c crypto-utils-polarssl.c
-@USE_INOTIFY_TRUE@am__objects_1 = watchdir-inotify.$(OBJEXT)
-@USE_KQUEUE_TRUE@am__objects_2 = watchdir-kqueue.$(OBJEXT)
-@WIN32_TRUE@am__objects_3 = file-win32.$(OBJEXT) \
-@WIN32_TRUE@	subprocess-win32.$(OBJEXT) \
-@WIN32_TRUE@	watchdir-win32.$(OBJEXT)
-@WIN32_FALSE@am__objects_4 = file-posix.$(OBJEXT) \
-@WIN32_FALSE@	subprocess-posix.$(OBJEXT)
-@CRYPTO_USE_OPENSSL_TRUE@am__objects_5 =  \
-@CRYPTO_USE_OPENSSL_TRUE@	crypto-utils-openssl.$(OBJEXT)
-@CRYPTO_USE_CYASSL_TRUE@am__objects_6 = crypto-utils-cyassl.$(OBJEXT)
-@CRYPTO_USE_POLARSSL_TRUE@am__objects_7 =  \
-@CRYPTO_USE_POLARSSL_TRUE@	crypto-utils-polarssl.$(OBJEXT)
-am_libtransmission_a_OBJECTS = announcer.$(OBJEXT) \
-	announcer-http.$(OBJEXT) announcer-udp.$(OBJEXT) \
-	bandwidth.$(OBJEXT) bitfield.$(OBJEXT) blocklist.$(OBJEXT) \
-	cache.$(OBJEXT) clients.$(OBJEXT) completion.$(OBJEXT) \
-	ConvertUTF.$(OBJEXT) crypto.$(OBJEXT) crypto-utils.$(OBJEXT) \
-	crypto-utils-fallback.$(OBJEXT) error.$(OBJEXT) \
-	fdlimit.$(OBJEXT) file.$(OBJEXT) handshake.$(OBJEXT) \
-	history.$(OBJEXT) inout.$(OBJEXT) list.$(OBJEXT) log.$(OBJEXT) \
-	magnet.$(OBJEXT) makemeta.$(OBJEXT) metainfo.$(OBJEXT) \
-	natpmp.$(OBJEXT) net.$(OBJEXT) peer-io.$(OBJEXT) \
-	peer-mgr.$(OBJEXT) peer-msgs.$(OBJEXT) platform.$(OBJEXT) \
-	platform-quota.$(OBJEXT) port-forwarding.$(OBJEXT) \
-	ptrarray.$(OBJEXT) quark.$(OBJEXT) resume.$(OBJEXT) \
-	rpcimpl.$(OBJEXT) rpc-server.$(OBJEXT) session.$(OBJEXT) \
-	session-id.$(OBJEXT) stats.$(OBJEXT) torrent.$(OBJEXT) \
-	torrent-ctor.$(OBJEXT) torrent-magnet.$(OBJEXT) \
-	tr-assert.$(OBJEXT) tr-dht.$(OBJEXT) tr-lpd.$(OBJEXT) \
-	tr-udp.$(OBJEXT) tr-utp.$(OBJEXT) tr-getopt.$(OBJEXT) \
-	trevent.$(OBJEXT) upnp.$(OBJEXT) utils.$(OBJEXT) \
-	variant.$(OBJEXT) variant-benc.$(OBJEXT) \
-	variant-json.$(OBJEXT) verify.$(OBJEXT) watchdir.$(OBJEXT) \
-	watchdir-generic.$(OBJEXT) web.$(OBJEXT) webseed.$(OBJEXT) \
-	wildmat.$(OBJEXT) $(am__objects_1) $(am__objects_2) \
-	$(am__objects_3) $(am__objects_4) $(am__objects_5) \
-	$(am__objects_6) $(am__objects_7)
-libtransmission_a_OBJECTS = $(am_libtransmission_a_OBJECTS)
-am__objects_8 = libtransmission-test.$(OBJEXT)
-am_bitfield_test_OBJECTS = bitfield-test.$(OBJEXT) $(am__objects_8)
-bitfield_test_OBJECTS = $(am_bitfield_test_OBJECTS)
-am__DEPENDENCIES_1 =
-am__DEPENDENCIES_2 = ./libtransmission.a $(am__DEPENDENCIES_1)
-bitfield_test_DEPENDENCIES = $(am__DEPENDENCIES_2)
+	crypto-utils-cyassl.c crypto-utils-polarssl.c announcer.h \
+	announcer-common.h bandwidth.h bitfield.h blocklist.h cache.h \
+	clients.h ConvertUTF.h crypto.h crypto-utils.h completion.h \
+	error.h error-types.h fdlimit.h file.h handshake.h history.h \
+	inout.h jsonsl.h libtransmission-test.h list.h log.h magnet.h \
+	makemeta.h metainfo.h natpmp_local.h net.h peer-common.h \
+	peer-io.h peer-mgr.h peer-msgs.h peer-socket.h platform.h \
+	platform-quota.h port-forwarding.h ptrarray.h quark.h resume.h \
+	rpcimpl.h rpc-server.h session.h session-id.h stats.h \
+	subprocess.h torrent.h torrent-magnet.h tr-getopt.h \
+	transmission.h tr-assert.h tr-dht.h tr-macros.h tr-udp.h \
+	tr-utp.h tr-lpd.h trevent.h upnp.h utils.h variant.h \
+	variant-common.h verify.h version.h watchdir.h \
+	watchdir-common.h web.h webseed.h whereami.h
+@USE_INOTIFY_TRUE@am__objects_1 = watchdir-inotify.lo
+@USE_KQUEUE_TRUE@am__objects_2 = watchdir-kqueue.lo
+@WIN32_TRUE@am__objects_3 = file-win32.lo subprocess-win32.lo \
+@WIN32_TRUE@	watchdir-win32.lo
+@WIN32_FALSE@am__objects_4 = file-posix.lo subprocess-posix.lo
+@CRYPTO_USE_OPENSSL_TRUE@am__objects_5 = crypto-utils-openssl.lo
+@CRYPTO_USE_CYASSL_TRUE@am__objects_6 = crypto-utils-cyassl.lo
+@CRYPTO_USE_POLARSSL_TRUE@am__objects_7 = crypto-utils-polarssl.lo
+am_libtransmission_og_la_OBJECTS = announcer.lo announcer-http.lo \
+	announcer-udp.lo bandwidth.lo bitfield.lo blocklist.lo \
+	cache.lo clients.lo completion.lo ConvertUTF.lo crypto.lo \
+	crypto-utils.lo crypto-utils-fallback.lo error.lo fdlimit.lo \
+	file.lo handshake.lo history.lo inout.lo list.lo log.lo \
+	magnet.lo makemeta.lo metainfo.lo natpmp.lo net.lo peer-io.lo \
+	peer-mgr.lo peer-msgs.lo platform.lo platform-quota.lo \
+	port-forwarding.lo ptrarray.lo quark.lo resume.lo rpcimpl.lo \
+	rpc-server.lo session.lo session-id.lo stats.lo torrent.lo \
+	torrent-ctor.lo torrent-magnet.lo tr-assert.lo tr-dht.lo \
+	tr-lpd.lo tr-udp.lo tr-utp.lo tr-getopt.lo trevent.lo upnp.lo \
+	utils.lo variant.lo variant-benc.lo variant-json.lo verify.lo \
+	watchdir.lo watchdir-generic.lo web.lo webseed.lo whereami.lo \
+	wildmat.lo $(am__objects_1) $(am__objects_2) $(am__objects_3) \
+	$(am__objects_4) $(am__objects_5) $(am__objects_6) \
+	$(am__objects_7)
+libtransmission_og_la_OBJECTS = $(am_libtransmission_og_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
+libtransmission_og_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libtransmission_og_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
+am__objects_8 = libtransmission-test.$(OBJEXT)
+am_bitfield_test_OBJECTS = bitfield-test.$(OBJEXT) $(am__objects_8)
+bitfield_test_OBJECTS = $(am_bitfield_test_OBJECTS)
+am__DEPENDENCIES_2 = ./libtransmission-og.la $(am__DEPENDENCIES_1)
+bitfield_test_DEPENDENCIES = $(am__DEPENDENCIES_2)
 bitfield_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
 	$(AM_CXXFLAGS) $(CXXFLAGS) $(bitfield_test_LDFLAGS) $(LDFLAGS) \
@@ -372,60 +397,61 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/ConvertUTF.Po \
-	./$(DEPDIR)/announcer-http.Po ./$(DEPDIR)/announcer-udp.Po \
-	./$(DEPDIR)/announcer.Po ./$(DEPDIR)/bandwidth.Po \
-	./$(DEPDIR)/bitfield-test.Po ./$(DEPDIR)/bitfield.Po \
-	./$(DEPDIR)/blocklist-test.Po ./$(DEPDIR)/blocklist.Po \
-	./$(DEPDIR)/cache.Po ./$(DEPDIR)/clients-test.Po \
-	./$(DEPDIR)/clients.Po ./$(DEPDIR)/completion.Po \
-	./$(DEPDIR)/crypto-test.Po ./$(DEPDIR)/crypto-utils-cyassl.Po \
-	./$(DEPDIR)/crypto-utils-fallback.Po \
-	./$(DEPDIR)/crypto-utils-openssl.Po \
-	./$(DEPDIR)/crypto-utils-polarssl.Po \
-	./$(DEPDIR)/crypto-utils.Po ./$(DEPDIR)/crypto.Po \
+am__depfiles_remade = ./$(DEPDIR)/ConvertUTF.Plo \
+	./$(DEPDIR)/announcer-http.Plo ./$(DEPDIR)/announcer-udp.Plo \
+	./$(DEPDIR)/announcer.Plo ./$(DEPDIR)/bandwidth.Plo \
+	./$(DEPDIR)/bitfield-test.Po ./$(DEPDIR)/bitfield.Plo \
+	./$(DEPDIR)/blocklist-test.Po ./$(DEPDIR)/blocklist.Plo \
+	./$(DEPDIR)/cache.Plo ./$(DEPDIR)/clients-test.Po \
+	./$(DEPDIR)/clients.Plo ./$(DEPDIR)/completion.Plo \
+	./$(DEPDIR)/crypto-test.Po ./$(DEPDIR)/crypto-utils-cyassl.Plo \
+	./$(DEPDIR)/crypto-utils-fallback.Plo \
+	./$(DEPDIR)/crypto-utils-openssl.Plo \
+	./$(DEPDIR)/crypto-utils-polarssl.Plo \
+	./$(DEPDIR)/crypto-utils.Plo ./$(DEPDIR)/crypto.Plo \
 	./$(DEPDIR)/dummy.Po ./$(DEPDIR)/error-test.Po \
-	./$(DEPDIR)/error.Po ./$(DEPDIR)/fdlimit.Po \
-	./$(DEPDIR)/file-posix.Po ./$(DEPDIR)/file-test.Po \
-	./$(DEPDIR)/file-win32.Po ./$(DEPDIR)/file.Po \
-	./$(DEPDIR)/handshake.Po ./$(DEPDIR)/history-test.Po \
-	./$(DEPDIR)/history.Po ./$(DEPDIR)/inout.Po \
+	./$(DEPDIR)/error.Plo ./$(DEPDIR)/fdlimit.Plo \
+	./$(DEPDIR)/file-posix.Plo ./$(DEPDIR)/file-test.Po \
+	./$(DEPDIR)/file-win32.Plo ./$(DEPDIR)/file.Plo \
+	./$(DEPDIR)/handshake.Plo ./$(DEPDIR)/history-test.Po \
+	./$(DEPDIR)/history.Plo ./$(DEPDIR)/inout.Plo \
 	./$(DEPDIR)/json-test.Po ./$(DEPDIR)/libtransmission-test.Po \
-	./$(DEPDIR)/list.Po ./$(DEPDIR)/log.Po \
-	./$(DEPDIR)/magnet-test.Po ./$(DEPDIR)/magnet.Po \
-	./$(DEPDIR)/makemeta-test.Po ./$(DEPDIR)/makemeta.Po \
-	./$(DEPDIR)/metainfo-test.Po ./$(DEPDIR)/metainfo.Po \
-	./$(DEPDIR)/move-test.Po ./$(DEPDIR)/natpmp.Po \
-	./$(DEPDIR)/net.Po ./$(DEPDIR)/peer-io.Po \
-	./$(DEPDIR)/peer-mgr.Po ./$(DEPDIR)/peer-msgs-test.Po \
-	./$(DEPDIR)/peer-msgs.Po ./$(DEPDIR)/platform-quota.Po \
-	./$(DEPDIR)/platform.Po ./$(DEPDIR)/port-forwarding.Po \
-	./$(DEPDIR)/ptrarray.Po ./$(DEPDIR)/quark-test.Po \
-	./$(DEPDIR)/quark.Po ./$(DEPDIR)/rename-test.Po \
-	./$(DEPDIR)/resume.Po ./$(DEPDIR)/rpc-server.Po \
-	./$(DEPDIR)/rpc-test.Po ./$(DEPDIR)/rpcimpl.Po \
-	./$(DEPDIR)/session-id.Po ./$(DEPDIR)/session-test.Po \
-	./$(DEPDIR)/session.Po ./$(DEPDIR)/stats.Po \
-	./$(DEPDIR)/subprocess-posix.Po ./$(DEPDIR)/subprocess-test.Po \
-	./$(DEPDIR)/subprocess-win32.Po ./$(DEPDIR)/torrent-ctor.Po \
-	./$(DEPDIR)/torrent-magnet.Po ./$(DEPDIR)/torrent.Po \
-	./$(DEPDIR)/tr-assert.Po ./$(DEPDIR)/tr-dht.Po \
-	./$(DEPDIR)/tr-getopt-test.Po ./$(DEPDIR)/tr-getopt.Po \
-	./$(DEPDIR)/tr-lpd.Po ./$(DEPDIR)/tr-udp.Po \
-	./$(DEPDIR)/tr-utp.Po ./$(DEPDIR)/trevent.Po \
-	./$(DEPDIR)/upnp.Po ./$(DEPDIR)/utils-test.Po \
-	./$(DEPDIR)/utils.Po ./$(DEPDIR)/variant-benc.Po \
-	./$(DEPDIR)/variant-json.Po ./$(DEPDIR)/variant-test.Po \
-	./$(DEPDIR)/variant.Po ./$(DEPDIR)/verify.Po \
-	./$(DEPDIR)/watchdir-generic.Po \
-	./$(DEPDIR)/watchdir-inotify.Po ./$(DEPDIR)/watchdir-kqueue.Po \
-	./$(DEPDIR)/watchdir-test.Po ./$(DEPDIR)/watchdir-win32.Po \
-	./$(DEPDIR)/watchdir.Po \
+	./$(DEPDIR)/list.Plo ./$(DEPDIR)/log.Plo \
+	./$(DEPDIR)/magnet-test.Po ./$(DEPDIR)/magnet.Plo \
+	./$(DEPDIR)/makemeta-test.Po ./$(DEPDIR)/makemeta.Plo \
+	./$(DEPDIR)/metainfo-test.Po ./$(DEPDIR)/metainfo.Plo \
+	./$(DEPDIR)/move-test.Po ./$(DEPDIR)/natpmp.Plo \
+	./$(DEPDIR)/net.Plo ./$(DEPDIR)/peer-io.Plo \
+	./$(DEPDIR)/peer-mgr.Plo ./$(DEPDIR)/peer-msgs-test.Po \
+	./$(DEPDIR)/peer-msgs.Plo ./$(DEPDIR)/platform-quota.Plo \
+	./$(DEPDIR)/platform.Plo ./$(DEPDIR)/port-forwarding.Plo \
+	./$(DEPDIR)/ptrarray.Plo ./$(DEPDIR)/quark-test.Po \
+	./$(DEPDIR)/quark.Plo ./$(DEPDIR)/rename-test.Po \
+	./$(DEPDIR)/resume.Plo ./$(DEPDIR)/rpc-server.Plo \
+	./$(DEPDIR)/rpc-test.Po ./$(DEPDIR)/rpcimpl.Plo \
+	./$(DEPDIR)/session-id.Plo ./$(DEPDIR)/session-test.Po \
+	./$(DEPDIR)/session.Plo ./$(DEPDIR)/stats.Plo \
+	./$(DEPDIR)/subprocess-posix.Plo \
+	./$(DEPDIR)/subprocess-test.Po \
+	./$(DEPDIR)/subprocess-win32.Plo ./$(DEPDIR)/torrent-ctor.Plo \
+	./$(DEPDIR)/torrent-magnet.Plo ./$(DEPDIR)/torrent.Plo \
+	./$(DEPDIR)/tr-assert.Plo ./$(DEPDIR)/tr-dht.Plo \
+	./$(DEPDIR)/tr-getopt-test.Po ./$(DEPDIR)/tr-getopt.Plo \
+	./$(DEPDIR)/tr-lpd.Plo ./$(DEPDIR)/tr-udp.Plo \
+	./$(DEPDIR)/tr-utp.Plo ./$(DEPDIR)/trevent.Plo \
+	./$(DEPDIR)/upnp.Plo ./$(DEPDIR)/utils-test.Po \
+	./$(DEPDIR)/utils.Plo ./$(DEPDIR)/variant-benc.Plo \
+	./$(DEPDIR)/variant-json.Plo ./$(DEPDIR)/variant-test.Po \
+	./$(DEPDIR)/variant.Plo ./$(DEPDIR)/verify.Plo \
+	./$(DEPDIR)/watchdir-generic.Plo \
+	./$(DEPDIR)/watchdir-inotify.Plo \
+	./$(DEPDIR)/watchdir-kqueue.Plo ./$(DEPDIR)/watchdir-test.Po \
+	./$(DEPDIR)/watchdir-win32.Plo ./$(DEPDIR)/watchdir.Plo \
 	./$(DEPDIR)/watchdir_generic_test-dummy.Po \
 	./$(DEPDIR)/watchdir_generic_test-libtransmission-test.Po \
 	./$(DEPDIR)/watchdir_generic_test-watchdir-test.Po \
-	./$(DEPDIR)/web.Po ./$(DEPDIR)/webseed.Po \
-	./$(DEPDIR)/wildmat.Po
+	./$(DEPDIR)/web.Plo ./$(DEPDIR)/webseed.Plo \
+	./$(DEPDIR)/whereami.Plo ./$(DEPDIR)/wildmat.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -463,7 +489,7 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(libtransmission_a_SOURCES) $(bitfield_test_SOURCES) \
+SOURCES = $(libtransmission_og_la_SOURCES) $(bitfield_test_SOURCES) \
 	$(nodist_EXTRA_bitfield_test_SOURCES) \
 	$(blocklist_test_SOURCES) \
 	$(nodist_EXTRA_blocklist_test_SOURCES) $(clients_test_SOURCES) \
@@ -491,7 +517,7 @@ SOURCES = $(libtransmission_a_SOURCES) $(bitfield_test_SOURCES) \
 	$(watchdir_generic_test_SOURCES) \
 	$(nodist_EXTRA_watchdir_generic_test_SOURCES) \
 	$(watchdir_test_SOURCES) $(nodist_EXTRA_watchdir_test_SOURCES)
-DIST_SOURCES = $(am__libtransmission_a_SOURCES_DIST) \
+DIST_SOURCES = $(am__libtransmission_og_la_SOURCES_DIST) \
 	$(bitfield_test_SOURCES) $(blocklist_test_SOURCES) \
 	$(clients_test_SOURCES) $(crypto_test_SOURCES) \
 	$(error_test_SOURCES) $(file_test_SOURCES) \
@@ -549,33 +575,6 @@ am__tty_colors = { \
     std='[m'; \
   fi; \
 }
-am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
-am__vpath_adj = case $$p in \
-    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
-    *) f=$$p;; \
-  esac;
-am__strip_dir = f=`echo $$p | sed -e 's|^.*/||'`;
-am__install_max = 40
-am__nobase_strip_setup = \
-  srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*|]/\\\\&/g'`
-am__nobase_strip = \
-  for p in $$list; do echo "$$p"; done | sed -e "s|$$srcdirstrip/||"
-am__nobase_list = $(am__nobase_strip_setup); \
-  for p in $$list; do echo "$$p $$p"; done | \
-  sed "s| $$srcdirstrip/| |;"' / .*\//!s/ .*/ ./; s,\( .*\)/[^/]*$$,\1,' | \
-  $(AWK) 'BEGIN { files["."] = "" } { files[$$2] = files[$$2] " " $$1; \
-    if (++n[$$2] == $(am__install_max)) \
-      { print $$2, files[$$2]; n[$$2] = 0; files[$$2] = "" } } \
-    END { for (dir in files) print dir, files[dir] }'
-am__base_list = \
-  sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
-  sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__uninstall_files_from_dir = { \
-  test -z "$$files" \
-    || { test ! -d "$$dir" && test ! -f "$$dir" && test ! -r "$$dir"; } \
-    || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
-         $(am__cd) "$$dir" && rm -f $$files; }; \
-  }
 am__recheck_rx = ^[ 	]*:recheck:[ 	]*
 am__global_test_result_rx = ^[ 	]*:global-test-result:[ 	]*
 am__copy_in_global_log_rx = ^[ 	]*:copy-in-global-log:[ 	]*
@@ -732,8 +731,8 @@ TEST_LOGS = $(am__test_logs2:.test.log=.log)
 TEST_LOG_DRIVER = $(SHELL) $(top_srcdir)/test-driver
 TEST_LOG_COMPILE = $(TEST_LOG_COMPILER) $(AM_TEST_LOG_FLAGS) \
 	$(TEST_LOG_FLAGS)
-am__DIST_COMMON = $(srcdir)/Makefile.in $(top_srcdir)/depcomp \
-	$(top_srcdir)/test-driver
+am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/subprocess-test.cmd \
+	$(top_srcdir)/depcomp $(top_srcdir)/test-driver
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 ALL_LINGUAS = @ALL_LINGUAS@
@@ -769,7 +768,6 @@ DATADIRNAME = @DATADIRNAME@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DHT_CFLAGS = @DHT_CFLAGS@
-DHT_INCLUDEPATH_QT = @DHT_INCLUDEPATH_QT@
 DHT_LIBS = @DHT_LIBS@
 DHT_LIBS_QT = @DHT_LIBS_QT@
 DLLTOOL = @DLLTOOL@
@@ -813,7 +811,6 @@ LIBAPPINDICATOR_CFLAGS = @LIBAPPINDICATOR_CFLAGS@
 LIBAPPINDICATOR_LIBS = @LIBAPPINDICATOR_LIBS@
 LIBAPPINDICATOR_MINIMUM = @LIBAPPINDICATOR_MINIMUM@
 LIBB64_CFLAGS = @LIBB64_CFLAGS@
-LIBB64_INCLUDEPATH_QT = @LIBB64_INCLUDEPATH_QT@
 LIBB64_LIBS = @LIBB64_LIBS@
 LIBB64_LIBS_QT = @LIBB64_LIBS_QT@
 LIBCURL_CFLAGS = @LIBCURL_CFLAGS@
@@ -825,24 +822,22 @@ LIBEVENT_LIBS_QT = @LIBEVENT_LIBS_QT@
 LIBEVENT_MINIMUM = @LIBEVENT_MINIMUM@
 LIBM = @LIBM@
 LIBNATPMP_CFLAGS = @LIBNATPMP_CFLAGS@
-LIBNATPMP_INCLUDEPATH_QT = @LIBNATPMP_INCLUDEPATH_QT@
 LIBNATPMP_LIBS = @LIBNATPMP_LIBS@
 LIBNATPMP_LIBS_QT = @LIBNATPMP_LIBS_QT@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
 LIBUPNP_CFLAGS = @LIBUPNP_CFLAGS@
-LIBUPNP_INCLUDEPATH_QT = @LIBUPNP_INCLUDEPATH_QT@
 LIBUPNP_LIBS = @LIBUPNP_LIBS@
 LIBUPNP_LIBS_QT = @LIBUPNP_LIBS_QT@
 LIBUTP_CFLAGS = @LIBUTP_CFLAGS@
-LIBUTP_INCLUDEPATH_QT = @LIBUTP_INCLUDEPATH_QT@
 LIBUTP_LIBS = @LIBUTP_LIBS@
 LIBUTP_LIBS_QT = @LIBUTP_LIBS_QT@
 LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
+MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
 MBEDTLS_CFLAGS = @MBEDTLS_CFLAGS@
@@ -878,6 +873,15 @@ PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
 PTHREAD_CC = @PTHREAD_CC@
 PTHREAD_CFLAGS = @PTHREAD_CFLAGS@
 PTHREAD_LIBS = @PTHREAD_LIBS@
+QMAKE = @QMAKE@
+QT_CXXFLAGS = @QT_CXXFLAGS@
+QT_DIR = @QT_DIR@
+QT_LIBS = @QT_LIBS@
+QT_LRELEASE = @QT_LRELEASE@
+QT_LUPDATE = @QT_LUPDATE@
+QT_MOC = @QT_MOC@
+QT_RCC = @QT_RCC@
+QT_UIC = @QT_UIC@
 RANLIB = @RANLIB@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
@@ -892,6 +896,11 @@ WINDRES = @WINDRES@
 WOLFSSL_CFLAGS = @WOLFSSL_CFLAGS@
 WOLFSSL_LIBS = @WOLFSSL_LIBS@
 XGETTEXT = @XGETTEXT@
+XMKMF = @XMKMF@
+X_CFLAGS = @X_CFLAGS@
+X_EXTRA_LIBS = @X_EXTRA_LIBS@
+X_LIBS = @X_LIBS@
+X_PRE_LIBS = @X_PRE_LIBS@
 ZLIB_CFLAGS = @ZLIB_CFLAGS@
 ZLIB_LIBS = @ZLIB_LIBS@
 ZLIB_MINIMUM = @ZLIB_MINIMUM@
@@ -903,6 +912,12 @@ ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
 ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
+ac_ct_QMAKE = @ac_ct_QMAKE@
+ac_ct_QT_LRELEASE = @ac_ct_QT_LRELEASE@
+ac_ct_QT_LUPDATE = @ac_ct_QT_LUPDATE@
+ac_ct_QT_MOC = @ac_ct_QT_MOC@
+ac_ct_QT_RCC = @ac_ct_QT_RCC@
+ac_ct_QT_UIC = @ac_ct_QT_UIC@
 acx_pthread_config = @acx_pthread_config@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
@@ -947,13 +962,18 @@ runstatedir = @runstatedir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
-subdirs = @subdirs@
+subdirs_extra = @subdirs_extra@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 transmissionlocaledir = @transmissionlocaledir@
+BUILT_SOURCES = version.h
+CLEANFILES = version.h
+
+# For CMake.
+EXTRA_DIST = CMakeLists.txt version.h.in subprocess-test.cmd
 AM_CPPFLAGS = -I$(top_srcdir) -D__TRANSMISSION__ \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" $(am__append_2) \
 	$(am__append_4) $(am__append_9) $(am__append_11)
@@ -969,8 +989,23 @@ AM_CFLAGS = \
   @PTHREAD_CFLAGS@ \
   @ZLIB_CFLAGS@
 
-noinst_LIBRARIES = libtransmission.a
-libtransmission_a_SOURCES = announcer.c announcer-http.c \
+lib_LTLIBRARIES = libtransmission-og.la
+
+# https://autotools.info/libtool/version.html:
+# Version format: "current:revision:age"
+# - Increase the "current" value whenever an interface has been added, removed or changed.
+# - Always increase the "revision" value.
+# - Increase the "age" value only if the changes made to the ABI are backward compatible
+libtransmission_og_la_LDFLAGS = -version-info 3:1:0
+libtransmission_og_la_LIBADD = \
+  @INTLLIBS@ \
+  @LIBCURL_LIBS@ \
+  @CRYPTO_LIBS@ \
+  @PTHREAD_LIBS@ \
+  @ZLIB_LIBS@ \
+  $(LIBM)
+
+libtransmission_og_la_SOURCES = announcer.c announcer-http.c \
 	announcer-udp.c bandwidth.c bitfield.c blocklist.c cache.c \
 	clients.c completion.c ConvertUTF.c crypto.c crypto-utils.c \
 	crypto-utils-fallback.c error.c fdlimit.c file.c handshake.c \
@@ -981,80 +1016,30 @@ libtransmission_a_SOURCES = announcer.c announcer-http.c \
 	torrent.c torrent-ctor.c torrent-magnet.c tr-assert.c tr-dht.c \
 	tr-lpd.c tr-udp.c tr-utp.c tr-getopt.c trevent.c upnp.c \
 	utils.c variant.c variant-benc.c variant-json.c verify.c \
-	watchdir.c watchdir-generic.c web.c webseed.c wildmat.c \
-	$(am__append_1) $(am__append_3) $(am__append_5) \
+	watchdir.c watchdir-generic.c web.c webseed.c whereami.c \
+	wildmat.c $(am__append_1) $(am__append_3) $(am__append_5) \
 	$(am__append_6) $(am__append_7) $(am__append_8) \
-	$(am__append_10)
+	$(am__append_10) announcer.h announcer-common.h bandwidth.h \
+	bitfield.h blocklist.h cache.h clients.h ConvertUTF.h crypto.h \
+	crypto-utils.h completion.h error.h error-types.h fdlimit.h \
+	file.h handshake.h history.h inout.h jsonsl.h \
+	libtransmission-test.h list.h log.h magnet.h makemeta.h \
+	metainfo.h natpmp_local.h net.h peer-common.h peer-io.h \
+	peer-mgr.h peer-msgs.h peer-socket.h platform.h \
+	platform-quota.h port-forwarding.h ptrarray.h quark.h resume.h \
+	rpcimpl.h rpc-server.h session.h session-id.h stats.h \
+	subprocess.h torrent.h torrent-magnet.h tr-getopt.h \
+	transmission.h tr-assert.h tr-dht.h tr-macros.h tr-udp.h \
+	tr-utp.h tr-lpd.h trevent.h upnp.h utils.h variant.h \
+	variant-common.h verify.h version.h watchdir.h \
+	watchdir-common.h web.h webseed.h whereami.h
+
+# Weird inclusion of a C file in another one.
 noinst_HEADERS = \
-  announcer.h \
-  announcer-common.h \
-  bandwidth.h \
-  bitfield.h \
-  blocklist.h \
-  cache.h \
-  clients.h \
-  ConvertUTF.h \
-  crypto.h \
-  crypto-utils.h \
-  completion.h \
-  error.h \
-  error-types.h \
-  fdlimit.h \
-  file.h \
-  handshake.h \
-  history.h \
-  inout.h \
-  jsonsl.c \
-  jsonsl.h \
-  libtransmission-test.h \
-  list.h \
-  log.h \
-  magnet.h \
-  makemeta.h \
-  metainfo.h \
-  natpmp_local.h \
-  net.h \
-  peer-common.h \
-  peer-io.h \
-  peer-mgr.h \
-  peer-msgs.h \
-  peer-socket.h \
-  platform.h \
-  platform-quota.h \
-  port-forwarding.h \
-  ptrarray.h \
-  quark.h \
-  resume.h \
-  rpcimpl.h \
-  rpc-server.h \
-  session.h \
-  session-id.h \
-  stats.h \
-  subprocess.h \
-  torrent.h \
-  torrent-magnet.h \
-  tr-getopt.h \
-  transmission.h \
-  tr-assert.h \
-  tr-dht.h \
-  tr-macros.h \
-  tr-udp.h \
-  tr-utp.h \
-  tr-lpd.h \
-  trevent.h \
-  upnp.h \
-  utils.h \
-  variant.h \
-  variant-common.h \
-  verify.h \
-  version.h \
-  watchdir.h \
-  watchdir-common.h \
-  web.h \
-  webseed.h
+  jsonsl.c
 
 apps_ldadd = \
-  ./libtransmission.a  \
+  ./libtransmission-og.la  \
   @LIBUPNP_LIBS@ \
   @LIBNATPMP_LIBS@ \
   @INTLLIBS@ \
@@ -1066,107 +1051,108 @@ apps_ldadd = \
   @CRYPTO_LIBS@ \
   @PTHREAD_LIBS@ \
   @ZLIB_LIBS@ \
-  ${LIBM}
+  $(LIBM)
 
 TEST_SOURCES = libtransmission-test.c
 bitfield_test_SOURCES = bitfield-test.c $(TEST_SOURCES)
 nodist_EXTRA_bitfield_test_SOURCES = dummy.cxx # force C++ linking
-bitfield_test_LDADD = ${apps_ldadd}
-bitfield_test_LDFLAGS = ${apps_ldflags}
+bitfield_test_LDADD = $(apps_ldadd)
+bitfield_test_LDFLAGS = $(apps_ldflags)
 blocklist_test_SOURCES = blocklist-test.c $(TEST_SOURCES)
 nodist_EXTRA_blocklist_test_SOURCES = dummy.cxx # force C++ linking
-blocklist_test_LDADD = ${apps_ldadd}
-blocklist_test_LDFLAGS = ${apps_ldflags}
+blocklist_test_LDADD = $(apps_ldadd)
+blocklist_test_LDFLAGS = $(apps_ldflags)
 clients_test_SOURCES = clients-test.c $(TEST_SOURCES)
 nodist_EXTRA_clients_test_SOURCES = dummy.cxx # force C++ linking
-clients_test_LDADD = ${apps_ldadd}
-clients_test_LDFLAGS = ${apps_ldflags}
+clients_test_LDADD = $(apps_ldadd)
+clients_test_LDFLAGS = $(apps_ldflags)
 crypto_test_SOURCES = crypto-test.c crypto-test-ref.h $(TEST_SOURCES)
 nodist_EXTRA_crypto_test_SOURCES = dummy.cxx # force C++ linking
-crypto_test_LDADD = ${apps_ldadd}
-crypto_test_LDFLAGS = ${apps_ldflags}
+crypto_test_LDADD = $(apps_ldadd)
+crypto_test_LDFLAGS = $(apps_ldflags)
 error_test_SOURCES = error-test.c $(TEST_SOURCES)
 nodist_EXTRA_error_test_SOURCES = dummy.cxx # force C++ linking
-error_test_LDADD = ${apps_ldadd}
-error_test_LDFLAGS = ${apps_ldflags}
+error_test_LDADD = $(apps_ldadd)
+error_test_LDFLAGS = $(apps_ldflags)
 file_test_SOURCES = file-test.c $(TEST_SOURCES)
 nodist_EXTRA_file_test_SOURCES = dummy.cxx # force C++ linking
-file_test_LDADD = ${apps_ldadd}
-file_test_LDFLAGS = ${apps_ldflags}
+file_test_LDADD = $(apps_ldadd)
+file_test_LDFLAGS = $(apps_ldflags)
 history_test_SOURCES = history-test.c $(TEST_SOURCES)
 nodist_EXTRA_history_test_SOURCES = dummy.cxx # force C++ linking
-history_test_LDADD = ${apps_ldadd}
-history_test_LDFLAGS = ${apps_ldflags}
+history_test_LDADD = $(apps_ldadd)
+history_test_LDFLAGS = $(apps_ldflags)
 json_test_SOURCES = json-test.c $(TEST_SOURCES)
 nodist_EXTRA_json_test_SOURCES = dummy.cxx # force C++ linking
-json_test_LDADD = ${apps_ldadd}
-json_test_LDFLAGS = ${apps_ldflags}
+json_test_LDADD = $(apps_ldadd)
+json_test_LDFLAGS = $(apps_ldflags)
 quark_test_SOURCES = quark-test.c $(TEST_SOURCES)
 nodist_EXTRA_quark_test_SOURCES = dummy.cxx # force C++ linking
-quark_test_LDADD = ${apps_ldadd}
-quark_test_LDFLAGS = ${apps_ldflags}
+quark_test_LDADD = $(apps_ldadd)
+quark_test_LDFLAGS = $(apps_ldflags)
 magnet_test_SOURCES = magnet-test.c $(TEST_SOURCES)
 nodist_EXTRA_magnet_test_SOURCES = dummy.cxx # force C++ linking
-magnet_test_LDADD = ${apps_ldadd}
-magnet_test_LDFLAGS = ${apps_ldflags}
+magnet_test_LDADD = $(apps_ldadd)
+magnet_test_LDFLAGS = $(apps_ldflags)
 metainfo_test_SOURCES = metainfo-test.c $(TEST_SOURCES)
 nodist_EXTRA_metainfo_test_SOURCES = dummy.cxx # force C++ linking
-metainfo_test_LDADD = ${apps_ldadd}
-metainfo_test_LDFLAGS = ${apps_ldflags}
+metainfo_test_LDADD = $(apps_ldadd)
+metainfo_test_LDFLAGS = $(apps_ldflags)
 makemeta_test_SOURCES = makemeta-test.c $(TEST_SOURCES)
 nodist_EXTRA_makemeta_test_SOURCES = dummy.cxx # force C++ linking
-makemeta_test_LDADD = ${apps_ldadd}
-makemeta_test_LDFLAGS = ${apps_ldflags}
+makemeta_test_LDADD = $(apps_ldadd)
+makemeta_test_LDFLAGS = $(apps_ldflags)
 move_test_SOURCES = move-test.c $(TEST_SOURCES)
 nodist_EXTRA_move_test_SOURCES = dummy.cxx # force C++ linking
-move_test_LDADD = ${apps_ldadd}
-move_test_LDFLAGS = ${apps_ldflags}
+move_test_LDADD = $(apps_ldadd)
+move_test_LDFLAGS = $(apps_ldflags)
 peer_msgs_test_SOURCES = peer-msgs-test.c $(TEST_SOURCES)
 nodist_EXTRA_peer_msgs_test_SOURCES = dummy.cxx # force C++ linking
-peer_msgs_test_LDADD = ${apps_ldadd}
-peer_msgs_test_LDFLAGS = ${apps_ldflags}
+peer_msgs_test_LDADD = $(apps_ldadd)
+peer_msgs_test_LDFLAGS = $(apps_ldflags)
 rpc_test_SOURCES = rpc-test.c $(TEST_SOURCES)
 nodist_EXTRA_rpc_test_SOURCES = dummy.cxx # force C++ linking
-rpc_test_LDADD = ${apps_ldadd}
-rpc_test_LDFLAGS = ${apps_ldflags}
+rpc_test_LDADD = $(apps_ldadd)
+rpc_test_LDFLAGS = $(apps_ldflags)
 session_test_SOURCES = session-test.c $(TEST_SOURCES)
 nodist_EXTRA_session_test_SOURCES = dummy.cxx # force C++ linking
-session_test_LDADD = ${apps_ldadd}
-session_test_LDFLAGS = ${apps_ldflags}
+session_test_LDADD = $(apps_ldadd)
+session_test_LDFLAGS = $(apps_ldflags)
 subprocess_test_SOURCES = subprocess-test.c $(TEST_SOURCES)
 nodist_EXTRA_subprocess_test_SOURCES = dummy.cxx # force C++ linking
-subprocess_test_LDADD = ${apps_ldadd}
-subprocess_test_LDFLAGS = ${apps_ldflags}
+subprocess_test_LDADD = $(apps_ldadd)
+subprocess_test_LDFLAGS = $(apps_ldflags)
 tr_getopt_test_SOURCES = tr-getopt-test.c $(TEST_SOURCES)
 nodist_EXTRA_tr_getopt_test_SOURCES = dummy.cxx # force C++ linking
-tr_getopt_test_LDADD = ${apps_ldadd}
-tr_getopt_test_LDFLAGS = ${apps_ldflags}
+tr_getopt_test_LDADD = $(apps_ldadd)
+tr_getopt_test_LDFLAGS = $(apps_ldflags)
 utils_test_SOURCES = utils-test.c $(TEST_SOURCES)
 nodist_EXTRA_utils_test_SOURCES = dummy.cxx # force C++ linking
-utils_test_LDADD = ${apps_ldadd}
-utils_test_LDFLAGS = ${apps_ldflags}
+utils_test_LDADD = $(apps_ldadd)
+utils_test_LDFLAGS = $(apps_ldflags)
 variant_test_SOURCES = variant-test.c $(TEST_SOURCES)
 nodist_EXTRA_variant_test_SOURCES = dummy.cxx # force C++ linking
-variant_test_LDADD = ${apps_ldadd}
-variant_test_LDFLAGS = ${apps_ldflags}
+variant_test_LDADD = $(apps_ldadd)
+variant_test_LDFLAGS = $(apps_ldflags)
 watchdir_test_SOURCES = watchdir-test.c $(TEST_SOURCES)
 nodist_EXTRA_watchdir_test_SOURCES = dummy.cxx # force C++ linking
-watchdir_test_LDADD = ${apps_ldadd}
-watchdir_test_LDFLAGS = ${apps_ldflags}
+watchdir_test_LDADD = $(apps_ldadd)
+watchdir_test_LDFLAGS = $(apps_ldflags)
 watchdir_generic_test_SOURCES = watchdir-test.c $(TEST_SOURCES)
 nodist_EXTRA_watchdir_generic_test_SOURCES = dummy.cxx # force C++ linking
-watchdir_generic_test_LDADD = ${apps_ldadd}
-watchdir_generic_test_LDFLAGS = ${apps_ldflags}
+watchdir_generic_test_LDADD = $(apps_ldadd)
+watchdir_generic_test_LDFLAGS = $(apps_ldflags)
 watchdir_generic_test_CPPFLAGS = -DWATCHDIR_TEST_FORCE_GENERIC $(AM_CPPFLAGS)
 rename_test_SOURCES = rename-test.c $(TEST_SOURCES)
 nodist_EXTRA_rename_test_SOURCES = dummy.cxx # force C++ linking
-rename_test_LDADD = ${apps_ldadd}
-rename_test_LDFLAGS = ${apps_ldflags}
-all: all-am
+rename_test_LDADD = $(apps_ldadd)
+rename_test_LDFLAGS = $(apps_ldflags)
+all: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) all-am
 
 .SUFFIXES:
 .SUFFIXES: .c .cxx .lo .log .o .obj .test .test$(EXEEXT) .trs
-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
 	    *$$dep*) \
@@ -1190,14 +1176,14 @@ Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 
-$(top_srcdir)/configure:  $(am__configure_deps)
+$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
+$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
 
-clean-noinstPROGRAMS:
-	@list='$(noinst_PROGRAMS)'; test -n "$$list" || exit 0; \
+clean-checkPROGRAMS:
+	@list='$(check_PROGRAMS)'; test -n "$$list" || exit 0; \
 	echo " rm -f" $$list; \
 	rm -f $$list || exit $$?; \
 	test -n "$(EXEEXT)" || exit 0; \
@@ -1205,13 +1191,43 @@ clean-noinstPROGRAMS:
 	echo " rm -f" $$list; \
 	rm -f $$list
 
-clean-noinstLIBRARIES:
-	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+install-libLTLIBRARIES: $(lib_LTLIBRARIES)
+	@$(NORMAL_INSTALL)
+	@list='$(lib_LTLIBRARIES)'; test -n "$(libdir)" || list=; \
+	list2=; for p in $$list; do \
+	  if test -f $$p; then \
+	    list2="$$list2 $$p"; \
+	  else :; fi; \
+	done; \
+	test -z "$$list2" || { \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(libdir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(libdir)" || exit 1; \
+	  echo " $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$list2 '$(DESTDIR)$(libdir)'"; \
+	  $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$list2 "$(DESTDIR)$(libdir)"; \
+	}
 
-libtransmission.a: $(libtransmission_a_OBJECTS) $(libtransmission_a_DEPENDENCIES) $(EXTRA_libtransmission_a_DEPENDENCIES) 
-	$(AM_V_at)-rm -f libtransmission.a
-	$(AM_V_AR)$(libtransmission_a_AR) libtransmission.a $(libtransmission_a_OBJECTS) $(libtransmission_a_LIBADD)
-	$(AM_V_at)$(RANLIB) libtransmission.a
+uninstall-libLTLIBRARIES:
+	@$(NORMAL_UNINSTALL)
+	@list='$(lib_LTLIBRARIES)'; test -n "$(libdir)" || list=; \
+	for p in $$list; do \
+	  $(am__strip_dir) \
+	  echo " $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=uninstall rm -f '$(DESTDIR)$(libdir)/$$f'"; \
+	  $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=uninstall rm -f "$(DESTDIR)$(libdir)/$$f"; \
+	done
+
+clean-libLTLIBRARIES:
+	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
+	@list='$(lib_LTLIBRARIES)'; \
+	locs=`for p in $$list; do echo $$p; done | \
+	      sed 's|^[^/]*$$|.|; s|/[^/]*$$||; s|$$|/so_locations|' | \
+	      sort -u`; \
+	test -z "$$locs" || { \
+	  echo rm -f $${locs}; \
+	  rm -f $${locs}; \
+	}
+
+libtransmission-og.la: $(libtransmission_og_la_OBJECTS) $(libtransmission_og_la_DEPENDENCIES) $(EXTRA_libtransmission_og_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(libtransmission_og_la_LINK) -rpath $(libdir) $(libtransmission_og_la_OBJECTS) $(libtransmission_og_la_LIBADD) $(LIBS)
 
 bitfield-test$(EXEEXT): $(bitfield_test_OBJECTS) $(bitfield_test_DEPENDENCIES) $(EXTRA_bitfield_test_DEPENDENCIES) 
 	@rm -f bitfield-test$(EXEEXT)
@@ -1311,104 +1327,105 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ConvertUTF.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/announcer-http.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/announcer-udp.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/announcer.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bandwidth.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ConvertUTF.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/announcer-http.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/announcer-udp.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/announcer.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bandwidth.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bitfield-test.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bitfield.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bitfield.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/blocklist-test.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/blocklist.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cache.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/blocklist.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cache.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/clients-test.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/clients.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/completion.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/clients.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/completion.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/crypto-test.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/crypto-utils-cyassl.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/crypto-utils-fallback.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/crypto-utils-openssl.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/crypto-utils-polarssl.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/crypto-utils.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/crypto.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/crypto-utils-cyassl.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/crypto-utils-fallback.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/crypto-utils-openssl.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/crypto-utils-polarssl.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/crypto-utils.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/crypto.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dummy.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/error-test.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/error.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fdlimit.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/file-posix.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/error.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fdlimit.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/file-posix.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/file-test.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/file-win32.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/file.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/handshake.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/file-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/file.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/handshake.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/history-test.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/history.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/inout.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/history.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/inout.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/json-test.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libtransmission-test.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/list.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/log.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/list.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/log.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/magnet-test.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/magnet.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/magnet.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/makemeta-test.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/makemeta.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/makemeta.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/metainfo-test.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/metainfo.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/metainfo.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/move-test.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/natpmp.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/net.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/peer-io.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/peer-mgr.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/natpmp.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/net.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/peer-io.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/peer-mgr.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/peer-msgs-test.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/peer-msgs.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/platform-quota.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/platform.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/port-forwarding.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ptrarray.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/peer-msgs.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/platform-quota.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/platform.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/port-forwarding.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ptrarray.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/quark-test.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/quark.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/quark.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rename-test.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/resume.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rpc-server.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/resume.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rpc-server.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rpc-test.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rpcimpl.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/session-id.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rpcimpl.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/session-id.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/session-test.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/session.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stats.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/subprocess-posix.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/session.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stats.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/subprocess-posix.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/subprocess-test.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/subprocess-win32.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/torrent-ctor.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/torrent-magnet.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/torrent.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tr-assert.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tr-dht.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/subprocess-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/torrent-ctor.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/torrent-magnet.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/torrent.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tr-assert.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tr-dht.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tr-getopt-test.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tr-getopt.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tr-lpd.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tr-udp.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tr-utp.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/trevent.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/upnp.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tr-getopt.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tr-lpd.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tr-udp.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tr-utp.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/trevent.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/upnp.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/utils-test.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/utils.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/variant-benc.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/variant-json.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/utils.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/variant-benc.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/variant-json.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/variant-test.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/variant.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/verify.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/watchdir-generic.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/watchdir-inotify.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/watchdir-kqueue.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/variant.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/verify.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/watchdir-generic.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/watchdir-inotify.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/watchdir-kqueue.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/watchdir-test.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/watchdir-win32.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/watchdir.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/watchdir-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/watchdir.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/watchdir_generic_test-dummy.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/watchdir_generic_test-libtransmission-test.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/watchdir_generic_test-watchdir-test.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/web.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/webseed.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wildmat.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/web.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/webseed.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/whereami.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wildmat.Plo@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -1684,7 +1701,7 @@ $(TEST_SUITE_LOG): $(TEST_LOGS)
 	fi;								\
 	$$success || exit 1
 
-check-TESTS: 
+check-TESTS: $(check_PROGRAMS)
 	@list='$(RECHECK_LOGS)';           test -z "$$list" || rm -f $$list
 	@list='$(RECHECK_LOGS:.log=.trs)'; test -z "$$list" || rm -f $$list
 	@test -z "$(TEST_SUITE_LOG)" || rm -f $(TEST_SUITE_LOG)
@@ -1694,7 +1711,7 @@ check-TESTS:
 	log_list=`echo $$log_list`; trs_list=`echo $$trs_list`; \
 	$(MAKE) $(AM_MAKEFLAGS) $(TEST_SUITE_LOG) TEST_LOGS="$$log_list"; \
 	exit $$?;
-recheck: all 
+recheck: all $(check_PROGRAMS)
 	@test -z "$(TEST_SUITE_LOG)" || rm -f $(TEST_SUITE_LOG)
 	@set +e; $(am__set_TESTS_bases); \
 	bases=`for i in $$bases; do echo $$i; done \
@@ -1914,12 +1931,21 @@ distdir-am: $(DISTFILES)
 	  fi; \
 	done
 check-am: all-am
+	$(MAKE) $(AM_MAKEFLAGS) $(check_PROGRAMS)
 	$(MAKE) $(AM_MAKEFLAGS) check-TESTS
-check: check-am
-all-am: Makefile $(PROGRAMS) $(LIBRARIES) $(HEADERS)
+check: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) check-am
+all-am: Makefile $(LTLIBRARIES) $(HEADERS)
+install-checkPROGRAMS: install-libLTLIBRARIES
+
 installdirs:
-install: install-am
-install-exec: install-exec-am
+	for dir in "$(DESTDIR)$(libdir)"; do \
+	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
+	done
+install: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) install-am
+install-exec: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) install-exec-am
 install-data: install-data-am
 uninstall: uninstall-am
 
@@ -1943,6 +1969,7 @@ mostlyclean-generic:
 	-test -z "$(TEST_SUITE_LOG)" || rm -f $(TEST_SUITE_LOG)
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
@@ -1951,110 +1978,112 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-am
 
-clean-am: clean-generic clean-libtool clean-noinstLIBRARIES \
-	clean-noinstPROGRAMS mostlyclean-am
+clean-am: clean-checkPROGRAMS clean-generic clean-libLTLIBRARIES \
+	clean-libtool mostlyclean-am
 
 distclean: distclean-am
-		-rm -f ./$(DEPDIR)/ConvertUTF.Po
-	-rm -f ./$(DEPDIR)/announcer-http.Po
-	-rm -f ./$(DEPDIR)/announcer-udp.Po
-	-rm -f ./$(DEPDIR)/announcer.Po
-	-rm -f ./$(DEPDIR)/bandwidth.Po
+		-rm -f ./$(DEPDIR)/ConvertUTF.Plo
+	-rm -f ./$(DEPDIR)/announcer-http.Plo
+	-rm -f ./$(DEPDIR)/announcer-udp.Plo
+	-rm -f ./$(DEPDIR)/announcer.Plo
+	-rm -f ./$(DEPDIR)/bandwidth.Plo
 	-rm -f ./$(DEPDIR)/bitfield-test.Po
-	-rm -f ./$(DEPDIR)/bitfield.Po
+	-rm -f ./$(DEPDIR)/bitfield.Plo
 	-rm -f ./$(DEPDIR)/blocklist-test.Po
-	-rm -f ./$(DEPDIR)/blocklist.Po
-	-rm -f ./$(DEPDIR)/cache.Po
+	-rm -f ./$(DEPDIR)/blocklist.Plo
+	-rm -f ./$(DEPDIR)/cache.Plo
 	-rm -f ./$(DEPDIR)/clients-test.Po
-	-rm -f ./$(DEPDIR)/clients.Po
-	-rm -f ./$(DEPDIR)/completion.Po
+	-rm -f ./$(DEPDIR)/clients.Plo
+	-rm -f ./$(DEPDIR)/completion.Plo
 	-rm -f ./$(DEPDIR)/crypto-test.Po
-	-rm -f ./$(DEPDIR)/crypto-utils-cyassl.Po
-	-rm -f ./$(DEPDIR)/crypto-utils-fallback.Po
-	-rm -f ./$(DEPDIR)/crypto-utils-openssl.Po
-	-rm -f ./$(DEPDIR)/crypto-utils-polarssl.Po
-	-rm -f ./$(DEPDIR)/crypto-utils.Po
-	-rm -f ./$(DEPDIR)/crypto.Po
+	-rm -f ./$(DEPDIR)/crypto-utils-cyassl.Plo
+	-rm -f ./$(DEPDIR)/crypto-utils-fallback.Plo
+	-rm -f ./$(DEPDIR)/crypto-utils-openssl.Plo
+	-rm -f ./$(DEPDIR)/crypto-utils-polarssl.Plo
+	-rm -f ./$(DEPDIR)/crypto-utils.Plo
+	-rm -f ./$(DEPDIR)/crypto.Plo
 	-rm -f ./$(DEPDIR)/dummy.Po
 	-rm -f ./$(DEPDIR)/error-test.Po
-	-rm -f ./$(DEPDIR)/error.Po
-	-rm -f ./$(DEPDIR)/fdlimit.Po
-	-rm -f ./$(DEPDIR)/file-posix.Po
+	-rm -f ./$(DEPDIR)/error.Plo
+	-rm -f ./$(DEPDIR)/fdlimit.Plo
+	-rm -f ./$(DEPDIR)/file-posix.Plo
 	-rm -f ./$(DEPDIR)/file-test.Po
-	-rm -f ./$(DEPDIR)/file-win32.Po
-	-rm -f ./$(DEPDIR)/file.Po
-	-rm -f ./$(DEPDIR)/handshake.Po
+	-rm -f ./$(DEPDIR)/file-win32.Plo
+	-rm -f ./$(DEPDIR)/file.Plo
+	-rm -f ./$(DEPDIR)/handshake.Plo
 	-rm -f ./$(DEPDIR)/history-test.Po
-	-rm -f ./$(DEPDIR)/history.Po
-	-rm -f ./$(DEPDIR)/inout.Po
+	-rm -f ./$(DEPDIR)/history.Plo
+	-rm -f ./$(DEPDIR)/inout.Plo
 	-rm -f ./$(DEPDIR)/json-test.Po
 	-rm -f ./$(DEPDIR)/libtransmission-test.Po
-	-rm -f ./$(DEPDIR)/list.Po
-	-rm -f ./$(DEPDIR)/log.Po
+	-rm -f ./$(DEPDIR)/list.Plo
+	-rm -f ./$(DEPDIR)/log.Plo
 	-rm -f ./$(DEPDIR)/magnet-test.Po
-	-rm -f ./$(DEPDIR)/magnet.Po
+	-rm -f ./$(DEPDIR)/magnet.Plo
 	-rm -f ./$(DEPDIR)/makemeta-test.Po
-	-rm -f ./$(DEPDIR)/makemeta.Po
+	-rm -f ./$(DEPDIR)/makemeta.Plo
 	-rm -f ./$(DEPDIR)/metainfo-test.Po
-	-rm -f ./$(DEPDIR)/metainfo.Po
+	-rm -f ./$(DEPDIR)/metainfo.Plo
 	-rm -f ./$(DEPDIR)/move-test.Po
-	-rm -f ./$(DEPDIR)/natpmp.Po
-	-rm -f ./$(DEPDIR)/net.Po
-	-rm -f ./$(DEPDIR)/peer-io.Po
-	-rm -f ./$(DEPDIR)/peer-mgr.Po
+	-rm -f ./$(DEPDIR)/natpmp.Plo
+	-rm -f ./$(DEPDIR)/net.Plo
+	-rm -f ./$(DEPDIR)/peer-io.Plo
+	-rm -f ./$(DEPDIR)/peer-mgr.Plo
 	-rm -f ./$(DEPDIR)/peer-msgs-test.Po
-	-rm -f ./$(DEPDIR)/peer-msgs.Po
-	-rm -f ./$(DEPDIR)/platform-quota.Po
-	-rm -f ./$(DEPDIR)/platform.Po
-	-rm -f ./$(DEPDIR)/port-forwarding.Po
-	-rm -f ./$(DEPDIR)/ptrarray.Po
+	-rm -f ./$(DEPDIR)/peer-msgs.Plo
+	-rm -f ./$(DEPDIR)/platform-quota.Plo
+	-rm -f ./$(DEPDIR)/platform.Plo
+	-rm -f ./$(DEPDIR)/port-forwarding.Plo
+	-rm -f ./$(DEPDIR)/ptrarray.Plo
 	-rm -f ./$(DEPDIR)/quark-test.Po
-	-rm -f ./$(DEPDIR)/quark.Po
+	-rm -f ./$(DEPDIR)/quark.Plo
 	-rm -f ./$(DEPDIR)/rename-test.Po
-	-rm -f ./$(DEPDIR)/resume.Po
-	-rm -f ./$(DEPDIR)/rpc-server.Po
+	-rm -f ./$(DEPDIR)/resume.Plo
+	-rm -f ./$(DEPDIR)/rpc-server.Plo
 	-rm -f ./$(DEPDIR)/rpc-test.Po
-	-rm -f ./$(DEPDIR)/rpcimpl.Po
-	-rm -f ./$(DEPDIR)/session-id.Po
+	-rm -f ./$(DEPDIR)/rpcimpl.Plo
+	-rm -f ./$(DEPDIR)/session-id.Plo
 	-rm -f ./$(DEPDIR)/session-test.Po
-	-rm -f ./$(DEPDIR)/session.Po
-	-rm -f ./$(DEPDIR)/stats.Po
-	-rm -f ./$(DEPDIR)/subprocess-posix.Po
+	-rm -f ./$(DEPDIR)/session.Plo
+	-rm -f ./$(DEPDIR)/stats.Plo
+	-rm -f ./$(DEPDIR)/subprocess-posix.Plo
 	-rm -f ./$(DEPDIR)/subprocess-test.Po
-	-rm -f ./$(DEPDIR)/subprocess-win32.Po
-	-rm -f ./$(DEPDIR)/torrent-ctor.Po
-	-rm -f ./$(DEPDIR)/torrent-magnet.Po
-	-rm -f ./$(DEPDIR)/torrent.Po
-	-rm -f ./$(DEPDIR)/tr-assert.Po
-	-rm -f ./$(DEPDIR)/tr-dht.Po
+	-rm -f ./$(DEPDIR)/subprocess-win32.Plo
+	-rm -f ./$(DEPDIR)/torrent-ctor.Plo
+	-rm -f ./$(DEPDIR)/torrent-magnet.Plo
+	-rm -f ./$(DEPDIR)/torrent.Plo
+	-rm -f ./$(DEPDIR)/tr-assert.Plo
+	-rm -f ./$(DEPDIR)/tr-dht.Plo
 	-rm -f ./$(DEPDIR)/tr-getopt-test.Po
-	-rm -f ./$(DEPDIR)/tr-getopt.Po
-	-rm -f ./$(DEPDIR)/tr-lpd.Po
-	-rm -f ./$(DEPDIR)/tr-udp.Po
-	-rm -f ./$(DEPDIR)/tr-utp.Po
-	-rm -f ./$(DEPDIR)/trevent.Po
-	-rm -f ./$(DEPDIR)/upnp.Po
+	-rm -f ./$(DEPDIR)/tr-getopt.Plo
+	-rm -f ./$(DEPDIR)/tr-lpd.Plo
+	-rm -f ./$(DEPDIR)/tr-udp.Plo
+	-rm -f ./$(DEPDIR)/tr-utp.Plo
+	-rm -f ./$(DEPDIR)/trevent.Plo
+	-rm -f ./$(DEPDIR)/upnp.Plo
 	-rm -f ./$(DEPDIR)/utils-test.Po
-	-rm -f ./$(DEPDIR)/utils.Po
-	-rm -f ./$(DEPDIR)/variant-benc.Po
-	-rm -f ./$(DEPDIR)/variant-json.Po
+	-rm -f ./$(DEPDIR)/utils.Plo
+	-rm -f ./$(DEPDIR)/variant-benc.Plo
+	-rm -f ./$(DEPDIR)/variant-json.Plo
 	-rm -f ./$(DEPDIR)/variant-test.Po
-	-rm -f ./$(DEPDIR)/variant.Po
-	-rm -f ./$(DEPDIR)/verify.Po
-	-rm -f ./$(DEPDIR)/watchdir-generic.Po
-	-rm -f ./$(DEPDIR)/watchdir-inotify.Po
-	-rm -f ./$(DEPDIR)/watchdir-kqueue.Po
+	-rm -f ./$(DEPDIR)/variant.Plo
+	-rm -f ./$(DEPDIR)/verify.Plo
+	-rm -f ./$(DEPDIR)/watchdir-generic.Plo
+	-rm -f ./$(DEPDIR)/watchdir-inotify.Plo
+	-rm -f ./$(DEPDIR)/watchdir-kqueue.Plo
 	-rm -f ./$(DEPDIR)/watchdir-test.Po
-	-rm -f ./$(DEPDIR)/watchdir-win32.Po
-	-rm -f ./$(DEPDIR)/watchdir.Po
+	-rm -f ./$(DEPDIR)/watchdir-win32.Plo
+	-rm -f ./$(DEPDIR)/watchdir.Plo
 	-rm -f ./$(DEPDIR)/watchdir_generic_test-dummy.Po
 	-rm -f ./$(DEPDIR)/watchdir_generic_test-libtransmission-test.Po
 	-rm -f ./$(DEPDIR)/watchdir_generic_test-watchdir-test.Po
-	-rm -f ./$(DEPDIR)/web.Po
-	-rm -f ./$(DEPDIR)/webseed.Po
-	-rm -f ./$(DEPDIR)/wildmat.Po
+	-rm -f ./$(DEPDIR)/web.Plo
+	-rm -f ./$(DEPDIR)/webseed.Plo
+	-rm -f ./$(DEPDIR)/whereami.Plo
+	-rm -f ./$(DEPDIR)/wildmat.Plo
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -2077,7 +2106,7 @@ install-dvi: install-dvi-am
 
 install-dvi-am:
 
-install-exec-am:
+install-exec-am: install-libLTLIBRARIES
 
 install-html: install-html-am
 
@@ -2100,104 +2129,105 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f ./$(DEPDIR)/ConvertUTF.Po
-	-rm -f ./$(DEPDIR)/announcer-http.Po
-	-rm -f ./$(DEPDIR)/announcer-udp.Po
-	-rm -f ./$(DEPDIR)/announcer.Po
-	-rm -f ./$(DEPDIR)/bandwidth.Po
+		-rm -f ./$(DEPDIR)/ConvertUTF.Plo
+	-rm -f ./$(DEPDIR)/announcer-http.Plo
+	-rm -f ./$(DEPDIR)/announcer-udp.Plo
+	-rm -f ./$(DEPDIR)/announcer.Plo
+	-rm -f ./$(DEPDIR)/bandwidth.Plo
 	-rm -f ./$(DEPDIR)/bitfield-test.Po
-	-rm -f ./$(DEPDIR)/bitfield.Po
+	-rm -f ./$(DEPDIR)/bitfield.Plo
 	-rm -f ./$(DEPDIR)/blocklist-test.Po
-	-rm -f ./$(DEPDIR)/blocklist.Po
-	-rm -f ./$(DEPDIR)/cache.Po
+	-rm -f ./$(DEPDIR)/blocklist.Plo
+	-rm -f ./$(DEPDIR)/cache.Plo
 	-rm -f ./$(DEPDIR)/clients-test.Po
-	-rm -f ./$(DEPDIR)/clients.Po
-	-rm -f ./$(DEPDIR)/completion.Po
+	-rm -f ./$(DEPDIR)/clients.Plo
+	-rm -f ./$(DEPDIR)/completion.Plo
 	-rm -f ./$(DEPDIR)/crypto-test.Po
-	-rm -f ./$(DEPDIR)/crypto-utils-cyassl.Po
-	-rm -f ./$(DEPDIR)/crypto-utils-fallback.Po
-	-rm -f ./$(DEPDIR)/crypto-utils-openssl.Po
-	-rm -f ./$(DEPDIR)/crypto-utils-polarssl.Po
-	-rm -f ./$(DEPDIR)/crypto-utils.Po
-	-rm -f ./$(DEPDIR)/crypto.Po
+	-rm -f ./$(DEPDIR)/crypto-utils-cyassl.Plo
+	-rm -f ./$(DEPDIR)/crypto-utils-fallback.Plo
+	-rm -f ./$(DEPDIR)/crypto-utils-openssl.Plo
+	-rm -f ./$(DEPDIR)/crypto-utils-polarssl.Plo
+	-rm -f ./$(DEPDIR)/crypto-utils.Plo
+	-rm -f ./$(DEPDIR)/crypto.Plo
 	-rm -f ./$(DEPDIR)/dummy.Po
 	-rm -f ./$(DEPDIR)/error-test.Po
-	-rm -f ./$(DEPDIR)/error.Po
-	-rm -f ./$(DEPDIR)/fdlimit.Po
-	-rm -f ./$(DEPDIR)/file-posix.Po
+	-rm -f ./$(DEPDIR)/error.Plo
+	-rm -f ./$(DEPDIR)/fdlimit.Plo
+	-rm -f ./$(DEPDIR)/file-posix.Plo
 	-rm -f ./$(DEPDIR)/file-test.Po
-	-rm -f ./$(DEPDIR)/file-win32.Po
-	-rm -f ./$(DEPDIR)/file.Po
-	-rm -f ./$(DEPDIR)/handshake.Po
+	-rm -f ./$(DEPDIR)/file-win32.Plo
+	-rm -f ./$(DEPDIR)/file.Plo
+	-rm -f ./$(DEPDIR)/handshake.Plo
 	-rm -f ./$(DEPDIR)/history-test.Po
-	-rm -f ./$(DEPDIR)/history.Po
-	-rm -f ./$(DEPDIR)/inout.Po
+	-rm -f ./$(DEPDIR)/history.Plo
+	-rm -f ./$(DEPDIR)/inout.Plo
 	-rm -f ./$(DEPDIR)/json-test.Po
 	-rm -f ./$(DEPDIR)/libtransmission-test.Po
-	-rm -f ./$(DEPDIR)/list.Po
-	-rm -f ./$(DEPDIR)/log.Po
+	-rm -f ./$(DEPDIR)/list.Plo
+	-rm -f ./$(DEPDIR)/log.Plo
 	-rm -f ./$(DEPDIR)/magnet-test.Po
-	-rm -f ./$(DEPDIR)/magnet.Po
+	-rm -f ./$(DEPDIR)/magnet.Plo
 	-rm -f ./$(DEPDIR)/makemeta-test.Po
-	-rm -f ./$(DEPDIR)/makemeta.Po
+	-rm -f ./$(DEPDIR)/makemeta.Plo
 	-rm -f ./$(DEPDIR)/metainfo-test.Po
-	-rm -f ./$(DEPDIR)/metainfo.Po
+	-rm -f ./$(DEPDIR)/metainfo.Plo
 	-rm -f ./$(DEPDIR)/move-test.Po
-	-rm -f ./$(DEPDIR)/natpmp.Po
-	-rm -f ./$(DEPDIR)/net.Po
-	-rm -f ./$(DEPDIR)/peer-io.Po
-	-rm -f ./$(DEPDIR)/peer-mgr.Po
+	-rm -f ./$(DEPDIR)/natpmp.Plo
+	-rm -f ./$(DEPDIR)/net.Plo
+	-rm -f ./$(DEPDIR)/peer-io.Plo
+	-rm -f ./$(DEPDIR)/peer-mgr.Plo
 	-rm -f ./$(DEPDIR)/peer-msgs-test.Po
-	-rm -f ./$(DEPDIR)/peer-msgs.Po
-	-rm -f ./$(DEPDIR)/platform-quota.Po
-	-rm -f ./$(DEPDIR)/platform.Po
-	-rm -f ./$(DEPDIR)/port-forwarding.Po
-	-rm -f ./$(DEPDIR)/ptrarray.Po
+	-rm -f ./$(DEPDIR)/peer-msgs.Plo
+	-rm -f ./$(DEPDIR)/platform-quota.Plo
+	-rm -f ./$(DEPDIR)/platform.Plo
+	-rm -f ./$(DEPDIR)/port-forwarding.Plo
+	-rm -f ./$(DEPDIR)/ptrarray.Plo
 	-rm -f ./$(DEPDIR)/quark-test.Po
-	-rm -f ./$(DEPDIR)/quark.Po
+	-rm -f ./$(DEPDIR)/quark.Plo
 	-rm -f ./$(DEPDIR)/rename-test.Po
-	-rm -f ./$(DEPDIR)/resume.Po
-	-rm -f ./$(DEPDIR)/rpc-server.Po
+	-rm -f ./$(DEPDIR)/resume.Plo
+	-rm -f ./$(DEPDIR)/rpc-server.Plo
 	-rm -f ./$(DEPDIR)/rpc-test.Po
-	-rm -f ./$(DEPDIR)/rpcimpl.Po
-	-rm -f ./$(DEPDIR)/session-id.Po
+	-rm -f ./$(DEPDIR)/rpcimpl.Plo
+	-rm -f ./$(DEPDIR)/session-id.Plo
 	-rm -f ./$(DEPDIR)/session-test.Po
-	-rm -f ./$(DEPDIR)/session.Po
-	-rm -f ./$(DEPDIR)/stats.Po
-	-rm -f ./$(DEPDIR)/subprocess-posix.Po
+	-rm -f ./$(DEPDIR)/session.Plo
+	-rm -f ./$(DEPDIR)/stats.Plo
+	-rm -f ./$(DEPDIR)/subprocess-posix.Plo
 	-rm -f ./$(DEPDIR)/subprocess-test.Po
-	-rm -f ./$(DEPDIR)/subprocess-win32.Po
-	-rm -f ./$(DEPDIR)/torrent-ctor.Po
-	-rm -f ./$(DEPDIR)/torrent-magnet.Po
-	-rm -f ./$(DEPDIR)/torrent.Po
-	-rm -f ./$(DEPDIR)/tr-assert.Po
-	-rm -f ./$(DEPDIR)/tr-dht.Po
+	-rm -f ./$(DEPDIR)/subprocess-win32.Plo
+	-rm -f ./$(DEPDIR)/torrent-ctor.Plo
+	-rm -f ./$(DEPDIR)/torrent-magnet.Plo
+	-rm -f ./$(DEPDIR)/torrent.Plo
+	-rm -f ./$(DEPDIR)/tr-assert.Plo
+	-rm -f ./$(DEPDIR)/tr-dht.Plo
 	-rm -f ./$(DEPDIR)/tr-getopt-test.Po
-	-rm -f ./$(DEPDIR)/tr-getopt.Po
-	-rm -f ./$(DEPDIR)/tr-lpd.Po
-	-rm -f ./$(DEPDIR)/tr-udp.Po
-	-rm -f ./$(DEPDIR)/tr-utp.Po
-	-rm -f ./$(DEPDIR)/trevent.Po
-	-rm -f ./$(DEPDIR)/upnp.Po
+	-rm -f ./$(DEPDIR)/tr-getopt.Plo
+	-rm -f ./$(DEPDIR)/tr-lpd.Plo
+	-rm -f ./$(DEPDIR)/tr-udp.Plo
+	-rm -f ./$(DEPDIR)/tr-utp.Plo
+	-rm -f ./$(DEPDIR)/trevent.Plo
+	-rm -f ./$(DEPDIR)/upnp.Plo
 	-rm -f ./$(DEPDIR)/utils-test.Po
-	-rm -f ./$(DEPDIR)/utils.Po
-	-rm -f ./$(DEPDIR)/variant-benc.Po
-	-rm -f ./$(DEPDIR)/variant-json.Po
+	-rm -f ./$(DEPDIR)/utils.Plo
+	-rm -f ./$(DEPDIR)/variant-benc.Plo
+	-rm -f ./$(DEPDIR)/variant-json.Plo
 	-rm -f ./$(DEPDIR)/variant-test.Po
-	-rm -f ./$(DEPDIR)/variant.Po
-	-rm -f ./$(DEPDIR)/verify.Po
-	-rm -f ./$(DEPDIR)/watchdir-generic.Po
-	-rm -f ./$(DEPDIR)/watchdir-inotify.Po
-	-rm -f ./$(DEPDIR)/watchdir-kqueue.Po
+	-rm -f ./$(DEPDIR)/variant.Plo
+	-rm -f ./$(DEPDIR)/verify.Plo
+	-rm -f ./$(DEPDIR)/watchdir-generic.Plo
+	-rm -f ./$(DEPDIR)/watchdir-inotify.Plo
+	-rm -f ./$(DEPDIR)/watchdir-kqueue.Plo
 	-rm -f ./$(DEPDIR)/watchdir-test.Po
-	-rm -f ./$(DEPDIR)/watchdir-win32.Po
-	-rm -f ./$(DEPDIR)/watchdir.Po
+	-rm -f ./$(DEPDIR)/watchdir-win32.Plo
+	-rm -f ./$(DEPDIR)/watchdir.Plo
 	-rm -f ./$(DEPDIR)/watchdir_generic_test-dummy.Po
 	-rm -f ./$(DEPDIR)/watchdir_generic_test-libtransmission-test.Po
 	-rm -f ./$(DEPDIR)/watchdir_generic_test-watchdir-test.Po
-	-rm -f ./$(DEPDIR)/web.Po
-	-rm -f ./$(DEPDIR)/webseed.Po
-	-rm -f ./$(DEPDIR)/wildmat.Po
+	-rm -f ./$(DEPDIR)/web.Plo
+	-rm -f ./$(DEPDIR)/webseed.Plo
+	-rm -f ./$(DEPDIR)/whereami.Plo
+	-rm -f ./$(DEPDIR)/wildmat.Plo
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
@@ -2214,27 +2244,31 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am:
+uninstall-am: uninstall-libLTLIBRARIES
 
-.MAKE: check-am install-am install-strip
+.MAKE: all check check-am install install-am install-exec \
+	install-strip
 
 .PHONY: CTAGS GTAGS TAGS all all-am am--depfiles check check-TESTS \
-	check-am clean clean-generic clean-libtool \
-	clean-noinstLIBRARIES clean-noinstPROGRAMS cscopelist-am ctags \
+	check-am clean clean-checkPROGRAMS clean-generic \
+	clean-libLTLIBRARIES clean-libtool cscopelist-am ctags \
 	ctags-am distclean distclean-compile distclean-generic \
 	distclean-libtool distclean-tags distdir dvi dvi-am html \
 	html-am info info-am install install-am install-data \
 	install-data-am install-dvi install-dvi-am install-exec \
 	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
+	install-info-am install-libLTLIBRARIES install-man install-pdf \
+	install-pdf-am install-ps install-ps-am install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	recheck tags tags-am uninstall uninstall-am
+	recheck tags tags-am uninstall uninstall-am \
+	uninstall-libLTLIBRARIES
 
 .PRECIOUS: Makefile
 
+version.h:
+	cd $(top_srcdir); ./update-version-h.sh
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

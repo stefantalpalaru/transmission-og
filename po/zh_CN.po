@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-30 09:57+0200\n"
+"POT-Creation-Date: 2023-07-27 15:18+0200\n"
 "PO-Revision-Date: 2017-01-26 19:47+0000\n"
 "Last-Translator: Dingzhong Chen <wsxy162@gmail.com>, 2020\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/transmissionbt/"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../cli/cli.c:114 ../gtk/util.c:92 ../libtransmission/utils.c:1727
+#: ../cli/cli.c:114 ../gtk/util.c:92 ../libtransmission/utils.c:1744
 msgid "None"
 msgstr "无"
 
@@ -739,7 +739,7 @@ msgstr "文件列表不适用于组合种子文件属性"
 msgid "Files"
 msgstr "文件"
 
-#: ../gtk/details.c:2979 ../gtk/tr-prefs.c:1202 ../gtk/tr-window.c:650
+#: ../gtk/details.c:2979 ../gtk/tr-prefs.c:1202 ../gtk/tr-window.c:664
 msgid "Options"
 msgstr "选项"
 
@@ -875,32 +875,32 @@ msgid ""
 "Got signal %d; trying to shut down cleanly. Do it again if it gets stuck."
 msgstr "收到信号 %d，尝试进行正常退出。如果没有成功关闭则请重试。"
 
-#: ../gtk/main.c:616
+#: ../gtk/main.c:629
 msgid "Where to look for configuration files"
 msgstr "配置文件的位置"
 
-#: ../gtk/main.c:617
+#: ../gtk/main.c:630
 msgid "Start with all torrents paused"
 msgstr "启动时暂停所有任务"
 
-#: ../gtk/main.c:618
+#: ../gtk/main.c:631
 msgid "Start minimized in notification area"
 msgstr "启动后最小化到通知区域"
 
-#: ../gtk/main.c:619
+#: ../gtk/main.c:632
 msgid "Show version number and exit"
 msgstr "显示版本并退出"
 
-#: ../gtk/main.c:637
+#: ../gtk/main.c:650
 msgid "Transmission OG"
 msgstr "Transmission OG"
 
 #. parse the command line
-#: ../gtk/main.c:640
+#: ../gtk/main.c:653
 msgid "[torrent files or urls]"
 msgstr "[种子文件或地址]"
 
-#: ../gtk/main.c:647
+#: ../gtk/main.c:660
 #, c-format
 msgid ""
 "%s\n"
@@ -909,7 +909,7 @@ msgstr ""
 "%s\n"
 "运行 %s --help 查看可以命令行选项的完整列表。\n"
 
-#: ../gtk/main.c:746
+#: ../gtk/main.c:759
 msgid ""
 "Transmission OG is a file sharing program. When you run a torrent, its data "
 "will be made available to others by means of upload. Any content you share "
@@ -918,44 +918,44 @@ msgstr ""
 "Transmission OG 是一个文件分享程序。当你运行种子任务时，其数据将通过上传的方"
 "式传给其他人。你分享的任何内容都由你自负责任。"
 
-#: ../gtk/main.c:749
+#: ../gtk/main.c:762
 msgid "I _Agree"
 msgstr "我同意(_A)"
 
-#: ../gtk/main.c:984
+#: ../gtk/main.c:997
 msgid "<b>Closing Connections</b>"
 msgstr "<b>正在关闭连接</b>"
 
-#: ../gtk/main.c:988
+#: ../gtk/main.c:1001
 msgid "Sending upload/download totals to tracker…"
 msgstr "正在发送上传/下载统计到 Tracker……"
 
-#: ../gtk/main.c:992
+#: ../gtk/main.c:1005
 msgid "_Quit Now"
 msgstr "立即退出(_Q)"
 
-#: ../gtk/main.c:1042
+#: ../gtk/main.c:1055
 msgid "Couldn't add corrupt torrent"
 msgid_plural "Couldn't add corrupt torrents"
 msgstr[0] "无法添加已损坏的种子"
 
-#: ../gtk/main.c:1048
+#: ../gtk/main.c:1061
 msgid "Couldn't add duplicate torrent"
 msgid_plural "Couldn't add duplicate torrents"
 msgstr[0] "无法添加重复的种子"
 
-#: ../gtk/main.c:1371
+#: ../gtk/main.c:1384
 msgid "A fast and easy BitTorrent client"
 msgstr "一个快速易用的 BitTorrent 客户端"
 
-#: ../gtk/main.c:1372
+#: ../gtk/main.c:1385
 msgid "Copyright (c) The Transmission OG Project"
 msgstr "Copyright (c) Transmission OG 项目"
 
 #. Translators: translate "translator-credits" as your name
 #. to have it appear in the credits in the "About"
 #. dialog
-#: ../gtk/main.c:1378
+#: ../gtk/main.c:1391
 msgid "translator-credits"
 msgstr ""
 "Aron Xu <happyaron.xu@gmail.com>, 2012\n"
@@ -1249,7 +1249,7 @@ msgstr "这些统计信息只是供你参考。重置它们不会影响 Tracker 
 msgid "_Reset"
 msgstr "重置(_R)"
 
-#: ../gtk/stats.c:123 ../gtk/tr-window.c:691
+#: ../gtk/stats.c:123 ../gtk/tr-window.c:705
 msgid "Statistics"
 msgstr "统计信息"
 
@@ -1402,26 +1402,26 @@ msgid "Seeding to %1$'d of %2$'d connected peer"
 msgid_plural "Seeding to %1$'d of %2$'d connected peers"
 msgstr[0] "正在向 %1$'d / %2$'d 个连接的节点做种上传"
 
-#: ../gtk/tr-core.c:1241
+#: ../gtk/tr-core.c:1249
 #, c-format
 msgid "Couldn't read \"%s\": %s"
 msgstr "无法读取“%s”：%s"
 
-#: ../gtk/tr-core.c:1337
+#: ../gtk/tr-core.c:1345
 #, c-format
 msgid "Skipping unknown torrent \"%s\""
 msgstr "正在跳过未知种子“%s”"
 
-#: ../gtk/tr-core.c:1612
+#: ../gtk/tr-core.c:1620
 msgid "Inhibiting desktop hibernation"
 msgstr "禁止桌面休眠"
 
-#: ../gtk/tr-core.c:1616
+#: ../gtk/tr-core.c:1624
 #, c-format
 msgid "Couldn't inhibit desktop hibernation: %s"
 msgstr "无法禁止桌面休眠：%s"
 
-#: ../gtk/tr-core.c:1649
+#: ../gtk/tr-core.c:1657
 msgid "Allowing desktop hibernation"
 msgstr "允许桌面休眠"
 
@@ -1845,27 +1845,27 @@ msgstr "网络"
 msgid "Remote"
 msgstr "远程"
 
-#: ../gtk/tr-window.c:131
+#: ../gtk/tr-window.c:132
 msgid "Torrent"
 msgstr "种子"
 
-#: ../gtk/tr-window.c:231
+#: ../gtk/tr-window.c:233
 msgid "Total Ratio"
 msgstr "总分享率"
 
-#: ../gtk/tr-window.c:232
+#: ../gtk/tr-window.c:234
 msgid "Session Ratio"
 msgstr "当前会话分享率"
 
-#: ../gtk/tr-window.c:233
+#: ../gtk/tr-window.c:235
 msgid "Total Transfer"
 msgstr "总传输量"
 
-#: ../gtk/tr-window.c:234
+#: ../gtk/tr-window.c:236
 msgid "Session Transfer"
 msgstr "当前会话传输量"
 
-#: ../gtk/tr-window.c:259
+#: ../gtk/tr-window.c:261
 #, c-format
 msgid ""
 "Click to disable Alternative Speed Limits\n"
@@ -1874,7 +1874,7 @@ msgstr ""
 "点击禁用替代速度限制\n"
 "（%1$s 下载，%2$s 上传）"
 
-#: ../gtk/tr-window.c:260
+#: ../gtk/tr-window.c:262
 #, c-format
 msgid ""
 "Click to enable Alternative Speed Limits\n"
@@ -1883,37 +1883,37 @@ msgstr ""
 "点击启用替代速度限制\n"
 "（%1$s 下载，%2$s 上传）"
 
-#: ../gtk/tr-window.c:314
+#: ../gtk/tr-window.c:316
 #, c-format
 msgid "Tracker will allow requests in %s"
 msgstr "Tracker 将允许来自 %s 的请求"
 
-#: ../gtk/tr-window.c:384
+#: ../gtk/tr-window.c:386
 msgid "Unlimited"
 msgstr "无限制"
 
-#: ../gtk/tr-window.c:455
+#: ../gtk/tr-window.c:457
 msgid "Seed Forever"
 msgstr "一直做种"
 
-#: ../gtk/tr-window.c:493
+#: ../gtk/tr-window.c:495
 msgid "Limit Download Speed"
 msgstr "限制下载速度"
 
-#: ../gtk/tr-window.c:497
+#: ../gtk/tr-window.c:499
 msgid "Limit Upload Speed"
 msgstr "限制上传速度"
 
-#: ../gtk/tr-window.c:504
+#: ../gtk/tr-window.c:506
 msgid "Stop Seeding at Ratio"
 msgstr "达到分享率后停止做种"
 
-#: ../gtk/tr-window.c:537
+#: ../gtk/tr-window.c:539
 #, c-format
 msgid "Stop at Ratio (%s)"
 msgstr "达到分享率（%s）后停止"
 
-#: ../gtk/tr-window.c:765 ../gtk/tr-window.c:791
+#: ../gtk/tr-window.c:782 ../gtk/tr-window.c:808
 #, c-format
 msgid "Ratio: %s"
 msgstr "分享率：%s"
@@ -1921,7 +1921,7 @@ msgstr "分享率：%s"
 #. Translators: "size|" is here for disambiguation. Please remove it from your translation.
 #. %1$s is the size of the data we've downloaded
 #. %2$s is the size of the data we've uploaded
-#: ../gtk/tr-window.c:775
+#: ../gtk/tr-window.c:792
 #, c-format
 msgid "Down: %1$s, Up: %2$s"
 msgstr "下载：%1$s，上传：%2$s"
@@ -1929,7 +1929,7 @@ msgstr "下载：%1$s，上传：%2$s"
 #. Translators: "size|" is here for disambiguation. Please remove it from your translation.
 #. %1$s is the size of the data we've downloaded
 #. %2$s is the size of the data we've uploaded
-#: ../gtk/tr-window.c:785
+#: ../gtk/tr-window.c:802
 #, c-format
 msgid "size|Down: %1$s, Up: %2$s"
 msgstr "量|下载：%s，上传：%s"
@@ -2080,7 +2080,7 @@ msgid "Connection failed"
 msgstr "连接失败"
 
 #: ../libtransmission/blocklist.c:63 ../libtransmission/blocklist.c:360
-#: ../libtransmission/utils.c:291
+#: ../libtransmission/utils.c:292
 #, c-format
 msgid "Couldn't read \"%1$s\": %2$s"
 msgstr "无法读取“%1$s”：%2$s"
@@ -2180,7 +2180,7 @@ msgstr "端口转发（NAT-PMP）"
 msgid "%s succeeded (%d)"
 msgstr "%s 成功 (%d)"
 
-#: ../libtransmission/natpmp.c:138
+#: ../libtransmission/natpmp.c:137
 #, c-format
 msgid "Found public address \"%s\""
 msgstr "找到了公共地址“%s”"
@@ -2190,7 +2190,7 @@ msgstr "找到了公共地址“%s”"
 msgid "no longer forwarding port %d"
 msgstr "不再转发端口 %d"
 
-#: ../libtransmission/natpmp.c:222
+#: ../libtransmission/natpmp.c:219
 #, c-format
 msgid "Port %d forwarded successfully"
 msgstr "端口 %d 已成功转发"
@@ -2249,12 +2249,12 @@ msgstr "停止中"
 msgid "Not forwarded"
 msgstr "未转发"
 
-#: ../libtransmission/port-forwarding.c:106 ../libtransmission/torrent.c:2370
+#: ../libtransmission/port-forwarding.c:108 ../libtransmission/torrent.c:2370
 #, c-format
 msgid "State changed from \"%1$s\" to \"%2$s\""
 msgstr "状态已从“%1$s”变为“%2$s”"
 
-#: ../libtransmission/port-forwarding.c:185
+#: ../libtransmission/port-forwarding.c:187
 msgid "Stopped"
 msgstr "已停止"
 
@@ -2355,69 +2355,69 @@ msgstr "磁力种子的元数据不可用"
 msgid "Port Forwarding (UPnP)"
 msgstr "端口转发（UPnP）"
 
-#: ../libtransmission/upnp.c:222
-msgid "IPv6 pinhole punching failed with error"
-msgstr ""
-
-#: ../libtransmission/upnp.c:226
-msgid "IPv6 pinhole added"
-msgstr ""
-
-#: ../libtransmission/upnp.c:226 ../libtransmission/upnp.c:263
-#: ../libtransmission/upnp.c:291 ../libtransmission/upnp.c:296
-msgid "unique ID"
-msgstr ""
-
-#: ../libtransmission/upnp.c:246
-msgid "correcting TCP pinhole ID to"
-msgstr ""
-
-#: ../libtransmission/upnp.c:259 ../libtransmission/upnp.c:287
-msgid "IPv6 pinhole updating failed with error"
-msgstr ""
-
-#: ../libtransmission/upnp.c:263 ../libtransmission/upnp.c:291
-msgid "IPv6 pinhole updated"
-msgstr ""
-
-#: ../libtransmission/upnp.c:280
+#: ../libtransmission/upnp.c:212
 msgid "IPv6 pinhole deletion failed with error"
 msgstr ""
 
-#: ../libtransmission/upnp.c:296
+#: ../libtransmission/upnp.c:219 ../libtransmission/upnp.c:294
+msgid "IPv6 pinhole updating failed with error"
+msgstr ""
+
+#: ../libtransmission/upnp.c:223 ../libtransmission/upnp.c:300
+msgid "IPv6 pinhole updated"
+msgstr ""
+
+#: ../libtransmission/upnp.c:223 ../libtransmission/upnp.c:228
+#: ../libtransmission/upnp.c:261 ../libtransmission/upnp.c:300
+msgid "unique ID"
+msgstr ""
+
+#: ../libtransmission/upnp.c:228
 msgid "IPv6 pinhole deleted"
 msgstr ""
 
-#: ../libtransmission/upnp.c:331
+#: ../libtransmission/upnp.c:257
+msgid "IPv6 pinhole punching failed with error"
+msgstr ""
+
+#: ../libtransmission/upnp.c:261
+msgid "IPv6 pinhole added"
+msgstr ""
+
+#: ../libtransmission/upnp.c:281
+msgid "correcting TCP pinhole ID to"
+msgstr ""
+
+#: ../libtransmission/upnp.c:333
 #, c-format
 msgid "Found Internet Gateway Device \"%s\""
 msgstr "发现网关设备“%s”"
 
-#: ../libtransmission/upnp.c:332
+#: ../libtransmission/upnp.c:334
 #, c-format
 msgid "Local Address is \"%s\""
 msgstr "本机地址是“%s\""
 
-#: ../libtransmission/upnp.c:359
+#: ../libtransmission/upnp.c:361
 #, c-format
 msgid "Port %d isn't forwarded"
 msgstr "端口 %d 没有转发"
 
-#: ../libtransmission/upnp.c:378
+#: ../libtransmission/upnp.c:380
 #, c-format
 msgid "Stopping port forwarding through \"%s\", service \"%s\""
 msgstr "正在停止使用服务 %2$s 通过“%1$s”进行端口转发"
 
-#: ../libtransmission/upnp.c:422
+#: ../libtransmission/upnp.c:423
 #, c-format
 msgid "Port forwarding through \"%s\", service \"%s\". (local address: %s:%d)"
 msgstr "使用服务 %2$s 通过“%1$s”进行端口转发。（本地地址：%3$s:%4$d）"
 
-#: ../libtransmission/upnp.c:427
+#: ../libtransmission/upnp.c:429
 msgid "Port forwarding successful!"
 msgstr "端口转发成功！"
 
-#: ../libtransmission/utils.c:303 ../libtransmission/utils.c:304
+#: ../libtransmission/utils.c:304 ../libtransmission/utils.c:305
 msgid "Not a regular file"
 msgstr "不是一个常规文件"
 

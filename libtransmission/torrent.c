@@ -3877,7 +3877,7 @@ static tr_file_index_t* renameFindAffectedFiles(tr_torrent* tor, char const* old
         char const* name = tor->info.files[i].name;
         size_t const len = strlen(name);
 
-        if ((len == oldpath_len || (len > oldpath_len && name[oldpath_len] == '/')) && memcmp(oldpath, name, oldpath_len) == 0)
+        if ((len == oldpath_len || (len > oldpath_len && name[oldpath_len] == TR_PATH_DELIMITER)) && memcmp(oldpath, name, oldpath_len) == 0)
         {
             indices[n++] = i;
         }
@@ -4057,7 +4057,7 @@ static void torrentRenamePath(void* vdata)
                 }
 
                 /* update tr_info.name if user changed the toplevel */
-                if (n == tor->info.fileCount && strchr(oldpath, '/') == NULL)
+                if (n == tor->info.fileCount && strchr(oldpath, TR_PATH_DELIMITER) == NULL)
                 {
                     tr_free(tor->info.name);
                     tor->info.name = tr_strdup(newname);

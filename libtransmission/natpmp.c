@@ -121,7 +121,6 @@ int tr_natpmpPulse(struct tr_natpmp* nat, tr_port private_port, bool is_enabled,
         val = sendpublicaddressrequest(&nat->natpmp);
         logVal("sendpublicaddressrequest", val);
         nat->state = val < 0 ? TR_NATPMP_ERR : TR_NATPMP_RECV_PUB;
-        nat->has_discovered = true;
         setCommandTime(nat);
     }
 
@@ -137,6 +136,7 @@ int tr_natpmpPulse(struct tr_natpmp* nat, tr_port private_port, bool is_enabled,
             evutil_inet_ntop(AF_INET, &response.pnu.publicaddress.addr, str, sizeof(str));
             tr_logAddNamedInfo(getKey(), _("Found public address \"%s\""), str);
             nat->state = TR_NATPMP_IDLE;
+            nat->has_discovered = true;
         }
         else if (val != NATPMP_TRYAGAIN)
         {
@@ -227,6 +227,7 @@ int tr_natpmpPulse(struct tr_natpmp* nat, tr_port private_port, bool is_enabled,
     switch (nat->state)
     {
     case TR_NATPMP_IDLE:
+    case TR_NATPMP_RECV_PUB:
         *public_port = nat->public_port;
         return nat->is_mapped ? TR_PORT_MAPPED : TR_PORT_UNMAPPED;
         break;
@@ -235,7 +236,6 @@ int tr_natpmpPulse(struct tr_natpmp* nat, tr_port private_port, bool is_enabled,
         ret = TR_PORT_UNMAPPED;
         break;
 
-    case TR_NATPMP_RECV_PUB:
     case TR_NATPMP_SEND_MAP:
     case TR_NATPMP_RECV_MAP:
         ret = TR_PORT_MAPPING;

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-30 09:57+0200\n"
+"POT-Creation-Date: 2023-07-27 15:18+0200\n"
 "PO-Revision-Date: 2017-01-26 19:47+0000\n"
 "Last-Translator: Lock Ring <reject5514@naver.com>, 2019\n"
 "Language-Team: Korean (https://www.transifex.com/transmissionbt/teams/33778/"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../cli/cli.c:114 ../gtk/util.c:92 ../libtransmission/utils.c:1727
+#: ../cli/cli.c:114 ../gtk/util.c:92 ../libtransmission/utils.c:1744
 msgid "None"
 msgstr "없음"
 
@@ -742,7 +742,7 @@ msgstr "복합 토렌트 속성은 파일 리스팅을 할 수 없습니다"
 msgid "Files"
 msgstr "파일"
 
-#: ../gtk/details.c:2979 ../gtk/tr-prefs.c:1202 ../gtk/tr-window.c:650
+#: ../gtk/details.c:2979 ../gtk/tr-prefs.c:1202 ../gtk/tr-window.c:664
 msgid "Options"
 msgstr "옵션"
 
@@ -881,32 +881,32 @@ msgstr ""
 "신호 %d개를 받음; 완전하게 끝내려 하고 있습니다. 진행이 되지 않을 경우에는 다"
 "시 하십시오."
 
-#: ../gtk/main.c:616
+#: ../gtk/main.c:629
 msgid "Where to look for configuration files"
 msgstr "설정 파일을 찾아볼 위치"
 
-#: ../gtk/main.c:617
+#: ../gtk/main.c:630
 msgid "Start with all torrents paused"
 msgstr "모든 토렌트를 멈춘 상태로 시작"
 
-#: ../gtk/main.c:618
+#: ../gtk/main.c:631
 msgid "Start minimized in notification area"
 msgstr "알림 영역에 최소화된 상태로 시작"
 
-#: ../gtk/main.c:619
+#: ../gtk/main.c:632
 msgid "Show version number and exit"
 msgstr "버전 번호를 보여주고 마침"
 
-#: ../gtk/main.c:637
+#: ../gtk/main.c:650
 msgid "Transmission OG"
 msgstr "트랜스미션"
 
 #. parse the command line
-#: ../gtk/main.c:640
+#: ../gtk/main.c:653
 msgid "[torrent files or urls]"
 msgstr "[토렌트 파일 또는 주소]"
 
-#: ../gtk/main.c:647
+#: ../gtk/main.c:660
 #, c-format
 msgid ""
 "%s\n"
@@ -915,7 +915,7 @@ msgstr ""
 "%s\n"
 "사용할 수 있는 명령행 옵션을 모두 보려면 '%s --help' 명령을 실행하십시오.\n"
 
-#: ../gtk/main.c:746
+#: ../gtk/main.c:759
 msgid ""
 "Transmission OG is a file sharing program. When you run a torrent, its data "
 "will be made available to others by means of upload. Any content you share "
@@ -925,44 +925,44 @@ msgstr ""
 "로드를 통해 다른 사람들이 사용할 수 있게 됩니다. 당신이 공유하는 모든 내용에 "
 "대해 자신이 직접 책임을 지셔야 합니다."
 
-#: ../gtk/main.c:749
+#: ../gtk/main.c:762
 msgid "I _Agree"
 msgstr "이에 _동의합니다"
 
-#: ../gtk/main.c:984
+#: ../gtk/main.c:997
 msgid "<b>Closing Connections</b>"
 msgstr "<b>접속을 닫는 중</b>"
 
-#: ../gtk/main.c:988
+#: ../gtk/main.c:1001
 msgid "Sending upload/download totals to tracker…"
 msgstr "총 업로드/다운로드 정보를 트래커로 보내고 있습니다…"
 
-#: ../gtk/main.c:992
+#: ../gtk/main.c:1005
 msgid "_Quit Now"
 msgstr "지금 끝내기(_Q)"
 
-#: ../gtk/main.c:1042
+#: ../gtk/main.c:1055
 msgid "Couldn't add corrupt torrent"
 msgid_plural "Couldn't add corrupt torrents"
 msgstr[0] "손상된 토렌트는 추가할 수 없습니다"
 
-#: ../gtk/main.c:1048
+#: ../gtk/main.c:1061
 msgid "Couldn't add duplicate torrent"
 msgid_plural "Couldn't add duplicate torrents"
 msgstr[0] "중복된 토렌트는 추가할 수 없습니다"
 
-#: ../gtk/main.c:1371
+#: ../gtk/main.c:1384
 msgid "A fast and easy BitTorrent client"
 msgstr "빠르고 간편한 비트토렌트 클라이언트"
 
-#: ../gtk/main.c:1372
+#: ../gtk/main.c:1385
 msgid "Copyright (c) The Transmission OG Project"
 msgstr "Copyright (c) The Transmission OG Project"
 
 #. Translators: translate "translator-credits" as your name
 #. to have it appear in the credits in the "About"
 #. dialog
-#: ../gtk/main.c:1378
+#: ../gtk/main.c:1391
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
@@ -1235,7 +1235,7 @@ msgstr ""
 msgid "_Reset"
 msgstr "초기화(_R)"
 
-#: ../gtk/stats.c:123 ../gtk/tr-window.c:691
+#: ../gtk/stats.c:123 ../gtk/tr-window.c:705
 msgid "Statistics"
 msgstr "통계"
 
@@ -1388,26 +1388,26 @@ msgid "Seeding to %1$'d of %2$'d connected peer"
 msgid_plural "Seeding to %1$'d of %2$'d connected peers"
 msgstr[0] "%2$'d명 중 연결된 파어 %1$'d명에게 배포 중"
 
-#: ../gtk/tr-core.c:1241
+#: ../gtk/tr-core.c:1249
 #, c-format
 msgid "Couldn't read \"%s\": %s"
 msgstr "\"%s\"을(를) 읽을 수 없습니다: %s"
 
-#: ../gtk/tr-core.c:1337
+#: ../gtk/tr-core.c:1345
 #, c-format
 msgid "Skipping unknown torrent \"%s\""
 msgstr "알 수 없는 토렌트 \"%s\"을(를) 건너뛰는 중"
 
-#: ../gtk/tr-core.c:1612
+#: ../gtk/tr-core.c:1620
 msgid "Inhibiting desktop hibernation"
 msgstr "데스크톱 최대 절전 사용하지 않기"
 
-#: ../gtk/tr-core.c:1616
+#: ../gtk/tr-core.c:1624
 #, c-format
 msgid "Couldn't inhibit desktop hibernation: %s"
 msgstr "데스크톱 최대 절전을 사용하지 않도록 설정할 수 없습니다: %s"
 
-#: ../gtk/tr-core.c:1649
+#: ../gtk/tr-core.c:1657
 msgid "Allowing desktop hibernation"
 msgstr "데스크톱 최대 절전 모드를 허용"
 
@@ -1831,71 +1831,71 @@ msgstr "네트워크"
 msgid "Remote"
 msgstr "리모트"
 
-#: ../gtk/tr-window.c:131
+#: ../gtk/tr-window.c:132
 msgid "Torrent"
 msgstr "토렌트"
 
-#: ../gtk/tr-window.c:231
+#: ../gtk/tr-window.c:233
 msgid "Total Ratio"
 msgstr "전체 비율"
 
-#: ../gtk/tr-window.c:232
+#: ../gtk/tr-window.c:234
 msgid "Session Ratio"
 msgstr "세션 비율"
 
-#: ../gtk/tr-window.c:233
+#: ../gtk/tr-window.c:235
 msgid "Total Transfer"
 msgstr "총 전송 량"
 
-#: ../gtk/tr-window.c:234
+#: ../gtk/tr-window.c:236
 msgid "Session Transfer"
 msgstr "세션 전송 량"
 
-#: ../gtk/tr-window.c:259
+#: ../gtk/tr-window.c:261
 #, c-format
 msgid ""
 "Click to disable Alternative Speed Limits\n"
 " (%1$s down, %2$s up)"
 msgstr ""
 
-#: ../gtk/tr-window.c:260
+#: ../gtk/tr-window.c:262
 #, c-format
 msgid ""
 "Click to enable Alternative Speed Limits\n"
 " (%1$s down, %2$s up)"
 msgstr ""
 
-#: ../gtk/tr-window.c:314
+#: ../gtk/tr-window.c:316
 #, c-format
 msgid "Tracker will allow requests in %s"
 msgstr "트래커가 %s 안에 요청을 수락할 것입니다"
 
-#: ../gtk/tr-window.c:384
+#: ../gtk/tr-window.c:386
 msgid "Unlimited"
 msgstr "제한 없음"
 
-#: ../gtk/tr-window.c:455
+#: ../gtk/tr-window.c:457
 msgid "Seed Forever"
 msgstr "영구 배포"
 
-#: ../gtk/tr-window.c:493
+#: ../gtk/tr-window.c:495
 msgid "Limit Download Speed"
 msgstr "다운로드 속도 제한"
 
-#: ../gtk/tr-window.c:497
+#: ../gtk/tr-window.c:499
 msgid "Limit Upload Speed"
 msgstr "업로드 속도 제한"
 
-#: ../gtk/tr-window.c:504
+#: ../gtk/tr-window.c:506
 msgid "Stop Seeding at Ratio"
 msgstr "설정한 비율에서 배포 중지"
 
-#: ../gtk/tr-window.c:537
+#: ../gtk/tr-window.c:539
 #, c-format
 msgid "Stop at Ratio (%s)"
 msgstr "비율 (%s)에서 정지"
 
-#: ../gtk/tr-window.c:765 ../gtk/tr-window.c:791
+#: ../gtk/tr-window.c:782 ../gtk/tr-window.c:808
 #, c-format
 msgid "Ratio: %s"
 msgstr "비율: %s"
@@ -1903,7 +1903,7 @@ msgstr "비율: %s"
 #. Translators: "size|" is here for disambiguation. Please remove it from your translation.
 #. %1$s is the size of the data we've downloaded
 #. %2$s is the size of the data we've uploaded
-#: ../gtk/tr-window.c:775
+#: ../gtk/tr-window.c:792
 #, c-format
 msgid "Down: %1$s, Up: %2$s"
 msgstr "다운로드: %1$s, 업로드: %2$s"
@@ -1911,7 +1911,7 @@ msgstr "다운로드: %1$s, 업로드: %2$s"
 #. Translators: "size|" is here for disambiguation. Please remove it from your translation.
 #. %1$s is the size of the data we've downloaded
 #. %2$s is the size of the data we've uploaded
-#: ../gtk/tr-window.c:785
+#: ../gtk/tr-window.c:802
 #, c-format
 msgid "size|Down: %1$s, Up: %2$s"
 msgstr "크기|다운로드: %1$s, 업로드: %2$s"
@@ -2063,7 +2063,7 @@ msgid "Connection failed"
 msgstr "연결 오류"
 
 #: ../libtransmission/blocklist.c:63 ../libtransmission/blocklist.c:360
-#: ../libtransmission/utils.c:291
+#: ../libtransmission/utils.c:292
 #, c-format
 msgid "Couldn't read \"%1$s\": %2$s"
 msgstr "\"%1$s\"(을)를 읽을 수 없습니다: %2$s"
@@ -2163,7 +2163,7 @@ msgstr "포트 포워딩(NAT-PMP)"
 msgid "%s succeeded (%d)"
 msgstr "%s 성공 (%d)"
 
-#: ../libtransmission/natpmp.c:138
+#: ../libtransmission/natpmp.c:137
 #, c-format
 msgid "Found public address \"%s\""
 msgstr "공개 주소 발견 \"%s\""
@@ -2173,7 +2173,7 @@ msgstr "공개 주소 발견 \"%s\""
 msgid "no longer forwarding port %d"
 msgstr "포트 %d을(를) 더 이상 포워딩하지 않음"
 
-#: ../libtransmission/natpmp.c:222
+#: ../libtransmission/natpmp.c:219
 #, c-format
 msgid "Port %d forwarded successfully"
 msgstr "포트 %d 성공적으로 포워드 함"
@@ -2232,12 +2232,12 @@ msgstr "정지"
 msgid "Not forwarded"
 msgstr "포워드 되지 않음"
 
-#: ../libtransmission/port-forwarding.c:106 ../libtransmission/torrent.c:2370
+#: ../libtransmission/port-forwarding.c:108 ../libtransmission/torrent.c:2370
 #, c-format
 msgid "State changed from \"%1$s\" to \"%2$s\""
 msgstr "상태가 \"%1$s\"에서 \"%2$s\"(으)로 바뀜"
 
-#: ../libtransmission/port-forwarding.c:185
+#: ../libtransmission/port-forwarding.c:187
 msgid "Stopped"
 msgstr "정지함"
 
@@ -2340,70 +2340,70 @@ msgstr "마그넷 토렌트의 메타 정보를 사용할 수 없습니다"
 msgid "Port Forwarding (UPnP)"
 msgstr "포트 포워딩(UPnP)"
 
-#: ../libtransmission/upnp.c:222
-msgid "IPv6 pinhole punching failed with error"
-msgstr ""
-
-#: ../libtransmission/upnp.c:226
-msgid "IPv6 pinhole added"
-msgstr ""
-
-#: ../libtransmission/upnp.c:226 ../libtransmission/upnp.c:263
-#: ../libtransmission/upnp.c:291 ../libtransmission/upnp.c:296
-msgid "unique ID"
-msgstr ""
-
-#: ../libtransmission/upnp.c:246
-msgid "correcting TCP pinhole ID to"
-msgstr ""
-
-#: ../libtransmission/upnp.c:259 ../libtransmission/upnp.c:287
-msgid "IPv6 pinhole updating failed with error"
-msgstr ""
-
-#: ../libtransmission/upnp.c:263 ../libtransmission/upnp.c:291
-msgid "IPv6 pinhole updated"
-msgstr ""
-
-#: ../libtransmission/upnp.c:280
+#: ../libtransmission/upnp.c:212
 msgid "IPv6 pinhole deletion failed with error"
 msgstr ""
 
-#: ../libtransmission/upnp.c:296
+#: ../libtransmission/upnp.c:219 ../libtransmission/upnp.c:294
+msgid "IPv6 pinhole updating failed with error"
+msgstr ""
+
+#: ../libtransmission/upnp.c:223 ../libtransmission/upnp.c:300
+msgid "IPv6 pinhole updated"
+msgstr ""
+
+#: ../libtransmission/upnp.c:223 ../libtransmission/upnp.c:228
+#: ../libtransmission/upnp.c:261 ../libtransmission/upnp.c:300
+msgid "unique ID"
+msgstr ""
+
+#: ../libtransmission/upnp.c:228
 msgid "IPv6 pinhole deleted"
 msgstr ""
 
-#: ../libtransmission/upnp.c:331
+#: ../libtransmission/upnp.c:257
+msgid "IPv6 pinhole punching failed with error"
+msgstr ""
+
+#: ../libtransmission/upnp.c:261
+msgid "IPv6 pinhole added"
+msgstr ""
+
+#: ../libtransmission/upnp.c:281
+msgid "correcting TCP pinhole ID to"
+msgstr ""
+
+#: ../libtransmission/upnp.c:333
 #, c-format
 msgid "Found Internet Gateway Device \"%s\""
 msgstr "인터넷 게이트웨이 장치 \"%s\"을(를) 발견"
 
-#: ../libtransmission/upnp.c:332
+#: ../libtransmission/upnp.c:334
 #, c-format
 msgid "Local Address is \"%s\""
 msgstr "로컬 주소 \"%s\""
 
-#: ../libtransmission/upnp.c:359
+#: ../libtransmission/upnp.c:361
 #, c-format
 msgid "Port %d isn't forwarded"
 msgstr "포트 %d 포워드 되지 않음"
 
-#: ../libtransmission/upnp.c:378
+#: ../libtransmission/upnp.c:380
 #, c-format
 msgid "Stopping port forwarding through \"%s\", service \"%s\""
 msgstr "\"%s\", 서비스 \"%s\"을(를)통한 포트 포워딩 중지"
 
-#: ../libtransmission/upnp.c:422
+#: ../libtransmission/upnp.c:423
 #, c-format
 msgid "Port forwarding through \"%s\", service \"%s\". (local address: %s:%d)"
 msgstr ""
 "\"%s\", 서비스 \"%s\"을(를)통하여 포트 포워딩을 합니다. (로컬 주소: %s:%d)"
 
-#: ../libtransmission/upnp.c:427
+#: ../libtransmission/upnp.c:429
 msgid "Port forwarding successful!"
 msgstr "포트 포워딩 성공!"
 
-#: ../libtransmission/utils.c:303 ../libtransmission/utils.c:304
+#: ../libtransmission/utils.c:304 ../libtransmission/utils.c:305
 msgid "Not a regular file"
 msgstr "정규 파일 아님"
 

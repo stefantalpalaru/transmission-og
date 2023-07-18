@@ -1,0 +1,18 @@
+# The build is reproducible only if this base image stays the same.
+FROM ghcr.io/stefantalpalaru/transmission-og:base_20230720120322_win64@sha256:cbc43b1ae20f7c3f9b3fcd1a77123a1ec1ae5c2105168b0428c3f73d34e2dc9f
+
+SHELL ["/bin/bash", "-c"]
+
+ARG USER_ID
+ARG GROUP_ID
+
+RUN addgroup --gid ${GROUP_ID} user; \
+	adduser --disabled-password --gecos '' --uid ${USER_ID} --gid ${GROUP_ID} user;
+
+USER user
+
+STOPSIGNAL SIGINT
+
+COPY "entry_point.sh" "/home/user/"
+ENTRYPOINT ["/home/user/entry_point.sh", "Windows_amd64"]
+

@@ -875,7 +875,7 @@
         <translation>&amp;Βοήθεια</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+9"/>
         <source>&amp;View</source>
         <translation>&amp;Προβολή</translation>
     </message>
@@ -910,12 +910,12 @@
         <translation>Άνοιγμα φακέλου του torrent</translation>
     </message>
     <message>
-        <location line="-161"/>
+        <location line="-159"/>
         <source>Queue</source>
         <translation>Ουρά</translation>
     </message>
     <message>
-        <location line="+122"/>
+        <location line="+120"/>
         <source>&amp;Open...</source>
         <translation>&amp;Άνοιγμα...</translation>
     </message>
@@ -1192,12 +1192,11 @@
         <translation>Άνοιγμα &amp;URL…</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>&amp;Donate</source>
-        <translation>&amp;Δωρεά</translation>
+        <translation type="vanished">&amp;Δωρεά</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+8"/>
         <source>Start &amp;Now</source>
         <translation>Εκκίνηση &amp;Τώρα</translation>
     </message>
@@ -1232,7 +1231,7 @@
         <translation>Ταξινόμηση κατά &amp;Σειρά</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cc" line="+465"/>
+        <location filename="../MainWindow.cc" line="+464"/>
         <source>Limit Download Speed</source>
         <translation>Περιορισμός Ταχύτητας Λήψης</translation>
     </message>
@@ -1243,13 +1242,13 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+734"/>
+        <location line="+729"/>
         <location line="+8"/>
         <source>Limited at %1</source>
         <translation>Περιορισμένη σε %1</translation>
     </message>
     <message>
-        <location line="-693"/>
+        <location line="-688"/>
         <source>Limit Upload Speed</source>
         <translation>Περιορισμός Ταχύτητας Αποστολής</translation>
     </message>
@@ -1265,7 +1264,7 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+721"/>
+        <location line="+716"/>
         <source>Stop at Ratio (%1)</source>
         <translation>Διακοπή στην Αναλογία (%1)</translation>
     </message>
@@ -1308,12 +1307,12 @@
         <translation>Άνοιγμα Torrent</translation>
     </message>
     <message>
-        <location line="-988"/>
+        <location line="-983"/>
         <source>Speed Limits</source>
         <translation>Όρια Tαχύτητας</translation>
     </message>
     <message>
-        <location line="+490"/>
+        <location line="+485"/>
         <source>Network Error</source>
         <translation>Σφάλμα Δικτύου</translation>
     </message>
@@ -1650,7 +1649,7 @@ To add another primary URL, add it after a blank line.</source>
 <context>
     <name>PrefsDialog</name>
     <message>
-        <location filename="../PrefsDialog.ui" line="+1139"/>
+        <location filename="../PrefsDialog.ui" line="+1159"/>
         <source>Use &amp;authentication</source>
         <translation>Χρήση &amp;πιστοποίησης</translation>
     </message>
@@ -1675,7 +1674,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>Διευθύνσεις:</translation>
     </message>
     <message>
-        <location line="-1150"/>
+        <location line="-1170"/>
         <source>Speed Limits</source>
         <translation>Όρια Tαχύτητας</translation>
     </message>
@@ -1695,7 +1694,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>&amp;Τις ημέρες:</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+359"/>
         <source>Every Day</source>
         <translation>Κάθε Μέρα</translation>
     </message>
@@ -1710,7 +1709,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>Σαββατοκύριακα</translation>
     </message>
     <message>
-        <location line="-183"/>
+        <location line="-207"/>
         <source>Sunday</source>
         <translation>Κυριακή</translation>
     </message>
@@ -1745,7 +1744,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>Σάββατο</translation>
     </message>
     <message>
-        <location line="+244"/>
+        <location line="+268"/>
         <source>Port is &lt;b&gt;open&lt;/b&gt;</source>
         <translation>Η θύρα είναι &lt;b&gt;ανοιχτή&lt;/b&gt;</translation>
     </message>
@@ -1761,7 +1760,7 @@ To add another primary URL, add it after a blank line.</source>
     </message>
     <message>
         <location line="+32"/>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+336"/>
         <source>Status unknown</source>
         <translation>Άγνωστη κατάσταση</translation>
     </message>
@@ -1849,7 +1848,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>Διαμοιρασμός</translation>
     </message>
     <message>
-        <location line="+548"/>
+        <location line="+568"/>
         <source>Remote</source>
         <translation>Απομακρυσμένα</translation>
     </message>
@@ -1862,7 +1861,7 @@ To add another primary URL, add it after a blank line.</source>
         </translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-287"/>
+        <location filename="../PrefsDialog.ui" line="-307"/>
         <source>Pick a &amp;random port every time Transmission OG is started</source>
         <translation>Χρήση μιας &amp;τυχαίας θύρας κάθε φορά που εκκινείται το Transmission OG</translation>
     </message>
@@ -1930,7 +1929,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>&amp;σε</translation>
     </message>
     <message>
-        <location line="+763"/>
+        <location line="+783"/>
         <location line="+9"/>
         <source>Desktop</source>
         <translation>Επιφάνεια Eργασίας</translation>
@@ -1941,7 +1940,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>Εμφάνιση εικονιδίου του Transmission OG στην &amp;περιοχή ειδοποιήσεων</translation>
     </message>
     <message>
-        <location line="-213"/>
+        <location line="-233"/>
         <source>Te&amp;st Port</source>
         <translation>Δοκ&amp;ιμή θύρας</translation>
     </message>
@@ -1961,7 +1960,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>&amp;Λειτουργία κρυπτογράφησης:</translation>
     </message>
     <message>
-        <location line="+453"/>
+        <location line="+473"/>
         <source>Remote Control</source>
         <translation>Απομακρυσμένος Έλεγχος</translation>
     </message>
@@ -1981,7 +1980,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>Επίτρεψε μόνο σε αυτές τις διευθύνσεις IP:</translation>
     </message>
     <message>
-        <location line="-1128"/>
+        <location line="-1148"/>
         <source>&amp;Upload:</source>
         <translation>&amp;Αποστολή:</translation>
     </message>
@@ -2006,7 +2005,17 @@ To add another primary URL, add it after a blank line.</source>
         <translation>Λ&amp;ήψη:</translation>
     </message>
     <message>
-        <location line="+836"/>
+        <location line="+792"/>
+        <source>a list of default trackers to be added to new public torrents (and existing ones, after a reload)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Default Trackers:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+61"/>
         <source>Start &amp;minimized in notification area</source>
         <translation>Εκκίνηση &amp;ελαχιστοποιημένο στην περιοχή ειδοποιήσεων</translation>
     </message>
@@ -2031,12 +2040,12 @@ To add another primary URL, add it after a blank line.</source>
         <translation>Αναπαραγωγή ενός &amp;ήχου όταν ολοκληρώνονται torrent</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="-73"/>
+        <location filename="../PrefsDialog.cc" line="-74"/>
         <source>Testing TCP Port...</source>
         <translation>Δοκιμή Θύρας TCP...</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-229"/>
+        <location filename="../PrefsDialog.ui" line="-249"/>
         <source>Peer Limits</source>
         <translation>Όρια Χρηστών</translation>
     </message>
@@ -2076,7 +2085,7 @@ To add another primary URL, add it after a blank line.</source>
         <translation>Κρυπτογράφηση</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+141"/>
+        <location filename="../PrefsDialog.cc" line="+142"/>
         <source>Select &quot;Torrent Done&quot; Script</source>
         <translation>Επιλογή Σεναρίου &quot;Ολοκλήρωση Torrent&quot;</translation>
     </message>
@@ -2206,7 +2215,7 @@ To add another primary URL, add it after a blank line.</source>
 <context>
     <name>Session</name>
     <message>
-        <location filename="../Session.cc" line="+531"/>
+        <location filename="../Session.cc" line="+532"/>
         <source>Error Renaming Path</source>
         <translation>Σφάλμα Μετονομασίας Διαδρομής</translation>
     </message>

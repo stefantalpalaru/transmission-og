@@ -1,5 +1,6 @@
 BUILT_SOURCES =
 CLEANFILES =
+EXTRA_DIST = CMakeLists.txt
 SUBDIRS = icons
 
 if TR_UNSTABLE
@@ -23,30 +24,6 @@ AM_CFLAGS = \
     @LIBCURL_CFLAGS@ \
     @ZLIB_CFLAGS@ \
     @PTHREAD_CFLAGS@
-
-noinst_HEADERS = \
-    actions.h \
-    conf.h \
-    details.h \
-    dialogs.h \
-    favicon.h \
-    file-list.h \
-    filter.h \
-    hig.h \
-    icons.h \
-    makemeta-ui.h \
-    msgwin.h \
-    notify.h \
-    open-dialog.h \
-    relocate.h \
-    stats.h \
-    torrent-cell-renderer.h \
-    transmission-resources.h \
-    tr-core.h \
-    tr-icon.h \
-    tr-prefs.h \
-    tr-window.h \
-    util.h
 
 bin_PROGRAMS = transmission-og-gtk
 
@@ -75,12 +52,38 @@ transmission_og_gtk_SOURCES = \
     tr-window.c \
     util.c
 
+transmission_og_gtk_SOURCES += \
+    actions.h \
+    conf.h \
+    details.h \
+    dialogs.h \
+    favicon.h \
+    file-list.h \
+    filter.h \
+    hig.h \
+    icons.h \
+    makemeta-ui.h \
+    msgwin.h \
+    notify.h \
+    open-dialog.h \
+    relocate.h \
+    stats.h \
+    torrent-cell-renderer.h \
+    transmission-resources.h \
+    tr-core.h \
+    tr-icon.h \
+    tr-prefs.h \
+    tr-window.h \
+    util.h \
+    ../libtransmission/version.h
+
 nodist_EXTRA_transmission_og_gtk_SOURCES = dummy.cxx # force C++ linking
 
+# Manual page.
 dist_man_MANS = transmission-og-gtk.1
 
 transmission_og_gtk_LDADD = \
-    $(top_builddir)/libtransmission/libtransmission.a \
+    $(top_builddir)/libtransmission/libtransmission-og.la \
     @LIBUPNP_LIBS@ \
     @LIBNATPMP_LIBS@ \
     @DHT_LIBS@ \
@@ -93,8 +96,9 @@ transmission_og_gtk_LDADD = \
     @CRYPTO_LIBS@ \
     @ZLIB_LIBS@ \
     @PTHREAD_LIBS@ \
-    ${LIBM}
+    $(LIBM)
 
+# Desktop integration.
 DESKTOP_IN_FILES=transmission-og-gtk.desktop.in
 DESKTOP_FILES=$(DESKTOP_IN_FILES:.desktop.in=.desktop)
 MAINTAINERCLEANFILES = $(DESKTOP_FILES)
@@ -135,25 +139,38 @@ BUILT_SOURCES += \
 	transmission-resources.c \
 	transmission-resources.h
 
-EXTRA_DIST = \
+EXTRA_DIST += \
 	$(DESKTOP_IN_FILES) \
 	$(APPDATA_IN_FILES) \
 	$(UI_FILES) \
 	transmission.gresource.xml \
-	transmission.png
+	transmission-og.ico \
+	transmission-og.png
 
 DISTCLEANFILES = \
 	$(DESKTOP_FILES) \
 	$(APPDATA_FILES)
 
+# Windows resource file.
 if WIN32
+transmission-og-gtk.rc: ../transmission-og.rc.in
+	TR_FILE_DESCRIPTION="Transmission OG GTK+ Client"; \
+	TR_INTERNAL_NAME="$(PACKAGE_NAME)-gtk"; \
+	TR_ORIGINAL_FILENAME="$(PACKAGE_NAME)-gtk.exe"; \
+	HAVE_ICON=1; \
+	TR_MAIN_ICON="$(PACKAGE_NAME).ico"; \
+	sed \
+	-e "s/%TR_FILE_DESCRIPTION%/$${TR_FILE_DESCRIPTION}/" \
+	-e "s/%TR_INTERNAL_NAME%/$${TR_INTERNAL_NAME}/" \
+	-e "s/%TR_ORIGINAL_FILENAME%/$${TR_ORIGINAL_FILENAME}/" \
+	-e "s/%HAVE_ICON%/$${HAVE_ICON}/" \
+	-e "s/%TR_MAIN_ICON%/$${TR_MAIN_ICON}/" \
+	$< > $@
 
-transmission.res: transmission.rc
-	$(WINDRES) -J rc -i transmission.rc -O coff -o transmission.res
+transmission-og-gtk.res: transmission-og-gtk.rc ../libtransmission/version.h
+	$(WINDRES) -J rc -I $(top_srcdir) -I $(srcdir) -i $< -O coff -o $@
 
-BUILT_SOURCES += transmission.res
-CLEANFILES += transmission.res
-transmission_og_gtk_LDADD += transmission.res
-transmission_og_gtk_LDFLAGS = -mwindows
-
-endif
+BUILT_SOURCES += transmission-og-gtk.res
+CLEANFILES += transmission-og-gtk.rc transmission-og-gtk.res
+transmission_og_gtk_LDADD += transmission-og-gtk.res
+endif #WIN32

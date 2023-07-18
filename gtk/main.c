@@ -503,6 +503,17 @@ static void on_startup(GApplication* application, gpointer user_data)
 
     sighandler_cbdata = cbdata;
 
+#ifdef _WIN32
+    // Set XDG_DATA_DIRS.
+    char* program_dir = tr_get_program_dir();
+    char* data_dir = tr_buildPath(program_dir, "share", NULL);
+
+    tr_env_set_string("XDG_DATA_DIRS", data_dir);
+
+    tr_free(program_dir);
+    tr_free(data_dir);
+#endif
+
     /* ensure the directories are created */
     if ((str = gtr_pref_string_get(TR_KEY_download_dir)) != NULL)
     {
@@ -553,8 +564,10 @@ static void on_startup(GApplication* application, gpointer user_data)
         }
     }
 
+#ifndef _WIN32
     /* if there's no magnet link handler registered, register us */
     ensure_magnet_handler_exists();
+#endif
 }
 
 static void on_activate(GApplication* app UNUSED, struct cbdata* cbdata)

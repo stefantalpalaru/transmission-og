@@ -91,10 +91,14 @@ build_triplet = @build@
 host_triplet = @host@
 bin_PROGRAMS = transmission-og-daemon$(EXEEXT)
 @WIN32_TRUE@am__append_1 = daemon-win32.c
-@WIN32_FALSE@am__append_2 = daemon-posix.c
+@WIN32_TRUE@am__append_2 = transmission-og-daemon.res
+@WIN32_TRUE@am__append_3 = transmission-og-daemon.rc transmission-og-daemon.res
+@WIN32_TRUE@am__append_4 = transmission-og-daemon.res
+@WIN32_FALSE@am__append_5 = daemon-posix.c
 subdir = daemon
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/acx-pthread.m4 \
+	$(top_srcdir)/m4/ax_have_qt.m4 \
 	$(top_srcdir)/m4/glib-gettext.m4 $(top_srcdir)/m4/intltool.m4 \
 	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
 	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
@@ -116,11 +120,10 @@ am__transmission_og_daemon_SOURCES_DIST = daemon.c daemon-win32.c \
 am_transmission_og_daemon_OBJECTS = daemon.$(OBJEXT) $(am__objects_1) \
 	$(am__objects_2)
 transmission_og_daemon_OBJECTS = $(am_transmission_og_daemon_OBJECTS)
-transmission_og_daemon_LDADD = $(LDADD)
 am__DEPENDENCIES_1 =
 transmission_og_daemon_DEPENDENCIES =  \
-	$(top_builddir)/libtransmission/libtransmission.a \
-	$(am__DEPENDENCIES_1)
+	$(top_builddir)/libtransmission/libtransmission-og.la \
+	$(am__DEPENDENCIES_1) $(am__append_4)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -273,7 +276,6 @@ DATADIRNAME = @DATADIRNAME@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DHT_CFLAGS = @DHT_CFLAGS@
-DHT_INCLUDEPATH_QT = @DHT_INCLUDEPATH_QT@
 DHT_LIBS = @DHT_LIBS@
 DHT_LIBS_QT = @DHT_LIBS_QT@
 DLLTOOL = @DLLTOOL@
@@ -317,7 +319,6 @@ LIBAPPINDICATOR_CFLAGS = @LIBAPPINDICATOR_CFLAGS@
 LIBAPPINDICATOR_LIBS = @LIBAPPINDICATOR_LIBS@
 LIBAPPINDICATOR_MINIMUM = @LIBAPPINDICATOR_MINIMUM@
 LIBB64_CFLAGS = @LIBB64_CFLAGS@
-LIBB64_INCLUDEPATH_QT = @LIBB64_INCLUDEPATH_QT@
 LIBB64_LIBS = @LIBB64_LIBS@
 LIBB64_LIBS_QT = @LIBB64_LIBS_QT@
 LIBCURL_CFLAGS = @LIBCURL_CFLAGS@
@@ -329,24 +330,22 @@ LIBEVENT_LIBS_QT = @LIBEVENT_LIBS_QT@
 LIBEVENT_MINIMUM = @LIBEVENT_MINIMUM@
 LIBM = @LIBM@
 LIBNATPMP_CFLAGS = @LIBNATPMP_CFLAGS@
-LIBNATPMP_INCLUDEPATH_QT = @LIBNATPMP_INCLUDEPATH_QT@
 LIBNATPMP_LIBS = @LIBNATPMP_LIBS@
 LIBNATPMP_LIBS_QT = @LIBNATPMP_LIBS_QT@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
 LIBUPNP_CFLAGS = @LIBUPNP_CFLAGS@
-LIBUPNP_INCLUDEPATH_QT = @LIBUPNP_INCLUDEPATH_QT@
 LIBUPNP_LIBS = @LIBUPNP_LIBS@
 LIBUPNP_LIBS_QT = @LIBUPNP_LIBS_QT@
 LIBUTP_CFLAGS = @LIBUTP_CFLAGS@
-LIBUTP_INCLUDEPATH_QT = @LIBUTP_INCLUDEPATH_QT@
 LIBUTP_LIBS = @LIBUTP_LIBS@
 LIBUTP_LIBS_QT = @LIBUTP_LIBS_QT@
 LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
+MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
 MBEDTLS_CFLAGS = @MBEDTLS_CFLAGS@
@@ -382,6 +381,15 @@ PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
 PTHREAD_CC = @PTHREAD_CC@
 PTHREAD_CFLAGS = @PTHREAD_CFLAGS@
 PTHREAD_LIBS = @PTHREAD_LIBS@
+QMAKE = @QMAKE@
+QT_CXXFLAGS = @QT_CXXFLAGS@
+QT_DIR = @QT_DIR@
+QT_LIBS = @QT_LIBS@
+QT_LRELEASE = @QT_LRELEASE@
+QT_LUPDATE = @QT_LUPDATE@
+QT_MOC = @QT_MOC@
+QT_RCC = @QT_RCC@
+QT_UIC = @QT_UIC@
 RANLIB = @RANLIB@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
@@ -396,6 +404,11 @@ WINDRES = @WINDRES@
 WOLFSSL_CFLAGS = @WOLFSSL_CFLAGS@
 WOLFSSL_LIBS = @WOLFSSL_LIBS@
 XGETTEXT = @XGETTEXT@
+XMKMF = @XMKMF@
+X_CFLAGS = @X_CFLAGS@
+X_EXTRA_LIBS = @X_EXTRA_LIBS@
+X_LIBS = @X_LIBS@
+X_PRE_LIBS = @X_PRE_LIBS@
 ZLIB_CFLAGS = @ZLIB_CFLAGS@
 ZLIB_LIBS = @ZLIB_LIBS@
 ZLIB_MINIMUM = @ZLIB_MINIMUM@
@@ -407,6 +420,12 @@ ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
 ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
+ac_ct_QMAKE = @ac_ct_QMAKE@
+ac_ct_QT_LRELEASE = @ac_ct_QT_LRELEASE@
+ac_ct_QT_LUPDATE = @ac_ct_QT_LUPDATE@
+ac_ct_QT_MOC = @ac_ct_QT_MOC@
+ac_ct_QT_RCC = @ac_ct_QT_RCC@
+ac_ct_QT_UIC = @ac_ct_QT_UIC@
 acx_pthread_config = @acx_pthread_config@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
@@ -451,13 +470,16 @@ runstatedir = @runstatedir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
-subdirs = @subdirs@
+subdirs_extra = @subdirs_extra@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 transmissionlocaledir = @transmissionlocaledir@
+BUILT_SOURCES = $(am__append_2)
+CLEANFILES = $(am__append_3)
+EXTRA_DIST = CMakeLists.txt transmission-og-daemon.service
 AM_CPPFLAGS = -I@top_srcdir@ -DEMBEDDED
 AM_CFLAGS = \
     @LIBEVENT_CFLAGS@ \
@@ -466,37 +488,28 @@ AM_CFLAGS = \
     @ZLIB_CFLAGS@ \
     @PTHREAD_CFLAGS@
 
-EXTRA_DIST = \
-    transmission-og-daemon.service
-
 dist_man_MANS = \
     transmission-og-daemon.1
 
-LDADD = \
-    $(top_builddir)/libtransmission/libtransmission.a \
-    @LIBUPNP_LIBS@ \
-    @LIBNATPMP_LIBS@ \
-    @DHT_LIBS@ \
-    @LIBB64_LIBS@ \
-    @LIBUTP_LIBS@ \
-    @LIBEVENT_LIBS@ \
-    @LIBCURL_LIBS@ \
-    @CRYPTO_LIBS@ \
-    @INTLLIBS@ \
-    @SYSTEMD_LIBS@ \
-    @ZLIB_LIBS@ \
-    @PTHREAD_LIBS@ \
-    ${LIBM}
+transmission_og_daemon_LDADD =  \
+	$(top_builddir)/libtransmission/libtransmission-og.la \
+	@LIBUPNP_LIBS@ @LIBNATPMP_LIBS@ @DHT_LIBS@ @LIBB64_LIBS@ \
+	@LIBUTP_LIBS@ @LIBEVENT_LIBS@ @LIBCURL_LIBS@ @CRYPTO_LIBS@ \
+	@INTLLIBS@ @SYSTEMD_LIBS@ @ZLIB_LIBS@ @PTHREAD_LIBS@ $(LIBM) \
+	$(am__append_4)
+noinst_HEADERS = \
+		 daemon.h \
+		 ../libtransmission/version.h
 
-noinst_HEADERS = daemon.h
 transmission_og_daemon_SOURCES = daemon.c $(am__append_1) \
-	$(am__append_2)
+	$(am__append_5)
 nodist_EXTRA_transmission_og_daemon_SOURCES = dummy.cxx # force C++ linking
-all: all-am
+all: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) all-am
 
 .SUFFIXES:
 .SUFFIXES: .c .cxx .lo .o .obj
-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
 	    *$$dep*) \
@@ -520,9 +533,9 @@ Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 
-$(top_srcdir)/configure:  $(am__configure_deps)
+$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
+$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
 install-binPROGRAMS: $(bin_PROGRAMS)
@@ -778,14 +791,17 @@ distdir-am: $(DISTFILES)
 	  fi; \
 	done
 check-am: all-am
-check: check-am
+check: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) check-am
 all-am: Makefile $(PROGRAMS) $(MANS) $(HEADERS)
 installdirs:
 	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(man1dir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
-install: install-am
-install-exec: install-exec-am
+install: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) install-am
+install-exec: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) install-exec-am
 install-data: install-data-am
 uninstall: uninstall-am
 
@@ -806,6 +822,7 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
@@ -814,6 +831,7 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-am
 
 clean-am: clean-binPROGRAMS clean-generic clean-libtool mostlyclean-am
@@ -892,7 +910,7 @@ uninstall-am: uninstall-binPROGRAMS uninstall-man
 
 uninstall-man: uninstall-man1
 
-.MAKE: install-am install-strip
+.MAKE: all check install install-am install-exec install-strip
 
 .PHONY: CTAGS GTAGS TAGS all all-am am--depfiles check check-am clean \
 	clean-binPROGRAMS clean-generic clean-libtool cscopelist-am \
@@ -911,6 +929,21 @@ uninstall-man: uninstall-man1
 
 .PRECIOUS: Makefile
 
+
+@WIN32_TRUE@transmission-og-daemon.rc: ../transmission-og.rc.in
+@WIN32_TRUE@	TR_FILE_DESCRIPTION="Transmission OG Daemon"; \
+@WIN32_TRUE@	TR_INTERNAL_NAME="$(PACKAGE_NAME)-daemon"; \
+@WIN32_TRUE@	TR_ORIGINAL_FILENAME="$(PACKAGE_NAME)-daemon.exe"; \
+@WIN32_TRUE@	HAVE_ICON=0; \
+@WIN32_TRUE@	sed \
+@WIN32_TRUE@	-e "s/%TR_FILE_DESCRIPTION%/$${TR_FILE_DESCRIPTION}/" \
+@WIN32_TRUE@	-e "s/%TR_INTERNAL_NAME%/$${TR_INTERNAL_NAME}/" \
+@WIN32_TRUE@	-e "s/%TR_ORIGINAL_FILENAME%/$${TR_ORIGINAL_FILENAME}/" \
+@WIN32_TRUE@	-e "s/%HAVE_ICON%/$${HAVE_ICON}/" \
+@WIN32_TRUE@	$< > $@
+
+@WIN32_TRUE@transmission-og-daemon.res: transmission-og-daemon.rc ../libtransmission/version.h
+@WIN32_TRUE@	$(WINDRES) -J rc -I $(top_srcdir) -i $< -O coff -o $@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

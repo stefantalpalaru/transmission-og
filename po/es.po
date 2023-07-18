@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-30 09:57+0200\n"
+"POT-Creation-Date: 2023-07-27 15:18+0200\n"
 "PO-Revision-Date: 2017-01-26 19:47+0000\n"
 "Last-Translator: Alfredo Monclus <alfredomonclus@gmail.com>, 2017\n"
 "Language-Team: Spanish (https://www.transifex.com/transmissionbt/teams/33778/"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../cli/cli.c:114 ../gtk/util.c:92 ../libtransmission/utils.c:1727
+#: ../cli/cli.c:114 ../gtk/util.c:92 ../libtransmission/utils.c:1744
 msgid "None"
 msgstr "Ninguno"
 
@@ -747,7 +747,7 @@ msgstr ""
 msgid "Files"
 msgstr "Archivos"
 
-#: ../gtk/details.c:2979 ../gtk/tr-prefs.c:1202 ../gtk/tr-window.c:650
+#: ../gtk/details.c:2979 ../gtk/tr-prefs.c:1202 ../gtk/tr-window.c:664
 msgid "Options"
 msgstr "Opciones"
 
@@ -896,32 +896,32 @@ msgstr ""
 "Se ha obtenido la señal %d y se está intentando detener limpiamente. "
 "Vuélvalo a hacer si se bloquea."
 
-#: ../gtk/main.c:616
+#: ../gtk/main.c:629
 msgid "Where to look for configuration files"
 msgstr "Dónde buscar los archivos de configuración"
 
-#: ../gtk/main.c:617
+#: ../gtk/main.c:630
 msgid "Start with all torrents paused"
 msgstr "Comenzar con todos los torrents pausados"
 
-#: ../gtk/main.c:618
+#: ../gtk/main.c:631
 msgid "Start minimized in notification area"
 msgstr "Iniciar minimizado en el área de notificación"
 
-#: ../gtk/main.c:619
+#: ../gtk/main.c:632
 msgid "Show version number and exit"
 msgstr "Mostrar número de versión y salir"
 
-#: ../gtk/main.c:637
+#: ../gtk/main.c:650
 msgid "Transmission OG"
 msgstr "Transmission OG"
 
 #. parse the command line
-#: ../gtk/main.c:640
+#: ../gtk/main.c:653
 msgid "[torrent files or urls]"
 msgstr "[archivos torrent o url]"
 
-#: ../gtk/main.c:647
+#: ../gtk/main.c:660
 #, c-format
 msgid ""
 "%s\n"
@@ -931,7 +931,7 @@ msgstr ""
 "Ejecute «%s --help» para ver una lista completa de las opciones de línea de "
 "órdenes disponibles.\n"
 
-#: ../gtk/main.c:746
+#: ../gtk/main.c:759
 msgid ""
 "Transmission OG is a file sharing program. When you run a torrent, its data "
 "will be made available to others by means of upload. Any content you share "
@@ -941,46 +941,46 @@ msgstr ""
 "un Torrent, su contenido estará disponible públicamente por medio de upload. "
 "Y por supuesto, todo contenido que compartas es tu responsabilidad."
 
-#: ../gtk/main.c:749
+#: ../gtk/main.c:762
 msgid "I _Agree"
 msgstr "Yo _Acepto"
 
-#: ../gtk/main.c:984
+#: ../gtk/main.c:997
 msgid "<b>Closing Connections</b>"
 msgstr "<b>Cerrando conexiones</b>"
 
-#: ../gtk/main.c:988
+#: ../gtk/main.c:1001
 msgid "Sending upload/download totals to tracker…"
 msgstr "Enviando totales de subida/bajada al rastreador..."
 
-#: ../gtk/main.c:992
+#: ../gtk/main.c:1005
 msgid "_Quit Now"
 msgstr "_Salir inmediatamente"
 
-#: ../gtk/main.c:1042
+#: ../gtk/main.c:1055
 msgid "Couldn't add corrupt torrent"
 msgid_plural "Couldn't add corrupt torrents"
 msgstr[0] "No se pudo añadir el torrent dañado"
 msgstr[1] "No se pudieron añadir los torrents dañados"
 
-#: ../gtk/main.c:1048
+#: ../gtk/main.c:1061
 msgid "Couldn't add duplicate torrent"
 msgid_plural "Couldn't add duplicate torrents"
 msgstr[0] "No se pudo añadir el torrent duplicado"
 msgstr[1] "No se pudieron añadir los torrents duplicados"
 
-#: ../gtk/main.c:1371
+#: ../gtk/main.c:1384
 msgid "A fast and easy BitTorrent client"
 msgstr "Un cliente de BitTorrent rápido y sencillo"
 
-#: ../gtk/main.c:1372
+#: ../gtk/main.c:1385
 msgid "Copyright (c) The Transmission OG Project"
 msgstr "Copyright (c) El proyecto Transmission OG"
 
 #. Translators: translate "translator-credits" as your name
 #. to have it appear in the credits in the "About"
 #. dialog
-#: ../gtk/main.c:1378
+#: ../gtk/main.c:1391
 msgid "translator-credits"
 msgstr ""
 "Vicente Carro Fernandez <vicentecarro@andaluciajunta.es>, 2006\n"
@@ -1320,7 +1320,7 @@ msgstr ""
 msgid "_Reset"
 msgstr "_Restablecer"
 
-#: ../gtk/stats.c:123 ../gtk/tr-window.c:691
+#: ../gtk/stats.c:123 ../gtk/tr-window.c:705
 msgid "Statistics"
 msgstr "Estadísticas"
 
@@ -1476,26 +1476,26 @@ msgid_plural "Seeding to %1$'d of %2$'d connected peers"
 msgstr[0] "Compartiendo con %1$'d de %2$'d par conectado"
 msgstr[1] "Compartiendo con %1$'d de %2$'d pares conectados"
 
-#: ../gtk/tr-core.c:1241
+#: ../gtk/tr-core.c:1249
 #, c-format
 msgid "Couldn't read \"%s\": %s"
 msgstr "No se puede leer «%s»: %s"
 
-#: ../gtk/tr-core.c:1337
+#: ../gtk/tr-core.c:1345
 #, c-format
 msgid "Skipping unknown torrent \"%s\""
 msgstr "Omitiendo torrent «%s» desconocido"
 
-#: ../gtk/tr-core.c:1612
+#: ../gtk/tr-core.c:1620
 msgid "Inhibiting desktop hibernation"
 msgstr "Inhibiendo la hibernación del escritorio"
 
-#: ../gtk/tr-core.c:1616
+#: ../gtk/tr-core.c:1624
 #, c-format
 msgid "Couldn't inhibit desktop hibernation: %s"
 msgstr "No se puede inhibir la hibernación del escritorio: %s"
 
-#: ../gtk/tr-core.c:1649
+#: ../gtk/tr-core.c:1657
 msgid "Allowing desktop hibernation"
 msgstr "Permitir hibernación de escritorio"
 
@@ -1925,27 +1925,27 @@ msgstr "Red"
 msgid "Remote"
 msgstr "Remoto"
 
-#: ../gtk/tr-window.c:131
+#: ../gtk/tr-window.c:132
 msgid "Torrent"
 msgstr "Torrent"
 
-#: ../gtk/tr-window.c:231
+#: ../gtk/tr-window.c:233
 msgid "Total Ratio"
 msgstr "Proporción total"
 
-#: ../gtk/tr-window.c:232
+#: ../gtk/tr-window.c:234
 msgid "Session Ratio"
 msgstr "Proporción de la sesión"
 
-#: ../gtk/tr-window.c:233
+#: ../gtk/tr-window.c:235
 msgid "Total Transfer"
 msgstr "Transferencia total"
 
-#: ../gtk/tr-window.c:234
+#: ../gtk/tr-window.c:236
 msgid "Session Transfer"
 msgstr "Transferencia de la sesión"
 
-#: ../gtk/tr-window.c:259
+#: ../gtk/tr-window.c:261
 #, c-format
 msgid ""
 "Click to disable Alternative Speed Limits\n"
@@ -1954,7 +1954,7 @@ msgstr ""
 "Pulse para desactivar los límites de velocidad alternativos\n"
 "(%1$s bajada, %2$s subida)"
 
-#: ../gtk/tr-window.c:260
+#: ../gtk/tr-window.c:262
 #, c-format
 msgid ""
 "Click to enable Alternative Speed Limits\n"
@@ -1963,37 +1963,37 @@ msgstr ""
 "Pulse para activar los límites de velocidad alternativos\n"
 "(%1$s bajada, %2$s subida)"
 
-#: ../gtk/tr-window.c:314
+#: ../gtk/tr-window.c:316
 #, c-format
 msgid "Tracker will allow requests in %s"
 msgstr "El rastreador permitirá peticiones en %s"
 
-#: ../gtk/tr-window.c:384
+#: ../gtk/tr-window.c:386
 msgid "Unlimited"
 msgstr "Ilimitado"
 
-#: ../gtk/tr-window.c:455
+#: ../gtk/tr-window.c:457
 msgid "Seed Forever"
 msgstr "Compartir para siempre"
 
-#: ../gtk/tr-window.c:493
+#: ../gtk/tr-window.c:495
 msgid "Limit Download Speed"
 msgstr "Limitar velocidad de descarga"
 
-#: ../gtk/tr-window.c:497
+#: ../gtk/tr-window.c:499
 msgid "Limit Upload Speed"
 msgstr "Limitar velocidad de subida"
 
-#: ../gtk/tr-window.c:504
+#: ../gtk/tr-window.c:506
 msgid "Stop Seeding at Ratio"
 msgstr "Dejar de compartir al alcanzar la proporción"
 
-#: ../gtk/tr-window.c:537
+#: ../gtk/tr-window.c:539
 #, c-format
 msgid "Stop at Ratio (%s)"
 msgstr "Detener en la proporción (%s)"
 
-#: ../gtk/tr-window.c:765 ../gtk/tr-window.c:791
+#: ../gtk/tr-window.c:782 ../gtk/tr-window.c:808
 #, c-format
 msgid "Ratio: %s"
 msgstr "Proporción: %s"
@@ -2001,7 +2001,7 @@ msgstr "Proporción: %s"
 #. Translators: "size|" is here for disambiguation. Please remove it from your translation.
 #. %1$s is the size of the data we've downloaded
 #. %2$s is the size of the data we've uploaded
-#: ../gtk/tr-window.c:775
+#: ../gtk/tr-window.c:792
 #, c-format
 msgid "Down: %1$s, Up: %2$s"
 msgstr "Bajada: %1$s, Subida: %2$s"
@@ -2009,7 +2009,7 @@ msgstr "Bajada: %1$s, Subida: %2$s"
 #. Translators: "size|" is here for disambiguation. Please remove it from your translation.
 #. %1$s is the size of the data we've downloaded
 #. %2$s is the size of the data we've uploaded
-#: ../gtk/tr-window.c:785
+#: ../gtk/tr-window.c:802
 #, c-format
 msgid "size|Down: %1$s, Up: %2$s"
 msgstr "Tamaño|Descarga: %1$s, Subida: %2$s"
@@ -2165,7 +2165,7 @@ msgid "Connection failed"
 msgstr "Conexión fallida"
 
 #: ../libtransmission/blocklist.c:63 ../libtransmission/blocklist.c:360
-#: ../libtransmission/utils.c:291
+#: ../libtransmission/utils.c:292
 #, c-format
 msgid "Couldn't read \"%1$s\": %2$s"
 msgstr "No se pudo leer «%1$s»: %2$s"
@@ -2265,7 +2265,7 @@ msgstr "Reenvío de puertos (NAT-PMP)"
 msgid "%s succeeded (%d)"
 msgstr "%s tuvo éxito (%d)"
 
-#: ../libtransmission/natpmp.c:138
+#: ../libtransmission/natpmp.c:137
 #, c-format
 msgid "Found public address \"%s\""
 msgstr "Se encontró la dirección pública «%s»"
@@ -2275,7 +2275,7 @@ msgstr "Se encontró la dirección pública «%s»"
 msgid "no longer forwarding port %d"
 msgstr "ya no se reenvía el puerto %d"
 
-#: ../libtransmission/natpmp.c:222
+#: ../libtransmission/natpmp.c:219
 #, c-format
 msgid "Port %d forwarded successfully"
 msgstr "Puerto %d reenviado correctamente"
@@ -2335,12 +2335,12 @@ msgstr "Deteniendo"
 msgid "Not forwarded"
 msgstr "No reenviado"
 
-#: ../libtransmission/port-forwarding.c:106 ../libtransmission/torrent.c:2370
+#: ../libtransmission/port-forwarding.c:108 ../libtransmission/torrent.c:2370
 #, c-format
 msgid "State changed from \"%1$s\" to \"%2$s\""
 msgstr "El estado cambió de «%1$s» a «%2$s»"
 
-#: ../libtransmission/port-forwarding.c:185
+#: ../libtransmission/port-forwarding.c:187
 msgid "Stopped"
 msgstr "Detenido"
 
@@ -2442,70 +2442,70 @@ msgstr "Metadatos del Magnet no utilizables"
 msgid "Port Forwarding (UPnP)"
 msgstr "Reenvío de puertos (UPnP)"
 
-#: ../libtransmission/upnp.c:222
-msgid "IPv6 pinhole punching failed with error"
-msgstr ""
-
-#: ../libtransmission/upnp.c:226
-msgid "IPv6 pinhole added"
-msgstr ""
-
-#: ../libtransmission/upnp.c:226 ../libtransmission/upnp.c:263
-#: ../libtransmission/upnp.c:291 ../libtransmission/upnp.c:296
-msgid "unique ID"
-msgstr ""
-
-#: ../libtransmission/upnp.c:246
-msgid "correcting TCP pinhole ID to"
-msgstr ""
-
-#: ../libtransmission/upnp.c:259 ../libtransmission/upnp.c:287
-msgid "IPv6 pinhole updating failed with error"
-msgstr ""
-
-#: ../libtransmission/upnp.c:263 ../libtransmission/upnp.c:291
-msgid "IPv6 pinhole updated"
-msgstr ""
-
-#: ../libtransmission/upnp.c:280
+#: ../libtransmission/upnp.c:212
 msgid "IPv6 pinhole deletion failed with error"
 msgstr ""
 
-#: ../libtransmission/upnp.c:296
+#: ../libtransmission/upnp.c:219 ../libtransmission/upnp.c:294
+msgid "IPv6 pinhole updating failed with error"
+msgstr ""
+
+#: ../libtransmission/upnp.c:223 ../libtransmission/upnp.c:300
+msgid "IPv6 pinhole updated"
+msgstr ""
+
+#: ../libtransmission/upnp.c:223 ../libtransmission/upnp.c:228
+#: ../libtransmission/upnp.c:261 ../libtransmission/upnp.c:300
+msgid "unique ID"
+msgstr ""
+
+#: ../libtransmission/upnp.c:228
 msgid "IPv6 pinhole deleted"
 msgstr ""
 
-#: ../libtransmission/upnp.c:331
+#: ../libtransmission/upnp.c:257
+msgid "IPv6 pinhole punching failed with error"
+msgstr ""
+
+#: ../libtransmission/upnp.c:261
+msgid "IPv6 pinhole added"
+msgstr ""
+
+#: ../libtransmission/upnp.c:281
+msgid "correcting TCP pinhole ID to"
+msgstr ""
+
+#: ../libtransmission/upnp.c:333
 #, c-format
 msgid "Found Internet Gateway Device \"%s\""
 msgstr "Detectado un dispositivo de pasarela a Internet «%s»"
 
-#: ../libtransmission/upnp.c:332
+#: ../libtransmission/upnp.c:334
 #, c-format
 msgid "Local Address is \"%s\""
 msgstr "La dirección local es «%s»"
 
-#: ../libtransmission/upnp.c:359
+#: ../libtransmission/upnp.c:361
 #, c-format
 msgid "Port %d isn't forwarded"
 msgstr "El puerto %d no está siendo redirigido"
 
-#: ../libtransmission/upnp.c:378
+#: ../libtransmission/upnp.c:380
 #, c-format
 msgid "Stopping port forwarding through \"%s\", service \"%s\""
 msgstr "Parando reenvío de puertos a través de «%s», servicio «%s»"
 
-#: ../libtransmission/upnp.c:422
+#: ../libtransmission/upnp.c:423
 #, c-format
 msgid "Port forwarding through \"%s\", service \"%s\". (local address: %s:%d)"
 msgstr ""
 "Reenvío de puertos a través de «%s», servicio «%s». (dirección local: %s:%d)"
 
-#: ../libtransmission/upnp.c:427
+#: ../libtransmission/upnp.c:429
 msgid "Port forwarding successful!"
 msgstr "Reenvío de puertos realizado con éxito"
 
-#: ../libtransmission/utils.c:303 ../libtransmission/utils.c:304
+#: ../libtransmission/utils.c:304 ../libtransmission/utils.c:305
 msgid "Not a regular file"
 msgstr "No es un archivo regular"
 

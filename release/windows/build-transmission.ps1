@@ -62,7 +62,7 @@ function global:Build-Transmission([string] $PrefixDir, [string] $Arch, [string]
     Invoke-VcEnvCommand cmake --build $BuildDir --target pack-msi
 
     New-Item -Path $ArtifactsDir -ItemType Directory -ErrorAction Ignore | Out-Null
-    $MsiPackage = (Get-ChildItem (Join-Path $BuildDir dist msi 'transmission-*.msi'))[0]
+    $MsiPackage = (Get-ChildItem (Join-Path $BuildDir installers msi 'transmission-*.msi'))[0]
     Move-Item -Path $MsiPackage.FullName -Destination $ArtifactsDir
     Invoke-NativeCommand cmake -E chdir $DebugSymbolsDir 7z a -y (Join-Path $ArtifactsDir "$($MsiPackage.BaseName)-pdb.zip")
 }

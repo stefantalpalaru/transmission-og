@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-30 09:57+0200\n"
+"POT-Creation-Date: 2023-07-27 15:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Mike Gelfand <mikedld@mikedld.com>, 2017\n"
 "Language-Team: Romanian (https://www.transifex.com/transmissionbt/"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?"
 "2:1));\n"
 
-#: ../cli/cli.c:114 ../gtk/util.c:92 ../libtransmission/utils.c:1727
+#: ../cli/cli.c:114 ../gtk/util.c:92 ../libtransmission/utils.c:1744
 msgid "None"
 msgstr "Nimic"
 
@@ -747,7 +747,7 @@ msgstr ""
 msgid "Files"
 msgstr "Fișiere"
 
-#: ../gtk/details.c:2979 ../gtk/tr-prefs.c:1202 ../gtk/tr-window.c:650
+#: ../gtk/details.c:2979 ../gtk/tr-prefs.c:1202 ../gtk/tr-window.c:664
 msgid "Options"
 msgstr "Opțiuni"
 
@@ -905,32 +905,32 @@ msgstr ""
 "S-a primit semnalul %d; se încearcă oprirea curată a programului. Reluați "
 "dacă procedura nu este dusă la bun sfârșit."
 
-#: ../gtk/main.c:616
+#: ../gtk/main.c:629
 msgid "Where to look for configuration files"
 msgstr "Locația fișierelor de configurare"
 
-#: ../gtk/main.c:617
+#: ../gtk/main.c:630
 msgid "Start with all torrents paused"
 msgstr "Porneşte cu toate torentele suspendate"
 
-#: ../gtk/main.c:618
+#: ../gtk/main.c:631
 msgid "Start minimized in notification area"
 msgstr "Afișează dialogul cu _opțiuni"
 
-#: ../gtk/main.c:619
+#: ../gtk/main.c:632
 msgid "Show version number and exit"
 msgstr "Arată numărul versiunii și ieși"
 
-#: ../gtk/main.c:637
+#: ../gtk/main.c:650
 msgid "Transmission OG"
 msgstr "Transmission OG"
 
 #. parse the command line
-#: ../gtk/main.c:640
+#: ../gtk/main.c:653
 msgid "[torrent files or urls]"
 msgstr "[fișiere sau URI-uri torent]"
 
-#: ../gtk/main.c:647
+#: ../gtk/main.c:660
 #, c-format
 msgid ""
 "%s\n"
@@ -940,55 +940,55 @@ msgstr ""
 "Executați „%s --help” pentru a vizualiza lista completă a opțiunilor din "
 "linia de comandă.\n"
 
-#: ../gtk/main.c:746
+#: ../gtk/main.c:759
 msgid ""
 "Transmission OG is a file sharing program. When you run a torrent, its data "
 "will be made available to others by means of upload. Any content you share "
 "is your sole responsibility."
 msgstr ""
 
-#: ../gtk/main.c:749
+#: ../gtk/main.c:762
 msgid "I _Agree"
 msgstr ""
 
-#: ../gtk/main.c:984
+#: ../gtk/main.c:997
 msgid "<b>Closing Connections</b>"
 msgstr "<b>Se închid conexiunile</b>"
 
-#: ../gtk/main.c:988
+#: ../gtk/main.c:1001
 msgid "Sending upload/download totals to tracker…"
 msgstr "Se trimit totalurile pentru încărcare/descărcare către tracker…"
 
-#: ../gtk/main.c:992
+#: ../gtk/main.c:1005
 msgid "_Quit Now"
 msgstr "Închide _acum"
 
-#: ../gtk/main.c:1042
+#: ../gtk/main.c:1055
 msgid "Couldn't add corrupt torrent"
 msgid_plural "Couldn't add corrupt torrents"
 msgstr[0] "Nu s-a putut adăuga torentul corupt"
 msgstr[1] "Nu s-au putut adăuga torentele corupte"
 msgstr[2] "Nu s-au putut adăuga torentele corupte"
 
-#: ../gtk/main.c:1048
+#: ../gtk/main.c:1061
 msgid "Couldn't add duplicate torrent"
 msgid_plural "Couldn't add duplicate torrents"
 msgstr[0] "Nu s-a putut adăugat torentul de două ori"
 msgstr[1] "Nu s-au putut adăuga torenții de două ori"
 msgstr[2] "Nu s-au putut adăuga torenții de două ori"
 
-#: ../gtk/main.c:1371
+#: ../gtk/main.c:1384
 msgid "A fast and easy BitTorrent client"
 msgstr "Un client BitTorrent simplu și rapid"
 
-#: ../gtk/main.c:1372
+#: ../gtk/main.c:1385
 msgid "Copyright (c) The Transmission OG Project"
 msgstr "Copyright (c) The Transmission OG Project"
 
 #. Translators: translate "translator-credits" as your name
 #. to have it appear in the credits in the "About"
 #. dialog
-#: ../gtk/main.c:1378
+#: ../gtk/main.c:1391
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
@@ -1279,7 +1279,7 @@ msgstr ""
 msgid "_Reset"
 msgstr "_Resetează"
 
-#: ../gtk/stats.c:123 ../gtk/tr-window.c:691
+#: ../gtk/stats.c:123 ../gtk/tr-window.c:705
 msgid "Statistics"
 msgstr "Statistici"
 
@@ -1438,26 +1438,26 @@ msgstr[0] "Se trimite către %1$'d din %2$'d partener conectat"
 msgstr[1] "Se trimite către %1$'d din %2$'d parteneri conectaţi"
 msgstr[2] "Se trimite către %1$'d din %2$'d de parteneri conectaţi"
 
-#: ../gtk/tr-core.c:1241
+#: ../gtk/tr-core.c:1249
 #, c-format
 msgid "Couldn't read \"%s\": %s"
 msgstr "Nu se poate citi „%s”: %s"
 
-#: ../gtk/tr-core.c:1337
+#: ../gtk/tr-core.c:1345
 #, c-format
 msgid "Skipping unknown torrent \"%s\""
 msgstr "Se omite torentul necunoscut „%s”"
 
-#: ../gtk/tr-core.c:1612
+#: ../gtk/tr-core.c:1620
 msgid "Inhibiting desktop hibernation"
 msgstr "Se inhibă intrarea în hibernare"
 
-#: ../gtk/tr-core.c:1616
+#: ../gtk/tr-core.c:1624
 #, c-format
 msgid "Couldn't inhibit desktop hibernation: %s"
 msgstr "Nu se poate inhiba intrarea în hibernare: %s"
 
-#: ../gtk/tr-core.c:1649
+#: ../gtk/tr-core.c:1657
 msgid "Allowing desktop hibernation"
 msgstr "Se permite hibernarea desktopului"
 
@@ -1891,71 +1891,71 @@ msgstr "Rețea"
 msgid "Remote"
 msgstr ""
 
-#: ../gtk/tr-window.c:131
+#: ../gtk/tr-window.c:132
 msgid "Torrent"
 msgstr "Torent"
 
-#: ../gtk/tr-window.c:231
+#: ../gtk/tr-window.c:233
 msgid "Total Ratio"
 msgstr "Raport total"
 
-#: ../gtk/tr-window.c:232
+#: ../gtk/tr-window.c:234
 msgid "Session Ratio"
 msgstr "Raport sesiune"
 
-#: ../gtk/tr-window.c:233
+#: ../gtk/tr-window.c:235
 msgid "Total Transfer"
 msgstr "Transfer total"
 
-#: ../gtk/tr-window.c:234
+#: ../gtk/tr-window.c:236
 msgid "Session Transfer"
 msgstr "Transfer sesiune"
 
-#: ../gtk/tr-window.c:259
+#: ../gtk/tr-window.c:261
 #, c-format
 msgid ""
 "Click to disable Alternative Speed Limits\n"
 " (%1$s down, %2$s up)"
 msgstr ""
 
-#: ../gtk/tr-window.c:260
+#: ../gtk/tr-window.c:262
 #, c-format
 msgid ""
 "Click to enable Alternative Speed Limits\n"
 " (%1$s down, %2$s up)"
 msgstr ""
 
-#: ../gtk/tr-window.c:314
+#: ../gtk/tr-window.c:316
 #, c-format
 msgid "Tracker will allow requests in %s"
 msgstr "Trackerul va permite cereri în %s"
 
-#: ../gtk/tr-window.c:384
+#: ../gtk/tr-window.c:386
 msgid "Unlimited"
 msgstr "Nelimitat"
 
-#: ../gtk/tr-window.c:455
+#: ../gtk/tr-window.c:457
 msgid "Seed Forever"
 msgstr "Contribuie permanent"
 
-#: ../gtk/tr-window.c:493
+#: ../gtk/tr-window.c:495
 msgid "Limit Download Speed"
 msgstr "Limită viteză descărcare"
 
-#: ../gtk/tr-window.c:497
+#: ../gtk/tr-window.c:499
 msgid "Limit Upload Speed"
 msgstr "Limită viteză încărcare"
 
-#: ../gtk/tr-window.c:504
+#: ../gtk/tr-window.c:506
 msgid "Stop Seeding at Ratio"
 msgstr "Oprește contribuția când se atinge raportul"
 
-#: ../gtk/tr-window.c:537
+#: ../gtk/tr-window.c:539
 #, c-format
 msgid "Stop at Ratio (%s)"
 msgstr "Oprește la raportul (%s)"
 
-#: ../gtk/tr-window.c:765 ../gtk/tr-window.c:791
+#: ../gtk/tr-window.c:782 ../gtk/tr-window.c:808
 #, c-format
 msgid "Ratio: %s"
 msgstr "Raport: %s"
@@ -1963,7 +1963,7 @@ msgstr "Raport: %s"
 #. Translators: "size|" is here for disambiguation. Please remove it from your translation.
 #. %1$s is the size of the data we've downloaded
 #. %2$s is the size of the data we've uploaded
-#: ../gtk/tr-window.c:775
+#: ../gtk/tr-window.c:792
 #, c-format
 msgid "Down: %1$s, Up: %2$s"
 msgstr "Descărcare: %1$s, Încărcare: %2$s"
@@ -1971,7 +1971,7 @@ msgstr "Descărcare: %1$s, Încărcare: %2$s"
 #. Translators: "size|" is here for disambiguation. Please remove it from your translation.
 #. %1$s is the size of the data we've downloaded
 #. %2$s is the size of the data we've uploaded
-#: ../gtk/tr-window.c:785
+#: ../gtk/tr-window.c:802
 #, c-format
 msgid "size|Down: %1$s, Up: %2$s"
 msgstr "Descărcat: %1$s, Încărcat: %2$s"
@@ -2132,7 +2132,7 @@ msgid "Connection failed"
 msgstr ""
 
 #: ../libtransmission/blocklist.c:63 ../libtransmission/blocklist.c:360
-#: ../libtransmission/utils.c:291
+#: ../libtransmission/utils.c:292
 #, c-format
 msgid "Couldn't read \"%1$s\": %2$s"
 msgstr "Nu s-a putut citi „%1$s”: %2$s"
@@ -2232,7 +2232,7 @@ msgstr "Înaintare port (NAT-PMP)"
 msgid "%s succeeded (%d)"
 msgstr "%s cu succes (%d)"
 
-#: ../libtransmission/natpmp.c:138
+#: ../libtransmission/natpmp.c:137
 #, c-format
 msgid "Found public address \"%s\""
 msgstr "S-a găsit adresa publică „%s”"
@@ -2242,7 +2242,7 @@ msgstr "S-a găsit adresa publică „%s”"
 msgid "no longer forwarding port %d"
 msgstr "nu se mai înaintează portul %d"
 
-#: ../libtransmission/natpmp.c:222
+#: ../libtransmission/natpmp.c:219
 #, c-format
 msgid "Port %d forwarded successfully"
 msgstr "Portul %d a fost înaintat cu succes"
@@ -2301,12 +2301,12 @@ msgstr "În curs de oprire"
 msgid "Not forwarded"
 msgstr "Nu s-a înaintat"
 
-#: ../libtransmission/port-forwarding.c:106 ../libtransmission/torrent.c:2370
+#: ../libtransmission/port-forwarding.c:108 ../libtransmission/torrent.c:2370
 #, c-format
 msgid "State changed from \"%1$s\" to \"%2$s\""
 msgstr "Starea s-a schimbat de la „%1$s” la „%2$s”"
 
-#: ../libtransmission/port-forwarding.c:185
+#: ../libtransmission/port-forwarding.c:187
 msgid "Stopped"
 msgstr "Oprit"
 
@@ -2408,69 +2408,69 @@ msgstr ""
 msgid "Port Forwarding (UPnP)"
 msgstr "Înaintare port (UPnP)"
 
-#: ../libtransmission/upnp.c:222
-msgid "IPv6 pinhole punching failed with error"
-msgstr ""
-
-#: ../libtransmission/upnp.c:226
-msgid "IPv6 pinhole added"
-msgstr ""
-
-#: ../libtransmission/upnp.c:226 ../libtransmission/upnp.c:263
-#: ../libtransmission/upnp.c:291 ../libtransmission/upnp.c:296
-msgid "unique ID"
-msgstr ""
-
-#: ../libtransmission/upnp.c:246
-msgid "correcting TCP pinhole ID to"
-msgstr ""
-
-#: ../libtransmission/upnp.c:259 ../libtransmission/upnp.c:287
-msgid "IPv6 pinhole updating failed with error"
-msgstr ""
-
-#: ../libtransmission/upnp.c:263 ../libtransmission/upnp.c:291
-msgid "IPv6 pinhole updated"
-msgstr ""
-
-#: ../libtransmission/upnp.c:280
+#: ../libtransmission/upnp.c:212
 msgid "IPv6 pinhole deletion failed with error"
 msgstr ""
 
-#: ../libtransmission/upnp.c:296
+#: ../libtransmission/upnp.c:219 ../libtransmission/upnp.c:294
+msgid "IPv6 pinhole updating failed with error"
+msgstr ""
+
+#: ../libtransmission/upnp.c:223 ../libtransmission/upnp.c:300
+msgid "IPv6 pinhole updated"
+msgstr ""
+
+#: ../libtransmission/upnp.c:223 ../libtransmission/upnp.c:228
+#: ../libtransmission/upnp.c:261 ../libtransmission/upnp.c:300
+msgid "unique ID"
+msgstr ""
+
+#: ../libtransmission/upnp.c:228
 msgid "IPv6 pinhole deleted"
 msgstr ""
 
-#: ../libtransmission/upnp.c:331
+#: ../libtransmission/upnp.c:257
+msgid "IPv6 pinhole punching failed with error"
+msgstr ""
+
+#: ../libtransmission/upnp.c:261
+msgid "IPv6 pinhole added"
+msgstr ""
+
+#: ../libtransmission/upnp.c:281
+msgid "correcting TCP pinhole ID to"
+msgstr ""
+
+#: ../libtransmission/upnp.c:333
 #, c-format
 msgid "Found Internet Gateway Device \"%s\""
 msgstr "S-a găsit un dispozitiv de acces la Internet „%s”"
 
-#: ../libtransmission/upnp.c:332
+#: ../libtransmission/upnp.c:334
 #, c-format
 msgid "Local Address is \"%s\""
 msgstr "Adresa locală este „%s”"
 
-#: ../libtransmission/upnp.c:359
+#: ../libtransmission/upnp.c:361
 #, c-format
 msgid "Port %d isn't forwarded"
 msgstr "Portul %d nu este înaintat"
 
-#: ../libtransmission/upnp.c:378
+#: ../libtransmission/upnp.c:380
 #, c-format
 msgid "Stopping port forwarding through \"%s\", service \"%s\""
 msgstr "Se oprește înaintarea portului prin „%s”, serviciul „%s”"
 
-#: ../libtransmission/upnp.c:422
+#: ../libtransmission/upnp.c:423
 #, c-format
 msgid "Port forwarding through \"%s\", service \"%s\". (local address: %s:%d)"
 msgstr "Port forwarding utilizând „%s”, serviciul „%s”. (adresa locală: %s:%d)"
 
-#: ../libtransmission/upnp.c:427
+#: ../libtransmission/upnp.c:429
 msgid "Port forwarding successful!"
 msgstr "Înaintarea portului s-a efectuat cu succes!"
 
-#: ../libtransmission/utils.c:303 ../libtransmission/utils.c:304
+#: ../libtransmission/utils.c:304 ../libtransmission/utils.c:305
 msgid "Not a regular file"
 msgstr "Nu este un fişier obişnuit"
 

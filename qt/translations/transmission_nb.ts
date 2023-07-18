@@ -875,7 +875,7 @@
         <translation>&amp;Hjelp</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+9"/>
         <source>&amp;View</source>
         <translation>&amp;Vis</translation>
     </message>
@@ -910,12 +910,12 @@
         <translation>Åpne torrentens mappe</translation>
     </message>
     <message>
-        <location line="-161"/>
+        <location line="-159"/>
         <source>Queue</source>
         <translation>Kø</translation>
     </message>
     <message>
-        <location line="+122"/>
+        <location line="+120"/>
         <source>&amp;Open...</source>
         <translation>&amp;Åpne…</translation>
     </message>
@@ -1192,12 +1192,11 @@
         <translation>Åpne &amp;nettadresse…</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>&amp;Donate</source>
-        <translation>&amp;Donere</translation>
+        <translation type="vanished">&amp;Donere</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+8"/>
         <source>Start &amp;Now</source>
         <translation>Start &amp;nå</translation>
     </message>
@@ -1232,7 +1231,7 @@
         <translation>Sorter etter &amp;køstatus</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cc" line="+465"/>
+        <location filename="../MainWindow.cc" line="+464"/>
         <source>Limit Download Speed</source>
         <translation>Begrens nedlastingshastighet</translation>
     </message>
@@ -1243,13 +1242,13 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+734"/>
+        <location line="+729"/>
         <location line="+8"/>
         <source>Limited at %1</source>
         <translation>Begrenset til %1</translation>
     </message>
     <message>
-        <location line="-693"/>
+        <location line="-688"/>
         <source>Limit Upload Speed</source>
         <translation>Begrens opplastingshastighet</translation>
     </message>
@@ -1265,7 +1264,7 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+721"/>
+        <location line="+716"/>
         <source>Stop at Ratio (%1)</source>
         <translation>Stopp når forholdet når (%1)</translation>
     </message>
@@ -1308,12 +1307,12 @@
         <translation>Åpne Torrent</translation>
     </message>
     <message>
-        <location line="-988"/>
+        <location line="-983"/>
         <source>Speed Limits</source>
         <translation>Hastighetsgrenser</translation>
     </message>
     <message>
-        <location line="+490"/>
+        <location line="+485"/>
         <source>Network Error</source>
         <translation>Nettverksfeil</translation>
     </message>
@@ -1650,7 +1649,7 @@ For å legge til en primær URL, legg den til etter en tom linje.</translation>
 <context>
     <name>PrefsDialog</name>
     <message>
-        <location filename="../PrefsDialog.ui" line="+1139"/>
+        <location filename="../PrefsDialog.ui" line="+1159"/>
         <source>Use &amp;authentication</source>
         <translation>Bruk &amp;bekreftelse</translation>
     </message>
@@ -1675,7 +1674,7 @@ For å legge til en primær URL, legg den til etter en tom linje.</translation>
         <translation>Adresser:</translation>
     </message>
     <message>
-        <location line="-1150"/>
+        <location line="-1170"/>
         <source>Speed Limits</source>
         <translation>Hastighetsgrenser</translation>
     </message>
@@ -1695,7 +1694,7 @@ For å legge til en primær URL, legg den til etter en tom linje.</translation>
         <translation>&amp;På disse dagene:</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+359"/>
         <source>Every Day</source>
         <translation>Hver dag</translation>
     </message>
@@ -1710,7 +1709,7 @@ For å legge til en primær URL, legg den til etter en tom linje.</translation>
         <translation>Helger</translation>
     </message>
     <message>
-        <location line="-183"/>
+        <location line="-207"/>
         <source>Sunday</source>
         <translation>Søndag</translation>
     </message>
@@ -1745,7 +1744,7 @@ For å legge til en primær URL, legg den til etter en tom linje.</translation>
         <translation>Lørdag</translation>
     </message>
     <message>
-        <location line="+244"/>
+        <location line="+268"/>
         <source>Port is &lt;b&gt;open&lt;/b&gt;</source>
         <translation>Porten er &lt;b&gt;åpen&lt;/b&gt;</translation>
     </message>
@@ -1761,7 +1760,7 @@ For å legge til en primær URL, legg den til etter en tom linje.</translation>
     </message>
     <message>
         <location line="+32"/>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+336"/>
         <source>Status unknown</source>
         <translation>Ukjent status</translation>
     </message>
@@ -1849,7 +1848,7 @@ For å legge til en primær URL, legg den til etter en tom linje.</translation>
         <translation>Deler</translation>
     </message>
     <message>
-        <location line="+548"/>
+        <location line="+568"/>
         <source>Remote</source>
         <translation>Fjern</translation>
     </message>
@@ -1862,7 +1861,7 @@ For å legge til en primær URL, legg den til etter en tom linje.</translation>
         </translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-287"/>
+        <location filename="../PrefsDialog.ui" line="-307"/>
         <source>Pick a &amp;random port every time Transmission OG is started</source>
         <translation>Velg en &amp;tilfeldig port hver gang Transmission OG startes</translation>
     </message>
@@ -1930,7 +1929,7 @@ For å legge til en primær URL, legg den til etter en tom linje.</translation>
         <translation>&amp;til</translation>
     </message>
     <message>
-        <location line="+763"/>
+        <location line="+783"/>
         <location line="+9"/>
         <source>Desktop</source>
         <translation>Skrivebord</translation>
@@ -1941,7 +1940,7 @@ For å legge til en primær URL, legg den til etter en tom linje.</translation>
         <translation>Vis Transmission OG-ikon i &amp;merknadsområde</translation>
     </message>
     <message>
-        <location line="-213"/>
+        <location line="-233"/>
         <source>Te&amp;st Port</source>
         <translation>Te&amp;st port</translation>
     </message>
@@ -1961,7 +1960,7 @@ For å legge til en primær URL, legg den til etter en tom linje.</translation>
         <translation>&amp;Krypteringsmodus:</translation>
     </message>
     <message>
-        <location line="+453"/>
+        <location line="+473"/>
         <source>Remote Control</source>
         <translation>Fjernkontroll</translation>
     </message>
@@ -1981,7 +1980,7 @@ For å legge til en primær URL, legg den til etter en tom linje.</translation>
         <translation>Bare tillat disse IP-a&amp;dressene:</translation>
     </message>
     <message>
-        <location line="-1128"/>
+        <location line="-1148"/>
         <source>&amp;Upload:</source>
         <translation>&amp;Last opp:</translation>
     </message>
@@ -2006,7 +2005,17 @@ For å legge til en primær URL, legg den til etter en tom linje.</translation>
         <translation>Last &amp;ned:</translation>
     </message>
     <message>
-        <location line="+836"/>
+        <location line="+792"/>
+        <source>a list of default trackers to be added to new public torrents (and existing ones, after a reload)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Default Trackers:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+61"/>
         <source>Start &amp;minimized in notification area</source>
         <translation>Start &amp;minimert i merknadsområde</translation>
     </message>
@@ -2031,12 +2040,12 @@ For å legge til en primær URL, legg den til etter en tom linje.</translation>
         <translation>Spill en &amp;lyd når torrenter fullføres</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="-73"/>
+        <location filename="../PrefsDialog.cc" line="-74"/>
         <source>Testing TCP Port...</source>
         <translation>Tester TCP-port…</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-229"/>
+        <location filename="../PrefsDialog.ui" line="-249"/>
         <source>Peer Limits</source>
         <translation>Likemannsgrenser</translation>
     </message>
@@ -2076,7 +2085,7 @@ For å legge til en primær URL, legg den til etter en tom linje.</translation>
         <translation>Kryptering</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+141"/>
+        <location filename="../PrefsDialog.cc" line="+142"/>
         <source>Select &quot;Torrent Done&quot; Script</source>
         <translation>Velg &quot;Torrent ferdig&quot;-skript</translation>
     </message>
@@ -2206,7 +2215,7 @@ For å legge til en primær URL, legg den til etter en tom linje.</translation>
 <context>
     <name>Session</name>
     <message>
-        <location filename="../Session.cc" line="+531"/>
+        <location filename="../Session.cc" line="+532"/>
         <source>Error Renaming Path</source>
         <translation>Klarte ikke å gi sti nytt navn</translation>
     </message>

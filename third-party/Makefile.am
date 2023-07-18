@@ -21,9 +21,17 @@ SUBDIRS = \
   $(DHT_DIR) \
   $(EVENT_DIR) \
   $(B64_DIR) \
-  $(NATPMP_DIR) \
+  $(UTP_DIR) \
   $(MINIUPNP_DIR) \
-  $(UTP_DIR)
+  $(NATPMP_DIR)
+
+DIST_SUBDIRS = \
+  dht \
+  libevent \
+  libb64 \
+  miniupnpc \
+  libnatpmp \
+  libutp
 
 EXTRA_DIST = \
   macosx-libevent-config.h \

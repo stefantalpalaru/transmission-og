@@ -1,0 +1,105 @@
+name: distcheck
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  distcheck:
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - os: linux
+          - os: windows
+        include:
+          - target:
+              os: linux
+            builder: ubuntu-22.04
+            shell: bash
+          - target:
+              os: windows
+            builder: windows-2019
+            shell: msys2 {0}
+
+    defaults:
+      run:
+        shell: ${{ matrix.shell }}
+
+    name: 'distcheck: ${{ matrix.target.os }}'
+    runs-on: ${{ matrix.builder }}
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+
+      - name: Environment variables
+        shell: bash
+        run: |
+          CFLAGS="-O3 -march=native -pipe"
+          CXXFLAGS="-O3 -march=native -pipe"
+          NCPU=""
+          MAKE_CMD="make"
+          case "${{ runner.os }}" in
+          "Linux")
+            NCPU="$(nproc)"
+            echo "DEBIAN_FRONTEND=noninteractive" >> ${GITHUB_ENV}
+            echo "TZ=Etc/UTC" >> ${GITHUB_ENV}
+            ;;
+          "Windows")
+            NCPU="${NUMBER_OF_PROCESSORS}"
+            MAKE_CMD="mingw32-make"
+            # avoid random failure: "aclocal-1.16: error: aclocal: file '/a/_temp/msys64/usr/share/aclocal/tcl.m4' does not exist"
+            echo "ACLOCAL_PATH=/d/a/_temp/msys64/usr/share/aclocal/:${ACLOCAL_PATH}" >> ${GITHUB_ENV}
+            ;;
+          esac
+          echo "CFLAGS=${CFLAGS}" >> ${GITHUB_ENV}
+          echo "CXXFLAGS=${CXXFLAGS}" >> ${GITHUB_ENV}
+          [[ -z "${NCPU}" || ${NCPU} -le 0 ]] && NCPU="1"
+          echo "NCPU=${NCPU}" >> ${GITHUB_ENV}
+          echo "MAKE_CMD=${MAKE_CMD}" >> ${GITHUB_ENV}
+
+      - name: Install build dependencies (Linux AMD64)
+        if: runner.os == 'Linux'
+        run: |
+          sudo -E apt-get update -qq
+          sudo -E eatmydata apt-get install --no-install-recommends -yq \
+            build-essential \
+            libayatana-appindicator3-dev \
+            libcurl4-openssl-dev \
+            libglib2.0-dev \
+            libgtk-3-dev \
+            libnotify-dev \
+            libssl-dev \
+            libsystemd-dev \
+            qttools5-dev \
+            xz-utils \
+            zlib1g-dev
+
+      - name: MSYS2 (Windows amd64)
+        if: runner.os == 'Windows'
+        uses: msys2/setup-msys2@v2
+        with:
+          path-type: inherit
+          install: >-
+            base-devel
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-curl
+            mingw-w64-x86_64-gtk3
+            mingw-w64-x86_64-libnotify
+            mingw-w64-x86_64-openssl
+            mingw-w64-x86_64-qt5-base
+            mingw-w64-x86_64-qt5-tools
+            mingw-w64-x86_64-qt5-winextras
+            mingw-w64-x86_64-toolchain
+            mingw-w64-x86_64-xz
+            mingw-w64-x86_64-zlib
+
+      - name: make distcheck
+        run: |
+          ./configure
+          ${MAKE_CMD} -j${NCPU} XZ_OPT="-e -T0" V=1 distcheck

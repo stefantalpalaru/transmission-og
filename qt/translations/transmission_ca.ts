@@ -875,7 +875,7 @@
         <translation>&amp;Ajuda</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+9"/>
         <source>&amp;View</source>
         <translation>&amp;Visualitza</translation>
     </message>
@@ -910,12 +910,12 @@
         <translation>Obre la carpeta del torrent</translation>
     </message>
     <message>
-        <location line="-161"/>
+        <location line="-159"/>
         <source>Queue</source>
         <translation>Cua</translation>
     </message>
     <message>
-        <location line="+122"/>
+        <location line="+120"/>
         <source>&amp;Open...</source>
         <translation>&amp;Obre...</translation>
     </message>
@@ -1192,12 +1192,11 @@
         <translation>Obre l&apos;&amp;URL...</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>&amp;Donate</source>
-        <translation>Fer un &amp;donatiu</translation>
+        <translation type="vanished">Fer un &amp;donatiu</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+8"/>
         <source>Start &amp;Now</source>
         <translation>I&amp;nicia ara</translation>
     </message>
@@ -1232,7 +1231,7 @@
         <translation>Ordena per la &amp;cua</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cc" line="+465"/>
+        <location filename="../MainWindow.cc" line="+464"/>
         <source>Limit Download Speed</source>
         <translation>Límit de la velocitat de baixada</translation>
     </message>
@@ -1243,13 +1242,13 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+734"/>
+        <location line="+729"/>
         <location line="+8"/>
         <source>Limited at %1</source>
         <translation>Limitat a %1</translation>
     </message>
     <message>
-        <location line="-693"/>
+        <location line="-688"/>
         <source>Limit Upload Speed</source>
         <translation>Límit de la velocitat de pujada</translation>
     </message>
@@ -1265,7 +1264,7 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+721"/>
+        <location line="+716"/>
         <source>Stop at Ratio (%1)</source>
         <translation>Atura a la relació (%1)</translation>
     </message>
@@ -1308,12 +1307,12 @@
         <translation>Obre un torrent</translation>
     </message>
     <message>
-        <location line="-988"/>
+        <location line="-983"/>
         <source>Speed Limits</source>
         <translation>Límits de velocitat</translation>
     </message>
     <message>
-        <location line="+490"/>
+        <location line="+485"/>
         <source>Network Error</source>
         <translation>Error de xarxa</translation>
     </message>
@@ -1650,7 +1649,7 @@ Per afegir un altre URL principal, afegiu-lo després d&apos;una línia en blanc
 <context>
     <name>PrefsDialog</name>
     <message>
-        <location filename="../PrefsDialog.ui" line="+1139"/>
+        <location filename="../PrefsDialog.ui" line="+1159"/>
         <source>Use &amp;authentication</source>
         <translation>Utilitza l&apos;&amp;autenticació</translation>
     </message>
@@ -1675,7 +1674,7 @@ Per afegir un altre URL principal, afegiu-lo després d&apos;una línia en blanc
         <translation>Adreces:</translation>
     </message>
     <message>
-        <location line="-1150"/>
+        <location line="-1170"/>
         <source>Speed Limits</source>
         <translation>Límits de velocitat</translation>
     </message>
@@ -1695,7 +1694,7 @@ Per afegir un altre URL principal, afegiu-lo després d&apos;una línia en blanc
         <translation>&amp;Als dies:</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+359"/>
         <source>Every Day</source>
         <translation>Cada dia</translation>
     </message>
@@ -1710,7 +1709,7 @@ Per afegir un altre URL principal, afegiu-lo després d&apos;una línia en blanc
         <translation>Caps de setmana</translation>
     </message>
     <message>
-        <location line="-183"/>
+        <location line="-207"/>
         <source>Sunday</source>
         <translation>Diumenge</translation>
     </message>
@@ -1745,7 +1744,7 @@ Per afegir un altre URL principal, afegiu-lo després d&apos;una línia en blanc
         <translation>Dissabte</translation>
     </message>
     <message>
-        <location line="+244"/>
+        <location line="+268"/>
         <source>Port is &lt;b&gt;open&lt;/b&gt;</source>
         <translation>El port està &lt;b&gt;obert&lt;/b&gt;</translation>
     </message>
@@ -1761,7 +1760,7 @@ Per afegir un altre URL principal, afegiu-lo després d&apos;una línia en blanc
     </message>
     <message>
         <location line="+32"/>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+336"/>
         <source>Status unknown</source>
         <translation>Estat desconegut</translation>
     </message>
@@ -1849,7 +1848,7 @@ Per afegir un altre URL principal, afegiu-lo després d&apos;una línia en blanc
         <translation>Compartició</translation>
     </message>
     <message>
-        <location line="+548"/>
+        <location line="+568"/>
         <source>Remote</source>
         <translation>Remot</translation>
     </message>
@@ -1862,7 +1861,7 @@ Per afegir un altre URL principal, afegiu-lo després d&apos;una línia en blanc
         </translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-287"/>
+        <location filename="../PrefsDialog.ui" line="-307"/>
         <source>Pick a &amp;random port every time Transmission OG is started</source>
         <translation>T&amp;ria un port aleatori cada cop que s&apos;inicia Transmission OG</translation>
     </message>
@@ -1930,7 +1929,7 @@ Per afegir un altre URL principal, afegiu-lo després d&apos;una línia en blanc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+763"/>
+        <location line="+783"/>
         <location line="+9"/>
         <source>Desktop</source>
         <translation>Escriptori</translation>
@@ -1941,7 +1940,7 @@ Per afegir un altre URL principal, afegiu-lo després d&apos;una línia en blanc
         <translation>Mostra la icona de Transmission OG a l&apos;àrea de &amp;notificació</translation>
     </message>
     <message>
-        <location line="-213"/>
+        <location line="-233"/>
         <source>Te&amp;st Port</source>
         <translation>&amp;Comprova el port</translation>
     </message>
@@ -1961,7 +1960,7 @@ Per afegir un altre URL principal, afegiu-lo després d&apos;una línia en blanc
         <translation>Mode de xifratg&amp;e:</translation>
     </message>
     <message>
-        <location line="+453"/>
+        <location line="+473"/>
         <source>Remote Control</source>
         <translation>Control remot</translation>
     </message>
@@ -1981,7 +1980,7 @@ Per afegir un altre URL principal, afegiu-lo després d&apos;una línia en blanc
         <translation>Permet només aquestes a&amp;dreces IP:</translation>
     </message>
     <message>
-        <location line="-1128"/>
+        <location line="-1148"/>
         <source>&amp;Upload:</source>
         <translation>P&amp;ujada:</translation>
     </message>
@@ -2006,7 +2005,17 @@ Per afegir un altre URL principal, afegiu-lo després d&apos;una línia en blanc
         <translation>&amp;Baixada:</translation>
     </message>
     <message>
-        <location line="+836"/>
+        <location line="+792"/>
+        <source>a list of default trackers to be added to new public torrents (and existing ones, after a reload)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Default Trackers:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+61"/>
         <source>Start &amp;minimized in notification area</source>
         <translation>Inicia &amp;minimitzat a l&apos;àrea de notificació</translation>
     </message>
@@ -2031,12 +2040,12 @@ Per afegir un altre URL principal, afegiu-lo després d&apos;una línia en blanc
         <translation>Reprodueix un &amp;so quan es completin els torrents</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="-73"/>
+        <location filename="../PrefsDialog.cc" line="-74"/>
         <source>Testing TCP Port...</source>
         <translation>S&apos;està comprovant el port TCP...</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-229"/>
+        <location filename="../PrefsDialog.ui" line="-249"/>
         <source>Peer Limits</source>
         <translation>Límit de clients</translation>
     </message>
@@ -2076,7 +2085,7 @@ Per afegir un altre URL principal, afegiu-lo després d&apos;una línia en blanc
         <translation>Xifratge</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+141"/>
+        <location filename="../PrefsDialog.cc" line="+142"/>
         <source>Select &quot;Torrent Done&quot; Script</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2206,7 +2215,7 @@ Per afegir un altre URL principal, afegiu-lo després d&apos;una línia en blanc
 <context>
     <name>Session</name>
     <message>
-        <location filename="../Session.cc" line="+531"/>
+        <location filename="../Session.cc" line="+532"/>
         <source>Error Renaming Path</source>
         <translation>Error en reanomenar el camí</translation>
     </message>
