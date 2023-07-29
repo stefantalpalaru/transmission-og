@@ -21779,7 +21779,7 @@ fi
 
 else $as_nop
 
-           LIBEVENT_CFLAGS="-I\$(top_srcdir)/third-party/libevent/include"
+	              LIBEVENT_CFLAGS="-I\$(top_srcdir)/third-party/libevent/include -I\$(top_builddir)/third-party/libevent/include"
            LIBEVENT_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/libevent/include"
            LIBEVENT_LIBS="\$(top_builddir)/third-party/libevent/.libs/libevent.a"
            LIBEVENT_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libevent/.libs/libevent.a"

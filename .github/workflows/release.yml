@@ -34,6 +34,7 @@ jobs:
           sudo -E apt-get update -qq
           sudo -E eatmydata apt-get install --no-install-recommends -yq \
             build-essential \
+            intltool \
             libayatana-appindicator3-dev \
             libc6:i386 \
             libcurl4-openssl-dev \

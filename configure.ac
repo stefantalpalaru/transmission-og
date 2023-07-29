@@ -466,7 +466,8 @@ AS_IF([test "x${enable_external_libevent}" = "xyes"], [
        LIBEVENT_INCLUDEPATH_QT=""
        LIBEVENT_LIBS_QT="${LIBEVENT_LIBS}"
        ], [
-           LIBEVENT_CFLAGS="-I\$(top_srcdir)/third-party/libevent/include"
+	   dnl "event2/event-config.h" is generated at configuration time and placed in the builddir
+           LIBEVENT_CFLAGS="-I\$(top_srcdir)/third-party/libevent/include -I\$(top_builddir)/third-party/libevent/include"
            LIBEVENT_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/libevent/include"
            LIBEVENT_LIBS="\$(top_builddir)/third-party/libevent/.libs/libevent.a"
            LIBEVENT_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libevent/.libs/libevent.a"

@@ -650,7 +650,7 @@ transmission_og_qt_SOURCES = AboutDialog.cc AddData.cc Application.cc \
 	../libtransmission/version.h
 
 # "MakeDialog.cc" includes "MakeDialog.moc" which is generated from itself.
-# The best we can do, given the circular dependency, is to generate it unconditionally every time.
+# We break this circular dependency with an order-only prerequisite.
 nodist_transmission_og_qt_SOURCES = AboutDialog.moc.cpp \
 	AddData.moc.cpp Application.moc.cpp ColumnResizer.moc.cpp \
 	DBusInteropHelper.moc.cpp DetailsDialog.moc.cpp \
@@ -1454,7 +1454,7 @@ uninstall-man: uninstall-man1
 	$(QT_MOC) $(AM_CPPFLAGS) -o $@ $<
 MakeDialog.cc: | MakeDialog.moc
 .PHONY: MakeDialog.moc
-MakeDialog.moc:
+MakeDialog.moc: MakeDialog.cc
 	$(QT_MOC) $(AM_CPPFLAGS) -o $@ "$(srcdir)/$(patsubst %.moc,%.cc,$@)"
 
 ui_%.h: %.ui

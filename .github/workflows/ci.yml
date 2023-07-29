@@ -76,10 +76,10 @@ jobs:
             ;;
           "macOS")
             NCPU="$(sysctl -n hw.logicalcpu)"
-            CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/gettext/include"
-            LDFLAGS="${LDFLAGS} -L/usr/local/opt/gettext/lib"
+            CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/gettext/include -I/usr/local/opt/miniupnpc/include"
+            LDFLAGS="${LDFLAGS} -L/usr/local/opt/gettext/lib -L/usr/local/opt/miniupnpc/lib"
             echo "/usr/local/opt/qt@5/bin" >> ${GITHUB_PATH}
-            echo "PKG_CONFIG_PATH=/usr/local/opt/qt@5/lib/pkgconfig:/usr/local/opt/openssl@1.1/lib/pkgconfig" >> ${GITHUB_ENV}
+            echo "PKG_CONFIG_PATH=/usr/local/opt/qt@5/lib/pkgconfig:/usr/local/opt/openssl@1.1/lib/pkgconfig:/usr/local/opt/miniupnpc/lib/pkgconfig" >> ${GITHUB_ENV}
             ;;
           "Windows")
             NCPU="${NUMBER_OF_PROCESSORS}"
@@ -324,7 +324,7 @@ jobs:
                 CONFIGURE_ARGS+=(
                   --disable-external-miniupnpc
                   --disable-external-natpmp
-                  QMAKE_ARGS="$(printf '%q ' ${QMAKE_ARGS[@]})"
+                  QMAKE_ARGS="$(printf '%q ' ${QMAKE_ARGS[@]} | sed 's/\\/\\\\/g')"
                 )
               fi
             fi
