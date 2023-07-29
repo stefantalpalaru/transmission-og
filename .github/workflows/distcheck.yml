@@ -36,7 +36,7 @@ jobs:
         if: runner.os == 'Windows'
         shell: bash
         run: |
-          git config --global core.symlink true
+          git config --global core.symlink false
 
       - name: Git checkout
         uses: actions/checkout@v3

@@ -120,7 +120,7 @@ percent.target = %
 percent.commands = @echo -n "\$(\$(@))\ "
 QMAKE_EXTRA_TARGETS += percent
 EOF
-    $QMAKE $am_have_qt_pro -o $am_have_qt_makefile
+    ${QMAKE} QMAKE_CXX="${CXX}" $am_have_qt_pro -o $am_have_qt_makefile
     # Work around some crazy MSYS2 path conversion resulting in relative paths here.
     QT_CXXFLAGS=`cd $am_have_qt_dir; make -s -f $am_have_qt_makefile CXXFLAGS INCPATH | sed 's%-I..@<:@./@:>@\+%-I/%g'`
     QT_LIBS=`cd $am_have_qt_dir; make -s -f $am_have_qt_makefile LIBS`

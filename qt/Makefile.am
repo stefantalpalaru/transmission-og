@@ -334,7 +334,7 @@ QMAKE_ARGS = \
 	     PKG_CONFIG=$(PKG_CONFIG) \
 	     QMAKE_LFLAGS="$(LDFLAGS)" \
 	     QMAKE_CXXFLAGS="$(CPPFLAGS) $(CXXFLAGS)" \
-	     QMAKE_INCDIR+="$(top_builddir)/third-party/libevent/include"
+	     QMAKE_INCDIR="$(top_builddir)/third-party/libevent/include"
 .PHONY: qmake-build
 qmake-build:
 	+ $(QMAKE) $(QMAKE_ARGS) -o Makefile.qmake "$(srcdir)/qtr.pro" && \
