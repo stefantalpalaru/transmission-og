@@ -54,8 +54,11 @@ jobs:
         run: |
           CFLAGS="-O3 -march=native -pipe"
           CXXFLAGS="-O3 -march=native -pipe"
+          CPPFLAGS=""
+          LDFLAGS=""
           NCPU=""
           MAKE_CMD="make"
+          QMAKE="qmake"
           case "${{ runner.os }}" in
           "Linux")
             NCPU="$(nproc)"
@@ -64,12 +67,17 @@ jobs:
             if [[ "${{ matrix.target.cpu }}" == "i386" ]]; then
               CFLAGS="${CFLAGS} -m32"
               CXXFLAGS="${CXXFLAGS} -m32"
+              CPPFLAGS="${CPPFLAGS} -I/usr/include/i386-linux-gnu/"
+              LDFLAGS="${LDFLAGS} -L/usr/lib/i386-linux-gnu/"
+              QMAKE="/usr/lib/i386-linux-gnu/qt5/bin/qmake"
               echo "/usr/lib/i386-linux-gnu/qt5/bin" >> ${GITHUB_PATH}
               echo "PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig" >> ${GITHUB_ENV}
             fi
             ;;
           "macOS")
             NCPU="$(sysctl -n hw.logicalcpu)"
+            CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/gettext/include"
+            LDFLAGS="${LDFLAGS} -L/usr/local/opt/gettext/lib"
             echo "/usr/local/opt/qt@5/bin" >> ${GITHUB_PATH}
             echo "PKG_CONFIG_PATH=/usr/local/opt/qt@5/lib/pkgconfig:/usr/local/opt/openssl@1.1/lib/pkgconfig" >> ${GITHUB_ENV}
             ;;
@@ -82,9 +90,12 @@ jobs:
           esac
           echo "CFLAGS=${CFLAGS}" >> ${GITHUB_ENV}
           echo "CXXFLAGS=${CXXFLAGS}" >> ${GITHUB_ENV}
+          echo "CPPFLAGS=${CPPFLAGS}" >> ${GITHUB_ENV}
+          echo "LDFLAGS=${LDFLAGS}" >> ${GITHUB_ENV}
           [[ -z "${NCPU}" || ${NCPU} -le 0 ]] && NCPU="1"
           echo "NCPU=${NCPU}" >> ${GITHUB_ENV}
           echo "MAKE_CMD=${MAKE_CMD}" >> ${GITHUB_ENV}
+          echo "QMAKE=${QMAKE}" >> ${GITHUB_ENV}
 
       - name: Install build dependencies (Linux i386)
         if: runner.os == 'Linux' && matrix.target.cpu == 'i386'
@@ -259,7 +270,9 @@ jobs:
               --enable-daemon
               --with-crypto=openssl
               --with-gtk
+              --with-qt
               --disable-external-utp # latest version redefines "bool" for C compilers
+              QMAKE="${QMAKE}" # the 64-bit version overrides the 32-bit one, otherwise
             )
             QMAKE_ARGS=(
               -early
@@ -298,8 +311,6 @@ jobs:
               fi
 
               if [[ "${{ matrix.target.cpu }}" == "i386" ]]; then
-                export LDFLAGS="${LDFLAGS} -L/usr/lib/i386-linux-gnu/"
-                export CPPFLAGS="${CPPFLAGS} -I/usr/include/i386-linux-gnu/"
                 QMAKE_ARGS+=(
                   QMAKE_CC=gcc
                   QMAKE_CXX=g++
