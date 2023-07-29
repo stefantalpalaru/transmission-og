@@ -416,7 +416,7 @@ AS_IF([test "x${enable_external_miniupnpc}" = "xyes"], [
                        ])
        LIBUPNP_CFLAGS=""
        LIBUPNP_LIBS="-lminiupnpc"
-       LIBUPNP_LIBS_QT="-lminiupnpc"
+       LIBUPNP_LIBS_QT="-L/usr/local/opt/miniupnpc/lib -lminiupnpc"
        ], [
            LIBUPNP_CFLAGS="-I\$(top_srcdir)/third-party/miniupnpc/include"
            LIBUPNP_LIBS="\$(top_builddir)/third-party/miniupnpc/libminiupnp.a"

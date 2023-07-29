@@ -224,11 +224,8 @@ nodist_transmission_og_qt_SOURCES = \
     WatchDir.moc.cpp
 
 # "MakeDialog.cc" includes "MakeDialog.moc" which is generated from itself.
-# We break this circular dependency with an order-only prerequisite.
 nodist_transmission_og_qt_SOURCES += \
     MakeDialog.moc
-MakeDialog.cc: | MakeDialog.moc
-.PHONY: MakeDialog.moc
 MakeDialog.moc: MakeDialog.cc
 	$(QT_MOC) $(AM_CPPFLAGS) -o $@ "$(srcdir)/$(patsubst %.moc,%.cc,$@)"
 

@@ -32,6 +32,13 @@ jobs:
     name: 'distcheck: ${{ matrix.target.os }}'
     runs-on: ${{ matrix.builder }}
     steps:
+      - name: core.symlinks
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          git config core.symlink
+          git config --global core.symlink true
+
       - name: Git checkout
         uses: actions/checkout@v3
         with:

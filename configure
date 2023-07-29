@@ -21542,7 +21542,7 @@ fi
 
        LIBUPNP_CFLAGS=""
        LIBUPNP_LIBS="-lminiupnpc"
-       LIBUPNP_LIBS_QT="-lminiupnpc"
+       LIBUPNP_LIBS_QT="-L/usr/local/opt/miniupnpc/lib -lminiupnpc"
 
 else $as_nop
 

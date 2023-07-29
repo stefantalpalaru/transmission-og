@@ -324,7 +324,7 @@ jobs:
                 CONFIGURE_ARGS+=(
                   --disable-external-miniupnpc
                   --disable-external-natpmp
-                  QMAKE_ARGS="$(printf '%q ' ${QMAKE_ARGS[@]} | sed 's/\\/\\\\/g')"
+                  QMAKE_ARGS="$(printf '%q ' ${QMAKE_ARGS[@]} | sed 's/\\/\\\\\\\\/g')"
                 )
               fi
             fi
