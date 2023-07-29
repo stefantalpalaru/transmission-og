@@ -326,7 +326,14 @@ EXTRA_DIST += \
 	      qtr.pro \
 	      qtr.rc
 
-QMAKE_ARGS =
+QMAKE_ARGS = \
+	     -early \
+	     QMAKE_CC=$(CC) \
+	     QMAKE_CXX=$(CXX) \
+	     QMAKE_LINK=$(CXX) \
+	     PKG_CONFIG=$(PKG_CONFIG) \
+	     QMAKE_LFLAGS="$(LDFLAGS)" \
+	     QMAKE_CXXFLAGS="$(CPPFLAGS) $(CXXFLAGS)"
 .PHONY: qmake-build
 qmake-build:
 	+ $(QMAKE) $(QMAKE_ARGS) -o Makefile.qmake "$(srcdir)/qtr.pro" && \

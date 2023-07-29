@@ -36,7 +36,6 @@ jobs:
         if: runner.os == 'Windows'
         shell: bash
         run: |
-          git config core.symlink
           git config --global core.symlink true
 
       - name: Git checkout

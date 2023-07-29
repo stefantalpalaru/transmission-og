@@ -76,10 +76,11 @@ jobs:
             ;;
           "macOS")
             NCPU="$(sysctl -n hw.logicalcpu)"
-            CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/gettext/include -I/usr/local/opt/miniupnpc/include"
-            LDFLAGS="${LDFLAGS} -L/usr/local/opt/gettext/lib -L/usr/local/opt/miniupnpc/lib"
+            CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/gettext/include"
+            LDFLAGS="${LDFLAGS} -L/usr/local/opt/gettext/lib"
             echo "/usr/local/opt/qt@5/bin" >> ${GITHUB_PATH}
-            echo "PKG_CONFIG_PATH=/usr/local/opt/qt@5/lib/pkgconfig:/usr/local/opt/openssl@1.1/lib/pkgconfig:/usr/local/opt/miniupnpc/lib/pkgconfig" >> ${GITHUB_ENV}
+            echo "PKG_CONFIG_PATH=/usr/local/opt/qt@5/lib/pkgconfig:/usr/local/opt/openssl@1.1/lib/pkgconfig" >> ${GITHUB_ENV}
+            echo "MACOSX_DEPLOYMENT_TARGET=12.0" >> ${GITHUB_ENV}
             ;;
           "Windows")
             NCPU="${NUMBER_OF_PROCESSORS}"
@@ -274,9 +275,6 @@ jobs:
               --disable-external-utp # latest version redefines "bool" for C compilers
               QMAKE="${QMAKE}" # the 64-bit version overrides the 32-bit one, otherwise
             )
-            QMAKE_ARGS=(
-              -early
-            )
 
             if [[ "${{ matrix.libs }}" == "system" ]]; then
               CONFIGURE_ARGS+=(
@@ -299,9 +297,8 @@ jobs:
                 --disable-mac
               )
               if [[ "${{ matrix.libs }}" == "system" ]]; then
-                QMAKE_ARGS+=(
-                  QMAKE_LIBDIR+="/usr/local/opt/miniupnpc/lib"
-                )
+                CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/miniupnpc/include"
+                LDFLAGS="${LDFLAGS} -L/usr/local/opt/miniupnpc/lib"
               fi
             elif [[ "${{ runner.os }}" == "Linux" ]]; then
               if [[ "${{ matrix.libs }}" == "system" ]]; then
@@ -311,20 +308,10 @@ jobs:
               fi
 
               if [[ "${{ matrix.target.cpu }}" == "i386" ]]; then
-                QMAKE_ARGS+=(
-                  QMAKE_CC=gcc
-                  QMAKE_CXX=g++
-                  QMAKE_LINK=g++
-                  PKG_CONFIG=pkg-config
-                  QMAKE_LFLAGS="-m32 -L/usr/lib/i386-linux-gnu"
-                  QMAKE_CXXFLAGS="${CXXFLAGS}"
-                )
-
                 # packages not available for i386:
                 CONFIGURE_ARGS+=(
                   --disable-external-miniupnpc
                   --disable-external-natpmp
-                  QMAKE_ARGS="$(printf '%q ' ${QMAKE_ARGS[@]} | sed 's/\\/\\\\\\\\/g')"
                 )
               fi
             fi
@@ -339,4 +326,5 @@ jobs:
             # Tests.
             # (random failure on Windows if we enable Make's parallelism here)
             ${MAKE_CMD} -C libtransmission check
+            cat libtransmission/test-suite.log
           fi # Autotools

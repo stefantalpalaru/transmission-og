@@ -731,7 +731,15 @@ dist_man_MANS = transmission-og-qt.1
 DESKTOP_FILES = transmission-og-qt.desktop
 Productivitydir = $(datadir)/applications
 Productivity_DATA = $(DESKTOP_FILES)
-QMAKE_ARGS = 
+QMAKE_ARGS = \
+	     -early \
+	     QMAKE_CC=$(CC) \
+	     QMAKE_CXX=$(CXX) \
+	     QMAKE_LINK=$(CXX) \
+	     PKG_CONFIG=$(PKG_CONFIG) \
+	     QMAKE_LFLAGS="$(LDFLAGS)" \
+	     QMAKE_CXXFLAGS="$(CPPFLAGS) $(CXXFLAGS)"
+
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
