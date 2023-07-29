@@ -738,7 +738,8 @@ QMAKE_ARGS = \
 	     QMAKE_LINK=$(CXX) \
 	     PKG_CONFIG=$(PKG_CONFIG) \
 	     QMAKE_LFLAGS="$(LDFLAGS)" \
-	     QMAKE_CXXFLAGS="$(CPPFLAGS) $(CXXFLAGS)"
+	     QMAKE_CXXFLAGS="$(CPPFLAGS) $(CXXFLAGS)" \
+	     QMAKE_INCDIR+="$(top_builddir)/third-party/libevent/include"
 
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
