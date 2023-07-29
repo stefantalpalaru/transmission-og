@@ -1465,8 +1465,8 @@ resources.cc: $(transmission_og_qt_QRC) $(transmission_og_qt_RES)
 .PHONY: qmake-build
 qmake-build:
 	+ $(QMAKE) $(QMAKE_ARGS) -o Makefile.qmake "$(srcdir)/qtr.pro" && \
-		$(MAKE) -C ../libtransmission && \
 		$(MAKE) -C ../third-party && \
+		$(MAKE) -C ../libtransmission && \
 		$(MAKE) -f Makefile.qmake
 
 # This is the stock rule with $(BUILT_SOURCES) dependency removed.

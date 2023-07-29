@@ -88,6 +88,7 @@ jobs:
           path-type: inherit
           install: >-
             base-devel
+            intltool
             mingw-w64-x86_64-cmake
             mingw-w64-x86_64-curl
             mingw-w64-x86_64-gtk3

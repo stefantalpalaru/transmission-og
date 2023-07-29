@@ -333,8 +333,8 @@ QMAKE_ARGS =
 .PHONY: qmake-build
 qmake-build:
 	+ $(QMAKE) $(QMAKE_ARGS) -o Makefile.qmake "$(srcdir)/qtr.pro" && \
-		$(MAKE) -C ../libtransmission && \
 		$(MAKE) -C ../third-party && \
+		$(MAKE) -C ../libtransmission && \
 		$(MAKE) -f Makefile.qmake
 CLEANFILES += Makefile.qmake
 
