@@ -1773,7 +1773,7 @@ Some influential environment variables:
   LIBAPPINDICATOR_LIBS
               linker flags for LIBAPPINDICATOR, overriding pkg-config
   XMKMF       Path to xmkmf, Makefile generator for X Window System
-  QMAKE       "Qt make tool"
+  QMAKE       "Qt's qmake tool"
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -23230,17 +23230,17 @@ fi
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for Qt" >&5
 printf %s "checking for Qt... " >&6; }
   # If we have Qt5 or later in the path, we're golden
-  ver=`$QMAKE --version | grep -o "Qt version ."`
+  ver=$(${QMAKE} --version | grep -o "Qt version .")
 
-  if test "$ver" ">" "Qt version 4"; then
+  if test "${ver}" ">" "Qt version 4"; then
     have_qt=yes
     # This pro file dumps qmake's variables, but it only works on Qt 5 or later
-    am_have_qt_dir=`mktemp -d`
-    am_have_qt_pro="$am_have_qt_dir/test.pro"
-    am_have_qt_stash="$am_have_qt_dir/.qmake.stash"
-    am_have_qt_makefile="$am_have_qt_dir/Makefile"
+    am_have_qt_dir=$(mktemp -d)
+    am_have_qt_pro="${am_have_qt_dir}/test.pro"
+    am_have_qt_stash="${am_have_qt_dir}/.qmake.stash"
+    am_have_qt_makefile="${am_have_qt_dir}/Makefile"
     # http://qt-project.org/doc/qt-5/qmake-variable-reference.html#qt
-    cat > $am_have_qt_pro << EOF
+    cat > ${am_have_qt_pro} << EOF
 win32 {
     CONFIG -= debug_and_release
     CONFIG += release
@@ -23280,17 +23280,17 @@ percent.target = %
 percent.commands = @echo -n "\$(\$(@))\ "
 QMAKE_EXTRA_TARGETS += percent
 EOF
-  set -x
-    ${QMAKE} QMAKE_CXX="${CXX}" QMAKE_LINK="${CXX}" $am_have_qt_pro -o $am_have_qt_makefile
+    # When using a 32-bit Qt installation on a multilib Ubuntu, qmake tries to
+    # use a non-existent "i686-linux-gnu-g++" and it fails during makefile creation.
+    ${QMAKE} -early QMAKE_CXX="${CXX}" "${am_have_qt_pro}" -o "${am_have_qt_makefile}"
     # Work around some crazy MSYS2 path conversion resulting in relative paths here.
-    QT_CXXFLAGS=`cd $am_have_qt_dir; make -s -f $am_have_qt_makefile CXXFLAGS INCPATH | sed 's%-I..[./]\+%-I/%g'`
-    QT_LIBS=`cd $am_have_qt_dir; make -s -f $am_have_qt_makefile LIBS`
-    rm $am_have_qt_pro $am_have_qt_stash $am_have_qt_makefile
-    rmdir $am_have_qt_dir
-  set +x
+    QT_CXXFLAGS=$(cd "${am_have_qt_dir}"; make -s -f "${am_have_qt_makefile}" CXXFLAGS INCPATH | sed 's%-I..[./]\+%-I/%g')
+    QT_LIBS=$(cd "${am_have_qt_dir}"; make -s -f "${am_have_qt_makefile}" LIBS)
+    rm "${am_have_qt_pro}" "${am_have_qt_stash}" "${am_have_qt_makefile}"
+    rmdir "${am_have_qt_dir}"
 
     # Look for specific tools in $PATH
-    PATH="${PATH}:$(${QMAKE} -query QT_INSTALL_BINS)"
+    PATH="$(${QMAKE} -query QT_INSTALL_BINS):${PATH}"
     if test -n "$ac_tool_prefix"; then
   for ac_prog in moc moc5 moc-qt5
   do
@@ -23848,7 +23848,7 @@ fi
     QT_LUPDATE="$(which ${QT_LUPDATE})"
 
     # Get Qt install dir from qmake
-    QT_DIR=`$QMAKE -query QT_INSTALL_LIBS`
+    QT_DIR=$($QMAKE -query QT_INSTALL_LIBS)
 
     # All variables are defined, report the result
     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $have_qt:
@@ -23894,7 +23894,7 @@ printf "%s\n" "$have_qt" >&6; }
 
 
   #### Being paranoid:
-  if test x"$have_qt" = xyes; then
+  if test x"${have_qt}" = xyes; then
     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking correct functioning of Qt installation" >&5
 printf %s "checking correct functioning of Qt installation... " >&6; }
     if test ${ax_cv_qt_test_result+y}
@@ -23917,7 +23917,7 @@ signals:
 };
 EOF
 
-      cat > ax_qt_main.$ac_ext << EOF
+      cat > ax_qt_main.${ac_ext} << EOF
 #include "ax_qt_test.h"
 #include <qapplication.h>
 int main( int argc, char **argv )

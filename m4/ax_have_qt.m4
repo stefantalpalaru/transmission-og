@@ -65,22 +65,22 @@ AC_DEFUN([AX_HAVE_QT],
   AC_REQUIRE([AC_PATH_XTRA])
   # openSUSE leap 15.3 installs qmake-qt5, not qmake, for example.
   # Store the full name (like qmake-qt5) into QMAKE.
-  AC_ARG_VAR([QMAKE],"Qt make tool")
+  AC_ARG_VAR([QMAKE],"Qt's qmake tool")
   AC_CHECK_TOOLS([QMAKE],[qmake qmake5 qmake-qt5],[false])
 
   AC_MSG_CHECKING(for Qt)
   # If we have Qt5 or later in the path, we're golden
-  ver=`$QMAKE --version | grep -o "Qt version ."`
+  ver=$(${QMAKE} --version | grep -o "Qt version .")
 
-  if test "$ver" ">" "Qt version 4"; then
+  if test "${ver}" ">" "Qt version 4"; then
     have_qt=yes
     # This pro file dumps qmake's variables, but it only works on Qt 5 or later
-    am_have_qt_dir=`mktemp -d`
-    am_have_qt_pro="$am_have_qt_dir/test.pro"
-    am_have_qt_stash="$am_have_qt_dir/.qmake.stash"
-    am_have_qt_makefile="$am_have_qt_dir/Makefile"
+    am_have_qt_dir=$(mktemp -d)
+    am_have_qt_pro="${am_have_qt_dir}/test.pro"
+    am_have_qt_stash="${am_have_qt_dir}/.qmake.stash"
+    am_have_qt_makefile="${am_have_qt_dir}/Makefile"
     # http://qt-project.org/doc/qt-5/qmake-variable-reference.html#qt
-    cat > $am_have_qt_pro << EOF
+    cat > ${am_have_qt_pro} << EOF
 win32 {
     CONFIG -= debug_and_release
     CONFIG += release
@@ -120,17 +120,17 @@ percent.target = %
 percent.commands = @echo -n "\$(\$(@))\ "
 QMAKE_EXTRA_TARGETS += percent
 EOF
-  set -x
-    ${QMAKE} QMAKE_CXX="${CXX}" QMAKE_LINK="${CXX}" $am_have_qt_pro -o $am_have_qt_makefile
+    # When using a 32-bit Qt installation on a multilib Ubuntu, qmake tries to
+    # use a non-existent "i686-linux-gnu-g++" and it fails during makefile creation.
+    ${QMAKE} -early QMAKE_CXX="${CXX}" "${am_have_qt_pro}" -o "${am_have_qt_makefile}"
     # Work around some crazy MSYS2 path conversion resulting in relative paths here.
-    QT_CXXFLAGS=`cd $am_have_qt_dir; make -s -f $am_have_qt_makefile CXXFLAGS INCPATH | sed 's%-I..@<:@./@:>@\+%-I/%g'`
-    QT_LIBS=`cd $am_have_qt_dir; make -s -f $am_have_qt_makefile LIBS`
-    rm $am_have_qt_pro $am_have_qt_stash $am_have_qt_makefile
-    rmdir $am_have_qt_dir
-  set +x
+    QT_CXXFLAGS=$(cd "${am_have_qt_dir}"; make -s -f "${am_have_qt_makefile}" CXXFLAGS INCPATH | sed 's%-I..@<:@./@:>@\+%-I/%g')
+    QT_LIBS=$(cd "${am_have_qt_dir}"; make -s -f "${am_have_qt_makefile}" LIBS)
+    rm "${am_have_qt_pro}" "${am_have_qt_stash}" "${am_have_qt_makefile}"
+    rmdir "${am_have_qt_dir}"
 
     # Look for specific tools in $PATH
-    PATH="${PATH}:$(${QMAKE} -query QT_INSTALL_BINS)"
+    PATH="$(${QMAKE} -query QT_INSTALL_BINS):${PATH}"
     AC_CHECK_TOOLS([QT_MOC],[moc moc5 moc-qt5],[false])
     QT_MOC="$(which ${QT_MOC})"
     AC_CHECK_TOOLS([QT_UIC],[uic uic5 uic-qt5],[false])
@@ -143,7 +143,7 @@ EOF
     QT_LUPDATE="$(which ${QT_LUPDATE})"
 
     # Get Qt install dir from qmake
-    QT_DIR=`$QMAKE -query QT_INSTALL_LIBS`
+    QT_DIR=$($QMAKE -query QT_INSTALL_LIBS)
 
     # All variables are defined, report the result
     AC_MSG_RESULT([$have_qt:
@@ -179,7 +179,7 @@ EOF
   AC_SUBST(QMAKE)
 
   #### Being paranoid:
-  if test x"$have_qt" = xyes; then
+  if test x"${have_qt}" = xyes; then
     AC_MSG_CHECKING(correct functioning of Qt installation)
     AC_CACHE_VAL(ax_cv_qt_test_result,
     [
@@ -198,7 +198,7 @@ signals:
 };
 EOF
 
-      cat > ax_qt_main.$ac_ext << EOF
+      cat > ax_qt_main.${ac_ext} << EOF
 #include "ax_qt_test.h"
 #include <qapplication.h>
 int main( int argc, char **argv )
