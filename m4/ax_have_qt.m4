@@ -68,7 +68,6 @@ AC_DEFUN([AX_HAVE_QT],
   set -x
   AC_ARG_VAR([QMAKE],"Qt make tool")
   AC_CHECK_TOOLS([QMAKE],[qmake qmake5 qmake-qt5],[false])
-  set +x
 
   AC_MSG_CHECKING(for Qt)
   # If we have Qt5 or later in the path, we're golden
@@ -128,6 +127,7 @@ EOF
     QT_LIBS=`cd $am_have_qt_dir; make -s -f $am_have_qt_makefile LIBS`
     rm $am_have_qt_pro $am_have_qt_stash $am_have_qt_makefile
     rmdir $am_have_qt_dir
+  set +x
 
     # Look for specific tools in $PATH
     PATH="${PATH}:$(${QMAKE} -query QT_INSTALL_BINS)"

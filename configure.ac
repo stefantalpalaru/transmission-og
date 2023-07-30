@@ -17,10 +17,14 @@ AC_CONFIG_MACRO_DIR([m4])
 dnl Prevent reconfiguring by default, due to Git not preserving timestamps.
 AM_MAINTAINER_MODE
 
-dnl AM_CONFIG_HEADER(config.h)
 AC_CONFIG_SRCDIR(libtransmission/transmission.h)
 AM_INIT_AUTOMAKE([tar-pax no-dist-gzip dist-xz foreign subdir-objects])
-LT_INIT
+
+dnl When we create a shared libtransmission-og, we are linking it to static
+dnl libraries in "third-party". Let's make sure those contain PIC objects.
+dnl (mostly an issue on macOS)
+LT_INIT([pic-only])
+
 LT_LIB_M
 
 CFLAGS="$CFLAGS -std=gnu11"
@@ -338,8 +342,8 @@ AS_IF([test "x${enable_external_dht}" = "xyes"], [
        DHT_LIBS_QMAKE="-ldht"
        ], [
            DHT_CFLAGS="-I\$(top_srcdir)/third-party/dht/include"
-           DHT_LIBS="\$(top_builddir)/third-party/dht/libdht.a"
-           DHT_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/dht/libdht.a"
+           DHT_LIBS="\$(top_builddir)/third-party/dht/libdht.la"
+           DHT_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/dht/.libs/libdht.a"
            ])
 
 AM_CONDITIONAL([BUILD_DHT], [test "x${enable_external_dht}" != "xyes"])
@@ -363,8 +367,8 @@ AS_IF([test "x${enable_external_b64}" = "xyes"], [
        LIBB64_LIBS_QMAKE="-lb64"
        ], [
            LIBB64_CFLAGS="-I\$(top_srcdir)/third-party/libb64/include"
-           LIBB64_LIBS="\$(top_builddir)/third-party/libb64/libb64.a"
-           LIBB64_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libb64/libb64.a"
+           LIBB64_LIBS="\$(top_builddir)/third-party/libb64/libb64.la"
+           LIBB64_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libb64/.libs/libb64.a"
            ])
 
 AM_CONDITIONAL([BUILD_B64], [test "x${enable_external_b64}" != "xyes"])
@@ -397,8 +401,8 @@ AS_IF([test "x${enable_utp}" != "xno"], [
               LIBUTP_LIBS_QMAKE="-lutp ${libutp_extra_libs}"
               ], [
                   LIBUTP_CFLAGS="-I\$(top_srcdir)/third-party/libutp/include"
-                  LIBUTP_LIBS="\$(top_builddir)/third-party/libutp/libutp.a ${libutp_extra_libs}"
-                  LIBUTP_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libutp/libutp.a ${libutp_extra_libs}"
+                  LIBUTP_LIBS="\$(top_builddir)/third-party/libutp/libutp.la ${libutp_extra_libs}"
+                  LIBUTP_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libutp/.libs/libutp.a ${libutp_extra_libs}"
                   ])
        ])
 
@@ -422,8 +426,8 @@ AS_IF([test "x${enable_external_miniupnpc}" = "xyes"], [
        LIBUPNP_LIBS_QMAKE="-lminiupnpc"
        ], [
            LIBUPNP_CFLAGS="-I\$(top_srcdir)/third-party/miniupnpc/include"
-           LIBUPNP_LIBS="\$(top_builddir)/third-party/miniupnpc/libminiupnp.a"
-           LIBUPNP_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/miniupnpc/libminiupnp.a"
+           LIBUPNP_LIBS="\$(top_builddir)/third-party/miniupnpc/libminiupnp.la"
+           LIBUPNP_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/miniupnpc/.libs/libminiupnp.a"
 	   AC_DEFINE([MINIUPNP_STATICLIB])
            ])
 
@@ -447,8 +451,8 @@ AS_IF([test "x${enable_external_natpmp}" = "xyes"], [
        LIBNATPMP_LIBS_QMAKE="-lnatpmp"
        ], [
            LIBNATPMP_CFLAGS="-I\$(top_srcdir)/third-party/libnatpmp/"
-           LIBNATPMP_LIBS="\$(top_builddir)/third-party/libnatpmp/libnatpmp.a"
-           LIBNATPMP_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libnatpmp/libnatpmp.a"
+           LIBNATPMP_LIBS="\$(top_builddir)/third-party/libnatpmp/libnatpmp.la"
+           LIBNATPMP_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libnatpmp/.libs/libnatpmp.a"
 	   AC_DEFINE([NATPMP_STATICLIB])
            ])
 
@@ -475,7 +479,7 @@ AS_IF([test "x${enable_external_libevent}" = "xyes"], [
            LIBEVENT_INCLUDEPATH_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libevent/include"
            LIBEVENT_LIBS="\$(top_builddir)/third-party/libevent/.libs/libevent.a"
            LIBEVENT_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libevent/.libs/libevent.a"
-           AX_SUBDIRS_CONFIGURE([third-party/libevent], [[--disable-shared], [--disable-samples], [--disable-libevent-regress]])
+           AX_SUBDIRS_CONFIGURE([third-party/libevent], [[--disable-shared], [--with-pic], [--disable-samples], [--disable-libevent-regress]])
            ])
 
 AM_CONDITIONAL([BUILD_EVENT], [test "x${enable_external_libevent}" != "xyes"])
@@ -654,6 +658,10 @@ AC_CONFIG_FILES([Makefile
                  po/Makefile.in])
 
 AC_OUTPUT
+
+dnl https://stackoverflow.com/a/67107413
+AC_MSG_RESULT([configure: removing rpath from libtool...])
+${SED} -i s/'^hardcode_libdir_flag_spec.*$'/'hardcode_libdir_flag_spec="-D__LIBTOOL_IS_A_FOOL__"'/g libtool
 
 echo "
 

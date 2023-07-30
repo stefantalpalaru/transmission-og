@@ -968,9 +968,9 @@ ac_user_opts='
 enable_option_checking
 enable_silent_rules
 enable_maintainer_mode
+with_pic
 enable_shared
 enable_static
-with_pic
 enable_fast_install
 with_aix_soname
 enable_dependency_tracking
@@ -3981,6 +3981,7 @@ END
     as_fn_error $? "Your 'rm' program is bad, sorry." "$LINENO" 5
   fi
 fi
+
 
 case `pwd` in
   *\ * | *\	*)
@@ -9066,6 +9067,35 @@ fi
 
 # Set options
 
+# Check whether --with-pic was given.
+if test ${with_pic+y}
+then :
+  withval=$with_pic; lt_p=${PACKAGE-default}
+    case $withval in
+    yes|no) pic_mode=$withval ;;
+    *)
+      pic_mode=default
+      # Look at the argument we got.  We use all the common list separators.
+      lt_save_ifs=$IFS; IFS=$IFS$PATH_SEPARATOR,
+      for lt_pkg in $withval; do
+	IFS=$lt_save_ifs
+	if test "X$lt_pkg" = "X$lt_p"; then
+	  pic_mode=yes
+	fi
+      done
+      IFS=$lt_save_ifs
+      ;;
+    esac
+else $as_nop
+  pic_mode=yes
+fi
+
+
+
+
+
+
+
 
 
         enable_dlopen=no
@@ -9131,36 +9161,6 @@ else $as_nop
 fi
 
 
-
-
-
-
-
-
-
-
-# Check whether --with-pic was given.
-if test ${with_pic+y}
-then :
-  withval=$with_pic; lt_p=${PACKAGE-default}
-    case $withval in
-    yes|no) pic_mode=$withval ;;
-    *)
-      pic_mode=default
-      # Look at the argument we got.  We use all the common list separators.
-      lt_save_ifs=$IFS; IFS=$IFS$PATH_SEPARATOR,
-      for lt_pkg in $withval; do
-	IFS=$lt_save_ifs
-	if test "X$lt_pkg" = "X$lt_p"; then
-	  pic_mode=yes
-	fi
-      done
-      IFS=$lt_save_ifs
-      ;;
-    esac
-else $as_nop
-  pic_mode=default
-fi
 
 
 
@@ -13442,6 +13442,7 @@ CC=$lt_save_CC
 
 
 # Only expand once:
+
 
 
 LIBM=
@@ -21323,8 +21324,8 @@ then :
 else $as_nop
 
            DHT_CFLAGS="-I\$(top_srcdir)/third-party/dht/include"
-           DHT_LIBS="\$(top_builddir)/third-party/dht/libdht.a"
-           DHT_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/dht/libdht.a"
+           DHT_LIBS="\$(top_builddir)/third-party/dht/libdht.la"
+           DHT_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/dht/.libs/libdht.a"
 
 fi
 
@@ -21427,8 +21428,8 @@ fi
 else $as_nop
 
            LIBB64_CFLAGS="-I\$(top_srcdir)/third-party/libb64/include"
-           LIBB64_LIBS="\$(top_builddir)/third-party/libb64/libb64.a"
-           LIBB64_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libb64/libb64.a"
+           LIBB64_LIBS="\$(top_builddir)/third-party/libb64/libb64.la"
+           LIBB64_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libb64/.libs/libb64.a"
 
 fi
 
@@ -21591,8 +21592,8 @@ fi
 else $as_nop
 
                   LIBUTP_CFLAGS="-I\$(top_srcdir)/third-party/libutp/include"
-                  LIBUTP_LIBS="\$(top_builddir)/third-party/libutp/libutp.a ${libutp_extra_libs}"
-                  LIBUTP_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libutp/libutp.a ${libutp_extra_libs}"
+                  LIBUTP_LIBS="\$(top_builddir)/third-party/libutp/libutp.la ${libutp_extra_libs}"
+                  LIBUTP_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libutp/.libs/libutp.a ${libutp_extra_libs}"
 
 fi
 
@@ -21696,8 +21697,8 @@ fi
 else $as_nop
 
            LIBUPNP_CFLAGS="-I\$(top_srcdir)/third-party/miniupnpc/include"
-           LIBUPNP_LIBS="\$(top_builddir)/third-party/miniupnpc/libminiupnp.a"
-           LIBUPNP_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/miniupnpc/libminiupnp.a"
+           LIBUPNP_LIBS="\$(top_builddir)/third-party/miniupnpc/libminiupnp.la"
+           LIBUPNP_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/miniupnpc/.libs/libminiupnp.a"
 	   printf "%s\n" "#define MINIUPNP_STATICLIB 1" >>confdefs.h
 
 
@@ -21801,8 +21802,8 @@ fi
 else $as_nop
 
            LIBNATPMP_CFLAGS="-I\$(top_srcdir)/third-party/libnatpmp/"
-           LIBNATPMP_LIBS="\$(top_builddir)/third-party/libnatpmp/libnatpmp.a"
-           LIBNATPMP_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libnatpmp/libnatpmp.a"
+           LIBNATPMP_LIBS="\$(top_builddir)/third-party/libnatpmp/libnatpmp.la"
+           LIBNATPMP_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libnatpmp/.libs/libnatpmp.a"
 	   printf "%s\n" "#define NATPMP_STATICLIB 1" >>confdefs.h
 
 
@@ -22022,6 +22023,7 @@ ac_abs_srcdir=$ac_abs_top_srcdir$ac_dir_suffix
       ax_args="--disable-option-checking $ax_args"
       # Options that must be added as they are provided.
       as_fn_append ax_args " '--disable-shared'"
+      as_fn_append ax_args " '--with-pic'"
       as_fn_append ax_args " '--disable-samples'"
       as_fn_append ax_args " '--disable-libevent-regress'"
 
@@ -23225,7 +23227,6 @@ esac
   fi
 fi
 
-  set +x
 
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for Qt" >&5
 printf %s "checking for Qt... " >&6; }
@@ -23286,6 +23287,7 @@ EOF
     QT_LIBS=`cd $am_have_qt_dir; make -s -f $am_have_qt_makefile LIBS`
     rm $am_have_qt_pro $am_have_qt_stash $am_have_qt_makefile
     rmdir $am_have_qt_dir
+  set +x
 
     # Look for specific tools in $PATH
     PATH="${PATH}:$(${QMAKE} -query QT_INSTALL_BINS)"
@@ -26449,9 +26451,9 @@ double_quote_subst='$double_quote_subst'
 delay_variable_subst='$delay_variable_subst'
 macro_version='`$ECHO "$macro_version" | $SED "$delay_single_quote_subst"`'
 macro_revision='`$ECHO "$macro_revision" | $SED "$delay_single_quote_subst"`'
+pic_mode='`$ECHO "$pic_mode" | $SED "$delay_single_quote_subst"`'
 enable_shared='`$ECHO "$enable_shared" | $SED "$delay_single_quote_subst"`'
 enable_static='`$ECHO "$enable_static" | $SED "$delay_single_quote_subst"`'
-pic_mode='`$ECHO "$pic_mode" | $SED "$delay_single_quote_subst"`'
 enable_fast_install='`$ECHO "$enable_fast_install" | $SED "$delay_single_quote_subst"`'
 shared_archive_member_spec='`$ECHO "$shared_archive_member_spec" | $SED "$delay_single_quote_subst"`'
 SHELL='`$ECHO "$SHELL" | $SED "$delay_single_quote_subst"`'
@@ -27477,14 +27479,14 @@ available_tags='CXX '
 macro_version=$macro_version
 macro_revision=$macro_revision
 
+# What type of objects to build.
+pic_mode=$pic_mode
+
 # Whether or not to build shared libraries.
 build_libtool_libs=$enable_shared
 
 # Whether or not to build static libraries.
 build_old_libs=$enable_static
-
-# What type of objects to build.
-pic_mode=$pic_mode
 
 # Whether or not to optimize for fast installation.
 fast_install=$enable_fast_install
@@ -28199,6 +28201,10 @@ if test -n "$ac_unrecognized_opts" && test "$enable_option_checking" != no; then
 printf "%s\n" "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
 fi
 
+
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: configure: removing rpath from libtool..." >&5
+printf "%s\n" "configure: removing rpath from libtool..." >&6; }
+${SED} -i s/'^hardcode_libdir_flag_spec.*$'/'hardcode_libdir_flag_spec="-D__LIBTOOL_IS_A_FOOL__"'/g libtool
 
 echo "
 
