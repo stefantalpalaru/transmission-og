@@ -13,7 +13,7 @@ unix: INSTALLS += man
 man.path = /share/man/man1/
 man.files = transmission-og-qt.1
 
-CONFIG += qt thread link_pkgconfig c++1z warn_on
+CONFIG += qt thread link_pkgconfig warn_on optimize_full
 QT += dbus network widgets
 win32:QT += winextras
 PKGCONFIG = libcurl openssl

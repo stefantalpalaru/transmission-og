@@ -20,11 +20,6 @@ AM_MAINTAINER_MODE
 AC_CONFIG_SRCDIR(libtransmission/transmission.h)
 AM_INIT_AUTOMAKE([tar-pax no-dist-gzip dist-xz foreign subdir-objects])
 
-dnl When we create a shared libtransmission-og, we are linking it to static
-dnl libraries in "third-party". Let's make sure those contain PIC objects.
-dnl (mostly an issue on macOS)
-LT_INIT([pic-only])
-
 LT_LIB_M
 
 CFLAGS="$CFLAGS -std=gnu11"
@@ -33,6 +28,11 @@ CXXFLAGS="$CXXFLAGS -std=gnu++17"
 AC_PROG_CC
 AC_PROG_CXX
 AC_C_INLINE
+
+dnl When we create a shared libtransmission-og, we are linking it to static
+dnl libraries in "third-party". Let's make sure those contain PIC objects.
+dnl (mostly an issue on macOS)
+LT_INIT([pic-only])
 
 if test m4_substr(peer_id_prefix,6,1) = "0"; then
   supported_build=yes
@@ -475,7 +475,7 @@ AS_IF([test "x${enable_external_libevent}" = "xyes"], [
        ], [
 	   dnl "event2/event-config.h" is generated at configuration time and placed in the builddir
            LIBEVENT_CFLAGS="-I\$(top_srcdir)/third-party/libevent/include -I\$(top_builddir)/third-party/libevent/include"
-	   dnl We handle that for qmake in "qt/Makefile.am", because that's where $(top_builddir) has a value - not in "qt/config.pri".
+	   dnl We handle that for qmake in "qt/Makefile.am", because that's where $(top_builddir) has a value - not in "qt/config.pri.in".
            LIBEVENT_INCLUDEPATH_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libevent/include"
            LIBEVENT_LIBS="\$(top_builddir)/third-party/libevent/.libs/libevent.a"
            LIBEVENT_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libevent/.libs/libevent.a"
@@ -640,7 +640,6 @@ AC_CONFIG_FILES([Makefile
                  third-party/libnatpmp/Makefile
                  third-party/libutp/Makefile
                  third-party/miniupnpc/Makefile
-                 macosx/Makefile
                  gtk/Makefile
                  gtk/icons/Makefile
                  qt/config.pri
@@ -656,6 +655,16 @@ AC_CONFIG_FILES([Makefile
                  web/javascript/Makefile
                  web/javascript/jquery/Makefile
                  po/Makefile.in])
+
+dnl Whatever the GitHub Actions Windows image is doing with Git symlinks, copying
+dnl them during a "make distcheck" is broken beyond repair. We only care about
+dnl "distcheck" on Windows in the context of CI testing. The source archive we
+dnl actually distribute is only generated on Linux.
+AS_IF([test "x${on_windows}" = "xno"], [
+    AC_CONFIG_FILES([
+        macosx/Makefile
+    ])
+])
 
 AC_OUTPUT
 

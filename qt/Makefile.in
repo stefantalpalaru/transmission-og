@@ -736,12 +736,6 @@ Productivity_DATA = $(DESKTOP_FILES)
 # wrong value in a VPATH build, for some mysterious reason.
 QMAKE_ARGS = \
 	     -early \
-	     QMAKE_CC="$(CC)" \
-	     QMAKE_CXX="$(CXX)" \
-	     QMAKE_LINK="$(CXX)" \
-	     PKG_CONFIG="$(PKG_CONFIG)" \
-	     QMAKE_LFLAGS="$(LDFLAGS)" \
-	     QMAKE_CXXFLAGS="$(CPPFLAGS) $(CXXFLAGS)" \
 	     QMAKE_INCDIR="$(abs_top_builddir)/third-party/libevent/include"
 
 all: $(BUILT_SOURCES)

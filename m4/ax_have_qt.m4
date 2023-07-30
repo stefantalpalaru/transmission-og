@@ -65,7 +65,6 @@ AC_DEFUN([AX_HAVE_QT],
   AC_REQUIRE([AC_PATH_XTRA])
   # openSUSE leap 15.3 installs qmake-qt5, not qmake, for example.
   # Store the full name (like qmake-qt5) into QMAKE.
-  set -x
   AC_ARG_VAR([QMAKE],"Qt make tool")
   AC_CHECK_TOOLS([QMAKE],[qmake qmake5 qmake-qt5],[false])
 
@@ -121,7 +120,8 @@ percent.target = %
 percent.commands = @echo -n "\$(\$(@))\ "
 QMAKE_EXTRA_TARGETS += percent
 EOF
-    ${QMAKE} QMAKE_CXX="${CXX}" $am_have_qt_pro -o $am_have_qt_makefile
+  set -x
+    ${QMAKE} QMAKE_CXX="${CXX}" QMAKE_LINK="${CXX}" $am_have_qt_pro -o $am_have_qt_makefile
     # Work around some crazy MSYS2 path conversion resulting in relative paths here.
     QT_CXXFLAGS=`cd $am_have_qt_dir; make -s -f $am_have_qt_makefile CXXFLAGS INCPATH | sed 's%-I..@<:@./@:>@\+%-I/%g'`
     QT_LIBS=`cd $am_have_qt_dir; make -s -f $am_have_qt_makefile LIBS`
