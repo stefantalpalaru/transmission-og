@@ -748,33 +748,33 @@ GTK_LIBS
 GTK_CFLAGS
 BUILD_GTK_FALSE
 BUILD_GTK_TRUE
-LIBEVENT_LIBS_QT
-LIBEVENT_INCLUDEPATH_QT
+LIBEVENT_LIBS_QMAKE
+LIBEVENT_INCLUDEPATH_QMAKE
 BUILD_EVENT_FALSE
 BUILD_EVENT_TRUE
 LIBEVENT_LIBS
 LIBEVENT_CFLAGS
-LIBNATPMP_LIBS_QT
+LIBNATPMP_LIBS_QMAKE
 LIBNATPMP_LIBS
 LIBNATPMP_CFLAGS
 BUILD_NATPMP_FALSE
 BUILD_NATPMP_TRUE
-LIBUPNP_LIBS_QT
+LIBUPNP_LIBS_QMAKE
 LIBUPNP_LIBS
 LIBUPNP_CFLAGS
 BUILD_MINIUPNP_FALSE
 BUILD_MINIUPNP_TRUE
 BUILD_UTP_FALSE
 BUILD_UTP_TRUE
-LIBUTP_LIBS_QT
+LIBUTP_LIBS_QMAKE
 LIBUTP_LIBS
 LIBUTP_CFLAGS
-LIBB64_LIBS_QT
+LIBB64_LIBS_QMAKE
 LIBB64_LIBS
 LIBB64_CFLAGS
 BUILD_B64_FALSE
 BUILD_B64_TRUE
-DHT_LIBS_QT
+DHT_LIBS_QMAKE
 DHT_LIBS
 DHT_CFLAGS
 BUILD_DHT_FALSE
@@ -21169,13 +21169,13 @@ then :
 
        DHT_CFLAGS=""
        DHT_LIBS="-ldht"
-       DHT_LIBS_QT="-ldht"
+       DHT_LIBS_QMAKE="-ldht"
 
 else $as_nop
 
            DHT_CFLAGS="-I\$(top_srcdir)/third-party/dht/include"
            DHT_LIBS="\$(top_builddir)/third-party/dht/libdht.a"
-           DHT_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/dht/libdht.a"
+           DHT_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/dht/libdht.a"
 
 fi
 
@@ -21273,13 +21273,13 @@ fi
 
        LIBB64_CFLAGS="-DUSE_SYSTEM_B64"
        LIBB64_LIBS="-lb64"
-       LIBB64_LIBS_QT="-lb64"
+       LIBB64_LIBS_QMAKE="-lb64"
 
 else $as_nop
 
            LIBB64_CFLAGS="-I\$(top_srcdir)/third-party/libb64/include"
            LIBB64_LIBS="\$(top_builddir)/third-party/libb64/libb64.a"
-           LIBB64_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libb64/libb64.a"
+           LIBB64_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libb64/libb64.a"
 
 fi
 
@@ -21437,13 +21437,13 @@ fi
 
               LIBUTP_CFLAGS=""
               LIBUTP_LIBS="-lutp ${libutp_extra_libs}"
-              LIBUTP_LIBS_QT="-lutp ${libutp_extra_libs}"
+              LIBUTP_LIBS_QMAKE="-lutp ${libutp_extra_libs}"
 
 else $as_nop
 
                   LIBUTP_CFLAGS="-I\$(top_srcdir)/third-party/libutp/include"
                   LIBUTP_LIBS="\$(top_builddir)/third-party/libutp/libutp.a ${libutp_extra_libs}"
-                  LIBUTP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libutp/libutp.a ${libutp_extra_libs}"
+                  LIBUTP_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libutp/libutp.a ${libutp_extra_libs}"
 
 fi
 
@@ -21542,13 +21542,13 @@ fi
 
        LIBUPNP_CFLAGS=""
        LIBUPNP_LIBS="-lminiupnpc"
-       LIBUPNP_LIBS_QT="-lminiupnpc"
+       LIBUPNP_LIBS_QMAKE="-lminiupnpc"
 
 else $as_nop
 
            LIBUPNP_CFLAGS="-I\$(top_srcdir)/third-party/miniupnpc/include"
            LIBUPNP_LIBS="\$(top_builddir)/third-party/miniupnpc/libminiupnp.a"
-           LIBUPNP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/miniupnpc/libminiupnp.a"
+           LIBUPNP_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/miniupnpc/libminiupnp.a"
 	   printf "%s\n" "#define MINIUPNP_STATICLIB 1" >>confdefs.h
 
 
@@ -21647,13 +21647,13 @@ fi
 
        LIBNATPMP_CFLAGS=""
        LIBNATPMP_LIBS="-lnatpmp"
-       LIBNATPMP_LIBS_QT="-lnatpmp"
+       LIBNATPMP_LIBS_QMAKE="-lnatpmp"
 
 else $as_nop
 
            LIBNATPMP_CFLAGS="-I\$(top_srcdir)/third-party/libnatpmp/"
            LIBNATPMP_LIBS="\$(top_builddir)/third-party/libnatpmp/libnatpmp.a"
-           LIBNATPMP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libnatpmp/libnatpmp.a"
+           LIBNATPMP_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libnatpmp/libnatpmp.a"
 	   printf "%s\n" "#define NATPMP_STATICLIB 1" >>confdefs.h
 
 
@@ -21774,15 +21774,15 @@ else
 printf "%s\n" "yes" >&6; }
 	:
 fi
-       LIBEVENT_INCLUDEPATH_QT=""
-       LIBEVENT_LIBS_QT="${LIBEVENT_LIBS}"
+       LIBEVENT_INCLUDEPATH_QMAKE=""
+       LIBEVENT_LIBS_QMAKE="${LIBEVENT_LIBS}"
 
 else $as_nop
 
 	              LIBEVENT_CFLAGS="-I\$(top_srcdir)/third-party/libevent/include -I\$(top_builddir)/third-party/libevent/include"
-           LIBEVENT_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/libevent/include"
+	              LIBEVENT_INCLUDEPATH_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libevent/include"
            LIBEVENT_LIBS="\$(top_builddir)/third-party/libevent/.libs/libevent.a"
-           LIBEVENT_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libevent/.libs/libevent.a"
+           LIBEVENT_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libevent/.libs/libevent.a"
 
 
   # Various preliminary checks.
@@ -23138,7 +23138,6 @@ EOF
 
     # Look for specific tools in $PATH
     PATH="${PATH}:$(${QMAKE} -query QT_INSTALL_BINS)"
-    echo "${PATH}"
     if test -n "$ac_tool_prefix"; then
   for ac_prog in moc moc5 moc-qt5
   do

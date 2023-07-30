@@ -41,8 +41,16 @@ DIST_SUBDIRS = \
   daemon \
   gtk po \
   qt \
-  macosx \
   web
+
+# Whatever the GitHub Actions Windows image is doing with Git symlinks, copying
+# them during a "make distcheck" is broken beyond repair. We only care about
+# "distcheck" on Windows in the context of CI testing. The source archive we
+# actually distribute is only generated on Linux.
+if !WIN32
+DIST_SUBDIRS += \
+  macosx
+endif
 
 EXTRA_DIST = \
   AUTHORS \

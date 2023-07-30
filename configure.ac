@@ -332,17 +332,17 @@ AC_ARG_ENABLE([external-dht],
 AS_IF([test "x${enable_external_dht}" = "xyes"], [
        DHT_CFLAGS=""
        DHT_LIBS="-ldht"
-       DHT_LIBS_QT="-ldht"
+       DHT_LIBS_QMAKE="-ldht"
        ], [
            DHT_CFLAGS="-I\$(top_srcdir)/third-party/dht/include"
            DHT_LIBS="\$(top_builddir)/third-party/dht/libdht.a"
-           DHT_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/dht/libdht.a"
+           DHT_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/dht/libdht.a"
            ])
 
 AM_CONDITIONAL([BUILD_DHT], [test "x${enable_external_dht}" != "xyes"])
 AC_SUBST(DHT_CFLAGS)
 AC_SUBST(DHT_LIBS)
-AC_SUBST(DHT_LIBS_QT)
+AC_SUBST(DHT_LIBS_QMAKE)
 
 
 dnl ----------------------------------------------------------------------------
@@ -357,17 +357,17 @@ AS_IF([test "x${enable_external_b64}" = "xyes"], [
                        ])
        LIBB64_CFLAGS="-DUSE_SYSTEM_B64"
        LIBB64_LIBS="-lb64"
-       LIBB64_LIBS_QT="-lb64"
+       LIBB64_LIBS_QMAKE="-lb64"
        ], [
            LIBB64_CFLAGS="-I\$(top_srcdir)/third-party/libb64/include"
            LIBB64_LIBS="\$(top_builddir)/third-party/libb64/libb64.a"
-           LIBB64_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libb64/libb64.a"
+           LIBB64_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libb64/libb64.a"
            ])
 
 AM_CONDITIONAL([BUILD_B64], [test "x${enable_external_b64}" != "xyes"])
 AC_SUBST(LIBB64_CFLAGS)
 AC_SUBST(LIBB64_LIBS)
-AC_SUBST(LIBB64_LIBS_QT)
+AC_SUBST(LIBB64_LIBS_QMAKE)
 
 
 dnl ----------------------------------------------------------------------------
@@ -391,17 +391,17 @@ AS_IF([test "x${enable_utp}" != "xno"], [
                               ])
               LIBUTP_CFLAGS=""
               LIBUTP_LIBS="-lutp ${libutp_extra_libs}"
-              LIBUTP_LIBS_QT="-lutp ${libutp_extra_libs}"
+              LIBUTP_LIBS_QMAKE="-lutp ${libutp_extra_libs}"
               ], [
                   LIBUTP_CFLAGS="-I\$(top_srcdir)/third-party/libutp/include"
                   LIBUTP_LIBS="\$(top_builddir)/third-party/libutp/libutp.a ${libutp_extra_libs}"
-                  LIBUTP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libutp/libutp.a ${libutp_extra_libs}"
+                  LIBUTP_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libutp/libutp.a ${libutp_extra_libs}"
                   ])
        ])
 
 AC_SUBST(LIBUTP_CFLAGS)
 AC_SUBST(LIBUTP_LIBS)
-AC_SUBST(LIBUTP_LIBS_QT)
+AC_SUBST(LIBUTP_LIBS_QMAKE)
 AM_CONDITIONAL([BUILD_UTP],[test "x${enable_external_utp}" != "xyes"])
 
 dnl
@@ -416,18 +416,18 @@ AS_IF([test "x${enable_external_miniupnpc}" = "xyes"], [
                        ])
        LIBUPNP_CFLAGS=""
        LIBUPNP_LIBS="-lminiupnpc"
-       LIBUPNP_LIBS_QT="-lminiupnpc"
+       LIBUPNP_LIBS_QMAKE="-lminiupnpc"
        ], [
            LIBUPNP_CFLAGS="-I\$(top_srcdir)/third-party/miniupnpc/include"
            LIBUPNP_LIBS="\$(top_builddir)/third-party/miniupnpc/libminiupnp.a"
-           LIBUPNP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/miniupnpc/libminiupnp.a"
+           LIBUPNP_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/miniupnpc/libminiupnp.a"
 	   AC_DEFINE([MINIUPNP_STATICLIB])
            ])
 
 AM_CONDITIONAL([BUILD_MINIUPNP], [test "x${enable_external_miniupnpc}" != "xyes"])
 AC_SUBST(LIBUPNP_CFLAGS)
 AC_SUBST(LIBUPNP_LIBS)
-AC_SUBST(LIBUPNP_LIBS_QT)
+AC_SUBST(LIBUPNP_LIBS_QMAKE)
 
 dnl ----------------------------------------------------------------------------
 dnl
@@ -441,18 +441,18 @@ AS_IF([test "x${enable_external_natpmp}" = "xyes"], [
                        ])
        LIBNATPMP_CFLAGS=""
        LIBNATPMP_LIBS="-lnatpmp"
-       LIBNATPMP_LIBS_QT="-lnatpmp"
+       LIBNATPMP_LIBS_QMAKE="-lnatpmp"
        ], [
            LIBNATPMP_CFLAGS="-I\$(top_srcdir)/third-party/libnatpmp/"
            LIBNATPMP_LIBS="\$(top_builddir)/third-party/libnatpmp/libnatpmp.a"
-           LIBNATPMP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libnatpmp/libnatpmp.a"
+           LIBNATPMP_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libnatpmp/libnatpmp.a"
 	   AC_DEFINE([NATPMP_STATICLIB])
            ])
 
 AM_CONDITIONAL([BUILD_NATPMP], [test "x${enable_external_natpmp}" != "xyes"])
 AC_SUBST(LIBNATPMP_CFLAGS)
 AC_SUBST(LIBNATPMP_LIBS)
-AC_SUBST(LIBNATPMP_LIBS_QT)
+AC_SUBST(LIBNATPMP_LIBS_QMAKE)
 
 dnl ----------------------------------------------------------------------------
 dnl
@@ -463,22 +463,23 @@ AC_ARG_ENABLE([external-libevent],
               AS_HELP_STRING([--enable-external-libevent], [use system libevent]))
 AS_IF([test "x${enable_external_libevent}" = "xyes"], [
        PKG_CHECK_MODULES(LIBEVENT, [libevent >= ${LIBEVENT_MINIMUM}])
-       LIBEVENT_INCLUDEPATH_QT=""
-       LIBEVENT_LIBS_QT="${LIBEVENT_LIBS}"
+       LIBEVENT_INCLUDEPATH_QMAKE=""
+       LIBEVENT_LIBS_QMAKE="${LIBEVENT_LIBS}"
        ], [
 	   dnl "event2/event-config.h" is generated at configuration time and placed in the builddir
            LIBEVENT_CFLAGS="-I\$(top_srcdir)/third-party/libevent/include -I\$(top_builddir)/third-party/libevent/include"
-           LIBEVENT_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/libevent/include"
+	   dnl We handle that for qmake in "qt/Makefile.am", because that's where $(top_builddir) has a value - not in "qt/config.pri".
+           LIBEVENT_INCLUDEPATH_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libevent/include"
            LIBEVENT_LIBS="\$(top_builddir)/third-party/libevent/.libs/libevent.a"
-           LIBEVENT_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libevent/.libs/libevent.a"
+           LIBEVENT_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libevent/.libs/libevent.a"
            AX_SUBDIRS_CONFIGURE([third-party/libevent], [[--disable-shared], [--disable-samples], [--disable-libevent-regress]])
            ])
 
 AM_CONDITIONAL([BUILD_EVENT], [test "x${enable_external_libevent}" != "xyes"])
 AC_SUBST(LIBEVENT_CFLAGS)
-AC_SUBST(LIBEVENT_INCLUDEPATH_QT)
+AC_SUBST(LIBEVENT_INCLUDEPATH_QMAKE)
 AC_SUBST(LIBEVENT_LIBS)
-AC_SUBST(LIBEVENT_LIBS_QT)
+AC_SUBST(LIBEVENT_LIBS_QMAKE)
 
 dnl ----------------------------------------------------------------------------
 dnl

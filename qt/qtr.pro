@@ -21,11 +21,11 @@ PKGCONFIG = libcurl openssl
 DEFINES += QT_NO_CAST_FROM_ASCII ENABLE_DBUS_INTEROP
 win32:DEFINES += QT_DBUS
 
-INCLUDEPATH = \
+# These are all prepended to default include paths.
+INCLUDEPATH += \
 	$${TRANSMISSION_TOP} \
 	$${LIBEVENT_INCLUDEPATH} \
-	/usr/local/include \
-	$${INCLUDEPATH}
+	/usr/local/include
 
 # We cannot use "*.la" files in here, since we are not linking with Libtool.
 LIBS += $${TRANSMISSION_TOP}/libtransmission/.libs/libtransmission-og.a

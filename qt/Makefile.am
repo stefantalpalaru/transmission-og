@@ -326,15 +326,17 @@ EXTRA_DIST += \
 	      qtr.pro \
 	      qtr.rc
 
+# We need "$(abs_top_builddir)" in here, because "$(top_builddir)" has the
+# wrong value in a VPATH build, for some mysterious reason.
 QMAKE_ARGS = \
 	     -early \
-	     QMAKE_CC=$(CC) \
-	     QMAKE_CXX=$(CXX) \
-	     QMAKE_LINK=$(CXX) \
-	     PKG_CONFIG=$(PKG_CONFIG) \
+	     QMAKE_CC="$(CC)" \
+	     QMAKE_CXX="$(CXX)" \
+	     QMAKE_LINK="$(CXX)" \
+	     PKG_CONFIG="$(PKG_CONFIG)" \
 	     QMAKE_LFLAGS="$(LDFLAGS)" \
 	     QMAKE_CXXFLAGS="$(CPPFLAGS) $(CXXFLAGS)" \
-	     QMAKE_INCDIR="$(top_builddir)/third-party/libevent/include"
+	     QMAKE_INCDIR="$(abs_top_builddir)/third-party/libevent/include"
 .PHONY: qmake-build
 qmake-build:
 	+ $(QMAKE) $(QMAKE_ARGS) -o Makefile.qmake "$(srcdir)/qtr.pro" && \

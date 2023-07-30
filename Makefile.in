@@ -87,8 +87,16 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-@HAVE_REVISION_FILE_TRUE@am__append_1 = REVISION
-@WIN32_TRUE@am__append_2 = -G "MinGW Makefiles"
+
+# Whatever the GitHub Actions Windows image is doing with Git symlinks, copying
+# them during a "make distcheck" is broken beyond repair. We only care about
+# "distcheck" on Windows in the context of CI testing. The source archive we
+# actually distribute is only generated on Linux.
+@WIN32_FALSE@am__append_1 = \
+@WIN32_FALSE@  macosx
+
+@HAVE_REVISION_FILE_TRUE@am__append_2 = REVISION
+@WIN32_TRUE@am__append_3 = -G "MinGW Makefiles"
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/acx-pthread.m4 \
@@ -242,7 +250,7 @@ DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DHT_CFLAGS = @DHT_CFLAGS@
 DHT_LIBS = @DHT_LIBS@
-DHT_LIBS_QT = @DHT_LIBS_QT@
+DHT_LIBS_QMAKE = @DHT_LIBS_QMAKE@
 DLLTOOL = @DLLTOOL@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
@@ -285,27 +293,27 @@ LIBAPPINDICATOR_LIBS = @LIBAPPINDICATOR_LIBS@
 LIBAPPINDICATOR_MINIMUM = @LIBAPPINDICATOR_MINIMUM@
 LIBB64_CFLAGS = @LIBB64_CFLAGS@
 LIBB64_LIBS = @LIBB64_LIBS@
-LIBB64_LIBS_QT = @LIBB64_LIBS_QT@
+LIBB64_LIBS_QMAKE = @LIBB64_LIBS_QMAKE@
 LIBCURL_CFLAGS = @LIBCURL_CFLAGS@
 LIBCURL_LIBS = @LIBCURL_LIBS@
 LIBEVENT_CFLAGS = @LIBEVENT_CFLAGS@
-LIBEVENT_INCLUDEPATH_QT = @LIBEVENT_INCLUDEPATH_QT@
+LIBEVENT_INCLUDEPATH_QMAKE = @LIBEVENT_INCLUDEPATH_QMAKE@
 LIBEVENT_LIBS = @LIBEVENT_LIBS@
-LIBEVENT_LIBS_QT = @LIBEVENT_LIBS_QT@
+LIBEVENT_LIBS_QMAKE = @LIBEVENT_LIBS_QMAKE@
 LIBEVENT_MINIMUM = @LIBEVENT_MINIMUM@
 LIBM = @LIBM@
 LIBNATPMP_CFLAGS = @LIBNATPMP_CFLAGS@
 LIBNATPMP_LIBS = @LIBNATPMP_LIBS@
-LIBNATPMP_LIBS_QT = @LIBNATPMP_LIBS_QT@
+LIBNATPMP_LIBS_QMAKE = @LIBNATPMP_LIBS_QMAKE@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
 LIBUPNP_CFLAGS = @LIBUPNP_CFLAGS@
 LIBUPNP_LIBS = @LIBUPNP_LIBS@
-LIBUPNP_LIBS_QT = @LIBUPNP_LIBS_QT@
+LIBUPNP_LIBS_QMAKE = @LIBUPNP_LIBS_QMAKE@
 LIBUTP_CFLAGS = @LIBUTP_CFLAGS@
 LIBUTP_LIBS = @LIBUTP_LIBS@
-LIBUTP_LIBS_QT = @LIBUTP_LIBS_QT@
+LIBUTP_LIBS_QMAKE = @LIBUTP_LIBS_QMAKE@
 LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
@@ -462,21 +470,12 @@ SUBDIRS = \
 
 
 # We need to distribute all these subdirs unconditionally, so the "$(.._DIR)" scheme above is not suitable.
-DIST_SUBDIRS = \
-  third-party \
-  libtransmission \
-  utils \
-  cli \
-  daemon \
-  gtk po \
-  qt \
-  macosx \
-  web
-
+DIST_SUBDIRS = third-party libtransmission utils cli daemon gtk po qt \
+	web $(am__append_1)
 EXTRA_DIST = AUTHORS CMakeLists.txt COPYING NEWS.md README.md \
 	Transmission.xcodeproj/project.pbxproj autogen.sh cmake docker \
 	extras installers m4 po/CMakeLists.txt transmission-og.rc.in \
-	update-version-h.sh utils/CMakeLists.txt $(am__append_1)
+	update-version-h.sh utils/CMakeLists.txt $(am__append_2)
 
 # Do a CMake build during "make distcheck".
 # Notice how we get "ctest" to run the tests in parallel by setting "ARGS" so
@@ -484,7 +483,7 @@ EXTRA_DIST = AUTHORS CMakeLists.txt COPYING NEWS.md README.md \
 # unknown arguments.
 CMAKE_ARGS = -DENABLE_CLI=ON -DUSE_SYSTEM_B64=OFF -DUSE_SYSTEM_DHT=OFF \
 	-DUSE_SYSTEM_EVENT2=OFF -DUSE_SYSTEM_MINIUPNPC=OFF \
-	-DUSE_SYSTEM_NATPMP=OFF -DUSE_SYSTEM_UTP=OFF $(am__append_2)
+	-DUSE_SYSTEM_NATPMP=OFF -DUSE_SYSTEM_UTP=OFF $(am__append_3)
 DISTCLEANFILES = \
   intltool-extract \
   intltool-merge \

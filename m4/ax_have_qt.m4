@@ -129,7 +129,6 @@ EOF
 
     # Look for specific tools in $PATH
     PATH="${PATH}:$(${QMAKE} -query QT_INSTALL_BINS)"
-    echo "${PATH}"
     AC_CHECK_TOOLS([QT_MOC],[moc moc5 moc-qt5],[false])
     QT_MOC="$(which ${QT_MOC})"
     AC_CHECK_TOOLS([QT_UIC],[uic uic5 uic-qt5],[false])
