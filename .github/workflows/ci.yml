@@ -325,5 +325,5 @@ jobs:
 
             # Tests.
             # (random failure on Windows if we enable Make's parallelism here)
-            ${MAKE_CMD} -C libtransmission check || { cat libtransmission/test-suite.log; exit 1; }
+            ${MAKE_CMD} V=1 -C libtransmission check || { cat libtransmission/test-suite.log; exit 1; }
           fi # Autotools

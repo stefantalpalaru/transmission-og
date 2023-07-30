@@ -162,6 +162,9 @@ dnl  various checks
 
 AC_PROG_LN_S
 AC_PROG_MKDIR_P
+AC_PROG_FGREP
+AC_PROG_SED
+
 
 AC_CHECK_HEADERS_ONCE([sys/time.h])
 
@@ -549,13 +552,12 @@ dnl a problem and the old version was working fine for you,
 dnl it should be safe to re-edit 0.40 back down to 0.23
 
 AS_IF([test "x${enable_nls}" != "xno"], [
-    m4_ifdef([IT_PROG_INTLTOOL],
-             [
+    m4_ifdef([IT_PROG_INTLTOOL], [
 dnl intltoolize needs this at the start of a line:
 IT_PROG_INTLTOOL([0.35.0],[no-xml])
-             ], [
-             AC_MSG_ERROR("--enable-nls requires intltool to be installed.")
-	     ])
+    ], [
+        AC_MSG_ERROR("--enable-nls requires intltool to be installed.")
+    ])
 
     AC_CHECK_HEADERS([libintl.h])
     GETTEXT_PACKAGE=transmission-og-gtk
@@ -564,6 +566,29 @@ IT_PROG_INTLTOOL([0.35.0],[no-xml])
     AM_GLIB_GNU_GETTEXT
     transmissionlocaledir='${prefix}/${DATADIRNAME}/locale'
     AC_SUBST(transmissionlocaledir)
+
+    dnl Check for and fix missing delete of intltool cache lock file.  Only
+    dnl needed with intltool >= 0.51.0-5.1, but just always fix as that is
+    dnl simpler and safe.
+    dnl From: https://gitlab.gnome.org/GNOME/gparted/-/merge_requests/103
+    AC_MSG_CHECKING([whether po/Makefile.in.in deletes intltool cache lock file])
+    file='po/Makefile.in.in'
+    AS_IF([test ! -f "$srcdir/$file"], [
+        AC_MSG_RESULT([not applicable])
+        ], [
+            AS_IF([${FGREP} -q '.intltool-merge-cache.lock' "$srcdir/$file" 2> /dev/null], [
+                AC_MSG_RESULT([yes])
+                ], [
+                    AS_IF([test -w "${srcdir}/${file}"], [
+                        ${SED} -i '/rm -f .intltool-merge-cache/s/$/ .intltool-merge-cache.lock/' "${srcdir}/${file}" 2> /dev/null
+                    ])
+                AS_IF([${FGREP} -q '.intltool-merge-cache.lock' "${srcdir}/${file}" 2> /dev/null], [
+                    AC_MSG_RESULT([fixed])
+                ], [
+                    AC_MSG_RESULT([no])
+                ])
+        ])
+    ])
 ])
 AC_SUBST(INTLLIBS)
 

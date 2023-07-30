@@ -1195,7 +1195,7 @@ if [ "x$HAVE_AUTORECONF" = "xyes" ] ; then
 
 	$ECHO "Warning: $AUTORECONF failed"
 
-	if test -f ltmain.sh ; then
+	if test ! -f ltmain.sh ; then
 	    $ECHO "libtoolize being run by autoreconf is not creating ltmain.sh in the auxillary directory like it should"
 	fi
 

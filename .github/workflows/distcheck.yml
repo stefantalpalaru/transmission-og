@@ -8,7 +8,7 @@ on:
 
 jobs:
   distcheck:
-    timeout-minutes: 30
+    timeout-minutes: 50
     strategy:
       fail-fast: false
       matrix:
