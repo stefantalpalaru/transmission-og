@@ -31,7 +31,6 @@ AC_C_INLINE
 
 dnl When we create a shared libtransmission-og, we are linking it to static
 dnl libraries in "third-party". Let's make sure those contain PIC objects.
-dnl (mostly an issue on macOS)
 LT_INIT([pic-only])
 
 if test m4_substr(peer_id_prefix,6,1) = "0"; then

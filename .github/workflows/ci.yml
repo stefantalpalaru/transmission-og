@@ -68,7 +68,7 @@ jobs:
               CFLAGS="${CFLAGS} -m32"
               CXXFLAGS="${CXXFLAGS} -m32"
               CPPFLAGS="${CPPFLAGS} -I/usr/include/i386-linux-gnu/"
-              LDFLAGS="${LDFLAGS} -L/usr/lib/i386-linux-gnu/"
+              LDFLAGS="${LDFLAGS} -m32 -L/usr/lib/i386-linux-gnu/"
               QMAKE="/usr/lib/i386-linux-gnu/qt5/bin/qmake"
               echo "/usr/lib/i386-linux-gnu/qt5/bin" >> ${GITHUB_PATH}
               echo "PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig" >> ${GITHUB_ENV}

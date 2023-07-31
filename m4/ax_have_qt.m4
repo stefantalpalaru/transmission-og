@@ -231,7 +231,7 @@ EOF
             echo "configure: could not compile:" >&AS_MESSAGE_LOG_FD
             cat ax_qt_main.$ac_ext >&AS_MESSAGE_LOG_FD
           else
-            ax_try_4="$CXX -o ax_qt_main ax_qt_main.o moc_ax_qt_test.o $QT_LIBS $LIBS >/dev/null 2>/dev/null"
+            ax_try_4="$CXX $LDFLAGS -o ax_qt_main ax_qt_main.o moc_ax_qt_test.o $QT_LIBS $LIBS >/dev/null 2>/dev/null"
             AC_TRY_EVAL(ax_try_4)
             if test x"$ac_status" != x0; then
               echo "$ax_err_4" >&AS_MESSAGE_LOG_FD
