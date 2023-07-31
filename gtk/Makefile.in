@@ -124,10 +124,9 @@ am_transmission_og_gtk_OBJECTS = actions.$(OBJEXT) conf.$(OBJEXT) \
 	tr-icon.$(OBJEXT) tr-prefs.$(OBJEXT) tr-window.$(OBJEXT) \
 	util.$(OBJEXT)
 transmission_og_gtk_OBJECTS = $(am_transmission_og_gtk_OBJECTS)
-am__DEPENDENCIES_1 =
 transmission_og_gtk_DEPENDENCIES =  \
 	$(top_builddir)/libtransmission/libtransmission-og.la \
-	$(am__DEPENDENCIES_1) $(am__append_3)
+	$(am__append_3)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -400,6 +399,7 @@ LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
+MACOSX_DEPLOYMENT_TARGET = @MACOSX_DEPLOYMENT_TARGET@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
@@ -576,10 +576,8 @@ nodist_EXTRA_transmission_og_gtk_SOURCES = dummy.cxx # force C++ linking
 dist_man_MANS = transmission-og-gtk.1
 transmission_og_gtk_LDADD =  \
 	$(top_builddir)/libtransmission/libtransmission-og.la \
-	@LIBUPNP_LIBS@ @LIBNATPMP_LIBS@ @DHT_LIBS@ @LIBB64_LIBS@ \
-	@LIBUTP_LIBS@ @GTK_LIBS@ @LIBAPPINDICATOR_LIBS@ \
-	@LIBEVENT_LIBS@ @LIBCURL_LIBS@ @CRYPTO_LIBS@ @ZLIB_LIBS@ \
-	@PTHREAD_LIBS@ $(LIBM) $(am__append_3)
+	@GTK_LIBS@ @LIBAPPINDICATOR_LIBS@ @LIBEVENT_LIBS@ \
+	$(am__append_3)
 
 # Desktop integration.
 DESKTOP_IN_FILES = transmission-og-gtk.desktop.in

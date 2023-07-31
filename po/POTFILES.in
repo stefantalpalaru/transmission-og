@@ -1,5 +1,4 @@
 cli/cli.c
-[encoding: UTF-8]
 gtk/actions.c
 gtk/conf.c
 gtk/details.c

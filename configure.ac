@@ -95,7 +95,7 @@ dnl
 dnl  platform-specific stuff.
 
 AC_CANONICAL_HOST
-on_darwin="no"
+on_macos="no"
 on_windows="no"
 case $host_os in
    *mingw32*)
@@ -126,12 +126,22 @@ case $host_os in
      ;;
 
   *darwin*)
-    on_darwin="yes"
+    on_macos="yes"
     LIBS="${LIBS} -framework Cocoa"
+
+    AS_IF([test -z "${MACOSX_DEPLOYMENT_TARGET}"], [
+        MACOSX_DEPLOYMENT_TARGET="$(sw_vers -productVersion)"
+    ])
+    AC_SUBST(MACOSX_DEPLOYMENT_TARGET)
+
+    CFLAGS="${CFLAGS} -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
+    CXXFLAGS="${CXXFLAGS} -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
+    LDFLAGS="${LDFLAGS} -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
     ;;
 esac
 
 AM_CONDITIONAL(WIN32, test "x${on_windows}" = "xyes")
+AM_CONDITIONAL(MACOS, test "x${on_macos}" = "xyes")
 
 
 dnl ----------------------------------------------------------------------------
@@ -478,7 +488,15 @@ AS_IF([test "x${enable_external_libevent}" = "xyes"], [
            LIBEVENT_INCLUDEPATH_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libevent/include"
            LIBEVENT_LIBS="\$(top_builddir)/third-party/libevent/.libs/libevent.a"
            LIBEVENT_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libevent/.libs/libevent.a"
-           AX_SUBDIRS_CONFIGURE([third-party/libevent], [[--disable-shared], [--with-pic], [--disable-samples], [--disable-libevent-regress]])
+           AX_SUBDIRS_CONFIGURE([third-party/libevent], [
+                                    [--disable-shared],
+                                    [--with-pic],
+                                    [--disable-samples],
+                                    [--disable-libevent-regress],
+                                    [CFLAGS=${CFLAGS}],
+                                    [CPPFLAGS=${CPPFLAGS}],
+                                    [LDFLAGS=${LDFLAGS}]
+                                ])
            ])
 
 AM_CONDITIONAL([BUILD_EVENT], [test "x${enable_external_libevent}" != "xyes"])

@@ -41,15 +41,7 @@ bin_PROGRAMS = transmission-og-qt
 transmission_og_qt_LDADD = \
     $(top_builddir)/libtransmission/libtransmission-og.la \
     @QT_LIBS@ \
-    @LIBUTP_LIBS@ \
-    @DHT_LIBS@ \
-    @LIBB64_LIBS@ \
-    @LIBUPNP_LIBS@ \
-    @LIBNATPMP_LIBS@ \
-    @LIBEVENT_LIBS@ \
-    @LIBCURL_LIBS@ \
-    @CRYPTO_LIBS@ \
-    @ZLIB_LIBS@
+    @LIBEVENT_LIBS@
 
 if WIN32
 transmission_og_qt_LDADD += \
@@ -337,6 +329,12 @@ QMAKE_ARGS = \
 	     QMAKE_LFLAGS="$(LDFLAGS)" \
 	     QMAKE_CXXFLAGS="$(CPPFLAGS) $(CXXFLAGS)" \
 	     QMAKE_INCDIR="$(abs_top_builddir)/third-party/libevent/include"
+if MACOS
+# A qmake build still errors out on macOS, with this ridiculous message:
+# "ld: warning: ignoring file ../libtransmission/.libs/libtransmission-og.a, building for macOS-x86_64 but attempting to link with file built for macOS-x86_64"
+QMAKE_ARGS += \
+	      QMAKE_MACOSX_DEPLOYMENT_TARGET="$(MACOSX_DEPLOYMENT_TARGET)"
+endif
 .PHONY: qmake-build
 qmake-build:
 	+ $(QMAKE) $(QMAKE_ARGS) -o Makefile.qmake "$(srcdir)/qtr.pro" && \

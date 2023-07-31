@@ -21,18 +21,7 @@ nodist_EXTRA_transmission_og_cli_SOURCES = dummy.cxx # force C++ linking
 
 transmission_og_cli_LDADD = \
     $(top_builddir)/libtransmission/libtransmission-og.la \
-    @LIBNATPMP_LIBS@ \
-    @LIBUPNP_LIBS@ \
-    @DHT_LIBS@ \
-    @LIBB64_LIBS@ \
-    @LIBUTP_LIBS@ \
-    @LIBEVENT_LIBS@ \
-    @LIBCURL_LIBS@ \
-    @CRYPTO_LIBS@ \
-    @INTLLIBS@ \
-    @ZLIB_LIBS@ \
-    @PTHREAD_LIBS@ \
-    $(LIBM)
+    @LIBEVENT_LIBS@
 
 if WIN32
 transmission-og-cli.rc: ../transmission-og.rc.in

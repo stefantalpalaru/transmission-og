@@ -112,10 +112,9 @@ am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(man1dir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_transmission_og_cli_OBJECTS = cli.$(OBJEXT)
 transmission_og_cli_OBJECTS = $(am_transmission_og_cli_OBJECTS)
-am__DEPENDENCIES_1 =
 transmission_og_cli_DEPENDENCIES =  \
 	$(top_builddir)/libtransmission/libtransmission-og.la \
-	$(am__DEPENDENCIES_1) $(am__append_3)
+	$(am__append_3)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -334,6 +333,7 @@ LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
+MACOSX_DEPLOYMENT_TARGET = @MACOSX_DEPLOYMENT_TARGET@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
@@ -484,9 +484,7 @@ transmission_og_cli_SOURCES = \
 nodist_EXTRA_transmission_og_cli_SOURCES = dummy.cxx # force C++ linking
 transmission_og_cli_LDADD =  \
 	$(top_builddir)/libtransmission/libtransmission-og.la \
-	@LIBNATPMP_LIBS@ @LIBUPNP_LIBS@ @DHT_LIBS@ @LIBB64_LIBS@ \
-	@LIBUTP_LIBS@ @LIBEVENT_LIBS@ @LIBCURL_LIBS@ @CRYPTO_LIBS@ \
-	@INTLLIBS@ @ZLIB_LIBS@ @PTHREAD_LIBS@ $(LIBM) $(am__append_3)
+	@LIBEVENT_LIBS@ $(am__append_3)
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 

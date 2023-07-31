@@ -22,19 +22,7 @@ bin_PROGRAMS = \
 
 transmission_og_daemon_LDADD = \
     $(top_builddir)/libtransmission/libtransmission-og.la \
-    @LIBUPNP_LIBS@ \
-    @LIBNATPMP_LIBS@ \
-    @DHT_LIBS@ \
-    @LIBB64_LIBS@ \
-    @LIBUTP_LIBS@ \
-    @LIBEVENT_LIBS@ \
-    @LIBCURL_LIBS@ \
-    @CRYPTO_LIBS@ \
-    @INTLLIBS@ \
-    @SYSTEMD_LIBS@ \
-    @ZLIB_LIBS@ \
-    @PTHREAD_LIBS@ \
-    $(LIBM)
+    @LIBEVENT_LIBS@
 
 noinst_HEADERS = \
 		 daemon.h \

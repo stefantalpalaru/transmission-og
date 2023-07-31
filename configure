@@ -816,8 +816,11 @@ PTHREAD_CFLAGS
 PTHREAD_LIBS
 PTHREAD_CC
 acx_pthread_config
+MACOS_FALSE
+MACOS_TRUE
 WIN32_FALSE
 WIN32_TRUE
+MACOSX_DEPLOYMENT_TARGET
 WINDRES
 LIBAPPINDICATOR_MINIMUM
 GIO_MINIMUM
@@ -18482,7 +18485,7 @@ LIBAPPINDICATOR_MINIMUM=0.4.90
 
 
 
-on_darwin="no"
+on_macos="no"
 on_windows="no"
 case $host_os in
    *mingw32*)
@@ -18608,8 +18611,20 @@ fi
      ;;
 
   *darwin*)
-    on_darwin="yes"
+    on_macos="yes"
     LIBS="${LIBS} -framework Cocoa"
+
+    if test -z "${MACOSX_DEPLOYMENT_TARGET}"
+then :
+
+        MACOSX_DEPLOYMENT_TARGET="$(sw_vers -productVersion)"
+
+fi
+
+
+    CFLAGS="${CFLAGS} -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
+    CXXFLAGS="${CXXFLAGS} -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
+    LDFLAGS="${LDFLAGS} -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
     ;;
 esac
 
@@ -18619,6 +18634,14 @@ esac
 else
   WIN32_TRUE='#'
   WIN32_FALSE=
+fi
+
+ if test "x${on_macos}" = "xyes"; then
+  MACOS_TRUE=
+  MACOS_FALSE='#'
+else
+  MACOS_TRUE='#'
+  MACOS_FALSE=
 fi
 
 
@@ -22026,6 +22049,10 @@ ac_abs_srcdir=$ac_abs_top_srcdir$ac_dir_suffix
       as_fn_append ax_args " '--with-pic'"
       as_fn_append ax_args " '--disable-samples'"
       as_fn_append ax_args " '--disable-libevent-regress'"
+      as_fn_append ax_args " 'CFLAGS=${CFLAGS}'"
+      as_fn_append ax_args " 'CPPFLAGS=${CPPFLAGS}'"
+      as_fn_append ax_args " 'LDFLAGS=${LDFLAGS}
+                                '"
 
       # New options that may need to be merged with existing options.
 
@@ -25720,6 +25747,10 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${WIN32_TRUE}" && test -z "${WIN32_FALSE}"; then
   as_fn_error $? "conditional \"WIN32\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${MACOS_TRUE}" && test -z "${MACOS_FALSE}"; then
+  as_fn_error $? "conditional \"MACOS\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${CRYPTO_USE_OPENSSL_TRUE}" && test -z "${CRYPTO_USE_OPENSSL_FALSE}"; then

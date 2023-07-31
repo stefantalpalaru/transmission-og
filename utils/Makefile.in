@@ -126,11 +126,9 @@ am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(man1dir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_transmission_og_create_OBJECTS = create.$(OBJEXT)
 transmission_og_create_OBJECTS = $(am_transmission_og_create_OBJECTS)
-am__DEPENDENCIES_1 =
-am__DEPENDENCIES_2 =  \
-	$(top_builddir)/libtransmission/libtransmission-og.la \
-	$(am__DEPENDENCIES_1)
-transmission_og_create_DEPENDENCIES = $(am__DEPENDENCIES_2) \
+am__DEPENDENCIES_1 =  \
+	$(top_builddir)/libtransmission/libtransmission-og.la
+transmission_og_create_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__append_3)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -138,15 +136,15 @@ am__v_lt_0 = --silent
 am__v_lt_1 = 
 am_transmission_og_edit_OBJECTS = edit.$(OBJEXT)
 transmission_og_edit_OBJECTS = $(am_transmission_og_edit_OBJECTS)
-transmission_og_edit_DEPENDENCIES = $(am__DEPENDENCIES_2) \
+transmission_og_edit_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__append_4)
 am_transmission_og_remote_OBJECTS = remote.$(OBJEXT)
 transmission_og_remote_OBJECTS = $(am_transmission_og_remote_OBJECTS)
-transmission_og_remote_DEPENDENCIES = $(am__DEPENDENCIES_2) \
+transmission_og_remote_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__append_5)
 am_transmission_og_show_OBJECTS = show.$(OBJEXT)
 transmission_og_show_OBJECTS = $(am_transmission_og_show_OBJECTS)
-transmission_og_show_DEPENDENCIES = $(am__DEPENDENCIES_2) \
+transmission_og_show_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__append_6)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -373,6 +371,7 @@ LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
+MACOSX_DEPLOYMENT_TARGET = @MACOSX_DEPLOYMENT_TARGET@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
@@ -532,25 +531,14 @@ dist_man_MANS = \
     transmission-og-remote.1 \
     transmission-og-show.1
 
-common_ldadd := \
+common_ldadd = \
     $(top_builddir)/libtransmission/libtransmission-og.la \
-    @LIBUPNP_LIBS@ \
-    @LIBNATPMP_LIBS@ \
-    @INTLLIBS@ \
-    @DHT_LIBS@ \
-    @LIBB64_LIBS@ \
-    @LIBUTP_LIBS@ \
-    @LIBEVENT_LIBS@ \
-    @LIBCURL_LIBS@ \
-    @CRYPTO_LIBS@ \
-    @ZLIB_LIBS@ \
-    @PTHREAD_LIBS@ \
-    $(LIBM)
+    @LIBEVENT_LIBS@
 
-transmission_og_create_LDADD := $(common_ldadd) $(am__append_3)
-transmission_og_edit_LDADD := $(common_ldadd) $(am__append_4)
-transmission_og_remote_LDADD := $(common_ldadd) $(am__append_5)
-transmission_og_show_LDADD := $(common_ldadd) $(am__append_6)
+transmission_og_create_LDADD = $(common_ldadd) $(am__append_3)
+transmission_og_edit_LDADD = $(common_ldadd) $(am__append_4)
+transmission_og_remote_LDADD = $(common_ldadd) $(am__append_5)
+transmission_og_show_LDADD = $(common_ldadd) $(am__append_6)
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 

@@ -47,6 +47,9 @@ Clone the Git repo:
 ```bash
 git clone https://github.com/stefantalpalaru/transmission-og.git
 cd transmission-og
+# Not needed the first time, only after building, pulling and getting errors
+# from the submodule update.
+git submodule foreach --quiet --recursive "git restore ."
 git submodule update --init --recursive
 ```
 

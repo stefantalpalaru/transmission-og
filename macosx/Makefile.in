@@ -228,6 +228,7 @@ LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
+MACOSX_DEPLOYMENT_TARGET = @MACOSX_DEPLOYMENT_TARGET@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
@@ -361,64 +362,37 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 transmissionlocaledir = @transmissionlocaledir@
 EXTRA_DIST = \
-    Credits.rtf \
     AboutWindow.xib \
-    BlocklistStatusWindow.xib \
-    FileRenameSheetController.xib \
-    FilterBar.xib \
-    InfoFileView.xib \
-    InfoPeersView.xib \
-    InfoTrackersView.xib \
-    InfoWindow.xib \
-    MessageWindow.xib \
-    StatsWindow.xib \
-    StatusBar.xib \
-    URLSheetWindow.xib \
-    Defaults.plist \
-    Info.plist \
-    Transmission_Prefix.pch \
-    Sparkle.framework \
-    sparkle_dsa_pub.pem \
-    TransmissionHelp \
-    QuickLookPlugin \
-    VDKQueue \
-    Images \
-    da.lproj \
-    de.lproj \
-    en.lproj \
-    es.lproj \
-    fr.lproj \
-    it.lproj \
-    nl.lproj \
-    pt_PT.lproj \
-    ru.lproj \
-    tr.lproj \
     AboutWindowController.h \
     AboutWindowController.m \
     AddMagnetWindowController.h \
     AddMagnetWindowController.m \
     AddWindowController.h \
     AddWindowController.m \
-    Badger.h \
-    Badger.m \
     BadgeView.h \
     BadgeView.m \
+    Badger.h \
+    Badger.m \
     BlocklistDownloader.h \
     BlocklistDownloader.m \
     BlocklistDownloaderViewController.h \
     BlocklistDownloaderViewController.m \
     BlocklistScheduler.h \
     BlocklistScheduler.m \
+    BlocklistStatusWindow.xib \
     BonjourController.h \
     BonjourController.m \
     ButtonToolbarItem.h \
     ButtonToolbarItem.m \
+    CMakeLists.txt \
     ColorTextField.h \
     ColorTextField.m \
     Controller.h \
     Controller.m \
     CreatorWindowController.h \
     CreatorWindowController.m \
+    Credits.rtf \
+    Defaults.plist \
     DragOverlayView.h \
     DragOverlayView.m \
     DragOverlayWindow.h \
@@ -427,8 +401,6 @@ EXTRA_DIST = \
     ExpandedPathToIconTransformer.m \
     ExpandedPathToPathTransformer.h \
     ExpandedPathToPathTransformer.m \
-    FileRenameSheetController.h \
-    FileRenameSheetController.m \
     FileListNode.h \
     FileListNode.m \
     FileNameCell.h \
@@ -439,6 +411,10 @@ EXTRA_DIST = \
     FileOutlineView.m \
     FilePriorityCell.h \
     FilePriorityCell.m \
+    FileRenameSheetController.h \
+    FileRenameSheetController.m \
+    FileRenameSheetController.xib \
+    FilterBar.xib \
     FilterBarController.h \
     FilterBarController.m \
     FilterBarView.h \
@@ -447,34 +423,41 @@ EXTRA_DIST = \
     FilterButton.m \
     GlobalOptionsPopoverViewController.h \
     GlobalOptionsPopoverViewController.m \
+    GroupToolbarItem.h \
+    GroupToolbarItem.m \
     GroupsController.h \
     GroupsController.m \
     GroupsPrefsController.h \
     GroupsPrefsController.m \
-    GroupToolbarItem.h \
-    GroupToolbarItem.m \
-    InfoTabButtonBack.h \
-    InfoTabButtonBack.m \
-    InfoTabButtonCell.h \
-    InfoTabButtonCell.m \
-    InfoTextField.h \
-    InfoTextField.m \
+    Images \
+    Info.plist \
+    Info.plist.in \
     InfoActivityViewController.h \
     InfoActivityViewController.m \
+    InfoFileView.xib \
     InfoFileViewController.h \
     InfoFileViewController.m \
     InfoGeneralViewController.h \
     InfoGeneralViewController.m \
     InfoOptionsViewController.h \
     InfoOptionsViewController.m \
+    InfoPeersView.xib \
     InfoPeersViewController.h \
     InfoPeersViewController.m \
+    InfoTabButtonBack.h \
+    InfoTabButtonBack.m \
+    InfoTabButtonCell.h \
+    InfoTabButtonCell.m \
+    InfoTextField.h \
+    InfoTextField.m \
+    InfoTrackersView.xib \
     InfoTrackersViewController.h \
     InfoTrackersViewController.m \
     InfoViewController.h \
+    InfoWindow.xib \
     InfoWindowController.h \
     InfoWindowController.m \
-    main.m \
+    MessageWindow.xib \
     MessageWindowController.h \
     MessageWindowController.m \
     NSApplicationAdditions.h \
@@ -501,24 +484,28 @@ EXTRA_DIST = \
     PrefsWindow.m \
     ProgressGradients.h \
     ProgressGradients.m \
+    QuickLookPlugin \
     ShareToolbarItem.h \
     ShareToolbarItem.m \
     ShareTorrentFileHelper.h \
     ShareTorrentFileHelper.m \
+    Sparkle.framework \
+    StatsWindow.xib \
     StatsWindowController.h \
     StatsWindowController.m \
+    StatusBar.xib \
     StatusBarController.h \
     StatusBarController.m \
     StatusBarView.h \
     StatusBarView.m \
     ToolbarSegmentedCell.h \
     ToolbarSegmentedCell.m \
+    Torrent.h \
+    Torrent.m \
     TorrentCell.h \
     TorrentCell.m \
     TorrentGroup.h \
     TorrentGroup.m \
-    Torrent.h \
-    Torrent.m \
     TorrentTableView.h \
     TorrentTableView.m \
     TrackerCell.h \
@@ -527,10 +514,26 @@ EXTRA_DIST = \
     TrackerNode.m \
     TrackerTableView.h \
     TrackerTableView.m \
+    TransmissionHelp \
+    Transmission_Prefix.pch \
+    URLSheetWindow.xib \
     URLSheetWindowController.h \
     URLSheetWindowController.m \
+    VDKQueue \
     WebSeedTableView.h \
-    WebSeedTableView.m
+    WebSeedTableView.m \
+    da.lproj \
+    de.lproj \
+    en.lproj \
+    es.lproj \
+    fr.lproj \
+    it.lproj \
+    main.m \
+    nl.lproj \
+    pt_PT.lproj \
+    ru.lproj \
+    sparkle_dsa_pub.pem \
+    tr.lproj
 
 all: all-am
 
@@ -609,9 +612,6 @@ distdir-am: $(DISTFILES)
 	    || exit 1; \
 	  fi; \
 	done
-	$(MAKE) $(AM_MAKEFLAGS) \
-	  top_distdir="$(top_distdir)" distdir="$(distdir)" \
-	  dist-hook
 check-am: all-am
 check: check-am
 all-am: Makefile
@@ -716,24 +716,19 @@ uninstall-am:
 .MAKE: install-am install-strip
 
 .PHONY: all all-am check check-am clean clean-generic clean-libtool \
-	clean-local cscopelist-am ctags-am dist-hook distclean \
-	distclean-generic distclean-libtool distdir dvi dvi-am html \
-	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-generic \
-	mostlyclean-libtool pdf pdf-am ps ps-am tags-am uninstall \
-	uninstall-am
+	clean-local cscopelist-am ctags-am distclean distclean-generic \
+	distclean-libtool distdir dvi dvi-am html html-am info info-am \
+	install install-am install-data install-data-am install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-info install-info-am install-man \
+	install-pdf install-pdf-am install-ps install-ps-am \
+	install-strip installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
+	tags-am uninstall uninstall-am
 
 .PRECIOUS: Makefile
 
-
-dist-hook:
-	rm -rf `find $(distdir)/ -type d -name .svn`
-	rm -rf `find $(distdir)/ -type d -name .deps`
 
 # Use Xcode do make the actual build
 @BUILD_MAC_TRUE@all:

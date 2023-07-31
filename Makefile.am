@@ -92,6 +92,11 @@ CMAKE_ARGS = \
 if WIN32
 CMAKE_ARGS += -G "MinGW Makefiles"
 endif
+if MACOS
+CMAKE_ARGS += \
+	      -DENABLE_MAC=ON \
+	      -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl
+endif
 distcheck-hook:
 	@ echo "*** CMake build ***"
 	+ TMPDIR="$(abs_top_builddir)/build" && \
@@ -102,6 +107,7 @@ distcheck-hook:
 		$(MAKE) VERBOSE=$(V) && \
 		$(MAKE) VERBOSE=$(V) ARGS="$(MAKEFLAGS)" test && \
 		rm -rf "$${TMPDIR}"
+if !MACOS
 	@ echo "*** qmake build ***"
 	+ TMPDIR="$(abs_top_builddir)/build" && \
 		rm -rf "$${TMPDIR}" && \
@@ -110,6 +116,7 @@ distcheck-hook:
 		"../$(distdir)/configure" && \
 		$(MAKE) -C qt qmake-build && \
 		rm -rf "$${TMPDIR}"
+endif
 
 DISTCLEANFILES = \
   intltool-extract \

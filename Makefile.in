@@ -97,6 +97,10 @@ host_triplet = @host@
 
 @HAVE_REVISION_FILE_TRUE@am__append_2 = REVISION
 @WIN32_TRUE@am__append_3 = -G "MinGW Makefiles"
+@MACOS_TRUE@am__append_4 = \
+@MACOS_TRUE@	      -DENABLE_MAC=ON \
+@MACOS_TRUE@	      -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl
+
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/acx-pthread.m4 \
@@ -319,6 +323,7 @@ LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
+MACOSX_DEPLOYMENT_TARGET = @MACOSX_DEPLOYMENT_TARGET@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
@@ -484,7 +489,8 @@ EXTRA_DIST = AUTHORS CMakeLists.txt COPYING NEWS.md README.md \
 # unknown arguments.
 CMAKE_ARGS = -DENABLE_CLI=ON -DUSE_SYSTEM_B64=OFF -DUSE_SYSTEM_DHT=OFF \
 	-DUSE_SYSTEM_EVENT2=OFF -DUSE_SYSTEM_MINIUPNPC=OFF \
-	-DUSE_SYSTEM_NATPMP=OFF -DUSE_SYSTEM_UTP=OFF $(am__append_3)
+	-DUSE_SYSTEM_NATPMP=OFF -DUSE_SYSTEM_UTP=OFF $(am__append_3) \
+	$(am__append_4)
 DISTCLEANFILES = \
   intltool-extract \
   intltool-merge \
@@ -965,14 +971,14 @@ distcheck-hook:
 		$(MAKE) VERBOSE=$(V) && \
 		$(MAKE) VERBOSE=$(V) ARGS="$(MAKEFLAGS)" test && \
 		rm -rf "$${TMPDIR}"
-	@ echo "*** qmake build ***"
-	+ TMPDIR="$(abs_top_builddir)/build" && \
-		rm -rf "$${TMPDIR}" && \
-		mkdir "$${TMPDIR}" && \
-		cd "$${TMPDIR}" && \
-		"../$(distdir)/configure" && \
-		$(MAKE) -C qt qmake-build && \
-		rm -rf "$${TMPDIR}"
+@MACOS_FALSE@	@ echo "*** qmake build ***"
+@MACOS_FALSE@	+ TMPDIR="$(abs_top_builddir)/build" && \
+@MACOS_FALSE@		rm -rf "$${TMPDIR}" && \
+@MACOS_FALSE@		mkdir "$${TMPDIR}" && \
+@MACOS_FALSE@		cd "$${TMPDIR}" && \
+@MACOS_FALSE@		"../$(distdir)/configure" && \
+@MACOS_FALSE@		$(MAKE) -C qt qmake-build && \
+@MACOS_FALSE@		rm -rf "$${TMPDIR}"
 
 distuninstallcheck:
 	@:

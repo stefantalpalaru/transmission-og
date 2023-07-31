@@ -12,6 +12,7 @@ Besides the generic build requirements, you also need [Docker](https://www.docke
 git clone https://github.com/stefantalpalaru/transmission-og.git
 cd transmission-og
 git checkout GIT_COMMIT
+git submodule foreach --quiet --recursive "git restore ."
 git submodule update --init --recursive
 ./configure
 make bindist

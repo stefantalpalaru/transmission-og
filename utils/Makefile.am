@@ -34,24 +34,13 @@ dist_man_MANS = \
     transmission-og-remote.1 \
     transmission-og-show.1
 
-common_ldadd := \
+common_ldadd = \
     $(top_builddir)/libtransmission/libtransmission-og.la \
-    @LIBUPNP_LIBS@ \
-    @LIBNATPMP_LIBS@ \
-    @INTLLIBS@ \
-    @DHT_LIBS@ \
-    @LIBB64_LIBS@ \
-    @LIBUTP_LIBS@ \
-    @LIBEVENT_LIBS@ \
-    @LIBCURL_LIBS@ \
-    @CRYPTO_LIBS@ \
-    @ZLIB_LIBS@ \
-    @PTHREAD_LIBS@ \
-    $(LIBM)
-transmission_og_create_LDADD := $(common_ldadd)
-transmission_og_edit_LDADD := $(common_ldadd)
-transmission_og_remote_LDADD := $(common_ldadd)
-transmission_og_show_LDADD := $(common_ldadd)
+    @LIBEVENT_LIBS@
+transmission_og_create_LDADD = $(common_ldadd)
+transmission_og_edit_LDADD = $(common_ldadd)
+transmission_og_remote_LDADD = $(common_ldadd)
+transmission_og_show_LDADD = $(common_ldadd)
 
 if WIN32
 transmission-og-create.rc: ../transmission-og.rc.in

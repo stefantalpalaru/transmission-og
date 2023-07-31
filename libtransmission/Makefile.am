@@ -29,11 +29,17 @@ lib_LTLIBRARIES = libtransmission-og.la
 libtransmission_og_la_LDFLAGS = -version-info 3:1:0
 
 libtransmission_og_la_LIBADD = \
+  @LIBUPNP_LIBS@ \
+  @LIBNATPMP_LIBS@ \
   @INTLLIBS@ \
+  @DHT_LIBS@ \
+  @LIBB64_LIBS@ \
+  @LIBUTP_LIBS@ \
+  @LIBEVENT_LIBS@ \
   @LIBCURL_LIBS@ \
   @CRYPTO_LIBS@ \
-  @PTHREAD_LIBS@ \
   @ZLIB_LIBS@ \
+  @PTHREAD_LIBS@ \
   $(LIBM)
 
 libtransmission_og_la_SOURCES = \
@@ -242,19 +248,8 @@ TESTS = \
 check_PROGRAMS = $(TESTS)
 
 apps_ldadd = \
-  ./libtransmission-og.la  \
-  @LIBUPNP_LIBS@ \
-  @LIBNATPMP_LIBS@ \
-  @INTLLIBS@ \
-  @DHT_LIBS@ \
-  @LIBB64_LIBS@ \
-  @LIBUTP_LIBS@ \
-  @LIBCURL_LIBS@ \
-  @LIBEVENT_LIBS@ \
-  @CRYPTO_LIBS@ \
-  @PTHREAD_LIBS@ \
-  @ZLIB_LIBS@ \
-  $(LIBM)
+  ./libtransmission-og.la \
+  @LIBEVENT_LIBS@
 
 TEST_SOURCES = libtransmission-test.c
 

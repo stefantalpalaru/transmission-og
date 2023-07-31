@@ -1,62 +1,35 @@
 EXTRA_DIST = \
-    Credits.rtf \
     AboutWindow.xib \
-    BlocklistStatusWindow.xib \
-    FileRenameSheetController.xib \
-    FilterBar.xib \
-    InfoFileView.xib \
-    InfoPeersView.xib \
-    InfoTrackersView.xib \
-    InfoWindow.xib \
-    MessageWindow.xib \
-    StatsWindow.xib \
-    StatusBar.xib \
-    URLSheetWindow.xib \
-    Defaults.plist \
-    Info.plist \
-    Transmission_Prefix.pch \
-    Sparkle.framework \
-    sparkle_dsa_pub.pem \
-    TransmissionHelp \
-    QuickLookPlugin \
-    VDKQueue \
-    Images \
-    da.lproj \
-    de.lproj \
-    en.lproj \
-    es.lproj \
-    fr.lproj \
-    it.lproj \
-    nl.lproj \
-    pt_PT.lproj \
-    ru.lproj \
-    tr.lproj \
     AboutWindowController.h \
     AboutWindowController.m \
     AddMagnetWindowController.h \
     AddMagnetWindowController.m \
     AddWindowController.h \
     AddWindowController.m \
-    Badger.h \
-    Badger.m \
     BadgeView.h \
     BadgeView.m \
+    Badger.h \
+    Badger.m \
     BlocklistDownloader.h \
     BlocklistDownloader.m \
     BlocklistDownloaderViewController.h \
     BlocklistDownloaderViewController.m \
     BlocklistScheduler.h \
     BlocklistScheduler.m \
+    BlocklistStatusWindow.xib \
     BonjourController.h \
     BonjourController.m \
     ButtonToolbarItem.h \
     ButtonToolbarItem.m \
+    CMakeLists.txt \
     ColorTextField.h \
     ColorTextField.m \
     Controller.h \
     Controller.m \
     CreatorWindowController.h \
     CreatorWindowController.m \
+    Credits.rtf \
+    Defaults.plist \
     DragOverlayView.h \
     DragOverlayView.m \
     DragOverlayWindow.h \
@@ -65,8 +38,6 @@ EXTRA_DIST = \
     ExpandedPathToIconTransformer.m \
     ExpandedPathToPathTransformer.h \
     ExpandedPathToPathTransformer.m \
-    FileRenameSheetController.h \
-    FileRenameSheetController.m \
     FileListNode.h \
     FileListNode.m \
     FileNameCell.h \
@@ -77,6 +48,10 @@ EXTRA_DIST = \
     FileOutlineView.m \
     FilePriorityCell.h \
     FilePriorityCell.m \
+    FileRenameSheetController.h \
+    FileRenameSheetController.m \
+    FileRenameSheetController.xib \
+    FilterBar.xib \
     FilterBarController.h \
     FilterBarController.m \
     FilterBarView.h \
@@ -85,34 +60,41 @@ EXTRA_DIST = \
     FilterButton.m \
     GlobalOptionsPopoverViewController.h \
     GlobalOptionsPopoverViewController.m \
+    GroupToolbarItem.h \
+    GroupToolbarItem.m \
     GroupsController.h \
     GroupsController.m \
     GroupsPrefsController.h \
     GroupsPrefsController.m \
-    GroupToolbarItem.h \
-    GroupToolbarItem.m \
-    InfoTabButtonBack.h \
-    InfoTabButtonBack.m \
-    InfoTabButtonCell.h \
-    InfoTabButtonCell.m \
-    InfoTextField.h \
-    InfoTextField.m \
+    Images \
+    Info.plist \
+    Info.plist.in \
     InfoActivityViewController.h \
     InfoActivityViewController.m \
+    InfoFileView.xib \
     InfoFileViewController.h \
     InfoFileViewController.m \
     InfoGeneralViewController.h \
     InfoGeneralViewController.m \
     InfoOptionsViewController.h \
     InfoOptionsViewController.m \
+    InfoPeersView.xib \
     InfoPeersViewController.h \
     InfoPeersViewController.m \
+    InfoTabButtonBack.h \
+    InfoTabButtonBack.m \
+    InfoTabButtonCell.h \
+    InfoTabButtonCell.m \
+    InfoTextField.h \
+    InfoTextField.m \
+    InfoTrackersView.xib \
     InfoTrackersViewController.h \
     InfoTrackersViewController.m \
     InfoViewController.h \
+    InfoWindow.xib \
     InfoWindowController.h \
     InfoWindowController.m \
-    main.m \
+    MessageWindow.xib \
     MessageWindowController.h \
     MessageWindowController.m \
     NSApplicationAdditions.h \
@@ -139,24 +121,28 @@ EXTRA_DIST = \
     PrefsWindow.m \
     ProgressGradients.h \
     ProgressGradients.m \
+    QuickLookPlugin \
     ShareToolbarItem.h \
     ShareToolbarItem.m \
     ShareTorrentFileHelper.h \
     ShareTorrentFileHelper.m \
+    Sparkle.framework \
+    StatsWindow.xib \
     StatsWindowController.h \
     StatsWindowController.m \
+    StatusBar.xib \
     StatusBarController.h \
     StatusBarController.m \
     StatusBarView.h \
     StatusBarView.m \
     ToolbarSegmentedCell.h \
     ToolbarSegmentedCell.m \
+    Torrent.h \
+    Torrent.m \
     TorrentCell.h \
     TorrentCell.m \
     TorrentGroup.h \
     TorrentGroup.m \
-    Torrent.h \
-    Torrent.m \
     TorrentTableView.h \
     TorrentTableView.m \
     TrackerCell.h \
@@ -165,14 +151,26 @@ EXTRA_DIST = \
     TrackerNode.m \
     TrackerTableView.h \
     TrackerTableView.m \
+    TransmissionHelp \
+    Transmission_Prefix.pch \
+    URLSheetWindow.xib \
     URLSheetWindowController.h \
     URLSheetWindowController.m \
+    VDKQueue \
     WebSeedTableView.h \
-    WebSeedTableView.m
-
-dist-hook:
-	rm -rf `find $(distdir)/ -type d -name .svn`
-	rm -rf `find $(distdir)/ -type d -name .deps`
+    WebSeedTableView.m \
+    da.lproj \
+    de.lproj \
+    en.lproj \
+    es.lproj \
+    fr.lproj \
+    it.lproj \
+    main.m \
+    nl.lproj \
+    pt_PT.lproj \
+    ru.lproj \
+    sparkle_dsa_pub.pem \
+    tr.lproj
 
 if BUILD_MAC
 # Use Xcode do make the actual build

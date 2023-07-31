@@ -301,9 +301,7 @@ else()
         endif()
     endif()
     tr_add_external_auto_library(EVENT2 libevent event
-        BUILD_IN_SOURCE 1
-        CONFIGURE_COMMAND "<SOURCE_DIR>/autogen.sh"
-                  COMMAND "<SOURCE_DIR>/configure" "--prefix=<INSTALL_DIR>"
+        CONFIGURE_COMMAND "<SOURCE_DIR>/configure" "--prefix=<INSTALL_DIR>"
                   "--disable-shared" "--disable-samples" "--disable-libevent-regress" ${EVENT2_CONFIGURE_FLAGS})
 endif()
 

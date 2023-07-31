@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    timeout-minutes: 30
+    timeout-minutes: 50
     strategy:
       fail-fast: false
       matrix:
@@ -80,7 +80,7 @@ jobs:
             LDFLAGS="${LDFLAGS} -L/usr/local/opt/gettext/lib"
             echo "/usr/local/opt/qt@5/bin" >> ${GITHUB_PATH}
             echo "PKG_CONFIG_PATH=/usr/local/opt/qt@5/lib/pkgconfig:/usr/local/opt/openssl@1.1/lib/pkgconfig" >> ${GITHUB_ENV}
-            echo "MACOSX_DEPLOYMENT_TARGET=12.0" >> ${GITHUB_ENV}
+            echo "MACOSX_DEPLOYMENT_TARGET=\"$(sw_vers -productVersion)\"" >> ${GITHUB_ENV}
             ;;
           "Windows")
             NCPU="${NUMBER_OF_PROCESSORS}"
@@ -292,10 +292,6 @@ jobs:
                 )
               fi
             elif [[ "${{ runner.os }}" == "macOS" ]]; then
-              CONFIGURE_ARGS+=(
-                # broken
-                --disable-mac
-              )
               if [[ "${{ matrix.libs }}" == "system" ]]; then
                 CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/miniupnpc/include"
                 LDFLAGS="${LDFLAGS} -L/usr/local/opt/miniupnpc/lib"

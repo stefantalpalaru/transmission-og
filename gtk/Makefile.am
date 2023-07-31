@@ -84,19 +84,9 @@ dist_man_MANS = transmission-og-gtk.1
 
 transmission_og_gtk_LDADD = \
     $(top_builddir)/libtransmission/libtransmission-og.la \
-    @LIBUPNP_LIBS@ \
-    @LIBNATPMP_LIBS@ \
-    @DHT_LIBS@ \
-    @LIBB64_LIBS@ \
-    @LIBUTP_LIBS@ \
     @GTK_LIBS@ \
     @LIBAPPINDICATOR_LIBS@ \
-    @LIBEVENT_LIBS@ \
-    @LIBCURL_LIBS@ \
-    @CRYPTO_LIBS@ \
-    @ZLIB_LIBS@ \
-    @PTHREAD_LIBS@ \
-    $(LIBM)
+    @LIBEVENT_LIBS@
 
 # Desktop integration.
 DESKTOP_IN_FILES=transmission-og-gtk.desktop.in
