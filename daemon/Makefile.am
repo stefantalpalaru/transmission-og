@@ -22,6 +22,7 @@ bin_PROGRAMS = \
 
 transmission_og_daemon_LDADD = \
     $(top_builddir)/libtransmission/libtransmission-og.la \
+    @SYSTEMD_LIBS@ \
     @LIBEVENT_LIBS@
 
 noinst_HEADERS = \

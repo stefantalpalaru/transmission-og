@@ -323,7 +323,6 @@ LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
-MACOSX_DEPLOYMENT_TARGET = @MACOSX_DEPLOYMENT_TARGET@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
@@ -961,6 +960,8 @@ uninstall-am:
 
 dist-hook:
 	rm -rf "$(distdir)/installers/installer"
+# A qmake build still errors out on macOS, with this ridiculous message:
+# "ld: warning: ignoring file ../libtransmission/.libs/libtransmission-og.a, building for macOS-x86_64 but attempting to link with file built for macOS-x86_64"
 distcheck-hook:
 	@ echo "*** CMake build ***"
 	+ TMPDIR="$(abs_top_builddir)/build" && \

@@ -345,7 +345,6 @@ LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
-MACOSX_DEPLOYMENT_TARGET = @MACOSX_DEPLOYMENT_TARGET@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
@@ -494,7 +493,7 @@ dist_man_MANS = \
 
 transmission_og_daemon_LDADD =  \
 	$(top_builddir)/libtransmission/libtransmission-og.la \
-	@LIBEVENT_LIBS@ $(am__append_4)
+	@SYSTEMD_LIBS@ @LIBEVENT_LIBS@ $(am__append_4)
 noinst_HEADERS = \
 		 daemon.h \
 		 ../libtransmission/version.h

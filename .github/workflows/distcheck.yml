@@ -105,6 +105,8 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew install \
+            autoconf \
+            automake \
             cmake \
             gettext \
             gtk+3 \

@@ -329,12 +329,6 @@ QMAKE_ARGS = \
 	     QMAKE_LFLAGS="$(LDFLAGS)" \
 	     QMAKE_CXXFLAGS="$(CPPFLAGS) $(CXXFLAGS)" \
 	     QMAKE_INCDIR="$(abs_top_builddir)/third-party/libevent/include"
-if MACOS
-# A qmake build still errors out on macOS, with this ridiculous message:
-# "ld: warning: ignoring file ../libtransmission/.libs/libtransmission-og.a, building for macOS-x86_64 but attempting to link with file built for macOS-x86_64"
-QMAKE_ARGS += \
-	      QMAKE_MACOSX_DEPLOYMENT_TARGET="$(MACOSX_DEPLOYMENT_TARGET)"
-endif
 .PHONY: qmake-build
 qmake-build:
 	+ $(QMAKE) $(QMAKE_ARGS) -o Makefile.qmake "$(srcdir)/qtr.pro" && \

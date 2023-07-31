@@ -128,15 +128,6 @@ case $host_os in
   *darwin*)
     on_macos="yes"
     LIBS="${LIBS} -framework Cocoa"
-
-    AS_IF([test -z "${MACOSX_DEPLOYMENT_TARGET}"], [
-        MACOSX_DEPLOYMENT_TARGET="$(sw_vers -productVersion)"
-    ])
-    AC_SUBST(MACOSX_DEPLOYMENT_TARGET)
-
-    CFLAGS="${CFLAGS} -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
-    CXXFLAGS="${CXXFLAGS} -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
-    LDFLAGS="${LDFLAGS} -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
     ;;
 esac
 

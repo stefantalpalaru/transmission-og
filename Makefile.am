@@ -97,6 +97,8 @@ CMAKE_ARGS += \
 	      -DENABLE_MAC=ON \
 	      -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl
 endif
+# A qmake build still errors out on macOS, with this ridiculous message:
+# "ld: warning: ignoring file ../libtransmission/.libs/libtransmission-og.a, building for macOS-x86_64 but attempting to link with file built for macOS-x86_64"
 distcheck-hook:
 	@ echo "*** CMake build ***"
 	+ TMPDIR="$(abs_top_builddir)/build" && \
