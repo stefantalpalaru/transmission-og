@@ -30,24 +30,19 @@ jobs:
 
       - name: Install build dependencies
         run: |
-          sudo -E dpkg --add-architecture i386
           sudo -E apt-get update -qq
           sudo -E eatmydata apt-get install --no-install-recommends -yq \
             build-essential \
+            gettext \
             intltool \
             libayatana-appindicator3-dev \
-            libc6:i386 \
             libcurl4-openssl-dev \
-            libgcc-s1:i386 \
             libglib2.0-dev \
             libgtk-3-dev \
             libnotify-dev \
             libssl-dev \
-            libstdc++6:i386 \
             libsystemd-dev \
             qttools5-dev \
-            wine-stable \
-            wine32 \
             xz-utils \
             zlib1g-dev
 
@@ -71,6 +66,23 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: 'recursive'
+
+      - name: Install build dependencies
+        run: |
+          sudo -E dpkg --add-architecture i386
+          sudo -E apt-get update -qq
+          sudo -E eatmydata apt-get install --no-install-recommends -yq \
+            build-essential \
+            gettext \
+            intltool \
+            libc6:i386 \
+            libcurl4-openssl-dev \
+            libgcc-s1:i386 \
+            libssl-dev \
+            libstdc++6:i386 \
+            wine-stable \
+            wine32 \
+            zlib1g-dev
 
       - name: Build installer
         run: |
