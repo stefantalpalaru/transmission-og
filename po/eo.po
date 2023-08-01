@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-30 09:57+0200\n"
+"POT-Creation-Date: 2023-07-31 14:49+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Mike Gelfand <mikedld@mikedld.com>, 2017\n"
 "Language-Team: Esperanto (https://www.transifex.com/transmissionbt/"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../cli/cli.c:114 ../gtk/util.c:92 ../libtransmission/utils.c:1727
+#: ../cli/cli.c:114 ../gtk/util.c:92 ../libtransmission/utils.c:1744
 msgid "None"
 msgstr "Neniom"
 
@@ -739,7 +739,7 @@ msgstr "Dosierlisto ne haveblas se vi elektis plurajn torentojn"
 msgid "Files"
 msgstr "Dosieroj"
 
-#: ../gtk/details.c:2979 ../gtk/tr-prefs.c:1202 ../gtk/tr-window.c:650
+#: ../gtk/details.c:2979 ../gtk/tr-prefs.c:1202 ../gtk/tr-window.c:664
 msgid "Options"
 msgstr "Opcioj"
 
@@ -886,32 +886,32 @@ msgid ""
 "Got signal %d; trying to shut down cleanly. Do it again if it gets stuck."
 msgstr "Ricevis signalon %d; provas dece fermi. Refaru ĝin se tio ne sukcesas."
 
-#: ../gtk/main.c:616
+#: ../gtk/main.c:629
 msgid "Where to look for configuration files"
 msgstr "Kie serĉi agordan dosieron"
 
-#: ../gtk/main.c:617
+#: ../gtk/main.c:630
 msgid "Start with all torrents paused"
 msgstr "Starti kun ĉiuj torentoj paŭzigitaj"
 
-#: ../gtk/main.c:618
+#: ../gtk/main.c:631
 msgid "Start minimized in notification area"
 msgstr "Starti minimumigite en sciiga zono"
 
-#: ../gtk/main.c:619
+#: ../gtk/main.c:632
 msgid "Show version number and exit"
 msgstr "Montri versian nomon kaj eliri"
 
-#: ../gtk/main.c:637
+#: ../gtk/main.c:650
 msgid "Transmission OG"
 msgstr "Transmission OG"
 
 #. parse the command line
-#: ../gtk/main.c:640
+#: ../gtk/main.c:653
 msgid "[torrent files or urls]"
 msgstr "[torentdosieroj aŭ URL-j]"
 
-#: ../gtk/main.c:647
+#: ../gtk/main.c:660
 #, c-format
 msgid ""
 "%s\n"
@@ -921,53 +921,53 @@ msgstr ""
 "Rulu '%s --help' por vidi kompletan liston de disponeblaj komandliniaj "
 "opcioj.\n"
 
-#: ../gtk/main.c:746
+#: ../gtk/main.c:759
 msgid ""
 "Transmission OG is a file sharing program. When you run a torrent, its data "
 "will be made available to others by means of upload. Any content you share "
 "is your sole responsibility."
 msgstr ""
 
-#: ../gtk/main.c:749
+#: ../gtk/main.c:762
 msgid "I _Agree"
 msgstr ""
 
-#: ../gtk/main.c:984
+#: ../gtk/main.c:997
 msgid "<b>Closing Connections</b>"
 msgstr "<b>Fermas Konektojn</b>"
 
-#: ../gtk/main.c:988
+#: ../gtk/main.c:1001
 msgid "Sending upload/download totals to tracker…"
 msgstr "Sendante totalojn de al-/elŝutoj al kunordiga servilo..."
 
-#: ../gtk/main.c:992
+#: ../gtk/main.c:1005
 msgid "_Quit Now"
 msgstr "Tuj _Eliri"
 
-#: ../gtk/main.c:1042
+#: ../gtk/main.c:1055
 msgid "Couldn't add corrupt torrent"
 msgid_plural "Couldn't add corrupt torrents"
 msgstr[0] "Oni ne povis aldoni difektitan torenton"
 msgstr[1] "Oni ne povis aldoni difektitajn torentojn"
 
-#: ../gtk/main.c:1048
+#: ../gtk/main.c:1061
 msgid "Couldn't add duplicate torrent"
 msgid_plural "Couldn't add duplicate torrents"
 msgstr[0] "Oni ne povis aldoni duoblan torenton"
 msgstr[1] "Oni ne povis aldoni duoblajn torentojn"
 
-#: ../gtk/main.c:1371
+#: ../gtk/main.c:1384
 msgid "A fast and easy BitTorrent client"
 msgstr "Rapida kaj facila BitTorrent-kliento"
 
-#: ../gtk/main.c:1372
+#: ../gtk/main.c:1385
 msgid "Copyright (c) The Transmission OG Project"
 msgstr "Kopirajto (c) La Transmission OG-projekto"
 
 #. Translators: translate "translator-credits" as your name
 #. to have it appear in the credits in the "About"
 #. dialog
-#: ../gtk/main.c:1378
+#: ../gtk/main.c:1391
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
@@ -1246,7 +1246,7 @@ msgstr ""
 msgid "_Reset"
 msgstr "_Restarigu"
 
-#: ../gtk/stats.c:123 ../gtk/tr-window.c:691
+#: ../gtk/stats.c:123 ../gtk/tr-window.c:705
 msgid "Statistics"
 msgstr "Statistiko"
 
@@ -1402,26 +1402,26 @@ msgid_plural "Seeding to %1$'d of %2$'d connected peers"
 msgstr[0] "Fontsendas al %1$'d el %2$'d konektita samtavolano"
 msgstr[1] "Fontsendas al %1$'d el %2$'d konektitaj samtavolanoj"
 
-#: ../gtk/tr-core.c:1241
+#: ../gtk/tr-core.c:1249
 #, c-format
 msgid "Couldn't read \"%s\": %s"
 msgstr ""
 
-#: ../gtk/tr-core.c:1337
+#: ../gtk/tr-core.c:1345
 #, c-format
 msgid "Skipping unknown torrent \"%s\""
 msgstr ""
 
-#: ../gtk/tr-core.c:1612
+#: ../gtk/tr-core.c:1620
 msgid "Inhibiting desktop hibernation"
 msgstr ""
 
-#: ../gtk/tr-core.c:1616
+#: ../gtk/tr-core.c:1624
 #, c-format
 msgid "Couldn't inhibit desktop hibernation: %s"
 msgstr ""
 
-#: ../gtk/tr-core.c:1649
+#: ../gtk/tr-core.c:1657
 msgid "Allowing desktop hibernation"
 msgstr "Permesas pasivumigon de la labortablo"
 
@@ -1849,71 +1849,71 @@ msgstr "Reto"
 msgid "Remote"
 msgstr ""
 
-#: ../gtk/tr-window.c:131
+#: ../gtk/tr-window.c:132
 msgid "Torrent"
 msgstr "Torento"
 
-#: ../gtk/tr-window.c:231
+#: ../gtk/tr-window.c:233
 msgid "Total Ratio"
 msgstr "Totala Rilatumo"
 
-#: ../gtk/tr-window.c:232
+#: ../gtk/tr-window.c:234
 msgid "Session Ratio"
 msgstr "Seanca Rilatumo"
 
-#: ../gtk/tr-window.c:233
+#: ../gtk/tr-window.c:235
 msgid "Total Transfer"
 msgstr "Totala Sendo"
 
-#: ../gtk/tr-window.c:234
+#: ../gtk/tr-window.c:236
 msgid "Session Transfer"
 msgstr "Seanca Sendo"
 
-#: ../gtk/tr-window.c:259
+#: ../gtk/tr-window.c:261
 #, c-format
 msgid ""
 "Click to disable Alternative Speed Limits\n"
 " (%1$s down, %2$s up)"
 msgstr ""
 
-#: ../gtk/tr-window.c:260
+#: ../gtk/tr-window.c:262
 #, c-format
 msgid ""
 "Click to enable Alternative Speed Limits\n"
 " (%1$s down, %2$s up)"
 msgstr ""
 
-#: ../gtk/tr-window.c:314
+#: ../gtk/tr-window.c:316
 #, c-format
 msgid "Tracker will allow requests in %s"
 msgstr "Ŝanĝospurilo permesos petojn post %s"
 
-#: ../gtk/tr-window.c:384
+#: ../gtk/tr-window.c:386
 msgid "Unlimited"
 msgstr "Senlima"
 
-#: ../gtk/tr-window.c:455
+#: ../gtk/tr-window.c:457
 msgid "Seed Forever"
 msgstr "Fontsendi eterne"
 
-#: ../gtk/tr-window.c:493
+#: ../gtk/tr-window.c:495
 msgid "Limit Download Speed"
 msgstr "Limigi elŝutrapidecon"
 
-#: ../gtk/tr-window.c:497
+#: ../gtk/tr-window.c:499
 msgid "Limit Upload Speed"
 msgstr "Limigi alŝutrapidecon"
 
-#: ../gtk/tr-window.c:504
+#: ../gtk/tr-window.c:506
 msgid "Stop Seeding at Ratio"
 msgstr "Ĉesi fontsendado je proporcio"
 
-#: ../gtk/tr-window.c:537
+#: ../gtk/tr-window.c:539
 #, c-format
 msgid "Stop at Ratio (%s)"
 msgstr "Ĉesi je Proporcio (%s)"
 
-#: ../gtk/tr-window.c:765 ../gtk/tr-window.c:791
+#: ../gtk/tr-window.c:782 ../gtk/tr-window.c:808
 #, c-format
 msgid "Ratio: %s"
 msgstr "Rilatumo: %s"
@@ -1921,7 +1921,7 @@ msgstr "Rilatumo: %s"
 #. Translators: "size|" is here for disambiguation. Please remove it from your translation.
 #. %1$s is the size of the data we've downloaded
 #. %2$s is the size of the data we've uploaded
-#: ../gtk/tr-window.c:775
+#: ../gtk/tr-window.c:792
 #, c-format
 msgid "Down: %1$s, Up: %2$s"
 msgstr ""
@@ -1929,7 +1929,7 @@ msgstr ""
 #. Translators: "size|" is here for disambiguation. Please remove it from your translation.
 #. %1$s is the size of the data we've downloaded
 #. %2$s is the size of the data we've uploaded
-#: ../gtk/tr-window.c:785
+#: ../gtk/tr-window.c:802
 #, c-format
 msgid "size|Down: %1$s, Up: %2$s"
 msgstr "El: %1$s, Al: %2$s"
@@ -2083,7 +2083,7 @@ msgid "Connection failed"
 msgstr ""
 
 #: ../libtransmission/blocklist.c:63 ../libtransmission/blocklist.c:360
-#: ../libtransmission/utils.c:291
+#: ../libtransmission/utils.c:292
 #, c-format
 msgid "Couldn't read \"%1$s\": %2$s"
 msgstr "Ne povis legi \"%1$s\": %2$s"
@@ -2183,7 +2183,7 @@ msgstr "Aliporda Plusandado (NAP-PMP)"
 msgid "%s succeeded (%d)"
 msgstr "%s sukcesis (%d)"
 
-#: ../libtransmission/natpmp.c:138
+#: ../libtransmission/natpmp.c:137
 #, c-format
 msgid "Found public address \"%s\""
 msgstr "Trovis publikan adreson \"%s\""
@@ -2193,7 +2193,7 @@ msgstr "Trovis publikan adreson \"%s\""
 msgid "no longer forwarding port %d"
 msgstr "ne plu plusendas pordon %d"
 
-#: ../libtransmission/natpmp.c:222
+#: ../libtransmission/natpmp.c:219
 #, c-format
 msgid "Port %d forwarded successfully"
 msgstr "Pordo %d sukcese plusendita"
@@ -2252,12 +2252,12 @@ msgstr "Haltigas"
 msgid "Not forwarded"
 msgstr "Ne plusendita"
 
-#: ../libtransmission/port-forwarding.c:106 ../libtransmission/torrent.c:2370
+#: ../libtransmission/port-forwarding.c:108 ../libtransmission/torrent.c:2370
 #, c-format
 msgid "State changed from \"%1$s\" to \"%2$s\""
 msgstr "Ŝanĝis staton de \"%1$s\" al \"%2$s\""
 
-#: ../libtransmission/port-forwarding.c:185
+#: ../libtransmission/port-forwarding.c:187
 msgid "Stopped"
 msgstr "Haltita"
 
@@ -2356,69 +2356,69 @@ msgstr ""
 msgid "Port Forwarding (UPnP)"
 msgstr "Aliporda Plusendado (UPnP)"
 
-#: ../libtransmission/upnp.c:222
-msgid "IPv6 pinhole punching failed with error"
-msgstr ""
-
-#: ../libtransmission/upnp.c:226
-msgid "IPv6 pinhole added"
-msgstr ""
-
-#: ../libtransmission/upnp.c:226 ../libtransmission/upnp.c:263
-#: ../libtransmission/upnp.c:291 ../libtransmission/upnp.c:296
-msgid "unique ID"
-msgstr ""
-
-#: ../libtransmission/upnp.c:246
-msgid "correcting TCP pinhole ID to"
-msgstr ""
-
-#: ../libtransmission/upnp.c:259 ../libtransmission/upnp.c:287
-msgid "IPv6 pinhole updating failed with error"
-msgstr ""
-
-#: ../libtransmission/upnp.c:263 ../libtransmission/upnp.c:291
-msgid "IPv6 pinhole updated"
-msgstr ""
-
-#: ../libtransmission/upnp.c:280
+#: ../libtransmission/upnp.c:212
 msgid "IPv6 pinhole deletion failed with error"
 msgstr ""
 
-#: ../libtransmission/upnp.c:296
+#: ../libtransmission/upnp.c:219 ../libtransmission/upnp.c:294
+msgid "IPv6 pinhole updating failed with error"
+msgstr ""
+
+#: ../libtransmission/upnp.c:223 ../libtransmission/upnp.c:300
+msgid "IPv6 pinhole updated"
+msgstr ""
+
+#: ../libtransmission/upnp.c:223 ../libtransmission/upnp.c:228
+#: ../libtransmission/upnp.c:261 ../libtransmission/upnp.c:300
+msgid "unique ID"
+msgstr ""
+
+#: ../libtransmission/upnp.c:228
 msgid "IPv6 pinhole deleted"
 msgstr ""
 
-#: ../libtransmission/upnp.c:331
+#: ../libtransmission/upnp.c:257
+msgid "IPv6 pinhole punching failed with error"
+msgstr ""
+
+#: ../libtransmission/upnp.c:261
+msgid "IPv6 pinhole added"
+msgstr ""
+
+#: ../libtransmission/upnp.c:281
+msgid "correcting TCP pinhole ID to"
+msgstr ""
+
+#: ../libtransmission/upnp.c:333
 #, c-format
 msgid "Found Internet Gateway Device \"%s\""
 msgstr "Trovis Interratan Kluzan Aparaton \"%s\""
 
-#: ../libtransmission/upnp.c:332
+#: ../libtransmission/upnp.c:334
 #, c-format
 msgid "Local Address is \"%s\""
 msgstr "Loka adreso estas \"%s\""
 
-#: ../libtransmission/upnp.c:359
+#: ../libtransmission/upnp.c:361
 #, c-format
 msgid "Port %d isn't forwarded"
 msgstr "Pordo %d ne estas plusendita"
 
-#: ../libtransmission/upnp.c:378
+#: ../libtransmission/upnp.c:380
 #, c-format
 msgid "Stopping port forwarding through \"%s\", service \"%s\""
 msgstr "Haltigas alipordan plusendadon per \"%s\", servo \"%s\""
 
-#: ../libtransmission/upnp.c:422
+#: ../libtransmission/upnp.c:423
 #, c-format
 msgid "Port forwarding through \"%s\", service \"%s\". (local address: %s:%d)"
 msgstr ""
 
-#: ../libtransmission/upnp.c:427
+#: ../libtransmission/upnp.c:429
 msgid "Port forwarding successful!"
 msgstr "Aliporda plusendado sukcesas!"
 
-#: ../libtransmission/utils.c:303 ../libtransmission/utils.c:304
+#: ../libtransmission/utils.c:304 ../libtransmission/utils.c:305
 msgid "Not a regular file"
 msgstr "Ne estas regula dosiero"
 

@@ -13,7 +13,7 @@
     <?define PlatformSystemFolder = "SystemFolder" ?>
   <?endif ?>
 
-  <Product Name="$(var.ProductName)" Id="*" UpgradeCode="1FB3C295-9BD4-4248-8C8B-B85CD11FE7C4" Language="1033" Codepage="1252" Version="$(var.TrVersionMsi)" Manufacturer="Transmission OG Project">
+  <Product Name="$(var.ProductName)" Id="*" UpgradeCode="CD87E0B3-C1C1-4B23-BD95-DFD5F7A7691B" Language="1033" Codepage="1252" Version="$(var.TrVersionMsi)" Manufacturer="Transmission OG Project">
     <Package Id="*" Keywords="Installer" Description="Transmission OG $(var.TrVersion) Installer" Comments="A Fast, Easy, and Free BitTorrent Client" Manufacturer="Transmission OG Project" InstallerVersion="500" InstallScope="perMachine" Languages="1033" Compressed="yes" SummaryCodepage="1252" />
     <MajorUpgrade DowngradeErrorMessage="A later version of [ProductName] is already installed. Setup will now exit." AllowSameVersionUpgrades="yes" />
 

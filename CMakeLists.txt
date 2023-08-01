@@ -284,7 +284,13 @@ endif()
 set(THIRD_PARTY_DIR ${CMAKE_SOURCE_DIR}/third-party)
 
 if(WIN32)
-    tr_add_external_auto_library(EVENT2 libevent event)
+    tr_add_external_auto_library(EVENT2 libevent event
+        CMAKE_ARGS
+            -DEVENT__DISABLE_BENCHMARK=ON
+            -DEVENT__DISABLE_REGRESS=ON
+            -DEVENT__DISABLE_SAMPLES=ON
+            -DEVENT__DISABLE_TESTS=ON
+    )
 else()
     set(EVENT2_CONFIGURE_FLAGS)
     if(APPLE)
@@ -295,9 +301,8 @@ else()
         endif()
     endif()
     tr_add_external_auto_library(EVENT2 libevent event
-        BUILD_IN_SOURCE 1
-        CONFIGURE_COMMAND "<SOURCE_DIR>/autogen.sh"
-                  COMMAND "<SOURCE_DIR>/configure" "--prefix=<INSTALL_DIR>" "--disable-shared" ${EVENT2_CONFIGURE_FLAGS})
+        CONFIGURE_COMMAND "<SOURCE_DIR>/configure" "--prefix=<INSTALL_DIR>"
+                  "--disable-shared" "--disable-samples" "--disable-libevent-regress" ${EVENT2_CONFIGURE_FLAGS})
 endif()
 
 tr_add_external_auto_library(NATPMP libnatpmp natpmp)
@@ -334,7 +339,11 @@ if(ENABLE_UTP)
     endif()
 endif()
 
-tr_add_external_auto_library(B64 libb64 b64)
+tr_add_external_auto_library(B64 libb64 b64
+    CMAKE_ARGS
+        -DLIBB64_BUILD_EXAMPLES=OFF
+        -DLIBB64_ENABLE_WERROR=OFF
+)
 
 if(WITH_INOTIFY)
     tr_get_required_flag(WITH_INOTIFY INOTIFY_IS_REQUIRED)
@@ -564,7 +573,7 @@ if(INSTALL_DOC)
 endif()
 
 if(MSVC AND ENABLE_DAEMON AND ENABLE_QT AND ENABLE_UTILS AND WITH_CRYPTO STREQUAL "openssl")
-    add_subdirectory(dist/msi)
+    add_subdirectory(installers/msi)
 endif()
 
 set(CPACK_SOURCE_GENERATOR TBZ2)

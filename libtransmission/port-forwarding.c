@@ -91,6 +91,7 @@ static void natPulse(tr_shared* s, bool do_check)
     oldStatus = tr_sharedTraversalStatus(s);
 
     s->natpmpStatus = tr_natpmpPulse(s->natpmp, private_peer_port, is_enabled, &public_peer_port);
+    /*tr_logAddNamedDbg(getKey(), "natpmpStatus = %d", s->natpmpStatus);*/
 
     if (s->natpmpStatus == TR_PORT_MAPPED)
     {
@@ -98,6 +99,7 @@ static void natPulse(tr_shared* s, bool do_check)
     }
 
     s->upnpStatus = tr_upnpPulse(s->upnp, private_peer_port, is_enabled, do_check);
+    /*tr_logAddNamedDbg(getKey(), "upnpStatus = %d", s->upnpStatus);*/
 
     newStatus = tr_sharedTraversalStatus(s);
 

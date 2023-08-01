@@ -6,19 +6,42 @@
 - Autotools fixes and improvements ([#3](https://github.com/stefantalpalaru/transmission-og/pull/3))
 - Rename project from "Transmission" to "Transmission OG" ([#5](https://github.com/stefantalpalaru/transmission-og/pull/5))
 - Add more client IDs ([#7](https://github.com/stefantalpalaru/transmission-og/pull/7))
-- "scrape-paused-torrents-enabled" now defaults to "false" (no effect on existing installations, because it's "true" in "settings.json")
+- "scrape-paused-torrents-enabled" now defaults to "false" (no effect on
+  existing installations, because it's "true" in "settings.json")
 - Prefetch whole pieces instead on individual blocks
 - UPnP pinhole punching (IPv6 equivalent of port forwarding)
 - Port forwarding: recover from errors
+- Autotools: libtransmission-og can now be built and installed as a shared library
+- CI: extensive combination of build parameters for the main testing workflow:
+  64-bit Linux, 32-bit Linux, macOS, Windows, system libraries, vendored
+  libraries, Autotools and CMake.
+- CI: new "distcheck" workflow that creates a source archive and then uses it
+  to build the software using Autotools, CMake and even qmake (for the Qt
+  client). Needed to make sure we pack everything we need in that archive.
+  Runs on Linux and Windows.
+- CI: "release" workflow that automatically builds a complete source archive,
+  the Windows installer and creates a release draft, when a new tag is pushed.
+  This draft needs to be manually edited (adding release notes), tested and
+  published.
 
 ### GTK+ Client
 - Stop eating the last message at each refresh of the Message Log
 - UI: better visual torrent separation
-- Scroll the main window to a newly added torrent
+- Auto-scroll the main window to a newly added torrent
+- Windows: don't try to register a magnet handler
+- Windows: set XDG\_DATA\_DIRS in the environment (relative to the program's
+  directory), to allow packaging/bundling Gtk+ resources
+- Windows: [reproducible build](https://reproducible-builds.org/) and "Inno
+  Setup"-based installer (`make bindist-win64` - on a Linux machine; uses
+  Docker and Wine)
 
 ### Qt Client
 - Fix download percentage bar glitch ([#3150](https://github.com/transmission/transmission/issues/3150))
 - UI: move the status line above the progress bar
+- Pure Autotools build, on par with the CMake one. Works on Windows with MSYS2,
+  works for out-of-tree builds.
+- Autotools wrapper for a qmake build, hooked into the "distcheck" target to
+  make sure the "\*.pro" file does not rot. Not meant for end-users.
 
 
 ## [Transmission 3.00](https://github.com/transmission/transmission/releases/tag/3.00) (2020-05-03)

@@ -21,13 +21,14 @@ minor_version=$(echo "${user_agent_prefix}" | awk -F . '{print $2 + 0}')
 
 vcs_revision=
 vcs_revision_file=REVISION
+touch "${vcs_revision_file}"
 
 if [ -n "$JENKINS_URL" ] && [ -n "$GIT_COMMIT" ]; then
   vcs_revision=$GIT_COMMIT
 elif [ -n "$TEAMCITY_PROJECT_NAME" ] && [ -n "$BUILD_VCS_NUMBER" ]; then
   vcs_revision=$BUILD_VCS_NUMBER
 elif [ -d ".git" ] && type git > /dev/null 2>&1; then
-  vcs_revision=$(git rev-list --max-count=1 HEAD)
+  vcs_revision=$(git rev-parse --short=8 HEAD)
 elif [ -f "$vcs_revision_file" ]; then
   vcs_revision=$(cat "$vcs_revision_file")
 fi

@@ -14,6 +14,7 @@
 #include "transmission.h"
 #include "cache.h"
 #include "file.h"
+#include "platform.h"
 #include "resume.h"
 #include "trevent.h"
 #include "torrent.h" /* tr_isTorrent() */
@@ -85,7 +86,7 @@ static int test_incomplete_dir_impl(char const* incomplete_dir, char const* down
     tor = libttest_zero_torrent_init(session);
     libttest_zero_torrent_populate(tor, false);
     check_uint(tr_torrentStat(tor)->leftUntilDone, ==, tor->info.pieceSize);
-    check_file_location(tor, 0, tr_strdup_printf("%s/%s.part", incomplete_dir, tor->info.files[0].name));
+    check_file_location(tor, 0, tr_strdup_printf("%s%s%s.part", incomplete_dir, TR_PATH_DELIMITER_STR, tor->info.files[0].name));
     check_file_location(tor, 1, tr_buildPath(incomplete_dir, tor->info.files[1].name, NULL));
     check_uint(tr_torrentStat(tor)->leftUntilDone, ==, tor->info.pieceSize);
 

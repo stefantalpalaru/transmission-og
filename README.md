@@ -5,61 +5,80 @@
 Transmission OG (Old Generation) is a fork of [Transmission](https://github.com/transmission/transmission/) 3.00 (fast, easy, and free BitTorrent client). It comes in several flavors:
   * GTK+ and Qt GUI applications for Linux, BSD, macOS, Windows, etc.
   * A headless daemon for servers and routers
-  * A native macOS GUI application (a bit lagging on features, help welcome)
+  * A native macOS GUI application (a bit lagging in features, help welcome)
   * A web UI for remote controlling any of the above
 
-This fork is focused on stability, by rewinding the project's history back before the big C++ rewrite.
+This fork is focused on stability, by rewinding the project's history back
+before the big C++ rewrite. It's meant to coexist with a Transmission
+installation, while being a drop-in replacement, so it changes binary names and
+it keeps the same configuration directories.
+
+The only problem with this scheme is on Windows, where the Transmission
+installer configures `transmission-daemon` to start automatically as a service.
+This can be solved by stopping it from the "Services" app and changing its
+startup type from "Automatic" to "Manual".
 
 ## Command line interface notes
 
-Transmission OG is fully supported in transmission-og-remote, the preferred CLI client.
+Transmission OG is fully supported in `transmission-og-remote`, the preferred CLI client.
 
-Three standalone tools to examine, create, and edit .torrent files exist: transmission-og-show, transmission-og-create, and transmission-og-edit, respectively.
+Three standalone tools to examine, create, and edit .torrent files exist: `transmission-og-show`, `transmission-og-create`, and `transmission-og-edit`, respectively.
 
-Prior to development of transmission-og-remote, the standalone client transmission-og-cli was created. Limited to a single torrent at a time, transmission-og-cli is deprecated and exists primarily to support older hardware dependent upon it. In almost all instances, transmission-og-remote should be used instead.
+Prior to development of `transmission-og-remote`, the standalone client `transmission-og-cli` was created. Limited to a single torrent at a time, `transmission-og-cli` is deprecated and exists primarily to support older hardware dependent upon it. In almost all instances, `transmission-og-remote` should be used instead.
 
 Different distributions may choose to package any or all of these tools in one or more separate packages.
 
-## Building
+## Packaging
 
-### Building a Transmission OG release from the command line
+A 64-bit Windows installer is provided for each release.
 
-    $ tar -xf transmission-og-3.01.tar.xz
-    $ cd transmission-og-3.01
-    $ mkdir build
-    $ cd build
-    $ cmake ..
-    $ make -j4 # if you have 4 CPU cores
-    $ sudo make install
+Gentoo Linux users need to use an overlay:
 
-### Building Transmission OG from Git (first time)
+```bash
+eselect repository enable stefantalpalaru
+emaint sync --repo stefantalpalaru
+emerge transmission-og
+```
 
-    $ git clone https://github.com/stefantalpalaru/transmission-og
-    $ cd transmission-og
-    $ git submodule update --init
-    $ mkdir build
-    $ cd build
-    $ cmake ..
-    $ make -j4 # if you have 4 CPU cores
-    $ sudo make install
+## Building from source
 
-### Building Transmission OG from Git (updating)
+Clone the Git repo:
 
-    $ cd transmission-og/build
-    $ make clean
-    $ git pull
-    $ git submodule update --init
-    $ cmake ..
-    $ make -j4 # if you have 4 CPU cores
-    $ sudo make install
+```bash
+git clone https://github.com/stefantalpalaru/transmission-og.git
+cd transmission-og
+# Not needed the first time, only after building, pulling and getting errors
+# from the submodule update.
+git submodule foreach --quiet --recursive "git restore ."
+git submodule update --init --recursive
+```
 
-### macOS native
+or unpack the source archive:
 
-Transmission OG has an Xcode project file (Transmission.xcodeproj) for building in Xcode.
+```bash
+tar -xf transmission-og-3.01.tar.xz
+cd transmission-og-3.01
+```
 
-For a more detailed description, and dependencies, visit the original wiki: https://github.com/transmission/transmission/wiki
+Build it using Autotools (preferred method):
 
-## Contributing
+```bash
+./configure --enable-cli
+make -j4 # if you have 4 CPU cores
+```
+
+Build it using CMake, which is an elaborate prank mistaken for a build system:
+
+```bash
+mkdir build
+cd build
+# I know you just created this dir, but get into the habit of always deleting
+# CMake's command line argument cache. You can thank me later.
+rm -f CMakeCache.txt; cmake -DENABLE_CLI=ON -DUSE_SYSTEM_UTP=OFF ..
+make -j4 # if you have 4 CPU cores
+```
+
+## Development
 
 ### Updating translations
 
@@ -70,4 +89,9 @@ make update-po
 cd ../qt
 /usr/lib64/qt5/bin/lupdate qtr.pro
 ```
+
+### Version bumping
+
+Needs to be done in: "configure.ac", "CMakeLists.txt" and
+"libtransmission/Makefile.am" (for the shared library).
 

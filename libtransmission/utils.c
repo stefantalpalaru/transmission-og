@@ -56,6 +56,7 @@
 #include "utils.h"
 #include "variant.h"
 #include "version.h"
+#include "whereami.h"
 
 time_t __tr_current_time = 0;
 
@@ -390,6 +391,22 @@ char* tr_buildPath(char const* first_element, ...)
     /* sanity checks & return */
     TR_ASSERT(pch - buf == (ptrdiff_t)bufLen);
     return buf;
+}
+
+char* tr_get_program_dir(void)
+{
+    char* path = NULL;
+    int length, dirname_length;
+
+    length = wai_getExecutablePath(NULL, 0, &dirname_length);
+    if (length > 0)
+    {
+        path = (char*)tr_malloc(length + 1);
+        wai_getExecutablePath(path, length, &dirname_length);
+        path[dirname_length] = '\0';
+    }
+
+    return path;
 }
 
 int64_t tr_getDirFreeSpace(char const* dir)
@@ -2235,6 +2252,23 @@ char* tr_env_get_string(char const* key, char const* default_value)
     return value;
 
 #endif
+}
+
+void tr_env_set_string(char const* key, char const* value)
+{
+    TR_ASSERT(key != NULL);
+
+#ifdef _WIN32
+    wchar_t* wide_key = tr_win32_utf8_to_native(key, -1);
+    wchar_t* wide_value = tr_win32_utf8_to_native(value, -1);
+
+    if (wide_key != NULL && wide_value != NULL)
+    {
+        SetEnvironmentVariableW(wide_key, wide_value);
+    }
+#else // _WIN32
+    setenv(key, value, 1);
+#endif // _WIN32
 }
 
 /***

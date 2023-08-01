@@ -13,6 +13,8 @@
 #include <stddef.h> /* size_t */
 #include <time.h> /* time_t */
 
+#include "transmission.h"
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -76,6 +78,12 @@ uint8_t* tr_loadFile(char const* filename, size_t* size, struct tr_error** error
 /** @brief build a filename from a series of elements using the
            platform's correct directory separator. */
 char* tr_buildPath(char const* first_element, ...) TR_GNUC_NULL_TERMINATED TR_GNUC_MALLOC;
+
+/**
+ * @brief Get this program's directory.
+ * @return a newly-allocated string that must be freed with tr_free()
+ */
+char* tr_get_program_dir(void);
 
 /**
  * @brief Get available disk space (in bytes) for the specified folder.
@@ -415,6 +423,9 @@ int tr_env_get_int(char const* key, int default_value);
 
 /** @brief Get environment variable value as string (should be freed afterwards). */
 char* tr_env_get_string(char const* key, char const* default_value);
+
+/** @brief Set environment variable value as string. */
+void tr_env_set_string(char const* key, char const* value);
 
 /***
 ****

@@ -14,10 +14,12 @@ m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 
 AC_CONFIG_MACRO_DIR([m4])
 
-dnl AM_CONFIG_HEADER(config.h)
+dnl Prevent reconfiguring by default, due to Git not preserving timestamps.
+AM_MAINTAINER_MODE
+
 AC_CONFIG_SRCDIR(libtransmission/transmission.h)
-AM_INIT_AUTOMAKE([1.9 tar-pax no-dist-gzip dist-xz foreign subdir-objects])
-LT_INIT
+AM_INIT_AUTOMAKE([tar-pax no-dist-gzip dist-xz foreign subdir-objects])
+
 LT_LIB_M
 
 CFLAGS="$CFLAGS -std=gnu11"
@@ -25,15 +27,20 @@ CXXFLAGS="$CXXFLAGS -std=gnu++17"
 
 AC_PROG_CC
 AC_PROG_CXX
+AC_C_INLINE
+
+dnl When we create a shared libtransmission-og, we are linking it to static
+dnl libraries in "third-party". Let's make sure those contain PIC objects.
+LT_INIT([pic-only])
 
 if test m4_substr(peer_id_prefix,6,1) = "0"; then
   supported_build=yes
   CPPFLAGS="$CPPFLAGS -DNDEBUG"
 else
   supported_build=no
-  if test "x$GCC" = "xyes" ; then
-    CFLAGS="$CFLAGS -g"
-    CXXFLAGS="$CXXFLAGS -g"
+  if test "x${GCC}" = "xyes" ; then
+    CFLAGS="${CFLAGS} -ggdb3"
+    CXXFLAGS="${CXXFLAGS} -ggdb3"
   fi
 fi
 AM_CONDITIONAL(TR_UNSTABLE, test "x$supported_build" = "xno")
@@ -83,33 +90,94 @@ AC_SUBST(GIO_MINIMUM)
 LIBAPPINDICATOR_MINIMUM=0.4.90
 AC_SUBST(LIBAPPINDICATOR_MINIMUM)
 
+dnl ----------------------------------------------------------------------------
+dnl
+dnl  platform-specific stuff.
 
-AC_PROG_CC
-AC_PROG_CXX
-AC_C_INLINE
-if test "x$GCC" = "xyes" ; then
-    CFLAGS="$CFLAGS -ggdb3 -Wall -W -Wpointer-arith -Wformat-security -Wundef -Wcast-align -Wstrict-prototypes -Wmissing-declarations -Wmissing-format-attribute -Wredundant-decls -Wnested-externs -Wunused-parameter -Wwrite-strings -Winline -Wfloat-equal"
+AC_CANONICAL_HOST
+on_macos="no"
+on_windows="no"
+case $host_os in
+   *mingw32*)
+     on_windows="yes"
+     CXXFLAGS="${CXXFLAGS} -mms-bitfields -mwin32 -mwindows"
+     dnl Target version (Vista and up)
+     CPPFLAGS="${CPPFLAGS} -DWINVER=0x0600 -D_WIN32_WINNT=0x0600 -DWIN32_LEAN_AND_MEAN"
+     dnl Use Unicode API (although we always use W or A names explicitly)
+     CPPFLAGS="${CPPFLAGS} -DUNICODE -D_UNICODE"
+     dnl Ignore various deprecation and security warnings (at least for now)
+     CPPFLAGS="${CPPFLAGS} -D_CRT_SECURE_NO_DEPRECATE -D_CRT_NONSTDC_NO_DEPRECATE -D_SCL_SECURE_NO_WARNINGS -D_WINSOCK_DEPRECATED_NO_WARNINGS"
+     dnl Increase maximum FD_SET size
+     CPPFLAGS="${CPPFLAGS} -DFD_SETSIZE=1024"
+     dnl Use MinGW versions of all the printf-family functions
+     CPPFLAGS="${CPPFLAGS} -D__USE_MINGW_ANSI_STDIO=1"
+     dnl Windows specific libraries
+     LIBS="${LIBS} -liphlpapi -lshell32 -lws2_32 -lcrypt32 -lshlwapi -luuid -lole32"
+     transmissionlocaledir="locale"
+     if test -z "$host_alias"; then
+       hostaliaswindres=
+     else
+       hostaliaswindres="$host_alias-windres";
+     fi
+     AC_CHECK_TOOL(WINDRES, windres)
+
+     dnl For Windows tests on VPATH builds.
+     AC_CONFIG_LINKS([libtransmission/subprocess-test.cmd:libtransmission/subprocess-test.cmd])
+     ;;
+
+  *darwin*)
+    on_macos="yes"
+    LIBS="${LIBS} -framework Cocoa"
+
+    AS_IF([test -z "${MACOSX_DEPLOYMENT_TARGET}"], [
+        MACOSX_DEPLOYMENT_TARGET="12.0"
+    ])
+    AC_SUBST(MACOSX_DEPLOYMENT_TARGET)
+
+    CFLAGS="${CFLAGS} -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
+    CXXFLAGS="${CXXFLAGS} -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
+    LDFLAGS="${LDFLAGS} -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
+    ;;
+esac
+
+AM_CONDITIONAL(WIN32, test "x${on_windows}" = "xyes")
+AM_CONDITIONAL(MACOS, test "x${on_macos}" = "xyes")
+
+
+dnl ----------------------------------------------------------------------------
+dnl
+dnl  compiler
+
+if test "x${GCC}" = "xyes"; then
+    CFLAGS="${CFLAGS} -Wall -W -Wpointer-arith -Wformat-security -Wundef -Wcast-align -Wstrict-prototypes -Wmissing-declarations -Wmissing-format-attribute -Wredundant-decls -Wnested-externs -Wunused-parameter -Wwrite-strings -Winline -Wfloat-equal"
 
     dnl figure out gcc version
     AC_MSG_CHECKING([gcc version])
-    GCC_VERSION=`$CC -dumpversion`
-    GCC_MAJOR=`echo $GCC_VERSION | cut -d . -f1`
-    GCC_MINOR=`echo $GCC_VERSION | cut -d . -f2`
-    GCC_VERSION_NUM=`(expr $GCC_MAJOR "*" 100 + $GCC_MINOR) 2>/dev/null`
+    GCC_VERSION=`${CC} -dumpversion`
+    GCC_MAJOR=`echo ${GCC_VERSION} | cut -d . -f1`
+    GCC_MINOR=`echo ${GCC_VERSION} | cut -d . -f2`
+    GCC_VERSION_NUM=`(expr ${GCC_MAJOR} "*" 100 + ${GCC_MINOR}) 2>/dev/null`
 
-    AC_MSG_RESULT($GCC_VERSION)
-    if test $GCC_VERSION_NUM -ge 304; then
+    AC_MSG_RESULT(${GCC_VERSION})
+    if test ${GCC_VERSION_NUM} -ge 304; then
         dnl these were added in 3.4
-        CFLAGS="$CFLAGS -Wextra -Winit-self"
+        CFLAGS="${CFLAGS} -Wextra -Winit-self"
     fi
-    if test $GCC_VERSION_NUM -ge 403; then
+    if test ${GCC_VERSION_NUM} -ge 403; then
         dnl these were added in 4.3
-        CFLAGS="$CFLAGS -Wvariadic-macros"
+        CFLAGS="${CFLAGS} -Wvariadic-macros"
     fi
 fi
 
+dnl ----------------------------------------------------------------------------
+dnl
+dnl  various checks
+
 AC_PROG_LN_S
 AC_PROG_MKDIR_P
+AC_PROG_FGREP
+AC_PROG_SED
+
 
 AC_CHECK_HEADERS_ONCE([sys/time.h])
 
@@ -134,6 +202,17 @@ AC_SEARCH_LIBS([quotacursor_skipidtype], [quota])
 PKG_CHECK_MODULES(LIBCURL, [libcurl >= $CURL_MINIMUM])
 PKG_CHECK_MODULES(ZLIB, [zlib >= $ZLIB_MINIMUM])
 
+AC_SYS_LARGEFILE
+
+AC_FUNC_GETMNTENT
+
+AC_CHECK_HEADERS([sys/statvfs.h \
+                  xfs/xfs.h])
+
+
+dnl ----------------------------------------------------------------------------
+dnl
+dnl  Cryptography library.
 
 AC_ARG_WITH([crypto], AS_HELP_STRING([--with-crypto=PKG],
             [use specified crypto library: auto (default), openssl, cyassl, polarssl]),
@@ -200,10 +279,6 @@ AC_SUBST(CRYPTO_CFLAGS)
 AC_SUBST(CRYPTO_LIBS)
 
 
-AC_SYS_LARGEFILE
-
-AC_FUNC_GETMNTENT
-
 dnl ----------------------------------------------------------------------------
 dnl
 dnl posix_fadvise
@@ -211,7 +286,8 @@ dnl posix_fadvise
 dnl can posix_fadvise be used
 AC_CHECK_DECLS(posix_fadvise, [], [], [
 #define _XOPEN_SOURCE 600
-#include <fcntl.h>])
+#include <fcntl.h>
+])
 AC_CHECK_FUNCS([posix_fadvise])
 
 
@@ -246,16 +322,10 @@ AS_IF([test "x$WANT_KQUEUE" != "xno"],
 AM_CONDITIONAL([USE_KQUEUE], [test "x$WANT_KQUEUE" != "xno" -a $HAVE_KQUEUE -eq 1])
 
 
-AC_CHECK_HEADERS([sys/statvfs.h \
-                  xfs/xfs.h])
-
-
 dnl ----------------------------------------------------------------------------
 dnl
-dnl file monitoring for the daemon
+dnl Check whether to enable systemd startup notification. This requires libsystemd.
 
-# Check whether to enable systemd startup notification.
-# This requires libsystemd.
 AC_ARG_WITH([systemd], AS_HELP_STRING([--with-systemd],
             [Add support for systemd startup notification (default is autodetected)]),
             [USE_SYSTEMD=$withval], [USE_SYSTEMD=auto])
@@ -277,21 +347,18 @@ AC_ARG_ENABLE([external-dht],
               AS_HELP_STRING([--enable-external-dht], [use system libdht]))
 AS_IF([test "x${enable_external_dht}" = "xyes"], [
        DHT_CFLAGS=""
-       DHT_INCLUDEPATH_QT=""
        DHT_LIBS="-ldht"
-       DHT_LIBS_QT="-ldht"
+       DHT_LIBS_QMAKE="-ldht"
        ], [
-           DHT_CFLAGS="-I\$(top_builddir)/third-party/dht/include"
-           DHT_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/dht/include"
-           DHT_LIBS="\$(top_builddir)/third-party/dht/libdht.a"
-           DHT_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/dht/libdht.a"
+           DHT_CFLAGS="-I\$(top_srcdir)/third-party/dht/include"
+           DHT_LIBS="\$(top_builddir)/third-party/dht/libdht.la"
+           DHT_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/dht/.libs/libdht.a"
            ])
 
 AM_CONDITIONAL([BUILD_DHT], [test "x${enable_external_dht}" != "xyes"])
 AC_SUBST(DHT_CFLAGS)
-AC_SUBST(DHT_INCLUDEPATH_QT)
 AC_SUBST(DHT_LIBS)
-AC_SUBST(DHT_LIBS_QT)
+AC_SUBST(DHT_LIBS_QMAKE)
 
 
 dnl ----------------------------------------------------------------------------
@@ -305,21 +372,18 @@ AS_IF([test "x${enable_external_b64}" = "xyes"], [
                        AC_MSG_ERROR([unable to find the "b64" library])
                        ])
        LIBB64_CFLAGS="-DUSE_SYSTEM_B64"
-       LIBB64_INCLUDEPATH_QT=""
        LIBB64_LIBS="-lb64"
-       LIBB64_LIBS_QT="-lb64"
+       LIBB64_LIBS_QMAKE="-lb64"
        ], [
            LIBB64_CFLAGS="-I\$(top_srcdir)/third-party/libb64/include"
-           LIBB64_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/libb64/include"
-           LIBB64_LIBS="\$(top_builddir)/third-party/libb64/libb64.a"
-           LIBB64_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libb64/libb64.a"
+           LIBB64_LIBS="\$(top_builddir)/third-party/libb64/libb64.la"
+           LIBB64_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libb64/.libs/libb64.a"
            ])
 
 AM_CONDITIONAL([BUILD_B64], [test "x${enable_external_b64}" != "xyes"])
 AC_SUBST(LIBB64_CFLAGS)
-AC_SUBST(LIBB64_INCLUDEPATH_QT)
 AC_SUBST(LIBB64_LIBS)
-AC_SUBST(LIBB64_LIBS_QT)
+AC_SUBST(LIBB64_LIBS_QMAKE)
 
 
 dnl ----------------------------------------------------------------------------
@@ -342,21 +406,18 @@ AS_IF([test "x${enable_utp}" != "xno"], [
                               AC_MSG_ERROR([unable to find the "utp" library])
                               ])
               LIBUTP_CFLAGS=""
-              LIBUTP_INCLUDEPATH_QT=""
               LIBUTP_LIBS="-lutp ${libutp_extra_libs}"
-              LIBUTP_LIBS_QT="-lutp ${libutp_extra_libs}"
+              LIBUTP_LIBS_QMAKE="-lutp ${libutp_extra_libs}"
               ], [
-                  LIBUTP_CFLAGS="-I\$(top_builddir)/third-party/libutp/include"
-                  LIBUTP_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/libutp/include"
-                  LIBUTP_LIBS="\$(top_builddir)/third-party/libutp/libutp.a ${libutp_extra_libs}"
-                  LIBUTP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libutp/libutp.a ${libutp_extra_libs}"
+                  LIBUTP_CFLAGS="-I\$(top_srcdir)/third-party/libutp/include"
+                  LIBUTP_LIBS="\$(top_builddir)/third-party/libutp/libutp.la ${libutp_extra_libs}"
+                  LIBUTP_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libutp/.libs/libutp.a ${libutp_extra_libs}"
                   ])
        ])
 
 AC_SUBST(LIBUTP_CFLAGS)
-AC_SUBST(LIBUTP_INCLUDEPATH_QT)
 AC_SUBST(LIBUTP_LIBS)
-AC_SUBST(LIBUTP_LIBS_QT)
+AC_SUBST(LIBUTP_LIBS_QMAKE)
 AM_CONDITIONAL([BUILD_UTP],[test "x${enable_external_utp}" != "xyes"])
 
 dnl
@@ -370,22 +431,19 @@ AS_IF([test "x${enable_external_miniupnpc}" = "xyes"], [
                        AC_MSG_ERROR([unable to find the "miniupnpc" library])
                        ])
        LIBUPNP_CFLAGS=""
-       LIBUPNP_INCLUDEPATH_QT=""
        LIBUPNP_LIBS="-lminiupnpc"
-       LIBUPNP_LIBS_QT="-lminiupnpc"
+       LIBUPNP_LIBS_QMAKE="-lminiupnpc"
        ], [
-           LIBUPNP_CFLAGS="-I\$(top_builddir)/third-party/miniupnpc/include"
-           LIBUPNP_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/miniupnpc/include"
-           LIBUPNP_LIBS="\$(top_builddir)/third-party/miniupnpc/libminiupnp.a"
-           LIBUPNP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/miniupnpc/libminiupnp.a"
+           LIBUPNP_CFLAGS="-I\$(top_srcdir)/third-party/miniupnpc/include"
+           LIBUPNP_LIBS="\$(top_builddir)/third-party/miniupnpc/libminiupnp.la"
+           LIBUPNP_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/miniupnpc/.libs/libminiupnp.a"
 	   AC_DEFINE([MINIUPNP_STATICLIB])
            ])
 
 AM_CONDITIONAL([BUILD_MINIUPNP], [test "x${enable_external_miniupnpc}" != "xyes"])
 AC_SUBST(LIBUPNP_CFLAGS)
-AC_SUBST(LIBUPNP_INCLUDEPATH_QT)
 AC_SUBST(LIBUPNP_LIBS)
-AC_SUBST(LIBUPNP_LIBS_QT)
+AC_SUBST(LIBUPNP_LIBS_QMAKE)
 
 dnl ----------------------------------------------------------------------------
 dnl
@@ -398,22 +456,19 @@ AS_IF([test "x${enable_external_natpmp}" = "xyes"], [
                        AC_MSG_ERROR([unable to find the "natpmp" library])
                        ])
        LIBNATPMP_CFLAGS=""
-       LIBNATPMP_INCLUDEPATH_QT=""
        LIBNATPMP_LIBS="-lnatpmp"
-       LIBNATPMP_LIBS_QT="-lnatpmp"
+       LIBNATPMP_LIBS_QMAKE="-lnatpmp"
        ], [
            LIBNATPMP_CFLAGS="-I\$(top_srcdir)/third-party/libnatpmp/"
-           LIBNATPMP_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/libnatpmp/"
-           LIBNATPMP_LIBS="\$(top_builddir)/third-party/libnatpmp/libnatpmp.a"
-           LIBNATPMP_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libnatpmp/libnatpmp.a"
+           LIBNATPMP_LIBS="\$(top_builddir)/third-party/libnatpmp/libnatpmp.la"
+           LIBNATPMP_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libnatpmp/.libs/libnatpmp.a"
 	   AC_DEFINE([NATPMP_STATICLIB])
            ])
 
 AM_CONDITIONAL([BUILD_NATPMP], [test "x${enable_external_natpmp}" != "xyes"])
 AC_SUBST(LIBNATPMP_CFLAGS)
-AC_SUBST(LIBNATPMP_INCLUDEPATH_QT)
 AC_SUBST(LIBNATPMP_LIBS)
-AC_SUBST(LIBNATPMP_LIBS_QT)
+AC_SUBST(LIBNATPMP_LIBS_QMAKE)
 
 dnl ----------------------------------------------------------------------------
 dnl
@@ -424,25 +479,35 @@ AC_ARG_ENABLE([external-libevent],
               AS_HELP_STRING([--enable-external-libevent], [use system libevent]))
 AS_IF([test "x${enable_external_libevent}" = "xyes"], [
        PKG_CHECK_MODULES(LIBEVENT, [libevent >= ${LIBEVENT_MINIMUM}])
-       LIBEVENT_INCLUDEPATH_QT=""
-       LIBEVENT_LIBS_QT="${LIBEVENT_LIBS}"
+       LIBEVENT_INCLUDEPATH_QMAKE=""
+       LIBEVENT_LIBS_QMAKE="${LIBEVENT_LIBS}"
        ], [
-           LIBEVENT_CFLAGS="-I\$(top_srcdir)/third-party/libevent/include"
-           LIBEVENT_INCLUDEPATH_QT="\$\${TRANSMISSION_TOP}/third-party/libevent/include"
+	   dnl "event2/event-config.h" is generated at configuration time and placed in the builddir
+           LIBEVENT_CFLAGS="-I\$(top_srcdir)/third-party/libevent/include -I\$(top_builddir)/third-party/libevent/include"
+	   dnl We handle that for qmake in "qt/Makefile.am", because that's where $(top_builddir) has a value - not in "qt/config.pri.in".
+           LIBEVENT_INCLUDEPATH_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libevent/include"
            LIBEVENT_LIBS="\$(top_builddir)/third-party/libevent/.libs/libevent.a"
-           LIBEVENT_LIBS_QT="\$\${TRANSMISSION_TOP}/third-party/libevent/.libs/libevent.a"
-           AC_CONFIG_SUBDIRS([third-party/libevent])
+           LIBEVENT_LIBS_QMAKE="\$\${TRANSMISSION_TOP}/third-party/libevent/.libs/libevent.a"
+           AX_SUBDIRS_CONFIGURE([third-party/libevent], [
+                                    [--disable-shared],
+                                    [--with-pic],
+                                    [--disable-samples],
+                                    [--disable-libevent-regress],
+                                    [CFLAGS=${CFLAGS}],
+                                    [CPPFLAGS=${CPPFLAGS}],
+                                    [LDFLAGS=${LDFLAGS}]
+                                ])
            ])
 
 AM_CONDITIONAL([BUILD_EVENT], [test "x${enable_external_libevent}" != "xyes"])
 AC_SUBST(LIBEVENT_CFLAGS)
-AC_SUBST(LIBEVENT_INCLUDEPATH_QT)
+AC_SUBST(LIBEVENT_INCLUDEPATH_QMAKE)
 AC_SUBST(LIBEVENT_LIBS)
-AC_SUBST(LIBEVENT_LIBS_QT)
+AC_SUBST(LIBEVENT_LIBS_QMAKE)
 
 dnl ----------------------------------------------------------------------------
 dnl
-dnl  detection for the GTK+ client
+dnl  GTK+ client
 
 AC_ARG_ENABLE([nls],
               [AS_HELP_STRING([--disable-nls],[disable native language support])])
@@ -458,7 +523,7 @@ AC_ARG_WITH([gtk], AS_HELP_STRING([--with-gtk],[with Gtk]),
             [with_gtk=$have_gtk])
 AM_CONDITIONAL([BUILD_GTK],[test "x$with_gtk" = "xyes"])
 use_libappindicator=no
-AS_IF([test "x$with_gtk" = "xyes"], [
+AS_IF([test "x${with_gtk}" = "xyes"], [
     AS_IF([test "x${enable_nls}" = "xno"], [
         AC_MSG_ERROR("The gtk client cannot be built without nls support.  Try adding either --enable-nls or --without-gtk" )
     ])
@@ -481,6 +546,22 @@ AS_IF([test "x$with_gtk" = "xyes"], [
     ])
 ])
 
+dnl ----------------------------------------------------------------------------
+dnl
+dnl  Qt client
+
+AX_HAVE_QT
+AC_ARG_WITH([qt], AS_HELP_STRING([--with-qt],[with Qt]),
+            [with_qt=${withval}],
+            [with_qt=${have_qt}])
+AM_CONDITIONAL([BUILD_QT],[test "x${with_qt}" = "xyes"])
+AS_IF([test "x${with_qt}" = "xyes"], [
+       AS_IF([test "x${have_qt}" = "xno"], [
+	      AC_MSG_ERROR([Qt support requested, but no Qt5 installation found.])
+	      ])
+       ])
+
+
 dnl This section is only used for internationalization.
 dnl If you don't need translations and this section gives you trouble --
 dnl such as if you're building for a headless system --
@@ -492,13 +573,12 @@ dnl a problem and the old version was working fine for you,
 dnl it should be safe to re-edit 0.40 back down to 0.23
 
 AS_IF([test "x${enable_nls}" != "xno"], [
-    m4_ifdef([IT_PROG_INTLTOOL],
-             [
+    m4_ifdef([IT_PROG_INTLTOOL], [
 dnl intltoolize needs this at the start of a line:
 IT_PROG_INTLTOOL([0.35.0],[no-xml])
-             ], [
-             AC_MSG_ERROR("--enable-nls requires intltool to be installed.")
-	     ])
+    ], [
+        AC_MSG_ERROR("--enable-nls requires intltool to be installed.")
+    ])
 
     AC_CHECK_HEADERS([libintl.h])
     GETTEXT_PACKAGE=transmission-og-gtk
@@ -507,81 +587,59 @@ IT_PROG_INTLTOOL([0.35.0],[no-xml])
     AM_GLIB_GNU_GETTEXT
     transmissionlocaledir='${prefix}/${DATADIRNAME}/locale'
     AC_SUBST(transmissionlocaledir)
+
+    dnl Check for and fix missing delete of intltool cache lock file.  Only
+    dnl needed with intltool >= 0.51.0-5.1, but just always fix as that is
+    dnl simpler and safe.
+    dnl From: https://gitlab.gnome.org/GNOME/gparted/-/merge_requests/103
+    AC_MSG_CHECKING([whether po/Makefile.in.in deletes intltool cache lock file])
+    file='po/Makefile.in.in'
+    AS_IF([test ! -f "$srcdir/$file"], [
+        AC_MSG_RESULT([not applicable])
+        ], [
+            AS_IF([${FGREP} -q '.intltool-merge-cache.lock' "$srcdir/$file" 2> /dev/null], [
+                AC_MSG_RESULT([yes])
+                ], [
+                    AS_IF([test -w "${srcdir}/${file}"], [
+                        ${SED} -i '/rm -f .intltool-merge-cache/s/$/ .intltool-merge-cache.lock/' "${srcdir}/${file}" 2> /dev/null
+                    ])
+                AS_IF([${FGREP} -q '.intltool-merge-cache.lock' "${srcdir}/${file}" 2> /dev/null], [
+                    AC_MSG_RESULT([fixed])
+                ], [
+                    AC_MSG_RESULT([no])
+                ])
+        ])
+    ])
 ])
 AC_SUBST(INTLLIBS)
 
 
-dnl ----------------------------------------------------------------------------
-dnl
-dnl  platform-specific stuff.
-
-AC_CANONICAL_HOST
-have_darwin="no"
-have_msw="no"
-case $host_os in
-
-   *mingw32*)
-     have_msw="yes"
-     CXXFLAGS="${CXXFLAGS} -mms-bitfields -mwin32 -mwindows"
-     dnl Target version (Vista and up)
-     CPPFLAGS="${CPPFLAGS} -DWINVER=0x0600 -D_WIN32_WINNT=0x0600 -DWIN32_LEAN_AND_MEAN"
-     dnl Use Unicode API (although we always use W or A names explicitly)
-     CPPFLAGS="${CPPFLAGS} -DUNICODE -D_UNICODE"
-     dnl Ignore various deprecation and security warnings (at least for now)
-     CPPFLAGS="${CPPFLAGS} -D_CRT_SECURE_NO_DEPRECATE -D_CRT_NONSTDC_NO_DEPRECATE -D_SCL_SECURE_NO_WARNINGS -D_WINSOCK_DEPRECATED_NO_WARNINGS"
-     dnl Increase maximum FD_SET size
-     CPPFLAGS="${CPPFLAGS} -DFD_SETSIZE=1024"
-     dnl Use MinGW versions of all the printf-family functions
-     CPPFLAGS="${CPPFLAGS} -D__USE_MINGW_ANSI_STDIO=1"
-     dnl Windows specific libraries
-     LIBS="${LIBS} -liphlpapi -lshell32 -lws2_32 -lcrypt32 -lshlwapi -luuid -lole32"
-     transmissionlocaledir="locale"
-     if test -z "$host_alias"; then
-       hostaliaswindres=
-     else
-       hostaliaswindres="$host_alias-windres";
-     fi
-     AC_CHECK_TOOL(WINDRES, windres)
-     ;;
-
-  *darwin*)
-    have_darwin="yes"
-    LIBS="${LIBS} -framework Cocoa"
-    ;;
-
-esac
-
 AC_ARG_ENABLE([lightweight],
-              AS_HELP_STRING([--enable-lightweight],[optimize libtransmission for low-resource systems: smaller cache size, prefer unencrypted peer connections, etc.]),
+              AS_HELP_STRING([--enable-lightweight],[optimise libtransmission-og for low-resource systems: smaller cache size, prefer unencrypted peer connections, etc.]),
               [enable_lightweight=${enableval}],
               [enable_lightweight="no"])
-if test "x$enable_lightweight" = "xyes" ; then
+if test "x${enable_lightweight}" = "xyes" ; then
   AC_DEFINE([TR_LIGHTWEIGHT],[1],[optimize libtransmission for low-resource systems])
 fi
 
 AC_ARG_ENABLE([cli],
-              [AS_HELP_STRING([--enable-cli],[build command-line client])],
+              [AS_HELP_STRING([--enable-cli],[build old command-line client (deprecated, use transmission-og-remote instead)])],
               [build_cli=${enableval}],
               [build_cli="no"])
-AM_CONDITIONAL([BUILD_CLI],[test "x$build_cli" = "xyes"])
+AM_CONDITIONAL([BUILD_CLI],[test "x${build_cli}" = "xyes"])
 
 AC_ARG_ENABLE([mac],
               [AS_HELP_STRING([--enable-mac],[build Mac client (broken, use CMake instead)])],
               [build_mac=${enableval}],
               [build_mac="no"])
-AM_CONDITIONAL([BUILD_MAC],[test "x$build_mac" = "xyes"])
-
-AC_ARG_ENABLE([daemon],
-              [AS_HELP_STRING([--enable-daemon],[build daemon])],
-              [build_daemon=${enableval}],
-              [build_daemon="yes"])
-AM_CONDITIONAL([BUILD_DAEMON],[test "x$build_daemon" = "xyes"])
-
-
-if test "x$build_mac" = "xyes" ; then
+AM_CONDITIONAL([BUILD_MAC],[test "x${build_mac}" = "xyes"])
+if test "x${build_mac}" = "xyes"; then
    AC_DEFINE([BUILD_MAC_CLIENT], 1)
 fi
-AM_CONDITIONAL(WIN32, test "x$have_msw" = "xyes")
+
+AC_ARG_ENABLE([daemon],
+	      AS_HELP_STRING([--disable-daemon],[do not build the daemon]))
+AM_CONDITIONAL([BUILD_DAEMON],[test "x${enable_daemon}" != "xno"])
 
 dnl ----------------------------------------------------------------------------
 dnl
@@ -591,18 +649,18 @@ AC_CONFIG_FILES([Makefile
                  transmission-og-gtk.spec
                  cli/Makefile
                  daemon/Makefile
-                 extras/Makefile
                  libtransmission/Makefile
                  utils/Makefile
                  third-party/Makefile
                  third-party/dht/Makefile
                  third-party/libb64/Makefile
                  third-party/libnatpmp/Makefile
+                 third-party/libutp/Makefile
                  third-party/miniupnpc/Makefile
-                 macosx/Makefile
                  gtk/Makefile
                  gtk/icons/Makefile
                  qt/config.pri
+		 qt/Makefile
                  web/Makefile
                  web/images/Makefile
                  web/style/Makefile
@@ -615,27 +673,37 @@ AC_CONFIG_FILES([Makefile
                  web/javascript/jquery/Makefile
                  po/Makefile.in])
 
+dnl Whatever the GitHub Actions Windows image is doing with Git symlinks, copying
+dnl them during a "make distcheck" is broken beyond repair. We only care about
+dnl "distcheck" on Windows in the context of CI testing. The source archive we
+dnl actually distribute is only generated on Linux.
+AS_IF([test "x${on_windows}" = "xno"], [
+    AC_CONFIG_FILES([
+        macosx/Makefile
+    ])
+])
+
 AC_OUTPUT
+
+dnl https://stackoverflow.com/a/67107413
+AC_MSG_RESULT([configure: removing rpath from libtool...])
+${SED} -i s/'^hardcode_libdir_flag_spec.*$'/'hardcode_libdir_flag_spec="-D__LIBTOOL_IS_A_FOOL__"'/g libtool
 
 echo "
 
 Configuration:
-
    Source code location:                              ${srcdir}
-   Compiler:                                          ${CXX}
+   Compilers:                                         ${CC} ${CXX}
 
-   Build libtransmission:                             yes
-      * optimized for low-resource systems:           ${enable_lightweight}
+   Build libtransmission-og:                          yes
+      * optimised for low-resource systems:           ${enable_lightweight}
       * µTP enabled:                                  ${enable_utp:-yes}
       * crypto library:                               ${CRYPTO_PKG}
 
-   Build Command-Line client:                         ${build_cli}
-
+   Build daemon:                                      ${enable_daemon:-yes}
+   Build old command-line client:                     ${build_cli}
    Build GTK+ client:                                 ${with_gtk}
       * libappindicator for an Ubuntu-style tray:     ${use_libappindicator}
-
-   Build Daemon:                                      ${build_daemon}
-
-   Build Mac client:                                  ${build_mac}
-
+   Build Qt client:                                   ${with_qt}
+   Build native Mac client:                           ${build_mac}
 "

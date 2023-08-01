@@ -419,10 +419,10 @@ int tr_upnpPulse(tr_upnp* handle, int port, bool isEnabled, bool doPortCheck)
             }
 
             handle->isMapped = err_tcp == 0 || err_udp == 0;
-        }
 
-        tr_logAddNamedInfo(getKey(), _("Port forwarding through \"%s\", service \"%s\". (local address: %s:%d)"),
-            handle->urls.controlURL, handle->data.first.servicetype, handle->lanaddr, port);
+            tr_logAddNamedInfo(getKey(), _("Port forwarding through \"%s\", service \"%s\". (local address: %s:%d)"),
+                handle->urls.controlURL, handle->data.first.servicetype, handle->lanaddr, port);
+        }
 
         if (handle->isMapped)
         {
@@ -432,7 +432,6 @@ int tr_upnpPulse(tr_upnp* handle, int port, bool isEnabled, bool doPortCheck)
         }
         else
         {
-            tr_logAddNamedInfo(getKey(), "If your router supports UPnP, please make sure UPnP is enabled!");
             handle->port = -1;
             handle->state = TR_UPNP_ERR;
         }

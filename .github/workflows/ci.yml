@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    timeout-minutes: 30
+    timeout-minutes: 50
     strategy:
       fail-fast: false
       matrix:
@@ -54,8 +54,11 @@ jobs:
         run: |
           CFLAGS="-O3 -march=native -pipe"
           CXXFLAGS="-O3 -march=native -pipe"
+          CPPFLAGS=""
+          LDFLAGS=""
           NCPU=""
           MAKE_CMD="make"
+          QMAKE="qmake"
           case "${{ runner.os }}" in
           "Linux")
             NCPU="$(nproc)"
@@ -64,14 +67,21 @@ jobs:
             if [[ "${{ matrix.target.cpu }}" == "i386" ]]; then
               CFLAGS="${CFLAGS} -m32"
               CXXFLAGS="${CXXFLAGS} -m32"
+              CPPFLAGS="${CPPFLAGS} -I/usr/include/i386-linux-gnu/"
+              LDFLAGS="${LDFLAGS} -m32 -L/usr/lib/i386-linux-gnu/"
+              QMAKE="/usr/lib/i386-linux-gnu/qt5/bin/qmake"
               echo "/usr/lib/i386-linux-gnu/qt5/bin" >> ${GITHUB_PATH}
               echo "PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig" >> ${GITHUB_ENV}
             fi
             ;;
           "macOS")
             NCPU="$(sysctl -n hw.logicalcpu)"
+            CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/gettext/include"
+            LDFLAGS="${LDFLAGS} -L/usr/local/opt/gettext/lib"
             echo "/usr/local/opt/qt@5/bin" >> ${GITHUB_PATH}
+            echo "/usr/local/opt/gettext/bin" >> ${GITHUB_PATH}
             echo "PKG_CONFIG_PATH=/usr/local/opt/qt@5/lib/pkgconfig:/usr/local/opt/openssl@1.1/lib/pkgconfig" >> ${GITHUB_ENV}
+            echo "MACOSX_DEPLOYMENT_TARGET=12.0" >> ${GITHUB_ENV}
             ;;
           "Windows")
             NCPU="${NUMBER_OF_PROCESSORS}"
@@ -82,9 +92,12 @@ jobs:
           esac
           echo "CFLAGS=${CFLAGS}" >> ${GITHUB_ENV}
           echo "CXXFLAGS=${CXXFLAGS}" >> ${GITHUB_ENV}
+          echo "CPPFLAGS=${CPPFLAGS}" >> ${GITHUB_ENV}
+          echo "LDFLAGS=${LDFLAGS}" >> ${GITHUB_ENV}
           [[ -z "${NCPU}" || ${NCPU} -le 0 ]] && NCPU="1"
           echo "NCPU=${NCPU}" >> ${GITHUB_ENV}
           echo "MAKE_CMD=${MAKE_CMD}" >> ${GITHUB_ENV}
+          echo "QMAKE=${QMAKE}" >> ${GITHUB_ENV}
 
       - name: Install build dependencies (Linux i386)
         if: runner.os == 'Linux' && matrix.target.cpu == 'i386'
@@ -92,21 +105,45 @@ jobs:
           sudo -E dpkg --add-architecture i386
           sudo -E apt-get update -qq
           sudo -E eatmydata apt-get install --no-install-recommends --allow-downgrades -yq \
-            libc6:i386 libgcc-s1:i386 libstdc++6:i386 libgomp1:i386 libatomic1:i386 \
-            gcc-multilib g++-multilib libcurl4-openssl-dev:i386 gettext:i386 \
-            libevent-dev:i386 libglib2.0-dev:i386 libgtk-3-dev:i386 \
-            libnotify-dev:i386 libssl-dev:i386 libsystemd-dev:i386 \
-            qttools5-dev:i386 zlib1g-dev:i386 intltool:i386
+            g++-multilib \
+            gcc-multilib \
+            gettext:i386 \
+            intltool:i386 \
+            libatomic1:i386 \
+            libc6:i386 \
+            libcurl4-openssl-dev:i386 \
+            libevent-dev:i386 \
+            libgcc-s1:i386 \
+            libglib2.0-dev:i386 \
+            libgomp1:i386 \
+            libgtk-3-dev:i386 \
+            libnotify-dev:i386 \
+            libssl-dev:i386 \
+            libstdc++6:i386 \
+            libsystemd-dev:i386 \
+            qttools5-dev:i386 \
+            zlib1g-dev:i386
 
       - name: Install build dependencies (Linux AMD64)
         if: runner.os == 'Linux' && matrix.target.cpu == 'amd64'
         run: |
           sudo -E apt-get update -qq
           sudo -E eatmydata apt-get install --no-install-recommends -yq \
-            build-essential libayatana-appindicator3-dev libcurl4-openssl-dev \
-            libevent-dev libglib2.0-dev libgtk-3-dev libminiupnpc-dev \
-            libnatpmp-dev libnotify-dev libssl-dev libsystemd-dev \
-            qttools5-dev zlib1g-dev gettext intltool
+            build-essential \
+            gettext \
+            intltool \
+            libayatana-appindicator3-dev \
+            libcurl4-openssl-dev \
+            libevent-dev \
+            libglib2.0-dev \
+            libgtk-3-dev \
+            libminiupnpc-dev \
+            libnatpmp-dev \
+            libnotify-dev \
+            libssl-dev \
+            libsystemd-dev \
+            qttools5-dev \
+            zlib1g-dev
 
       - name: Select the Xcode version
         if: runner.os == 'macOS'
@@ -117,8 +154,19 @@ jobs:
       - name: Install build dependencies (macOS)
         if: runner.os == 'macOS'
         run: |
-          brew install cmake gettext gtk+3 pkg-config qt@5 libevent openssl@1.1 \
-            miniupnpc libnatpmp intltool automake autoconf
+          brew install \
+            autoconf \
+            automake \
+            cmake \
+            gettext \
+            gtk+3 \
+            intltool \
+            libevent \
+            libnatpmp \
+            miniupnpc \
+            openssl@1.1 \
+            pkg-config \
+            qt@5
 
       - name: MSYS2 (Windows amd64)
         if: runner.os == 'Windows' && matrix.target.cpu == 'amd64'
@@ -224,10 +272,9 @@ jobs:
               --enable-daemon
               --with-crypto=openssl
               --with-gtk
+              --with-qt
               --disable-external-utp # latest version redefines "bool" for C compilers
-            )
-            QMAKE_ARGS=(
-              -early
+              QMAKE="${QMAKE}" # the 64-bit version overrides the 32-bit one, otherwise
             )
 
             if [[ "${{ matrix.libs }}" == "system" ]]; then
@@ -246,14 +293,9 @@ jobs:
                 )
               fi
             elif [[ "${{ runner.os }}" == "macOS" ]]; then
-              CONFIGURE_ARGS+=(
-                # broken
-                --disable-mac
-              )
               if [[ "${{ matrix.libs }}" == "system" ]]; then
-                QMAKE_ARGS+=(
-                  QMAKE_LIBDIR+="/usr/local/opt/miniupnpc/lib"
-                )
+                CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/miniupnpc/include"
+                LDFLAGS="${LDFLAGS} -L/usr/local/opt/miniupnpc/lib"
               fi
             elif [[ "${{ runner.os }}" == "Linux" ]]; then
               if [[ "${{ matrix.libs }}" == "system" ]]; then
@@ -263,17 +305,6 @@ jobs:
               fi
 
               if [[ "${{ matrix.target.cpu }}" == "i386" ]]; then
-                export LDFLAGS="${LDFLAGS} -L/usr/lib/i386-linux-gnu/"
-                export CPPFLAGS="${CPPFLAGS} -I/usr/include/i386-linux-gnu/"
-                QMAKE_ARGS+=(
-                  QMAKE_CC=gcc
-                  QMAKE_CXX=g++
-                  QMAKE_LINK=g++
-                  PKG_CONFIG=pkg-config
-                  QMAKE_LFLAGS="-m32 -L/usr/lib/i386-linux-gnu"
-                  QMAKE_CXXFLAGS="${CXXFLAGS}"
-                )
-
                 # packages not available for i386:
                 CONFIGURE_ARGS+=(
                   --disable-external-miniupnpc
@@ -284,12 +315,14 @@ jobs:
 
             ./configure "${CONFIGURE_ARGS[@]}"
             ${MAKE_CMD} -j${NCPU} V=1
-            # Qt client
-            cd qt
-            qmake "${QMAKE_ARGS[@]}" qtr.pro
-            ${MAKE_CMD} -j${NCPU}
-            cd - &>/dev/null
-            # tests
+
+            # A third way to build the Qt client, using "qmake".
+            if [[ "${{ runner.os }}" != "macOS" ]]; then
+              ${MAKE_CMD} -C qt clean
+              ${MAKE_CMD} -j${NCPU} V=1 -C qt qmake-build
+            fi
+
+            # Tests.
             # (random failure on Windows if we enable Make's parallelism here)
-            ${MAKE_CMD} -C libtransmission check
+            ${MAKE_CMD} V=1 -C libtransmission check || { cat libtransmission/test-suite.log; exit 1; }
           fi # Autotools

@@ -636,7 +636,7 @@ static void handle_request(struct evhttp_request* req, void* arg)
 
         if (server->loginattempts == 100)
         {
-            send_simple_response(req, 403, "<p>Too many unsuccessful login attempts. Please restart transmission-daemon.</p>");
+            send_simple_response(req, 403, "<p>Too many unsuccessful login attempts. Please restart transmission-og-daemon.</p>");
             return;
         }
 
@@ -646,7 +646,7 @@ static void handle_request(struct evhttp_request* req, void* arg)
                 "<p>Unauthorized IP Address.</p>"
                 "<p>Either disable the IP address whitelist or add your address to it.</p>"
                 "<p>If you're editing settings.json, see the 'rpc-whitelist' and 'rpc-whitelist-enabled' entries.</p>"
-                "<p>If you're still using ACLs, use a whitelist instead. See the transmission-daemon manpage for details.</p>");
+                "<p>If you're still using ACLs, use a whitelist instead. See the transmission-og-daemon manpage for details.</p>");
             return;
         }
 

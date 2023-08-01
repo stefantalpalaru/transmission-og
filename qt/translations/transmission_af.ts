@@ -875,7 +875,7 @@
         <translation>&amp;Help</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+9"/>
         <source>&amp;View</source>
         <translation>&amp;Aansig</translation>
     </message>
@@ -910,12 +910,12 @@
         <translation>Open die torrent se vouer</translation>
     </message>
     <message>
-        <location line="-161"/>
+        <location line="-159"/>
         <source>Queue</source>
         <translation>Wagry</translation>
     </message>
     <message>
-        <location line="+122"/>
+        <location line="+120"/>
         <source>&amp;Open...</source>
         <translation>&amp;Open…</translation>
     </message>
@@ -1192,12 +1192,11 @@
         <translation>Open &amp;URL…</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>&amp;Donate</source>
-        <translation>&amp;Skenk</translation>
+        <translation type="vanished">&amp;Skenk</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+8"/>
         <source>Start &amp;Now</source>
         <translation>Begin &amp;Nou</translation>
     </message>
@@ -1232,7 +1231,7 @@
         <translation>Sorteer volgens &amp;Wagry</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cc" line="+465"/>
+        <location filename="../MainWindow.cc" line="+464"/>
         <source>Limit Download Speed</source>
         <translation>Beperk Aflaaispoed</translation>
     </message>
@@ -1243,13 +1242,13 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+734"/>
+        <location line="+729"/>
         <location line="+8"/>
         <source>Limited at %1</source>
         <translation>Beperk op %1</translation>
     </message>
     <message>
-        <location line="-693"/>
+        <location line="-688"/>
         <source>Limit Upload Speed</source>
         <translation>Beperk Oplaaispoed</translation>
     </message>
@@ -1265,7 +1264,7 @@
     </message>
     <message>
         <location line="+6"/>
-        <location line="+721"/>
+        <location line="+716"/>
         <source>Stop at Ratio (%1)</source>
         <translation>Stop by Ratio (%1)</translation>
     </message>
@@ -1308,12 +1307,12 @@
         <translation>Open Torrent</translation>
     </message>
     <message>
-        <location line="-988"/>
+        <location line="-983"/>
         <source>Speed Limits</source>
         <translation>Spoedlimiete</translation>
     </message>
     <message>
-        <location line="+490"/>
+        <location line="+485"/>
         <source>Network Error</source>
         <translation>Netwerkfout</translation>
     </message>
@@ -1650,7 +1649,7 @@ Voeg nog ’n primêre URL na ’n skoon lyn toe.</translation>
 <context>
     <name>PrefsDialog</name>
     <message>
-        <location filename="../PrefsDialog.ui" line="+1139"/>
+        <location filename="../PrefsDialog.ui" line="+1159"/>
         <source>Use &amp;authentication</source>
         <translation>Gebruik &amp;waarmerking</translation>
     </message>
@@ -1675,7 +1674,7 @@ Voeg nog ’n primêre URL na ’n skoon lyn toe.</translation>
         <translation>Adresse:</translation>
     </message>
     <message>
-        <location line="-1150"/>
+        <location line="-1170"/>
         <source>Speed Limits</source>
         <translation>Spoedlimiete</translation>
     </message>
@@ -1695,7 +1694,7 @@ Voeg nog ’n primêre URL na ’n skoon lyn toe.</translation>
         <translation>&amp;Op dae:</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+359"/>
         <source>Every Day</source>
         <translation>Daagliks</translation>
     </message>
@@ -1710,7 +1709,7 @@ Voeg nog ’n primêre URL na ’n skoon lyn toe.</translation>
         <translation>Naweke</translation>
     </message>
     <message>
-        <location line="-183"/>
+        <location line="-207"/>
         <source>Sunday</source>
         <translation>Sondag</translation>
     </message>
@@ -1745,7 +1744,7 @@ Voeg nog ’n primêre URL na ’n skoon lyn toe.</translation>
         <translation>Saterdag</translation>
     </message>
     <message>
-        <location line="+244"/>
+        <location line="+268"/>
         <source>Port is &lt;b&gt;open&lt;/b&gt;</source>
         <translation>Poort is &lt;b&gt;oop&lt;/b&gt;</translation>
     </message>
@@ -1761,7 +1760,7 @@ Voeg nog ’n primêre URL na ’n skoon lyn toe.</translation>
     </message>
     <message>
         <location line="+32"/>
-        <location filename="../PrefsDialog.cc" line="+335"/>
+        <location filename="../PrefsDialog.cc" line="+336"/>
         <source>Status unknown</source>
         <translation>Status onbekend</translation>
     </message>
@@ -1849,7 +1848,7 @@ Voeg nog ’n primêre URL na ’n skoon lyn toe.</translation>
         <translation>Saai tans</translation>
     </message>
     <message>
-        <location line="+548"/>
+        <location line="+568"/>
         <source>Remote</source>
         <translation>Afstand</translation>
     </message>
@@ -1862,7 +1861,7 @@ Voeg nog ’n primêre URL na ’n skoon lyn toe.</translation>
         </translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-287"/>
+        <location filename="../PrefsDialog.ui" line="-307"/>
         <source>Pick a &amp;random port every time Transmission OG is started</source>
         <translation>Kies elke keer wat Transmission OG herbegin word ’n &amp;lukrake poort</translation>
     </message>
@@ -1930,7 +1929,7 @@ Voeg nog ’n primêre URL na ’n skoon lyn toe.</translation>
         <translation>&amp;na</translation>
     </message>
     <message>
-        <location line="+763"/>
+        <location line="+783"/>
         <location line="+9"/>
         <source>Desktop</source>
         <translation>Werkskerm</translation>
@@ -1941,7 +1940,7 @@ Voeg nog ’n primêre URL na ’n skoon lyn toe.</translation>
         <translation>Toon Transmission OG-ikoon in die &amp;kennisgewingarea</translation>
     </message>
     <message>
-        <location line="-213"/>
+        <location line="-233"/>
         <source>Te&amp;st Port</source>
         <translation>T&amp;oets Poort</translation>
     </message>
@@ -1961,7 +1960,7 @@ Voeg nog ’n primêre URL na ’n skoon lyn toe.</translation>
         <translation>&amp;Enkripsiemodus:</translation>
     </message>
     <message>
-        <location line="+453"/>
+        <location line="+473"/>
         <source>Remote Control</source>
         <translation>Afstandbeheer</translation>
     </message>
@@ -1981,7 +1980,7 @@ Voeg nog ’n primêre URL na ’n skoon lyn toe.</translation>
         <translation>Laat slegs hierdie IP-a&amp;dresse toe:</translation>
     </message>
     <message>
-        <location line="-1128"/>
+        <location line="-1148"/>
         <source>&amp;Upload:</source>
         <translation>&amp;Oplaai:</translation>
     </message>
@@ -2006,7 +2005,17 @@ Voeg nog ’n primêre URL na ’n skoon lyn toe.</translation>
         <translation>La&amp;ai af:</translation>
     </message>
     <message>
-        <location line="+836"/>
+        <location line="+792"/>
+        <source>a list of default trackers to be added to new public torrents (and existing ones, after a reload)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Default Trackers:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+61"/>
         <source>Start &amp;minimized in notification area</source>
         <translation>Begin &amp;verklein in kennisgewingarea</translation>
     </message>
@@ -2031,12 +2040,12 @@ Voeg nog ’n primêre URL na ’n skoon lyn toe.</translation>
         <translation>Speel ’n &amp;geluid af wanneer torrents klaar is</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="-73"/>
+        <location filename="../PrefsDialog.cc" line="-74"/>
         <source>Testing TCP Port...</source>
         <translation>Toets tans TCP-poort…</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.ui" line="-229"/>
+        <location filename="../PrefsDialog.ui" line="-249"/>
         <source>Peer Limits</source>
         <translation>Eweknielimiete</translation>
     </message>
@@ -2076,7 +2085,7 @@ Voeg nog ’n primêre URL na ’n skoon lyn toe.</translation>
         <translation>Enkripsie</translation>
     </message>
     <message>
-        <location filename="../PrefsDialog.cc" line="+141"/>
+        <location filename="../PrefsDialog.cc" line="+142"/>
         <source>Select &quot;Torrent Done&quot; Script</source>
         <translation>Kies “Torrent Voltooid”-skrip</translation>
     </message>
@@ -2206,7 +2215,7 @@ Voeg nog ’n primêre URL na ’n skoon lyn toe.</translation>
 <context>
     <name>Session</name>
     <message>
-        <location filename="../Session.cc" line="+531"/>
+        <location filename="../Session.cc" line="+532"/>
         <source>Error Renaming Path</source>
         <translation>Fout Met Hernoem Van Pad</translation>
     </message>

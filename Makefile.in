@@ -87,10 +87,25 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-@HAVE_REVISION_FILE_TRUE@am__append_1 = REVISION
+
+# Whatever the GitHub Actions Windows image is doing with Git symlinks, copying
+# them during a "make distcheck" is broken beyond repair. We only care about
+# "distcheck" on Windows in the context of CI testing. The source archive we
+# actually distribute is only generated on Linux.
+@WIN32_FALSE@am__append_1 = \
+@WIN32_FALSE@  macosx
+
+@HAVE_REVISION_FILE_TRUE@am__append_2 = REVISION
+@WIN32_TRUE@am__append_3 = -G "MinGW Makefiles"
+@MACOS_TRUE@am__append_4 = \
+@MACOS_TRUE@	      -DENABLE_MAC=ON \
+@MACOS_TRUE@	      -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl
+
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/acx-pthread.m4 \
+	$(top_srcdir)/m4/ax_have_qt.m4 \
+	$(top_srcdir)/m4/ax_subdirs_configure.m4 \
 	$(top_srcdir)/m4/glib-gettext.m4 $(top_srcdir)/m4/intltool.m4 \
 	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
 	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
@@ -103,7 +118,7 @@ DIST_COMMON = $(srcdir)/Makefile.am $(top_srcdir)/configure \
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno config.status.lineno
 mkinstalldirs = $(install_sh) -d
-CONFIG_CLEAN_FILES = transmission-og-gtk.spec qt/config.pri
+CONFIG_CLEAN_FILES = transmission-og-gtk.spec
 CONFIG_CLEAN_VPATH_FILES =
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -157,13 +172,10 @@ am__define_uniq_tagged_files = \
   unique=`for i in $$list; do \
     if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
   done | $(am__uniquify_input)`
-DIST_SUBDIRS = extras third-party libtransmission utils daemon cli gtk \
-	po macosx web
 am__DIST_COMMON = $(srcdir)/Makefile.in \
-	$(srcdir)/transmission-og-gtk.spec.in \
-	$(top_srcdir)/qt/config.pri.in AUTHORS COPYING ChangeLog \
-	NEWS.md README.md compile config.guess config.sub install-sh \
-	ltmain.sh missing
+	$(srcdir)/transmission-og-gtk.spec.in AUTHORS COPYING \
+	ChangeLog NEWS.md README.md compile config.guess config.sub \
+	install-sh ltmain.sh missing
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -242,9 +254,8 @@ DATADIRNAME = @DATADIRNAME@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DHT_CFLAGS = @DHT_CFLAGS@
-DHT_INCLUDEPATH_QT = @DHT_INCLUDEPATH_QT@
 DHT_LIBS = @DHT_LIBS@
-DHT_LIBS_QT = @DHT_LIBS_QT@
+DHT_LIBS_QMAKE = @DHT_LIBS_QMAKE@
 DLLTOOL = @DLLTOOL@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
@@ -286,36 +297,34 @@ LIBAPPINDICATOR_CFLAGS = @LIBAPPINDICATOR_CFLAGS@
 LIBAPPINDICATOR_LIBS = @LIBAPPINDICATOR_LIBS@
 LIBAPPINDICATOR_MINIMUM = @LIBAPPINDICATOR_MINIMUM@
 LIBB64_CFLAGS = @LIBB64_CFLAGS@
-LIBB64_INCLUDEPATH_QT = @LIBB64_INCLUDEPATH_QT@
 LIBB64_LIBS = @LIBB64_LIBS@
-LIBB64_LIBS_QT = @LIBB64_LIBS_QT@
+LIBB64_LIBS_QMAKE = @LIBB64_LIBS_QMAKE@
 LIBCURL_CFLAGS = @LIBCURL_CFLAGS@
 LIBCURL_LIBS = @LIBCURL_LIBS@
 LIBEVENT_CFLAGS = @LIBEVENT_CFLAGS@
-LIBEVENT_INCLUDEPATH_QT = @LIBEVENT_INCLUDEPATH_QT@
+LIBEVENT_INCLUDEPATH_QMAKE = @LIBEVENT_INCLUDEPATH_QMAKE@
 LIBEVENT_LIBS = @LIBEVENT_LIBS@
-LIBEVENT_LIBS_QT = @LIBEVENT_LIBS_QT@
+LIBEVENT_LIBS_QMAKE = @LIBEVENT_LIBS_QMAKE@
 LIBEVENT_MINIMUM = @LIBEVENT_MINIMUM@
 LIBM = @LIBM@
 LIBNATPMP_CFLAGS = @LIBNATPMP_CFLAGS@
-LIBNATPMP_INCLUDEPATH_QT = @LIBNATPMP_INCLUDEPATH_QT@
 LIBNATPMP_LIBS = @LIBNATPMP_LIBS@
-LIBNATPMP_LIBS_QT = @LIBNATPMP_LIBS_QT@
+LIBNATPMP_LIBS_QMAKE = @LIBNATPMP_LIBS_QMAKE@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
 LIBUPNP_CFLAGS = @LIBUPNP_CFLAGS@
-LIBUPNP_INCLUDEPATH_QT = @LIBUPNP_INCLUDEPATH_QT@
 LIBUPNP_LIBS = @LIBUPNP_LIBS@
-LIBUPNP_LIBS_QT = @LIBUPNP_LIBS_QT@
+LIBUPNP_LIBS_QMAKE = @LIBUPNP_LIBS_QMAKE@
 LIBUTP_CFLAGS = @LIBUTP_CFLAGS@
-LIBUTP_INCLUDEPATH_QT = @LIBUTP_INCLUDEPATH_QT@
 LIBUTP_LIBS = @LIBUTP_LIBS@
-LIBUTP_LIBS_QT = @LIBUTP_LIBS_QT@
+LIBUTP_LIBS_QMAKE = @LIBUTP_LIBS_QMAKE@
 LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
+MACOSX_DEPLOYMENT_TARGET = @MACOSX_DEPLOYMENT_TARGET@
+MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
 MBEDTLS_CFLAGS = @MBEDTLS_CFLAGS@
@@ -351,6 +360,15 @@ PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
 PTHREAD_CC = @PTHREAD_CC@
 PTHREAD_CFLAGS = @PTHREAD_CFLAGS@
 PTHREAD_LIBS = @PTHREAD_LIBS@
+QMAKE = @QMAKE@
+QT_CXXFLAGS = @QT_CXXFLAGS@
+QT_DIR = @QT_DIR@
+QT_LIBS = @QT_LIBS@
+QT_LRELEASE = @QT_LRELEASE@
+QT_LUPDATE = @QT_LUPDATE@
+QT_MOC = @QT_MOC@
+QT_RCC = @QT_RCC@
+QT_UIC = @QT_UIC@
 RANLIB = @RANLIB@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
@@ -365,6 +383,11 @@ WINDRES = @WINDRES@
 WOLFSSL_CFLAGS = @WOLFSSL_CFLAGS@
 WOLFSSL_LIBS = @WOLFSSL_LIBS@
 XGETTEXT = @XGETTEXT@
+XMKMF = @XMKMF@
+X_CFLAGS = @X_CFLAGS@
+X_EXTRA_LIBS = @X_EXTRA_LIBS@
+X_LIBS = @X_LIBS@
+X_PRE_LIBS = @X_PRE_LIBS@
 ZLIB_CFLAGS = @ZLIB_CFLAGS@
 ZLIB_LIBS = @ZLIB_LIBS@
 ZLIB_MINIMUM = @ZLIB_MINIMUM@
@@ -376,6 +399,12 @@ ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
 ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
+ac_ct_QMAKE = @ac_ct_QMAKE@
+ac_ct_QT_LRELEASE = @ac_ct_QT_LRELEASE@
+ac_ct_QT_LUPDATE = @ac_ct_QT_LUPDATE@
+ac_ct_QT_MOC = @ac_ct_QT_MOC@
+ac_ct_QT_RCC = @ac_ct_QT_RCC@
+ac_ct_QT_UIC = @ac_ct_QT_UIC@
 acx_pthread_config = @acx_pthread_config@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
@@ -420,7 +449,7 @@ runstatedir = @runstatedir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
-subdirs = @subdirs@
+subdirs_extra = @subdirs_extra@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
@@ -428,27 +457,40 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 transmissionlocaledir = @transmissionlocaledir@
 ACLOCAL_AMFLAGS = -I m4
+AM_DISTCHECK_CONFIGURE_FLAGS = --enable-cli
 @BUILD_CLI_TRUE@CLI_DIR = cli
-@BUILD_DAEMON_TRUE@@WIN32_FALSE@DAEMON_DIR = daemon
+@BUILD_DAEMON_TRUE@DAEMON_DIR = daemon
 @BUILD_GTK_TRUE@GTK_DIR = gtk po
+@BUILD_QT_TRUE@TR_QT_DIR = qt
 @BUILD_MAC_TRUE@MAC_DIR = macosx
 SUBDIRS = \
-  extras \
   third-party \
   libtransmission \
   utils \
-  $(DAEMON_DIR) \
   $(CLI_DIR) \
+  $(DAEMON_DIR) \
   $(GTK_DIR) \
+  $(TR_QT_DIR) \
   $(MAC_DIR) \
   web
 
-EXTRA_DIST = qt NEWS.md AUTHORS COPYING README.md autogen.sh \
-	update-version-h.sh Transmission.xcodeproj/project.pbxproj \
-	CMakeLists.txt cmake cli/CMakeLists.txt daemon/CMakeLists.txt \
-	gtk/CMakeLists.txt libtransmission/CMakeLists.txt \
-	libtransmission/version.h.in po/CMakeLists.txt \
-	qt/CMakeLists.txt utils/CMakeLists.txt $(am__append_1)
+
+# We need to distribute all these subdirs unconditionally, so the "$(.._DIR)" scheme above is not suitable.
+DIST_SUBDIRS = third-party libtransmission utils cli daemon gtk po qt \
+	web $(am__append_1)
+EXTRA_DIST = AUTHORS CMakeLists.txt COPYING NEWS.md README.md \
+	Transmission.xcodeproj/project.pbxproj autogen.sh cmake docker \
+	extras installers m4 po/CMakeLists.txt transmission-og.rc.in \
+	update-version-h.sh utils/CMakeLists.txt $(am__append_2)
+
+# Do a CMake build during "make distcheck".
+# Notice how we get "ctest" to run the tests in parallel by setting "ARGS" so
+# it contains any "-jN" argument passed to "make". Luckily, "ctest" ignores
+# unknown arguments.
+CMAKE_ARGS = -DENABLE_CLI=ON -DUSE_SYSTEM_B64=OFF -DUSE_SYSTEM_DHT=OFF \
+	-DUSE_SYSTEM_EVENT2=OFF -DUSE_SYSTEM_MINIUPNPC=OFF \
+	-DUSE_SYSTEM_NATPMP=OFF -DUSE_SYSTEM_UTP=OFF $(am__append_3) \
+	$(am__append_4)
 DISTCLEANFILES = \
   intltool-extract \
   intltool-merge \
@@ -459,7 +501,7 @@ all: all-recursive
 .SUFFIXES:
 am--refresh: Makefile
 	@:
-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
 	    *$$dep*) \
@@ -485,14 +527,12 @@ Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
 	$(SHELL) ./config.status --recheck
 
-$(top_srcdir)/configure:  $(am__configure_deps)
+$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
 	$(am__cd) $(srcdir) && $(AUTOCONF)
-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
+$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
 	$(am__cd) $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 $(am__aclocal_m4_deps):
 transmission-og-gtk.spec: $(top_builddir)/config.status $(srcdir)/transmission-og-gtk.spec.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-qt/config.pri: $(top_builddir)/config.status $(top_srcdir)/qt/config.pri.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 
 mostlyclean-libtool:
@@ -540,7 +580,6 @@ $(am__recursive_targets):
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
-tags: tags-recursive
 TAGS: tags
 
 tags-am: $(TAGS_DEPENDENCIES) $(am__tagged_files)
@@ -750,6 +789,7 @@ distcheck: dist
 	test -d $(distdir)/_build || exit 0; \
 	dc_install_base=`$(am__cd) $(distdir)/_inst && pwd | sed -e 's,^[^:\\/]:[\\/],/,'` \
 	  && dc_destdir="$${TMPDIR-/tmp}/am-dc-$$$$/" \
+	  && $(MAKE) $(AM_MAKEFLAGS) distcheck-hook \
 	  && am__cwd=`pwd` \
 	  && $(am__cd) $(distdir)/_build/sub \
 	  && ../../configure \
@@ -782,23 +822,6 @@ distcheck: dist
 	@(echo "$(distdir) archives ready for distribution: "; \
 	  list='$(DIST_ARCHIVES)'; for i in $$list; do echo $$i; done) | \
 	  sed -e 1h -e 1s/./=/g -e 1p -e 1x -e '$$p' -e '$$x'
-distuninstallcheck:
-	@test -n '$(distuninstallcheck_dir)' || { \
-	  echo 'ERROR: trying to run $@ with an empty' \
-	       '$$(distuninstallcheck_dir)' >&2; \
-	  exit 1; \
-	}; \
-	$(am__cd) '$(distuninstallcheck_dir)' || { \
-	  echo 'ERROR: cannot chdir into $(distuninstallcheck_dir)' >&2; \
-	  exit 1; \
-	}; \
-	test `$(am__distuninstallcheck_listfiles) | wc -l` -eq 0 \
-	   || { echo "ERROR: files left after uninstall:" ; \
-	        if test -n "$(DESTDIR)"; then \
-	          echo "  (check DESTDIR support)"; \
-	        fi ; \
-	        $(distuninstallcheck_listfiles) ; \
-	        exit 1; } >&2
 distcleancheck: distclean
 	@if test '$(srcdir)' = . ; then \
 	  echo "ERROR: distcleancheck can only run from a VPATH build" ; \
@@ -937,7 +960,62 @@ uninstall-am:
 
 
 dist-hook:
-	find "$(distdir)/qt" "$(distdir)/cmake" -name .svn -exec rm -rf '{}' '+' -prune
+	rm -rf "$(distdir)/installers/installer"
+# A qmake build still errors out on macOS, with this ridiculous message:
+# "ld: warning: ignoring file ../libtransmission/.libs/libtransmission-og.a, building for macOS-x86_64 but attempting to link with file built for macOS-x86_64"
+distcheck-hook:
+	@ echo "*** CMake build ***"
+	+ TMPDIR="$(abs_top_builddir)/build" && \
+		rm -rf "$${TMPDIR}" && \
+		mkdir "$${TMPDIR}" && \
+		cd "$${TMPDIR}" && \
+		cmake $(CMAKE_ARGS) "../$(distdir)" && \
+		$(MAKE) VERBOSE=$(V) && \
+		$(MAKE) VERBOSE=$(V) ARGS="$(MAKEFLAGS)" test && \
+		rm -rf "$${TMPDIR}"
+@MACOS_FALSE@	@ echo "*** qmake build ***"
+@MACOS_FALSE@	+ TMPDIR="$(abs_top_builddir)/build" && \
+@MACOS_FALSE@		rm -rf "$${TMPDIR}" && \
+@MACOS_FALSE@		mkdir "$${TMPDIR}" && \
+@MACOS_FALSE@		cd "$${TMPDIR}" && \
+@MACOS_FALSE@		"../$(distdir)/configure" && \
+@MACOS_FALSE@		$(MAKE) -C qt qmake-build && \
+@MACOS_FALSE@		rm -rf "$${TMPDIR}"
+
+distuninstallcheck:
+	@:
+
+.PHONY: tags
+tags:
+	ctags -R \
+		--exclude="*.md" \
+		--exclude="*/icons" \
+		--exclude="installers" \
+		--exclude="tmp_install" \
+		--exclude="web" \
+		.
+
+# List all Git submodule URLs and commit hashes, including the nested ones.
+.PHONY: list-submodules
+list-submodules:
+	@{ "$(srcdir)/extras/git_show_deps.sh" ;\
+		git submodule foreach --quiet --recursive "$(CURDIR)/extras/git_show_deps.sh"; } \
+		| sort -u
+
+# If you want to use SSH keys with GitHub, for this project and all its submodules.
+.PHONY: github-ssh
+github-ssh:
+	git config url."git@github.com:".insteadOf "https://github.com/"
+	git submodule foreach --recursive 'git config url."git@github.com:".insteadOf "https://github.com/"'
+
+.PHONY: bindist-win64
+bindist-win64:
+	+ MAKE="$(MAKE)" \
+		docker/build_image/make_bindist.sh win64
+	rm -rf installers/installer
+	WINEDEBUG=-all wine installers/InnoSetup/ISCC.exe installers/transmission-og.iss
+	ls -lh tmp_install/bin
+	ls -lh installers/installer
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

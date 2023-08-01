@@ -85,6 +85,7 @@ set(${PROJECT_NAME}_SOURCES
     watchdir-win32.c
     web.c
     webseed.c
+    whereami.c
     wildmat.c
 )
 
@@ -181,6 +182,7 @@ set(${PROJECT_NAME}_PRIVATE_HEADERS
     version.h
     watchdir-common.h
     webseed.h
+    whereami.h
 )
 
 if(NOT ENABLE_UTP)

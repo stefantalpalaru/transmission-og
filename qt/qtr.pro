@@ -1,7 +1,9 @@
+TRANSMISSION_TOP = ..
+include($$(PWD)/config.pri)
+
 TARGET = transmission-og-qt
 NAME = "Transmission OG"
-DESCRIPTION = "Transmission OG: a fast, easy, and free BitTorrent client"
-VERSION = 3.01
+DESCRIPTION = "Transmission OG: a fast, easy and free BitTorrent client"
 LICENSE = "GPL"
 
 target.path = /bin
@@ -11,33 +13,22 @@ unix: INSTALLS += man
 man.path = /share/man/man1/
 man.files = transmission-og-qt.1
 
-CONFIG += qt thread link_pkgconfig c++1z warn_on
-QT += network dbus
+CONFIG += qt thread link_pkgconfig c++17 warn_on optimize_full
+QT += dbus network widgets
 win32:QT += winextras
-PKGCONFIG = fontconfig libcurl openssl
-
-greaterThan(QT_MAJOR_VERSION, 4) {
-    QT += widgets
-}
+PKGCONFIG += libcurl openssl
 
 DEFINES += QT_NO_CAST_FROM_ASCII ENABLE_DBUS_INTEROP
 win32:DEFINES += QT_DBUS
 
-TRANSMISSION_TOP = ..
-
-include(config.pri)
-
-INCLUDEPATH = \
-	$${DHT_INCLUDEPATH} \
-	$${LIBB64_INCLUDEPATH} \
-	$${LIBUTP_INCLUDEPATH} \
-	$${LIBUPNP_INCLUDEPATH} \
-	$${LIBNATPMP_INCLUDEPATH} \
+# These are all prepended to default include paths.
+INCLUDEPATH += \
+	$${TRANSMISSION_TOP} \
 	$${LIBEVENT_INCLUDEPATH} \
-	/usr/local/include \
-	$${INCLUDEPATH}
-INCLUDEPATH += $${TRANSMISSION_TOP}
-LIBS += $${TRANSMISSION_TOP}/libtransmission/libtransmission.a
+	/usr/local/include
+
+# We cannot use "*.la" files in here, since we are not linking with Libtool.
+LIBS += $${TRANSMISSION_TOP}/libtransmission/.libs/libtransmission-og.a
 LIBS += $${LIBUTP_LIBS}
 LIBS += $${DHT_LIBS}
 LIBS += $${LIBB64_LIBS}
@@ -47,23 +38,32 @@ LIBS += $${LIBEVENT_LIBS}
 LIBS += -lz
 win32:LIBS += -lws2_32 -lintl -lcrypt32 -luuid -lole32 -liconv -lwldap32 -liphlpapi
 
-TRANSLATIONS += translations/transmission_de.ts \
+TRANSLATIONS += \
+                translations/transmission_af.ts \
+                translations/transmission_ca.ts \
+                translations/transmission_da.ts \
+                translations/transmission_de.ts \
+                translations/transmission_el.ts \
                 translations/transmission_en.ts \
                 translations/transmission_es.ts \
                 translations/transmission_eu.ts \
+                translations/transmission_fi.ts \
                 translations/transmission_fr.ts \
                 translations/transmission_hu.ts \
                 translations/transmission_id.ts \
                 translations/transmission_it_IT.ts \
+                translations/transmission_ja.ts \
                 translations/transmission_ka.ts \
                 translations/transmission_kk.ts \
                 translations/transmission_ko.ts \
                 translations/transmission_lt.ts \
+                translations/transmission_nb.ts \
                 translations/transmission_nl.ts \
                 translations/transmission_pl.ts \
                 translations/transmission_pt_BR.ts \
                 translations/transmission_pt_PT.ts \
                 translations/transmission_ru.ts \
+                translations/transmission_sl.ts \
                 translations/transmission_sv.ts \
                 translations/transmission_tr.ts \
                 translations/transmission_uk.ts \
