@@ -820,6 +820,7 @@ MACOS_FALSE
 MACOS_TRUE
 WIN32_FALSE
 WIN32_TRUE
+MACOSX_DEPLOYMENT_TARGET
 WINDRES
 LIBAPPINDICATOR_MINIMUM
 GIO_MINIMUM
@@ -18612,6 +18613,14 @@ fi
   *darwin*)
     on_macos="yes"
     LIBS="${LIBS} -framework Cocoa"
+
+    if test -z "${MACOSX_DEPLOYMENT_TARGET}"
+then :
+
+        MACOSX_DEPLOYMENT_TARGET="12.0"
+
+fi
+
     ;;
 esac
 

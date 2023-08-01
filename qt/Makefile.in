@@ -105,8 +105,11 @@ bin_PROGRAMS = transmission-og-qt$(EXEEXT)
 @WIN32_TRUE@am__append_3 = \
 @WIN32_TRUE@    icons/Faenza/Faenza.qrc
 
-@WIN32_TRUE@am__append_4 = transmission-og-qt.res
-@WIN32_TRUE@am__append_5 = transmission-og-qt.rc transmission-og-qt.res
+@MACOS_TRUE@am__append_4 = \
+@MACOS_TRUE@	      QMAKE_MACOSX_DEPLOYMENT_TARGET="$(MACOSX_DEPLOYMENT_TARGET)"
+
+@WIN32_TRUE@am__append_5 = transmission-og-qt.res
+@WIN32_TRUE@am__append_6 = transmission-og-qt.rc transmission-og-qt.res
 subdir = qt
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/acx-pthread.m4 \
@@ -452,6 +455,7 @@ LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
+MACOSX_DEPLOYMENT_TARGET = @MACOSX_DEPLOYMENT_TARGET@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
@@ -587,9 +591,9 @@ transmissionlocaledir = @transmissionlocaledir@
 
 # Make sure that all these generated source files get built first and are
 # cleaned properly.
-BUILT_SOURCES = $(nodist_transmission_og_qt_SOURCES) $(am__append_4)
+BUILT_SOURCES = $(nodist_transmission_og_qt_SOURCES) $(am__append_5)
 CLEANFILES = $(nodist_transmission_og_qt_SOURCES) Makefile.qmake \
-	$(am__append_5)
+	$(am__append_6)
 
 # For CMake.
 EXTRA_DIST = CMakeLists.txt ComInteropHelper.cc ComInteropHelper.h \
@@ -733,16 +737,12 @@ Productivity_DATA = $(DESKTOP_FILES)
 
 # We need "$(abs_top_builddir)" in here, because "$(top_builddir)" has the
 # wrong value in a VPATH build, for some mysterious reason.
-QMAKE_ARGS = \
-	     -early \
-	     QMAKE_CC="$(CC)" \
-	     QMAKE_CXX="$(CXX)" \
-	     QMAKE_LINK="$(CXX)" \
-	     PKG_CONFIG="$(PKG_CONFIG)" \
-	     QMAKE_LFLAGS="$(LDFLAGS)" \
-	     QMAKE_CXXFLAGS="$(CPPFLAGS) $(CXXFLAGS)" \
-	     QMAKE_INCDIR="$(abs_top_builddir)/third-party/libevent/include"
-
+QMAKE_ARGS = -early QMAKE_CC="$(CC)" QMAKE_CXX="$(CXX)" \
+	QMAKE_LINK="$(CXX)" PKG_CONFIG="$(PKG_CONFIG)" \
+	QMAKE_LFLAGS="$(LDFLAGS)" QMAKE_CXXFLAGS="$(CPPFLAGS) \
+	$(CXXFLAGS)" \
+	QMAKE_INCDIR="$(abs_top_builddir)/third-party/libevent/include" \
+	$(am__append_4)
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 

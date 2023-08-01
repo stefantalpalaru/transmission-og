@@ -329,6 +329,10 @@ QMAKE_ARGS = \
 	     QMAKE_LFLAGS="$(LDFLAGS)" \
 	     QMAKE_CXXFLAGS="$(CPPFLAGS) $(CXXFLAGS)" \
 	     QMAKE_INCDIR="$(abs_top_builddir)/third-party/libevent/include"
+if MACOS
+QMAKE_ARGS += \
+	      QMAKE_MACOSX_DEPLOYMENT_TARGET="$(MACOSX_DEPLOYMENT_TARGET)"
+endif #MACOS
 .PHONY: qmake-build
 qmake-build:
 	+ $(QMAKE) $(QMAKE_ARGS) -o Makefile.qmake "$(srcdir)/qtr.pro" && \

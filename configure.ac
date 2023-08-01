@@ -128,6 +128,11 @@ case $host_os in
   *darwin*)
     on_macos="yes"
     LIBS="${LIBS} -framework Cocoa"
+
+    AS_IF([test -z "${MACOSX_DEPLOYMENT_TARGET}"], [
+        MACOSX_DEPLOYMENT_TARGET="12.0"
+    ])
+    AC_SUBST(MACOSX_DEPLOYMENT_TARGET)
     ;;
 esac
 
