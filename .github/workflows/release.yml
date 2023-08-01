@@ -86,7 +86,7 @@ jobs:
             xvfb \
             zlib1g-dev
           sudo -E eatmydata apt-get install --install-recommends -yq \
-            winehq-staging
+            winehq-stable
 
       - name: Build installer
         run: |
