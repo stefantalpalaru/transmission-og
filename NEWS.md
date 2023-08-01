@@ -32,8 +32,8 @@
 - Windows: set XDG\_DATA\_DIRS in the environment (relative to the program's
   directory), to allow packaging/bundling Gtk+ resources
 - Windows: [reproducible build](https://reproducible-builds.org/) and "Inno
-  Setup"-based installer (`make bindist-win64` - on a Linux machine; uses
-  Docker and Wine)
+  Setup"-based installer (`make bindist-win64` and `make installer-win64` - on
+  a Linux machine; uses Docker and Wine)
 
 ### Qt Client
 - Fix download percentage bar glitch ([#3150](https://github.com/transmission/transmission/issues/3150))
