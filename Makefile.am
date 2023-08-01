@@ -156,6 +156,7 @@ bindist-win64:
 	+ MAKE="$(MAKE)" \
 		docker/build_image/make_bindist.sh win64
 	rm -rf installers/installer
-	WINEDEBUG=-all wine installers/InnoSetup/ISCC.exe installers/transmission-og.iss
+	cd installers/InnoSetup && \
+		WINEDEBUG=-all wine ISCC.exe ../transmission-og.iss
 	ls -lh tmp_install/bin
 	ls -lh installers/installer
