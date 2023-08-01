@@ -133,6 +133,10 @@ case $host_os in
         MACOSX_DEPLOYMENT_TARGET="12.0"
     ])
     AC_SUBST(MACOSX_DEPLOYMENT_TARGET)
+
+    CFLAGS="${CFLAGS} -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
+    CXXFLAGS="${CXXFLAGS} -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
+    LDFLAGS="${LDFLAGS} -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
     ;;
 esac
 
