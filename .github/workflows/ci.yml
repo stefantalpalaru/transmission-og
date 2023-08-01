@@ -79,6 +79,7 @@ jobs:
             CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/gettext/include"
             LDFLAGS="${LDFLAGS} -L/usr/local/opt/gettext/lib"
             echo "/usr/local/opt/qt@5/bin" >> ${GITHUB_PATH}
+            echo "/usr/local/opt/gettext/bin" >> ${GITHUB_PATH}
             echo "PKG_CONFIG_PATH=/usr/local/opt/qt@5/lib/pkgconfig:/usr/local/opt/openssl@1.1/lib/pkgconfig" >> ${GITHUB_ENV}
             echo "MACOSX_DEPLOYMENT_TARGET=12.0" >> ${GITHUB_ENV}
             ;;
@@ -316,8 +317,10 @@ jobs:
             ${MAKE_CMD} -j${NCPU} V=1
 
             # A third way to build the Qt client, using "qmake".
-            ${MAKE_CMD} -C qt clean
-            ${MAKE_CMD} -j${NCPU} V=1 -C qt qmake-build
+            if [[ "${{ runner.os }}" != "macOS" ]]; then
+              ${MAKE_CMD} -C qt clean
+              ${MAKE_CMD} -j${NCPU} V=1 -C qt qmake-build
+            fi
 
             # Tests.
             # (random failure on Windows if we enable Make's parallelism here)
