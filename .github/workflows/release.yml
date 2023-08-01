@@ -2,7 +2,7 @@ name: Create release draft
 on:
   push:
     tags:
-    - '*'
+      - '*'
   workflow_dispatch:
 
 jobs:
