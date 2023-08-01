@@ -672,7 +672,7 @@ int main(int argc, char** argv)
         return 0;
     }
 
-    gtk_window_set_default_icon_name(MY_CONFIG_NAME);
+    gtk_window_set_default_icon_name(MY_CONFIG_NAME "-og");
 
     /* init the unit formatters */
     tr_formatter_mem_init(mem_K, _(mem_K_str), _(mem_M_str), _(mem_G_str), _(mem_T_str));
@@ -1383,7 +1383,7 @@ static void show_about_dialog(GtkWindow* parent)
         "authors", authors,
         "comments", _("A fast and easy BitTorrent client"),
         "copyright", _("Copyright (c) The Transmission OG Project"),
-        "logo-icon-name", MY_CONFIG_NAME,
+        "logo-icon-name", MY_CONFIG_NAME "-og",
         "name", g_get_application_name(),
         /* Translators: translate "translator-credits" as your name
            to have it appear in the credits in the "About"

@@ -46,7 +46,7 @@ if [[ "${PLATFORM}" == "Windows_amd64" ]]; then
 	# Some GTK+ resources we cannot statically link.
 	mkdir -p tmp_install/share/glib-2.0
 	cp -a /opt/mxe/usr/x86_64-w64-mingw32.static/share/glib-2.0/schemas tmp_install/share/glib-2.0/
-	cp -a /opt/mxe/usr/x86_64-w64-mingw32.static/share/icons tmp_install/share/
+	#cp -a /opt/mxe/usr/x86_64-w64-mingw32.static/share/icons tmp_install/share/
 	cp -a /opt/mxe/usr/x86_64-w64-mingw32.static/bin/gdbus.exe tmp_install/bin/
 fi
 

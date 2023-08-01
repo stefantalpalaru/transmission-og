@@ -93,7 +93,7 @@ Application::Application(int& argc, char** argv) :
     myWatchDir(nullptr),
     myLastFullUpdateTime(0)
 {
-    setApplicationName(MY_CONFIG_NAME);
+    setApplicationName(QLatin1String("transmission-og"));
     loadTranslations();
 
     Formatter::initUnits();
