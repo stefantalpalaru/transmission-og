@@ -83,6 +83,7 @@ jobs:
             libgcc-s1:i386 \
             libssl-dev \
             libstdc++6:i386 \
+            xvfb \
             zlib1g-dev
           sudo -E eatmydata apt-get install --install-recommends -yq \
             winehq-staging
@@ -91,7 +92,7 @@ jobs:
         run: |
           ./configure
           wineboot -u
-          make bindist-win64
+          xvfb-run make bindist-win64
           cd tmp_install/bin
           sha256sum transmission-og-* > win64.sha256sum
 
