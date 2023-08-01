@@ -95,7 +95,7 @@ jobs:
 
   prepare-release:
     name: Prepare release draft
-    needs: [source-archive build-win64]
+    needs: [source-archive, build-win64]
     runs-on: ubuntu-22.04
     steps:
       - name: Download artefacts
