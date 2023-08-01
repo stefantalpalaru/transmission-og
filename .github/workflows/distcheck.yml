@@ -50,6 +50,8 @@ jobs:
         run: |
           CFLAGS="-O3 -march=native -pipe"
           CXXFLAGS="-O3 -march=native -pipe"
+          CPPFLAGS=""
+          LDFLAGS=""
           NCPU=""
           MAKE_CMD="make"
           case "${{ runner.os }}" in
@@ -76,6 +78,8 @@ jobs:
           esac
           echo "CFLAGS=${CFLAGS}" >> ${GITHUB_ENV}
           echo "CXXFLAGS=${CXXFLAGS}" >> ${GITHUB_ENV}
+          echo "CPPFLAGS=${CPPFLAGS}" >> ${GITHUB_ENV}
+          echo "LDFLAGS=${LDFLAGS}" >> ${GITHUB_ENV}
           [[ -z "${NCPU}" || ${NCPU} -le 0 ]] && NCPU="1"
           echo "NCPU=${NCPU}" >> ${GITHUB_ENV}
           echo "MAKE_CMD=${MAKE_CMD}" >> ${GITHUB_ENV}
