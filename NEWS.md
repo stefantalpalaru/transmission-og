@@ -1,4 +1,4 @@
-## (next)
+## Transmission OG 3.01 (2023-08-02)
 
 ### All Platforms
 - Default trackers for public torrents (not on the native Mac client) ([#229](https://github.com/transmission/transmission/pull/229))

@@ -39,13 +39,14 @@ tr_auto_option(WITH_SYSTEMD         "Add support for systemd startup notificatio
 
 set(TR_NAME ${PROJECT_NAME})
 
-# convention: -TR MAJOR MINOR MAINT STATUS - (each a single char)
+# "TR_USER_AGENT_PREFIX" format: "[MAJOR].[MINOR][PATCH]" with a trailing "+" if it's a development version
+# "TR_PEER_ID_PREFIX" format: "-TR[MAJOR][MINOR][PATCH][STATUS]-" (each a single char)
 # STATUS: "X" for prerelease beta builds,
 #         "Z" for unsupported trunk builds,
 #         "0" for stable, supported releases
 # these should be the only two lines you need to change
-set(TR_USER_AGENT_PREFIX "3.01+")
-set(TR_PEER_ID_PREFIX "-TR301Z-")
+set(TR_USER_AGENT_PREFIX "3.01")
+set(TR_PEER_ID_PREFIX "-TR3010-")
 
 string(REGEX MATCH "^([0-9]+)\\.([0-9]+).*" TR_VERSION "${TR_USER_AGENT_PREFIX}")
 set(TR_VERSION_MAJOR "${CMAKE_MATCH_1}")
