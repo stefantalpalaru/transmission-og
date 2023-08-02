@@ -128,8 +128,6 @@ jobs:
       - name: Create installer
         run: |
           tar -xzf tmp_install.tar.gz
-          pwd
-          ls -l
           ./installers/InnoSetup/ISCC.exe installers/transmission-og.iss
 
       - name: Upload installer artefact
