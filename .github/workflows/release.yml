@@ -70,6 +70,9 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo -E dpkg --add-architecture i386
+          sudo mkdir -p -m 755 /etc/apt/keyrings
+          sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+          sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources
           sudo -E apt-get update -qq
           sudo -E eatmydata apt-get install --no-install-recommends -yq \
             build-essential \
@@ -80,14 +83,16 @@ jobs:
             libgcc-s1:i386 \
             libssl-dev \
             libstdc++6:i386 \
-            wine-stable \
-            wine32 \
+            xvfb \
             zlib1g-dev
+          sudo -E eatmydata apt-get install --install-recommends -yq \
+            winehq-stable
 
       - name: Build installer
         run: |
           ./configure
-          make bindist-win64
+          WINEDEBUG=-all wineboot -u
+          xvfb-run make bindist-win64
           cd tmp_install/bin
           sha256sum transmission-og-* > win64.sha256sum
 
