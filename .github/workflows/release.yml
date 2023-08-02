@@ -59,7 +59,7 @@ jobs:
           retention-days: 2
 
   build-win64:
-    name: Windows AMD64 binaries
+    name: Windows AMD64 release asset
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
@@ -69,28 +69,38 @@ jobs:
 
       - name: Install build dependencies
         run: |
+          sudo -E dpkg --add-architecture i386
+          sudo mkdir -p -m 755 /etc/apt/keyrings
+          sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+          sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources
           sudo -E apt-get update -qq
           sudo -E eatmydata apt-get install --no-install-recommends -yq \
             build-essential \
             gettext \
             intltool \
+            libc6:i386 \
             libcurl4-openssl-dev \
+            libgcc-s1:i386 \
             libssl-dev \
+            libstdc++6:i386 \
+            xvfb \
             zlib1g-dev
+          sudo -E eatmydata apt-get install --install-recommends -yq \
+            winehq-stable
 
-      - name: Build binaries
+      - name: Build installer
         run: |
           ./configure
-          make bindist-win64
-          tar -czf tmp_install.tar.gz tmp_install
+          wineboot -u
+          xvfb-run make bindist-win64
           cd tmp_install/bin
           sha256sum transmission-og-* > win64.sha256sum
 
-      - name: Upload binaries artefact
+      - name: Upload installer artefact
         uses: actions/upload-artifact@v3
         with:
-          name: Windows_amd64_binaries
-          path: tmp_install.tar.gz
+          name: Windows_amd64_installer
+          path: ./installers/installer/*.exe
           retention-days: 2
 
       - name: Upload checksum artefact
@@ -100,52 +110,9 @@ jobs:
           path: ./tmp_install/bin/win64.sha256sum
           retention-days: 2
 
-  build-win64-installer:
-    name: Windows AMD64 installer asset
-    needs: [build-win64]
-    runs-on: windows-2019
-
-    defaults:
-      run:
-        shell: msys2 {0}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          submodules: 'recursive'
-
-      - name: MSYS2 (Windows amd64)
-        uses: msys2/setup-msys2@v2
-        with:
-          path-type: inherit
-
-      - name: Download artefacts
-        uses: actions/download-artifact@v3
-        with:
-          name: Windows_amd64_binaries
-
-      - name: Create installer
-        run: |
-          tar -xzf tmp_install.tar.gz
-          ./installers/InnoSetup/ISCC.exe installers/transmission-og.iss
-
-      - name: Upload installer artefact
-        uses: actions/upload-artifact@v3
-        with:
-          name: Windows_amd64_installer
-          path: ./installers/installer/*.exe
-          retention-days: 2
-
-      - name: Delete artefact
-        uses: geekyeggo/delete-artifact@v2
-        with:
-          failOnError: false
-          name: Windows_amd64_binaries
-
   prepare-release:
     name: Prepare release draft
-    needs: [source-archive, build-win64-installer]
+    needs: [source-archive, build-win64]
     runs-on: ubuntu-22.04
     steps:
       - name: Download artefacts

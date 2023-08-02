@@ -1012,12 +1012,9 @@ github-ssh:
 bindist-win64:
 	+ MAKE="$(MAKE)" \
 		docker/build_image/make_bindist.sh win64
-	ls -lh tmp_install/bin
-
-.PHONY: installer-win64
-installer-win64: bindist-win64
 	rm -rf installers/installer
-	wine installers/InnoSetup/ISCC.exe installers/transmission-og.iss
+	WINEDEBUG=-all wine installers/InnoSetup/ISCC.exe installers/transmission-og.iss
+	ls -lh tmp_install/bin
 	ls -lh installers/installer
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
