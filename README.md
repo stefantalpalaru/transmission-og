@@ -2,11 +2,13 @@
 
 ## About
 
-Transmission OG (Old Generation) is a fork of [Transmission](https://github.com/transmission/transmission/) 3.00 (fast, easy, and free BitTorrent client). It comes in several flavors:
+Transmission OG (Old Generation) is a fork of
+[Transmission](https://github.com/transmission/transmission/) 3.00 (fast, easy,
+and free BitTorrent client). It comes in several flavours:
   * GTK+ and Qt GUI applications for Linux, BSD, macOS, Windows, etc.
-  * A headless daemon for servers and routers
-  * A native macOS GUI application (a bit lagging in features, help welcome)
-  * A web UI for remote controlling any of the above
+  * a daemon for servers and routers
+  * a native macOS GUI application (a bit lagging in features, help welcome)
+  * a web UI for remote controlling any of the above
 
 This fork is focused on stability, by rewinding the project's history back
 before the big C++ rewrite. It's meant to coexist with a Transmission
@@ -20,7 +22,7 @@ startup type from "Automatic" to "Manual".
 
 ## Command line interface notes
 
-Transmission OG is fully supported in `transmission-og-remote`, the preferred CLI client.
+Transmission OG is fully supported by `transmission-og-remote`, the preferred CLI client.
 
 Three standalone tools to examine, create, and edit .torrent files exist: `transmission-og-show`, `transmission-og-create`, and `transmission-og-edit`, respectively.
 
@@ -30,7 +32,10 @@ Different distributions may choose to package any or all of these tools in one o
 
 ## Packaging
 
-A 64-bit Windows installer is provided for each release.
+A 64-bit Windows installer is provided for each release. It has no external
+dependencies. All installed binaries are statically linked and
+[reproducible](https://reproducible-builds.org/). The GTK+ client was chosen
+over the Qt one, because it has more features.
 
 Gentoo Linux users need to use an overlay:
 
@@ -41,6 +46,68 @@ emerge transmission-og
 ```
 
 ## Building from source
+
+### Dependencies
+
+Ubuntu:
+
+```bash
+sudo apt-get install --no-install-recommends -yq \
+         build-essential \
+         gettext \
+         intltool \
+         libayatana-appindicator3-dev \
+         libcurl4-openssl-dev \
+         libglib2.0-dev \
+         libgtk-3-dev \
+         libnotify-dev \
+         libssl-dev \
+         libsystemd-dev \
+         qttools5-dev \
+         zlib1g-dev
+```
+
+macOS with Homebrew:
+
+```bash
+export CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/gettext/include"
+export LDFLAGS="${LDFLAGS} -L/usr/local/opt/gettext/lib"
+export PATH="${PATH}:/usr/local/opt/qt@5/bin:/usr/local/opt/gettext/bin"
+export PKG_CONFIG_PATH=/usr/local/opt/qt@5/lib/pkgconfig:/usr/local/opt/openssl@1.1/lib/pkgconfig
+export MACOSX_DEPLOYMENT_TARGET=12.0
+
+brew install \
+         autoconf \
+         automake \
+         cmake \
+         gettext \
+         gtk+3 \
+         intltool \
+         openssl@1.1 \
+         pkg-config \
+         qt@5
+```
+
+Windows with MSYS2's Mingw-w64 distribution:
+
+```bash
+pacman -Syu \
+           base-devel \
+           intltool \
+           mingw-w64-x86_64-autotools \
+           mingw-w64-x86_64-cmake \
+           mingw-w64-x86_64-curl \
+           mingw-w64-x86_64-gtk3 \
+           mingw-w64-x86_64-libnotify \
+           mingw-w64-x86_64-openssl \
+           mingw-w64-x86_64-qt5-base \
+           mingw-w64-x86_64-qt5-tools \
+           mingw-w64-x86_64-qt5-winextras \
+           mingw-w64-x86_64-toolchain \
+           mingw-w64-x86_64-zlib
+```
+
+### Building
 
 Clone the Git repo:
 
@@ -53,7 +120,7 @@ git submodule foreach --quiet --recursive "git restore ."
 git submodule update --init --recursive
 ```
 
-or unpack the source archive:
+Or unpack the source archive:
 
 ```bash
 tar -xf transmission-og-3.01.tar.xz
@@ -67,7 +134,9 @@ Build it using Autotools (preferred method):
 make -j4 # if you have 4 CPU cores
 ```
 
-Build it using CMake, which is an elaborate prank mistaken for a build system:
+(You'll want to use `mingw32-make` on Windows)
+
+Or build it using CMake, which is an elaborate prank mistaken for a build system:
 
 ```bash
 mkdir build
@@ -77,6 +146,9 @@ cd build
 rm -f CMakeCache.txt; cmake -DENABLE_CLI=ON -DUSE_SYSTEM_UTP=OFF ..
 make -j4 # if you have 4 CPU cores
 ```
+
+On Windows, you need to pass `-G "MinGW Makefiles"` to CMake, while on macOS
+you need `-DOPENSSL_ROOT_DIR=/usr/local/opt/openssl`.
 
 ## Development
 
@@ -95,3 +167,4 @@ cd ../qt
 Needs to be done in: "configure.ac", "CMakeLists.txt" and
 "libtransmission/Makefile.am" (for the shared library).
 
+"NEWS.md" also needs a new section.

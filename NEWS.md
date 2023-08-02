@@ -3,14 +3,14 @@
 ### All Platforms
 - Default trackers for public torrents (not on the native Mac client) ([#229](https://github.com/transmission/transmission/pull/229))
 - OpenSSL-3: load "legacy" provider for RC4 ([#4716](https://github.com/transmission/transmission/issues/4716))
-- Autotools fixes and improvements ([#3](https://github.com/stefantalpalaru/transmission-og/pull/3))
+- Autotools fixes and improvements ([#3](https://github.com/stefantalpalaru/transmission-og/pull/3), [#16](https://github.com/stefantalpalaru/transmission-og/pull/16))
 - Rename project from "Transmission" to "Transmission OG" ([#5](https://github.com/stefantalpalaru/transmission-og/pull/5))
 - Add more client IDs ([#7](https://github.com/stefantalpalaru/transmission-og/pull/7))
 - "scrape-paused-torrents-enabled" now defaults to "false" (no effect on
-  existing installations, because it's "true" in "settings.json")
-- Prefetch whole pieces instead on individual blocks
-- UPnP pinhole punching (IPv6 equivalent of port forwarding)
-- Port forwarding: recover from errors
+  existing installations, because it's "true" in "settings.json") [#8](https://github.com/stefantalpalaru/transmission-og/pull/8)
+- Prefetch whole pieces instead on individual blocks [#9](https://github.com/stefantalpalaru/transmission-og/pull/9)
+- UPnP pinhole punching (IPv6 equivalent of port forwarding) [#10](https://github.com/stefantalpalaru/transmission-og/pull/10)
+- Port forwarding: recover from errors [#15](https://github.com/stefantalpalaru/transmission-og/pull/15)
 - Autotools: libtransmission-og can now be built and installed as a shared library
 - CI: extensive combination of build parameters for the main testing workflow:
   64-bit Linux, 32-bit Linux, macOS, Windows, system libraries, vendored
@@ -18,7 +18,7 @@
 - CI: new "distcheck" workflow that creates a source archive and then uses it
   to build the software using Autotools, CMake and even qmake (for the Qt
   client). Needed to make sure we pack everything we need in that archive.
-  Runs on Linux and Windows.
+  Runs on Linux and macOS.
 - CI: "release" workflow that automatically builds a complete source archive,
   the Windows installer and creates a release draft, when a new tag is pushed.
   This draft needs to be manually edited (adding release notes), tested and
@@ -26,8 +26,8 @@
 
 ### GTK+ Client
 - Stop eating the last message at each refresh of the Message Log
-- UI: better visual torrent separation
-- Auto-scroll the main window to a newly added torrent
+- UI: better visual torrent separation [#11](https://github.com/stefantalpalaru/transmission-og/pull/11)
+- Auto-scroll the main window to a newly added torrent [#14](https://github.com/stefantalpalaru/transmission-og/pull/14)
 - Windows: don't try to register a magnet handler
 - Windows: set XDG\_DATA\_DIRS in the environment (relative to the program's
   directory), to allow packaging/bundling Gtk+ resources
@@ -39,7 +39,7 @@
 - Fix download percentage bar glitch ([#3150](https://github.com/transmission/transmission/issues/3150))
 - UI: move the status line above the progress bar
 - Pure Autotools build, on par with the CMake one. Works on Windows with MSYS2,
-  works for out-of-tree builds.
+  works on macOS with Homebrew, works for out-of-tree builds.
 - Autotools wrapper for a qmake build, hooked into the "distcheck" target to
   make sure the "\*.pro" file does not rot. Not meant for end-users.
 
