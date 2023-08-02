@@ -832,8 +832,6 @@ OPENSSL_MINIMUM
 ZLIB_MINIMUM
 LIBEVENT_MINIMUM
 CURL_MINIMUM
-HAVE_REVISION_FILE_FALSE
-HAVE_REVISION_FILE_TRUE
 TR_UNSTABLE_FALSE
 TR_UNSTABLE_TRUE
 CXXCPP
@@ -18430,14 +18428,6 @@ else
   TR_UNSTABLE_FALSE=
 fi
 
- if test -f REVISION; then
-  HAVE_REVISION_FILE_TRUE=
-  HAVE_REVISION_FILE_FALSE='#'
-else
-  HAVE_REVISION_FILE_TRUE='#'
-  HAVE_REVISION_FILE_FALSE=
-fi
-
 
 ##
 ##
@@ -25739,10 +25729,6 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${TR_UNSTABLE_TRUE}" && test -z "${TR_UNSTABLE_FALSE}"; then
   as_fn_error $? "conditional \"TR_UNSTABLE\" was never defined.
-Usually this means the macro was only invoked conditionally." "$LINENO" 5
-fi
-if test -z "${HAVE_REVISION_FILE_TRUE}" && test -z "${HAVE_REVISION_FILE_FALSE}"; then
-  as_fn_error $? "conditional \"HAVE_REVISION_FILE\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${WIN32_TRUE}" && test -z "${WIN32_FALSE}"; then

@@ -95,9 +95,8 @@ host_triplet = @host@
 @WIN32_FALSE@am__append_1 = \
 @WIN32_FALSE@  macosx
 
-@HAVE_REVISION_FILE_TRUE@am__append_2 = REVISION
-@WIN32_TRUE@am__append_3 = -G "MinGW Makefiles"
-@MACOS_TRUE@am__append_4 = \
+@WIN32_TRUE@am__append_2 = -G "MinGW Makefiles"
+@MACOS_TRUE@am__append_3 = \
 @MACOS_TRUE@	      -DENABLE_MAC=ON \
 @MACOS_TRUE@	      -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl
 
@@ -456,6 +455,12 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 transmissionlocaledir = @transmissionlocaledir@
+EXTRA_DIST = AUTHORS CMakeLists.txt COPYING NEWS.md README.md \
+	Transmission.xcodeproj/project.pbxproj autogen.sh cmake docker \
+	extras installers m4 po/CMakeLists.txt transmission-og.rc.in \
+	update-version-h.sh utils/CMakeLists.txt REVISION
+DISTCLEANFILES = REVISION intltool-extract intltool-merge \
+	intltool-update
 ACLOCAL_AMFLAGS = -I m4
 AM_DISTCHECK_CONFIGURE_FLAGS = --enable-cli
 @BUILD_CLI_TRUE@CLI_DIR = cli
@@ -478,10 +483,6 @@ SUBDIRS = \
 # We need to distribute all these subdirs unconditionally, so the "$(.._DIR)" scheme above is not suitable.
 DIST_SUBDIRS = third-party libtransmission utils cli daemon gtk po qt \
 	web $(am__append_1)
-EXTRA_DIST = AUTHORS CMakeLists.txt COPYING NEWS.md README.md \
-	Transmission.xcodeproj/project.pbxproj autogen.sh cmake docker \
-	extras installers m4 po/CMakeLists.txt transmission-og.rc.in \
-	update-version-h.sh utils/CMakeLists.txt $(am__append_2)
 
 # Do a CMake build during "make distcheck".
 # Notice how we get "ctest" to run the tests in parallel by setting "ARGS" so
@@ -489,13 +490,8 @@ EXTRA_DIST = AUTHORS CMakeLists.txt COPYING NEWS.md README.md \
 # unknown arguments.
 CMAKE_ARGS = -DENABLE_CLI=ON -DUSE_SYSTEM_B64=OFF -DUSE_SYSTEM_DHT=OFF \
 	-DUSE_SYSTEM_EVENT2=OFF -DUSE_SYSTEM_MINIUPNPC=OFF \
-	-DUSE_SYSTEM_NATPMP=OFF -DUSE_SYSTEM_UTP=OFF $(am__append_3) \
-	$(am__append_4)
-DISTCLEANFILES = \
-  intltool-extract \
-  intltool-merge \
-  intltool-update 
-
+	-DUSE_SYSTEM_NATPMP=OFF -DUSE_SYSTEM_UTP=OFF $(am__append_2) \
+	$(am__append_3)
 all: all-recursive
 
 .SUFFIXES:
@@ -958,6 +954,9 @@ uninstall-am:
 
 .PRECIOUS: Makefile
 
+
+REVISION:
+	cd $(top_srcdir); ./update-version-h.sh
 
 dist-hook:
 	rm -rf "$(distdir)/installers/installer"

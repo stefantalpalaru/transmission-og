@@ -91,7 +91,7 @@ jobs:
       - name: Build installer
         run: |
           ./configure
-          wineboot -u
+          WINEDEBUG=-all wineboot -u
           xvfb-run make bindist-win64
           cd tmp_install/bin
           sha256sum transmission-og-* > win64.sha256sum

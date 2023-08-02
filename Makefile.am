@@ -1,3 +1,6 @@
+EXTRA_DIST =
+DISTCLEANFILES =
+
 ACLOCAL_AMFLAGS = -I m4
 AM_DISTCHECK_CONFIGURE_FLAGS = --enable-cli
 
@@ -52,7 +55,7 @@ DIST_SUBDIRS += \
   macosx
 endif
 
-EXTRA_DIST = \
+EXTRA_DIST += \
   AUTHORS \
   CMakeLists.txt \
   COPYING \
@@ -70,9 +73,10 @@ EXTRA_DIST = \
   update-version-h.sh \
   utils/CMakeLists.txt
 
-if HAVE_REVISION_FILE
-  EXTRA_DIST += REVISION
-endif
+REVISION:
+	cd $(top_srcdir); ./update-version-h.sh
+EXTRA_DIST += REVISION
+DISTCLEANFILES += REVISION
 
 dist-hook:
 	rm -rf "$(distdir)/installers/installer"
@@ -120,7 +124,7 @@ if !MACOS
 		rm -rf "$${TMPDIR}"
 endif
 
-DISTCLEANFILES = \
+DISTCLEANFILES += \
   intltool-extract \
   intltool-merge \
   intltool-update 
