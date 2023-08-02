@@ -76,7 +76,6 @@ EXTRA_DIST += \
 REVISION:
 	cd $(top_srcdir); ./update-version-h.sh
 EXTRA_DIST += REVISION
-DISTCLEANFILES += REVISION
 
 dist-hook:
 	rm -rf "$(distdir)/installers/installer"

@@ -459,8 +459,7 @@ EXTRA_DIST = AUTHORS CMakeLists.txt COPYING NEWS.md README.md \
 	Transmission.xcodeproj/project.pbxproj autogen.sh cmake docker \
 	extras installers m4 po/CMakeLists.txt transmission-og.rc.in \
 	update-version-h.sh utils/CMakeLists.txt REVISION
-DISTCLEANFILES = REVISION intltool-extract intltool-merge \
-	intltool-update
+DISTCLEANFILES = intltool-extract intltool-merge intltool-update
 ACLOCAL_AMFLAGS = -I m4
 AM_DISTCHECK_CONFIGURE_FLAGS = --enable-cli
 @BUILD_CLI_TRUE@CLI_DIR = cli
