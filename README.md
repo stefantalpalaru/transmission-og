@@ -1,9 +1,10 @@
 [![CI](https://github.com/stefantalpalaru/transmission-og/actions/workflows/ci.yml/badge.svg)](https://github.com/stefantalpalaru/transmission-og/actions/workflows/ci.yml)
+[![distcheck](https://github.com/stefantalpalaru/transmission-og/actions/workflows/distcheck.yml/badge.svg)](https://github.com/stefantalpalaru/transmission-og/actions/workflows/distcheck.yml)
 
 ## About
 
 Transmission OG (Old Generation) is a fork of
-[Transmission](https://github.com/transmission/transmission/) 3.00 (fast, easy,
+[Transmission](https://github.com/transmission/transmission/) 3.00 (fast, easy
 and free BitTorrent client). It comes in several flavours:
   * GTK+ and Qt GUI applications for Linux, BSD, macOS, Windows, etc.
   * a daemon for servers and routers
