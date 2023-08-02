@@ -1,10 +1,11 @@
-dnl convention: -TR MAJOR MINOR MAINT STATUS - (each a single char)
+dnl "user_agent_prefix" format: "[MAJOR].[MINOR][PATCH]" with a trailing "+" if it's a development version
+dnl "peer_id_prefix" format: "-TR[MAJOR][MINOR][PATCH][STATUS]-" (each a single char)
 dnl STATUS: "X" for prerelease beta builds,
 dnl         "Z" for unsupported trunk builds,
 dnl         "0" for stable, supported releases
 dnl these should be the only two lines you need to change
-m4_define([user_agent_prefix],[3.01+])
-m4_define([peer_id_prefix],[-TR301Z-])
+m4_define([user_agent_prefix],[3.01])
+m4_define([peer_id_prefix],[-TR3010-])
 
 AC_INIT([transmission-og],[user_agent_prefix],[https://github.com/stefantalpalaru/transmission-og])
 AC_SUBST(USERAGENT_PREFIX,[user_agent_prefix])

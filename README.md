@@ -39,7 +39,7 @@ over the Qt one, because it has more features.
 
 Gentoo Linux users need to use an overlay:
 
-```bash
+```text
 eselect repository enable stefantalpalaru
 emaint sync --repo stefantalpalaru
 emerge transmission-og
