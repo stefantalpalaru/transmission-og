@@ -1,22 +1,35 @@
 [main]
 host = https://www.transifex.com
 
-[transmissionbt.qt]
-file_filter = qt/translations/transmission_<lang>.ts
-source_lang = en
-type = QT
+[o:transmission-og:p:transmission-og:r:gtk]
+file_filter            = po/<lang>.po
+source_file            = po/en.po
+source_lang            = en
+type                   = PO
+replace_edited_strings = false
+keep_translations      = false
 
-[transmissionbt.gtk]
-file_filter = po/<lang>.po
-source_lang = en
-type = PO
+[o:transmission-og:p:transmission-og:r:mac]
+file_filter            = macosx/<lang>.lproj/Localizable.strings
+source_file            = macosx/en.lproj/Localizable.strings
+source_lang            = en
+type                   = STRINGS
+replace_edited_strings = false
+keep_translations      = false
 
-[transmissionbt.mac]
-file_filter = macosx/<lang>.lproj/Localizable.strings
-source_lang = en
-type = STRINGS
+[o:transmission-og:p:transmission-og:r:mac-ql]
+file_filter            = macosx/QuickLookPlugin/<lang>.lproj/Localizable.strings
+source_file            = macosx/QuickLookPlugin/en.lproj/Localizable.strings
+source_lang            = en
+type                   = STRINGS
+replace_edited_strings = false
+keep_translations      = false
 
-[transmissionbt.mac-ql]
-file_filter = macosx/QuickLookPlugin/<lang>.lproj/Localizable.strings
-source_lang = en
-type = STRINGS
+[o:transmission-og:p:transmission-og:r:qt]
+file_filter            = qt/translations/transmission_<lang>.ts
+source_file            = qt/translations/transmission_en.ts
+source_lang            = en
+type                   = QT
+replace_edited_strings = false
+keep_translations      = false
+

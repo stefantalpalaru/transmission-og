@@ -164,9 +164,13 @@ EXTRA_DIST = \
     en.lproj \
     es.lproj \
     fr.lproj \
+    fr_CA.lproj \
     it.lproj \
+    it_IT.lproj \
     main.m \
     nl.lproj \
+    pt.lproj \
+    pt_BR.lproj \
     pt_PT.lproj \
     ru.lproj \
     sparkle_dsa_pub.pem \

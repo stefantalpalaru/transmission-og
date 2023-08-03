@@ -8,16 +8,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-31 14:49+0200\n"
+"POT-Creation-Date: 2023-08-03 17:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Mike Gelfand <mikedld@mikedld.com>, 2017\n"
-"Language-Team: Portuguese (https://www.transifex.com/transmissionbt/"
-"teams/33778/pt/)\n"
+"Language-Team: Portuguese (https://www.transifex.com/transmission-og/"
+"teams/173456/pt/)\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
+"1000000 == 0 ? 1 : 2;\n"
 
 #: ../cli/cli.c:114 ../gtk/util.c:92 ../libtransmission/utils.c:1744
 msgid "None"
@@ -393,6 +394,7 @@ msgid "%1$s (%2$'d piece @ %3$s)"
 msgid_plural "%1$s (%2$'d pieces @ %3$s)"
 msgstr[0] "%1$s (%2$'d parte @ %3$s)"
 msgstr[1] "%1$s (%2$'d partes @ %3$s)"
+msgstr[2] "%1$s (%2$'d partes @ %3$s)"
 
 #: ../gtk/details.c:925
 #, c-format
@@ -400,6 +402,7 @@ msgid "%1$s (%2$'d piece)"
 msgid_plural "%1$s (%2$'d pieces)"
 msgstr[0] "%1$s (%2$'d parte)"
 msgstr[1] "%1$s (%2$'d partes)"
+msgstr[2] "%1$s (%2$'d partes)"
 
 #: ../gtk/details.c:969
 #, c-format
@@ -762,6 +765,7 @@ msgid "Remove torrent?"
 msgid_plural "Remove %d torrents?"
 msgstr[0] "Remover torrent?"
 msgstr[1] "Remover %d torrents?"
+msgstr[2] "Remover %d torrents?"
 
 #: ../gtk/dialogs.c:104
 #, c-format
@@ -769,6 +773,7 @@ msgid "Delete this torrent's downloaded files?"
 msgid_plural "Delete these %d torrents' downloaded files?"
 msgstr[0] "Eliminar os ficheiros transferidos por este torrent?"
 msgstr[1] "Eliminar os ficheiros transferidos por estes %d torrents?"
+msgstr[2] "Eliminar os ficheiros transferidos por estes %d torrents?"
 
 #: ../gtk/dialogs.c:113
 msgid ""
@@ -783,30 +788,37 @@ msgstr[0] ""
 msgstr[1] ""
 "Após remoção, continuar a transferência requer os ficheiros torrent ou a "
 "ligações magnet."
+msgstr[2] ""
+"Após remoção, continuar a transferência requer os ficheiros torrent ou a "
+"ligações magnet."
 
 #: ../gtk/dialogs.c:118
 msgid "This torrent has not finished downloading."
 msgid_plural "These torrents have not finished downloading."
 msgstr[0] "Este torrent não terminou de ser recebido"
 msgstr[1] "Estes torrents não terminaram de ser recebidos"
+msgstr[2] "Estes torrents não terminaram de ser recebidos"
 
 #: ../gtk/dialogs.c:123
 msgid "This torrent is connected to peers."
 msgid_plural "These torrents are connected to peers."
 msgstr[0] "Este torrent está ligado a  peers"
 msgstr[1] "Estes torrents estão ligados a  peers"
+msgstr[2] "Estes torrents estão ligados a  peers"
 
 #: ../gtk/dialogs.c:130
 msgid "One of these torrents is connected to peers."
 msgid_plural "Some of these torrents are connected to peers."
 msgstr[0] "Um destes torrents está ligado a peers"
 msgstr[1] "Alguns destes torrents estão ligados a peers"
+msgstr[2] "Alguns destes torrents estão ligados a peers"
 
 #: ../gtk/dialogs.c:141
 msgid "One of these torrents has not finished downloading."
 msgid_plural "Some of these torrents have not finished downloading."
 msgstr[0] "Um destes torrents ainda não acabou de ser transferido."
 msgstr[1] "Alguns destes torrents ainda não acabaram de ser transferidos"
+msgstr[2] "Alguns destes torrents ainda não acabaram de ser transferidos"
 
 #: ../gtk/file-list.c:624 ../gtk/util.c:527
 msgid "High"
@@ -953,12 +965,14 @@ msgid "Couldn't add corrupt torrent"
 msgid_plural "Couldn't add corrupt torrents"
 msgstr[0] "Não foi possível adicionar torrent danificado"
 msgstr[1] "Não foi possível adicionar torrents danificados"
+msgstr[2] "Não foi possível adicionar torrents danificados"
 
 #: ../gtk/main.c:1061
 msgid "Couldn't add duplicate torrent"
 msgid_plural "Couldn't add duplicate torrents"
 msgstr[0] "Não foi possível adicionar torrent duplicado"
 msgstr[1] "Não foi possível adicionar torrents duplicados"
+msgstr[2] "Não foi possível adicionar torrents duplicados"
 
 #: ../gtk/main.c:1384
 msgid "A fast and easy BitTorrent client"
@@ -1067,6 +1081,7 @@ msgid "%1$s; %2$'d File"
 msgid_plural "%1$s; %2$'d Files"
 msgstr[0] "%1$s; %2$'d ficheiro"
 msgstr[1] "%1$s; %2$'d ficheiros"
+msgstr[2] "%1$s; %2$'d ficheiros"
 
 #: ../gtk/makemeta-ui.c:315
 #, c-format
@@ -1074,6 +1089,7 @@ msgid "%1$'d Piece @ %2$s"
 msgid_plural "%1$'d Pieces @ %2$s"
 msgstr[0] "%1$'d parte @ %2$s"
 msgstr[1] "%1$'d partes @ %2$s"
+msgstr[2] "%1$'d partes @ %2$s"
 
 #: ../gtk/makemeta-ui.c:444
 msgid "Sa_ve to:"
@@ -1249,6 +1265,7 @@ msgid "Started %'d time"
 msgid_plural "Started %'d times"
 msgstr[0] "Iniciado %'d vez"
 msgstr[1] "Iniciado %'d vezes"
+msgstr[2] "Iniciado %'d vezes"
 
 #: ../gtk/stats.c:91
 msgid "Reset your statistics?"
@@ -1390,6 +1407,7 @@ msgid "peer"
 msgid_plural "peers"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #. Downloading from 2 of 3 peer (s) and 2 webseed (s)
 #: ../gtk/torrent-cell-renderer.c:268
@@ -1402,6 +1420,7 @@ msgid "web seed"
 msgid_plural "web seeds"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #. Downloading from 3 web seed (s)
 #: ../gtk/torrent-cell-renderer.c:275
@@ -1421,6 +1440,7 @@ msgid "Seeding to %1$'d of %2$'d connected peer"
 msgid_plural "Seeding to %1$'d of %2$'d connected peers"
 msgstr[0] "A enviar para %1$'d de %2$'d peer ligado"
 msgstr[1] "A enviar para %1$'d de %2$'d peers ligados"
+msgstr[2] "A enviar para %1$'d de %2$'d peers ligados"
 
 #: ../gtk/tr-core.c:1249
 #, c-format
@@ -1564,6 +1584,7 @@ msgid "Blocklist contains %'d rule"
 msgid_plural "Blocklist contains %'d rules"
 msgstr[0] "A lista de bloqueio contém %'d regra"
 msgstr[1] "A lista de bloqueio contém %'d regras"
+msgstr[2] "A lista de bloqueio contém %'d regras"
 
 #: ../gtk/tr-prefs.c:484
 #, c-format
@@ -1571,6 +1592,7 @@ msgid "Blocklist has %'d rule."
 msgid_plural "Blocklist has %'d rules."
 msgstr[0] "A lista de bloqueio possui %'d regra"
 msgstr[1] "A lista de bloqueio possui %'d regras"
+msgstr[2] "A lista de bloqueio possui %'d regras"
 
 #: ../gtk/tr-prefs.c:488
 msgid "<b>Update succeeded!</b>"
@@ -2009,6 +2031,7 @@ msgid "%'d day"
 msgid_plural "%'d days"
 msgstr[0] "%'d dia"
 msgstr[1] "%'d dias"
+msgstr[2] "%'d dias"
 
 #: ../gtk/util.c:123
 #, c-format
@@ -2016,6 +2039,7 @@ msgid "%'d hour"
 msgid_plural "%'d hours"
 msgstr[0] "%'d hora"
 msgstr[1] "%'d horas"
+msgstr[2] "%'d horas"
 
 #: ../gtk/util.c:124
 #, c-format
@@ -2023,6 +2047,7 @@ msgid "%'d minute"
 msgid_plural "%'d minutes"
 msgstr[0] "%'d minuto"
 msgstr[1] "%'d minutos"
+msgstr[2] "%'d minutos"
 
 #: ../gtk/util.c:125
 #, c-format
@@ -2030,6 +2055,7 @@ msgid "%'d second"
 msgid_plural "%'d seconds"
 msgstr[0] "%'d segundo"
 msgstr[1] "%'d segundos"
+msgstr[2] "%'d segundos"
 
 #: ../gtk/util.c:258
 #, c-format

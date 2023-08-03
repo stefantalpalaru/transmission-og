@@ -151,6 +151,17 @@ make -j4 # if you have 4 CPU cores
 On Windows, you need to pass `-G "MinGW Makefiles"` to CMake, while on macOS
 you need `-DOPENSSL_ROOT_DIR=/usr/local/opt/openssl`.
 
+## Translating
+
+Translations for Mac, Qt and GTK+ clients are managed on Transifex. To help
+translate, or add a new language, you'll need to [register on Transifex
+and join the translation
+team](https://help.transifex.com/en/articles/6248698-getting-started-as-a-translator)
+for the [Transmission OG
+project](https://explore.transifex.com/transmission-og/transmission-og/).
+
+Please open a PR here after updating a translation on Transifex.
+
 ## Development
 
 ### Updating translations
