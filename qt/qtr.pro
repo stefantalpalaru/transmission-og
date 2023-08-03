@@ -41,6 +41,7 @@ win32:LIBS += -lws2_32 -lintl -lcrypt32 -luuid -lole32 -liconv -lwldap32 -liphlp
 TRANSLATIONS += \
                 translations/transmission_af.ts \
                 translations/transmission_ca.ts \
+                translations/transmission_ca@valencia.ts \
                 translations/transmission_da.ts \
                 translations/transmission_de.ts \
                 translations/transmission_el.ts \
@@ -49,8 +50,10 @@ TRANSLATIONS += \
                 translations/transmission_eu.ts \
                 translations/transmission_fi.ts \
                 translations/transmission_fr.ts \
+                translations/transmission_fr_CA.ts \
                 translations/transmission_hu.ts \
                 translations/transmission_id.ts \
+                translations/transmission_it.ts \
                 translations/transmission_it_IT.ts \
                 translations/transmission_ja.ts \
                 translations/transmission_ka.ts \
@@ -60,6 +63,7 @@ TRANSLATIONS += \
                 translations/transmission_nb.ts \
                 translations/transmission_nl.ts \
                 translations/transmission_pl.ts \
+                translations/transmission_pt.ts \
                 translations/transmission_pt_BR.ts \
                 translations/transmission_pt_PT.ts \
                 translations/transmission_ru.ts \
@@ -67,7 +71,9 @@ TRANSLATIONS += \
                 translations/transmission_sv.ts \
                 translations/transmission_tr.ts \
                 translations/transmission_uk.ts \
-                translations/transmission_zh_CN.ts
+                translations/transmission_zh_CN.ts \
+                translations/transmission_zh_HK.ts \
+                translations/transmission_zh_TW.ts
 
 FORMS += AboutDialog.ui \
          DetailsDialog.ui \

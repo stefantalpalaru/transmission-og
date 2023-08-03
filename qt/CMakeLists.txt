@@ -135,6 +135,7 @@ tr_qt_add_resources(${PROJECT_NAME}_QRC_SOURCES ${${PROJECT_NAME}_QRC_FILES})
 set(${PROJECT_NAME}_LINGUAS
     af
     ca
+    ca@valencia
     da
     de
     el
@@ -143,8 +144,10 @@ set(${PROJECT_NAME}_LINGUAS
     eu
     fi
     fr
+    fr_CA
     hu
     id
+    it
     it_IT
     ja
     ka
@@ -154,6 +157,7 @@ set(${PROJECT_NAME}_LINGUAS
     nb
     nl
     pl
+    pt
     pt_BR
     pt_PT
     ru
@@ -162,6 +166,8 @@ set(${PROJECT_NAME}_LINGUAS
     tr
     uk
     zh_CN
+    zh_HK
+    zh_TW
 )
 
 if(ENABLE_NLS)

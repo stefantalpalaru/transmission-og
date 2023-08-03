@@ -309,8 +309,12 @@ set(${PROJECT_NAME}_LINGUAS
     en
     es
     fr
+    fr_CA
     it
+    it_IT
     nl
+    pt
+    pt_BR
     pt_PT
     ru
     tr

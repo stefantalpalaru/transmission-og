@@ -8,16 +8,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-31 14:49+0200\n"
+"POT-Creation-Date: 2023-08-03 17:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>, 2017\n"
-"Language-Team: Kazakh (https://www.transifex.com/transmissionbt/teams/33778/"
-"kk/)\n"
+"Language-Team: Kazakh (https://www.transifex.com/transmission-og/"
+"teams/173456/kk/)\n"
 "Language: kk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #: ../cli/cli.c:114 ../gtk/util.c:92 ../libtransmission/utils.c:1744
 msgid "None"
@@ -392,12 +392,14 @@ msgstr "Белгісіз"
 msgid "%1$s (%2$'d piece @ %3$s)"
 msgid_plural "%1$s (%2$'d pieces @ %3$s)"
 msgstr[0] "%1$s (%2$'d бөлім @ %3$s)"
+msgstr[1] "%1$s (%2$'d бөлім @ %3$s)"
 
 #: ../gtk/details.c:925
 #, c-format
 msgid "%1$s (%2$'d piece)"
 msgid_plural "%1$s (%2$'d pieces)"
 msgstr[0] "%1$s (%2$'d бөлім)"
+msgstr[1] "%1$s (%2$'d бөлім)"
 
 #: ../gtk/details.c:969
 #, c-format
@@ -755,12 +757,14 @@ msgstr "%'d Торрент қасиеттері"
 msgid "Remove torrent?"
 msgid_plural "Remove %d torrents?"
 msgstr[0] "%d торрентті өшіру керек пе?"
+msgstr[1] "%d торрентті өшіру керек пе?"
 
 #: ../gtk/dialogs.c:104
 #, c-format
 msgid "Delete this torrent's downloaded files?"
 msgid_plural "Delete these %d torrents' downloaded files?"
 msgstr[0] "Бұл %d торренттің жүктелген файлдарын өшіру керек пе?"
+msgstr[1] "Бұл %d торренттің жүктелген файлдарын өшіру керек пе?"
 
 #: ../gtk/dialogs.c:113
 msgid ""
@@ -772,26 +776,33 @@ msgid_plural ""
 msgstr[0] ""
 "Өшірілсе, торренті қайта жалғастыру үшін торрент файлдар не сілтемесі керек "
 "болады."
+msgstr[1] ""
+"Өшірілсе, торренті қайта жалғастыру үшін торрент файлдар не сілтемесі керек "
+"болады."
 
 #: ../gtk/dialogs.c:118
 msgid "This torrent has not finished downloading."
 msgid_plural "These torrents have not finished downloading."
 msgstr[0] "Бұл торренттердің жүктелуі аяқталмаған."
+msgstr[1] "Бұл торренттердің жүктелуі аяқталмаған."
 
 #: ../gtk/dialogs.c:123
 msgid "This torrent is connected to peers."
 msgid_plural "These torrents are connected to peers."
 msgstr[0] "Бұл торренттер тораптарға қосулы тұр."
+msgstr[1] "Бұл торренттер тораптарға қосулы тұр."
 
 #: ../gtk/dialogs.c:130
 msgid "One of these torrents is connected to peers."
 msgid_plural "Some of these torrents are connected to peers."
 msgstr[0] "Бұл торренттердің кейбіреулері тораптарға қосулы тұр."
+msgstr[1] "Бұл торренттердің кейбіреулері тораптарға қосулы тұр."
 
 #: ../gtk/dialogs.c:141
 msgid "One of these torrents has not finished downloading."
 msgid_plural "Some of these torrents have not finished downloading."
 msgstr[0] "Бұл торренттердің кейбіреулерінің жүктелуі аяқталмаған."
+msgstr[1] "Бұл торренттердің кейбіреулерінің жүктелуі аяқталмаған."
 
 #: ../gtk/file-list.c:624 ../gtk/util.c:527
 msgid "High"
@@ -936,11 +947,13 @@ msgstr "Қазір _шығу"
 msgid "Couldn't add corrupt torrent"
 msgid_plural "Couldn't add corrupt torrents"
 msgstr[0] "Зақымдалған торренттерді қосу мүмкін емес"
+msgstr[1] "Зақымдалған торренттерді қосу мүмкін емес"
 
 #: ../gtk/main.c:1061
 msgid "Couldn't add duplicate torrent"
 msgid_plural "Couldn't add duplicate torrents"
 msgstr[0] "Қайталанатын торренттерді қосу мүмкін емес"
+msgstr[1] "Қайталанатын торренттерді қосу мүмкін емес"
 
 #: ../gtk/main.c:1384
 msgid "A fast and easy BitTorrent client"
@@ -1017,12 +1030,14 @@ msgstr "Көзі таңдалмаған"
 msgid "%1$s; %2$'d File"
 msgid_plural "%1$s; %2$'d Files"
 msgstr[0] "%1$s; %2$'d файл"
+msgstr[1] "%1$s; %2$'d файл"
 
 #: ../gtk/makemeta-ui.c:315
 #, c-format
 msgid "%1$'d Piece @ %2$s"
 msgid_plural "%1$'d Pieces @ %2$s"
 msgstr[0] "%1$'d бөлім @ %2$s"
+msgstr[1] "%1$'d бөлім @ %2$s"
 
 #: ../gtk/makemeta-ui.c:444
 msgid "Sa_ve to:"
@@ -1197,6 +1212,7 @@ msgstr "Жергілікті мәліметтер ол жерде _болып т
 msgid "Started %'d time"
 msgid_plural "Started %'d times"
 msgstr[0] "%'d рет қосылған"
+msgstr[1] "%'d рет қосылған"
 
 #: ../gtk/stats.c:91
 msgid "Reset your statistics?"
@@ -1338,6 +1354,7 @@ msgstr ""
 msgid "peer"
 msgid_plural "peers"
 msgstr[0] "торап"
+msgstr[1] "торап"
 
 #. Downloading from 2 of 3 peer (s) and 2 webseed (s)
 #: ../gtk/torrent-cell-renderer.c:268
@@ -1349,6 +1366,7 @@ msgstr ""
 msgid "web seed"
 msgid_plural "web seeds"
 msgstr[0] "веб-сидерлер"
+msgstr[1] "веб-сидерлер"
 
 #. Downloading from 3 web seed (s)
 #: ../gtk/torrent-cell-renderer.c:275
@@ -1367,6 +1385,7 @@ msgstr ""
 msgid "Seeding to %1$'d of %2$'d connected peer"
 msgid_plural "Seeding to %1$'d of %2$'d connected peers"
 msgstr[0] "Тарату %1$'d торапқа, барлығы %2$'d торап қосулы"
+msgstr[1] "Тарату %1$'d торапқа, барлығы %2$'d торап қосулы"
 
 #: ../gtk/tr-core.c:1249
 #, c-format
@@ -1509,12 +1528,14 @@ msgstr "Торрент аяқ_талғанда дыбысты ойнату"
 msgid "Blocklist contains %'d rule"
 msgid_plural "Blocklist contains %'d rules"
 msgstr[0] "Блоктізімде %'d ереже бар"
+msgstr[1] "Блоктізімде %'d ереже бар"
 
 #: ../gtk/tr-prefs.c:484
 #, c-format
 msgid "Blocklist has %'d rule."
 msgid_plural "Blocklist has %'d rules."
 msgstr[0] "Блоктізімде %'d ереже бар."
+msgstr[1] "Блоктізімде %'d ереже бар."
 
 #: ../gtk/tr-prefs.c:488
 msgid "<b>Update succeeded!</b>"
@@ -1949,24 +1970,28 @@ msgstr "ТБ/с"
 msgid "%'d day"
 msgid_plural "%'d days"
 msgstr[0] "%'d күн"
+msgstr[1] "%'d күн"
 
 #: ../gtk/util.c:123
 #, c-format
 msgid "%'d hour"
 msgid_plural "%'d hours"
 msgstr[0] "%'d сағат"
+msgstr[1] "%'d сағат"
 
 #: ../gtk/util.c:124
 #, c-format
 msgid "%'d minute"
 msgid_plural "%'d minutes"
 msgstr[0] "%'d минут"
+msgstr[1] "%'d минут"
 
 #: ../gtk/util.c:125
 #, c-format
 msgid "%'d second"
 msgid_plural "%'d seconds"
 msgstr[0] "%'d секунд"
+msgstr[1] "%'d секунд"
 
 #: ../gtk/util.c:258
 #, c-format

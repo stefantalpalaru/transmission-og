@@ -8,16 +8,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-31 14:49+0200\n"
+"POT-Creation-Date: 2023-08-03 17:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Mike Gelfand <mikedld@mikedld.com>, 2017\n"
-"Language-Team: Slovak (https://www.transifex.com/transmissionbt/teams/33778/"
-"sk/)\n"
+"Language-Team: Slovak (https://www.transifex.com/transmission-og/"
+"teams/173456/sk/)\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n "
+">= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
 
 #: ../cli/cli.c:114 ../gtk/util.c:92 ../libtransmission/utils.c:1744
 msgid "None"
@@ -394,6 +395,7 @@ msgid_plural "%1$s (%2$'d pieces @ %3$s)"
 msgstr[0] "%1$s (%2$'d častí @ %3$s)"
 msgstr[1] "%1$s (%2$'d časť @ %3$s)"
 msgstr[2] "%1$s (%2$'d časti @ %3$s)"
+msgstr[3] "%1$s (%2$'d časti @ %3$s)"
 
 #: ../gtk/details.c:925
 #, c-format
@@ -402,6 +404,7 @@ msgid_plural "%1$s (%2$'d pieces)"
 msgstr[0] "%1$s (%2$'d častí)"
 msgstr[1] "%1$s (%2$'d časť)"
 msgstr[2] "%1$s (%2$'d časti)"
+msgstr[3] "%1$s (%2$'d časti)"
 
 #: ../gtk/details.c:969
 #, c-format
@@ -767,6 +770,7 @@ msgid_plural "Remove %d torrents?"
 msgstr[0] "Odstrániť %d torrentov?"
 msgstr[1] "Odstrániť torrent?"
 msgstr[2] "Odstrániť %d torrenty?"
+msgstr[3] "Odstrániť %d torrenty?"
 
 #: ../gtk/dialogs.c:104
 #, c-format
@@ -775,6 +779,7 @@ msgid_plural "Delete these %d torrents' downloaded files?"
 msgstr[0] "Odstrániť súbory stiahnuté týmito %d torrentami?"
 msgstr[1] "Odstrániť súbory stiahnuté týmto torentom?"
 msgstr[2] "Odstrániť súbory stiahnuté týmito %d torrentami?"
+msgstr[3] "Odstrániť súbory stiahnuté týmito %d torrentami?"
 
 #: ../gtk/dialogs.c:113
 msgid ""
@@ -792,6 +797,9 @@ msgstr[1] ""
 msgstr[2] ""
 "Po ich odstránení budú potrebné na pokračovanie prenosov súbory s torrentami "
 "alebo odkazy typu magnet."
+msgstr[3] ""
+"Po ich odstránení budú potrebné na pokračovanie prenosov súbory s torrentami "
+"alebo odkazy typu magnet."
 
 #: ../gtk/dialogs.c:118
 msgid "This torrent has not finished downloading."
@@ -799,6 +807,7 @@ msgid_plural "These torrents have not finished downloading."
 msgstr[0] "Tieto torrenty sa ešte nestiahli."
 msgstr[1] "Tento torrent sa ešte nestiahol."
 msgstr[2] "Tieto torrenty sa ešte nestiahli."
+msgstr[3] "Tieto torrenty sa ešte nestiahli."
 
 #: ../gtk/dialogs.c:123
 msgid "This torrent is connected to peers."
@@ -806,6 +815,7 @@ msgid_plural "These torrents are connected to peers."
 msgstr[0] "Tieto torrenty sú pripojené k ďalším partnerom."
 msgstr[1] "Tento torrent je pripojený k ďalším partnerom."
 msgstr[2] "Tieto torrenty sú pripojené k ďalším partnerom."
+msgstr[3] "Tieto torrenty sú pripojené k ďalším partnerom."
 
 #: ../gtk/dialogs.c:130
 msgid "One of these torrents is connected to peers."
@@ -813,6 +823,7 @@ msgid_plural "Some of these torrents are connected to peers."
 msgstr[0] "Niektoré z týchto torrentov sú pripojené k ďalším klientom."
 msgstr[1] "Jeden z týchto torrentov je pripojený k ďalším klientom."
 msgstr[2] "Niektoré z týchto torrentov sú pripojené k ďalším partnerom."
+msgstr[3] "Niektoré z týchto torrentov sú pripojené k ďalším partnerom."
 
 #: ../gtk/dialogs.c:141
 msgid "One of these torrents has not finished downloading."
@@ -820,6 +831,7 @@ msgid_plural "Some of these torrents have not finished downloading."
 msgstr[0] "Niektoré z týchto torrentov sa ešte nestiahli."
 msgstr[1] "Jeden z týchto torrentov sa ešte nestiahol."
 msgstr[2] "Niektoré z týchto torrentov sa ešte nestiahli."
+msgstr[3] "Niektoré z týchto torrentov sa ešte nestiahli."
 
 #: ../gtk/file-list.c:624 ../gtk/util.c:527
 msgid "High"
@@ -968,6 +980,7 @@ msgid_plural "Couldn't add corrupt torrents"
 msgstr[0] "Nepodarilo sa pridať poškodené torrenty"
 msgstr[1] "Nepodarilo sa pridať poškodený torrent"
 msgstr[2] "Nepodarilo sa pridať poškodené torrenty"
+msgstr[3] "Nepodarilo sa pridať poškodené torrenty"
 
 #: ../gtk/main.c:1061
 msgid "Couldn't add duplicate torrent"
@@ -975,6 +988,7 @@ msgid_plural "Couldn't add duplicate torrents"
 msgstr[0] "Nepodarilo sa pridať rovnaké torrenty"
 msgstr[1] "Nepodarilo sa pridať rovnaký torrent"
 msgstr[2] "Nepodarilo sa pridať rovnaké torrenty"
+msgstr[3] "Nepodarilo sa pridať rovnaké torrenty"
 
 #: ../gtk/main.c:1384
 msgid "A fast and easy BitTorrent client"
@@ -1059,6 +1073,7 @@ msgid_plural "%1$s; %2$'d Files"
 msgstr[0] "%1$s; %2$'d súborov"
 msgstr[1] "%1$s; %2$'d súbor"
 msgstr[2] "%1$s; %2$'d súbory"
+msgstr[3] "%1$s; %2$'d súbory"
 
 #: ../gtk/makemeta-ui.c:315
 #, c-format
@@ -1067,6 +1082,7 @@ msgid_plural "%1$'d Pieces @ %2$s"
 msgstr[0] "%1$'d častí @ %2$s"
 msgstr[1] "%1$'d časť @ %2$s"
 msgstr[2] "%1$'d časti @ %2$s"
+msgstr[3] "%1$'d časti @ %2$s"
 
 #: ../gtk/makemeta-ui.c:444
 msgid "Sa_ve to:"
@@ -1243,6 +1259,7 @@ msgid_plural "Started %'d times"
 msgstr[0] "Spustený %'d-krát"
 msgstr[1] "Spustený %'d-krát"
 msgstr[2] "Spustený %'d-krát"
+msgstr[3] "Spustený %'d-krát"
 
 #: ../gtk/stats.c:91
 msgid "Reset your statistics?"
@@ -1385,6 +1402,7 @@ msgid_plural "peers"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 #. Downloading from 2 of 3 peer (s) and 2 webseed (s)
 #: ../gtk/torrent-cell-renderer.c:268
@@ -1398,6 +1416,7 @@ msgid_plural "web seeds"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 #. Downloading from 3 web seed (s)
 #: ../gtk/torrent-cell-renderer.c:275
@@ -1418,6 +1437,7 @@ msgid_plural "Seeding to %1$'d of %2$'d connected peers"
 msgstr[0] "Zdieľa sa %1$'d s %2$'d pripojenými partnermi"
 msgstr[1] "Zdieľa sa %1$'d s %2$'d pripojeným partnerom"
 msgstr[2] "Zdieľa sa %1$'d s %2$'d pripojenými partnermi"
+msgstr[3] "Zdieľa sa %1$'d s %2$'d pripojenými partnermi"
 
 #: ../gtk/tr-core.c:1249
 #, c-format
@@ -1562,6 +1582,7 @@ msgid_plural "Blocklist contains %'d rules"
 msgstr[0] "Zoznam blokovaní obsahuje %'d pravidiel"
 msgstr[1] "Zoznam blokovaní obsahuje %'d pravidlo"
 msgstr[2] "Zoznam blokovaní obsahuje %'d pravidlá"
+msgstr[3] "Zoznam blokovaní obsahuje %'d pravidlá"
 
 #: ../gtk/tr-prefs.c:484
 #, c-format
@@ -1570,6 +1591,7 @@ msgid_plural "Blocklist has %'d rules."
 msgstr[0] "Zoznam blokovaní má %'d pravidiel"
 msgstr[1] "Zoznam blokovaní má %'d pravidlo"
 msgstr[2] "Zoznam blokovaní má %'d pravidlá"
+msgstr[3] "Zoznam blokovaní má %'d pravidlá"
 
 #: ../gtk/tr-prefs.c:488
 msgid "<b>Update succeeded!</b>"
@@ -2008,6 +2030,7 @@ msgid_plural "%'d days"
 msgstr[0] "%'d dňami"
 msgstr[1] "%'d dňom"
 msgstr[2] "%'d dňami"
+msgstr[3] "%'d dňami"
 
 #: ../gtk/util.c:123
 #, c-format
@@ -2016,6 +2039,7 @@ msgid_plural "%'d hours"
 msgstr[0] "%'d hodín"
 msgstr[1] "%'d hodina"
 msgstr[2] "%'d hodiny"
+msgstr[3] "%'d hodiny"
 
 #: ../gtk/util.c:124
 #, c-format
@@ -2024,6 +2048,7 @@ msgid_plural "%'d minutes"
 msgstr[0] "%'d minút"
 msgstr[1] "%'d minúta"
 msgstr[2] "%'d minúty"
+msgstr[3] "%'d minúty"
 
 #: ../gtk/util.c:125
 #, c-format
@@ -2032,6 +2057,7 @@ msgid_plural "%'d seconds"
 msgstr[0] "%'d sekúnd"
 msgstr[1] "%'d sekunda"
 msgstr[2] "%'d sekundy"
+msgstr[3] "%'d sekundy"
 
 #: ../gtk/util.c:258
 #, c-format

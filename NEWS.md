@@ -1,3 +1,9 @@
+## (next)
+
+### All Platforms
+- Set up a Transifex project to manage translations
+
+
 ## [Transmission OG 3.01](https://github.com/stefantalpalaru/transmission-og/releases/tag/3.01) (2023-08-02)
 
 ### All Platforms
