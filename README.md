@@ -160,7 +160,7 @@ team](https://help.transifex.com/en/articles/6248698-getting-started-as-a-transl
 for the [Transmission OG
 project](https://explore.transifex.com/transmission-og/transmission-og/).
 
-Please open a PR here after updating a translation on Transifex.
+Please open an issue here after updating a translation on Transifex.
 
 ## Development
 
