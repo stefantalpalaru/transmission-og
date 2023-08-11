@@ -53,8 +53,10 @@ static void set_system_error(tr_error** error, int code, char const* what)
     }
 }
 
-static bool tr_spawn_async_in_child(char* const* cmd, char* const* env, char const* work_dir, int pipe_fd)
+static bool tr_spawn_async_in_child(tr_error** error, char* const* cmd, char* const* env, char const* work_dir, int pipe_fd)
 {
+    ssize_t count;
+
     if (env != NULL)
     {
         for (size_t i = 0; env[i] != NULL; ++i)
@@ -79,7 +81,11 @@ static bool tr_spawn_async_in_child(char* const* cmd, char* const* env, char con
     return true;
 
 fail:
-    write(pipe_fd, &errno, sizeof(errno));
+    count = write(pipe_fd, &errno, sizeof(errno));
+    if (count == -1)
+    {
+        set_system_error(error, errno, "Write to pipe");
+    }
     return false;
 }
 
@@ -161,7 +167,7 @@ bool tr_spawn_async(char* const* cmd, char* const* env, char const* work_dir, tr
     {
         close(pipe_fds[0]);
 
-        if (!tr_spawn_async_in_child(cmd, env, work_dir, pipe_fds[1]))
+        if (!tr_spawn_async_in_child(error, cmd, env, work_dir, pipe_fds[1]))
         {
             _exit(0);
         }

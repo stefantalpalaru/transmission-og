@@ -1828,7 +1828,7 @@ static void core_send_rpc_request(TrCore* core, tr_variant const* request, int t
         data->core = core;
         data->response_func = response_func;
         data->response_func_user_data = response_func_user_data;
-        g_hash_table_insert(pendingRequests, g_memdup(&tag, sizeof(int)), data);
+        g_hash_table_insert(pendingRequests, g_memdup2(&tag, sizeof(int)), data);
 
         /* make the request */
 #ifdef DEBUG_RPC
