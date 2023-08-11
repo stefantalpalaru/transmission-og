@@ -20,7 +20,7 @@
 #include <openssl/rand.h>
 #include <openssl/ssl.h>
 #include <openssl/x509.h>
-#if OPENSSL_VERSION_MAJOR >= 3
+#if OPENSSL_VERSION_NUMBER >= 0x30000000L
 #include <openssl/provider.h>
 #endif
 
@@ -185,13 +185,13 @@ static void openssl_evp_cipher_context_free(EVP_CIPHER_CTX* handle)
 
 #endif
 
-#if OPENSSL_VERSION_MAJOR >= 3
+#if OPENSSL_VERSION_NUMBER >= 0x30000000L
 bool tr_openssl_providers_loaded = false;
 #endif
 
 tr_rc4_ctx_t tr_rc4_new(void)
 {
-#if OPENSSL_VERSION_MAJOR >= 3
+#if OPENSSL_VERSION_NUMBER >= 0x30000000L
     // https://github.com/openssl/openssl/blob/master/README-PROVIDERS.md#loading-providers
     if (!tr_openssl_providers_loaded)
     {

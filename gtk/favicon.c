@@ -122,7 +122,7 @@ static void favicon_web_done_cb(tr_session* session UNUSED, bool did_connect UNU
     void const* data, size_t len, void* vfav)
 {
     struct favicon_data* fav = vfav;
-    fav->contents = g_memdup(data, len);
+    fav->contents = g_memdup2(data, len);
     fav->len = len;
 
     gdk_threads_add_idle(favicon_web_done_idle_cb, fav);
