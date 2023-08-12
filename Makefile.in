@@ -456,9 +456,11 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 transmissionlocaledir = @transmissionlocaledir@
 EXTRA_DIST = AUTHORS CMakeLists.txt COPYING NEWS.md README.md \
-	Transmission.xcodeproj/project.pbxproj autogen.sh cmake docker \
-	extras installers m4 po/CMakeLists.txt transmission-og.rc.in \
-	update-version-h.sh utils/CMakeLists.txt REVISION
+	Transmission.xcodeproj/project.pbxproj autogen.sh \
+	.clang-format .clang-format-ignore .clang-format-include \
+	code_style.sh cmake docker extras installers m4 \
+	po/CMakeLists.txt transmission-og.rc.in update-version-h.sh \
+	utils/CMakeLists.txt REVISION
 DISTCLEANFILES = intltool-extract intltool-merge intltool-update
 ACLOCAL_AMFLAGS = -I m4
 AM_DISTCHECK_CONFIGURE_FLAGS = --enable-cli

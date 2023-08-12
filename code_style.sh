@@ -40,10 +40,10 @@ find_cfiles() {
        ! \( $(get_find_path_args $(trim_comments .clang-format-ignore)) \) "$@"
 }
 
-# We're targeting clang-format version 15 and other versions give slightly
-# different results, so prefer `clang-format-15` if it's installed.
+# We're targeting clang-format version 16 and other versions give slightly
+# different results, so prefer `clang-format-16` if it's installed.
 clang_format_exe_names=(
-  'clang-format-15'
+  'clang-format-16'
   'clang-format'
 )
 for name in ${clang_format_exe_names[@]}; do
@@ -57,6 +57,7 @@ if [ -z "${clang_format_exe}" ]; then
   echo "error: clang-format not found";
   exit 1;
 fi
+"${clang_format_exe}" --version
 
 # format C/C++
 clang_format_args="$([ -n "$fix" ] && echo '-i' || echo '--dry-run --Werror')"

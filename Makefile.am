@@ -63,6 +63,10 @@ EXTRA_DIST += \
   README.md \
   Transmission.xcodeproj/project.pbxproj \
   autogen.sh \
+  .clang-format \
+  .clang-format-ignore \
+  .clang-format-include \
+  code_style.sh \
   cmake \
   docker \
   extras \

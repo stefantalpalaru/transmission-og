@@ -3,7 +3,6 @@
 # untracked files
 .*/*
 build/*
-cmake-build-*/*
 libtransmission/version.h
 gtk/transmission-resources.c
 gtk/transmission-resources.h
