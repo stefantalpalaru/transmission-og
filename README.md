@@ -183,7 +183,7 @@ Git integration, using a ".git/hooks/pre-commit" with executable permissions:
 #!/usr/bin/env sh
 
 root="$(git rev-parse --show-toplevel)"
-exec "${root}/code_style.sh" --check
+"${root}/code_style.sh" --check
 ```
 
 ### Updating translations
