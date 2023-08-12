@@ -25,8 +25,8 @@
 
 @interface StatusBarView : NSView
 {
-    NSGradient * fGradient;
-    CIImage * fNoiseImage;
+    NSGradient* fGradient;
+    CIImage* fNoiseImage;
 }
 
 @end

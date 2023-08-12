@@ -29,13 +29,13 @@ public:
     };
 
 public:
-    FilterMode(int mode = SHOW_ALL) :
-        myMode(mode)
+    FilterMode(int mode = SHOW_ALL)
+        : myMode(mode)
     {
     }
 
-    FilterMode(QString const& name) :
-        myMode(modeFromName(name))
+    FilterMode(QString const& name)
+        : myMode(modeFromName(name))
     {
     }
 
@@ -83,13 +83,13 @@ public:
     };
 
 public:
-    SortMode(int mode = SORT_BY_ID) :
-        myMode(mode)
+    SortMode(int mode = SORT_BY_ID)
+        : myMode(mode)
     {
     }
 
-    SortMode(QString const& name) :
-        myMode(modeFromName(name))
+    SortMode(QString const& name)
+        : myMode(modeFromName(name))
     {
     }
 

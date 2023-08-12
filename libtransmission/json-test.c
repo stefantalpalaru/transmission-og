@@ -29,14 +29,13 @@ static int test_elements(void)
     int err = 0;
     tr_quark key;
 
-    in =
-        "{ \"string\": \"hello world\","
-        "  \"escaped\": \"bell \\b formfeed \\f linefeed \\n carriage return \\r tab \\t\","
-        "  \"int\": 5, "
-        "  \"float\": 6.5, "
-        "  \"true\": true, "
-        "  \"false\": false, "
-        "  \"null\": null }";
+    in = "{ \"string\": \"hello world\","
+         "  \"escaped\": \"bell \\b formfeed \\f linefeed \\n carriage return \\r tab \\t\","
+         "  \"int\": 5, "
+         "  \"float\": 6.5, "
+         "  \"true\": true, "
+         "  \"false\": false, "
+         "  \"null\": null }";
 
     err = tr_variantFromJson(&top, in, strlen(in));
     check_int(err, ==, 0);
@@ -143,19 +142,19 @@ static int test_utf8(void)
 
 static int test1(void)
 {
-    char const* in =
-        "{\n"
-        "    \"headers\": {\n"
-        "        \"type\": \"request\",\n"
-        "        \"tag\": 666\n"
-        "    },\n"
-        "    \"body\": {\n"
-        "        \"name\": \"torrent-info\",\n"
-        "        \"arguments\": {\n"
-        "            \"ids\": [ 7, 10 ]\n"
-        "        }\n"
-        "    }\n"
-        "}\n";
+    char const*
+        in = "{\n"
+             "    \"headers\": {\n"
+             "        \"type\": \"request\",\n"
+             "        \"tag\": 666\n"
+             "    },\n"
+             "    \"body\": {\n"
+             "        \"name\": \"torrent-info\",\n"
+             "        \"arguments\": {\n"
+             "            \"ids\": [ 7, 10 ]\n"
+             "        }\n"
+             "    }\n"
+             "}\n";
     tr_variant top;
     tr_variant* headers;
     tr_variant* body;
@@ -207,12 +206,12 @@ static int test2(void)
 
 static int test3(void)
 {
-    char const* in =
-        "{ \"error\": 2,"
-        "  \"errorString\": \"torrent not registered with this tracker 6UHsVW'*C\","
-        "  \"eta\": 262792,"
-        "  \"id\": 25,"
-        "  \"leftUntilDone\": 2275655680 }";
+    char const*
+        in = "{ \"error\": 2,"
+             "  \"errorString\": \"torrent not registered with this tracker 6UHsVW'*C\","
+             "  \"eta\": 262792,"
+             "  \"id\": 25,"
+             "  \"leftUntilDone\": 2275655680 }";
     tr_variant top;
     char const* str;
 
@@ -242,22 +241,22 @@ static int test_unescape(void)
 
 int main(void)
 {
-    char const* comma_locales[] =
-    {
+    char const* comma_locales[] = {
         "da_DK.UTF-8",
         "fr_FR.UTF-8",
-        "ru_RU.UTF-8"
+        "ru_RU.UTF-8",
     };
 
-    testFunc const tests[] =
-    {
+    // clang-format off
+    testFunc const tests[] = {
         test_elements,
         test_utf8,
         test1,
         test2,
         test3,
-        test_unescape
+        test_unescape,
     };
+    // clang-format on
 
     /* run the tests in a locale with a decimal point of '.' */
     setlocale(LC_NUMERIC, "C");
@@ -274,7 +273,10 @@ int main(void)
 
     if (!is_locale_set)
     {
-        fprintf(stderr, "WARNING: unable to run locale-specific json tests. add a locale like %s or %s\n", comma_locales[0],
+        fprintf(
+            stderr,
+            "WARNING: unable to run locale-specific json tests. add a locale like %s or %s\n",
+            comma_locales[0],
             comma_locales[1]);
     }
     else

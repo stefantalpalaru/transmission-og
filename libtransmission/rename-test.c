@@ -37,8 +37,7 @@ static tr_session* session = NULL;
         check_uint(tst->leftUntilDone, ==, totalSize); \
         check_uint(tor->info.totalSize, ==, totalSize); \
         check_uint(tst->haveValid, ==, 0); \
-    } \
-    while (0)
+    } while (0)
 
 static bool testFileExistsAndConsistsOfThisString(tr_torrent const* tor, tr_file_index_t fileIndex, char const* str)
 {
@@ -64,7 +63,11 @@ static bool testFileExistsAndConsistsOfThisString(tr_torrent const* tor, tr_file
     return success;
 }
 
-static void onRenameDone(tr_torrent* tor UNUSED, char const* oldpath UNUSED, char const* newname UNUSED, int error,
+static void onRenameDone(
+    tr_torrent* tor UNUSED,
+    char const* oldpath UNUSED,
+    char const* newname UNUSED,
+    int error,
     void* user_data)
 {
     *(int*)user_data = error;
@@ -78,8 +81,7 @@ static int torrentRenameAndWait(tr_torrent* tor, char const* oldpath, char const
     do
     {
         tr_wait_msec(10);
-    }
-    while (error == -1);
+    } while (error == -1);
 
     return error;
 }
@@ -140,7 +142,8 @@ static int test_single_filename_torrent(void)
 
     /* this is a single-file torrent whose file is hello-world.txt, holding the string "hello, world!" */
     ctor = tr_ctorNew(session);
-    tor = create_torrent_from_base64_metainfo(ctor,
+    tor = create_torrent_from_base64_metainfo(
+        ctor,
         "ZDEwOmNyZWF0ZWQgYnkyNTpUcmFuc21pc3Npb24vMi42MSAoMTM0MDcpMTM6Y3JlYXRpb24gZGF0"
         "ZWkxMzU4NTQ5MDk4ZTg6ZW5jb2Rpbmc1OlVURi04NDppbmZvZDY6bGVuZ3RoaTE0ZTQ6bmFtZTE1"
         "OmhlbGxvLXdvcmxkLnR4dDEyOnBpZWNlIGxlbmd0aGkzMjc2OGU2OnBpZWNlczIwOukboJcrkFUY"
@@ -272,23 +275,26 @@ static int test_multifile_torrent(void)
     tr_stat const* st;
     tr_file const* files;
     char const* strings[4];
-    char const* expected_files[4] =
-    {
-        "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Acinonyx" TR_PATH_DELIMITER_STR "Cheetah" TR_PATH_DELIMITER_STR "Chester",
-        "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR "catus" TR_PATH_DELIMITER_STR "Kyphi",
-        "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR "catus" TR_PATH_DELIMITER_STR "Saffron",
-        "Felidae" TR_PATH_DELIMITER_STR "Pantherinae" TR_PATH_DELIMITER_STR "Panthera" TR_PATH_DELIMITER_STR "Tiger" TR_PATH_DELIMITER_STR "Tony"
+    char const* expected_files[4] = {
+        "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Acinonyx" TR_PATH_DELIMITER_STR
+        "Cheetah" TR_PATH_DELIMITER_STR "Chester",
+        "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR
+        "catus" TR_PATH_DELIMITER_STR "Kyphi",
+        "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR
+        "catus" TR_PATH_DELIMITER_STR "Saffron",
+        "Felidae" TR_PATH_DELIMITER_STR "Pantherinae" TR_PATH_DELIMITER_STR "Panthera" TR_PATH_DELIMITER_STR
+        "Tiger" TR_PATH_DELIMITER_STR "Tony",
     };
-    char const* expected_contents[4] =
-    {
+    char const* expected_contents[4] = {
         "It ain't easy bein' cheesy.\n",
         "Inquisitive\n",
         "Tough\n",
-        "They’re Grrrrreat!\n"
+        "They’re Grrrrreat!\n",
     };
 
     ctor = tr_ctorNew(session);
-    tor = create_torrent_from_base64_metainfo(ctor,
+    tor = create_torrent_from_base64_metainfo(
+        ctor,
         "ZDEwOmNyZWF0ZWQgYnkyNTpUcmFuc21pc3Npb24vMi42MSAoMTM0MDcpMTM6Y3JlYXRpb24gZGF0"
         "ZWkxMzU4NTU1NDIwZTg6ZW5jb2Rpbmc1OlVURi04NDppbmZvZDU6ZmlsZXNsZDY6bGVuZ3RoaTI4"
         "ZTQ6cGF0aGw3OkZlbGluYWU4OkFjaW5vbnl4NzpDaGVldGFoNzpDaGVzdGVyZWVkNjpsZW5ndGhp"
@@ -333,20 +339,56 @@ static int test_multifile_torrent(void)
     **/
 
     /* rename a leaf... */
-    check_int(torrentRenameAndWait(tor, "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR "catus" TR_PATH_DELIMITER_STR "Kyphi", "placeholder"), ==, 0);
-    check_str(files[1].name, ==, "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR "catus" TR_PATH_DELIMITER_STR "placeholder");
+    check_int(
+        torrentRenameAndWait(
+            tor,
+            "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR
+            "catus" TR_PATH_DELIMITER_STR "Kyphi",
+            "placeholder"),
+        ==,
+        0);
+    check_str(
+        files[1].name,
+        ==,
+        "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR
+        "catus" TR_PATH_DELIMITER_STR "placeholder");
     check(testFileExistsAndConsistsOfThisString(tor, 1, "Inquisitive\n"));
 
     /* ...and back again */
-    check_int(torrentRenameAndWait(tor, "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR "catus" TR_PATH_DELIMITER_STR "placeholder", "Kyphi"), ==, 0);
-    check_str(files[1].name, ==, "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR "catus" TR_PATH_DELIMITER_STR "Kyphi");
+    check_int(
+        torrentRenameAndWait(
+            tor,
+            "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR
+            "catus" TR_PATH_DELIMITER_STR "placeholder",
+            "Kyphi"),
+        ==,
+        0);
+    check_str(
+        files[1].name,
+        ==,
+        "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR
+        "catus" TR_PATH_DELIMITER_STR "Kyphi");
     testFileExistsAndConsistsOfThisString(tor, 1, "Inquisitive\n");
 
     /* rename a branch... */
-    check_int(torrentRenameAndWait(tor, "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR "catus", "placeholder"), ==, 0);
+    check_int(
+        torrentRenameAndWait(
+            tor,
+            "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR "catus",
+            "placeholder"),
+        ==,
+        0);
     check_str(files[0].name, ==, expected_files[0]);
-    check_str(files[1].name, ==, "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR "placeholder" TR_PATH_DELIMITER_STR "Kyphi");
-    check_str(files[2].name, ==, "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR "placeholder" TR_PATH_DELIMITER_STR "Saffron");
+    check_str(
+        files[1].name,
+        ==,
+        "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR
+        "placeholder" TR_PATH_DELIMITER_STR "Kyphi");
+    check_str(
+        files[2].name,
+        ==,
+        "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR
+        "placeholder" TR_PATH_DELIMITER_STR "Saffron");
     check_str(files[3].name, ==, expected_files[3]);
     check(testFileExistsAndConsistsOfThisString(tor, 1, expected_contents[1]));
     check(testFileExistsAndConsistsOfThisString(tor, 2, expected_contents[2]));
@@ -363,12 +405,26 @@ static int test_multifile_torrent(void)
     loaded = tr_torrentLoadResume(tor, ~0, ctor, NULL);
     check_uint((loaded & TR_FR_FILENAMES), !=, 0);
     check_str(files[0].name, ==, expected_files[0]);
-    check_str(files[1].name, ==, "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR "placeholder" TR_PATH_DELIMITER_STR "Kyphi");
-    check_str(files[2].name, ==, "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR "placeholder" TR_PATH_DELIMITER_STR "Saffron");
+    check_str(
+        files[1].name,
+        ==,
+        "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR
+        "placeholder" TR_PATH_DELIMITER_STR "Kyphi");
+    check_str(
+        files[2].name,
+        ==,
+        "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR
+        "placeholder" TR_PATH_DELIMITER_STR "Saffron");
     check_str(files[3].name, ==, expected_files[3]);
 
     /* ...and back again */
-    check_int(torrentRenameAndWait(tor, "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR "placeholder", "catus"), ==, 0);
+    check_int(
+        torrentRenameAndWait(
+            tor,
+            "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR "placeholder",
+            "catus"),
+        ==,
+        0);
 
     for (tr_file_index_t i = 0; i < 4; ++i)
     {
@@ -411,14 +467,34 @@ static int test_multifile_torrent(void)
     testFileExistsAndConsistsOfThisString(tor, 3, expected_contents[3]);
 
     /* rename a branch... */
-    check_int(torrentRenameAndWait(tor, "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR "catus", "foo"), ==, 0);
+    check_int(
+        torrentRenameAndWait(
+            tor,
+            "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR "catus",
+            "foo"),
+        ==,
+        0);
     check_str(files[0].name, ==, expected_files[0]);
-    check_str(files[1].name, ==, "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR "foo" TR_PATH_DELIMITER_STR "Kyphi");
-    check_str(files[2].name, ==, "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR "foo" TR_PATH_DELIMITER_STR "Saffron");
+    check_str(
+        files[1].name,
+        ==,
+        "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR
+        "foo" TR_PATH_DELIMITER_STR "Kyphi");
+    check_str(
+        files[2].name,
+        ==,
+        "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR
+        "foo" TR_PATH_DELIMITER_STR "Saffron");
     check_str(files[3].name, ==, expected_files[3]);
 
     /* ...and back again */
-    check_int(torrentRenameAndWait(tor, "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR "foo", "catus"), ==, 0);
+    check_int(
+        torrentRenameAndWait(
+            tor,
+            "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR "foo",
+            "catus"),
+        ==,
+        0);
 
     for (tr_file_index_t i = 0; i < 4; ++i)
     {
@@ -426,10 +502,14 @@ static int test_multifile_torrent(void)
     }
 
     check_int(torrentRenameAndWait(tor, "Felidae", "gabba"), ==, 0);
-    strings[0] = "gabba" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Acinonyx" TR_PATH_DELIMITER_STR "Cheetah" TR_PATH_DELIMITER_STR "Chester";
-    strings[1] = "gabba" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR "catus" TR_PATH_DELIMITER_STR "Kyphi";
-    strings[2] = "gabba" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR "catus" TR_PATH_DELIMITER_STR "Saffron";
-    strings[3] = "gabba" TR_PATH_DELIMITER_STR "Pantherinae" TR_PATH_DELIMITER_STR "Panthera" TR_PATH_DELIMITER_STR "Tiger" TR_PATH_DELIMITER_STR "Tony";
+    strings[0] = "gabba" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Acinonyx" TR_PATH_DELIMITER_STR
+                 "Cheetah" TR_PATH_DELIMITER_STR "Chester";
+    strings[1] = "gabba" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR
+                 "catus" TR_PATH_DELIMITER_STR "Kyphi";
+    strings[2] = "gabba" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR
+                 "catus" TR_PATH_DELIMITER_STR "Saffron";
+    strings[3] = "gabba" TR_PATH_DELIMITER_STR "Pantherinae" TR_PATH_DELIMITER_STR "Panthera" TR_PATH_DELIMITER_STR
+                 "Tiger" TR_PATH_DELIMITER_STR "Tony";
 
     for (tr_file_index_t i = 0; i < 4; ++i)
     {
@@ -439,12 +519,29 @@ static int test_multifile_torrent(void)
 
     /* rename the root, then a branch, and then a leaf... */
     check_int(torrentRenameAndWait(tor, "gabba", "Felidae"), ==, 0);
-    check_int(torrentRenameAndWait(tor, "Felidae" TR_PATH_DELIMITER_STR "Pantherinae" TR_PATH_DELIMITER_STR "Panthera" TR_PATH_DELIMITER_STR "Tiger", "Snow Leopard"), ==, 0);
-    check_int(torrentRenameAndWait(tor, "Felidae" TR_PATH_DELIMITER_STR "Pantherinae" TR_PATH_DELIMITER_STR "Panthera" TR_PATH_DELIMITER_STR "Snow Leopard" TR_PATH_DELIMITER_STR "Tony", "10.6"), ==, 0);
-    strings[0] = "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Acinonyx" TR_PATH_DELIMITER_STR "Cheetah" TR_PATH_DELIMITER_STR "Chester";
-    strings[1] = "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR "catus" TR_PATH_DELIMITER_STR "Kyphi";
-    strings[2] = "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR "catus" TR_PATH_DELIMITER_STR "Saffron";
-    strings[3] = "Felidae" TR_PATH_DELIMITER_STR "Pantherinae" TR_PATH_DELIMITER_STR "Panthera" TR_PATH_DELIMITER_STR "Snow Leopard" TR_PATH_DELIMITER_STR "10.6";
+    check_int(
+        torrentRenameAndWait(
+            tor,
+            "Felidae" TR_PATH_DELIMITER_STR "Pantherinae" TR_PATH_DELIMITER_STR "Panthera" TR_PATH_DELIMITER_STR "Tiger",
+            "Snow Leopard"),
+        ==,
+        0);
+    check_int(
+        torrentRenameAndWait(
+            tor,
+            "Felidae" TR_PATH_DELIMITER_STR "Pantherinae" TR_PATH_DELIMITER_STR "Panthera" TR_PATH_DELIMITER_STR
+            "Snow Leopard" TR_PATH_DELIMITER_STR "Tony",
+            "10.6"),
+        ==,
+        0);
+    strings[0] = "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Acinonyx" TR_PATH_DELIMITER_STR
+                 "Cheetah" TR_PATH_DELIMITER_STR "Chester";
+    strings[1] = "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR
+                 "catus" TR_PATH_DELIMITER_STR "Kyphi";
+    strings[2] = "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR
+                 "catus" TR_PATH_DELIMITER_STR "Saffron";
+    strings[3] = "Felidae" TR_PATH_DELIMITER_STR "Pantherinae" TR_PATH_DELIMITER_STR "Panthera" TR_PATH_DELIMITER_STR
+                 "Snow Leopard" TR_PATH_DELIMITER_STR "10.6";
 
     for (tr_file_index_t i = 0; i < 4; ++i)
     {
@@ -460,7 +557,8 @@ static int test_multifile_torrent(void)
     **/
 
     ctor = tr_ctorNew(session);
-    tor = create_torrent_from_base64_metainfo(ctor,
+    tor = create_torrent_from_base64_metainfo(
+        ctor,
         "ZDEwOmNyZWF0ZWQgYnkyNTpUcmFuc21pc3Npb24vMi42MSAoMTM0MDcpMTM6Y3JlYXRpb24gZGF0"
         "ZWkxMzU4NTU1NDIwZTg6ZW5jb2Rpbmc1OlVURi04NDppbmZvZDU6ZmlsZXNsZDY6bGVuZ3RoaTI4"
         "ZTQ6cGF0aGw3OkZlbGluYWU4OkFjaW5vbnl4NzpDaGVldGFoNzpDaGVzdGVyZWVkNjpsZW5ndGhp"
@@ -571,11 +669,10 @@ static int test_partial_file(void)
 
 int main(void)
 {
-    testFunc const tests[] =
-    {
+    testFunc const tests[] = {
         test_single_filename_torrent,
         test_multifile_torrent,
-        test_partial_file
+        test_partial_file,
     };
 
     session = libttest_session_init(NULL);

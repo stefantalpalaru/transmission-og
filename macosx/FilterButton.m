@@ -25,25 +25,25 @@
 
 @implementation FilterButton
 
-- (id) initWithCoder: (NSCoder *) coder
+- (id)initWithCoder:(NSCoder*)coder
 {
-    if ((self = [super initWithCoder: coder]))
+    if ((self = [super initWithCoder:coder]))
     {
         fCount = NSNotFound;
     }
     return self;
 }
 
-- (void) setCount: (NSUInteger) count
+- (void)setCount:(NSUInteger)count
 {
     if (count == fCount)
         return;
 
     fCount = count;
 
-    [self setToolTip: fCount == 1 ? NSLocalizedString(@"1 transfer", "Filter Button -> tool tip")
-        : [NSString stringWithFormat: NSLocalizedString(@"%@ transfers", "Filter Bar Button -> tool tip"),
-            [NSString formattedUInteger: fCount]]];
+    [self setToolTip:fCount == 1 ? NSLocalizedString(@"1 transfer", "Filter Button -> tool tip") :
+                                   [NSString stringWithFormat:NSLocalizedString(@"%@ transfers", "Filter Bar Button -> tool tip"),
+                                                              [NSString formattedUInteger:fCount]]];
 }
 
 @end

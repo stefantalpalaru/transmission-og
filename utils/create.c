@@ -32,8 +32,7 @@ static char const* outfile = NULL;
 static char const* infile = NULL;
 static uint32_t piecesize_kib = 0;
 
-static tr_option options[] =
-{
+static tr_option options[] = {
     { 'p', "private", "Allow this torrent to only be used with the specified tracker(s)", "p", false, NULL },
     { 'o', "outfile", "Save the generated .torrent to this filename", "o", true, "<file>" },
     { 's', "piecesize", "Set how many KiB each piece should be, overriding the preferred default", "s", true, "<size in KiB>" },

@@ -27,8 +27,8 @@ extern bool qAxOutProcServer;
 extern wchar_t qAxModuleFilename[MAX_PATH];
 extern QString qAxInit();
 
-ComInteropHelper::ComInteropHelper() :
-    m_client(new QAxObject(QLatin1String("Transmission.QtClient")))
+ComInteropHelper::ComInteropHelper()
+    : m_client(new QAxObject(QLatin1String("Transmission.QtClient")))
 {
 }
 

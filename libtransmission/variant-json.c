@@ -86,8 +86,12 @@ static void error_handler(jsonsl_t jsn, jsonsl_error_t error, struct jsonsl_stat
 
     if (data->source != NULL)
     {
-        tr_logAddError("JSON parse failed in %s at pos %zu: %s -- remaining text \"%.16s\"", data->source, jsn->pos,
-            jsonsl_strerror(error), buf);
+        tr_logAddError(
+            "JSON parse failed in %s at pos %zu: %s -- remaining text \"%.16s\"",
+            data->source,
+            jsn->pos,
+            jsonsl_strerror(error),
+            buf);
     }
     else
     {
@@ -103,7 +107,10 @@ static int error_callback(jsonsl_t jsn, jsonsl_error_t error, struct jsonsl_stat
     return 0; /* bail */
 }
 
-static void action_callback_PUSH(jsonsl_t jsn, jsonsl_action_t action UNUSED, struct jsonsl_state_st* state,
+static void action_callback_PUSH(
+    jsonsl_t jsn,
+    jsonsl_action_t action UNUSED,
+    struct jsonsl_state_st* state,
     jsonsl_char_t const* buf UNUSED)
 {
     tr_variant* node;
@@ -160,8 +167,7 @@ static bool decode_hex_string(char const* in, unsigned int* setme)
         {
             return false;
         }
-    }
-    while (++in != end);
+    } while (++in != end);
 
     *setme = val;
     return true;
@@ -302,7 +308,10 @@ static char const* extract_string(jsonsl_t jsn, struct jsonsl_state_st* state, s
     return ret;
 }
 
-static void action_callback_POP(jsonsl_t jsn, jsonsl_action_t action UNUSED, struct jsonsl_state_st* state,
+static void action_callback_POP(
+    jsonsl_t jsn,
+    jsonsl_action_t action UNUSED,
+    struct jsonsl_state_st* state,
     jsonsl_char_t const* buf UNUSED)
 {
     struct json_wrapper_data* data = jsn->data;
@@ -694,16 +703,17 @@ static void jsonContainerEndFunc(tr_variant const* val, void* vdata)
     jsonChildFunc(data);
 }
 
-static struct VariantWalkFuncs const walk_funcs =
-{
+// clang-format off
+static struct VariantWalkFuncs const walk_funcs = {
     jsonIntFunc,
     jsonBoolFunc,
     jsonRealFunc,
     jsonStringFunc,
     jsonDictBeginFunc,
     jsonListBeginFunc,
-    jsonContainerEndFunc
+    jsonContainerEndFunc,
 };
+// clang-format on
 
 void tr_variantToBufJson(tr_variant const* top, struct evbuffer* buf, bool lean)
 {

@@ -24,8 +24,8 @@ int getHSpacing(QWidget const* w)
 
 } // namespace
 
-FilterBarComboBox::FilterBarComboBox(QWidget* parent) :
-    QComboBox(parent)
+FilterBarComboBox::FilterBarComboBox(QWidget* parent)
+    : QComboBox(parent)
 {
     setSizeAdjustPolicy(QComboBox::AdjustToContents);
 }
@@ -113,8 +113,11 @@ void FilterBarComboBox::paintEvent(QPaintEvent* e)
         {
             QPen const pen = painter.pen();
             painter.setPen(Utils::getFadedColor(pen.color()));
-            QRect const textRect = QStyle::alignedRect(opt.direction, Qt::AlignRight | Qt::AlignVCenter,
-                QSize(opt.fontMetrics.width(text), rect.height()), rect);
+            QRect const textRect = QStyle::alignedRect(
+                opt.direction,
+                Qt::AlignRight | Qt::AlignVCenter,
+                QSize(opt.fontMetrics.width(text), rect.height()),
+                rect);
             painter.drawText(textRect, Qt::AlignRight | Qt::AlignVCenter, text);
             Utils::narrowRect(rect, 0, textRect.width() + hmargin, opt.direction);
             painter.setPen(pen);

@@ -361,8 +361,14 @@ static void on_idle(tr_webseed* w)
     }
 }
 
-static void web_response_func(tr_session* session, bool did_connect UNUSED, bool did_timeout UNUSED, long response_code,
-    void const* response UNUSED, size_t response_byte_count UNUSED, void* vtask)
+static void web_response_func(
+    tr_session* session,
+    bool did_connect UNUSED,
+    bool did_timeout UNUSED,
+    long response_code,
+    void const* response UNUSED,
+    size_t response_byte_count UNUSED,
+    void* vtask)
 {
     tr_webseed* w;
     tr_torrent* tor;
@@ -575,10 +581,9 @@ static void webseed_destruct(tr_peer* peer)
     tr_peerDestruct(&w->parent);
 }
 
-static struct tr_peer_virtual_funcs const my_funcs =
-{
+static struct tr_peer_virtual_funcs const my_funcs = {
     .destruct = webseed_destruct,
-    .is_transferring_pieces = webseed_is_transferring_pieces
+    .is_transferring_pieces = webseed_is_transferring_pieces,
 };
 
 /***

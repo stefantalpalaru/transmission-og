@@ -11,11 +11,12 @@
 #ifdef HAVE_LIBAPPINDICATOR
 #include <libappindicator/app-indicator.h>
 #endif
-#include <libtransmission/transmission.h>
-#include <libtransmission/utils.h>
 #include "actions.h"
 #include "tr-icon.h"
 #include "util.h"
+
+#include <libtransmission/transmission.h>
+#include <libtransmission/utils.h>
 
 static TR_DEFINE_QUARK(tr_core, core)
 

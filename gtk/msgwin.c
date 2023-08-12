@@ -6,22 +6,22 @@
  *
  */
 
+#include "msgwin.h"
+
+#include "conf.h"
+#include "hig.h"
+#include "tr-core.h"
+#include "tr-prefs.h"
+#include "util.h"
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
 
-#include <glib/gi18n.h>
-#include <gtk/gtk.h>
-
 #include <libtransmission/transmission.h>
 #include <libtransmission/log.h>
 
-#include "conf.h"
-#include "hig.h"
-#include "msgwin.h"
-#include "tr-core.h"
-#include "tr-prefs.h"
-#include "util.h"
+#include <glib/gi18n.h>
+#include <gtk/gtk.h>
 
 enum
 {
@@ -143,8 +143,8 @@ static void doSave(GtkWindow* parent, struct MsgData* data, char const* filename
 
     if (fp == NULL)
     {
-        GtkWidget* w = gtk_message_dialog_new(parent, 0, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, _("Couldn't save \"%s\""),
-            filename);
+        GtkWidget*
+            w = gtk_message_dialog_new(parent, 0, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, _("Couldn't save \"%s\""), filename);
         gtk_message_dialog_format_secondary_text(GTK_MESSAGE_DIALOG(w), "%s", g_strerror(errno));
         g_signal_connect_swapped(w, "response", G_CALLBACK(gtk_widget_destroy), w);
         gtk_widget_show(w);
@@ -180,11 +180,15 @@ static void doSave(GtkWindow* parent, struct MsgData* data, char const* filename
                     break;
                 }
 
-                fprintf(fp, "%s\t%s\t%s\t%s\n", date, levelStr, node->name != NULL ? node->name : "",
+                fprintf(
+                    fp,
+                    "%s\t%s\t%s\t%s\n",
+                    date,
+                    levelStr,
+                    node->name != NULL ? node->name : "",
                     node->message != NULL ? node->message : "");
                 g_free(date);
-            }
-            while (gtk_tree_model_iter_next(model, &iter));
+            } while (gtk_tree_model_iter_next(model, &iter));
         }
 
         fclose(fp);
@@ -206,8 +210,15 @@ static void onSaveDialogResponse(GtkWidget* d, int response, gpointer data)
 static void onSaveRequest(GtkWidget* w, gpointer data)
 {
     GtkWindow* window = GTK_WINDOW(gtk_widget_get_toplevel(w));
-    GtkWidget* d = gtk_file_chooser_dialog_new(_("Save Log"), window, GTK_FILE_CHOOSER_ACTION_SAVE, GTK_STOCK_CANCEL,
-        GTK_RESPONSE_CANCEL, GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT, NULL);
+    GtkWidget* d = gtk_file_chooser_dialog_new(
+        _("Save Log"),
+        window,
+        GTK_FILE_CHOOSER_ACTION_SAVE,
+        GTK_STOCK_CANCEL,
+        GTK_RESPONSE_CANCEL,
+        GTK_STOCK_SAVE,
+        GTK_RESPONSE_ACCEPT,
+        NULL);
 
     g_signal_connect(d, "response", G_CALLBACK(onSaveDialogResponse), data);
     gtk_widget_show(d);
@@ -248,7 +259,11 @@ static char const* getForegroundColor(int msgLevel)
     }
 }
 
-static void renderText(GtkTreeViewColumn* column UNUSED, GtkCellRenderer* renderer, GtkTreeModel* tree_model, GtkTreeIter* iter,
+static void renderText(
+    GtkTreeViewColumn* column UNUSED,
+    GtkCellRenderer* renderer,
+    GtkTreeModel* tree_model,
+    GtkTreeIter* iter,
     gpointer gcol)
 {
     int const col = GPOINTER_TO_INT(gcol);
@@ -259,7 +274,11 @@ static void renderText(GtkTreeViewColumn* column UNUSED, GtkCellRenderer* render
     g_object_set(renderer, "text", str, "foreground", getForegroundColor(node->level), "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 }
 
-static void renderTime(GtkTreeViewColumn* column UNUSED, GtkCellRenderer* renderer, GtkTreeModel* tree_model, GtkTreeIter* iter,
+static void renderTime(
+    GtkTreeViewColumn* column UNUSED,
+    GtkCellRenderer* renderer,
+    GtkTreeModel* tree_model,
+    GtkTreeIter* iter,
     gpointer data UNUSED)
 {
     struct tm tm;
@@ -362,12 +381,14 @@ static tr_log_message* addMessages(GtkListStore* store, struct tr_log_message* h
     {
         char const* name = i->name != NULL ? i->name : default_name;
 
+        // clang-format off
         gtk_list_store_insert_with_values(store, NULL, 0,
             COL_TR_MSG, i,
             COL_NAME, name,
             COL_MESSAGE, i->message,
             COL_SEQUENCE, ++sequence,
             -1);
+        // clang-format on
 
         /* if it's an error message, dump it to the terminal too */
         if (i->level == TR_LOG_ERROR)
@@ -426,11 +447,13 @@ static gboolean onRefresh(gpointer gdata)
 
 static GtkWidget* debug_level_combo_new(void)
 {
+    // clang-format off
     GtkWidget* w = gtr_combo_box_new_enum(
         _("Error"), TR_LOG_ERROR,
         _("Information"), TR_LOG_INFO,
         _("Debug"), TR_LOG_DEBUG,
         NULL);
+    // clang-format on
     gtr_combo_box_set_active_enum(GTK_COMBO_BOX(w), gtr_pref_int_get(TR_KEY_message_level));
     return w;
 }
@@ -506,7 +529,8 @@ GtkWidget* gtr_message_log_window_new(GtkWindow* parent, TrCore* core)
     ***  messages
     **/
 
-    data->store = gtk_list_store_new(N_COLUMNS,
+    data->store = gtk_list_store_new(
+        N_COLUMNS,
         G_TYPE_UINT, /* sequence */
         G_TYPE_POINTER, /* category */
         G_TYPE_POINTER, /* message */

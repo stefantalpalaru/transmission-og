@@ -24,17 +24,17 @@
 
 @implementation ColorTextField
 
-- (void) awakeFromNib
+- (void)awakeFromNib
 {
-    [self setEnabled: [self isEnabled]];
+    [self setEnabled:[self isEnabled]];
 }
 
-- (void) setEnabled: (BOOL) flag
+- (void)setEnabled:(BOOL)flag
 {
-    [super setEnabled: flag];
+    [super setEnabled:flag];
 
-    NSColor * color = flag ? [NSColor controlTextColor] : [NSColor disabledControlTextColor];
-    [self setTextColor: color];
+    NSColor* color = flag ? [NSColor controlTextColor] : [NSColor disabledControlTextColor];
+    [self setTextColor:color];
 }
 
 @end

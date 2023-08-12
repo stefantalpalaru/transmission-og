@@ -24,7 +24,7 @@
 
 @interface FileListNode (Private)
 
-- (id) initWithFolder: (BOOL) isFolder name: (NSString *) name path: (NSString *) path torrent: (Torrent *) torrent;
+- (id)initWithFolder:(BOOL)isFolder name:(NSString*)name path:(NSString*)path torrent:(Torrent*)torrent;
 
 @end
 
@@ -40,9 +40,9 @@
 @synthesize indexes = fIndexes;
 @synthesize children = fChildren;
 
-- (id) initWithFolderName: (NSString *) name path: (NSString *) path torrent: (Torrent *) torrent
+- (id)initWithFolderName:(NSString*)name path:(NSString*)path torrent:(Torrent*)torrent
 {
-    if ((self = [self initWithFolder: YES name: name path: path torrent: torrent]))
+    if ((self = [self initWithFolder:YES name:name path:path torrent:torrent]))
     {
         fChildren = [[NSMutableArray alloc] init];
         fSize = 0;
@@ -51,74 +51,77 @@
     return self;
 }
 
-- (id) initWithFileName: (NSString *) name path: (NSString *) path size: (uint64_t) size index: (NSUInteger) index torrent: (Torrent *) torrent
+- (id)initWithFileName:(NSString*)name
+                  path:(NSString*)path
+                  size:(uint64_t)size
+                 index:(NSUInteger)index
+               torrent:(Torrent*)torrent
 {
-    if ((self = [self initWithFolder: NO name: name path: path torrent: torrent]))
+    if ((self = [self initWithFolder:NO name:name path:path torrent:torrent]))
     {
         fSize = size;
-        [fIndexes addIndex: index];
+        [fIndexes addIndex:index];
     }
 
     return self;
 }
 
-- (void) insertChild: (FileListNode *) child
+- (void)insertChild:(FileListNode*)child
 {
     NSAssert(fIsFolder, @"method can only be invoked on folders");
 
-    [fChildren addObject: child];
+    [fChildren addObject:child];
 }
 
-- (void) insertIndex: (NSUInteger) index withSize: (uint64_t) size
+- (void)insertIndex:(NSUInteger)index withSize:(uint64_t)size
 {
     NSAssert(fIsFolder, @"method can only be invoked on folders");
 
-    [fIndexes addIndex: index];
+    [fIndexes addIndex:index];
     fSize += size;
 }
 
-- (id) copyWithZone: (NSZone *) zone
+- (id)copyWithZone:(NSZone*)zone
 {
     //this object is essentially immutable after initial setup
     return self;
 }
 
-
-- (NSString *) description
+- (NSString*)description
 {
     if (!fIsFolder)
-        return [NSString stringWithFormat: @"%@ (%ld)", fName, [fIndexes firstIndex]];
+        return [NSString stringWithFormat:@"%@ (%ld)", fName, [fIndexes firstIndex]];
     else
-        return [NSString stringWithFormat: @"%@ (folder: %@)", fName, fIndexes];
+        return [NSString stringWithFormat:@"%@ (folder: %@)", fName, fIndexes];
 }
 
-- (NSImage *) icon
+- (NSImage*)icon
 {
     if (!fIcon)
-        fIcon = [[NSWorkspace sharedWorkspace] iconForFileType: fIsFolder ? NSFileTypeForHFSTypeCode(kGenericFolderIcon)
-                                                                            : [fName pathExtension]];
+        fIcon = [[NSWorkspace sharedWorkspace]
+            iconForFileType:fIsFolder ? NSFileTypeForHFSTypeCode(kGenericFolderIcon) : [fName pathExtension]];
     return fIcon;
 }
 
-- (NSMutableArray *) children
+- (NSMutableArray*)children
 {
     NSAssert(fIsFolder, @"method can only be invoked on folders");
 
     return fChildren;
 }
 
-- (BOOL) updateFromOldName: (NSString *) oldName toNewName: (NSString *) newName inPath: (NSString *) path
+- (BOOL)updateFromOldName:(NSString*)oldName toNewName:(NSString*)newName inPath:(NSString*)path
 {
     NSParameterAssert(oldName != nil);
     NSParameterAssert(newName != nil);
     NSParameterAssert(path != nil);
 
-    NSArray * lookupPathComponents = [path pathComponents];
-    NSArray * thesePathComponents = [self.path pathComponents];
+    NSArray* lookupPathComponents = [path pathComponents];
+    NSArray* thesePathComponents = [self.path pathComponents];
 
-    if ([lookupPathComponents isEqualToArray: thesePathComponents]) //this node represents what's being renamed
+    if ([lookupPathComponents isEqualToArray:thesePathComponents]) //this node represents what's being renamed
     {
-        if ([oldName isEqualToString: self.name])
+        if ([oldName isEqualToString:self.name])
         {
             fName = [newName copy];
             fIcon = nil;
@@ -127,17 +130,19 @@
     }
     else if ([lookupPathComponents count] < [thesePathComponents count]) //what's being renamed is part of this node's path
     {
-        lookupPathComponents = [lookupPathComponents arrayByAddingObject: oldName];
-        const BOOL allSame = NSNotFound == [lookupPathComponents indexOfObjectWithOptions: NSEnumerationConcurrent passingTest: ^BOOL(NSString * name, NSUInteger idx, BOOL * stop) {
-            return ![name isEqualToString: thesePathComponents[idx]];
-        }];
+        lookupPathComponents = [lookupPathComponents arrayByAddingObject:oldName];
+        BOOL const allSame = NSNotFound ==
+            [lookupPathComponents indexOfObjectWithOptions:NSEnumerationConcurrent
+                                               passingTest:^BOOL(NSString* name, NSUInteger idx, BOOL* stop) {
+                                                   return ![name isEqualToString:thesePathComponents[idx]];
+                                               }];
 
         if (allSame)
         {
-            NSString * oldPathPrefix = [path stringByAppendingPathComponent: oldName];
-            NSString * newPathPrefix = [path stringByAppendingPathComponent: newName];
+            NSString* oldPathPrefix = [path stringByAppendingPathComponent:oldName];
+            NSString* newPathPrefix = [path stringByAppendingPathComponent:newName];
 
-            fPath = [fPath stringByReplacingCharactersInRange: NSMakeRange(0, [oldPathPrefix length]) withString: newPathPrefix];
+            fPath = [fPath stringByReplacingCharactersInRange:NSMakeRange(0, [oldPathPrefix length]) withString:newPathPrefix];
             return YES;
         }
     }
@@ -149,7 +154,7 @@
 
 @implementation FileListNode (Private)
 
-- (id) initWithFolder: (BOOL) isFolder name: (NSString *) name path: (NSString *) path torrent: (Torrent *) torrent
+- (id)initWithFolder:(BOOL)isFolder name:(NSString*)name path:(NSString*)path torrent:(Torrent*)torrent
 {
     if ((self = [super init]))
     {

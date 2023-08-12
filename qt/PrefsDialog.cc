@@ -56,8 +56,8 @@ class PreferenceWidget
     static char const* const PREF_KEY;
 
 public:
-    explicit PreferenceWidget(QObject* object) :
-        m_object(object)
+    explicit PreferenceWidget(QObject* object)
+        : m_object(object)
     {
     }
 
@@ -371,8 +371,8 @@ void PrefsDialog::initSpeedTab()
         ui.altSpeedLimitDaysCombo->addItem(qtDayName(i), qtDayToTrDay(i));
     }
 
-    ui.altSpeedLimitDaysCombo->setCurrentIndex(ui.altSpeedLimitDaysCombo->findData(myPrefs.getInt(
-        Prefs::ALT_SPEED_LIMIT_TIME_DAY)));
+    ui.altSpeedLimitDaysCombo->setCurrentIndex(
+        ui.altSpeedLimitDaysCombo->findData(myPrefs.getInt(Prefs::ALT_SPEED_LIMIT_TIME_DAY)));
 
     linkWidgetToPref(ui.uploadSpeedLimitCheck, Prefs::USPEED_ENABLED);
     linkWidgetToPref(ui.uploadSpeedLimitSpin, Prefs::USPEED);
@@ -384,8 +384,8 @@ void PrefsDialog::initSpeedTab()
     linkWidgetToPref(ui.altSpeedLimitStartTimeEdit, Prefs::ALT_SPEED_LIMIT_TIME_BEGIN);
     linkWidgetToPref(ui.altSpeedLimitEndTimeEdit, Prefs::ALT_SPEED_LIMIT_TIME_END);
 
-    mySchedWidgets << ui.altSpeedLimitStartTimeEdit << ui.altSpeedLimitToLabel << ui.altSpeedLimitEndTimeEdit <<
-        ui.altSpeedLimitDaysLabel << ui.altSpeedLimitDaysCombo;
+    mySchedWidgets << ui.altSpeedLimitStartTimeEdit << ui.altSpeedLimitToLabel << ui.altSpeedLimitEndTimeEdit
+                   << ui.altSpeedLimitDaysLabel << ui.altSpeedLimitDaysCombo;
 
     ColumnResizer* cr(new ColumnResizer(this));
     cr->addLayout(ui.speedLimitsSectionLayout);
@@ -477,8 +477,12 @@ void PrefsDialog::onBlocklistUpdated(int n)
 
 void PrefsDialog::onUpdateBlocklistClicked()
 {
-    myBlocklistDialog = new QMessageBox(QMessageBox::Information, QString(),
-        tr("<b>Update Blocklist</b><p>Getting new blocklist..."), QMessageBox::Close, this);
+    myBlocklistDialog = new QMessageBox(
+        QMessageBox::Information,
+        QString(),
+        tr("<b>Update Blocklist</b><p>Getting new blocklist..."),
+        QMessageBox::Close,
+        this);
     connect(myBlocklistDialog, SIGNAL(rejected()), this, SLOT(onUpdateBlocklistCancelled()));
     connect(&mySession, SIGNAL(blocklistUpdated(int)), this, SLOT(onBlocklistUpdated(int)));
     myBlocklistDialog->show();
@@ -606,8 +610,8 @@ void PrefsDialog::updateDownloadingWidgetsLocality()
     ui.watchDirStack->setCurrentWidget(myIsLocal ? static_cast<QWidget*>(ui.watchDirButton) : ui.watchDirEdit);
     ui.downloadDirStack->setCurrentWidget(myIsLocal ? static_cast<QWidget*>(ui.downloadDirButton) : ui.downloadDirEdit);
     ui.incompleteDirStack->setCurrentWidget(myIsLocal ? static_cast<QWidget*>(ui.incompleteDirButton) : ui.incompleteDirEdit);
-    ui.completionScriptStack->setCurrentWidget(myIsLocal ? static_cast<QWidget*>(ui.completionScriptButton) :
-        ui.completionScriptEdit);
+    ui.completionScriptStack->setCurrentWidget(
+        myIsLocal ? static_cast<QWidget*>(ui.completionScriptButton) : ui.completionScriptEdit);
 
     ui.watchDirStack->setFixedHeight(ui.watchDirStack->currentWidget()->sizeHint().height());
     ui.downloadDirStack->setFixedHeight(ui.downloadDirStack->currentWidget()->sizeHint().height());
@@ -621,12 +625,12 @@ void PrefsDialog::updateDownloadingWidgetsLocality()
 ****
 ***/
 
-PrefsDialog::PrefsDialog(Session& session, Prefs& prefs, QWidget* parent) :
-    BaseDialog(parent),
-    mySession(session),
-    myPrefs(prefs),
-    myIsServer(session.isServer()),
-    myIsLocal(mySession.isLocal())
+PrefsDialog::PrefsDialog(Session& session, Prefs& prefs, QWidget* parent)
+    : BaseDialog(parent)
+    , mySession(session)
+    , myPrefs(prefs)
+    , myIsServer(session.isServer())
+    , myIsLocal(mySession.isLocal())
 {
     ui.setupUi(this);
 
@@ -641,9 +645,9 @@ PrefsDialog::PrefsDialog(Session& session, Prefs& prefs, QWidget* parent) :
     connect(&mySession, SIGNAL(sessionUpdated()), SLOT(sessionUpdated()));
 
     QList<int> keys;
-    keys << Prefs::RPC_ENABLED << Prefs::ALT_SPEED_LIMIT_ENABLED << Prefs::ALT_SPEED_LIMIT_TIME_ENABLED << Prefs::ENCRYPTION <<
-        Prefs::BLOCKLIST_ENABLED << Prefs::DIR_WATCH << Prefs::DOWNLOAD_DIR << Prefs::INCOMPLETE_DIR <<
-        Prefs::INCOMPLETE_DIR_ENABLED << Prefs::SCRIPT_TORRENT_DONE_FILENAME;
+    keys << Prefs::RPC_ENABLED << Prefs::ALT_SPEED_LIMIT_ENABLED << Prefs::ALT_SPEED_LIMIT_TIME_ENABLED << Prefs::ENCRYPTION
+         << Prefs::BLOCKLIST_ENABLED << Prefs::DIR_WATCH << Prefs::DOWNLOAD_DIR << Prefs::INCOMPLETE_DIR
+         << Prefs::INCOMPLETE_DIR_ENABLED << Prefs::SCRIPT_TORRENT_DONE_FILENAME;
 
     for (int const key : keys)
     {

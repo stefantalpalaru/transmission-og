@@ -6,18 +6,19 @@
  *
  */
 
-#include <glib/gi18n.h>
-#include <gtk/gtk.h>
+#include "makemeta-ui.h"
+
+#include "hig.h"
+#include "tr-core.h"
+#include "tr-prefs.h"
+#include "util.h"
 
 #include <libtransmission/transmission.h>
 #include <libtransmission/makemeta.h>
 #include <libtransmission/utils.h> /* tr_formatter_mem_B() */
 
-#include "hig.h"
-#include "makemeta-ui.h"
-#include "tr-core.h"
-#include "tr-prefs.h"
-#include "util.h"
+#include <glib/gi18n.h>
+#include <gtk/gtk.h>
 
 #define FILE_CHOSEN_KEY "file-is-chosen"
 
@@ -41,8 +42,7 @@ typedef struct
     GtkTextBuffer* announce_text_buffer;
     TrCore* core;
     tr_metainfo_builder* builder;
-}
-MakeMetaUI;
+} MakeMetaUI;
 
 static void freeMetaUI(gpointer p)
 {
@@ -161,7 +161,7 @@ static void onProgressDialogResponse(GtkDialog* d, int response, gpointer data)
     case GTK_RESPONSE_ACCEPT:
         addTorrent(ui);
 
-    /* fall-through */
+        /* fall-through */
 
     case GTK_RESPONSE_CLOSE:
         gtk_widget_destroy(ui->builder->result ? GTK_WIDGET(d) : ui->dialog);
@@ -180,8 +180,17 @@ static void makeProgressDialog(GtkWidget* parent, MakeMetaUI* ui)
     GtkWidget* v;
     GtkWidget* fr;
 
-    d = gtk_dialog_new_with_buttons(_("New Torrent"), GTK_WINDOW(parent), GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, GTK_STOCK_ADD, GTK_RESPONSE_ACCEPT, NULL);
+    d = gtk_dialog_new_with_buttons(
+        _("New Torrent"),
+        GTK_WINDOW(parent),
+        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+        GTK_STOCK_CANCEL,
+        GTK_RESPONSE_CANCEL,
+        GTK_STOCK_CLOSE,
+        GTK_RESPONSE_CLOSE,
+        GTK_STOCK_ADD,
+        GTK_RESPONSE_ACCEPT,
+        NULL);
     ui->progress_dialog = d;
     g_signal_connect(d, "response", G_CALLBACK(onProgressDialogResponse), ui);
 
@@ -307,13 +316,19 @@ static void updatePiecesLabel(MakeMetaUI* ui)
     {
         char buf[128];
         tr_strlsize(buf, builder->totalSize, sizeof(buf));
-        g_string_append_printf(gstr, ngettext("%1$s; %2$'d File", "%1$s; %2$'d Files", builder->fileCount), buf,
+        g_string_append_printf(
+            gstr,
+            ngettext("%1$s; %2$'d File", "%1$s; %2$'d Files", builder->fileCount),
+            buf,
             builder->fileCount);
         g_string_append(gstr, "; ");
 
         tr_formatter_mem_B(buf, builder->pieceSize, sizeof(buf));
-        g_string_append_printf(gstr, ngettext("%1$'d Piece @ %2$s", "%1$'d Pieces @ %2$s", builder->pieceCount),
-            builder->pieceCount, buf);
+        g_string_append_printf(
+            gstr,
+            ngettext("%1$'d Piece @ %2$s", "%1$'d Pieces @ %2$s", builder->pieceCount),
+            builder->pieceCount,
+            buf);
     }
 
     g_string_append(gstr, "</i>");
@@ -381,8 +396,15 @@ static char const* getDefaultSavePath(void)
     return g_get_user_special_dir(G_USER_DIRECTORY_DESKTOP);
 }
 
-static void on_drag_data_received(GtkWidget* widget UNUSED, GdkDragContext* drag_context, gint x UNUSED, gint y UNUSED,
-    GtkSelectionData* selection_data, guint info UNUSED, guint time_, gpointer user_data)
+static void on_drag_data_received(
+    GtkWidget* widget UNUSED,
+    GdkDragContext* drag_context,
+    gint x UNUSED,
+    gint y UNUSED,
+    GtkSelectionData* selection_data,
+    guint info UNUSED,
+    guint time_,
+    gpointer user_data)
 {
     gboolean success = FALSE;
     MakeMetaUI* ui = user_data;
@@ -431,8 +453,15 @@ GtkWidget* gtr_torrent_creation_dialog_new(GtkWindow* parent, TrCore* core)
 
     ui->core = core;
 
-    d = gtk_dialog_new_with_buttons(_("New Torrent"), parent, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_STOCK_CLOSE,
-        GTK_RESPONSE_CLOSE, GTK_STOCK_NEW, GTK_RESPONSE_ACCEPT, NULL);
+    d = gtk_dialog_new_with_buttons(
+        _("New Torrent"),
+        parent,
+        GTK_DIALOG_DESTROY_WITH_PARENT,
+        GTK_STOCK_CLOSE,
+        GTK_RESPONSE_CLOSE,
+        GTK_STOCK_NEW,
+        GTK_RESPONSE_ACCEPT,
+        NULL);
     ui->dialog = d;
     g_signal_connect(d, "response", G_CALLBACK(onResponse), ui);
     g_object_set_data_full(G_OBJECT(d), "ui", ui, freeMetaUI);
@@ -458,8 +487,7 @@ GtkWidget* gtr_torrent_creation_dialog_new(GtkWindow* parent, TrCore* core)
     gtk_widget_set_sensitive(GTK_WIDGET(w), FALSE);
     hig_workarea_add_row_w(t, &row, l, w, NULL);
 
-    slist = gtk_radio_button_get_group(GTK_RADIO_BUTTON(l)),
-    l = gtk_radio_button_new_with_mnemonic(slist, _("Source _File:"));
+    slist = gtk_radio_button_get_group(GTK_RADIO_BUTTON(l)), l = gtk_radio_button_new_with_mnemonic(slist, _("Source _File:"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(l), TRUE);
     w = gtk_file_chooser_button_new(NULL, GTK_FILE_CHOOSER_ACTION_OPEN);
     g_signal_connect(l, "toggled", G_CALLBACK(onFileToggled), ui);
@@ -490,8 +518,10 @@ GtkWidget* gtr_torrent_creation_dialog_new(GtkWindow* parent, TrCore* core)
     gtk_container_add(GTK_CONTAINER(fr), sw);
     gtk_box_pack_start(GTK_BOX(v), fr, TRUE, TRUE, 0);
     l = gtk_label_new(NULL);
-    gtk_label_set_markup(GTK_LABEL(l), _("To add a backup URL, add it on the line after the primary URL.\n"
-        "To add another primary URL, add it after a blank line."));
+    gtk_label_set_markup(
+        GTK_LABEL(l),
+        _("To add a backup URL, add it on the line after the primary URL.\n"
+          "To add another primary URL, add it after a blank line."));
     gtk_label_set_justify(GTK_LABEL(l), GTK_JUSTIFY_LEFT);
     g_object_set(l, "halign", GTK_ALIGN_START, "valign", GTK_ALIGN_CENTER, NULL);
     gtk_box_pack_start(GTK_BOX(v), l, FALSE, FALSE, 0);

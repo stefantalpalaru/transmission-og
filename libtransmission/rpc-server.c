@@ -270,16 +270,14 @@ static char const* mimetype_guess(char const* path)
     {
         char const* suffix;
         char const* mime_type;
-    }
-    const types[] =
-    {
+    } const types[] = {
         /* these are the ones we need for serving the web client's files... */
         { "css", "text/css" },
         { "gif", "image/gif" },
         { "html", "text/html" },
         { "ico", "image/vnd.microsoft.icon" },
         { "js", "application/javascript" },
-        { "png", "image/png" }
+        { "png", "image/png" },
     };
     char const* dot = strrchr(path, '.');
 
@@ -294,7 +292,10 @@ static char const* mimetype_guess(char const* path)
     return "application/octet-stream";
 }
 
-static void add_response(struct evhttp_request* req, struct tr_rpc_server* server, struct evbuffer* out,
+static void add_response(
+    struct evhttp_request* req,
+    struct tr_rpc_server* server,
+    struct evbuffer* out,
     struct evbuffer* content)
 {
     char const* key = "Accept-Encoding";
@@ -432,7 +433,9 @@ static void handle_web_client(struct evhttp_request* req, struct tr_rpc_server* 
 
     if (tr_str_is_empty(webClientDir))
     {
-        send_simple_response(req, HTTP_NOTFOUND,
+        send_simple_response(
+            req,
+            HTTP_NOTFOUND,
             "<p>Couldn't find Transmission OG's web interface files!</p>"
             "<p>Users: to tell Transmission OG where to look, "
             "set the TRANSMISSION_WEB_HOME environment "
@@ -460,7 +463,10 @@ static void handle_web_client(struct evhttp_request* req, struct tr_rpc_server* 
         }
         else
         {
-            char* filename = tr_strdup_printf("%s%s%s", webClientDir, TR_PATH_DELIMITER_STR,
+            char* filename = tr_strdup_printf(
+                "%s%s%s",
+                webClientDir,
+                TR_PATH_DELIMITER_STR,
                 tr_str_is_empty(subpath) ? "index.html" : subpath);
             serve_file(req, server, filename);
             tr_free(filename);
@@ -513,7 +519,10 @@ static void handle_rpc(struct evhttp_request* req, struct tr_rpc_server* server)
 {
     if (req->type == EVHTTP_REQ_POST)
     {
-        handle_rpc_from_json(req, server, (char const*)evbuffer_pullup(req->input_buffer, -1),
+        handle_rpc_from_json(
+            req,
+            server,
+            (char const*)evbuffer_pullup(req->input_buffer, -1),
             evbuffer_get_length(req->input_buffer));
         return;
     }
@@ -636,13 +645,18 @@ static void handle_request(struct evhttp_request* req, void* arg)
 
         if (server->loginattempts == 100)
         {
-            send_simple_response(req, 403, "<p>Too many unsuccessful login attempts. Please restart transmission-og-daemon.</p>");
+            send_simple_response(
+                req,
+                403,
+                "<p>Too many unsuccessful login attempts. Please restart transmission-og-daemon.</p>");
             return;
         }
 
         if (!isAddressAllowed(server, req->remote_host))
         {
-            send_simple_response(req, 403,
+            send_simple_response(
+                req,
+                403,
                 "<p>Unauthorized IP Address.</p>"
                 "<p>Either disable the IP address whitelist or add your address to it.</p>"
                 "<p>If you're editing settings.json, see the 'rpc-whitelist' and 'rpc-whitelist-enabled' entries.</p>"
@@ -670,12 +684,13 @@ static void handle_request(struct evhttp_request* req, void* arg)
             }
         }
 
-        if (server->isPasswordEnabled && (pass == NULL || user == NULL || strcmp(server->username, user) != 0 ||
-            !tr_ssha1_matches(server->password, pass)))
+        if (server->isPasswordEnabled &&
+            (pass == NULL || user == NULL || strcmp(server->username, user) != 0 || !tr_ssha1_matches(server->password, pass)))
         {
             evhttp_add_header(req->output_headers, "WWW-Authenticate", "Basic realm=\"" MY_REALM "\"");
             server->loginattempts++;
-            char* unauthuser = tr_strdup_printf("<p>Unauthorized User. %d unsuccessful login attempts.</p>",
+            char* unauthuser = tr_strdup_printf(
+                "<p>Unauthorized User. %d unsuccessful login attempts.</p>",
                 server->loginattempts);
             send_simple_response(req, 401, unauthuser);
             tr_free(unauthuser);
@@ -733,7 +748,8 @@ static void handle_request(struct evhttp_request* req, void* arg)
                 "<a href=\"https://en.wikipedia.org/wiki/Cross-site_request_forgery\">CSRF</a> "
                 "attacks.</p>"
                 "<p><code>%s: %s</code></p>",
-                TR_RPC_SESSION_ID_HEADER, sessionId);
+                TR_RPC_SESSION_ID_HEADER,
+                sessionId);
             evhttp_add_header(req->output_headers, TR_RPC_SESSION_ID_HEADER, sessionId);
             send_simple_response(req, 409, tmp);
             tr_free(tmp);
@@ -823,7 +839,11 @@ static void startServer(void* vserver)
             return;
         }
 
-        tr_logAddNamedError(MY_NAME, "Unable to bind to %s:%d after %d attempts, giving up", address, port,
+        tr_logAddNamedError(
+            MY_NAME,
+            "Unable to bind to %s:%d after %d attempts, giving up",
+            address,
+            port,
             SERVER_START_RETRY_COUNT);
     }
     else
@@ -948,8 +968,10 @@ static void tr_rpcSetList(char const* whitelistStr, tr_list** list)
 
         if (strcspn(token, "+-") < len)
         {
-            tr_logAddNamedInfo(MY_NAME,
-                "Adding address to whitelist: %s (And it has a '+' or '-'!  Are you using an old ACL by mistake?)", token);
+            tr_logAddNamedInfo(
+                MY_NAME,
+                "Adding address to whitelist: %s (And it has a '+' or '-'!  Are you using an old ACL by mistake?)",
+                token);
         }
         else
         {
@@ -1240,7 +1262,11 @@ tr_rpc_server* tr_rpcInit(tr_session* session, tr_variant* settings)
 
     if (s->isEnabled)
     {
-        tr_logAddNamedInfo(MY_NAME, _("Serving RPC and Web requests on %s:%d%s"), tr_rpcGetBindAddress(s), (int)s->port,
+        tr_logAddNamedInfo(
+            MY_NAME,
+            _("Serving RPC and Web requests on %s:%d%s"),
+            tr_rpcGetBindAddress(s),
+            (int)s->port,
             s->url);
         tr_runInEventThread(session, startServer, s);
 

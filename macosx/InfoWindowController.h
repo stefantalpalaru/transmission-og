@@ -33,36 +33,36 @@
 
 @interface InfoWindowController : NSWindowController
 {
-    NSArray * fTorrents;
+    NSArray* fTorrents;
 
     CGFloat fMinWindowWidth;
 
-    NSViewController <InfoViewController> * fViewController;
+    NSViewController<InfoViewController>* fViewController;
     NSInteger fCurrentTabTag;
-    IBOutlet NSMatrix * fTabMatrix;
+    IBOutlet NSMatrix* fTabMatrix;
 
-    InfoGeneralViewController * fGeneralViewController;
-    InfoActivityViewController * fActivityViewController;
-    InfoTrackersViewController * fTrackersViewController;
-    InfoPeersViewController * fPeersViewController;
-    InfoFileViewController * fFileViewController;
-    InfoOptionsViewController * fOptionsViewController;
+    InfoGeneralViewController* fGeneralViewController;
+    InfoActivityViewController* fActivityViewController;
+    InfoTrackersViewController* fTrackersViewController;
+    InfoPeersViewController* fPeersViewController;
+    InfoFileViewController* fFileViewController;
+    InfoOptionsViewController* fOptionsViewController;
 
-    IBOutlet NSImageView * fImageView;
-    IBOutlet NSTextField * fNameField, * fBasicInfoField, * fNoneSelectedField;
+    IBOutlet NSImageView* fImageView;
+    IBOutlet NSTextField *fNameField, *fBasicInfoField, *fNoneSelectedField;
 }
 
-- (void) setInfoForTorrents: (NSArray *) torrents;
-- (void) updateInfoStats;
-- (void) updateOptions;
+- (void)setInfoForTorrents:(NSArray*)torrents;
+- (void)updateInfoStats;
+- (void)updateOptions;
 
-- (void) setTab: (id) sender;
+- (void)setTab:(id)sender;
 
-- (void) setNextTab;
-- (void) setPreviousTab;
+- (void)setNextTab;
+- (void)setPreviousTab;
 
-- (NSArray *) quickLookURLs;
-- (BOOL) canQuickLook;
-- (NSRect) quickLookSourceFrameForPreviewItem: (id <QLPreviewItem>) item;
+- (NSArray*)quickLookURLs;
+- (BOOL)canQuickLook;
+- (NSRect)quickLookSourceFrameForPreviewItem:(id<QLPreviewItem>)item;
 
 @end

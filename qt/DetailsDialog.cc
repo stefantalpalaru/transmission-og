@@ -94,8 +94,8 @@ class PeerItem : public QTreeWidgetItem
     QString status;
 
 public:
-    PeerItem(Peer const& p) :
-        peer(p)
+    PeerItem(Peer const& p)
+        : peer(p)
     {
     }
 
@@ -119,7 +119,7 @@ public:
         status = s;
     }
 
-    virtual bool operator <(QTreeWidgetItem const& other) const
+    virtual bool operator<(QTreeWidgetItem const& other) const
     {
         PeerItem const* i = dynamic_cast<PeerItem const*>(&other);
         QTreeWidget* tw(treeWidget());
@@ -164,8 +164,8 @@ private:
                 if (ipAddress.protocol() == QAbstractSocket::IPv4Protocol)
                 {
                     quint32 const ipv4Address = ipAddress.toIPv4Address();
-                    collatedAddress = QLatin1String("1-") + QString::fromLatin1(QByteArray::number(ipv4Address, 16).
-                        rightJustified(8, '0'));
+                    collatedAddress = QLatin1String("1-") +
+                        QString::fromLatin1(QByteArray::number(ipv4Address, 16).rightJustified(8, '0'));
                 }
                 else if (ipAddress.protocol() == QAbstractSocket::IPv6Protocol)
                 {
@@ -207,13 +207,13 @@ QIcon DetailsDialog::getStockIcon(QString const& freedesktop_name, int fallback)
     return icon;
 }
 
-DetailsDialog::DetailsDialog(Session& session, Prefs& prefs, TorrentModel const& model, QWidget* parent) :
-    BaseDialog(parent),
-    mySession(session),
-    myPrefs(prefs),
-    myModel(model),
-    myChangedTorrents(false),
-    myHavePendingRefresh(false)
+DetailsDialog::DetailsDialog(Session& session, Prefs& prefs, TorrentModel const& model, QWidget* parent)
+    : BaseDialog(parent)
+    , mySession(session)
+    , myPrefs(prefs)
+    , myModel(model)
+    , myChangedTorrents(false)
+    , myHavePendingRefresh(false)
 {
     ui.setupUi(this);
 
@@ -498,8 +498,10 @@ void DetailsDialog::refresh()
             //: %1 is amount of downloaded and verified data,
             //: %2 is overall size of torrent data,
             //: %3 is percentage (%1/%2*100)
-            string = tr("%1 of %2 (%3%)").arg(Formatter::sizeToString(haveVerified)).arg(Formatter::sizeToString(sizeWhenDone)).
-                arg(pct);
+            string = tr("%1 of %2 (%3%)")
+                         .arg(Formatter::sizeToString(haveVerified))
+                         .arg(Formatter::sizeToString(sizeWhenDone))
+                         .arg(pct);
         }
         else
         {
@@ -508,8 +510,11 @@ void DetailsDialog::refresh()
             //: %2 is overall size of torrent data,
             //: %3 is percentage (%1/%2*100),
             //: %4 is amount of downloaded but not yet verified data
-            string = tr("%1 of %2 (%3%), %4 Unverified").arg(Formatter::sizeToString(haveVerified + haveUnverified)).
-                arg(Formatter::sizeToString(sizeWhenDone)).arg(pct).arg(Formatter::sizeToString(haveUnverified));
+            string = tr("%1 of %2 (%3%), %4 Unverified")
+                         .arg(Formatter::sizeToString(haveVerified + haveUnverified))
+                         .arg(Formatter::sizeToString(sizeWhenDone))
+                         .arg(pct)
+                         .arg(Formatter::sizeToString(haveUnverified));
         }
     }
 
@@ -754,8 +759,9 @@ void DetailsDialog::refresh()
         }
         else if (pieceSize > 0)
         {
-            string = tr("%1 (%Ln pieces @ %2)", "", pieces).arg(Formatter::sizeToString(size)).
-                arg(Formatter::memToString(pieceSize));
+            string = tr("%1 (%Ln pieces @ %2)", "", pieces)
+                         .arg(Formatter::sizeToString(size))
+                         .arg(Formatter::memToString(pieceSize));
         }
         else
         {
@@ -1134,8 +1140,9 @@ void DetailsDialog::refresh()
 
             item->setText(COL_UP, peer.rateToPeer.isZero() ? QString() : Formatter::speedToString(peer.rateToPeer));
             item->setText(COL_DOWN, peer.rateToClient.isZero() ? QString() : Formatter::speedToString(peer.rateToClient));
-            item->setText(COL_PERCENT, peer.progress > 0 ? QString::fromLatin1("%1%").arg(int(peer.progress * 100.0)) :
-                QString());
+            item->setText(
+                COL_PERCENT,
+                peer.progress > 0 ? QString::fromLatin1("%1%").arg(int(peer.progress * 100.0)) : QString());
             item->setText(COL_STATUS, code);
             item->setToolTip(COL_STATUS, codeTip);
 
@@ -1289,8 +1296,8 @@ void DetailsDialog::onTrackerSelectionChanged()
 void DetailsDialog::onAddTrackerClicked()
 {
     bool ok = false;
-    QString const url = QInputDialog::getText(this, tr("Add URL "), tr("Add tracker announce URL:"), QLineEdit::Normal,
-        QString(), &ok);
+    QString const
+        url = QInputDialog::getText(this, tr("Add URL "), tr("Add tracker announce URL:"), QLineEdit::Normal, QString(), &ok);
 
     if (!ok)
     {
@@ -1335,8 +1342,13 @@ void DetailsDialog::onEditTrackerClicked()
     TrackerInfo const trackerInfo = ui.trackersView->model()->data(i, TrackerModel::TrackerRole).value<TrackerInfo>();
 
     bool ok = false;
-    QString const newval = QInputDialog::getText(this, tr("Edit URL "), tr("Edit tracker announce URL:"), QLineEdit::Normal,
-        trackerInfo.st.announce, &ok);
+    QString const newval = QInputDialog::getText(
+        this,
+        tr("Edit URL "),
+        tr("Edit tracker announce URL:"),
+        QLineEdit::Normal,
+        trackerInfo.st.announce,
+        &ok);
 
     if (!ok)
     {
@@ -1413,8 +1425,8 @@ void DetailsDialog::initOptionsTab()
     cr->addLayout(ui.peerConnectionsSectionLayout);
     cr->update();
 
-    void (QComboBox::* comboIndexChanged)(int) = &QComboBox::currentIndexChanged;
-    void (QSpinBox::* spinValueChanged)(int) = &QSpinBox::valueChanged;
+    void (QComboBox::*comboIndexChanged)(int) = &QComboBox::currentIndexChanged;
+    void (QSpinBox::*spinValueChanged)(int) = &QSpinBox::valueChanged;
     connect(ui.bandwidthPriorityCombo, comboIndexChanged, this, &DetailsDialog::onBandwidthPriorityChanged);
     connect(ui.idleCombo, comboIndexChanged, this, &DetailsDialog::onIdleModeChanged);
     connect(ui.idleSpin, &QSpinBox::editingFinished, this, &DetailsDialog::onSpinBoxEditingFinished);
@@ -1456,7 +1468,9 @@ void DetailsDialog::initTrackerTab()
     connect(ui.showBackupTrackersCheck, &QAbstractButton::clicked, this, &DetailsDialog::onShowBackupTrackersToggled);
     connect(ui.showTrackerScrapesCheck, &QAbstractButton::clicked, this, &DetailsDialog::onShowTrackerScrapesToggled);
     connect(
-        ui.trackersView->selectionModel(), &QItemSelectionModel::selectionChanged, this,
+        ui.trackersView->selectionModel(),
+        &QItemSelectionModel::selectionChanged,
+        this,
         &DetailsDialog::onTrackerSelectionChanged);
 
     onTrackerSelectionChanged();

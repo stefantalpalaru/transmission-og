@@ -124,11 +124,9 @@ static int test_ssha1(void)
     {
         char const* const plain_text;
         char const* const ssha1;
-    }
-    test_data[] =
-    {
+    } test_data[] = {
         { "test", "{15ad0621b259a84d24dcd4e75b09004e98a3627bAMbyRHJy" },
-        { "QNY)(*#$B)!_X$B !_B#($^!)*&$%CV!#)&$C!@$(P*)", "{10e2d7acbb104d970514a147cd16d51dfa40fb3c0OSwJtOL" }
+        { "QNY)(*#$B)!_X$B !_B#($^!)*&$%CV!#)&$C!@$(P*)", "{10e2d7acbb104d970514a147cd16d51dfa40fb3c0OSwJtOL" },
     };
 
 #define HASH_COUNT (4 * 1024)
@@ -303,15 +301,16 @@ static int test_base64(void)
 
 int main(void)
 {
-    testFunc const tests[] =
-    {
+    // clang-format off
+    testFunc const tests[] = {
         test_torrent_hash,
         test_encrypt_decrypt,
         test_sha1,
         test_ssha1,
         test_random,
-        test_base64
+        test_base64,
     };
+    // clang-format on
 
     return runTests(tests, NUM_TESTS(tests));
 }

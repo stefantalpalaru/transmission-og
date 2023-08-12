@@ -171,10 +171,9 @@ static CURLcode ssl_context_func(CURL* curl, void* ssl_ctx, void* user_data)
         return CURLE_OK;
     }
 
-    static LPCWSTR const sys_store_names[] =
-    {
+    static LPCWSTR const sys_store_names[] = {
         L"CA",
-        L"ROOT"
+        L"ROOT",
     };
 
     for (size_t i = 0; i < TR_N_ELEMENTS(sys_store_names); ++i)
@@ -323,8 +322,14 @@ static void task_finish_func(void* vtask)
 
     if (task->done_func != NULL)
     {
-        (*task->done_func)(task->session, task->did_connect, task->did_timeout, task->code, evbuffer_pullup(task->response, -1),
-            evbuffer_get_length(task->response), task->done_func_user_data);
+        (*task->done_func)(
+            task->session,
+            task->did_connect,
+            task->did_timeout,
+            task->code,
+            evbuffer_pullup(task->response, -1),
+            evbuffer_get_length(task->response),
+            task->done_func_user_data);
     }
 
     task_free(task);
@@ -336,8 +341,14 @@ static void task_finish_func(void* vtask)
 
 static void tr_webThreadFunc(void* vsession);
 
-static struct tr_web_task* tr_webRunImpl(tr_session* session, int torrentId, char const* url, char const* range,
-    char const* cookies, tr_web_done_func done_func, void* done_func_user_data,
+static struct tr_web_task* tr_webRunImpl(
+    tr_session* session,
+    int torrentId,
+    char const* url,
+    char const* range,
+    char const* cookies,
+    tr_web_done_func done_func,
+    void* done_func_user_data,
     struct evbuffer* buffer)
 {
     struct tr_web_task* task = NULL;
@@ -374,7 +385,11 @@ static struct tr_web_task* tr_webRunImpl(tr_session* session, int torrentId, cha
     return task;
 }
 
-struct tr_web_task* tr_webRunWithCookies(tr_session* session, char const* url, char const* cookies, tr_web_done_func done_func,
+struct tr_web_task* tr_webRunWithCookies(
+    tr_session* session,
+    char const* url,
+    char const* cookies,
+    tr_web_done_func done_func,
     void* done_func_user_data)
 {
     return tr_webRunImpl(session, -1, url, NULL, cookies, done_func, done_func_user_data, NULL);
@@ -385,8 +400,13 @@ struct tr_web_task* tr_webRun(tr_session* session, char const* url, tr_web_done_
     return tr_webRunWithCookies(session, url, NULL, done_func, done_func_user_data);
 }
 
-struct tr_web_task* tr_webRunWebseed(tr_torrent* tor, char const* url, char const* range, tr_web_done_func done_func,
-    void* done_func_user_data, struct evbuffer* buffer)
+struct tr_web_task* tr_webRunWebseed(
+    tr_torrent* tor,
+    char const* url,
+    char const* range,
+    tr_web_done_func done_func,
+    void* done_func_user_data,
+    struct evbuffer* buffer)
 {
     return tr_webRunImpl(tor->session, tr_torrentId(tor), url, range, NULL, done_func, done_func_user_data, buffer);
 }
@@ -410,8 +430,13 @@ static void tr_select(int nfds, fd_set* r_fd_set, fd_set* w_fd_set, fd_set* c_fd
         long int const msec = t->tv_sec * 1000 + t->tv_usec / 1000;
         tr_wait_msec(msec);
     }
-    else if (select(0, r_fd_set->fd_count != 0 ? r_fd_set : NULL, w_fd_set->fd_count != 0 ? w_fd_set : NULL,
-        c_fd_set->fd_count != 0 ? c_fd_set : NULL, t) == -1)
+    else if (
+        select(
+            0,
+            r_fd_set->fd_count != 0 ? r_fd_set : NULL,
+            w_fd_set->fd_count != 0 ? w_fd_set : NULL,
+            c_fd_set->fd_count != 0 ? c_fd_set : NULL,
+            t) == -1)
     {
         char errstr[512];
         int const e = EVUTIL_SOCKET_ERROR();
@@ -452,7 +477,9 @@ static void tr_webThreadFunc(void* vsession)
 
     if (web->curl_ssl_verify)
     {
-        tr_logAddNamedInfo("web", "will verify tracker certs using envvar CURL_CA_BUNDLE: %s",
+        tr_logAddNamedInfo(
+            "web",
+            "will verify tracker certs using envvar CURL_CA_BUNDLE: %s",
             web->curl_ca_bundle == NULL ? "none" : web->curl_ca_bundle);
         tr_logAddNamedInfo("web", "NB: this only works if you built against libcurl with openssl or gnutls, NOT nss");
         tr_logAddNamedInfo("web", "NB: invalid certs will show up as 'Could not connect to tracker' like many other errors");
@@ -566,8 +593,7 @@ static void tr_webThreadFunc(void* vsession)
         do
         {
             mcode = curl_multi_perform(multi, &unused);
-        }
-        while (mcode == CURLM_CALL_MULTI_PERFORM);
+        } while (mcode == CURLM_CALL_MULTI_PERFORM);
 
         /* pump completed tasks from the multi */
         while ((msg = curl_multi_info_read(multi, &unused)) != NULL)

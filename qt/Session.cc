@@ -95,12 +95,10 @@ void Session::portTest()
 {
     RpcQueue* q = new RpcQueue();
 
-    q->add([this]()
-        {
-            return exec("port-test", nullptr);
-        });
+    q->add([this]() { return exec("port-test", nullptr); });
 
-    q->add([this](RpcResponse const& r)
+    q->add(
+        [this](RpcResponse const& r)
         {
             bool isOpen = false;
 
@@ -124,12 +122,10 @@ void Session::copyMagnetLinkToClipboard(int torrentId)
 
     RpcQueue* q = new RpcQueue();
 
-    q->add([this, &args]()
-        {
-            return exec(TR_KEY_torrent_get, &args);
-        });
+    q->add([this, &args]() { return exec(TR_KEY_torrent_get, &args); });
 
-    q->add([](RpcResponse const& r)
+    q->add(
+        [](RpcResponse const& r)
         {
             tr_variant* torrents;
 
@@ -297,12 +293,12 @@ void Session::updatePref(int key)
 ****
 ***/
 
-Session::Session(QString const& configDir, Prefs& prefs) :
-    myConfigDir(configDir),
-    myPrefs(prefs),
-    myBlocklistSize(-1),
-    mySession(nullptr),
-    myIsDefinitelyLocalSession(true)
+Session::Session(QString const& configDir, Prefs& prefs)
+    : myConfigDir(configDir)
+    , myPrefs(prefs)
+    , myBlocklistSize(-1)
+    , mySession(nullptr)
+    , myIsDefinitelyLocalSession(true)
 {
     myStats.ratio = TR_RATIO_NA;
     myStats.uploadedBytes = 0;
@@ -316,7 +312,10 @@ Session::Session(QString const& configDir, Prefs& prefs) :
     connect(&myRpc, SIGNAL(httpAuthenticationRequired()), this, SIGNAL(httpAuthenticationRequired()));
     connect(&myRpc, SIGNAL(dataReadProgress()), this, SIGNAL(dataReadProgress()));
     connect(&myRpc, SIGNAL(dataSendProgress()), this, SIGNAL(dataSendProgress()));
-    connect(&myRpc, SIGNAL(networkResponse(QNetworkReply::NetworkError, QString)), this,
+    connect(
+        &myRpc,
+        SIGNAL(networkResponse(QNetworkReply::NetworkError, QString)),
+        this,
         SIGNAL(networkResponse(QNetworkReply::NetworkError, QString)));
 }
 
@@ -518,10 +517,8 @@ void Session::torrentRenamePath(torrent_ids_t const& ids, QString const& oldpath
 
     RpcQueue* q = new RpcQueue();
 
-    q->add([this, &args]()
-        {
-            return exec("torrent-rename-path", &args);
-        },
+    q->add(
+        [this, &args]() { return exec("torrent-rename-path", &args); },
         [](RpcResponse const& r)
         {
             char const* path = "(unknown)";
@@ -529,16 +526,21 @@ void Session::torrentRenamePath(torrent_ids_t const& ids, QString const& oldpath
             tr_variantDictFindStr(r.args.get(), TR_KEY_path, &path, nullptr);
             tr_variantDictFindStr(r.args.get(), TR_KEY_name, &name, nullptr);
 
-            QMessageBox* d = new QMessageBox(QMessageBox::Information, tr("Error Renaming Path"),
-                tr("<p><b>Unable to rename \"%1\" as \"%2\": %3.</b></p><p>Please correct the errors and try again.</p>").
-                    arg(QString::fromUtf8(path)).arg(QString::fromUtf8(name)).arg(r.result), QMessageBox::Close,
+            QMessageBox* d = new QMessageBox(
+                QMessageBox::Information,
+                tr("Error Renaming Path"),
+                tr("<p><b>Unable to rename \"%1\" as \"%2\": %3.</b></p><p>Please correct the errors and try again.</p>")
+                    .arg(QString::fromUtf8(path))
+                    .arg(QString::fromUtf8(name))
+                    .arg(r.result),
+                QMessageBox::Close,
                 qApp->activeWindow());
             QObject::connect(d, &QMessageBox::rejected, d, &QMessageBox::deleteLater);
             d->show();
         });
 
-    q->add([this, ids](RpcResponse const& /*r*/)
-        {
+    q->add(
+        [this, ids](RpcResponse const& /*r*/) {
             refreshTorrents(ids, { TR_KEY_fileStats, TR_KEY_files, TR_KEY_id, TR_KEY_name });
         });
 
@@ -555,14 +557,12 @@ void Session::refreshTorrents(torrent_ids_t const& ids, KeyList const& keys)
 
     RpcQueue* q = new RpcQueue();
 
-    q->add([this, &args]()
-        {
-            return exec(TR_KEY_torrent_get, &args);
-        });
+    q->add([this, &args]() { return exec(TR_KEY_torrent_get, &args); });
 
     bool const allTorrents = ids.empty();
 
-    q->add([this, allTorrents](RpcResponse const& r)
+    q->add(
+        [this, allTorrents](RpcResponse const& r)
         {
             tr_variant* torrents;
 
@@ -598,15 +598,9 @@ void Session::sendTorrentRequest(char const* request, torrent_ids_t const& ids)
 
     RpcQueue* q = new RpcQueue();
 
-    q->add([this, request, &args]()
-        {
-            return exec(request, &args);
-        });
+    q->add([this, request, &args]() { return exec(request, &args); });
 
-    q->add([this, ids]()
-        {
-            refreshTorrents(ids, Torrent::mainStatKeys);
-        });
+    q->add([this, ids]() { refreshTorrents(ids, Torrent::mainStatKeys); });
 
     q->run();
 }
@@ -665,15 +659,9 @@ void Session::refreshSessionStats()
 {
     RpcQueue* q = new RpcQueue();
 
-    q->add([this]()
-        {
-            return exec("session-stats", nullptr);
-        });
+    q->add([this]() { return exec("session-stats", nullptr); });
 
-    q->add([this](RpcResponse const& r)
-        {
-            updateStats(r.args.get());
-        });
+    q->add([this](RpcResponse const& r) { updateStats(r.args.get()); });
 
     q->run();
 }
@@ -682,15 +670,9 @@ void Session::refreshSessionInfo()
 {
     RpcQueue* q = new RpcQueue();
 
-    q->add([this]()
-        {
-            return exec("session-get", nullptr);
-        });
+    q->add([this]() { return exec("session-get", nullptr); });
 
-    q->add([this](RpcResponse const& r)
-        {
-            updateInfo(r.args.get());
-        });
+    q->add([this](RpcResponse const& r) { updateInfo(r.args.get()); });
 
     q->run();
 }
@@ -699,12 +681,10 @@ void Session::updateBlocklist()
 {
     RpcQueue* q = new RpcQueue();
 
-    q->add([this]()
-        {
-            return exec("blocklist-update", nullptr);
-        });
+    q->add([this]() { return exec("blocklist-update", nullptr); });
 
-    q->add([this](RpcResponse const& r)
+    q->add(
+        [this](RpcResponse const& r)
         {
             int64_t blocklistSize;
 
@@ -974,20 +954,22 @@ void Session::addTorrent(AddData const& addMe, tr_variant* args, bool trashOrigi
 
     RpcQueue* q = new RpcQueue();
 
-    q->add([this, args]()
-        {
-            return exec("torrent-add", args);
-        },
+    q->add(
+        [this, args]() { return exec("torrent-add", args); },
         [addMe](RpcResponse const& r)
         {
-            QMessageBox* d = new QMessageBox(QMessageBox::Warning, tr("Error Adding Torrent"),
-                QString::fromLatin1("<p><b>%1</b></p><p>%2</p>").arg(r.result).arg(addMe.readableName()), QMessageBox::Close,
+            QMessageBox* d = new QMessageBox(
+                QMessageBox::Warning,
+                tr("Error Adding Torrent"),
+                QString::fromLatin1("<p><b>%1</b></p><p>%2</p>").arg(r.result).arg(addMe.readableName()),
+                QMessageBox::Close,
                 qApp->activeWindow());
             QObject::connect(d, &QMessageBox::rejected, d, &QMessageBox::deleteLater);
             d->show();
         });
 
-    q->add([addMe](RpcResponse const& r)
+    q->add(
+        [addMe](RpcResponse const& r)
         {
             tr_variant* dup;
 
@@ -1001,9 +983,14 @@ void Session::addTorrent(AddData const& addMe, tr_variant* args, bool trashOrigi
             if (tr_variantDictFindStr(dup, TR_KEY_name, &str, nullptr))
             {
                 QString const name = QString::fromUtf8(str);
-                QMessageBox* d = new QMessageBox(QMessageBox::Warning, tr("Add Torrent"),
-                    tr("<p><b>Unable to add \"%1\".</b></p><p>It is a duplicate of \"%2\" which is already added.</p>").
-                        arg(addMe.readableShortName()).arg(name), QMessageBox::Close, qApp->activeWindow());
+                QMessageBox* d = new QMessageBox(
+                    QMessageBox::Warning,
+                    tr("Add Torrent"),
+                    tr("<p><b>Unable to add \"%1\".</b></p><p>It is a duplicate of \"%2\" which is already added.</p>")
+                        .arg(addMe.readableShortName())
+                        .arg(name),
+                    QMessageBox::Close,
+                    qApp->activeWindow());
                 QObject::connect(d, &QMessageBox::rejected, d, &QMessageBox::deleteLater);
                 d->show();
             }
@@ -1011,7 +998,8 @@ void Session::addTorrent(AddData const& addMe, tr_variant* args, bool trashOrigi
 
     if (trashOriginal && addMe.type == AddData::FILENAME)
     {
-        q->add([addMe]()
+        q->add(
+            [addMe]()
             {
                 QFile original(addMe.filename);
                 original.setPermissions(QFile::ReadOwner | QFile::WriteOwner);

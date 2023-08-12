@@ -33,7 +33,10 @@ bool DBusInteropHelper::isConnected() const
 
 QVariant DBusInteropHelper::addMetainfo(QString const& metainfo)
 {
-    QDBusMessage request = QDBusMessage::createMethodCall(DBUS_SERVICE, DBUS_OBJECT_PATH, DBUS_INTERFACE,
+    QDBusMessage request = QDBusMessage::createMethodCall(
+        DBUS_SERVICE,
+        DBUS_OBJECT_PATH,
+        DBUS_INTERFACE,
         QLatin1String("AddMetainfo"));
     request.setArguments(QVariantList() << metainfo);
 

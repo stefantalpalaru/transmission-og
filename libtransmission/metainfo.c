@@ -97,11 +97,9 @@ char* tr_metainfo_sanitize_path_component(char const* str, size_t len, bool* is_
 
     /* https://docs.microsoft.com/en-us/windows/desktop/FileIO/naming-a-file */
     char const* const reserved_chars = "<>:\"/\\|?*";
-    char const* const reserved_names[] =
-    {
-        "CON", "PRN", "AUX", "NUL",
-        "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
-        "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"
+    char const* const reserved_names[] = {
+        "CON",  "PRN",  "AUX",  "NUL",  "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7",
+        "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9",
     };
 
     char* const ret = tr_new(char, len + 2);
@@ -525,7 +523,11 @@ static void geturllist(tr_info* inf, tr_variant* meta)
     }
 }
 
-static char const* tr_metainfoParseImpl(tr_session const* session, tr_info* inf, bool* hasInfoDict, size_t* infoDictLength,
+static char const* tr_metainfoParseImpl(
+    tr_session const* session,
+    tr_info* inf,
+    bool* hasInfoDict,
+    size_t* infoDictLength,
     tr_variant const* meta_in)
 {
     int64_t i;
@@ -715,8 +717,8 @@ static char const* tr_metainfoParseImpl(tr_session const* session, tr_info* inf,
     /* files */
     if (!isMagnet)
     {
-        if ((str = parseFiles(inf, tr_variantDictFind(infoDict, TR_KEY_files), tr_variantDictFind(infoDict,
-            TR_KEY_length))) != NULL)
+        if ((str = parseFiles(inf, tr_variantDictFind(infoDict, TR_KEY_files), tr_variantDictFind(infoDict, TR_KEY_length))) !=
+            NULL)
         {
             return str;
         }
@@ -748,7 +750,11 @@ static char const* tr_metainfoParseImpl(tr_session const* session, tr_info* inf,
     return NULL;
 }
 
-bool tr_metainfoParse(tr_session const* session, tr_variant const* meta_in, tr_info* inf, bool* hasInfoDict,
+bool tr_metainfoParse(
+    tr_session const* session,
+    tr_variant const* meta_in,
+    tr_info* inf,
+    bool* hasInfoDict,
     size_t* infoDictLength)
 {
     char const* badTag = tr_metainfoParseImpl(session, inf, hasInfoDict, infoDictLength, meta_in);
@@ -808,7 +814,10 @@ void tr_metainfoRemoveSaved(tr_session const* session, tr_info const* inf)
     tr_free(filename);
 }
 
-void tr_metainfoMigrateFile(tr_session const* session, tr_info const* info, enum tr_metainfo_basename_format old_format,
+void tr_metainfoMigrateFile(
+    tr_session const* session,
+    tr_info const* info,
+    enum tr_metainfo_basename_format old_format,
     enum tr_metainfo_basename_format new_format)
 {
     char* old_filename = getTorrentFilename(session, info, old_format);

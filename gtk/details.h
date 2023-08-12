@@ -8,8 +8,9 @@
 
 #pragma once
 
-#include <gtk/gtk.h>
 #include "tr-core.h"
+
+#include <gtk/gtk.h>
 
 GtkWidget* gtr_torrent_details_dialog_new(GtkWindow* parent, TrCore* core);
 

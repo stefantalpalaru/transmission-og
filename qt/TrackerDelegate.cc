@@ -55,7 +55,11 @@ public:
     }
 };
 
-ItemLayout::ItemLayout(QString const& text, bool suppressColors, Qt::LayoutDirection direction, QPoint const& topLeft,
+ItemLayout::ItemLayout(
+    QString const& text,
+    bool suppressColors,
+    Qt::LayoutDirection direction,
+    QPoint const& topLeft,
     int width)
 {
     QStyle const* style(qApp->style());
@@ -142,7 +146,8 @@ void TrackerDelegate::drawTracker(QPainter* painter, QStyleOptionViewItem const&
 
     QAbstractTextDocumentLayout::PaintContext paintContext;
     paintContext.clip = layout.textRect.translated(-layout.textRect.topLeft());
-    paintContext.palette.setColor(QPalette::Text,
+    paintContext.palette.setColor(
+        QPalette::Text,
         option.palette.color(isItemSelected ? QPalette::HighlightedText : QPalette::Text));
     painter->translate(layout.textRect.topLeft());
     layout.textLayout()->draw(painter, paintContext);
@@ -208,20 +213,27 @@ QString TrackerDelegate::getText(TrackerInfo const& inf) const
             if (inf.st.lastAnnounceSucceeded)
             {
                 //: %1 and %2 are replaced with HTML markup, %3 is duration
-                str += tr("Got a list of%1 %Ln peer(s)%2 %3 ago", nullptr, inf.st.lastAnnouncePeerCount).
-                    arg(success_markup_begin).arg(success_markup_end).arg(tstr);
+                str += tr("Got a list of%1 %Ln peer(s)%2 %3 ago", nullptr, inf.st.lastAnnouncePeerCount)
+                           .arg(success_markup_begin)
+                           .arg(success_markup_end)
+                           .arg(tstr);
             }
             else if (inf.st.lastAnnounceTimedOut)
             {
                 //: %1 and %2 are replaced with HTML markup, %3 is duration
-                str += tr("Peer list request %1timed out%2 %3 ago; will retry").arg(timeout_markup_begin).
-                    arg(timeout_markup_end).arg(tstr);
+                str += tr("Peer list request %1timed out%2 %3 ago; will retry")
+                           .arg(timeout_markup_begin)
+                           .arg(timeout_markup_end)
+                           .arg(tstr);
             }
             else
             {
                 //: %1 and %3 are replaced with HTML markup, %2 is error message, %4 is duration
-                str += tr("Got an error %1\"%2\"%3 %4 ago").arg(err_markup_begin).arg(inf.st.lastAnnounceResult).
-                    arg(err_markup_end).arg(tstr);
+                str += tr("Got an error %1\"%2\"%3 %4 ago")
+                           .arg(err_markup_begin)
+                           .arg(inf.st.lastAnnounceResult)
+                           .arg(err_markup_end)
+                           .arg(tstr);
             }
         }
 
@@ -269,26 +281,34 @@ QString TrackerDelegate::getText(TrackerInfo const& inf) const
                     {
                         //: First part of phrase "Tracker had ... seeder(s) and ... leecher(s) ... ago";
                         //: %1 and %2 are replaced with HTML markup
-                        str += tr("Tracker had%1 %Ln seeder(s)%2", nullptr, inf.st.seederCount).arg(success_markup_begin).
-                            arg(success_markup_end);
+                        str += tr("Tracker had%1 %Ln seeder(s)%2", nullptr, inf.st.seederCount)
+                                   .arg(success_markup_begin)
+                                   .arg(success_markup_end);
                         //: Second part of phrase "Tracker had ... seeder(s) and ... leecher(s) ... ago";
                         //: %1 and %2 are replaced with HTML markup, %3 is duration;
                         //: notice that leading space (before "and") is included here
-                        str += tr(" and%1 %Ln leecher(s)%2 %3 ago", nullptr, inf.st.leecherCount).arg(success_markup_begin).
-                            arg(success_markup_end).arg(tstr);
+                        str += tr(" and%1 %Ln leecher(s)%2 %3 ago", nullptr, inf.st.leecherCount)
+                                   .arg(success_markup_begin)
+                                   .arg(success_markup_end)
+                                   .arg(tstr);
                     }
                     else
                     {
                         //: %1 and %2 are replaced with HTML markup, %3 is duration
-                        str += tr("Tracker had %1no information%2 on peer counts %3 ago").arg(success_markup_begin).
-                            arg(success_markup_end).arg(tstr);
+                        str += tr("Tracker had %1no information%2 on peer counts %3 ago")
+                                   .arg(success_markup_begin)
+                                   .arg(success_markup_end)
+                                   .arg(tstr);
                     }
                 }
                 else
                 {
                     //: %1 and %3 are replaced with HTML markup, %2 is error message, %4 is duration
-                    str += tr("Got a scrape error %1\"%2\"%3 %4 ago").arg(err_markup_begin).arg(inf.st.lastScrapeResult).
-                        arg(err_markup_end).arg(tstr);
+                    str += tr("Got a scrape error %1\"%2\"%3 %4 ago")
+                               .arg(err_markup_begin)
+                               .arg(inf.st.lastScrapeResult)
+                               .arg(err_markup_end)
+                               .arg(tstr);
                 }
             }
 

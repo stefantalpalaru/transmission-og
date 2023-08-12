@@ -63,6 +63,10 @@ EXTRA_DIST += \
   README.md \
   Transmission.xcodeproj/project.pbxproj \
   autogen.sh \
+  .clang-format \
+  .clang-format-ignore \
+  .clang-format-include \
+  code_style.sh \
   cmake \
   docker \
   extras \
@@ -153,6 +157,15 @@ list-submodules:
 github-ssh:
 	git config url."git@github.com:".insteadOf "https://github.com/"
 	git submodule foreach --recursive 'git config url."git@github.com:".insteadOf "https://github.com/"'
+
+# Code formatting.
+.PHONY: check-format
+check-format:
+	"$(srcdir)/code_style.sh" --check
+
+.PHONY: format
+format:
+	"$(srcdir)/code_style.sh"
 
 .PHONY: bindist-win64
 bindist-win64:

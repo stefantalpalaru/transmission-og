@@ -25,10 +25,12 @@ typedef struct callback_data
     tr_watchdir_t dir;
     char* name;
     tr_watchdir_status result;
-}
-callback_data;
+} callback_data;
 
-#define CB_DATA_STATIC_INIT { NULL, NULL, 0 }
+#define CB_DATA_STATIC_INIT \
+    { \
+        NULL, NULL, 0 \
+    }
 
 static struct event_base* ev_base = NULL;
 
@@ -89,7 +91,10 @@ static void create_dir(char const* parent_dir, char const* name)
     tr_free(path);
 }
 
-static tr_watchdir_t create_watchdir(char const* path, tr_watchdir_cb callback, void* callback_user_data,
+static tr_watchdir_t create_watchdir(
+    char const* path,
+    tr_watchdir_cb callback,
+    void* callback_user_data,
     struct event_base* event_base)
 {
 #ifdef WATCHDIR_TEST_FORCE_GENERIC
@@ -385,14 +390,7 @@ static int test_retry(void)
 
 int main(void)
 {
-    testFunc const tests[] =
-    {
-        test_construct,
-        test_initial_scan,
-        test_watch,
-        test_watch_two_dirs,
-        test_retry
-    };
+    testFunc const tests[] = { test_construct, test_initial_scan, test_watch, test_watch_two_dirs, test_retry };
 
     tr_net_init();
 

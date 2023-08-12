@@ -100,7 +100,14 @@ static void three_digits(char* buf, size_t buflen, char const* name, uint8_t con
 
 static void four_digits(char* buf, size_t buflen, char const* name, uint8_t const* digits)
 {
-    tr_snprintf(buf, buflen, "%s %d.%d.%d.%d", name, charint(digits[0]), charint(digits[1]), charint(digits[2]),
+    tr_snprintf(
+        buf,
+        buflen,
+        "%s %d.%d.%d.%d",
+        name,
+        charint(digits[0]),
+        charint(digits[1]),
+        charint(digits[2]),
         charint(digits[3]));
 }
 
@@ -210,44 +217,90 @@ char* tr_clientForId(char* buf, size_t buflen, void const* id_in)
             }
             else if (strncmp(chid + 3, "3", 1) == 0 && strncmp(chid + 4, "00", 2) != 0) /* 3.00 < ID < 4.00 */
             {
-                tr_snprintf(buf, buflen, "Transmission OG %d.%02d%s", strint(id + 3, 1), strint(id + 4, 2),
+                tr_snprintf(
+                    buf,
+                    buflen,
+                    "Transmission OG %d.%02d%s",
+                    strint(id + 3, 1),
+                    strint(id + 4, 2),
                     (id[6] == 'Z' || id[6] == 'X') ? "+" : "");
             }
             else /* current client style: -TR111Z- is 1.11+ */
             {
-                tr_snprintf(buf, buflen, "Transmission %d.%02d%s", strint(id + 3, 1), strint(id + 4, 2),
+                tr_snprintf(
+                    buf,
+                    buflen,
+                    "Transmission %d.%02d%s",
+                    strint(id + 3, 1),
+                    strint(id + 4, 2),
                     (id[6] == 'Z' || id[6] == 'X') ? "+" : "");
             }
         }
         else if (strncmp(chid + 1, "UT", 2) == 0)
         {
-            tr_snprintf(buf, buflen, "\xc2\xb5Torrent %d.%d.%d%s", strint(id + 3, 1), strint(id + 4, 1), strint(id + 5, 1),
+            tr_snprintf(
+                buf,
+                buflen,
+                "\xc2\xb5Torrent %d.%d.%d%s",
+                strint(id + 3, 1),
+                strint(id + 4, 1),
+                strint(id + 5, 1),
                 getMnemonicEnd(id[6]));
         }
         else if (strncmp(chid + 1, "UW", 2) == 0)
         {
-            tr_snprintf(buf, buflen, "\xc2\xb5Torrent Web %d.%d.%d%s", strint(id + 3, 1), strint(id + 4, 1), strint(id + 5, 1),
+            tr_snprintf(
+                buf,
+                buflen,
+                "\xc2\xb5Torrent Web %d.%d.%d%s",
+                strint(id + 3, 1),
+                strint(id + 4, 1),
+                strint(id + 5, 1),
                 getMnemonicEnd(id[6]));
         }
         else if (strncmp(chid + 1, "BT", 2) == 0)
         {
-            tr_snprintf(buf, buflen, "BitTorrent %d.%d.%d%s", strint(id + 3, 1), strint(id + 4, 1), strint(id + 5, 1),
+            tr_snprintf(
+                buf,
+                buflen,
+                "BitTorrent %d.%d.%d%s",
+                strint(id + 3, 1),
+                strint(id + 4, 1),
+                strint(id + 5, 1),
                 getMnemonicEnd(id[6]));
         }
         else if (strncmp(chid + 1, "BW", 2) == 0)
         {
-            tr_snprintf(buf, buflen, "BitTorrent Web %d.%d.%d%s", strint(id + 3, 1), strint(id + 4, 1), strint(id + 5, 1),
+            tr_snprintf(
+                buf,
+                buflen,
+                "BitTorrent Web %d.%d.%d%s",
+                strint(id + 3, 1),
+                strint(id + 4, 1),
+                strint(id + 5, 1),
                 getMnemonicEnd(id[6]));
         }
         else if (strncmp(chid + 1, "UM", 2) == 0)
         {
-            tr_snprintf(buf, buflen, "\xc2\xb5Torrent Mac %d.%d.%d%s", strint(id + 3, 1), strint(id + 4, 1), strint(id + 5, 1),
+            tr_snprintf(
+                buf,
+                buflen,
+                "\xc2\xb5Torrent Mac %d.%d.%d%s",
+                strint(id + 3, 1),
+                strint(id + 4, 1),
+                strint(id + 5, 1),
                 getMnemonicEnd(id[6]));
         }
         else if (strncmp(chid + 1, "UE", 2) == 0)
         {
-            tr_snprintf(buf, buflen, "\xc2\xb5Torrent Embedded %d.%d.%d%s", strint(id + 3, 1), strint(id + 4, 1),
-                strint(id + 5, 1), getMnemonicEnd(id[6]));
+            tr_snprintf(
+                buf,
+                buflen,
+                "\xc2\xb5Torrent Embedded %d.%d.%d%s",
+                strint(id + 3, 1),
+                strint(id + 4, 1),
+                strint(id + 5, 1),
+                getMnemonicEnd(id[6]));
         }
         /* */
         else if (strncmp(chid + 1, "AZ", 2) == 0)
@@ -705,23 +758,47 @@ char* tr_clientForId(char* buf, size_t buflen, void const* id_in)
     {
         if (strncmp(chid + 1, "UT", 2) == 0)
         {
-            tr_snprintf(buf, buflen, "\xc2\xb5Torrent %d.%d.%d%s", strint(id + 3, 1), strint(id + 4, 1), strint(id + 5, 2),
+            tr_snprintf(
+                buf,
+                buflen,
+                "\xc2\xb5Torrent %d.%d.%d%s",
+                strint(id + 3, 1),
+                strint(id + 4, 1),
+                strint(id + 5, 2),
                 getMnemonicEnd(id[7]));
         }
         else if (strncmp(chid + 1, "UW", 2) == 0)
         {
-            tr_snprintf(buf, buflen, "\xc2\xb5Torrent Web %d.%d.%d%s", strint(id + 3, 1), strint(id + 4, 1), strint(id + 5, 2),
+            tr_snprintf(
+                buf,
+                buflen,
+                "\xc2\xb5Torrent Web %d.%d.%d%s",
+                strint(id + 3, 1),
+                strint(id + 4, 1),
+                strint(id + 5, 2),
                 getMnemonicEnd(id[7]));
         }
         else if (strncmp(chid + 1, "UM", 2) == 0)
         {
-            tr_snprintf(buf, buflen, "\xc2\xb5Torrent Mac %d.%d.%d%s", strint(id + 3, 1), strint(id + 4, 1), strint(id + 5, 2),
+            tr_snprintf(
+                buf,
+                buflen,
+                "\xc2\xb5Torrent Mac %d.%d.%d%s",
+                strint(id + 3, 1),
+                strint(id + 4, 1),
+                strint(id + 5, 2),
                 getMnemonicEnd(id[7]));
         }
         else if (strncmp(chid + 1, "UE", 2) == 0)
         {
-            tr_snprintf(buf, buflen, "\xc2\xb5Torrent Embedded %d.%d.%d%s", strint(id + 3, 1), strint(id + 4, 1),
-                strint(id + 5, 2), getMnemonicEnd(id[7]));
+            tr_snprintf(
+                buf,
+                buflen,
+                "\xc2\xb5Torrent Embedded %d.%d.%d%s",
+                strint(id + 3, 1),
+                strint(id + 4, 1),
+                strint(id + 5, 2),
+                getMnemonicEnd(id[7]));
         }
 
         if (!tr_str_is_empty(buf))

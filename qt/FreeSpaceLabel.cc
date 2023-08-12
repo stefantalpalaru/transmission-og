@@ -23,10 +23,10 @@ static int const INTERVAL_MSEC = 15000;
 
 } // namespace
 
-FreeSpaceLabel::FreeSpaceLabel(QWidget* parent) :
-    QLabel(parent),
-    mySession(nullptr),
-    myTimer(this)
+FreeSpaceLabel::FreeSpaceLabel(QWidget* parent)
+    : QLabel(parent)
+    , mySession(nullptr)
+    , myTimer(this)
 {
     myTimer.setSingleShot(true);
     myTimer.setInterval(INTERVAL_MSEC);
@@ -70,12 +70,10 @@ void FreeSpaceLabel::onTimer()
 
     RpcQueue* q = new RpcQueue();
 
-    q->add([this, &args]()
-        {
-            return mySession->exec("free-space", &args);
-        });
+    q->add([this, &args]() { return mySession->exec("free-space", &args); });
 
-    q->add([this](RpcResponse const& r)
+    q->add(
+        [this](RpcResponse const& r)
         {
             QString str;
 

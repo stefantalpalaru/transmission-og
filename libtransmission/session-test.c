@@ -129,10 +129,9 @@ static int test_session_id(void)
 
 int main(void)
 {
-    testFunc const tests[] =
-    {
+    testFunc const tests[] = {
         testPeerId,
-        test_session_id
+        test_session_id,
     };
 
     return runTests(tests, NUM_TESTS(tests));

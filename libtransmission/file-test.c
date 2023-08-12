@@ -701,8 +701,7 @@ static int test_path_xname(struct xname_test_data const* data, size_t data_size,
 
 static int test_path_basename_dirname(void)
 {
-    struct xname_test_data const common_xname_tests[] =
-    {
+    struct xname_test_data const common_xname_tests[] = {
         { "/", "/" },
         { "", "." },
 #ifdef _WIN32
@@ -731,9 +730,9 @@ static int test_path_basename_dirname(void)
         { "c:\\a\\b\"c\\d", NULL },
         { "c:\\a\\b|c\\d", NULL },
         { "c:\\a\\b?c\\d", NULL },
-        { "c:\\a\\b*c\\d", NULL }
+        { "c:\\a\\b*c\\d", NULL },
 #else
-        { "////", "/" }
+        { "////", "/" },
 #endif
     };
 
@@ -747,8 +746,7 @@ static int test_path_basename_dirname(void)
         return 1;
     }
 
-    struct xname_test_data const basename_tests[] =
-    {
+    struct xname_test_data const basename_tests[] = {
         { "a", "a" },
         { "aa", "aa" },
         { "/aa", "aa" },
@@ -767,7 +765,7 @@ static int test_path_basename_dirname(void)
         { "\\\\a", "a" },
         { "\\\\1.2.3.4", "1.2.3.4" },
         { "\\", "/" },
-        { "\\a", "a" }
+        { "\\a", "a" },
 #endif
     };
 
@@ -776,8 +774,7 @@ static int test_path_basename_dirname(void)
         return 1;
     }
 
-    struct xname_test_data const dirname_tests[] =
-    {
+    struct xname_test_data const dirname_tests[] = {
         { "/a/b/c", "/a/b" },
         { "a/b/c", "a/b" },
         { "a/b/c/", "a/b" },
@@ -801,7 +798,7 @@ static int test_path_basename_dirname(void)
         { "\\\\a", "\\\\" },
         { "\\\\1.2.3.4", "\\\\" },
         { "\\\\", "\\\\" },
-        { "a/b\\c", "a/b" }
+        { "a/b\\c", "a/b" },
 #endif
     };
 
@@ -1002,9 +999,7 @@ static int test_path_native_separators(void)
     {
         char* input;
         char const* output;
-    }
-    test_data[] =
-    {
+    } test_data[] = {
         { path1, "" },
         { path2, TR_IF_WIN32("a", "a") },
         { path3, TR_IF_WIN32("\\", "/") },
@@ -1620,8 +1615,7 @@ static int test_dir_read(void)
 
 int main(void)
 {
-    testFunc const tests[] =
-    {
+    testFunc const tests[] = {
         test_get_info,
         test_path_exists,
         test_path_is_relative,
@@ -1638,7 +1632,7 @@ int main(void)
         test_file_map,
         test_file_utilities,
         test_dir_create,
-        test_dir_read
+        test_dir_read,
     };
 
     /* init the session */

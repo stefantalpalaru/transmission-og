@@ -26,9 +26,9 @@ int getHSpacing(QWidget const* w)
 
 } // namespace
 
-FilterBarComboBoxDelegate::FilterBarComboBoxDelegate(QObject* parent, QComboBox* combo) :
-    QItemDelegate(parent),
-    myCombo(combo)
+FilterBarComboBoxDelegate::FilterBarComboBoxDelegate(QObject* parent, QComboBox* combo)
+    : QItemDelegate(parent)
+    , myCombo(combo)
 {
 }
 
@@ -69,9 +69,11 @@ void FilterBarComboBoxDelegate::paint(QPainter* painter, QStyleOptionViewItem co
     {
         QStyleOptionViewItem disabledOption = option;
         QPalette::ColorRole const disabledColorRole = (disabledOption.state & QStyle::State_Selected) != 0 ?
-            QPalette::HighlightedText : QPalette::Text;
-        disabledOption.palette.setColor(disabledColorRole, Utils::getFadedColor(disabledOption.palette.color(
-            disabledColorRole)));
+            QPalette::HighlightedText :
+            QPalette::Text;
+        disabledOption.palette.setColor(
+            disabledColorRole,
+            Utils::getFadedColor(disabledOption.palette.color(disabledColorRole)));
 
         QRect boundingBox = option.rect;
 
@@ -80,7 +82,10 @@ void FilterBarComboBoxDelegate::paint(QPainter* painter, QStyleOptionViewItem co
 
         QRect decorationRect = rect(option, index, Qt::DecorationRole);
         decorationRect.setSize(myCombo->iconSize());
-        decorationRect = QStyle::alignedRect(option.direction, Qt::AlignLeft | Qt::AlignVCenter, decorationRect.size(),
+        decorationRect = QStyle::alignedRect(
+            option.direction,
+            Qt::AlignLeft | Qt::AlignVCenter,
+            decorationRect.size(),
             boundingBox);
         Utils::narrowRect(boundingBox, decorationRect.width() + hmargin, 0, option.direction);
 

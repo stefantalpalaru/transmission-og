@@ -6,27 +6,27 @@
  *
  */
 
+#include "util.h"
+
+#include "conf.h"
+#include "hig.h"
+#include "tr-core.h"
+#include "tr-prefs.h"
 #include <ctype.h> /* isxdigit() */
 #include <errno.h>
 #include <limits.h> /* INT_MAX */
 #include <stdarg.h>
 #include <string.h> /* strchr(), strrchr(), strlen(), strstr() */
 
-#include <gtk/gtk.h>
-#include <glib/gi18n.h>
-#include <gio/gio.h> /* g_file_trash() */
-
 #include <libtransmission/transmission.h> /* TR_RATIO_NA, TR_RATIO_INF */
 #include <libtransmission/error.h>
 #include <libtransmission/utils.h> /* tr_strratio() */
-#include <libtransmission/web.h> /* tr_webResponseStr() */
 #include <libtransmission/version.h> /* SHORT_VERSION_STRING */
+#include <libtransmission/web.h> /* tr_webResponseStr() */
 
-#include "conf.h"
-#include "hig.h"
-#include "tr-core.h"
-#include "tr-prefs.h"
-#include "util.h"
+#include <gio/gio.h> /* g_file_trash() */
+#include <glib/gi18n.h>
+#include <gtk/gtk.h>
 
 /***
 ****  UNITS
@@ -205,8 +205,8 @@ void gtr_get_host_from_url(char* buf, size_t buflen, char const* url)
 
 static gboolean gtr_is_supported_url(char const* str)
 {
-    return str != NULL && (g_str_has_prefix(str, "ftp://") || g_str_has_prefix(str, "http://") ||
-        g_str_has_prefix(str, "https://"));
+    return str != NULL &&
+        (g_str_has_prefix(str, "ftp://") || g_str_has_prefix(str, "http://") || g_str_has_prefix(str, "https://"));
 }
 
 gboolean gtr_is_magnet_link(char const* str)
@@ -259,7 +259,9 @@ void gtr_add_torrent_error_dialog(GtkWidget* child, int err, tr_torrent* duplica
     }
     else if (err == TR_PARSE_DUPLICATE)
     {
-        secondary = g_strdup_printf(_("The torrent file \"%s\" is already in use by \"%s.\""), filename,
+        secondary = g_strdup_printf(
+            _("The torrent file \"%s\" is already in use by \"%s.\""),
+            filename,
             tr_torrentName(duplicate_torrent));
     }
     else
@@ -267,7 +269,12 @@ void gtr_add_torrent_error_dialog(GtkWidget* child, int err, tr_torrent* duplica
         secondary = g_strdup_printf(_("The torrent file \"%s\" encountered an unknown error."), filename);
     }
 
-    w = gtk_message_dialog_new(win, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, "%s",
+    w = gtk_message_dialog_new(
+        win,
+        GTK_DIALOG_DESTROY_WITH_PARENT,
+        GTK_MESSAGE_ERROR,
+        GTK_BUTTONS_CLOSE,
+        "%s",
         _("Error opening torrent"));
     gtk_message_dialog_format_secondary_text(GTK_MESSAGE_DIALOG(w), "%s", secondary);
     g_signal_connect_swapped(w, "response", G_CALLBACK(gtk_widget_destroy), w);
@@ -275,7 +282,7 @@ void gtr_add_torrent_error_dialog(GtkWidget* child, int err, tr_torrent* duplica
     g_free(secondary);
 }
 
-typedef void (* PopupFunc)(GtkWidget*, GdkEventButton*);
+typedef void (*PopupFunc)(GtkWidget*, GdkEventButton*);
 
 /* pop up the context menu if a user right-clicks.
    if the row they right-click on isn't selected, select it. */
@@ -492,8 +499,7 @@ GtkWidget* gtr_combo_box_new_enum(char const* text_1, ...)
             int const val = va_arg(vl, int);
             gtk_list_store_insert_with_values(store, NULL, INT_MAX, 0, val, 1, text, -1);
             text = va_arg(vl, char const*);
-        }
-        while (text != NULL);
+        } while (text != NULL);
 
         va_end(vl);
     }
@@ -523,11 +529,13 @@ int gtr_combo_box_get_active_enum(GtkComboBox* combo_box)
 
 GtkWidget* gtr_priority_combo_new(void)
 {
+    // clang-format off
     return gtr_combo_box_new_enum(
-        _("High"), TR_PRI_HIGH,
-        _("Normal"), TR_PRI_NORMAL,
-        _("Low"), TR_PRI_LOW,
-        NULL);
+            _("High"), TR_PRI_HIGH,
+            _("Normal"), TR_PRI_NORMAL,
+            _("Low"), TR_PRI_LOW,
+            NULL);
+    // clang-format on
 }
 
 /***
@@ -605,8 +613,11 @@ void gtr_unrecognized_url_dialog(GtkWidget* parent, char const* url)
     if (gtr_is_magnet_link(url) && strstr(url, xt) == NULL)
     {
         g_string_append_printf(gstr, "\n \n");
-        g_string_append_printf(gstr, _("This magnet link appears to be intended for something other than BitTorrent. "
-            "BitTorrent magnet links have a section containing \"%s\"."), xt);
+        g_string_append_printf(
+            gstr,
+            _("This magnet link appears to be intended for something other than BitTorrent. "
+              "BitTorrent magnet links have a section containing \"%s\"."),
+            xt);
     }
 
     gtk_message_dialog_format_secondary_text(GTK_MESSAGE_DIALOG(w), "%s", gstr->str);
@@ -621,10 +632,9 @@ void gtr_unrecognized_url_dialog(GtkWidget* parent, char const* url)
 
 void gtr_paste_clipboard_url_into_entry(GtkWidget* e)
 {
-    char* text[] =
-    {
+    char* text[] = {
         g_strstrip(gtk_clipboard_wait_for_text(gtk_clipboard_get(GDK_SELECTION_PRIMARY))),
-        g_strstrip(gtk_clipboard_wait_for_text(gtk_clipboard_get(GDK_SELECTION_CLIPBOARD)))
+        g_strstrip(gtk_clipboard_wait_for_text(gtk_clipboard_get(GDK_SELECTION_CLIPBOARD))),
     };
 
     for (size_t i = 0; i < G_N_ELEMENTS(text); ++i)

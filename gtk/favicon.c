@@ -6,14 +6,15 @@
  *
  */
 
-#include <glib/gstdio.h> /* g_remove() */
-#include <gtk/gtk.h>
+#include "favicon.h"
+
+#include "util.h" /* gtr_get_host_from_url() */
 
 #include <libtransmission/transmission.h>
 #include <libtransmission/web.h> /* tr_webRun() */
 
-#include "favicon.h"
-#include "util.h" /* gtr_get_host_from_url() */
+#include <glib/gstdio.h> /* g_remove() */
+#include <gtk/gtk.h>
 
 #define IMAGE_TYPES 4
 static char const* image_types[IMAGE_TYPES] = { "ico", "png", "gif", "jpg" };
@@ -118,8 +119,14 @@ static gboolean favicon_web_done_idle_cb(gpointer vfav)
     return G_SOURCE_REMOVE;
 }
 
-static void favicon_web_done_cb(tr_session* session UNUSED, bool did_connect UNUSED, bool did_timeout UNUSED, long code UNUSED,
-    void const* data, size_t len, void* vfav)
+static void favicon_web_done_cb(
+    tr_session* session UNUSED,
+    bool did_connect UNUSED,
+    bool did_timeout UNUSED,
+    long code UNUSED,
+    void const* data,
+    size_t len,
+    void* vfav)
 {
     struct favicon_data* fav = vfav;
     fav->contents = g_memdup2(data, len);

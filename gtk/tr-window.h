@@ -22,8 +22,9 @@
 
 #pragma once
 
-#include <gtk/gtk.h>
 #include "tr-core.h"
+
+#include <gtk/gtk.h>
 
 GtkWidget* gtr_window_new(GtkApplication* app, GtkUIManager* uim, TrCore* core);
 GtkTreeSelection* gtr_window_get_selection(GtkWindow*);

@@ -29,7 +29,7 @@
  If the underlying data structure is a linked-list, for example, then this might be less
  efficient than simply removing the object and re-adding it.
  */
-- (void) moveObjectAtIndex: (NSUInteger) fromIndex toIndex: (NSUInteger) toIndex
+- (void)moveObjectAtIndex:(NSUInteger)fromIndex toIndex:(NSUInteger)toIndex
 {
     if (fromIndex == toIndex)
         return;
@@ -40,15 +40,14 @@
     if (fromIndex < toIndex)
     {
         for (NSUInteger i = fromIndex; i < toIndex; ++i)
-            self[i] = self[i+1];
+            self[i] = self[i + 1];
     }
     else
     {
         for (NSUInteger i = fromIndex; i > toIndex; --i)
-            self[i] = self[i-1];
+            self[i] = self[i - 1];
     }
     self[toIndex] = object;
-
 }
 
 @end

@@ -349,7 +349,10 @@ static uint8_t* getHashInfo(tr_metainfo_builder* b)
     return ret;
 }
 
-static void getFileInfo(char const* topFile, tr_metainfo_builder_file const* file, tr_variant* uninitialized_length,
+static void getFileInfo(
+    char const* topFile,
+    tr_metainfo_builder_file const* file,
+    tr_variant* uninitialized_length,
     tr_variant* uninitialized_path)
 {
     size_t offset;
@@ -564,8 +567,13 @@ static void makeMetaWorkerFunc(void* unused UNUSED)
     workerThread = NULL;
 }
 
-void tr_makeMetaInfo(tr_metainfo_builder* builder, char const* outputFile, tr_tracker_info const* trackers, int trackerCount,
-    char const* comment, bool isPrivate)
+void tr_makeMetaInfo(
+    tr_metainfo_builder* builder,
+    char const* outputFile,
+    tr_tracker_info const* trackers,
+    int trackerCount,
+    char const* comment,
+    bool isPrivate)
 {
     tr_lock* lock;
 

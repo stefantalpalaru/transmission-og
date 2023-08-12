@@ -30,8 +30,7 @@ struct Property
     int type;
 };
 
-Property constexpr myProperties[] =
-{
+Property constexpr myProperties[] = {
     { Torrent::UPLOAD_SPEED, TR_KEY_rateUpload, QVariant::ULongLong } /* Bps */,
     { Torrent::DOWNLOAD_SPEED, TR_KEY_rateDownload, QVariant::ULongLong }, /* Bps */
     { Torrent::DOWNLOAD_DIR, TR_KEY_downloadDir, QVariant::String },
@@ -92,6 +91,7 @@ Property constexpr myProperties[] =
 ***/
 
 // unchanging fields needed by the main window
+// clang-format off
 Torrent::KeyList const Torrent::mainInfoKeys{
     TR_KEY_addedDate,
     TR_KEY_downloadDir,
@@ -101,6 +101,7 @@ Torrent::KeyList const Torrent::mainInfoKeys{
     TR_KEY_totalSize,
     TR_KEY_trackers,
 };
+// clang-format on
 
 // changing fields needed by the main window
 Torrent::KeyList const Torrent::mainStatKeys{
@@ -128,12 +129,13 @@ Torrent::KeyList const Torrent::mainStatKeys{
     TR_KEY_sizeWhenDone,
     TR_KEY_status,
     TR_KEY_uploadedEver,
-    TR_KEY_webseedsSendingToUs
+    TR_KEY_webseedsSendingToUs,
 };
 
 Torrent::KeyList const Torrent::allMainKeys = Torrent::mainInfoKeys + Torrent::mainStatKeys;
 
 // unchanging fields needed by the details dialog
+// clang-format off
 Torrent::KeyList const Torrent::detailInfoKeys{
     TR_KEY_comment,
     TR_KEY_creator,
@@ -143,8 +145,9 @@ Torrent::KeyList const Torrent::detailInfoKeys{
     TR_KEY_isPrivate,
     TR_KEY_pieceCount,
     TR_KEY_pieceSize,
-    TR_KEY_trackers
+    TR_KEY_trackers,
 };
+// clang-format on
 
 // changing fields needed by the details dialog
 Torrent::KeyList const Torrent::detailStatKeys{
@@ -165,35 +168,36 @@ Torrent::KeyList const Torrent::detailStatKeys{
     TR_KEY_startDate,
     TR_KEY_trackerStats,
     TR_KEY_uploadLimit,
-    TR_KEY_uploadLimited
+    TR_KEY_uploadLimited,
 };
 
 /***
 ****
 ***/
 
-Torrent::Torrent(Prefs const& prefs, int id) :
-    myId(id),
-    myPrefs(prefs)
+Torrent::Torrent(Prefs const& prefs, int id)
+    : myId(id)
+    , myPrefs(prefs)
 {
     static_assert(TR_N_ELEMENTS(myProperties) == PROPERTY_COUNT);
 
-    static_assert(([] () constexpr
-    {
-        int i = 0;
-
-        for (auto const& property : myProperties)
+    static_assert((
+        []() constexpr
         {
-            if (property.id != i)
+            int i = 0;
+
+            for (auto const& property : myProperties)
             {
-                return false;
+                if (property.id != i)
+                {
+                    return false;
+                }
+
+                ++i;
             }
 
-            ++i;
-        }
-
-        return true;
-    })());
+            return true;
+        })());
 
     setIcon(MIME_ICON, Utils::getFileIcon());
 }
@@ -643,8 +647,7 @@ bool Torrent::update(tr_quark const* keys, tr_variant** values, size_t n)
         case QVariant::DateTime:
             {
                 int64_t val;
-                if (tr_variantGetInt(child, &val) && val &&
-                    setTime(property_index, time_t(val)))
+                if (tr_variantGetInt(child, &val) && val && setTime(property_index, time_t(val)))
                 {
                     changed = true;
 

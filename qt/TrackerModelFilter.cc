@@ -9,9 +9,9 @@
 #include "TrackerModel.h"
 #include "TrackerModelFilter.h"
 
-TrackerModelFilter::TrackerModelFilter(QObject* parent) :
-    QSortFilterProxyModel(parent),
-    myShowBackups(false)
+TrackerModelFilter::TrackerModelFilter(QObject* parent)
+    : QSortFilterProxyModel(parent)
+    , myShowBackups(false)
 {
 }
 

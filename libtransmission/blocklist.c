@@ -274,8 +274,18 @@ static bool parseLine2(char const* line, struct tr_ipv4_range* range)
     char str[32];
     tr_address addr;
 
-    if (sscanf(line, "%3d.%3d.%3d.%3d - %3d.%3d.%3d.%3d , %3d , ", &a[0], &a[1], &a[2], &a[3], &b[0], &b[1], &b[2], &b[3],
-        &unk) != 9)
+    if (sscanf(
+            line,
+            "%3d.%3d.%3d.%3d - %3d.%3d.%3d.%3d , %3d , ",
+            &a[0],
+            &a[1],
+            &a[2],
+            &a[3],
+            &b[0],
+            &b[1],
+            &b[2],
+            &b[3],
+            &unk) != 9)
     {
         return false;
     }

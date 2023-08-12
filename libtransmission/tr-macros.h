@@ -35,18 +35,15 @@
 #endif
 
 #ifdef __GNUC__
-#define TR_GNUC_CHECK_VERSION(major, minor) \
-    (__GNUC__ > (major) || \
-    (__GNUC__ == (major) && __GNUC_MINOR__ >= (minor)))
+#define TR_GNUC_CHECK_VERSION(major, minor) (__GNUC__ > (major) || (__GNUC__ == (major) && __GNUC_MINOR__ >= (minor)))
 #else
 #define TR_GNUC_CHECK_VERSION(major, minor) 0
 #endif
 
 #ifdef __UCLIBC__
 #define TR_UCLIBC_CHECK_VERSION(major, minor, micro) \
-    (__UCLIBC_MAJOR__ > (major) || \
-    (__UCLIBC_MAJOR__ == (major) && __UCLIBC_MINOR__ > (minor)) || \
-    (__UCLIBC_MAJOR__ == (major) && __UCLIBC_MINOR__ == (minor) && __UCLIBC_SUBLEVEL__ >= (micro)))
+    (__UCLIBC_MAJOR__ > (major) || (__UCLIBC_MAJOR__ == (major) && __UCLIBC_MINOR__ > (minor)) || \
+     (__UCLIBC_MAJOR__ == (major) && __UCLIBC_MINOR__ == (minor) && __UCLIBC_SUBLEVEL__ >= (micro)))
 #else
 #define TR_UCLIBC_CHECK_VERSION(major, minor, micro) 0
 #endif
@@ -146,7 +143,7 @@
 #else
 #define TR_STATIC_ASSERT(x, msg) \
     { \
-        typedef char __tr_static_check__ [(x) ? 1 : -1] UNUSED; \
+        typedef char __tr_static_check__[(x) ? 1 : -1] UNUSED; \
     }
 #endif
 

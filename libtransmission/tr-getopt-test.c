@@ -11,8 +11,7 @@
 
 #include "libtransmission-test.h"
 
-static struct tr_option const options[] =
-{
+static struct tr_option const options[] = {
     { 'p', "private", "Allow this torrent to only be used with the specified tracker(s)", "p", false, NULL },
     { 'o', "outfile", "Save the generated .torrent to this filename", "o", true, "<file>" },
     { 's', "piecesize", "Set how many KiB each piece should be, overriding the preferred default", "s", true, "<size in KiB>" },
@@ -165,8 +164,7 @@ static int test_match_longer_key(void)
 
 int main(void)
 {
-    testFunc const tests[] =
-    {
+    testFunc const tests[] = {
         test_no_options,
         test_short_noarg,
         test_long_noarg,
@@ -177,7 +175,7 @@ int main(void)
         test_unknown_option,
         test_missing_arg,
         test_match_longer_key,
-        test_lots_of_options
+        test_lots_of_options,
     };
 
     return runTests(tests, NUM_TESTS(tests));

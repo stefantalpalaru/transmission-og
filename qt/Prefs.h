@@ -21,7 +21,7 @@ class QDateTime;
 
 extern "C"
 {
-struct tr_variant;
+    struct tr_variant;
 }
 
 class Prefs : public QObject

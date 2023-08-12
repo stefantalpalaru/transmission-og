@@ -18,12 +18,12 @@
 #include "PathButton.h"
 #include "Utils.h"
 
-PathButton::PathButton(QWidget* parent) :
-    QToolButton(parent),
-    myMode(DirectoryMode),
-    myTitle(),
-    myNameFilter(),
-    myPath()
+PathButton::PathButton(QWidget* parent)
+    : QToolButton(parent)
+    , myMode(DirectoryMode)
+    , myTitle()
+    , myNameFilter()
+    , myPath()
 {
     setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed));
     setToolButtonStyle(Qt::ToolButtonTextBesideIcon);

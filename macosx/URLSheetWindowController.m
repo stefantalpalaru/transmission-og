@@ -25,37 +25,37 @@
 
 @interface URLSheetWindowController (Private)
 
-- (void) updateOpenButtonForURL: (NSString *) string;
+- (void)updateOpenButtonForURL:(NSString*)string;
 
 @end
 
 @implementation URLSheetWindowController
 
-NSString * urlString = nil;
+NSString* urlString = nil;
 
-- (id) initWithController: (Controller *) controller
+- (id)initWithController:(Controller*)controller
 {
-    if ((self = [self initWithWindowNibName: @"URLSheetWindow"]))
+    if ((self = [self initWithWindowNibName:@"URLSheetWindow"]))
     {
         fController = controller;
     }
     return self;
 }
 
-- (void) awakeFromNib
+- (void)awakeFromNib
 {
-    [fLabelField setStringValue: NSLocalizedString(@"Internet address of torrent file:", "URL sheet label")];
+    [fLabelField setStringValue:NSLocalizedString(@"Internet address of torrent file:", "URL sheet label")];
 
     if (urlString)
     {
-        [fTextField setStringValue: urlString];
-        [fTextField selectText: self];
+        [fTextField setStringValue:urlString];
+        [fTextField selectText:self];
 
-        [self updateOpenButtonForURL: urlString];
+        [self updateOpenButtonForURL:urlString];
     }
 
-    [fOpenButton setTitle: NSLocalizedString(@"Open", "URL sheet button")];
-    [fCancelButton setTitle: NSLocalizedString(@"Cancel", "URL sheet button")];
+    [fOpenButton setTitle:NSLocalizedString(@"Open", "URL sheet button")];
+    [fCancelButton setTitle:NSLocalizedString(@"Cancel", "URL sheet button")];
 
     [fOpenButton sizeToFit];
     [fCancelButton sizeToFit];
@@ -72,51 +72,51 @@ NSString * urlString = nil;
         openFrame.size.width = NSWidth(cancelFrame);
 
     openFrame.origin.x = NSWidth([[self window] frame]) - NSWidth(openFrame) - 20.0 + 6.0; //I don't know why the extra 6.0 is needed
-    [fOpenButton setFrame: openFrame];
+    [fOpenButton setFrame:openFrame];
 
     cancelFrame.origin.x = NSMinX(openFrame) - NSWidth(cancelFrame);
-    [fCancelButton setFrame: cancelFrame];
+    [fCancelButton setFrame:cancelFrame];
 }
 
-- (void) openURLEndSheet: (id) sender
+- (void)openURLEndSheet:(id)sender
 {
-    [[self window] orderOut: sender];
-    [NSApp endSheet: [self window] returnCode: 1];
+    [[self window] orderOut:sender];
+    [NSApp endSheet:[self window] returnCode:1];
 }
 
-- (void) openURLCancelEndSheet: (id) sender
+- (void)openURLCancelEndSheet:(id)sender
 {
-    [[self window] orderOut: sender];
-    [NSApp endSheet: [self window] returnCode: 0];
+    [[self window] orderOut:sender];
+    [NSApp endSheet:[self window] returnCode:0];
 }
 
-- (NSString *) urlString
+- (NSString*)urlString
 {
     return [fTextField stringValue];
 }
 
-- (void) controlTextDidChange: (NSNotification *) notification
+- (void)controlTextDidChange:(NSNotification*)notification
 {
-    [self updateOpenButtonForURL: [fTextField stringValue]];
+    [self updateOpenButtonForURL:[fTextField stringValue]];
 }
 
 @end
 
 @implementation URLSheetWindowController (Private)
 
-- (void) updateOpenButtonForURL: (NSString *) string
+- (void)updateOpenButtonForURL:(NSString*)string
 {
     BOOL enable = YES;
-    if ([string isEqualToString: @""])
+    if ([string isEqualToString:@""])
         enable = NO;
     else
     {
-        NSRange prefixRange = [string rangeOfString: @"://"];
+        NSRange prefixRange = [string rangeOfString:@"://"];
         if (prefixRange.location != NSNotFound && [string length] == NSMaxRange(prefixRange))
             enable = NO;
     }
 
-    [fOpenButton setEnabled: enable];
+    [fOpenButton setEnabled:enable];
 }
 
 @end

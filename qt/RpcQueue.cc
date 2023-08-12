@@ -10,9 +10,9 @@
 
 #include "RpcQueue.h"
 
-RpcQueue::RpcQueue(QObject* parent) :
-    QObject(parent),
-    myTolerateErrors(false)
+RpcQueue::RpcQueue(QObject* parent)
+    : QObject(parent)
+    , myTolerateErrors(false)
 {
     connect(&myFutureWatcher, SIGNAL(finished()), SLOT(stepFinished()));
 }

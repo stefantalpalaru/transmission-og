@@ -26,7 +26,10 @@
 ****
 ***/
 
-static void zeroes_completeness_func(tr_torrent* torrent UNUSED, tr_completeness completeness, bool wasRunning UNUSED,
+static void zeroes_completeness_func(
+    tr_torrent* torrent UNUSED,
+    tr_completeness completeness,
+    bool wasRunning UNUSED,
     void* user_data)
 {
     *(tr_completeness*)user_data = completeness;
@@ -40,8 +43,7 @@ static void zeroes_completeness_func(tr_torrent* torrent UNUSED, tr_completeness
         check_str(path, ==, expected); \
         tr_free(expected); \
         tr_free(path); \
-    } \
-    while (0)
+    } while (0)
 
 struct test_incomplete_dir_data
 {
@@ -86,7 +88,10 @@ static int test_incomplete_dir_impl(char const* incomplete_dir, char const* down
     tor = libttest_zero_torrent_init(session);
     libttest_zero_torrent_populate(tor, false);
     check_uint(tr_torrentStat(tor)->leftUntilDone, ==, tor->info.pieceSize);
-    check_file_location(tor, 0, tr_strdup_printf("%s%s%s.part", incomplete_dir, TR_PATH_DELIMITER_STR, tor->info.files[0].name));
+    check_file_location(
+        tor,
+        0,
+        tr_strdup_printf("%s%s%s.part", incomplete_dir, TR_PATH_DELIMITER_STR, tor->info.files[0].name));
     check_file_location(tor, 1, tr_buildPath(incomplete_dir, tor->info.files[1].name, NULL));
     check_uint(tr_torrentStat(tor)->leftUntilDone, ==, tor->info.pieceSize);
 
@@ -118,8 +123,7 @@ static int test_incomplete_dir_impl(char const* incomplete_dir, char const* down
             do
             {
                 tr_wait_msec(50);
-            }
-            while (!data.done);
+            } while (!data.done);
         }
 
         evbuffer_free(data.buf);
@@ -231,11 +235,7 @@ static int test_set_location(void)
 
 int main(void)
 {
-    testFunc const tests[] =
-    {
-        test_incomplete_dir,
-        test_set_location
-    };
+    testFunc const tests[] = { test_incomplete_dir, test_set_location };
 
     return runTests(tests, NUM_TESTS(tests));
 }

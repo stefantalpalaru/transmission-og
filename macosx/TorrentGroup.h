@@ -25,17 +25,17 @@
 @interface TorrentGroup : NSObject
 {
     NSInteger fGroup;
-    NSMutableArray * fTorrents;
+    NSMutableArray* fTorrents;
 }
 
-- (id) initWithGroup: (NSInteger) group;
+- (id)initWithGroup:(NSInteger)group;
 
-- (NSInteger) groupIndex;
-- (NSInteger) groupOrderValue;
-- (NSMutableArray *) torrents;
+- (NSInteger)groupIndex;
+- (NSInteger)groupOrderValue;
+- (NSMutableArray*)torrents;
 
-- (CGFloat) ratio;
-- (CGFloat) uploadRate;
-- (CGFloat) downloadRate;
+- (CGFloat)ratio;
+- (CGFloat)uploadRate;
+- (CGFloat)downloadRate;
 
 @end

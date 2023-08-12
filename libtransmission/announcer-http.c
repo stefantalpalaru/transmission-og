@@ -58,15 +58,14 @@ static char* announce_url_new(tr_session const* session, tr_announce_request con
 
     evbuffer_expand(buf, 1024);
 
-    evbuffer_add_printf(buf,
+    evbuffer_add_printf(
+        buf,
         "%s"
         "%c"
         "info_hash=%s"
         "&peer_id=%*.*s"
         "&port=%d"
-        "&uploaded=%" PRIu64
-        "&downloaded=%" PRIu64
-        "&left=%" PRIu64
+        "&uploaded=%" PRIu64 "&downloaded=%" PRIu64 "&left=%" PRIu64
         "&numwant=%d"
         "&key=%x"
         "&compact=1"
@@ -74,7 +73,9 @@ static char* announce_url_new(tr_session const* session, tr_announce_request con
         req->url,
         strchr(req->url, '?') != NULL ? '&' : '?',
         escaped_info_hash,
-        PEER_ID_LEN, PEER_ID_LEN, req->peer_id,
+        PEER_ID_LEN,
+        PEER_ID_LEN,
+        req->peer_id,
         req->port,
         req->up,
         req->down,
@@ -205,8 +206,14 @@ static void on_announce_done_eventthread(void* vdata)
     tr_free(data);
 }
 
-static void on_announce_done(tr_session* session, bool did_connect, bool did_timeout, long response_code, void const* msg,
-    size_t msglen, void* vdata)
+static void on_announce_done(
+    tr_session* session,
+    bool did_connect,
+    bool did_timeout,
+    long response_code,
+    void const* msg,
+    size_t msglen,
+    void* vdata)
 {
     tr_announce_response* response;
     struct announce_data* data = vdata;
@@ -324,7 +331,10 @@ static void on_announce_done(tr_session* session, bool did_connect, bool did_tim
     tr_runInEventThread(session, on_announce_done_eventthread, data);
 }
 
-void tr_tracker_http_announce(tr_session* session, tr_announce_request const* request, tr_announce_response_func response_func,
+void tr_tracker_http_announce(
+    tr_session* session,
+    tr_announce_request const* request,
+    tr_announce_response_func response_func,
     void* response_func_user_data)
 {
     struct announce_data* d;
@@ -373,8 +383,14 @@ static void on_scrape_done_eventthread(void* vdata)
     tr_free(data);
 }
 
-static void on_scrape_done(tr_session* session, bool did_connect, bool did_timeout, long response_code, void const* msg,
-    size_t msglen, void* vdata)
+static void on_scrape_done(
+    tr_session* session,
+    bool did_connect,
+    bool did_timeout,
+    long response_code,
+    void const* msg,
+    size_t msglen,
+    void* vdata)
 {
     tr_scrape_response* response;
     struct scrape_data* data = vdata;
@@ -503,7 +519,10 @@ static char* scrape_url_new(tr_scrape_request const* req)
     return evbuffer_free_to_str(buf, NULL);
 }
 
-void tr_tracker_http_scrape(tr_session* session, tr_scrape_request const* request, tr_scrape_response_func response_func,
+void tr_tracker_http_scrape(
+    tr_session* session,
+    tr_scrape_request const* request,
+    tr_scrape_response_func response_func,
     void* response_func_user_data)
 {
     struct scrape_data* d;

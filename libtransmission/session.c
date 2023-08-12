@@ -173,7 +173,12 @@ static void accept_incoming_peer(evutil_socket_t fd, short what UNUSED, void* vs
 
     if (clientSocket != TR_BAD_SOCKET)
     {
-        tr_logAddDeep(__FILE__, __LINE__, NULL, "new incoming connection %" PRIdMAX " (%s)", (intmax_t)clientSocket,
+        tr_logAddDeep(
+            __FILE__,
+            __LINE__,
+            NULL,
+            "new incoming connection %" PRIdMAX " (%s)",
+            (intmax_t)clientSocket,
             tr_peerIoAddrStr(&clientAddr, clientPort));
         tr_peerMgrAddIncoming(session->peerMgr, &clientAddr, clientPort, tr_peer_socket_tcp_create(clientSocket));
     }
@@ -2039,7 +2044,10 @@ void tr_sessionClose(tr_session* session)
 
     time_t const deadline = time(NULL) + SHUTDOWN_MAX_SECONDS;
 
-    dbgmsg("shutting down transmission session %p... now is %zu, deadline is %zu", (void*)session, (size_t)time(NULL),
+    dbgmsg(
+        "shutting down transmission session %p... now is %zu, deadline is %zu",
+        (void*)session,
+        (size_t)time(NULL),
         (size_t)deadline);
 
     /* close the session */
@@ -2056,10 +2064,14 @@ void tr_sessionClose(tr_session* session)
      * for a bit while they tell the router & tracker
      * that we're closing now */
     while ((session->shared != NULL || session->web != NULL || session->announcer != NULL || session->announcer_udp != NULL) &&
-        !deadlineReached(deadline))
+           !deadlineReached(deadline))
     {
-        dbgmsg("waiting on port unmap (%p) or announcer (%p)... now %zu deadline %zu", (void*)session->shared,
-            (void*)session->announcer, (size_t)time(NULL), (size_t)deadline);
+        dbgmsg(
+            "waiting on port unmap (%p) or announcer (%p)... now %zu deadline %zu",
+            (void*)session->shared,
+            (void*)session->announcer,
+            (size_t)time(NULL),
+            (size_t)deadline);
         tr_wait_msec(50);
     }
 
@@ -2138,7 +2150,8 @@ static void sessionLoadTorrents(void* vdata)
     tr_sys_path_info info;
     char const* dirname = tr_getTorrentDir(data->session);
     tr_sys_dir_t odir = (tr_sys_path_get_info(dirname, 0, &info, NULL) && info.type == TR_SYS_PATH_IS_DIRECTORY) ?
-        tr_sys_dir_open(dirname, NULL) : TR_BAD_SYS_DIR;
+        tr_sys_dir_open(dirname, NULL) :
+        TR_BAD_SYS_DIR;
 
     if (odir != TR_BAD_SYS_DIR)
     {
@@ -2512,7 +2525,8 @@ static void loadBlocklists(tr_session* session)
 
                 tr_blocklistFileFree(b);
             }
-            else if (tr_sys_path_get_info(path, 0, &path_info, NULL) &&
+            else if (
+                tr_sys_path_get_info(path, 0, &path_info, NULL) &&
                 path_info.last_modified_at >= binname_info.last_modified_at) /* update it */
             {
                 char* old;
@@ -2699,7 +2713,8 @@ static void metainfoLookupInit(tr_session* session)
     tr_sys_path_info info;
     char const* dirname = tr_getTorrentDir(session);
     tr_sys_dir_t odir = (tr_sys_path_get_info(dirname, 0, &info, NULL) && info.type == TR_SYS_PATH_IS_DIRECTORY) ?
-        tr_sys_dir_open(dirname, NULL) : TR_BAD_SYS_DIR;
+        tr_sys_dir_open(dirname, NULL) :
+        TR_BAD_SYS_DIR;
 
     if (odir != TR_BAD_SYS_DIR)
     {
@@ -3056,7 +3071,11 @@ void tr_sessionGetNextQueuedTorrents(tr_session* session, tr_direction direction
     }
     else if (num_wanted < num_candidates)
     {
-        tr_quickfindFirstK(candidates, num_candidates, sizeof(struct TorrentAndPosition), compareTorrentAndPositions,
+        tr_quickfindFirstK(
+            candidates,
+            num_candidates,
+            sizeof(struct TorrentAndPosition),
+            compareTorrentAndPositions,
             num_wanted);
     }
 

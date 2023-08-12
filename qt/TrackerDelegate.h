@@ -20,9 +20,9 @@ class TrackerDelegate : public QItemDelegate
     Q_OBJECT
 
 public:
-    TrackerDelegate(QObject* parent = nullptr) :
-        QItemDelegate(parent),
-        myShowMore(false)
+    TrackerDelegate(QObject* parent = nullptr)
+        : QItemDelegate(parent)
+        , myShowMore(false)
     {
     }
 

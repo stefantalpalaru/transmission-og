@@ -1,7 +1,7 @@
 #pragma once
 
 #ifndef __TRANSMISSION__
- #error only libtransmission should #include this header.
+#error only libtransmission should #include this header.
 #endif
 
 /*
@@ -93,10 +93,10 @@
     bit mask & shift operations.
 ------------------------------------------------------------------------ */
 
-typedef unsigned long	UTF32;	/* at least 32 bits */
-typedef unsigned short	UTF16;	/* at least 16 bits */
-typedef unsigned char	UTF8;	/* typically 8 bits */
-typedef unsigned char	Boolean; /* 0 or 1 */
+typedef unsigned long UTF32; /* at least 32 bits */
+typedef unsigned short UTF16; /* at least 16 bits */
+typedef unsigned char UTF8; /* typically 8 bits */
+typedef unsigned char Boolean; /* 0 or 1 */
 
 /* Some fundamental constants */
 #define UNI_REPLACEMENT_CHAR (UTF32)0x0000FFFD
@@ -105,53 +105,72 @@ typedef unsigned char	Boolean; /* 0 or 1 */
 #define UNI_MAX_UTF32 (UTF32)0x7FFFFFFF
 #define UNI_MAX_LEGAL_UTF32 (UTF32)0x0010FFFF
 
-typedef enum {
-	conversionOK, 		/* conversion successful */
-	sourceExhausted,	/* partial character in source, but hit end */
-	targetExhausted,	/* insuff. room in target for conversion */
-	sourceIllegal		/* source sequence is illegal/malformed */
+typedef enum
+{
+    conversionOK, /* conversion successful */
+    sourceExhausted, /* partial character in source, but hit end */
+    targetExhausted, /* insuff. room in target for conversion */
+    sourceIllegal /* source sequence is illegal/malformed */
 } ConversionResult;
 
-typedef enum {
-	strictConversion = 0,
-	lenientConversion
+typedef enum
+{
+    strictConversion = 0,
+    lenientConversion
 } ConversionFlags;
 
 /* This is for C++ and does no harm in C */
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-ConversionResult ConvertUTF8toUTF16 (
-		const UTF8** sourceStart, const UTF8* sourceEnd,
-		UTF16** targetStart, UTF16* targetEnd, ConversionFlags flags);
+    ConversionResult ConvertUTF8toUTF16(
+        UTF8 const** sourceStart,
+        UTF8 const* sourceEnd,
+        UTF16** targetStart,
+        UTF16* targetEnd,
+        ConversionFlags flags);
 
-ConversionResult ConvertUTF16toUTF8 (
-		const UTF16** sourceStart, const UTF16* sourceEnd,
-		UTF8** targetStart, UTF8* targetEnd, ConversionFlags flags);
+    ConversionResult ConvertUTF16toUTF8(
+        UTF16 const** sourceStart,
+        UTF16 const* sourceEnd,
+        UTF8** targetStart,
+        UTF8* targetEnd,
+        ConversionFlags flags);
 
-ConversionResult ConvertUTF8toUTF32 (
-		const UTF8** sourceStart, const UTF8* sourceEnd,
-		UTF32** targetStart, UTF32* targetEnd, ConversionFlags flags);
+    ConversionResult ConvertUTF8toUTF32(
+        UTF8 const** sourceStart,
+        UTF8 const* sourceEnd,
+        UTF32** targetStart,
+        UTF32* targetEnd,
+        ConversionFlags flags);
 
-ConversionResult ConvertUTF32toUTF8 (
-		const UTF32** sourceStart, const UTF32* sourceEnd,
-		UTF8** targetStart, UTF8* targetEnd, ConversionFlags flags);
+    ConversionResult ConvertUTF32toUTF8(
+        UTF32 const** sourceStart,
+        UTF32 const* sourceEnd,
+        UTF8** targetStart,
+        UTF8* targetEnd,
+        ConversionFlags flags);
 
-ConversionResult ConvertUTF16toUTF32 (
-		const UTF16** sourceStart, const UTF16* sourceEnd,
-		UTF32** targetStart, UTF32* targetEnd, ConversionFlags flags);
+    ConversionResult ConvertUTF16toUTF32(
+        UTF16 const** sourceStart,
+        UTF16 const* sourceEnd,
+        UTF32** targetStart,
+        UTF32* targetEnd,
+        ConversionFlags flags);
 
-ConversionResult ConvertUTF32toUTF16 (
-		const UTF32** sourceStart, const UTF32* sourceEnd,
-		UTF16** targetStart, UTF16* targetEnd, ConversionFlags flags);
+    ConversionResult ConvertUTF32toUTF16(
+        UTF32 const** sourceStart,
+        UTF32 const* sourceEnd,
+        UTF16** targetStart,
+        UTF16* targetEnd,
+        ConversionFlags flags);
 
-Boolean isLegalUTF8Sequence (const UTF8 *source, const UTF8 *sourceEnd);
+    Boolean isLegalUTF8Sequence(UTF8 const* source, UTF8 const* sourceEnd);
 
-
-/* intended to work the same as g_utf8_validate */
-Boolean tr_utf8_validate (const char * str, size_t max_len, const char ** end);
-
+    /* intended to work the same as g_utf8_validate */
+    Boolean tr_utf8_validate(char const* str, size_t max_len, char const** end);
 
 #ifdef __cplusplus
 }
