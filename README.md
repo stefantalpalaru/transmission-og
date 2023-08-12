@@ -180,7 +180,7 @@ autocmd defgroup BufNewFile,BufRead /path/to/transmission-og/*.{c,cc,h} ClangFor
 Git integration, using a ".git/hooks/pre-commit" with executable permissions:
 
 ```bash
-#!/usr/bin/env sh
+#!/bin/sh
 
 root="$(git rev-parse --show-toplevel)"
 "${root}/code_style.sh" --check
