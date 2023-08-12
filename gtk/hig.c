@@ -6,8 +6,9 @@
  *
  */
 
-#include <gtk/gtk.h>
 #include "hig.h"
+
+#include <gtk/gtk.h>
 
 GtkWidget* hig_workarea_create(void)
 {
@@ -140,7 +141,11 @@ GtkWidget* hig_workarea_add_row(GtkWidget* t, guint* row, char const* mnemonic_s
     return l;
 }
 
-GtkWidget* hig_workarea_add_tall_row(GtkWidget* table, guint* row, char const* mnemonic_string, GtkWidget* control,
+GtkWidget* hig_workarea_add_tall_row(
+    GtkWidget* table,
+    guint* row,
+    char const* mnemonic_string,
+    GtkWidget* control,
     GtkWidget* mnemonic)
 {
     GtkWidget* l = gtk_label_new_with_mnemonic(mnemonic_string);

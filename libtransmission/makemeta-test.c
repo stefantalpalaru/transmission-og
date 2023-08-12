@@ -16,8 +16,13 @@
 #include <stdlib.h> /* mktemp() */
 #include <string.h> /* strlen() */
 
-static int test_single_file_impl(tr_tracker_info const* trackers, size_t const trackerCount, void const* payload,
-    size_t const payloadSize, char const* comment, bool isPrivate)
+static int test_single_file_impl(
+    tr_tracker_info const* trackers,
+    size_t const trackerCount,
+    void const* payload,
+    size_t const payloadSize,
+    char const* comment,
+    bool isPrivate)
 {
     char* sandbox;
     char* input_file;
@@ -110,8 +115,13 @@ static int test_single_file(void)
     return 0;
 }
 
-static int test_single_directory_impl(tr_tracker_info const* trackers, size_t const trackerCount, void const** payloads,
-    size_t const* payloadSizes, size_t const payloadCount, char const* comment,
+static int test_single_directory_impl(
+    tr_tracker_info const* trackers,
+    size_t const trackerCount,
+    void const** payloads,
+    size_t const* payloadSizes,
+    size_t const payloadCount,
+    char const* comment,
     bool const isPrivate)
 {
     char* sandbox;
@@ -211,8 +221,12 @@ static int test_single_directory_impl(tr_tracker_info const* trackers, size_t co
     return 0;
 }
 
-static int test_single_directory_random_payload_impl(tr_tracker_info const* trackers, size_t const trackerCount,
-    size_t const maxFileCount, size_t const maxFileSize, char const* comment,
+static int test_single_directory_random_payload_impl(
+    tr_tracker_info const* trackers,
+    size_t const trackerCount,
+    size_t const maxFileCount,
+    size_t const maxFileSize,
+    char const* comment,
     bool const isPrivate)
 {
     void** payloads;
@@ -269,8 +283,13 @@ static int test_single_directory_random_payload(void)
 
     for (size_t i = 0; i < 10; i++)
     {
-        test_single_directory_random_payload_impl(trackers, trackerCount, DEFAULT_MAX_FILE_COUNT, DEFAULT_MAX_FILE_SIZE,
-            comment, isPrivate);
+        test_single_directory_random_payload_impl(
+            trackers,
+            trackerCount,
+            DEFAULT_MAX_FILE_COUNT,
+            DEFAULT_MAX_FILE_SIZE,
+            comment,
+            isPrivate);
     }
 
     return 0;
@@ -278,10 +297,9 @@ static int test_single_directory_random_payload(void)
 
 int main(void)
 {
-    testFunc const tests[] =
-    {
+    testFunc const tests[] = {
         test_single_file,
-        test_single_directory_random_payload
+        test_single_directory_random_payload,
     };
 
     return runTests(tests, NUM_TESTS(tests));

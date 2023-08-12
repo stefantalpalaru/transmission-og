@@ -130,12 +130,11 @@ void tr_variantInit(tr_variant* v, char type)
 ****
 ***/
 
-static struct tr_variant_string const STRING_INIT =
-{
+static struct tr_variant_string const STRING_INIT = {
     .type = TR_STRING_TYPE_QUARK,
     .quark = TR_KEY_NONE,
     .len = 0,
-    .str.str = ""
+    .str.str = "",
 };
 
 static void tr_variant_string_clear(struct tr_variant_string* str)
@@ -950,16 +949,17 @@ static void freeContainerEndFunc(tr_variant const* v, void* unused UNUSED)
     tr_free(v->val.l.vals);
 }
 
-static struct VariantWalkFuncs const freeWalkFuncs =
-{
+// clang-format off
+static struct VariantWalkFuncs const freeWalkFuncs = {
     freeDummyFunc,
     freeDummyFunc,
     freeDummyFunc,
     freeStringFunc,
     freeDummyFunc,
     freeDummyFunc,
-    freeContainerEndFunc
+    freeContainerEndFunc,
 };
+// clang-format on
 
 void tr_variantFree(tr_variant* v)
 {
@@ -1270,7 +1270,12 @@ bool tr_variantFromFile(tr_variant* setme, tr_variant_fmt fmt, char const* filen
     return ret;
 }
 
-int tr_variantFromBuf(tr_variant* setme, tr_variant_fmt fmt, void const* buf, size_t buflen, char const* optional_source,
+int tr_variantFromBuf(
+    tr_variant* setme,
+    tr_variant_fmt fmt,
+    void const* buf,
+    size_t buflen,
+    char const* optional_source,
     char const** setme_end)
 {
     int err;

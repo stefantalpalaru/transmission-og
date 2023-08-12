@@ -24,27 +24,27 @@
 
 @interface MessageWindowController : NSWindowController
 {
-    IBOutlet NSTableView * fMessageTable;
+    IBOutlet NSTableView* fMessageTable;
 
-    IBOutlet NSPopUpButton * fLevelButton;
-    IBOutlet NSButton * fSaveButton, * fClearButton;
-    IBOutlet NSSearchField * fFilterField;
+    IBOutlet NSPopUpButton* fLevelButton;
+    IBOutlet NSButton *fSaveButton, *fClearButton;
+    IBOutlet NSSearchField* fFilterField;
 
-    NSMutableArray * fMessages, * fDisplayedMessages;
+    NSMutableArray *fMessages, *fDisplayedMessages;
 
-    NSDictionary * fAttributes;
+    NSDictionary* fAttributes;
 
-    NSTimer * fTimer;
+    NSTimer* fTimer;
 
-    NSLock * fLock;
+    NSLock* fLock;
 }
 
-- (void) updateLog: (NSTimer *) timer;
+- (void)updateLog:(NSTimer*)timer;
 
-- (void) changeLevel: (id) sender;
-- (void) changeFilter: (id) sender;
-- (void) clearLog: (id) sender;
+- (void)changeLevel:(id)sender;
+- (void)changeFilter:(id)sender;
+- (void)clearLog:(id)sender;
 
-- (void) writeToFile: (id) sender;
+- (void)writeToFile:(id)sender;
 
 @end

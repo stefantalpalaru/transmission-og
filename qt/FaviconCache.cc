@@ -48,7 +48,7 @@ QPixmap scale(QPixmap pixmap)
     return pixmap.scaled(FaviconCache::getIconSize(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
 
-}
+} // namespace
 void FaviconCache::ensureCacheDirHasBeenScanned()
 {
     static bool hasBeenScanned = false;

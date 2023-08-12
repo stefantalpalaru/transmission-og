@@ -44,8 +44,7 @@ namespace
 QLatin1String const MY_CONFIG_NAME("transmission");
 QLatin1String const MY_READABLE_NAME("transmission-og-qt");
 
-tr_option const opts[] =
-{
+tr_option const opts[] = {
     { 'g', "config-dir", "Where to look for configuration files", "g", true, "<path>" },
     { 'm', "minimized", "Start minimized in system tray", "m", false, nullptr },
     { 'p', "port", "Port to use when connecting to an existing session", "p", true, "<port>" },
@@ -59,7 +58,7 @@ tr_option const opts[] =
 char const* getUsage()
 {
     return "Usage:\n"
-        "  transmission [OPTIONS...] [torrent files]";
+           "  transmission [OPTIONS...] [torrent files]";
 }
 
 enum
@@ -84,14 +83,14 @@ bool loadTranslation(QTranslator& translator, QString const& name, QLocale const
 
 } // namespace
 
-Application::Application(int& argc, char** argv) :
-    QApplication(argc, argv),
-    myPrefs(nullptr),
-    mySession(nullptr),
-    myModel(nullptr),
-    myWindow(nullptr),
-    myWatchDir(nullptr),
-    myLastFullUpdateTime(0)
+Application::Application(int& argc, char** argv)
+    : QApplication(argc, argv)
+    , myPrefs(nullptr)
+    , mySession(nullptr)
+    , myModel(nullptr)
+    , myWindow(nullptr)
+    , myWatchDir(nullptr)
+    , myLastFullUpdateTime(0)
 {
     setApplicationName(QLatin1String("transmission-og"));
     loadTranslations();
@@ -339,10 +338,15 @@ Application::Application(int& argc, char** argv) :
 
     if (!myPrefs->getBool(Prefs::USER_HAS_GIVEN_INFORMED_CONSENT))
     {
-        QMessageBox* dialog = new QMessageBox(QMessageBox::Information, QString(),
-            tr("<b>Transmission OG is a file sharing program.</b>"), QMessageBox::Ok | QMessageBox::Cancel, myWindow);
-        dialog->setInformativeText(tr("When you run a torrent, its data will be made available to others by means of upload. "
-            "Any content you share is your sole responsibility."));
+        QMessageBox* dialog = new QMessageBox(
+            QMessageBox::Information,
+            QString(),
+            tr("<b>Transmission OG is a file sharing program.</b>"),
+            QMessageBox::Ok | QMessageBox::Cancel,
+            myWindow);
+        dialog->setInformativeText(
+            tr("When you run a torrent, its data will be made available to others by means of upload. "
+               "Any content you share is your sole responsibility."));
         dialog->button(QMessageBox::Ok)->setText(tr("I &Agree"));
         dialog->setDefaultButton(QMessageBox::Ok);
         dialog->setModal(true);

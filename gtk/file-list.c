@@ -6,21 +6,22 @@
  *
  */
 
-#include <limits.h> /* INT_MAX */
-#include <stddef.h>
-#include <stdio.h>
-#include <string.h>
-#include <glib/gi18n.h>
-#include <gtk/gtk.h>
-
-#include <libtransmission/transmission.h>
-#include <libtransmission/utils.h>
-
 #include "file-list.h"
+
 #include "hig.h"
 #include "icons.h"
 #include "tr-prefs.h"
 #include "util.h"
+#include <limits.h> /* INT_MAX */
+#include <stddef.h>
+#include <stdio.h>
+#include <string.h>
+
+#include <libtransmission/transmission.h>
+#include <libtransmission/utils.h>
+
+#include <glib/gi18n.h>
+#include <gtk/gtk.h>
 
 #define TR_DOWNLOAD_KEY "tr-download-key"
 #define TR_COLUMN_ID_KEY "tr-model-column-id-key"
@@ -58,8 +59,7 @@ typedef struct
     GtkTreeStore* store; /* same object as model, but recast */
     int torrentId;
     guint timeout_tag;
-}
-FileData;
+} FileData;
 
 static void clearData(FileData* data)
 {
@@ -105,6 +105,7 @@ static gboolean refreshFilesForeach(GtkTreeModel* model, GtkTreePath* path UNUSE
     int old_enabled;
     gboolean const is_file = !gtk_tree_model_iter_has_child(model, iter);
 
+    // clang-format off
     gtk_tree_model_get(model, iter,
         FC_ENABLED, &old_enabled,
         FC_PRIORITY, &old_priority,
@@ -113,6 +114,7 @@ static gboolean refreshFilesForeach(GtkTreeModel* model, GtkTreePath* path UNUSE
         FC_SIZE, &size,
         FC_PROG, &old_prog,
         -1);
+    // clang-format on
 
     if (is_file)
     {
@@ -132,20 +134,24 @@ static gboolean refreshFilesForeach(GtkTreeModel* model, GtkTreePath* path UNUSE
             if (!refresh_data->resort_needed)
             {
                 if ((refresh_data->resort_needed = (refresh_data->sort_column_id == FC_PRIORITY && priority != old_priority) ||
-                    (refresh_data->sort_column_id == FC_ENABLED && enabled != old_enabled)))
+                         (refresh_data->sort_column_id == FC_ENABLED && enabled != old_enabled)))
                 {
                     refresh_data->resort_needed = TRUE;
-                    gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(data->model),
-                        GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID, GTK_SORT_ASCENDING);
+                    gtk_tree_sortable_set_sort_column_id(
+                        GTK_TREE_SORTABLE(data->model),
+                        GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID,
+                        GTK_SORT_ASCENDING);
                 }
             }
 
+            // clang-format off
             gtk_tree_store_set(data->store, iter,
                 FC_PRIORITY, priority,
                 FC_ENABLED, enabled,
                 FC_HAVE, have,
                 FC_PROG, prog,
                 -1);
+            // clang-format on
         }
     }
     else
@@ -169,12 +175,14 @@ static gboolean refreshFilesForeach(GtkTreeModel* model, GtkTreePath* path UNUSE
                 int64_t child_have;
                 int64_t child_size;
 
+                // clang-format off
                 gtk_tree_model_get(model, &child,
                     FC_SIZE, &child_size,
                     FC_HAVE, &child_have,
                     FC_PRIORITY, &child_priority,
                     FC_ENABLED, &child_enabled,
                     -1);
+                // clang-format on
 
                 if ((child_enabled != FALSE) && (child_enabled != NOT_SET))
                 {
@@ -199,8 +207,7 @@ static gboolean refreshFilesForeach(GtkTreeModel* model, GtkTreePath* path UNUSE
                 {
                     priority = MIXED;
                 }
-            }
-            while (gtk_tree_model_iter_next(model, &child));
+            } while (gtk_tree_model_iter_next(model, &child));
         }
 
         prog = sub_size != 0 ? (int)(100.0 * have / sub_size) : 1;
@@ -209,6 +216,7 @@ static gboolean refreshFilesForeach(GtkTreeModel* model, GtkTreePath* path UNUSE
         {
             char size_str[64];
             tr_strlsize(size_str, sub_size, sizeof(size_str));
+            // clang-format off
             gtk_tree_store_set(data->store, iter,
                 FC_SIZE, sub_size,
                 FC_SIZE_STR, size_str,
@@ -217,13 +225,17 @@ static gboolean refreshFilesForeach(GtkTreeModel* model, GtkTreePath* path UNUSE
                 FC_ENABLED, enabled,
                 FC_PROG, prog,
                 -1);
+            // clang-format on
         }
     }
 
     return FALSE; /* keep walking */
 }
 
-static void gtr_tree_model_foreach_postorder_subtree(GtkTreeModel* model, GtkTreeIter* parent, GtkTreeModelForeachFunc func,
+static void gtr_tree_model_foreach_postorder_subtree(
+    GtkTreeModel* model,
+    GtkTreeIter* parent,
+    GtkTreeModelForeachFunc func,
     gpointer data)
 {
     GtkTreeIter child;
@@ -233,8 +245,7 @@ static void gtr_tree_model_foreach_postorder_subtree(GtkTreeModel* model, GtkTre
         do
         {
             gtr_tree_model_foreach_postorder_subtree(model, &child, func, data);
-        }
-        while (gtk_tree_model_iter_next(model, &child));
+        } while (gtk_tree_model_iter_next(model, &child));
     }
 
     if (parent != NULL)
@@ -252,8 +263,7 @@ static void gtr_tree_model_foreach_postorder(GtkTreeModel* model, GtkTreeModelFo
         do
         {
             gtr_tree_model_foreach_postorder_subtree(model, &iter, func, data);
-        }
-        while (gtk_tree_model_iter_next(model, &iter));
+        } while (gtk_tree_model_iter_next(model, &iter));
     }
 }
 
@@ -456,6 +466,7 @@ static void buildTree(GNode* node, gpointer gdata)
 
     tr_strlsize(size_str, child_data->length, sizeof(size_str));
 
+    // clang-format off
     gtk_tree_store_insert_with_values(build->store, &child_iter, build->iter, INT_MAX,
         FC_INDEX, child_data->index,
         FC_LABEL, child_data->name,
@@ -466,6 +477,7 @@ static void buildTree(GNode* node, gpointer gdata)
         FC_PRIORITY, priority,
         FC_ENABLED, enabled,
         -1);
+    // clang-format on
 
     if (!isLeaf)
     {
@@ -510,6 +522,7 @@ void gtr_file_list_set_torrent(GtkWidget* w, int torrentId)
     clearData(data);
 
     /* instantiate the model */
+    // clang-format off
     store = gtk_tree_store_new(N_FILE_COLS,
         GDK_TYPE_PIXBUF, /* icon */
         G_TYPE_STRING, /* label */
@@ -521,6 +534,7 @@ void gtr_file_list_set_torrent(GtkWidget* w, int torrentId)
         G_TYPE_UINT64, /* have */
         G_TYPE_INT, /* priority */
         G_TYPE_INT); /* dl enabled */
+    // clang-format on
 
     data->store = store;
     data->model = GTK_TREE_MODEL(store);
@@ -603,7 +617,11 @@ void gtr_file_list_set_torrent(GtkWidget* w, int torrentId)
 ****
 ***/
 
-static void renderDownload(GtkTreeViewColumn* column UNUSED, GtkCellRenderer* renderer, GtkTreeModel* model, GtkTreeIter* iter,
+static void renderDownload(
+    GtkTreeViewColumn* column UNUSED,
+    GtkCellRenderer* renderer,
+    GtkTreeModel* model,
+    GtkTreeIter* iter,
     gpointer data UNUSED)
 {
     gboolean enabled;
@@ -611,7 +629,11 @@ static void renderDownload(GtkTreeViewColumn* column UNUSED, GtkCellRenderer* re
     g_object_set(renderer, "inconsistent", enabled == MIXED, "active", enabled == TRUE, NULL);
 }
 
-static void renderPriority(GtkTreeViewColumn* column UNUSED, GtkCellRenderer* renderer, GtkTreeModel* model, GtkTreeIter* iter,
+static void renderPriority(
+    GtkTreeViewColumn* column UNUSED,
+    GtkCellRenderer* renderer,
+    GtkTreeModel* model,
+    GtkTreeIter* iter,
     gpointer data UNUSED)
 {
     int priority;
@@ -654,8 +676,7 @@ static char* buildFilename(tr_torrent* tor, GtkTreeModel* model, GtkTreePath* pa
     {
         child = parent;
         gtk_tree_model_get(model, &child, FC_LABEL, &tokens[n--], -1);
-    }
-    while (gtk_tree_model_iter_parent(model, &parent, &child));
+    } while (gtk_tree_model_iter_parent(model, &parent, &child));
 
     ret = g_build_filenamev(tokens);
     g_strfreev(tokens);
@@ -688,8 +709,7 @@ static gboolean onRowActivated(GtkTreeView* view, GtkTreePath* path, GtkTreeView
                     char* tmp = g_path_get_dirname(filename);
                     g_free(filename);
                     filename = tmp;
-                }
-                while (!tr_str_is_empty(filename) && !g_file_test(filename, G_FILE_TEST_EXISTS));
+                } while (!tr_str_is_empty(filename) && !g_file_test(filename, G_FILE_TEST_EXISTS));
             }
 
             if ((handled = !tr_str_is_empty(filename)))
@@ -841,8 +861,13 @@ static int on_rename_done_idle(struct rename_data* data)
     }
     else
     {
-        GtkWidget* w = gtk_message_dialog_new(GTK_WINDOW(gtk_widget_get_toplevel(data->file_data->top)), GTK_DIALOG_MODAL,
-            GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, _("Unable to rename file as \"%s\": %s"), data->newname,
+        GtkWidget* w = gtk_message_dialog_new(
+            GTK_WINDOW(gtk_widget_get_toplevel(data->file_data->top)),
+            GTK_DIALOG_MODAL,
+            GTK_MESSAGE_ERROR,
+            GTK_BUTTONS_CLOSE,
+            _("Unable to rename file as \"%s\": %s"),
+            data->newname,
             tr_strerror(data->error));
         gtk_message_dialog_format_secondary_text(GTK_MESSAGE_DIALOG(w), "%s", _("Please correct the errors and try again."));
         gtk_dialog_run(GTK_DIALOG(w));
@@ -856,8 +881,12 @@ static int on_rename_done_idle(struct rename_data* data)
     return G_SOURCE_REMOVE;
 }
 
-static void on_rename_done(tr_torrent* tor G_GNUC_UNUSED, char const* oldpath G_GNUC_UNUSED, char const* newname G_GNUC_UNUSED,
-    int error, struct rename_data* rename_data)
+static void on_rename_done(
+    tr_torrent* tor G_GNUC_UNUSED,
+    char const* oldpath G_GNUC_UNUSED,
+    char const* newname G_GNUC_UNUSED,
+    int error,
+    struct rename_data* rename_data)
 {
     rename_data->error = error;
     gdk_threads_add_idle((GSourceFunc)on_rename_done_idle, rename_data);
@@ -972,8 +1001,19 @@ GtkWidget* gtr_file_list_new(TrCore* core, int torrentId)
     /* add "size" column */
     title = _("Size");
     rend = gtk_cell_renderer_text_new();
-    g_object_set(rend, "alignment", PANGO_ALIGN_RIGHT, "font-desc", pango_font_description, "xpad", GUI_PAD, "xalign", 1.0F,
-        "yalign", 0.5F, NULL);
+    g_object_set(
+        rend,
+        "alignment",
+        PANGO_ALIGN_RIGHT,
+        "font-desc",
+        pango_font_description,
+        "xpad",
+        GUI_PAD,
+        "xalign",
+        1.0F,
+        "yalign",
+        0.5F,
+        NULL);
     col = gtk_tree_view_column_new_with_attributes(title, rend, NULL);
     gtk_tree_view_column_set_sizing(col, GTK_TREE_VIEW_COLUMN_GROW_ONLY);
     gtk_tree_view_column_set_sort_column_id(col, FC_SIZE);

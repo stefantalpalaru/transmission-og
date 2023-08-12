@@ -35,8 +35,12 @@ void Formatter::initUnits()
     unitStrings[SPEED][MB] = tr("MB/s");
     unitStrings[SPEED][GB] = tr("GB/s");
     unitStrings[SPEED][TB] = tr("TB/s");
-    tr_formatter_speed_init(speed_K, unitStrings[SPEED][KB].toUtf8().constData(), unitStrings[SPEED][MB].toUtf8().constData(),
-        unitStrings[SPEED][GB].toUtf8().constData(), unitStrings[SPEED][TB].toUtf8().constData());
+    tr_formatter_speed_init(
+        speed_K,
+        unitStrings[SPEED][KB].toUtf8().constData(),
+        unitStrings[SPEED][MB].toUtf8().constData(),
+        unitStrings[SPEED][GB].toUtf8().constData(),
+        unitStrings[SPEED][TB].toUtf8().constData());
 
     size_K = 1000;
     unitStrings[SIZE][B] = tr("B");
@@ -44,8 +48,12 @@ void Formatter::initUnits()
     unitStrings[SIZE][MB] = tr("MB");
     unitStrings[SIZE][GB] = tr("GB");
     unitStrings[SIZE][TB] = tr("TB");
-    tr_formatter_size_init(size_K, unitStrings[SIZE][KB].toUtf8().constData(), unitStrings[SIZE][MB].toUtf8().constData(),
-        unitStrings[SIZE][GB].toUtf8().constData(), unitStrings[SIZE][TB].toUtf8().constData());
+    tr_formatter_size_init(
+        size_K,
+        unitStrings[SIZE][KB].toUtf8().constData(),
+        unitStrings[SIZE][MB].toUtf8().constData(),
+        unitStrings[SIZE][GB].toUtf8().constData(),
+        unitStrings[SIZE][TB].toUtf8().constData());
 
     mem_K = 1024;
     unitStrings[MEM][B] = tr("B");
@@ -53,8 +61,12 @@ void Formatter::initUnits()
     unitStrings[MEM][MB] = tr("MiB");
     unitStrings[MEM][GB] = tr("GiB");
     unitStrings[MEM][TB] = tr("TiB");
-    tr_formatter_mem_init(mem_K, unitStrings[MEM][KB].toUtf8().constData(), unitStrings[MEM][MB].toUtf8().constData(),
-        unitStrings[MEM][GB].toUtf8().constData(), unitStrings[MEM][TB].toUtf8().constData());
+    tr_formatter_mem_init(
+        mem_K,
+        unitStrings[MEM][KB].toUtf8().constData(),
+        unitStrings[MEM][MB].toUtf8().constData(),
+        unitStrings[MEM][GB].toUtf8().constData(),
+        unitStrings[MEM][TB].toUtf8().constData());
 }
 
 /***

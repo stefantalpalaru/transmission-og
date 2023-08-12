@@ -565,8 +565,7 @@ static int test_env(void)
 
 int main(void)
 {
-    testFunc const tests[] =
-    {
+    testFunc const tests[] = {
         test_array,
         test_buildpath,
         test_hex,
@@ -581,7 +580,7 @@ int main(void)
         test_truncd,
         test_url,
         test_utf8,
-        test_env
+        test_env,
     };
 
     return runTests(tests, NUM_TESTS(tests));

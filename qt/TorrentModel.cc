@@ -27,17 +27,17 @@ namespace
 
 struct TorrentIdLessThan
 {
-    bool operator ()(Torrent* left, Torrent* right) const
+    bool operator()(Torrent* left, Torrent* right) const
     {
         return left->id() < right->id();
     }
 
-    bool operator ()(int leftId, Torrent* right) const
+    bool operator()(int leftId, Torrent* right) const
     {
         return leftId < right->id();
     }
 
-    bool operator ()(Torrent* left, int rightId) const
+    bool operator()(Torrent* left, int rightId) const
     {
         return left->id() < rightId;
     }
@@ -48,7 +48,7 @@ auto getIds(Iter it, Iter end)
 {
     torrent_ids_t ids;
 
-    for ( ; it != end; ++it)
+    for (; it != end; ++it)
     {
         ids.insert((*it)->id());
     }
@@ -62,8 +62,8 @@ auto getIds(Iter it, Iter end)
 ****
 ***/
 
-TorrentModel::TorrentModel(Prefs const& prefs) :
-    myPrefs(prefs)
+TorrentModel::TorrentModel(Prefs const& prefs)
+    : myPrefs(prefs)
 {
 }
 
@@ -163,11 +163,11 @@ void TorrentModel::updateTorrents(tr_variant* torrents, bool isCompleteList)
 
     auto const now = time(nullptr);
     auto const recently_added = [now](auto const& tor)
-        {
-            static auto constexpr max_age = 60;
-            auto const date = tor->dateAdded();
-            return (date != 0) && (difftime(now, date) < max_age);
-        };
+    {
+        static auto constexpr max_age = 60;
+        auto const date = tor->dateAdded();
+        return (date != 0) && (difftime(now, date) < max_age);
+    };
 
     // build a list of the property keys
     tr_variant* const firstChild = tr_variantListChild(torrents, 0);
@@ -476,6 +476,9 @@ void TorrentModel::rowsRemove(torrents_t const& torrents)
 
 bool TorrentModel::hasTorrent(QString const& hashString) const
 {
-    auto test = [hashString](auto const& tor) { return tor->hashString() == hashString; };
+    auto test = [hashString](auto const& tor)
+    {
+        return tor->hashString() == hashString;
+    };
     return std::any_of(myTorrents.cbegin(), myTorrents.cend(), test);
 }

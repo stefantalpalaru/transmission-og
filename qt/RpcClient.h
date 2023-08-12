@@ -30,8 +30,8 @@ Q_DECLARE_METATYPE(TrVariantPtr)
 
 extern "C"
 {
-struct evbuffer;
-struct tr_session;
+    struct evbuffer;
+    struct tr_session;
 }
 
 struct RpcResponse

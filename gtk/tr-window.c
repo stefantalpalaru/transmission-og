@@ -20,13 +20,7 @@
  * DEALINGS IN THE SOFTWARE.
  *****************************************************************************/
 
-#include <string.h> /* strlen() */
-
-#include <gtk/gtk.h>
-#include <glib/gi18n.h>
-
-#include <libtransmission/transmission.h>
-#include <libtransmission/utils.h> /* tr_formatter_speed_KBps() */
+#include "tr-window.h"
 
 #include "actions.h"
 #include "conf.h"
@@ -34,8 +28,14 @@
 #include "hig.h"
 #include "torrent-cell-renderer.h"
 #include "tr-prefs.h"
-#include "tr-window.h"
 #include "util.h"
+#include <string.h> /* strlen() */
+
+#include <libtransmission/transmission.h>
+#include <libtransmission/utils.h> /* tr_formatter_speed_KBps() */
+
+#include <glib/gi18n.h>
+#include <gtk/gtk.h>
 
 typedef struct
 {
@@ -62,12 +62,11 @@ typedef struct
     TrCore* core;
     gulong pref_handler_id;
     gulong torrent_added_handler_id;
-}
-PrivateData;
+} PrivateData;
 
 static TR_DEFINE_QUARK(private_data, private_data)
 
-static PrivateData* get_private_data(GtkWindow * w)
+static PrivateData* get_private_data(GtkWindow* w)
 {
     return g_object_get_qdata(G_OBJECT(w), private_data_quark());
 }
@@ -87,13 +86,20 @@ static void on_popup_menu(GtkWidget* self UNUSED, GdkEventButton* event)
 #endif
 }
 
-static void view_row_activated(GtkTreeView* tree_view UNUSED, GtkTreePath* path UNUSED, GtkTreeViewColumn* column UNUSED,
+static void view_row_activated(
+    GtkTreeView* tree_view UNUSED,
+    GtkTreePath* path UNUSED,
+    GtkTreeViewColumn* column UNUSED,
     gpointer user_data UNUSED)
 {
     gtr_action_activate("show-torrent-properties");
 }
 
-static gboolean tree_view_search_equal_func(GtkTreeModel* model, gint column UNUSED, gchar const* key, GtkTreeIter* iter,
+static gboolean tree_view_search_equal_func(
+    GtkTreeModel* model,
+    gint column UNUSED,
+    gchar const* key,
+    GtkTreeIter* iter,
     gpointer search_data UNUSED)
 {
     gboolean match;
@@ -123,14 +129,24 @@ static GtkWidget* makeview(PrivateData* p)
     gtk_tree_view_set_headers_visible(tree_view, FALSE);
     gtk_tree_view_set_fixed_height_mode(tree_view, TRUE);
 
-    GtkCssProvider *provider = gtk_css_provider_new();
+    GtkCssProvider* provider = gtk_css_provider_new();
     gtk_css_provider_load_from_data(provider, ".view {border: 1px solid #d0d0d0;}", -1, NULL);
-    gtk_style_context_add_provider(gtk_widget_get_style_context(view), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    gtk_style_context_add_provider(
+        gtk_widget_get_style_context(view),
+        GTK_STYLE_PROVIDER(provider),
+        GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
     p->selection = gtk_tree_view_get_selection(tree_view);
 
-    p->column = col = GTK_TREE_VIEW_COLUMN(g_object_new(GTK_TYPE_TREE_VIEW_COLUMN, "title", _("Torrent"), "resizable", TRUE,
-        "sizing", GTK_TREE_VIEW_COLUMN_FIXED, NULL));
+    p->column = col = GTK_TREE_VIEW_COLUMN(g_object_new(
+        GTK_TYPE_TREE_VIEW_COLUMN,
+        "title",
+        _("Torrent"),
+        "resizable",
+        TRUE,
+        "sizing",
+        GTK_TREE_VIEW_COLUMN_FIXED,
+        NULL));
 
     p->renderer = r = torrent_cell_renderer_new();
     gtk_tree_view_column_pack_start(col, r, FALSE);
@@ -227,13 +243,11 @@ static struct
 {
     char const* val;
     char const* i18n;
-}
-stats_modes[] =
-{
+} stats_modes[] = {
     { "total-ratio", N_("Total Ratio") },
     { "session-ratio", N_("Session Ratio") },
     { "total-transfer", N_("Total Transfer") },
-    { "session-transfer", N_("Session Transfer") }
+    { "session-transfer", N_("Session Transfer") },
 };
 
 static void status_menu_toggled_cb(GtkCheckMenuItem* menu_item, gpointer vprivate)
@@ -259,7 +273,7 @@ static void syncAltSpeedButton(PrivateData* p)
     tr_formatter_speed_KBps(u, gtr_pref_int_get(TR_KEY_alt_speed_up), sizeof(u));
     tr_formatter_speed_KBps(d, gtr_pref_int_get(TR_KEY_alt_speed_down), sizeof(d));
     fmt = b ? _("Click to disable Alternative Speed Limits\n (%1$s down, %2$s up)") :
-        _("Click to enable Alternative Speed Limits\n (%1$s down, %2$s up)");
+              _("Click to enable Alternative Speed Limits\n (%1$s down, %2$s up)");
     str = g_strdup_printf(fmt, d, u);
 
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(w), b);
@@ -292,8 +306,13 @@ static void findMaxAnnounceTime(GtkTreeModel* model, GtkTreePath* path UNUSED, G
     *maxTime = MAX(*maxTime, torStat->manualAnnounceTime);
 }
 
-static gboolean onAskTrackerQueryTooltip(GtkWidget* widget UNUSED, gint x UNUSED, gint y UNUSED, gboolean keyboard_tip UNUSED,
-    GtkTooltip* tooltip, gpointer gdata)
+static gboolean onAskTrackerQueryTooltip(
+    GtkWidget* widget UNUSED,
+    gint x UNUSED,
+    gint y UNUSED,
+    gboolean keyboard_tip UNUSED,
+    GtkTooltip* tooltip,
+    gpointer gdata)
 {
     gboolean handled;
     time_t maxTime = 0;
@@ -543,7 +562,11 @@ static void onOptionsClicked(GtkButton* button, gpointer vp)
     gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(b ? p->ratio_on_item : p->ratio_off_item), TRUE);
 
 #if GTK_CHECK_VERSION(3, 22, 0)
-    gtk_menu_popup_at_widget(GTK_MENU(p->options_menu), GTK_WIDGET(button), GDK_GRAVITY_NORTH_WEST, GDK_GRAVITY_SOUTH_WEST,
+    gtk_menu_popup_at_widget(
+        GTK_MENU(p->options_menu),
+        GTK_WIDGET(button),
+        GDK_GRAVITY_NORTH_WEST,
+        GDK_GRAVITY_SOUTH_WEST,
         NULL);
 #else
     gtk_menu_popup(GTK_MENU(p->options_menu), NULL, NULL, NULL, NULL, 0, gtk_get_current_event_time());
@@ -610,7 +633,9 @@ GtkWidget* gtr_window_new(GtkApplication* app, GtkUIManager* ui_mgr, TrCore* cor
     style = ".tr-workarea.frame {border-left-width: 0; border-right-width: 0; border-radius: 0;}";
     css_provider = gtk_css_provider_new();
     gtk_css_provider_load_from_data(css_provider, style, strlen(style), NULL);
-    gtk_style_context_add_provider_for_screen(gdk_screen_get_default(), GTK_STYLE_PROVIDER(css_provider),
+    gtk_style_context_add_provider_for_screen(
+        gdk_screen_get_default(),
+        GTK_STYLE_PROVIDER(css_provider),
         GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
     /* window's main container */
@@ -834,18 +859,19 @@ static void updateSpeeds(PrivateData* p)
                 int dc;
                 double us;
                 double ds;
+                // clang-format off
                 gtk_tree_model_get(model, &iter,
-                    MC_SPEED_UP, &us,
-                    MC_SPEED_DOWN, &ds,
-                    MC_ACTIVE_PEERS_UP, &uc,
-                    MC_ACTIVE_PEERS_DOWN, &dc,
-                    -1);
+                        MC_SPEED_UP, &us,
+                        MC_SPEED_DOWN, &ds,
+                        MC_ACTIVE_PEERS_UP, &uc,
+                        MC_ACTIVE_PEERS_DOWN, &dc,
+                        -1);
+                // clang-format on
                 upSpeed += us;
                 upCount += uc;
                 downSpeed += ds;
                 downCount += dc;
-            }
-            while (gtk_tree_model_iter_next(model, &iter));
+            } while (gtk_tree_model_iter_next(model, &iter));
         }
 
         tr_formatter_speed_KBps(speed_str, downSpeed, sizeof(speed_str));

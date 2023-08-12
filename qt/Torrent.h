@@ -34,7 +34,7 @@ class Prefs;
 
 extern "C"
 {
-struct tr_variant;
+    struct tr_variant;
 }
 
 struct Peer
@@ -99,12 +99,12 @@ Q_DECLARE_METATYPE(TrackerStatsList)
 
 struct TorrentFile
 {
-    TorrentFile() :
-        wanted(true),
-        index(-1),
-        priority(0),
-        size(0),
-        have(0)
+    TorrentFile()
+        : wanted(true)
+        , index(-1)
+        , priority(0)
+        , size(0)
+        , have(0)
     {
     }
 

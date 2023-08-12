@@ -8,8 +8,9 @@
 
 #pragma once
 
-#include <gtk/gtk.h>
 #include "tr-core.h"
+
+#include <gtk/gtk.h>
 
 #define WINDOW_ICON "transmission-main-window-icon"
 #define TRAY_ICON "transmission-tray-icon"

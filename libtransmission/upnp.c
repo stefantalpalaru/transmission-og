@@ -36,8 +36,7 @@ typedef enum
     TR_UPNP_DISCOVER,
     TR_UPNP_MAP,
     TR_UPNP_UNMAP
-}
-tr_upnp_state;
+} tr_upnp_state;
 
 struct tr_upnp
 {
@@ -46,8 +45,9 @@ struct tr_upnp
     struct IGDdatas data;
     int port;
     char lanaddr[16];
-    struct {
-        const char *proto;
+    struct
+    {
+        char const* proto;
         char proto_no[8];
         char id[8];
     } pinhole[2]; // TCP and UDP
@@ -133,13 +133,35 @@ static int tr_upnpGetSpecificPortMappingEntry(tr_upnp* handle, char const* proto
     tr_logAddNamedInfo(getKey(), "Checking for an existing port mapping: %s %s", proto, portStr);
 
 #if (MINIUPNPC_API_VERSION >= 10) /* adds remoteHost arg */
-    err = UPNP_GetSpecificPortMappingEntry(handle->urls.controlURL, handle->data.first.servicetype, portStr, proto,
-        NULL /*remoteHost*/, intClient, intPort, NULL /*desc*/, NULL /*enabled*/, NULL /*duration*/);
+    err = UPNP_GetSpecificPortMappingEntry(
+        handle->urls.controlURL,
+        handle->data.first.servicetype,
+        portStr,
+        proto,
+        NULL /*remoteHost*/,
+        intClient,
+        intPort,
+        NULL /*desc*/,
+        NULL /*enabled*/,
+        NULL /*duration*/);
 #elif (MINIUPNPC_API_VERSION >= 8) /* adds desc, enabled and leaseDuration args */
-    err = UPNP_GetSpecificPortMappingEntry(handle->urls.controlURL, handle->data.first.servicetype, portStr, proto, intClient,
-        intPort, NULL /*desc*/, NULL /*enabled*/, NULL /*duration*/);
+    err = UPNP_GetSpecificPortMappingEntry(
+        handle->urls.controlURL,
+        handle->data.first.servicetype,
+        portStr,
+        proto,
+        intClient,
+        intPort,
+        NULL /*desc*/,
+        NULL /*enabled*/,
+        NULL /*duration*/);
 #else
-    err = UPNP_GetSpecificPortMappingEntry(handle->urls.controlURL, handle->data.first.servicetype, portStr, proto, intClient,
+    err = UPNP_GetSpecificPortMappingEntry(
+        handle->urls.controlURL,
+        handle->data.first.servicetype,
+        portStr,
+        proto,
+        intClient,
         intPort);
 #endif
 
@@ -155,16 +177,36 @@ static int tr_upnpAddPortMapping(tr_upnp const* handle, char const* proto, tr_po
 
     errno = 0;
 #if (MINIUPNPC_API_VERSION >= 8)
-    err = UPNP_AddPortMapping(handle->urls.controlURL, handle->data.first.servicetype, portStr, portStr, handle->lanaddr, desc,
-        proto, NULL, NULL);
+    err = UPNP_AddPortMapping(
+        handle->urls.controlURL,
+        handle->data.first.servicetype,
+        portStr,
+        portStr,
+        handle->lanaddr,
+        desc,
+        proto,
+        NULL,
+        NULL);
 #else
-    err = UPNP_AddPortMapping(handle->urls.controlURL, handle->data.first.servicetype, portStr, portStr, handle->lanaddr, desc,
-        proto, NULL);
+    err = UPNP_AddPortMapping(
+        handle->urls.controlURL,
+        handle->data.first.servicetype,
+        portStr,
+        portStr,
+        handle->lanaddr,
+        desc,
+        proto,
+        NULL);
 #endif
 
     if (err != 0)
     {
-        tr_logAddNamedError(getKey(), "%s port forwarding failed with error %d (errno %d - %s)", proto, err, errno,
+        tr_logAddNamedError(
+            getKey(),
+            "%s port forwarding failed with error %d (errno %d - %s)",
+            proto,
+            err,
+            errno,
             tr_strerror(errno));
     }
 
@@ -189,7 +231,11 @@ static bool tr_upnpCanPinhole(tr_upnp const* handle)
     }
 
     int firewall_enabled = 0, inbound_pinhole_allowed = 0;
-    UPNP_GetFirewallStatus(handle->urls.controlURL_6FC, handle->data.IPv6FC.servicetype, &firewall_enabled, &inbound_pinhole_allowed);
+    UPNP_GetFirewallStatus(
+        handle->urls.controlURL_6FC,
+        handle->data.IPv6FC.servicetype,
+        &firewall_enabled,
+        &inbound_pinhole_allowed);
     if (firewall_enabled == 0 || inbound_pinhole_allowed == 0)
     {
         return false;
@@ -209,23 +255,51 @@ static void tr_upnpDeletePinholes(tr_upnp* handle)
             res = UPNP_DeletePinhole(handle->urls.controlURL_6FC, handle->data.IPv6FC.servicetype, handle->pinhole[i].id);
             if (res != UPNPCOMMAND_SUCCESS)
             {
-                tr_logAddNamedError(getKey(), "[%s] %s: %d (%s)", handle->pinhole[i].proto, _("IPv6 pinhole deletion failed with error"), res, strupnperror(res));
+                tr_logAddNamedError(
+                    getKey(),
+                    "[%s] %s: %d (%s)",
+                    handle->pinhole[i].proto,
+                    _("IPv6 pinhole deletion failed with error"),
+                    res,
+                    strupnperror(res));
 
                 // Try to update the lease time to 1s.
 
-                res = UPNP_UpdatePinhole(handle->urls.controlURL_6FC, handle->data.IPv6FC.servicetype, handle->pinhole[i].id, "1");
+                res = UPNP_UpdatePinhole(
+                    handle->urls.controlURL_6FC,
+                    handle->data.IPv6FC.servicetype,
+                    handle->pinhole[i].id,
+                    "1");
                 if (res != UPNPCOMMAND_SUCCESS)
                 {
-                    tr_logAddNamedError(getKey(), "[%s] %s: %d (%s)", handle->pinhole[i].proto, _("IPv6 pinhole updating failed with error"), res, strupnperror(res));
+                    tr_logAddNamedError(
+                        getKey(),
+                        "[%s] %s: %d (%s)",
+                        handle->pinhole[i].proto,
+                        _("IPv6 pinhole updating failed with error"),
+                        res,
+                        strupnperror(res));
                 }
                 else
                 {
-                    tr_logAddNamedInfo(getKey(), "[%s] %s: (%s: %s, 1s)", handle->pinhole[i].proto, _("IPv6 pinhole updated"), _("unique ID"), handle->pinhole[i].id);
+                    tr_logAddNamedInfo(
+                        getKey(),
+                        "[%s] %s: (%s: %s, 1s)",
+                        handle->pinhole[i].proto,
+                        _("IPv6 pinhole updated"),
+                        _("unique ID"),
+                        handle->pinhole[i].id);
                 }
             }
             else
             {
-                tr_logAddNamedInfo(getKey(), "[%s] %s (%s: %s)", handle->pinhole[i].proto, _("IPv6 pinhole deleted"), _("unique ID"), handle->pinhole[i].id);
+                tr_logAddNamedInfo(
+                    getKey(),
+                    "[%s] %s (%s: %s)",
+                    handle->pinhole[i].proto,
+                    _("IPv6 pinhole deleted"),
+                    _("unique ID"),
+                    handle->pinhole[i].id);
             }
 
             memset(handle->pinhole[i].id, 0, sizeof(handle->pinhole[i].id));
@@ -251,14 +325,43 @@ static void tr_upnpAddOrUpdatePinholes(tr_upnp* handle, tr_port port)
 
         for (int i = 0; i < 2; i++)
         {
-            res = UPNP_AddPinhole(handle->urls.controlURL_6FC, handle->data.IPv6FC.servicetype, "::", port_str, ipv6_str, port_str, handle->pinhole[i].proto_no, TR_PINHOLE_LEASE_TIME, handle->pinhole[i].id);
+            res = UPNP_AddPinhole(
+                handle->urls.controlURL_6FC,
+                handle->data.IPv6FC.servicetype,
+                "::",
+                port_str,
+                ipv6_str,
+                port_str,
+                handle->pinhole[i].proto_no,
+                TR_PINHOLE_LEASE_TIME,
+                handle->pinhole[i].id);
             if (res != UPNPCOMMAND_SUCCESS)
             {
-                tr_logAddNamedError(getKey(), "[%s] %s: %d (%s) ([::]:%s -> [%s]:%s, %ss)", handle->pinhole[i].proto, _("IPv6 pinhole punching failed with error"), res, strupnperror(res), port_str, ipv6_str, port_str, TR_PINHOLE_LEASE_TIME);
+                tr_logAddNamedError(
+                    getKey(),
+                    "[%s] %s: %d (%s) ([::]:%s -> [%s]:%s, %ss)",
+                    handle->pinhole[i].proto,
+                    _("IPv6 pinhole punching failed with error"),
+                    res,
+                    strupnperror(res),
+                    port_str,
+                    ipv6_str,
+                    port_str,
+                    TR_PINHOLE_LEASE_TIME);
             }
             else
             {
-                tr_logAddNamedInfo(getKey(), "[%s] %s: [::]:%s -> [%s]:%s (%s: %s, %ss)", handle->pinhole[i].proto, _("IPv6 pinhole added"), port_str, ipv6_str, port_str, _("unique ID"), handle->pinhole[i].id, TR_PINHOLE_LEASE_TIME);
+                tr_logAddNamedInfo(
+                    getKey(),
+                    "[%s] %s: [::]:%s -> [%s]:%s (%s: %s, %ss)",
+                    handle->pinhole[i].proto,
+                    _("IPv6 pinhole added"),
+                    port_str,
+                    ipv6_str,
+                    port_str,
+                    _("unique ID"),
+                    handle->pinhole[i].id,
+                    TR_PINHOLE_LEASE_TIME);
             }
         }
 
@@ -288,16 +391,36 @@ static void tr_upnpAddOrUpdatePinholes(tr_upnp* handle, tr_port port)
 
         for (int i = 0; i < 2; i++)
         {
-            res = UPNP_UpdatePinhole(handle->urls.controlURL_6FC, handle->data.IPv6FC.servicetype, handle->pinhole[i].id, TR_PINHOLE_LEASE_TIME);
+            res = UPNP_UpdatePinhole(
+                handle->urls.controlURL_6FC,
+                handle->data.IPv6FC.servicetype,
+                handle->pinhole[i].id,
+                TR_PINHOLE_LEASE_TIME);
             if (res != UPNPCOMMAND_SUCCESS)
             {
-                tr_logAddNamedError(getKey(), "[%s] %s: %d (%s)", handle->pinhole[i].proto, _("IPv6 pinhole updating failed with error"), res, strupnperror(res));
-		// Delete them so they get created again.
-		tr_upnpDeletePinholes(handle);
+                tr_logAddNamedError(
+                    getKey(),
+                    "[%s] %s: %d (%s)",
+                    handle->pinhole[i].proto,
+                    _("IPv6 pinhole updating failed with error"),
+                    res,
+                    strupnperror(res));
+                // Delete them so they get created again.
+                tr_upnpDeletePinholes(handle);
             }
             else
             {
-                tr_logAddNamedInfo(getKey(), "[%s] %s: [::]:%s -> [%s]:%s (%s: %s, %ss)", handle->pinhole[i].proto, _("IPv6 pinhole updated"), port_str, ipv6_str, port_str, _("unique ID"), handle->pinhole[i].id, TR_PINHOLE_LEASE_TIME);
+                tr_logAddNamedInfo(
+                    getKey(),
+                    "[%s] %s: [::]:%s -> [%s]:%s (%s: %s, %ss)",
+                    handle->pinhole[i].proto,
+                    _("IPv6 pinhole updated"),
+                    port_str,
+                    ipv6_str,
+                    port_str,
+                    _("unique ID"),
+                    handle->pinhole[i].id,
+                    TR_PINHOLE_LEASE_TIME);
             }
         }
     }
@@ -327,8 +450,8 @@ int tr_upnpPulse(tr_upnp* handle, int port, bool isEnabled, bool doPortCheck)
 
         errno = 0;
 
-        if (UPNP_GetValidIGD(devlist, &handle->urls, &handle->data, handle->lanaddr,
-            sizeof(handle->lanaddr)) == UPNP_IGD_VALID_CONNECTED)
+        if (UPNP_GetValidIGD(devlist, &handle->urls, &handle->data, handle->lanaddr, sizeof(handle->lanaddr)) ==
+            UPNP_IGD_VALID_CONNECTED)
         {
             tr_logAddNamedInfo(getKey(), _("Found Internet Gateway Device \"%s\""), handle->urls.controlURL);
             tr_logAddNamedInfo(getKey(), _("Local Address is \"%s\""), handle->lanaddr);
@@ -377,7 +500,10 @@ int tr_upnpPulse(tr_upnp* handle, int port, bool isEnabled, bool doPortCheck)
         tr_upnpDeletePortMapping(handle, "TCP", handle->port);
         tr_upnpDeletePortMapping(handle, "UDP", handle->port);
 
-        tr_logAddNamedInfo(getKey(), _("Stopping port forwarding through \"%s\", service \"%s\""), handle->urls.controlURL,
+        tr_logAddNamedInfo(
+            getKey(),
+            _("Stopping port forwarding through \"%s\", service \"%s\""),
+            handle->urls.controlURL,
             handle->data.first.servicetype);
 
         tr_upnpDeletePinholes(handle);
@@ -420,8 +546,13 @@ int tr_upnpPulse(tr_upnp* handle, int port, bool isEnabled, bool doPortCheck)
 
             handle->isMapped = err_tcp == 0 || err_udp == 0;
 
-            tr_logAddNamedInfo(getKey(), _("Port forwarding through \"%s\", service \"%s\". (local address: %s:%d)"),
-                handle->urls.controlURL, handle->data.first.servicetype, handle->lanaddr, port);
+            tr_logAddNamedInfo(
+                getKey(),
+                _("Port forwarding through \"%s\", service \"%s\". (local address: %s:%d)"),
+                handle->urls.controlURL,
+                handle->data.first.servicetype,
+                handle->lanaddr,
+                port);
         }
 
         if (handle->isMapped)

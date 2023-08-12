@@ -156,10 +156,9 @@ static int test_session_get_and_set(void)
 
 int main(void)
 {
-    testFunc const tests[] =
-    {
+    testFunc const tests[] = {
         test_list,
-        test_session_get_and_set
+        test_session_get_and_set,
     };
 
     return runTests(tests, NUM_TESTS(tests));

@@ -26,11 +26,11 @@
 
 #define PRIORITY_KEY "priority"
 
-FileTreeView::FileTreeView(QWidget* parent, bool isEditable) :
-    QTreeView(parent),
-    myModel(new FileTreeModel(this, isEditable)),
-    myProxy(new QSortFilterProxyModel(this)),
-    myDelegate(new FileTreeDelegate(this))
+FileTreeView::FileTreeView(QWidget* parent, bool isEditable)
+    : QTreeView(parent)
+    , myModel(new FileTreeModel(this, isEditable))
+    , myProxy(new QSortFilterProxyModel(this))
+    , myDelegate(new FileTreeDelegate(this))
 {
     myProxy->setSourceModel(myModel);
     myProxy->setSortRole(FileTreeModel::SortRole);
@@ -105,8 +105,8 @@ void FileTreeView::resizeEvent(QResizeEvent* event)
             break;
 
         case FileTreeModel::COL_PRIORITY:
-            itemTexts << FileTreeItem::tr("Low") << FileTreeItem::tr("Normal") << FileTreeItem::tr("High") <<
-                FileTreeItem::tr("Mixed");
+            itemTexts << FileTreeItem::tr("Low") << FileTreeItem::tr("Normal") << FileTreeItem::tr("High")
+                      << FileTreeItem::tr("Mixed");
             break;
         }
 
@@ -372,7 +372,8 @@ void FileTreeView::refreshContextMenuActionsSensitivity()
     myUncheckSelectedAction->setEnabled(haveChecked);
     myOnlyCheckSelectedAction->setEnabled(haveSelection);
     myPriorityMenu->setEnabled(haveSelection);
-    myOpenAction->setEnabled(haveSingleSelection && selectedRows.first().data(FileTreeModel::FileIndexRole).toInt() >= 0 &&
+    myOpenAction->setEnabled(
+        haveSingleSelection && selectedRows.first().data(FileTreeModel::FileIndexRole).toInt() >= 0 &&
         selectedRows.first().data(FileTreeModel::CompleteRole).toBool());
     myRenameAction->setEnabled(haveSingleSelection);
 }

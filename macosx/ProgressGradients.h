@@ -25,15 +25,15 @@
 
 @interface ProgressGradients : NSObject
 
-+ (NSGradient *) progressWhiteGradient;
-+ (NSGradient *) progressGrayGradient;
-+ (NSGradient *) progressLightGrayGradient;
-+ (NSGradient *) progressBlueGradient;
-+ (NSGradient *) progressDarkBlueGradient;
-+ (NSGradient *) progressGreenGradient;
-+ (NSGradient *) progressLightGreenGradient;
-+ (NSGradient *) progressDarkGreenGradient;
-+ (NSGradient *) progressRedGradient;
-+ (NSGradient *) progressYellowGradient;
++ (NSGradient*)progressWhiteGradient;
++ (NSGradient*)progressGrayGradient;
++ (NSGradient*)progressLightGrayGradient;
++ (NSGradient*)progressBlueGradient;
++ (NSGradient*)progressDarkBlueGradient;
++ (NSGradient*)progressGreenGradient;
++ (NSGradient*)progressLightGreenGradient;
++ (NSGradient*)progressDarkGreenGradient;
++ (NSGradient*)progressRedGradient;
++ (NSGradient*)progressYellowGradient;
 
 @end

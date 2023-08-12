@@ -60,28 +60,66 @@ bool libtest_check(char const* file, int line, bool pass, bool condition, char c
     return pass;
 }
 
-bool libtest_check_bool(char const* file, int line, bool pass, bool lhs, bool rhs, char const* lhs_str, char const* op_str,
+bool libtest_check_bool(
+    char const* file,
+    int line,
+    bool pass,
+    bool lhs,
+    bool rhs,
+    char const* lhs_str,
+    char const* op_str,
     char const* rhs_str)
 {
     if (should_print(pass))
     {
-        fprintf(stderr, "%s %s:%d: %s %s %s (%s %s %s)\n", pass ? "PASS" : "FAIL", file, line, lhs_str, op_str, rhs_str,
-            lhs ? "true" : "false", op_str, rhs ? "true" : "false");
+        fprintf(
+            stderr,
+            "%s %s:%d: %s %s %s (%s %s %s)\n",
+            pass ? "PASS" : "FAIL",
+            file,
+            line,
+            lhs_str,
+            op_str,
+            rhs_str,
+            lhs ? "true" : "false",
+            op_str,
+            rhs ? "true" : "false");
     }
 
     return pass;
 }
 
-bool libtest_check_str(char const* file, int line, bool pass, char const* lhs, char const* rhs, char const* lhs_str,
-    char const* op_str, char const* rhs_str)
+bool libtest_check_str(
+    char const* file,
+    int line,
+    bool pass,
+    char const* lhs,
+    char const* rhs,
+    char const* lhs_str,
+    char const* op_str,
+    char const* rhs_str)
 {
     if (should_print(pass))
     {
         char const* const lhs_quote = lhs != NULL ? "\"" : "";
         char const* const rhs_quote = rhs != NULL ? "\"" : "";
 
-        fprintf(stderr, "%s %s:%d: %s %s %s (%s%s%s %s %s%s%s)\n", pass ? "PASS" : "FAIL", file, line, lhs_str, op_str, rhs_str,
-            lhs_quote, lhs != NULL ? lhs : "NULL", lhs_quote, op_str, rhs_quote, rhs != NULL ? rhs : "NULL", rhs_quote);
+        fprintf(
+            stderr,
+            "%s %s:%d: %s %s %s (%s%s%s %s %s%s%s)\n",
+            pass ? "PASS" : "FAIL",
+            file,
+            line,
+            lhs_str,
+            op_str,
+            rhs_str,
+            lhs_quote,
+            lhs != NULL ? lhs : "NULL",
+            lhs_quote,
+            op_str,
+            rhs_quote,
+            rhs != NULL ? rhs : "NULL",
+            rhs_quote);
     }
 
     return pass;
@@ -113,8 +151,16 @@ static void print_mem(FILE* stream, void const* data, size_t size)
     fprintf(stream, "'");
 }
 
-bool libtest_check_mem(char const* file, int line, bool pass, void const* lhs, void const* rhs, size_t size,
-    char const* lhs_str, char const* op_str, char const* rhs_str)
+bool libtest_check_mem(
+    char const* file,
+    int line,
+    bool pass,
+    void const* lhs,
+    void const* rhs,
+    size_t size,
+    char const* lhs_str,
+    char const* op_str,
+    char const* rhs_str)
 {
     if (should_print(pass))
     {
@@ -128,37 +174,88 @@ bool libtest_check_mem(char const* file, int line, bool pass, void const* lhs, v
     return pass;
 }
 
-bool libtest_check_int(char const* file, int line, bool pass, intmax_t lhs, intmax_t rhs, char const* lhs_str,
-    char const* op_str, char const* rhs_str)
+bool libtest_check_int(
+    char const* file,
+    int line,
+    bool pass,
+    intmax_t lhs,
+    intmax_t rhs,
+    char const* lhs_str,
+    char const* op_str,
+    char const* rhs_str)
 {
     if (should_print(pass))
     {
-        fprintf(stderr, "%s %s:%d: %s %s %s (%jd %s %jd)\n", pass ? "PASS" : "FAIL", file, line, lhs_str, op_str, rhs_str, lhs,
-            op_str, rhs);
+        fprintf(
+            stderr,
+            "%s %s:%d: %s %s %s (%jd %s %jd)\n",
+            pass ? "PASS" : "FAIL",
+            file,
+            line,
+            lhs_str,
+            op_str,
+            rhs_str,
+            lhs,
+            op_str,
+            rhs);
     }
 
     return pass;
 }
 
-bool libtest_check_uint(char const* file, int line, bool pass, uintmax_t lhs, uintmax_t rhs, char const* lhs_str,
-    char const* op_str, char const* rhs_str)
+bool libtest_check_uint(
+    char const* file,
+    int line,
+    bool pass,
+    uintmax_t lhs,
+    uintmax_t rhs,
+    char const* lhs_str,
+    char const* op_str,
+    char const* rhs_str)
 {
     if (should_print(pass))
     {
-        fprintf(stderr, "%s %s:%d: %s %s %s (%ju %s %ju)\n", pass ? "PASS" : "FAIL", file, line, lhs_str, op_str, rhs_str, lhs,
-            op_str, rhs);
+        fprintf(
+            stderr,
+            "%s %s:%d: %s %s %s (%ju %s %ju)\n",
+            pass ? "PASS" : "FAIL",
+            file,
+            line,
+            lhs_str,
+            op_str,
+            rhs_str,
+            lhs,
+            op_str,
+            rhs);
     }
 
     return pass;
 }
 
-bool libtest_check_ptr(char const* file, int line, bool pass, void const* lhs, void const* rhs, char const* lhs_str,
-    char const* op_str, char const* rhs_str)
+bool libtest_check_ptr(
+    char const* file,
+    int line,
+    bool pass,
+    void const* lhs,
+    void const* rhs,
+    char const* lhs_str,
+    char const* op_str,
+    char const* rhs_str)
 {
     if (should_print(pass))
     {
-        fprintf(stderr, "%s %s:%d: %s %s %s (%p %s %p)\n", pass ? "PASS" : "FAIL", file, line, lhs_str, op_str, rhs_str, lhs,
-            op_str, rhs);
+        fprintf(
+            stderr,
+            "%s %s:%d: %s %s %s (%p %s %p)\n",
+            pass ? "PASS" : "FAIL",
+            file,
+            line,
+            lhs_str,
+            op_str,
+            rhs_str,
+            lhs,
+            op_str,
+            rhs);
     }
 
     return pass;

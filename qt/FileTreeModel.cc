@@ -19,10 +19,10 @@ namespace
 class PathIteratorBase
 {
 protected:
-    PathIteratorBase(QString const& path, int slashIndex) :
-        myPath(path),
-        mySlashIndex(slashIndex),
-        myToken()
+    PathIteratorBase(QString const& path, int slashIndex)
+        : myPath(path)
+        , mySlashIndex(slashIndex)
+        , myToken()
     {
         myToken.reserve(path.size() / 2);
     }
@@ -40,8 +40,8 @@ QChar const PathIteratorBase::SlashChar = QLatin1Char('/');
 class ForwardPathIterator : public PathIteratorBase
 {
 public:
-    ForwardPathIterator(QString const& path) :
-        PathIteratorBase(path, path.size() - 1)
+    ForwardPathIterator(QString const& path)
+        : PathIteratorBase(path, path.size() - 1)
     {
     }
 
@@ -63,8 +63,8 @@ public:
 class BackwardPathIterator : public PathIteratorBase
 {
 public:
-    BackwardPathIterator(QString const& path) :
-        PathIteratorBase(path, 0)
+    BackwardPathIterator(QString const& path)
+        : PathIteratorBase(path, 0)
     {
     }
 
@@ -91,11 +91,11 @@ public:
 
 } // namespace
 
-FileTreeModel::FileTreeModel(QObject* parent, bool isEditable) :
-    QAbstractItemModel(parent),
-    myIsEditable(isEditable),
-    myRootItem(new FileTreeItem),
-    myIndexCache()
+FileTreeModel::FileTreeModel(QObject* parent, bool isEditable)
+    : QAbstractItemModel(parent)
+    , myIsEditable(isEditable)
+    , myRootItem(new FileTreeItem)
+    , myIndexCache()
 {
 }
 
@@ -345,8 +345,14 @@ FileTreeItem* FileTreeModel::findItemForFileIndex(int fileIndex) const
     return myIndexCache.value(fileIndex, nullptr);
 }
 
-void FileTreeModel::addFile(int fileIndex, QString const& filename, bool wanted, int priority, uint64_t totalSize,
-    uint64_t have, bool updateFields)
+void FileTreeModel::addFile(
+    int fileIndex,
+    QString const& filename,
+    bool wanted,
+    int priority,
+    uint64_t totalSize,
+    uint64_t have,
+    bool updateFields)
 {
     FileTreeItem* item;
 
@@ -435,7 +441,10 @@ void FileTreeModel::addFile(int fileIndex, QString const& filename, bool wanted,
     }
 }
 
-void FileTreeModel::emitParentsChanged(QModelIndex const& index, int firstColumn, int lastColumn,
+void FileTreeModel::emitParentsChanged(
+    QModelIndex const& index,
+    int firstColumn,
+    int lastColumn,
     QSet<QModelIndex>* visitedParentIndices)
 {
     assert(firstColumn <= lastColumn);

@@ -26,15 +26,15 @@
 
 @interface StatsWindowController : NSWindowController
 {
-    IBOutlet NSTextField * fUploadedField, * fUploadedAllField, * fDownloadedField, * fDownloadedAllField,
-                        * fRatioField, * fRatioAllField, * fTimeField, * fTimeAllField, * fNumOpenedField,
-                        * fUploadedLabelField, * fDownloadedLabelField, * fRatioLabelField, * fTimeLabelField, * fNumOpenedLabelField;
-    IBOutlet NSButton * fResetButton;
-    NSTimer * fTimer;
+    IBOutlet NSTextField *fUploadedField, *fUploadedAllField, *fDownloadedField, *fDownloadedAllField, *fRatioField,
+        *fRatioAllField, *fTimeField, *fTimeAllField, *fNumOpenedField, *fUploadedLabelField, *fDownloadedLabelField,
+        *fRatioLabelField, *fTimeLabelField, *fNumOpenedLabelField;
+    IBOutlet NSButton* fResetButton;
+    NSTimer* fTimer;
 }
 
-+ (StatsWindowController *) statsWindow;
++ (StatsWindowController*)statsWindow;
 
-- (void) resetStats: (id) sender;
+- (void)resetStats:(id)sender;
 
 @end

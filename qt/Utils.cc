@@ -62,8 +62,12 @@ void addAssociatedFileIcon(QFileInfo const& fileInfo, UINT iconSize, QIcon& icon
 
         SHFILEINFO shellFileInfo;
 
-        if (::SHGetFileInfoW(reinterpret_cast<wchar_t const*>(filename.utf16()), FILE_ATTRIBUTE_NORMAL, &shellFileInfo,
-            sizeof(shellFileInfo), SHGFI_ICON | iconSize | SHGFI_USEFILEATTRIBUTES) != 0)
+        if (::SHGetFileInfoW(
+                reinterpret_cast<wchar_t const*>(filename.utf16()),
+                FILE_ATTRIBUTE_NORMAL,
+                &shellFileInfo,
+                sizeof(shellFileInfo),
+                SHGFI_ICON | iconSize | SHGFI_USEFILEATTRIBUTES) != 0)
         {
             if (shellFileInfo.hIcon != nullptr)
             {
@@ -284,8 +288,9 @@ int Utils::measureViewItem(QAbstractItemView* view, QString const& text)
     option.textElideMode = Qt::ElideNone;
     option.font = view->font();
 
-    return view->style()->sizeFromContents(QStyle::CT_ItemViewItem, &option, QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX), view).
-        width();
+    return view->style()
+        ->sizeFromContents(QStyle::CT_ItemViewItem, &option, QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX), view)
+        .width();
 }
 
 int Utils::measureHeaderItem(QHeaderView* view, QString const& text)

@@ -8,7 +8,8 @@
 
 #pragma once
 
-#include <gtk/gtk.h>
 #include "tr-core.h"
+
+#include <gtk/gtk.h>
 
 GtkWidget* gtr_stats_dialog_new(GtkWindow* parent, TrCore* core);

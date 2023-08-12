@@ -21,6 +21,7 @@
 #define PRIME_LEN 96
 #define DH_PRIVKEY_LEN 20
 
+// clang-format off
 static uint8_t const dh_P[PRIME_LEN] =
 {
     0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xC9, 0x0F, 0xDA, 0xA2,
@@ -32,6 +33,7 @@ static uint8_t const dh_P[PRIME_LEN] =
     0xE4, 0x85, 0xB5, 0x76, 0x62, 0x5E, 0x7E, 0xC6, 0xF4, 0x4C, 0x42, 0xE9,
     0xA6, 0x3A, 0x36, 0x21, 0x00, 0x00, 0x00, 0x00, 0x00, 0x09, 0x05, 0x63,
 };
+// clang-format on
 
 static uint8_t const dh_G[] = { 2 };
 
@@ -157,8 +159,13 @@ void tr_cryptoEncrypt(tr_crypto* crypto, size_t buf_len, void const* buf_in, voi
     tr_rc4_process(crypto->enc_key, buf_in, buf_out, buf_len);
 }
 
-bool tr_cryptoSecretKeySha1(tr_crypto const* crypto, void const* prepend_data, size_t prepend_data_size,
-    void const* append_data, size_t append_data_size, uint8_t* hash)
+bool tr_cryptoSecretKeySha1(
+    tr_crypto const* crypto,
+    void const* prepend_data,
+    size_t prepend_data_size,
+    void const* append_data,
+    size_t append_data_size,
+    uint8_t* hash)
 {
     TR_ASSERT(crypto != NULL);
     TR_ASSERT(crypto->mySecret != NULL);

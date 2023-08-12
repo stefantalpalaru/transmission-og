@@ -487,6 +487,7 @@ UNUSED static inline void lpd_consistencyCheck(void)
 */
 bool tr_lpdSendAnnounce(tr_torrent const* t)
 {
+    // clang-format off
     char const fmt[] =
         "BT-SEARCH * HTTP/%u.%u" CRLF
         "Host: %s:%u" CRLF
@@ -494,6 +495,7 @@ bool tr_lpdSendAnnounce(tr_torrent const* t)
         "Infohash: %s" CRLF
         CRLF
         CRLF;
+    // clang-format on
 
     char hashString[lengthof(t->info.hashString)];
     char query[lpd_maxDatagramLength + 1] = { 0 };
@@ -518,7 +520,12 @@ bool tr_lpdSendAnnounce(tr_torrent const* t)
 
         /* destination address info has already been set up in tr_lpdInit(),
          * so we refrain from preparing another sockaddr_in here */
-        int res = sendto(lpd_socket2, (void const*)query, len, 0, (struct sockaddr const*)&lpd_mcastAddr,
+        int res = sendto(
+            lpd_socket2,
+            (void const*)query,
+            len,
+            0,
+            (struct sockaddr const*)&lpd_mcastAddr,
             sizeof(lpd_mcastAddr));
 
         if (res != len)
@@ -682,7 +689,10 @@ static int tr_lpdAnnounceMore(time_t const now, int const interval)
 
         if (lpd_unsolicitedMsgCounter < 0)
         {
-            tr_logAddNamedInfo("LPD", "Dropped %d announces in the last interval (max. %d allowed)", -lpd_unsolicitedMsgCounter,
+            tr_logAddNamedInfo(
+                "LPD",
+                "Dropped %d announces in the last interval (max. %d allowed)",
+                -lpd_unsolicitedMsgCounter,
                 maxAnnounceCap);
         }
 
@@ -720,7 +730,12 @@ static void event_callback(evutil_socket_t s UNUSED, short type, void* ignore UN
         char foreignMsg[lpd_maxDatagramLength + 1];
 
         /* process local announcement from foreign peer */
-        int res = recvfrom(lpd_socket, (void*)foreignMsg, lpd_maxDatagramLength, 0, (struct sockaddr*)&foreignAddr,
+        int res = recvfrom(
+            lpd_socket,
+            (void*)foreignMsg,
+            lpd_maxDatagramLength,
+            0,
+            (struct sockaddr*)&foreignAddr,
             (socklen_t*)&addrLen);
 
         /* besides, do we get flooded? then bail out! */
@@ -731,10 +746,9 @@ static void event_callback(evutil_socket_t s UNUSED, short type, void* ignore UN
 
         if (res > 0 && res <= lpd_maxDatagramLength)
         {
-            struct tr_pex foreignPeer =
-            {
+            struct tr_pex foreignPeer = {
                 .port = 0, /* the peer-to-peer port is yet unknown */
-                .flags = 0
+                .flags = 0,
             };
 
             /* be paranoid enough about zero terminating the foreign string */

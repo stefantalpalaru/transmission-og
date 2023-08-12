@@ -72,10 +72,9 @@ static int test_error_propagate(void)
 
 int main(void)
 {
-    testFunc const tests[] =
-    {
+    testFunc const tests[] = {
         test_error_set,
-        test_error_propagate
+        test_error_propagate,
     };
 
     return runTests(tests, NUM_TESTS(tests));

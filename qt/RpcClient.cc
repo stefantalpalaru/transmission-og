@@ -45,11 +45,11 @@ TrVariantPtr createVariant()
 
 } // namespace
 
-RpcClient::RpcClient(QObject* parent) :
-    QObject(parent),
-    mySession(nullptr),
-    myNAM(nullptr),
-    myNextTag(0)
+RpcClient::RpcClient(QObject* parent)
+    : QObject(parent)
+    , mySession(nullptr)
+    , myNAM(nullptr)
+    , myNextTag(0)
 {
     qRegisterMetaType<TrVariantPtr>("TrVariantPtr");
 }
@@ -125,8 +125,9 @@ void RpcClient::sendNetworkRequest(TrVariantPtr json, QFutureInterface<RpcRespon
 {
     QNetworkRequest request;
     request.setUrl(myUrl);
-    request.setRawHeader("User-Agent", (qApp->applicationName() + QLatin1Char('/') +
-        QString::fromUtf8(LONG_VERSION_STRING)).toUtf8());
+    request.setRawHeader(
+        "User-Agent",
+        (qApp->applicationName() + QLatin1Char('/') + QString::fromUtf8(LONG_VERSION_STRING)).toUtf8());
     request.setRawHeader("Content-Type", "application/json; charset=UTF-8");
 
     if (!mySessionId.isEmpty())
@@ -147,7 +148,8 @@ void RpcClient::sendNetworkRequest(TrVariantPtr json, QFutureInterface<RpcRespon
     connect(reply, SIGNAL(uploadProgress(qint64, qint64)), this, SIGNAL(dataSendProgress()));
 
 #ifdef DEBUG_HTTP
-    std::cerr << "sending " << "POST " << qPrintable(myUrl.path()) << std::endl;
+    std::cerr << "sending "
+              << "POST " << qPrintable(myUrl.path()) << std::endl;
 
     for (QByteArray const& b : request.rawHeaderList())
     {
@@ -195,7 +197,10 @@ QNetworkAccessManager* RpcClient::networkAccessManager()
 
         connect(myNAM, SIGNAL(finished(QNetworkReply*)), this, SLOT(networkRequestFinished(QNetworkReply*)));
 
-        connect(myNAM, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)), this,
+        connect(
+            myNAM,
+            SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
+            this,
             SIGNAL(httpAuthenticationRequired()));
     }
 
@@ -221,8 +226,8 @@ void RpcClient::networkRequestFinished(QNetworkReply* reply)
 {
     reply->deleteLater();
 
-    QFutureInterface<RpcResponse> promise = reply->property(REQUEST_FUTUREINTERFACE_PROPERTY_KEY).
-        value<QFutureInterface<RpcResponse>>();
+    QFutureInterface<RpcResponse> promise = reply->property(REQUEST_FUTUREINTERFACE_PROPERTY_KEY)
+                                                .value<QFutureInterface<RpcResponse>>();
 
 #ifdef DEBUG_HTTP
     std::cerr << "http response header: " << std::endl;

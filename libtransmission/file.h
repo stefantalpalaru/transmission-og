@@ -20,21 +20,21 @@ extern "C"
 {
 #endif
 
-struct tr_error;
+    struct tr_error;
 
-/**
+    /**
  * @addtogroup file_io File IO
  * @{
  */
 
 #ifndef _WIN32
 
-/** @brief Platform-specific file descriptor type. */
-typedef int tr_sys_file_t;
+    /** @brief Platform-specific file descriptor type. */
+    typedef int tr_sys_file_t;
 /** @brief Platform-specific invalid file descriptor constant. */
 #define TR_BAD_SYS_FILE (-1)
-/** @brief Platform-specific directory descriptor type. */
-typedef void* tr_sys_dir_t;
+    /** @brief Platform-specific directory descriptor type. */
+    typedef void* tr_sys_dir_t;
 /** @brief Platform-specific end-of-line sequence. */
 #define TR_NATIVE_EOL_STR "\n"
 /** @brief Platform-specific end-of-line sequence length. */
@@ -53,85 +53,75 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
 /** @brief Platform-specific invalid directory descriptor constant. */
 #define TR_BAD_SYS_DIR ((tr_sys_dir_t)NULL)
 
-typedef enum
-{
-    TR_STD_SYS_FILE_IN,
-    TR_STD_SYS_FILE_OUT,
-    TR_STD_SYS_FILE_ERR
-}
-tr_std_sys_file_t;
+    typedef enum
+    {
+        TR_STD_SYS_FILE_IN,
+        TR_STD_SYS_FILE_OUT,
+        TR_STD_SYS_FILE_ERR
+    } tr_std_sys_file_t;
 
-typedef enum
-{
-    TR_SYS_FILE_READ = (1 << 0),
-    TR_SYS_FILE_WRITE = (1 << 1),
-    TR_SYS_FILE_CREATE = (1 << 2),
-    TR_SYS_FILE_CREATE_NEW = (1 << 3),
-    TR_SYS_FILE_APPEND = (1 << 4),
-    TR_SYS_FILE_TRUNCATE = (1 << 5),
-    TR_SYS_FILE_SEQUENTIAL = (1 << 6)
-}
-tr_sys_file_open_flags_t;
+    typedef enum
+    {
+        TR_SYS_FILE_READ = (1 << 0),
+        TR_SYS_FILE_WRITE = (1 << 1),
+        TR_SYS_FILE_CREATE = (1 << 2),
+        TR_SYS_FILE_CREATE_NEW = (1 << 3),
+        TR_SYS_FILE_APPEND = (1 << 4),
+        TR_SYS_FILE_TRUNCATE = (1 << 5),
+        TR_SYS_FILE_SEQUENTIAL = (1 << 6)
+    } tr_sys_file_open_flags_t;
 
-typedef enum
-{
-    TR_SEEK_SET,
-    TR_SEEK_CUR,
-    TR_SEEK_END
-}
-tr_seek_origin_t;
+    typedef enum
+    {
+        TR_SEEK_SET,
+        TR_SEEK_CUR,
+        TR_SEEK_END
+    } tr_seek_origin_t;
 
-typedef enum
-{
-    TR_SYS_FILE_LOCK_SH = (1 << 0),
-    TR_SYS_FILE_LOCK_EX = (1 << 1),
-    TR_SYS_FILE_LOCK_NB = (1 << 2),
-    TR_SYS_FILE_LOCK_UN = (1 << 3)
-}
-tr_sys_file_lock_flags_t;
+    typedef enum
+    {
+        TR_SYS_FILE_LOCK_SH = (1 << 0),
+        TR_SYS_FILE_LOCK_EX = (1 << 1),
+        TR_SYS_FILE_LOCK_NB = (1 << 2),
+        TR_SYS_FILE_LOCK_UN = (1 << 3)
+    } tr_sys_file_lock_flags_t;
 
-typedef enum
-{
-    TR_SYS_PATH_NO_FOLLOW = (1 << 0)
-}
-tr_sys_path_get_info_flags_t;
+    typedef enum
+    {
+        TR_SYS_PATH_NO_FOLLOW = (1 << 0)
+    } tr_sys_path_get_info_flags_t;
 
-typedef enum
-{
-    TR_SYS_FILE_ADVICE_WILL_NEED,
-    TR_SYS_FILE_ADVICE_DONT_NEED
-}
-tr_sys_file_advice_t;
+    typedef enum
+    {
+        TR_SYS_FILE_ADVICE_WILL_NEED,
+        TR_SYS_FILE_ADVICE_DONT_NEED
+    } tr_sys_file_advice_t;
 
-typedef enum
-{
-    TR_SYS_FILE_PREALLOC_SPARSE = (1 << 0)
-}
-tr_sys_file_preallocate_flags_t;
+    typedef enum
+    {
+        TR_SYS_FILE_PREALLOC_SPARSE = (1 << 0)
+    } tr_sys_file_preallocate_flags_t;
 
-typedef enum
-{
-    TR_SYS_DIR_CREATE_PARENTS = (1 << 0)
-}
-tr_sys_dir_create_flags_t;
+    typedef enum
+    {
+        TR_SYS_DIR_CREATE_PARENTS = (1 << 0)
+    } tr_sys_dir_create_flags_t;
 
-typedef enum
-{
-    TR_SYS_PATH_IS_FILE,
-    TR_SYS_PATH_IS_DIRECTORY,
-    TR_SYS_PATH_IS_OTHER
-}
-tr_sys_path_type_t;
+    typedef enum
+    {
+        TR_SYS_PATH_IS_FILE,
+        TR_SYS_PATH_IS_DIRECTORY,
+        TR_SYS_PATH_IS_OTHER
+    } tr_sys_path_type_t;
 
-typedef struct tr_sys_path_info
-{
-    tr_sys_path_type_t type;
-    uint64_t size;
-    time_t last_modified_at;
-}
-tr_sys_path_info;
+    typedef struct tr_sys_path_info
+    {
+        tr_sys_path_type_t type;
+        uint64_t size;
+        time_t last_modified_at;
+    } tr_sys_path_info;
 
-/**
+    /**
  * @name Platform-specific wrapper functions
  *
  * Following functions accept paths in UTF-8 encoding and convert them to native
@@ -143,9 +133,9 @@ tr_sys_path_info;
  * @{
  */
 
-/* Path-related wrappers */
+    /* Path-related wrappers */
 
-/**
+    /**
  * @brief Portability wrapper for `stat()`.
  *
  * @param[in]  path  Path to file or directory.
@@ -156,9 +146,9 @@ tr_sys_path_info;
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-bool tr_sys_path_get_info(char const* path, int flags, tr_sys_path_info* info, struct tr_error** error);
+    bool tr_sys_path_get_info(char const* path, int flags, tr_sys_path_info* info, struct tr_error** error);
 
-/**
+    /**
  * @brief Portability wrapper for `access()`.
  *
  * @param[in]  path  Path to file or directory.
@@ -169,9 +159,9 @@ bool tr_sys_path_get_info(char const* path, int flags, tr_sys_path_info* info, s
  *         be returned in case of error; if you need to distinguish the two,
  *         check if `error` is `NULL` afterwards.
  */
-bool tr_sys_path_exists(char const* path, struct tr_error** error);
+    bool tr_sys_path_exists(char const* path, struct tr_error** error);
 
-/**
+    /**
  * @brief Check whether path is relative.
  *
  * This function only analyzes the string, so no error reporting is needed.
@@ -180,9 +170,9 @@ bool tr_sys_path_exists(char const* path, struct tr_error** error);
  *
  * @return `True` if path is relative, `false` otherwise
  */
-bool tr_sys_path_is_relative(char const* path);
+    bool tr_sys_path_is_relative(char const* path);
 
-/**
+    /**
  * @brief Test to see if the two filenames point to the same file.
  *
  * @param[in]  path1  Path to first file or directory.
@@ -195,9 +185,9 @@ bool tr_sys_path_is_relative(char const* path);
  *         if you need to distinguish the two, check if `error` is `NULL`
  *         afterwards.
  */
-bool tr_sys_path_is_same(char const* path1, char const* path2, struct tr_error** error);
+    bool tr_sys_path_is_same(char const* path1, char const* path2, struct tr_error** error);
 
-/**
+    /**
  * @brief Portability wrapper for `realpath()`.
  *
  * @param[in]  path  Path to file or directory.
@@ -209,9 +199,9 @@ bool tr_sys_path_is_same(char const* path1, char const* path2, struct tr_error**
  *         when no longer needed), `NULL` otherwise (with `error` set
  *         accordingly).
  */
-char* tr_sys_path_resolve(char const* path, struct tr_error** error);
+    char* tr_sys_path_resolve(char const* path, struct tr_error** error);
 
-/**
+    /**
  * @brief Portability wrapper for `basename()`.
  *
  * @param[in]  path  Path to file or directory.
@@ -223,9 +213,9 @@ char* tr_sys_path_resolve(char const* path, struct tr_error** error);
  *         it when no longer needed), `NULL` otherwise (with `error` set
  *         accordingly).
  */
-char* tr_sys_path_basename(char const* path, struct tr_error** error);
+    char* tr_sys_path_basename(char const* path, struct tr_error** error);
 
-/**
+    /**
  * @brief Portability wrapper for `dirname()`.
  *
  * @param[in]  path  Path to file or directory.
@@ -237,9 +227,9 @@ char* tr_sys_path_basename(char const* path, struct tr_error** error);
  *         when no longer needed), `NULL` otherwise (with `error` set
  *         accordingly).
  */
-char* tr_sys_path_dirname(char const* path, struct tr_error** error);
+    char* tr_sys_path_dirname(char const* path, struct tr_error** error);
 
-/**
+    /**
  * @brief Portability wrapper for `rename()`.
  *
  * @param[in]  src_path Path to source file or directory.
@@ -251,9 +241,9 @@ char* tr_sys_path_dirname(char const* path, struct tr_error** error);
  *         Rename will generally only succeed if both source and destination are
  *         on the same partition.
  */
-bool tr_sys_path_rename(char const* src_path, char const* dst_path, struct tr_error** error);
+    bool tr_sys_path_rename(char const* src_path, char const* dst_path, struct tr_error** error);
 
-/**
+    /**
  * @brief Portability wrapper for `remove()`.
  *
  * @param[in]  path  Path to file or directory.
@@ -264,20 +254,20 @@ bool tr_sys_path_rename(char const* src_path, char const* dst_path, struct tr_er
  *         Directory removal will only succeed if it is empty (contains no other
  *         files and directories).
  */
-bool tr_sys_path_remove(char const* path, struct tr_error** error);
+    bool tr_sys_path_remove(char const* path, struct tr_error** error);
 
-/**
+    /**
  * @brief Transform path separators to native ones, in-place.
  *
  * @param[in,out] path Path to transform.
  *
  * @return Same path but with native (and uniform) separators.
  */
-char* tr_sys_path_native_separators(char* path);
+    char* tr_sys_path_native_separators(char* path);
 
-/* File-related wrappers */
+    /* File-related wrappers */
 
-/**
+    /**
  * @brief Get handle to one of standard I/O files.
  *
  * @param[in]  std_file Standard file identifier.
@@ -288,9 +278,9 @@ char* tr_sys_path_native_separators(char* path);
  *         `error` set accordingly). DO NOT pass this descriptor to
  *         @ref tr_sys_file_close (unless you know what you are doing).
  */
-tr_sys_file_t tr_sys_file_get_std(tr_std_sys_file_t std_file, struct tr_error** error);
+    tr_sys_file_t tr_sys_file_get_std(tr_std_sys_file_t std_file, struct tr_error** error);
 
-/**
+    /**
  * @brief Portability wrapper for `open()`.
  *
  * @param[in]  path        Path to file.
@@ -303,9 +293,9 @@ tr_sys_file_t tr_sys_file_get_std(tr_std_sys_file_t std_file, struct tr_error** 
  * @return Opened file descriptor on success, `TR_BAD_SYS_FILE` otherwise (with
  *         `error` set accordingly).
  */
-tr_sys_file_t tr_sys_file_open(char const* path, int flags, int permissions, struct tr_error** error);
+    tr_sys_file_t tr_sys_file_open(char const* path, int flags, int permissions, struct tr_error** error);
 
-/**
+    /**
  * @brief Portability wrapper for `mkstemp()`.
  *
  * @param[in,out] path_template Template path to file. Should end with at least
@@ -319,9 +309,9 @@ tr_sys_file_t tr_sys_file_open(char const* path, int flags, int permissions, str
  * @return Opened file descriptor on success, `TR_BAD_SYS_FILE` otherwise (with
  *         `error` set accordingly).
  */
-tr_sys_file_t tr_sys_file_open_temp(char* path_template, struct tr_error** error);
+    tr_sys_file_t tr_sys_file_open_temp(char* path_template, struct tr_error** error);
 
-/**
+    /**
  * @brief Portability wrapper for `close()`.
  *
  * @param[in]  handle Valid file descriptor.
@@ -330,9 +320,9 @@ tr_sys_file_t tr_sys_file_open_temp(char* path_template, struct tr_error** error
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-bool tr_sys_file_close(tr_sys_file_t handle, struct tr_error** error);
+    bool tr_sys_file_close(tr_sys_file_t handle, struct tr_error** error);
 
-/**
+    /**
  * @brief Portability wrapper for `fstat()`.
  *
  * @param[in]  handle Valid file descriptor.
@@ -342,9 +332,9 @@ bool tr_sys_file_close(tr_sys_file_t handle, struct tr_error** error);
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-bool tr_sys_file_get_info(tr_sys_file_t handle, tr_sys_path_info* info, struct tr_error** error);
+    bool tr_sys_file_get_info(tr_sys_file_t handle, tr_sys_path_info* info, struct tr_error** error);
 
-/**
+    /**
  * @brief Portability wrapper for `lseek()`.
  *
  * @param[in]  handle     Valid file descriptor.
@@ -357,10 +347,14 @@ bool tr_sys_file_get_info(tr_sys_file_t handle, tr_sys_path_info* info, struct t
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-bool tr_sys_file_seek(tr_sys_file_t handle, int64_t offset, tr_seek_origin_t origin, uint64_t* new_offset,
-    struct tr_error** error);
+    bool tr_sys_file_seek(
+        tr_sys_file_t handle,
+        int64_t offset,
+        tr_seek_origin_t origin,
+        uint64_t* new_offset,
+        struct tr_error** error);
 
-/**
+    /**
  * @brief Portability wrapper for `read()`.
  *
  * @param[in]  handle     Valid file descriptor.
@@ -373,9 +367,9 @@ bool tr_sys_file_seek(tr_sys_file_t handle, int64_t offset, tr_seek_origin_t ori
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-bool tr_sys_file_read(tr_sys_file_t handle, void* buffer, uint64_t size, uint64_t* bytes_read, struct tr_error** error);
+    bool tr_sys_file_read(tr_sys_file_t handle, void* buffer, uint64_t size, uint64_t* bytes_read, struct tr_error** error);
 
-/**
+    /**
  * @brief Like `pread()`, except that the position is undefined afterwards.
  *        Not thread-safe.
  *
@@ -390,10 +384,15 @@ bool tr_sys_file_read(tr_sys_file_t handle, void* buffer, uint64_t size, uint64_
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-bool tr_sys_file_read_at(tr_sys_file_t handle, void* buffer, uint64_t size, uint64_t offset, uint64_t* bytes_read,
-    struct tr_error** error);
+    bool tr_sys_file_read_at(
+        tr_sys_file_t handle,
+        void* buffer,
+        uint64_t size,
+        uint64_t offset,
+        uint64_t* bytes_read,
+        struct tr_error** error);
 
-/**
+    /**
  * @brief Portability wrapper for `write()`.
  *
  * @param[in]  handle        Valid file descriptor.
@@ -406,10 +405,14 @@ bool tr_sys_file_read_at(tr_sys_file_t handle, void* buffer, uint64_t size, uint
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-bool tr_sys_file_write(tr_sys_file_t handle, void const* buffer, uint64_t size, uint64_t* bytes_written,
-    struct tr_error** error);
+    bool tr_sys_file_write(
+        tr_sys_file_t handle,
+        void const* buffer,
+        uint64_t size,
+        uint64_t* bytes_written,
+        struct tr_error** error);
 
-/**
+    /**
  * @brief Like `pwrite()`, except that the position is undefined afterwards.
  *        Not thread-safe.
  *
@@ -424,10 +427,15 @@ bool tr_sys_file_write(tr_sys_file_t handle, void const* buffer, uint64_t size, 
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-bool tr_sys_file_write_at(tr_sys_file_t handle, void const* buffer, uint64_t size, uint64_t offset, uint64_t* bytes_written,
-    struct tr_error** error);
+    bool tr_sys_file_write_at(
+        tr_sys_file_t handle,
+        void const* buffer,
+        uint64_t size,
+        uint64_t offset,
+        uint64_t* bytes_written,
+        struct tr_error** error);
 
-/**
+    /**
  * @brief Portability wrapper for `fsync()`.
  *
  * @param[in]  handle Valid file descriptor.
@@ -436,9 +444,9 @@ bool tr_sys_file_write_at(tr_sys_file_t handle, void const* buffer, uint64_t siz
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-bool tr_sys_file_flush(tr_sys_file_t handle, struct tr_error** error);
+    bool tr_sys_file_flush(tr_sys_file_t handle, struct tr_error** error);
 
-/**
+    /**
  * @brief Portability wrapper for `ftruncate()`.
  *
  * @param[in]  handle Valid file descriptor.
@@ -448,9 +456,9 @@ bool tr_sys_file_flush(tr_sys_file_t handle, struct tr_error** error);
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-bool tr_sys_file_truncate(tr_sys_file_t handle, uint64_t size, struct tr_error** error);
+    bool tr_sys_file_truncate(tr_sys_file_t handle, uint64_t size, struct tr_error** error);
 
-/**
+    /**
  * @brief Tell system to prefetch or discard some part of file which is [not] to be read soon.
  *
  * @param[in]  handle Valid file descriptor.
@@ -461,10 +469,14 @@ bool tr_sys_file_truncate(tr_sys_file_t handle, uint64_t size, struct tr_error**
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-bool tr_sys_file_advise(tr_sys_file_t handle, uint64_t offset, uint64_t size, tr_sys_file_advice_t advice,
-    struct tr_error** error);
+    bool tr_sys_file_advise(
+        tr_sys_file_t handle,
+        uint64_t offset,
+        uint64_t size,
+        tr_sys_file_advice_t advice,
+        struct tr_error** error);
 
-/**
+    /**
  * @brief Preallocate file to specified size in full or sparse mode.
  *
  * @param[in]  handle Valid file descriptor.
@@ -475,9 +487,9 @@ bool tr_sys_file_advise(tr_sys_file_t handle, uint64_t offset, uint64_t size, tr
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-bool tr_sys_file_preallocate(tr_sys_file_t handle, uint64_t size, int flags, struct tr_error** error);
+    bool tr_sys_file_preallocate(tr_sys_file_t handle, uint64_t size, int flags, struct tr_error** error);
 
-/**
+    /**
  * @brief Portability wrapper for `mmap()` for files.
  *
  * @param[in]  handle Valid file descriptor.
@@ -489,9 +501,9 @@ bool tr_sys_file_preallocate(tr_sys_file_t handle, uint64_t size, int flags, str
  * @return Pointer to mapped file data on success, `NULL` otherwise (with
  *         `error` set accordingly).
  */
-void* tr_sys_file_map_for_reading(tr_sys_file_t handle, uint64_t offset, uint64_t size, struct tr_error** error);
+    void* tr_sys_file_map_for_reading(tr_sys_file_t handle, uint64_t offset, uint64_t size, struct tr_error** error);
 
-/**
+    /**
  * @brief Portability wrapper for `munmap()` for files.
  *
  * @param[in]  address Pointer to mapped file data.
@@ -501,9 +513,9 @@ void* tr_sys_file_map_for_reading(tr_sys_file_t handle, uint64_t offset, uint64_
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-bool tr_sys_file_unmap(void const* address, uint64_t size, struct tr_error** error);
+    bool tr_sys_file_unmap(void const* address, uint64_t size, struct tr_error** error);
 
-/**
+    /**
  * @brief Portability wrapper for `flock()`.
  *
  * Don't try to upgrade or downgrade the lock unless you know what you are
@@ -516,11 +528,11 @@ bool tr_sys_file_unmap(void const* address, uint64_t size, struct tr_error** err
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-bool tr_sys_file_lock(tr_sys_file_t handle, int operation, struct tr_error** error);
+    bool tr_sys_file_lock(tr_sys_file_t handle, int operation, struct tr_error** error);
 
-/* File-related wrappers (utility) */
+    /* File-related wrappers (utility) */
 
-/**
+    /**
  * @brief Portability wrapper for `fgets()`, removing EOL internally.
  *
  * Special care should be taken when reading from one of standard input streams
@@ -541,9 +553,9 @@ bool tr_sys_file_lock(tr_sys_file_t handle, int operation, struct tr_error** err
  *         you need to distinguish the two, check if `error` is `NULL`
  *         afterwards.
  */
-bool tr_sys_file_read_line(tr_sys_file_t handle, char* buffer, size_t buffer_size, struct tr_error** error);
+    bool tr_sys_file_read_line(tr_sys_file_t handle, char* buffer, size_t buffer_size, struct tr_error** error);
 
-/**
+    /**
  * @brief Portability wrapper for `fputs()`, appending EOL internally.
  *
  * Special care should be taken when writing to one of standard output streams
@@ -559,9 +571,9 @@ bool tr_sys_file_read_line(tr_sys_file_t handle, char* buffer, size_t buffer_siz
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-bool tr_sys_file_write_line(tr_sys_file_t handle, char const* buffer, struct tr_error** error);
+    bool tr_sys_file_write_line(tr_sys_file_t handle, char const* buffer, struct tr_error** error);
 
-/**
+    /**
  * @brief Portability wrapper for `fprintf()`.
  *
  * Special care should be taken when writing to one of standard output streams
@@ -578,11 +590,11 @@ bool tr_sys_file_write_line(tr_sys_file_t handle, char const* buffer, struct tr_
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-bool tr_sys_file_write_fmt(tr_sys_file_t handle, char const* format, struct tr_error** error, ...) TR_GNUC_PRINTF(2, 4);
+    bool tr_sys_file_write_fmt(tr_sys_file_t handle, char const* format, struct tr_error** error, ...) TR_GNUC_PRINTF(2, 4);
 
-/* Directory-related wrappers */
+    /* Directory-related wrappers */
 
-/**
+    /**
  * @brief Portability wrapper for `getcwd()`.
  *
  * @param[out] error Pointer to error object. Optional, pass `NULL` if you are
@@ -592,9 +604,9 @@ bool tr_sys_file_write_fmt(tr_sys_file_t handle, char const* format, struct tr_e
  *         directory (use @ref tr_free to free it when no longer needed) on
  *         success, `NULL` otherwise (with `error` set accordingly).
  */
-char* tr_sys_dir_get_current(struct tr_error** error);
+    char* tr_sys_dir_get_current(struct tr_error** error);
 
-/**
+    /**
  * @brief Like `mkdir()`, but makes parent directories if needed.
  *
  * @param[in]  path        Path to directory.
@@ -606,9 +618,9 @@ char* tr_sys_dir_get_current(struct tr_error** error);
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-bool tr_sys_dir_create(char const* path, int flags, int permissions, struct tr_error** error);
+    bool tr_sys_dir_create(char const* path, int flags, int permissions, struct tr_error** error);
 
-/**
+    /**
  * @brief Portability wrapper for `mkdtemp()`.
  *
  * @param[in,out] path_template Template path to directory. Should end with at
@@ -621,9 +633,9 @@ bool tr_sys_dir_create(char const* path, int flags, int permissions, struct tr_e
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-bool tr_sys_dir_create_temp(char* path_template, struct tr_error** error);
+    bool tr_sys_dir_create_temp(char* path_template, struct tr_error** error);
 
-/**
+    /**
  * @brief Portability wrapper for `opendir()`.
  *
  * @param[in]  path  Path to directory.
@@ -633,9 +645,9 @@ bool tr_sys_dir_create_temp(char* path_template, struct tr_error** error);
  * @return Opened directory descriptor on success, `TR_BAD_SYS_DIR` otherwise
  *         (with `error` set accordingly).
  */
-tr_sys_dir_t tr_sys_dir_open(char const* path, struct tr_error** error);
+    tr_sys_dir_t tr_sys_dir_open(char const* path, struct tr_error** error);
 
-/**
+    /**
  * @brief Portability wrapper for `readdir()`.
  *
  * @param[in]  handle Valid directory descriptor.
@@ -648,9 +660,9 @@ tr_sys_dir_t tr_sys_dir_open(char const* path, struct tr_error** error);
  *         of directory; if you need to distinguish the two, check if `error`
  *         is `NULL` afterwards.
  */
-char const* tr_sys_dir_read_name(tr_sys_dir_t handle, struct tr_error** error);
+    char const* tr_sys_dir_read_name(tr_sys_dir_t handle, struct tr_error** error);
 
-/**
+    /**
  * @brief Portability wrapper for `closedir()`.
  *
  * @param[in]  handle Valid directory descriptor.
@@ -659,10 +671,10 @@ char const* tr_sys_dir_read_name(tr_sys_dir_t handle, struct tr_error** error);
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-bool tr_sys_dir_close(tr_sys_dir_t handle, struct tr_error** error);
+    bool tr_sys_dir_close(tr_sys_dir_t handle, struct tr_error** error);
 
-/** @} */
-/** @} */
+    /** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }

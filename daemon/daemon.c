@@ -86,16 +86,18 @@ static struct event_base* ev_base = NULL;
 
 static char const* getUsage(void)
 {
-    return "Transmission OG " LONG_VERSION_STRING "  https://github.com/stefantalpalaru/transmission-og\n"
-        "A fast and easy BitTorrent client\n"
-        "\n"
-        MY_NAME " is a headless Transmission OG session\n"
-        "that can be controlled via transmission-remote\n"
-        "or the web interface.\n"
-        "\n"
-        "Usage: " MY_NAME " [options]";
+    return "Transmission OG " LONG_VERSION_STRING
+           "  https://github.com/stefantalpalaru/transmission-og\n"
+           "A fast and easy BitTorrent client\n"
+           "\n" MY_NAME
+           " is a headless Transmission OG session\n"
+           "that can be controlled via transmission-remote\n"
+           "or the web interface.\n"
+           "\n"
+           "Usage: " MY_NAME " [options]";
 }
 
+// clang-format off
 static struct tr_option const options[] =
 {
     { 'a', "allowed", "Allowed IP addresses. (Default: " TR_DEFAULT_RPC_WHITELIST ")", "a", true, "<list>" },
@@ -147,13 +149,17 @@ static struct tr_option const options[] =
     { 'x', "pid-file", "Enable PID file", "x", true, "<pid-file>" },
     { 0, NULL, NULL, NULL, false, NULL }
 };
+// clang-format on
 
 static bool reopen_log_file(char const* filename)
 {
     tr_error* error = NULL;
     tr_sys_file_t const old_log_file = logfile;
-    tr_sys_file_t const new_log_file = tr_sys_file_open(filename, TR_SYS_FILE_WRITE | TR_SYS_FILE_CREATE | TR_SYS_FILE_APPEND,
-        0666, &error);
+    tr_sys_file_t const new_log_file = tr_sys_file_open(
+        filename,
+        TR_SYS_FILE_WRITE | TR_SYS_FILE_CREATE | TR_SYS_FILE_APPEND,
+        0666,
+        &error);
 
     if (new_log_file == TR_BAD_SYS_FILE)
     {
@@ -351,8 +357,11 @@ static void periodicUpdate(evutil_socket_t fd UNUSED, short what UNUSED, void* c
     reportStatus();
 }
 
-static tr_rpc_callback_status on_rpc_callback(tr_session* session UNUSED, tr_rpc_callback_type type,
-    struct tr_torrent* tor UNUSED, void* user_data UNUSED)
+static tr_rpc_callback_status on_rpc_callback(
+    tr_session* session UNUSED,
+    tr_rpc_callback_type type,
+    struct tr_torrent* tor UNUSED,
+    void* user_data UNUSED)
 {
     if (type == TR_RPC_SESSION_CLOSE)
     {
@@ -362,7 +371,13 @@ static tr_rpc_callback_status on_rpc_callback(tr_session* session UNUSED, tr_rpc
     return TR_RPC_OK;
 }
 
-static bool parse_args(int argc, char const** argv, tr_variant* settings, bool* paused, bool* dump_settings, bool* foreground,
+static bool parse_args(
+    int argc,
+    char const** argv,
+    tr_variant* settings,
+    bool* paused,
+    bool* dump_settings,
+    bool* foreground,
     int* exit_code)
 {
     int c;
@@ -657,7 +672,10 @@ static int daemon_start(void* raw_arg, bool foreground)
     if (!tr_str_is_empty(pid_filename))
     {
         tr_error* error = NULL;
-        tr_sys_file_t fp = tr_sys_file_open(pid_filename, TR_SYS_FILE_WRITE | TR_SYS_FILE_CREATE | TR_SYS_FILE_TRUNCATE, 0666,
+        tr_sys_file_t fp = tr_sys_file_open(
+            pid_filename,
+            TR_SYS_FILE_WRITE | TR_SYS_FILE_CREATE | TR_SYS_FILE_TRUNCATE,
+            0666,
             &error);
 
         if (fp != TR_BAD_SYS_FILE)
@@ -861,8 +879,7 @@ int tr_main(int argc, char* argv[])
         return ret;
     }
 
-    dtr_callbacks const cb =
-    {
+    dtr_callbacks const cb = {
         .on_start = &daemon_start,
         .on_stop = &daemon_stop,
         .on_reconfigure = &daemon_reconfigure,

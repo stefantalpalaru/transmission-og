@@ -23,25 +23,25 @@ class FileTreeItem
     Q_DISABLE_COPY(FileTreeItem)
 
 public:
-/* *INDENT-OFF* */
+    /* *INDENT-OFF* */
     enum
     {
         LOW = (1 << 0),
         NORMAL = (1 << 1),
         HIGH = (1 << 2)
     };
-/* *INDENT-ON* */
+    /* *INDENT-ON* */
 
 public:
-    FileTreeItem(QString const& name = QString(), int fileIndex = -1, uint64_t size = 0) :
-        myName(name),
-        myFileIndex(fileIndex),
-        myTotalSize(size),
-        myParent(nullptr),
-        myPriority(0),
-        myIsWanted(false),
-        myHaveSize(0),
-        myFirstUnhashedRow(0)
+    FileTreeItem(QString const& name = QString(), int fileIndex = -1, uint64_t size = 0)
+        : myName(name)
+        , myFileIndex(fileIndex)
+        , myTotalSize(size)
+        , myParent(nullptr)
+        , myPriority(0)
+        , myIsWanted(false)
+        , myHaveSize(0)
+        , myFirstUnhashedRow(0)
     {
     }
 

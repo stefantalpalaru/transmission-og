@@ -63,8 +63,12 @@ bool utp_write(UTPSocket* socket, size_t count)
     return false;
 }
 
-int tr_utpPacket(unsigned char const* buf UNUSED, size_t buflen UNUSED, struct sockaddr const* from UNUSED,
-    socklen_t fromlen UNUSED, tr_session* ss UNUSED)
+int tr_utpPacket(
+    unsigned char const* buf UNUSED,
+    size_t buflen UNUSED,
+    struct sockaddr const* from UNUSED,
+    socklen_t fromlen UNUSED,
+    tr_session* ss UNUSED)
 {
     return -1;
 }

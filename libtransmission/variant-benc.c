@@ -88,7 +88,11 @@ int tr_bencParseInt(uint8_t const* buf, uint8_t const* bufend, uint8_t const** s
  * Note that there is no constant beginning delimiter, and no ending delimiter.
  * Example: 4:spam represents the string "spam"
  */
-int tr_bencParseStr(uint8_t const* buf, uint8_t const* bufend, uint8_t const** setme_end, uint8_t const** setme_str,
+int tr_bencParseStr(
+    uint8_t const* buf,
+    uint8_t const* bufend,
+    uint8_t const** setme_end,
+    uint8_t const** setme_str,
     size_t* setme_strlen)
 {
     void const* end;
@@ -376,16 +380,17 @@ static void saveContainerEndFunc(tr_variant const* val UNUSED, void* evbuf)
     evbuffer_add(evbuf, "e", 1);
 }
 
-static struct VariantWalkFuncs const walk_funcs =
-{
+// clang-format off
+static struct VariantWalkFuncs const walk_funcs = {
     saveIntFunc,
     saveBoolFunc,
     saveRealFunc,
     saveStringFunc,
     saveDictBeginFunc,
     saveListBeginFunc,
-    saveContainerEndFunc
+    saveContainerEndFunc,
 };
+// clang-format on
 
 void tr_variantToBufBenc(tr_variant const* top, struct evbuffer* buf)
 {

@@ -20,23 +20,6 @@
  * DEALINGS IN THE SOFTWARE.
  *****************************************************************************/
 
-#include <locale.h>
-#include <signal.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h> /* exit() */
-#include <time.h>
-
-#include <glib/gi18n.h>
-#include <glib/gstdio.h>
-#include <gio/gio.h>
-#include <gtk/gtk.h>
-
-#include <libtransmission/transmission.h>
-#include <libtransmission/rpcimpl.h>
-#include <libtransmission/utils.h>
-#include <libtransmission/version.h>
-
 #include "actions.h"
 #include "conf.h"
 #include "details.h"
@@ -53,6 +36,22 @@
 #include "tr-prefs.h"
 #include "tr-window.h"
 #include "util.h"
+#include <locale.h>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h> /* exit() */
+#include <string.h>
+#include <time.h>
+
+#include <libtransmission/transmission.h>
+#include <libtransmission/rpcimpl.h>
+#include <libtransmission/utils.h>
+#include <libtransmission/version.h>
+
+#include <gio/gio.h>
+#include <glib/gi18n.h>
+#include <glib/gstdio.h>
+#include <gtk/gtk.h>
 
 #define MY_CONFIG_NAME "transmission"
 #define MY_READABLE_NAME "transmission-og-gtk"
@@ -189,7 +188,10 @@ struct counts_data
     int stopped_count;
 };
 
-static void get_selected_torrent_counts_foreach(GtkTreeModel* model, GtkTreePath* path UNUSED, GtkTreeIter* iter,
+static void get_selected_torrent_counts_foreach(
+    GtkTreeModel* model,
+    GtkTreePath* path UNUSED,
+    GtkTreeIter* iter,
     gpointer user_data)
 {
     int activity = 0;
@@ -219,7 +221,10 @@ static void get_selected_torrent_counts(struct cbdata* data, struct counts_data*
     gtk_tree_selection_selected_foreach(data->sel, get_selected_torrent_counts_foreach, counts);
 }
 
-static void count_updatable_foreach(GtkTreeModel* model, GtkTreePath* path UNUSED, GtkTreeIter* iter,
+static void count_updatable_foreach(
+    GtkTreeModel* model,
+    GtkTreePath* path UNUSED,
+    GtkTreeIter* iter,
     gpointer accumulated_status)
 {
     tr_torrent* tor;
@@ -306,7 +311,11 @@ static void register_magnet_link_handler(void)
     char const* const content_type = "x-scheme-handler/magnet";
 
     error = NULL;
-    app = g_app_info_create_from_commandline("transmission-og-gtk", "transmission-og-gtk", G_APP_INFO_CREATE_SUPPORTS_URIS, &error);
+    app = g_app_info_create_from_commandline(
+        "transmission-og-gtk",
+        "transmission-og-gtk",
+        G_APP_INFO_CREATE_SUPPORTS_URIS,
+        &error);
     g_app_info_set_as_default_for_type(app, content_type, &error);
 
     if (error != NULL)
@@ -446,8 +455,11 @@ static gboolean on_rpc_changed_idle(gpointer gdata)
     return G_SOURCE_REMOVE;
 }
 
-static tr_rpc_callback_status on_rpc_changed(tr_session* session G_GNUC_UNUSED, tr_rpc_callback_type type,
-    struct tr_torrent* tor, void* gdata)
+static tr_rpc_callback_status on_rpc_changed(
+    tr_session* session G_GNUC_UNUSED,
+    tr_rpc_callback_type type,
+    struct tr_torrent* tor,
+    void* gdata)
 {
     struct cbdata* cbdata = gdata;
     struct on_rpc_changed_struct* data;
@@ -624,8 +636,7 @@ int main(int argc, char** argv)
     GError* error = NULL;
     struct cbdata cbdata;
 
-    GOptionEntry option_entries[] =
-    {
+    GOptionEntry option_entries[] = {
         { "config-dir", 'g', 0, G_OPTION_ARG_FILENAME, &cbdata.config_dir, _("Where to look for configuration files"), NULL },
         { "paused", 'p', 0, G_OPTION_ARG_NONE, &cbdata.start_paused, _("Start with all torrents paused"), NULL },
         { "minimized", 'm', 0, G_OPTION_ARG_NONE, &cbdata.is_iconified, _("Start minimized in notification area"), NULL },
@@ -688,7 +699,9 @@ int main(int argc, char** argv)
 
     /* init the application for the specified config dir */
     stat(cbdata.config_dir, &sb);
-    application_id = g_strdup_printf("com.transmissionbt.transmission_og_%lu_%lu", (unsigned long)sb.st_dev,
+    application_id = g_strdup_printf(
+        "com.transmissionbt.transmission_og_%lu_%lu",
+        (unsigned long)sb.st_dev,
         (unsigned long)sb.st_ino);
     app = gtk_application_new(application_id, G_APPLICATION_HANDLES_OPEN);
     g_signal_connect(app, "open", G_CALLBACK(on_open), &cbdata);
@@ -755,9 +768,14 @@ static void app_setup(GtkWindow* wind, struct cbdata* cbdata)
 
     if (!gtr_pref_flag_get(TR_KEY_user_has_given_informed_consent))
     {
-        GtkWidget* w = gtk_message_dialog_new(GTK_WINDOW(wind), GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_OTHER,
-            GTK_BUTTONS_NONE, "%s", _("Transmission OG is a file sharing program. When you run a torrent, its data will be "
-            "made available to others by means of upload. Any content you share is your sole responsibility."));
+        GtkWidget* w = gtk_message_dialog_new(
+            GTK_WINDOW(wind),
+            GTK_DIALOG_DESTROY_WITH_PARENT,
+            GTK_MESSAGE_OTHER,
+            GTK_BUTTONS_NONE,
+            "%s",
+            _("Transmission OG is a file sharing program. When you run a torrent, its data will be "
+              "made available to others by means of upload. Any content you share is your sole responsibility."));
         gtk_dialog_add_button(GTK_DIALOG(w), GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT);
         gtk_dialog_add_button(GTK_DIALOG(w), _("I _Agree"), GTK_RESPONSE_ACCEPT);
         gtk_dialog_set_default_response(GTK_DIALOG(w), GTK_RESPONSE_ACCEPT);
@@ -846,8 +864,15 @@ static void rowChangedCB(GtkTreeModel* model UNUSED, GtkTreePath* path, GtkTreeI
     }
 }
 
-static void on_drag_data_received(GtkWidget* widget UNUSED, GdkDragContext* drag_context, gint x UNUSED, gint y UNUSED,
-    GtkSelectionData* selection_data, guint info UNUSED, guint time_, gpointer gdata)
+static void on_drag_data_received(
+    GtkWidget* widget UNUSED,
+    GdkDragContext* drag_context,
+    gint x UNUSED,
+    gint y UNUSED,
+    GtkSelectionData* selection_data,
+    guint info UNUSED,
+    guint time_,
+    gpointer gdata)
 {
     char** uris = gtk_selection_data_get_uris(selection_data);
     guint const file_count = g_strv_length(uris);
@@ -985,8 +1010,14 @@ static void on_app_exit(gpointer vdata)
     c = GTK_WIDGET(cbdata->wind);
     gtk_container_remove(GTK_CONTAINER(c), gtk_bin_get_child(GTK_BIN(c)));
 
-    p =
-        g_object_new(GTK_TYPE_GRID, "column-spacing", GUI_PAD_BIG, "halign", GTK_ALIGN_CENTER, "valign", GTK_ALIGN_CENTER,
+    p = g_object_new(
+        GTK_TYPE_GRID,
+        "column-spacing",
+        GUI_PAD_BIG,
+        "halign",
+        GTK_ALIGN_CENTER,
+        "valign",
+        GTK_ALIGN_CENTER,
         NULL);
     gtk_container_add(GTK_CONTAINER(c), p);
 
@@ -1052,14 +1083,21 @@ static void flush_torrent_errors(struct cbdata* cbdata)
 {
     if (cbdata->error_list != NULL)
     {
-        show_torrent_errors(cbdata->wind, ngettext("Couldn't add corrupt torrent", "Couldn't add corrupt torrents",
-            g_slist_length(cbdata->error_list)), &cbdata->error_list);
+        show_torrent_errors(
+            cbdata->wind,
+            ngettext("Couldn't add corrupt torrent", "Couldn't add corrupt torrents", g_slist_length(cbdata->error_list)),
+            &cbdata->error_list);
     }
 
     if (cbdata->duplicates_list != NULL)
     {
-        show_torrent_errors(cbdata->wind, ngettext("Couldn't add duplicate torrent", "Couldn't add duplicate torrents",
-            g_slist_length(cbdata->duplicates_list)), &cbdata->duplicates_list);
+        show_torrent_errors(
+            cbdata->wind,
+            ngettext(
+                "Couldn't add duplicate torrent",
+                "Couldn't add duplicate torrents",
+                g_slist_length(cbdata->duplicates_list)),
+            &cbdata->duplicates_list);
     }
 }
 
@@ -1371,12 +1409,12 @@ static gboolean update_model_loop(gpointer gdata)
 static void show_about_dialog(GtkWindow* parent)
 {
     char const* uri = "https://github.com/stefantalpalaru/transmission-og";
-    char const* authors[] =
-    {
+    // clang-format off
+    char const* authors[] = {
         "Charles Kerr (Backend; GTK+)",
         "Mitchell Livingston (Backend; OS X)",
         "Mike Gelfand",
-        NULL
+        NULL,
     };
 
     gtk_show_about_dialog(parent,
@@ -1397,6 +1435,7 @@ static void show_about_dialog(GtkWindow* parent)
         "wrap-license", TRUE,
 #endif
         NULL);
+    // clang-format on
 }
 
 static void append_id_to_benc_list(GtkTreeModel* m, GtkTreePath* path UNUSED, GtkTreeIter* iter, gpointer list)
@@ -1578,7 +1617,8 @@ void gtr_actions_handler(char const* action_name, gpointer user_data)
             gtk_widget_show(w);
         }
     }
-    else if (g_strcmp0(action_name, "torrent-start") == 0 || g_strcmp0(action_name, "torrent-start-now") == 0 ||
+    else if (
+        g_strcmp0(action_name, "torrent-start") == 0 || g_strcmp0(action_name, "torrent-start-now") == 0 ||
         g_strcmp0(action_name, "torrent-stop") == 0 || g_strcmp0(action_name, "torrent-reannounce") == 0 ||
         g_strcmp0(action_name, "torrent-verify") == 0 || g_strcmp0(action_name, "queue-move-top") == 0 ||
         g_strcmp0(action_name, "queue-move-up") == 0 || g_strcmp0(action_name, "queue-move-down") == 0 ||

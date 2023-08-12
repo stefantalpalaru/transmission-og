@@ -101,7 +101,9 @@ void FilterBar::refreshTrackers()
 {
     enum
     {
-        ROW_TOTALS = 0, ROW_SEPARATOR, ROW_FIRST_TRACKER
+        ROW_TOTALS = 0,
+        ROW_SEPARATOR,
+        ROW_FIRST_TRACKER
     };
 
     auto torrentsPerHost = std::unordered_map<QString, int>{};
@@ -120,17 +122,17 @@ void FilterBar::refreshTrackers()
     item->setData(getCountString(num_trackers), FilterBarComboBox::CountStringRole);
 
     auto updateTrackerItem = [](QStandardItem* i, auto const& it)
-        {
-            auto const& displayName = it->first;
-            auto const& count = it->second;
-            auto const icon = qApp->faviconCache().find(FaviconCache::getKey(displayName));
-            i->setData(displayName, Qt::DisplayRole);
-            i->setData(displayName, TrackerRole);
-            i->setData(getCountString(count), FilterBarComboBox::CountStringRole);
-            i->setData(icon, Qt::DecorationRole);
-            i->setData(int(count), FilterBarComboBox::CountRole);
-            return i;
-        };
+    {
+        auto const& displayName = it->first;
+        auto const& count = it->second;
+        auto const icon = qApp->faviconCache().find(FaviconCache::getKey(displayName));
+        i->setData(displayName, Qt::DisplayRole);
+        i->setData(displayName, TrackerRole);
+        i->setData(getCountString(count), FilterBarComboBox::CountStringRole);
+        i->setData(icon, Qt::DecorationRole);
+        i->setData(int(count), FilterBarComboBox::CountRole);
+        return i;
+    };
 
     auto newTrackers = std::map<QString, int>(torrentsPerHost.begin(), torrentsPerHost.end());
     auto old_it = myTrackerCounts.cbegin();
@@ -195,13 +197,13 @@ FilterBarComboBox* FilterBar::createTrackerCombo(QStandardItemModel* model)
 ****
 ***/
 
-FilterBar::FilterBar(Prefs& prefs, TorrentModel const& torrents, TorrentFilter const& filter, QWidget* parent) :
-    QWidget(parent),
-    myPrefs(prefs),
-    myTorrents(torrents),
-    myFilter(filter),
-    myRecountTimer(new QTimer(this)),
-    myIsBootstrapping(true)
+FilterBar::FilterBar(Prefs& prefs, TorrentModel const& torrents, TorrentFilter const& filter, QWidget* parent)
+    : QWidget(parent)
+    , myPrefs(prefs)
+    , myTorrents(torrents)
+    , myFilter(filter)
+    , myRecountTimer(new QTimer(this))
+    , myIsBootstrapping(true)
 {
     QHBoxLayout* h = new QHBoxLayout(this);
     h->setContentsMargins(3, 3, 3, 3);

@@ -25,8 +25,8 @@ public:
     };
 
 public:
-    AddData() :
-        type(NONE)
+    AddData()
+        : type(NONE)
     {
     }
 

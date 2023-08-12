@@ -875,6 +875,7 @@ void tr_hex_to_binary(char const* input, void* output, size_t byte_length)
 
 static bool isValidURLChars(char const* url, size_t url_len)
 {
+    // clang-format off
     static char const rfc2396_valid_chars[] =
         "abcdefghijklmnopqrstuvwxyz" /* lowalpha */
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ" /* upalpha */
@@ -883,13 +884,14 @@ static bool isValidURLChars(char const* url, size_t url_len)
         ";/?:@&=+$," /* reserved */
         "<>#%<\"" /* delims */
         "{}|\\^[]`"; /* unwise */
+    // clang-format on
 
     if (url == NULL)
     {
         return false;
     }
 
-    for (char const* c = url, * end = url + url_len; c < end && *c != '\0'; ++c)
+    for (char const *c = url, *end = url + url_len; c < end && *c != '\0'; ++c)
     {
         if (memchr(rfc2396_valid_chars, *c, sizeof(rfc2396_valid_chars) - 1) == NULL)
         {
@@ -927,7 +929,7 @@ bool tr_urlIsValid(char const* url, size_t url_len)
 
     return isValidURLChars(url, url_len) && tr_urlParse(url, url_len, NULL, NULL, NULL, NULL) &&
         (memcmp(url, "http://", 7) == 0 || memcmp(url, "https://", 8) == 0 || memcmp(url, "ftp://", 6) == 0 ||
-            memcmp(url, "sftp://", 7) == 0);
+         memcmp(url, "sftp://", 7) == 0);
 }
 
 bool tr_addressIsIP(char const* str)
@@ -961,15 +963,16 @@ static int get_port_for_scheme(char const* scheme, size_t scheme_len)
         int port;
     };
 
-    static struct known_scheme const known_schemes[] =
-    {
+    // clang-format off
+    static struct known_scheme const known_schemes[] = {
         { "udp", 80 },
         { "ftp", 21 },
         { "sftp", 22 },
         { "http", 80 },
         { "https", 443 },
-        { NULL, 0 }
+        { NULL, 0 },
     };
+    // clang-format on
 
     for (struct known_scheme const* s = known_schemes; s->name != NULL; ++s)
     {
@@ -1074,11 +1077,18 @@ void tr_removeElementFromArray(void* array, unsigned int index_to_remove, size_t
 {
     char* a = array;
 
-    memmove(a + sizeof_element * index_to_remove, a + sizeof_element * (index_to_remove + 1),
+    memmove(
+        a + sizeof_element * index_to_remove,
+        a + sizeof_element * (index_to_remove + 1),
         sizeof_element * (--nmemb - index_to_remove));
 }
 
-int tr_lowerBound(void const* key, void const* base, size_t nmemb, size_t size, tr_voidptr_compare_func compar,
+int tr_lowerBound(
+    void const* key,
+    void const* base,
+    size_t nmemb,
+    size_t size,
+    tr_voidptr_compare_func compar,
     bool* exact_match)
 {
     size_t first = 0;
@@ -1131,13 +1141,16 @@ int tr_lowerBound(void const* key, void const* base, size_t nmemb, size_t size, 
                 char __tmp = *__a; \
                 *__a++ = *__b; \
                 *__b++ = __tmp; \
-            } \
-            while (--__size > 0); \
+            } while (--__size > 0); \
         } \
-    } \
-    while (0)
+    } while (0)
 
-static size_t quickfindPartition(char* base, size_t left, size_t right, size_t size, tr_voidptr_compare_func compar,
+static size_t quickfindPartition(
+    char* base,
+    size_t left,
+    size_t right,
+    size_t size,
+    tr_voidptr_compare_func compar,
     size_t pivotIndex)
 {
     size_t storeIndex;
@@ -1338,7 +1351,11 @@ char* tr_win32_native_to_utf8(wchar_t const* text, int text_size)
     return tr_win32_native_to_utf8_ex(text, text_size, 0, 0, NULL);
 }
 
-char* tr_win32_native_to_utf8_ex(wchar_t const* text, int text_size, int extra_chars_before, int extra_chars_after,
+char* tr_win32_native_to_utf8_ex(
+    wchar_t const* text,
+    int text_size,
+    int extra_chars_before,
+    int extra_chars_after,
     int* real_result_size)
 {
     char* ret = NULL;
@@ -1384,7 +1401,11 @@ wchar_t* tr_win32_utf8_to_native(char const* text, int text_size)
     return tr_win32_utf8_to_native_ex(text, text_size, 0, 0, NULL);
 }
 
-wchar_t* tr_win32_utf8_to_native_ex(char const* text, int text_size, int extra_chars_before, int extra_chars_after,
+wchar_t* tr_win32_utf8_to_native_ex(
+    char const* text,
+    int text_size,
+    int extra_chars_before,
+    int extra_chars_after,
     int* real_result_size)
 {
     wchar_t* ret = NULL;
@@ -1432,8 +1453,14 @@ char* tr_win32_format_message(uint32_t code)
     char* text = NULL;
     size_t text_size;
 
-    wide_size = FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-        NULL, code, 0, (LPWSTR)&wide_text, 0, NULL);
+    wide_size = FormatMessageW(
+        FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+        NULL,
+        code,
+        0,
+        (LPWSTR)&wide_text,
+        0,
+        NULL);
 
     if (wide_size == 0)
     {
@@ -1510,7 +1537,7 @@ void tr_win32_make_args_utf8(int* argc, char*** argv)
     LocalFree(my_wide_argv);
 }
 
-int tr_main_win32(int argc, char** argv, int (* real_main)(int, char**))
+int tr_main_win32(int argc, char** argv, int (*real_main)(int, char**))
 {
     tr_win32_make_args_utf8(&argc, &argv);
     SetConsoleCP(CP_UTF8);
@@ -1938,8 +1965,7 @@ uint64_t tr_htonll(uint64_t x)
     {
         uint32_t lx[2];
         uint64_t llx;
-    }
-    u;
+    } u;
     u.lx[0] = htonl(x >> 32);
     u.lx[1] = htonl(x & 0xFFFFFFFFULL);
     return u.llx;
@@ -1960,8 +1986,7 @@ uint64_t tr_ntohll(uint64_t x)
     {
         uint32_t lx[2];
         uint64_t llx;
-    }
-    u;
+    } u;
     u.llx = x;
     return ((uint64_t)ntohl(u.lx[0]) << 32) | (uint64_t)ntohl(u.lx[1]);
 
@@ -1993,7 +2018,12 @@ enum
     TR_FMT_TB
 };
 
-static void formatter_init(struct formatter_units* units, unsigned int kilo, char const* kb, char const* mb, char const* gb,
+static void formatter_init(
+    struct formatter_units* units,
+    unsigned int kilo,
+    char const* kb,
+    char const* mb,
+    char const* gb,
     char const* tb)
 {
     uint64_t value;

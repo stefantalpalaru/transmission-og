@@ -558,7 +558,10 @@ static int testParse2(void)
     tr_variantDictAddStr(&top, key_str, "this-is-a-string");
 
     benc = tr_variantToStr(&top, TR_VARIANT_FMT_BENC, &len);
-    check_str(benc, ==, "d14:this-is-a-booli1e14:this-is-a-real8:0.50000016:this-is-a-string16:this-is-a-string14:this-is-an-"
+    check_str(
+        benc,
+        ==,
+        "d14:this-is-a-booli1e14:this-is-a-real8:0.50000016:this-is-a-string16:this-is-a-string14:this-is-an-"
         "inti1234ee");
     check_int(tr_variantFromBencFull(&top2, benc, len, NULL, &end), ==, 0);
     check_ptr(end, ==, benc + len);
@@ -582,8 +585,8 @@ static int testParse2(void)
 
 int main(void)
 {
-    static testFunc const tests[] =
-    {
+    // clang-format off
+    static testFunc const tests[] = {
         testInt,
         testStr,
         testParse,
@@ -591,8 +594,9 @@ int main(void)
         testMerge,
         testBool,
         testParse2,
-        testStackSmash
+        testStackSmash,
     };
+    // clang-format on
 
     return runTests(tests, NUM_TESTS(tests));
 }

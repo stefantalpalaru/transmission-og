@@ -149,10 +149,9 @@ static int test_updating(void)
 
 int main(void)
 {
-    testFunc const tests[] =
-    {
+    testFunc const tests[] = {
         test_parsing,
-        test_updating
+        test_updating,
     };
 
     return runTests(tests, NUM_TESTS(tests));

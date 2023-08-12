@@ -1,5 +1,6 @@
 [![CI](https://github.com/stefantalpalaru/transmission-og/actions/workflows/ci.yml/badge.svg)](https://github.com/stefantalpalaru/transmission-og/actions/workflows/ci.yml)
 [![distcheck](https://github.com/stefantalpalaru/transmission-og/actions/workflows/distcheck.yml/badge.svg)](https://github.com/stefantalpalaru/transmission-og/actions/workflows/distcheck.yml)
+[![stylecheck](https://github.com/stefantalpalaru/transmission-og/actions/workflows/stylecheck.yml/badge.svg)](https://github.com/stefantalpalaru/transmission-og/actions/workflows/stylecheck.yml)
 
 ## About
 
@@ -163,6 +164,27 @@ project](https://explore.transifex.com/transmission-og/transmission-og/).
 Please open an issue here after updating a translation on Transifex.
 
 ## Development
+
+### Code formatting
+
+We are using `clang-format` through the wrapper script `code_style.sh` (`make format` also works).
+
+Vim integration, using [vim-clang-format](https://github.com/rhysd/vim-clang-format):
+
+```vimrc
+" in your ~/.vimrc
+autocmd defgroup BufNewFile,BufRead /path/to/transmission-og/*.{c,cc,h} setlocal shiftwidth=4 softtabstop=4 expandtab
+autocmd defgroup BufNewFile,BufRead /path/to/transmission-og/*.{c,cc,h} ClangFormatAutoEnable
+```
+
+Git integration, using a ".git/hooks/pre-commit" with executable permissions:
+
+```bash
+#!/usr/bin/env sh
+
+root="$(git rev-parse --show-toplevel)"
+exec "${root}/code_style.sh" --check
+```
 
 ### Updating translations
 

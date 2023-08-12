@@ -26,10 +26,9 @@ static int test_spawn_async_missing_exe(void)
 {
     char missing_exe_path[] = TR_IF_WIN32("C:\\", "/") "tr-missing-test-exe" TR_IF_WIN32(".exe", "");
 
-    char* const args[] =
-    {
+    char* const args[] = {
         missing_exe_path,
-        NULL
+        NULL,
     };
 
     tr_error* error = NULL;
@@ -55,8 +54,8 @@ static int test_spawn_async_args(void)
     char test_arg_3[] = "";
     char test_arg_4[] = "\"arg3'^! $PATH %PATH% \\";
 
-    char* const args[] =
-    {
+    // clang-format off
+    char* const args[] = {
         self_path,
         result_path,
         arg_dump_args,
@@ -64,8 +63,9 @@ static int test_spawn_async_args(void)
         test_arg_2,
         test_arg_3,
         allow_batch_metachars ? test_arg_4 : NULL,
-        NULL
+        NULL,
     };
+    // clang-format on
 
     tr_error* error = NULL;
     bool const ret = tr_spawn_async(args, NULL, NULL, &error);
@@ -125,8 +125,8 @@ static int test_spawn_async_env(void)
     char test_env_value_4[] = "bar";
     char test_env_value_5[] = "jar";
 
-    char* const args[] =
-    {
+    // clang-format off
+    char* const args[] = {
         self_path,
         result_path,
         arg_dump_env,
@@ -136,16 +136,16 @@ static int test_spawn_async_env(void)
         test_env_key_4,
         test_env_key_5,
         test_env_key_6,
-        NULL
+        NULL,
     };
+    // clang-format on
 
-    char* const env[] =
-    {
+    char* const env[] = {
         tr_strdup_printf("%s=%s", test_env_key_1, test_env_value_1),
         tr_strdup_printf("%s=%s", test_env_key_2, test_env_value_2),
         tr_strdup_printf("%s=%s", test_env_key_3, test_env_value_3),
         tr_strdup_printf("%s=%s", test_env_key_5, test_env_value_5),
-        NULL
+        NULL,
     };
 
     /* Inherited */
@@ -205,12 +205,11 @@ static int test_spawn_async_cwd_explicit(void)
     char* const test_dir = libtest_sandbox_create();
     char* const result_path = tr_sys_path_native_separators(tr_buildPath(test_dir, "result.txt", NULL));
 
-    char* const args[] =
-    {
+    char* const args[] = {
         self_path,
         result_path,
         arg_dump_cwd,
-        NULL
+        NULL,
     };
 
     tr_error* error = NULL;
@@ -248,12 +247,11 @@ static int test_spawn_async_cwd_inherit(void)
 
     char* const expected_cwd = tr_sys_dir_get_current(NULL);
 
-    char* const args[] =
-    {
+    char* const args[] = {
         self_path,
         result_path,
         arg_dump_cwd,
-        NULL
+        NULL,
     };
 
     tr_error* error = NULL;
@@ -290,12 +288,11 @@ static int test_spawn_async_cwd_missing(void)
     char* const test_dir = libtest_sandbox_create();
     char* const result_path = tr_sys_path_native_separators(tr_buildPath(test_dir, "result.txt", NULL));
 
-    char* const args[] =
-    {
+    char* const args[] = {
         self_path,
         result_path,
         arg_dump_cwd,
-        NULL
+        NULL,
     };
 
     tr_error* error = NULL;
@@ -324,8 +321,11 @@ int main(int argc, char** argv)
 
         char* const tmp_result_path = tr_strdup_printf("%s.tmp", result_path);
 
-        tr_sys_file_t const fd = tr_sys_file_open(tmp_result_path, TR_SYS_FILE_WRITE | TR_SYS_FILE_CREATE |
-            TR_SYS_FILE_TRUNCATE, 0644, NULL);
+        tr_sys_file_t const fd = tr_sys_file_open(
+            tmp_result_path,
+            TR_SYS_FILE_WRITE | TR_SYS_FILE_CREATE | TR_SYS_FILE_TRUNCATE,
+            0644,
+            NULL);
 
         if (fd == TR_BAD_SYS_FILE)
         {
@@ -371,15 +371,16 @@ int main(int argc, char** argv)
         return 0;
     }
 
-    testFunc const tests[] =
-    {
+    // clang-format off
+    testFunc const tests[] = {
         test_spawn_async_missing_exe,
         test_spawn_async_args,
         test_spawn_async_env,
         test_spawn_async_cwd_explicit,
         test_spawn_async_cwd_inherit,
-        test_spawn_async_cwd_missing
+        test_spawn_async_cwd_missing,
     };
+    // clang-format on
 
     int ret = runTests(tests, NUM_TESTS(tests));
 

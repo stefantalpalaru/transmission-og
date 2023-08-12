@@ -30,7 +30,10 @@ public:
 
     // returns a cached pixmap, or a NULL pixmap if there's no match in the cache
     QPixmap find(QString const& key);
-    QPixmap find(QUrl const& url) { return find(getKey(url)); }
+    QPixmap find(QUrl const& url)
+    {
+        return find(getKey(url));
+    }
 
     // This will emit a signal when (if) the icon becomes ready.
     // Returns the key.

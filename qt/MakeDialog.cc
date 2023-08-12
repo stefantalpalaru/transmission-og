@@ -47,10 +47,10 @@ private:
 
 } // namespace
 
-MakeProgressDialog::MakeProgressDialog(Session& session, tr_metainfo_builder& builder, QWidget* parent) :
-    BaseDialog(parent),
-    mySession(session),
-    myBuilder(builder)
+MakeProgressDialog::MakeProgressDialog(Session& session, tr_metainfo_builder& builder, QWidget* parent)
+    : BaseDialog(parent)
+    , mySession(session)
+    , myBuilder(builder)
 {
     ui.setupUi(this);
 
@@ -67,7 +67,8 @@ void MakeProgressDialog::onButtonBoxClicked(QAbstractButton* button)
     switch (ui.dialogButtons->standardButton(button))
     {
     case QDialogButtonBox::Open:
-        mySession.addNewlyCreatedTorrent(QString::fromUtf8(myBuilder.outputFile),
+        mySession.addNewlyCreatedTorrent(
+            QString::fromUtf8(myBuilder.outputFile),
             QFileInfo(QString::fromUtf8(myBuilder.top)).dir().path());
         break;
 
@@ -112,13 +113,15 @@ void MakeProgressDialog::onProgress()
     }
     else if (b.result == TR_MAKEMETA_IO_READ)
     {
-        str = tr("Error reading \"%1\": %2").arg(QString::fromUtf8(b.errfile)).
-            arg(QString::fromLocal8Bit(tr_strerror(b.my_errno)));
+        str = tr("Error reading \"%1\": %2")
+                  .arg(QString::fromUtf8(b.errfile))
+                  .arg(QString::fromLocal8Bit(tr_strerror(b.my_errno)));
     }
     else if (b.result == TR_MAKEMETA_IO_WRITE)
     {
-        str = tr("Error writing \"%1\": %2").arg(QString::fromUtf8(b.errfile)).
-            arg(QString::fromLocal8Bit(tr_strerror(b.my_errno)));
+        str = tr("Error writing \"%1\": %2")
+                  .arg(QString::fromUtf8(b.errfile))
+                  .arg(QString::fromLocal8Bit(tr_strerror(b.my_errno)));
     }
 
     ui.progressLabel->setText(str);
@@ -177,8 +180,13 @@ void MakeDialog::makeTorrent()
     }
 
     // start making the torrent
-    tr_makeMetaInfo(myBuilder.get(), target.toUtf8().constData(), trackers.isEmpty() ? nullptr : trackers.data(),
-        trackers.size(), comment.isEmpty() ? nullptr : comment.toUtf8().constData(), ui.privateCheck->isChecked());
+    tr_makeMetaInfo(
+        myBuilder.get(),
+        target.toUtf8().constData(),
+        trackers.isEmpty() ? nullptr : trackers.data(),
+        trackers.size(),
+        comment.isEmpty() ? nullptr : comment.toUtf8().constData(),
+        ui.privateCheck->isChecked());
 
     // pop up the dialog
     MakeProgressDialog* dialog = new MakeProgressDialog(mySession, *myBuilder, this);
@@ -220,17 +228,20 @@ void MakeDialog::onSourceChanged()
     {
         QString files = tr("%Ln File(s)", nullptr, myBuilder->fileCount);
         QString pieces = tr("%Ln Piece(s)", nullptr, myBuilder->pieceCount);
-        text = tr("%1 in %2; %3 @ %4").arg(Formatter::sizeToString(myBuilder->totalSize)).arg(files).arg(pieces).
-            arg(Formatter::sizeToString(myBuilder->pieceSize));
+        text = tr("%1 in %2; %3 @ %4")
+                   .arg(Formatter::sizeToString(myBuilder->totalSize))
+                   .arg(files)
+                   .arg(pieces)
+                   .arg(Formatter::sizeToString(myBuilder->pieceSize));
     }
 
     ui.sourceSizeLabel->setText(text);
 }
 
-MakeDialog::MakeDialog(Session& session, QWidget* parent) :
-    BaseDialog(parent),
-    mySession(session),
-    myBuilder(nullptr, &tr_metaInfoBuilderFree)
+MakeDialog::MakeDialog(Session& session, QWidget* parent)
+    : BaseDialog(parent)
+    , mySession(session)
+    , myBuilder(nullptr, &tr_metaInfoBuilderFree)
 {
     ui.setupUi(this);
 

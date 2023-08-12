@@ -30,28 +30,28 @@
 {
     tr_tracker_stat fStat;
 
-    Torrent * __weak fTorrent;
+    Torrent* __weak fTorrent;
 }
 
-@property (nonatomic, weak, readonly) Torrent * torrent;
+@property(nonatomic, weak, readonly) Torrent* torrent;
 
-- (id) initWithTrackerStat: (tr_tracker_stat *) stat torrent: (Torrent *) torrent;
+- (id)initWithTrackerStat:(tr_tracker_stat*)stat torrent:(Torrent*)torrent;
 
-- (BOOL) isEqual: (id) object;
+- (BOOL)isEqual:(id)object;
 
-- (NSString *) host;
-- (NSString *) fullAnnounceAddress;
+- (NSString*)host;
+- (NSString*)fullAnnounceAddress;
 
-- (NSInteger) tier;
+- (NSInteger)tier;
 
-- (NSUInteger) identifier;
+- (NSUInteger)identifier;
 
-- (NSInteger) totalSeeders;
-- (NSInteger) totalLeechers;
-- (NSInteger) totalDownloaded;
+- (NSInteger)totalSeeders;
+- (NSInteger)totalLeechers;
+- (NSInteger)totalDownloaded;
 
-- (NSString *) lastAnnounceStatusString;
-- (NSString *) nextAnnounceStatusString;
-- (NSString *) lastScrapeStatusString;
+- (NSString*)lastAnnounceStatusString;
+- (NSString*)nextAnnounceStatusString;
+- (NSString*)lastScrapeStatusString;
 
 @end

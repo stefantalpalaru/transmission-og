@@ -8,8 +8,9 @@
 
 #pragma once
 
-#include <gtk/gtk.h>
 #include "tr-core.h"
+
+#include <gtk/gtk.h>
 
 GtkWidget* gtr_file_list_new(TrCore*, int torrent_id);
 void gtr_file_list_clear(GtkWidget*);

@@ -27,39 +27,39 @@
 
 @interface CreatorWindowController : NSWindowController
 {
-    IBOutlet NSImageView * fIconView;
-    IBOutlet NSTextField * fNameField, * fStatusField, * fPiecesField, * fLocationField;
-    IBOutlet NSTableView * fTrackerTable;
-    IBOutlet NSSegmentedControl * fTrackerAddRemoveControl;
-    IBOutlet NSTextView * fCommentView;
-    IBOutlet NSButton * fPrivateCheck, * fOpenCheck;
+    IBOutlet NSImageView* fIconView;
+    IBOutlet NSTextField *fNameField, *fStatusField, *fPiecesField, *fLocationField;
+    IBOutlet NSTableView* fTrackerTable;
+    IBOutlet NSSegmentedControl* fTrackerAddRemoveControl;
+    IBOutlet NSTextView* fCommentView;
+    IBOutlet NSButton *fPrivateCheck, *fOpenCheck;
 
-    IBOutlet NSView * fProgressView;
-    IBOutlet NSProgressIndicator * fProgressIndicator;
+    IBOutlet NSView* fProgressView;
+    IBOutlet NSProgressIndicator* fProgressIndicator;
 
-    tr_metainfo_builder * fInfo;
-    NSURL * fPath, * fLocation;
-    NSMutableArray * fTrackers;
+    tr_metainfo_builder* fInfo;
+    NSURL *fPath, *fLocation;
+    NSMutableArray* fTrackers;
 
-    NSTimer * fTimer;
+    NSTimer* fTimer;
     BOOL fStarted, fOpenWhenCreated;
 
-    NSUserDefaults * fDefaults;
+    NSUserDefaults* fDefaults;
 }
 
-+ (CreatorWindowController *) createTorrentFile: (tr_session *) handle;
-+ (CreatorWindowController *) createTorrentFile: (tr_session *) handle forFile: (NSURL *) file;
++ (CreatorWindowController*)createTorrentFile:(tr_session*)handle;
++ (CreatorWindowController*)createTorrentFile:(tr_session*)handle forFile:(NSURL*)file;
 
-- (id) initWithHandle: (tr_session *) handle path: (NSURL *) path;
+- (id)initWithHandle:(tr_session*)handle path:(NSURL*)path;
 
-- (IBAction) setLocation: (id) sender;
-- (IBAction) create: (id) sender;
-- (IBAction) cancelCreateWindow: (id) sender;
-- (IBAction) cancelCreateProgress: (id) sender;
+- (IBAction)setLocation:(id)sender;
+- (IBAction)create:(id)sender;
+- (IBAction)cancelCreateWindow:(id)sender;
+- (IBAction)cancelCreateProgress:(id)sender;
 
-- (IBAction) addRemoveTracker: (id) sender;
+- (IBAction)addRemoveTracker:(id)sender;
 
-- (void) copy: (id) sender;
-- (void) paste: (id) sender;
+- (void)copy:(id)sender;
+- (void)paste:(id)sender;
 
 @end

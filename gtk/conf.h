@@ -23,6 +23,7 @@
 #pragma once
 
 #include <inttypes.h>
+
 #include <libtransmission/transmission.h> /* tr_variant, tr_session */
 #include <libtransmission/quark.h>
 

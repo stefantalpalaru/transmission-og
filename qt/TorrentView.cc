@@ -15,9 +15,9 @@
 class TorrentView::HeaderWidget : public QWidget
 {
 public:
-    HeaderWidget(TorrentView* parent) :
-        QWidget(parent),
-        myText()
+    HeaderWidget(TorrentView* parent)
+        : QWidget(parent)
+        , myText()
     {
         setFont(qApp->font("QMiniFont"));
     }
@@ -64,9 +64,9 @@ private:
     QString myText;
 };
 
-TorrentView::TorrentView(QWidget* parent) :
-    QListView(parent),
-    myHeaderWidget(new HeaderWidget(this))
+TorrentView::TorrentView(QWidget* parent)
+    : QListView(parent)
+    , myHeaderWidget(new HeaderWidget(this))
 {
 }
 

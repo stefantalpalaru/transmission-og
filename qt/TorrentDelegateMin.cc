@@ -63,8 +63,14 @@ public:
     QRect barRect;
 
 public:
-    ItemLayout(QString const& nameText, QString const& statusText, QIcon const& emblemIcon, QFont const& baseFont,
-        Qt::LayoutDirection direction, QPoint const& topLeft, int width);
+    ItemLayout(
+        QString const& nameText,
+        QString const& statusText,
+        QIcon const& emblemIcon,
+        QFont const& baseFont,
+        Qt::LayoutDirection direction,
+        QPoint const& topLeft,
+        int width);
 
     QSize size() const
     {
@@ -88,12 +94,18 @@ private:
     }
 };
 
-ItemLayout::ItemLayout(QString const& nameText, QString const& statusText, QIcon const& emblemIcon, QFont const& baseFont,
-    Qt::LayoutDirection direction, QPoint const& topLeft, int width) :
-    myNameText(nameText),
-    myStatusText(statusText),
-    nameFont(baseFont),
-    statusFont(baseFont)
+ItemLayout::ItemLayout(
+    QString const& nameText,
+    QString const& statusText,
+    QIcon const& emblemIcon,
+    QFont const& baseFont,
+    Qt::LayoutDirection direction,
+    QPoint const& topLeft,
+    int width)
+    : myNameText(nameText)
+    , myStatusText(statusText)
+    , nameFont(baseFont)
+    , statusFont(baseFont)
 {
     QStyle const* style(qApp->style());
     int const iconSize(style->pixelMetric(QStyle::PM_SmallIconSize));
@@ -110,17 +122,24 @@ ItemLayout::ItemLayout(QString const& nameText, QString const& statusText, QIcon
     barStyle.maximum = 100;
     barStyle.progress = 100;
     barStyle.textVisible = true;
-    QSize const barSize(barStyle.rect.width() * 2 - style->subElementRect(QStyle::SE_ProgressBarGroove, &barStyle).width(),
+    QSize const barSize(
+        barStyle.rect.width() * 2 - style->subElementRect(QStyle::SE_ProgressBarGroove, &barStyle).width(),
         barStyle.rect.height());
 
     QRect baseRect(topLeft, QSize(width, std::max({ iconSize, nameSize.height(), statusSize.height(), barSize.height() })));
 
     iconRect = style->alignedRect(direction, Qt::AlignLeft | Qt::AlignVCenter, QSize(iconSize, iconSize), baseRect);
-    emblemRect = style->alignedRect(direction, Qt::AlignRight | Qt::AlignBottom, emblemIcon.actualSize(iconRect.size() / 2,
-        QIcon::Normal, QIcon::On), iconRect);
+    emblemRect = style->alignedRect(
+        direction,
+        Qt::AlignRight | Qt::AlignBottom,
+        emblemIcon.actualSize(iconRect.size() / 2, QIcon::Normal, QIcon::On),
+        iconRect);
     barRect = style->alignedRect(direction, Qt::AlignRight | Qt::AlignVCenter, barSize, baseRect);
     Utils::narrowRect(baseRect, iconRect.width() + GUI_PAD, barRect.width() + GUI_PAD, direction);
-    statusRect = style->alignedRect(direction, Qt::AlignRight | Qt::AlignVCenter, QSize(statusSize.width(), baseRect.height()),
+    statusRect = style->alignedRect(
+        direction,
+        Qt::AlignRight | Qt::AlignVCenter,
+        QSize(statusSize.width(), baseRect.height()),
         baseRect);
     Utils::narrowRect(baseRect, 0, statusRect.width() + GUI_PAD, direction);
     nameRect = baseRect;
@@ -132,8 +151,14 @@ QSize TorrentDelegateMin::sizeHint(QStyleOptionViewItem const& option, Torrent c
 {
     bool const isMagnet(!tor.hasMetadata());
     QSize const m(margin(*qApp->style()));
-    ItemLayout const layout(isMagnet ? progressString(tor) : tor.name(), shortStatusString(tor), QIcon(), option.font,
-        option.direction, QPoint(0, 0), option.rect.width() - m.width() * 2);
+    ItemLayout const layout(
+        isMagnet ? progressString(tor) : tor.name(),
+        shortStatusString(tor),
+        QIcon(),
+        option.font,
+        option.direction,
+        QPoint(0, 0),
+        option.rect.width() - m.width() * 2);
     return layout.size() + m * 2;
 }
 
@@ -226,8 +251,14 @@ void TorrentDelegateMin::drawTorrent(QPainter* painter, QStyleOptionViewItem con
     // layout
     QSize const m(margin(*style));
     QRect const contentRect(option.rect.adjusted(m.width(), m.height(), -m.width(), -m.height()));
-    ItemLayout const layout(isMagnet ? progressString(tor) : tor.name(), shortStatusString(tor), emblemIcon, option.font,
-        option.direction, contentRect.topLeft(), contentRect.width());
+    ItemLayout const layout(
+        isMagnet ? progressString(tor) : tor.name(),
+        shortStatusString(tor),
+        emblemIcon,
+        option.font,
+        option.direction,
+        contentRect.topLeft(),
+        contentRect.width());
 
     // render
     if (tor.hasError() && !isItemSelected)

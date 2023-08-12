@@ -25,16 +25,16 @@
 ****
 ***/
 
-OptionsDialog::OptionsDialog(Session& session, Prefs const& prefs, AddData const& addme, QWidget* parent) :
-    BaseDialog(parent),
-    mySession(session),
-    myAdd(addme),
-    myIsLocal(mySession.isLocal()),
-    myHaveInfo(false),
-    myVerifyButton(new QPushButton(tr("&Verify Local Data"), this)),
-    myVerifyFile(nullptr),
-    myVerifyHash(QCryptographicHash::Sha1),
-    myEditTimer(this)
+OptionsDialog::OptionsDialog(Session& session, Prefs const& prefs, AddData const& addme, QWidget* parent)
+    : BaseDialog(parent)
+    , mySession(session)
+    , myAdd(addme)
+    , myIsLocal(mySession.isLocal())
+    , myHaveInfo(false)
+    , myVerifyButton(new QPushButton(tr("&Verify Local Data"), this))
+    , myVerifyFile(nullptr)
+    , myVerifyHash(QCryptographicHash::Sha1)
+    , myEditTimer(this)
 {
     ui.setupUi(this);
 

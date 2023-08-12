@@ -53,7 +53,7 @@ private:
     typedef std::function<RpcResponseFuture(RpcResponseFuture const&)> QueuedFunction;
 
     // Internally stored error handler function. Takes the last response future and returns nothing.
-    typedef std::function<void (RpcResponseFuture const&)> ErrorHandlerFunction;
+    typedef std::function<void(RpcResponseFuture const&)> ErrorHandlerFunction;
 
 private slots:
     void stepFinished();
@@ -64,77 +64,80 @@ private:
     // These overloads convert various forms of input closures to what we store internally.
 
     // normal closure, takes response and returns new future
-    template<typename Func, typename std::enable_if<
-        std::is_same<typename std::result_of<Func(RpcResponse const&)>::type, RpcResponseFuture>::value
-        >::type* = nullptr>
+    template<
+        typename Func,
+        typename std::enable_if<
+            std::is_same<typename std::result_of<Func(RpcResponse const&)>::type, RpcResponseFuture>::value>::type* = nullptr>
     QueuedFunction normalizeFunc(Func const& func)
     {
         return [func](RpcResponseFuture const& r)
-            {
-                return func(r.result());
-            };
+        {
+            return func(r.result());
+        };
     }
 
     // closure without argument (first step), takes nothing and returns new future
-    template<typename Func, typename std::enable_if<
-        std::is_same<typename std::result_of<Func()>::type, RpcResponseFuture>::value
-        >::type* = nullptr>
+    template<
+        typename Func,
+        typename std::enable_if<std::is_same<typename std::result_of<Func()>::type, RpcResponseFuture>::value>::type* = nullptr>
     QueuedFunction normalizeFunc(Func const& func)
     {
         return [func](RpcResponseFuture const&)
-            {
-                return func();
-            };
+        {
+            return func();
+        };
     }
 
     // closure without return value ("auxiliary"), takes response and returns nothing -- internally we reuse the last future
-    template<typename Func, typename std::enable_if<
-        std::is_same<typename std::result_of<Func(RpcResponse const&)>::type, void>::value
-        >::type* = nullptr>
+    template<
+        typename Func,
+        typename std::enable_if<std::is_same<typename std::result_of<Func(RpcResponse const&)>::type, void>::value>::type* =
+            nullptr>
     QueuedFunction normalizeFunc(Func const& func)
     {
         return [func](RpcResponseFuture const& r)
-            {
-                func(r.result());
-                return r;
-            };
+        {
+            func(r.result());
+            return r;
+        };
     }
 
     // closure without argument and return value, takes nothing and returns nothing -- next function will also get nothing
-    template<typename Func, typename std::enable_if<
-        std::is_same<typename std::result_of<Func()>::type, void>::value
-        >::type* = nullptr>
+    template<
+        typename Func,
+        typename std::enable_if<std::is_same<typename std::result_of<Func()>::type, void>::value>::type* = nullptr>
     QueuedFunction normalizeFunc(Func const& func)
     {
         return [func](RpcResponseFuture const& r)
-            {
-                func();
-                return r;
-            };
+        {
+            func();
+            return r;
+        };
     }
 
     // normal error handler, takes last response
-    template<typename Func, typename std::enable_if<
-        std::is_same<typename std::result_of<Func(RpcResponse const&)>::type, void>::value
-        >::type* = nullptr>
+    template<
+        typename Func,
+        typename std::enable_if<std::is_same<typename std::result_of<Func(RpcResponse const&)>::type, void>::value>::type* =
+            nullptr>
     ErrorHandlerFunction normalizeErrorHandler(Func const& func)
     {
         return [func](RpcResponseFuture const& r)
-            {
-                func(r.result());
-            };
+        {
+            func(r.result());
+        };
     }
 
     // error handler without an argument, takes nothing
-    template<typename Func, typename std::enable_if<
-        std::is_same<typename std::result_of<Func()>::type, void>::value
-        >::type* = nullptr>
+    template<
+        typename Func,
+        typename std::enable_if<std::is_same<typename std::result_of<Func()>::type, void>::value>::type* = nullptr>
     ErrorHandlerFunction normalizeErrorHandler(Func const& func)
     {
         return [func](RpcResponseFuture const&)
-            {
-                func();
-            };
+        {
+            func();
+        };
     }
 
 private:

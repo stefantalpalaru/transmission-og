@@ -25,8 +25,7 @@
 ****
 ***/
 
-Prefs::PrefItem Prefs::myItems[] =
-{
+Prefs::PrefItem Prefs::myItems[] = {
     /* gui settings */
     { OPTIONS_PROMPT, TR_KEY_show_options_window, QVariant::Bool },
     { OPEN_DIALOG_FOLDER, TR_KEY_open_dialog_dir, QVariant::String },
@@ -126,8 +125,8 @@ Prefs::PrefItem Prefs::myItems[] =
 ****
 ***/
 
-Prefs::Prefs(QString const& configDir) :
-    myConfigDir(configDir)
+Prefs::Prefs(QString const& configDir)
+    : myConfigDir(configDir)
 {
     assert(sizeof(myItems) / sizeof(myItems[0]) == PREFS_COUNT);
 
@@ -332,7 +331,9 @@ void Prefs::initDefaults(tr_variant* d)
     tr_variantDictAddBool(d, TR_KEY_sort_reversed, false);
     tr_variantDictAddBool(d, TR_KEY_torrent_added_notification_enabled, true);
     tr_variantDictAddBool(d, TR_KEY_torrent_complete_notification_enabled, true);
-    tr_variantDictAddStr(d, TR_KEY_torrent_complete_sound_command,
+    tr_variantDictAddStr(
+        d,
+        TR_KEY_torrent_complete_sound_command,
         "canberra-gtk-play -i complete-download -d 'transmission torrent downloaded'");
     tr_variantDictAddBool(d, TR_KEY_torrent_complete_sound_enabled, true);
     tr_variantDictAddBool(d, TR_KEY_user_has_given_informed_consent, false);

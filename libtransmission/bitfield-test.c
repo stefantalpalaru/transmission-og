@@ -36,8 +36,7 @@ static int test_bitfield_count_range(void)
     do
     {
         end = tr_rand_int_weak(bitCount);
-    }
-    while (end == begin);
+    } while (end == begin);
 
     /* ensure end <= begin */
     if (end < begin)
@@ -223,11 +222,7 @@ static int test_bitfield_has_all_none(void)
 
 int main(void)
 {
-    testFunc const tests[] =
-    {
-        test_bitfields,
-        test_bitfield_has_all_none
-    };
+    testFunc const tests[] = { test_bitfields, test_bitfield_has_all_none };
 
     int ret = runTests(tests, NUM_TESTS(tests));
 

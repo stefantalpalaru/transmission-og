@@ -58,9 +58,7 @@ static int test_metainfo(void)
         int expected_benc_err;
         int expected_parse_result;
         void const* benc;
-    }
-    const metainfo[] =
-    {
+    } const metainfo[] = {
         { 0, TR_PARSE_OK, BEFORE_PATH "5:a.txt" AFTER_PATH },
 
         /* allow empty components, but not =all= empty components, see bug #5517 */
@@ -79,7 +77,7 @@ static int test_metainfo(void)
         { 0, TR_PARSE_OK, BEFORE_PATH "5:a.txt2:.." AFTER_PATH },
 
         /* fail on empty string */
-        { EILSEQ, TR_PARSE_ERR, "" }
+        { EILSEQ, TR_PARSE_ERR, "" },
     };
 
     tr_logSetLevel(0); /* yes, we already know these will generate errors, thank you... */
@@ -110,9 +108,7 @@ static int test_sanitize(void)
         size_t len;
         char const* expected_result;
         bool expected_is_adjusted;
-    }
-    const test_data[] =
-    {
+    } const test_data[] = {
         /* skipped */
         { "", 0, NULL, false },
         { ".", 1, NULL, false },
@@ -146,7 +142,7 @@ static int test_sanitize(void)
         { "..foo", 5, "..foo", false },
         { "foo.bar.baz", 11, "foo.bar.baz", false },
         { "null", 4, "null", false },
-        { "compass", 7, "compass", false }
+        { "compass", 7, "compass", false },
     };
 
     for (size_t i = 0; i < TR_N_ELEMENTS(test_data); ++i)
@@ -169,11 +165,10 @@ static int test_sanitize(void)
 
 int main(void)
 {
-    testFunc const tests[] =
-    {
+    testFunc const tests[] = {
         test_magnet_link,
         test_metainfo,
-        test_sanitize
+        test_sanitize,
     };
 
     return runTests(tests, NUM_TESTS(tests));

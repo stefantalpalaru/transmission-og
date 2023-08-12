@@ -15,8 +15,8 @@ class TorrentDelegateMin : public TorrentDelegate
     Q_OBJECT
 
 public:
-    explicit TorrentDelegateMin(QObject* parent = nullptr) :
-        TorrentDelegate(parent)
+    explicit TorrentDelegateMin(QObject* parent = nullptr)
+        : TorrentDelegate(parent)
     {
     }
 

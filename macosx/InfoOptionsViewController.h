@@ -24,45 +24,43 @@
 
 #import "InfoViewController.h"
 
-@interface InfoOptionsViewController : NSViewController <InfoViewController>
+@interface InfoOptionsViewController : NSViewController<InfoViewController>
 {
-    NSArray * fTorrents;
+    NSArray* fTorrents;
 
     BOOL fSet;
 
-    IBOutlet NSPopUpButton * fPriorityPopUp, * fRatioPopUp, * fIdlePopUp;
-    IBOutlet NSButton * fUploadLimitCheck, * fDownloadLimitCheck, * fGlobalLimitCheck, * fRemoveSeedingCompleteCheck;
-    IBOutlet NSTextField * fUploadLimitField, * fDownloadLimitField, * fRatioLimitField, * fIdleLimitField,
-                        * fUploadLimitLabel, * fDownloadLimitLabel, * fIdleLimitLabel,
-                        * fRatioLimitGlobalLabel, * fIdleLimitGlobalLabel,
-                        * fPeersConnectLabel, * fPeersConnectField;
+    IBOutlet NSPopUpButton *fPriorityPopUp, *fRatioPopUp, *fIdlePopUp;
+    IBOutlet NSButton *fUploadLimitCheck, *fDownloadLimitCheck, *fGlobalLimitCheck, *fRemoveSeedingCompleteCheck;
+    IBOutlet NSTextField *fUploadLimitField, *fDownloadLimitField, *fRatioLimitField, *fIdleLimitField, *fUploadLimitLabel,
+        *fDownloadLimitLabel, *fIdleLimitLabel, *fRatioLimitGlobalLabel, *fIdleLimitGlobalLabel, *fPeersConnectLabel, *fPeersConnectField;
 
     //remove when we switch to auto layout on 10.7
-    IBOutlet NSTextField * fTransferBandwidthSectionLabel, * fPrioritySectionLabel, * fPriorityLabel;
-    IBOutlet NSTextField * fSeedingLimitsSectionLabel, * fRatioLabel, * fInactivityLabel;
-    IBOutlet NSTextField * fAdvancedSectionLabel, * fMaxConnectionsLabel;
+    IBOutlet NSTextField *fTransferBandwidthSectionLabel, *fPrioritySectionLabel, *fPriorityLabel;
+    IBOutlet NSTextField *fSeedingLimitsSectionLabel, *fRatioLabel, *fInactivityLabel;
+    IBOutlet NSTextField *fAdvancedSectionLabel, *fMaxConnectionsLabel;
 
-    NSString * fInitialString;
+    NSString* fInitialString;
 }
 
-- (void) setInfoForTorrents: (NSArray *) torrents;
-- (void) updateInfo;
-- (void) updateOptions;
+- (void)setInfoForTorrents:(NSArray*)torrents;
+- (void)updateInfo;
+- (void)updateOptions;
 
-- (IBAction) setUseSpeedLimit: (id) sender;
-- (IBAction) setSpeedLimit: (id) sender;
-- (IBAction) setUseGlobalSpeedLimit: (id) sender;
+- (IBAction)setUseSpeedLimit:(id)sender;
+- (IBAction)setSpeedLimit:(id)sender;
+- (IBAction)setUseGlobalSpeedLimit:(id)sender;
 
-- (IBAction) setRatioSetting: (id) sender;
-- (IBAction) setRatioLimit: (id) sender;
+- (IBAction)setRatioSetting:(id)sender;
+- (IBAction)setRatioLimit:(id)sender;
 
-- (IBAction) setIdleSetting: (id) sender;
-- (IBAction) setIdleLimit: (id) sender;
+- (IBAction)setIdleSetting:(id)sender;
+- (IBAction)setIdleLimit:(id)sender;
 
-- (IBAction) setRemoveWhenSeedingCompletes: (id) sender;
+- (IBAction)setRemoveWhenSeedingCompletes:(id)sender;
 
-- (IBAction) setPriority: (id) sender;
+- (IBAction)setPriority:(id)sender;
 
-- (IBAction) setPeersConnectLimit: (id) sender;
+- (IBAction)setPeersConnectLimit:(id)sender;
 
 @end

@@ -8,8 +8,9 @@
 
 #pragma once
 
-#include <gtk/gtk.h>
 #include "tr-core.h"
+
+#include <gtk/gtk.h>
 
 gpointer gtr_icon_new(TrCore* core);
 void gtr_icon_refresh(gpointer);

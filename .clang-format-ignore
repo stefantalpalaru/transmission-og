@@ -1,0 +1,19 @@
+# Skipped files must be justified as untracked or third-party maintained
+
+# untracked files
+.*/*
+build/*
+cmake-build-*/*
+libtransmission/version.h
+gtk/transmission-resources.c
+gtk/transmission-resources.h
+qt/resources.cc
+qt/ui_*.h
+qt/*.moc.cpp
+
+# third-party maintained projects
+third-party/*
+installers/*
+
+# maintained at https://github.com/sparkle-project/Sparkle
+macosx/Sparkle.framework/*

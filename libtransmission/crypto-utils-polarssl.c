@@ -9,7 +9,7 @@
 /* *INDENT-OFF* */
 #if defined(POLARSSL_IS_MBEDTLS)
 #define API_HEADER(x) <mbedtls/x>
-#define API(x) mbedtls_ ## x
+#define API(x) mbedtls_##x
 #define API_VERSION_NUMBER MBEDTLS_VERSION_NUMBER
 #else
 #define API_HEADER(x) <polarssl/x>
@@ -43,10 +43,10 @@
 
 #define MY_NAME "tr_crypto_utils"
 
-typedef API (ctr_drbg_context) api_ctr_drbg_context;
-typedef API (sha1_context) api_sha1_context;
-typedef API (arc4_context) api_arc4_context;
-typedef API (dhm_context) api_dhm_context;
+typedef API(ctr_drbg_context) api_ctr_drbg_context;
+typedef API(sha1_context) api_sha1_context;
+typedef API(arc4_context) api_arc4_context;
+typedef API(dhm_context) api_dhm_context;
 
 static void log_polarssl_error(int error_code, char const* file, int line)
 {
@@ -233,7 +233,10 @@ void tr_rc4_process(tr_rc4_ctx_t handle, void const* input, void* output, size_t
 ****
 ***/
 
-tr_dh_ctx_t tr_dh_new(uint8_t const* prime_num, size_t prime_num_length, uint8_t const* generator_num,
+tr_dh_ctx_t tr_dh_new(
+    uint8_t const* prime_num,
+    size_t prime_num_length,
+    uint8_t const* generator_num,
     size_t generator_num_length)
 {
     TR_ASSERT(prime_num != NULL);

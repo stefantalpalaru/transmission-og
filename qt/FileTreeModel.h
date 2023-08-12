@@ -48,7 +48,13 @@ public:
     void setEditable(bool editable);
 
     void clear();
-    void addFile(int index, QString const& filename, bool wanted, int priority, uint64_t size, uint64_t have,
+    void addFile(
+        int index,
+        QString const& filename,
+        bool wanted,
+        int priority,
+        uint64_t size,
+        uint64_t have,
         bool torrentChanged);
 
     bool openFile(QModelIndex const& index);
@@ -80,7 +86,10 @@ signals:
 private:
     void clearSubtree(QModelIndex const&);
     QModelIndex indexOf(FileTreeItem*, int column) const;
-    void emitParentsChanged(QModelIndex const&, int firstColumn, int lastColumn,
+    void emitParentsChanged(
+        QModelIndex const&,
+        int firstColumn,
+        int lastColumn,
         QSet<QModelIndex>* visitedParentIndices = nullptr);
     void emitSubtreeChanged(QModelIndex const&, int firstColumn, int lastColumn);
     FileTreeItem* findItemForFileIndex(int fileIndex) const;
