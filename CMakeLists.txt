@@ -573,10 +573,6 @@ if(INSTALL_DOC)
     install(FILES AUTHORS COPYING NEWS.md README.md extras/rpc-spec.txt extras/send-email-when-torrent-done.sh DESTINATION ${CMAKE_INSTALL_DOCDIR})
 endif()
 
-if(MSVC AND ENABLE_DAEMON AND ENABLE_QT AND ENABLE_UTILS AND WITH_CRYPTO STREQUAL "openssl")
-    add_subdirectory(installers/msi)
-endif()
-
 set(CPACK_SOURCE_GENERATOR TBZ2)
 set(CPACK_SOURCE_PACKAGE_FILE_NAME "${TR_NAME}-${TR_USER_AGENT_PREFIX}")
 set(CPACK_SOURCE_IGNORE_FILES
