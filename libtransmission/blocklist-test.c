@@ -18,14 +18,14 @@
 
 #include "libtransmission-test.h"
 
-static char const* contents1 =
+static char const *contents1 =
     "10.5.6.7/8\n"
     "Austin Law Firm:216.16.1.144-216.16.1.151\n"
     "Sargent Controls and Aerospace:216.19.18.0-216.19.18.255\n"
     "Corel Corporation:216.21.157.192-216.21.157.223\n"
     "Fox Speed Channel:216.79.131.192-216.79.131.223\n";
 
-static char const* contents2 =
+static char const *contents2 =
     "10.5.6.7/8\n"
     "Austin Law Firm:216.16.1.144-216.16.1.151\n"
     "Sargent Controls and Aerospace:216.19.18.0-216.19.18.255\n"
@@ -33,10 +33,10 @@ static char const* contents2 =
     "Fox Speed Channel:216.79.131.192-216.79.131.223\n"
     "Evilcorp:216.88.88.0-216.88.88.255\n";
 
-static void create_text_file(char const* path, char const* contents)
+static void create_text_file(char const *path, char const *contents)
 {
     tr_sys_file_t fd;
-    char* dir;
+    char *dir;
 
     dir = tr_sys_path_dirname(path, NULL);
     tr_sys_dir_create(dir, TR_SYS_DIR_CREATE_PARENTS, 0700, NULL);
@@ -49,7 +49,7 @@ static void create_text_file(char const* path, char const* contents)
     libttest_sync();
 }
 
-static bool address_is_blocked(tr_session* session, char const* address_str)
+static bool address_is_blocked(tr_session *session, char const *address_str)
 {
     struct tr_address addr;
     tr_address_from_string(&addr, address_str);
@@ -58,8 +58,8 @@ static bool address_is_blocked(tr_session* session, char const* address_str)
 
 static int test_parsing(void)
 {
-    char* path;
-    tr_session* session;
+    char *path;
+    tr_session *session;
 
     /* init the session */
     session = libttest_session_init(NULL);
@@ -107,8 +107,8 @@ static int test_parsing(void)
 
 static int test_updating(void)
 {
-    char* path;
-    tr_session* session;
+    char *path;
+    tr_session *session;
 
     /* init the session */
     session = libttest_session_init(NULL);

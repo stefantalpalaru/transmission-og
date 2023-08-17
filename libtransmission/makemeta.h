@@ -15,7 +15,7 @@ extern "C"
 
     typedef struct tr_metainfo_builder_file
     {
-        char* filename;
+        char *filename;
         uint64_t size;
     } tr_metainfo_builder_file;
 
@@ -35,8 +35,8 @@ extern "C"
     ***  and cleaned up by tr_metaInfoBuilderFree()
     **/
 
-        char* top;
-        tr_metainfo_builder_file* files;
+        char *top;
+        tr_metainfo_builder_file *files;
         uint64_t totalSize;
         uint32_t fileCount;
         uint32_t pieceSize;
@@ -49,10 +49,10 @@ extern "C"
     ***  and cleaned up by tr_metaInfoBuilderFree()
     **/
 
-        tr_tracker_info* trackers;
+        tr_tracker_info *trackers;
         int trackerCount;
-        char* comment;
-        char* outputFile;
+        char *comment;
+        char *outputFile;
         bool isPrivate;
 
         /**
@@ -79,10 +79,10 @@ extern "C"
     ***  The client should never use these fields.
     **/
 
-        struct tr_metainfo_builder* nextBuilder;
+        struct tr_metainfo_builder *nextBuilder;
     } tr_metainfo_builder;
 
-    tr_metainfo_builder* tr_metaInfoBuilderCreate(char const* topFile);
+    tr_metainfo_builder *tr_metaInfoBuilderCreate(char const *topFile);
 
     /**
  * Call this before tr_makeMetaInfo() to override the builder.pieceSize
@@ -90,9 +90,9 @@ extern "C"
  *
  * @return false if the piece size isn't valid; eg, isn't a power of two.
  */
-    bool tr_metaInfoBuilderSetPieceSize(tr_metainfo_builder* builder, uint32_t bytes);
+    bool tr_metaInfoBuilderSetPieceSize(tr_metainfo_builder *builder, uint32_t bytes);
 
-    void tr_metaInfoBuilderFree(tr_metainfo_builder*);
+    void tr_metaInfoBuilderFree(tr_metainfo_builder *);
 
     /**
  * @brief create a new .torrent file
@@ -112,11 +112,11 @@ extern "C"
  * @param trackerCount size of the `trackers' array
  */
     void tr_makeMetaInfo(
-        tr_metainfo_builder* builder,
-        char const* outputFile,
-        tr_tracker_info const* trackers,
+        tr_metainfo_builder *builder,
+        char const *outputFile,
+        tr_tracker_info const *trackers,
         int trackerCount,
-        char const* comment,
+        char const *comment,
         bool isPrivate);
 
 #ifdef __cplusplus

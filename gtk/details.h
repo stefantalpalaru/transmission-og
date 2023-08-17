@@ -12,6 +12,6 @@
 
 #include <gtk/gtk.h>
 
-GtkWidget* gtr_torrent_details_dialog_new(GtkWindow* parent, TrCore* core);
+GtkWidget *gtr_torrent_details_dialog_new(GtkWindow *parent, TrCore *core);
 
-void gtr_torrent_details_dialog_set_torrents(GtkWidget* details_dialog, GSList* torrent_ids);
+void gtr_torrent_details_dialog_set_torrents(GtkWidget *details_dialog, GSList *torrent_ids);

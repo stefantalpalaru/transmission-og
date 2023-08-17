@@ -17,21 +17,21 @@
 #include <string.h> /* strlen() */
 
 static int test_single_file_impl(
-    tr_tracker_info const* trackers,
+    tr_tracker_info const *trackers,
     size_t const trackerCount,
-    void const* payload,
+    void const *payload,
     size_t const payloadSize,
-    char const* comment,
+    char const *comment,
     bool isPrivate)
 {
-    char* sandbox;
-    char* input_file;
-    char* torrent_file;
-    tr_metainfo_builder* builder;
-    tr_ctor* ctor;
+    char *sandbox;
+    char *input_file;
+    char *torrent_file;
+    tr_metainfo_builder *builder;
+    tr_ctor *ctor;
     tr_parse_result parse_result;
     tr_info inf;
-    char* tmpstr;
+    char *tmpstr;
 
     /* set up our local test sandbox */
     sandbox = libtest_sandbox_create();
@@ -95,16 +95,16 @@ static int test_single_file(void)
     tr_tracker_info trackers[16];
     size_t trackerCount;
     bool isPrivate;
-    char const* comment;
-    char const* payload;
+    char const *comment;
+    char const *payload;
     size_t payloadSize;
 
     trackerCount = 0;
     trackers[trackerCount].tier = trackerCount;
-    trackers[trackerCount].announce = (char*)"udp://tracker.openbittorrent.com:80";
+    trackers[trackerCount].announce = (char *)"udp://tracker.openbittorrent.com:80";
     ++trackerCount;
     trackers[trackerCount].tier = trackerCount;
-    trackers[trackerCount].announce = (char*)"udp://tracker.publicbt.com:80";
+    trackers[trackerCount].announce = (char *)"udp://tracker.publicbt.com:80";
     ++trackerCount;
     payload = "Hello, World!\n";
     payloadSize = strlen(payload);
@@ -116,24 +116,24 @@ static int test_single_file(void)
 }
 
 static int test_single_directory_impl(
-    tr_tracker_info const* trackers,
+    tr_tracker_info const *trackers,
     size_t const trackerCount,
-    void const** payloads,
-    size_t const* payloadSizes,
+    void const **payloads,
+    size_t const *payloadSizes,
     size_t const payloadCount,
-    char const* comment,
+    char const *comment,
     bool const isPrivate)
 {
-    char* sandbox;
-    char* torrent_file;
-    tr_metainfo_builder* builder;
-    tr_ctor* ctor;
+    char *sandbox;
+    char *torrent_file;
+    tr_metainfo_builder *builder;
+    tr_ctor *ctor;
     tr_parse_result parse_result;
     tr_info inf;
-    char* top;
-    char** files;
+    char *top;
+    char **files;
     size_t totalSize;
-    char* tmpstr;
+    char *tmpstr;
 
     /* set up our local test sandbox */
     sandbox = libtest_sandbox_create();
@@ -143,7 +143,7 @@ static int test_single_directory_impl(
     tr_sys_dir_create_temp(top, NULL);
 
     /* build the payload files that go into the top temp directory */
-    files = tr_new(char*, payloadCount);
+    files = tr_new(char *, payloadCount);
     totalSize = 0;
 
     for (size_t i = 0; i < payloadCount; i++)
@@ -222,20 +222,20 @@ static int test_single_directory_impl(
 }
 
 static int test_single_directory_random_payload_impl(
-    tr_tracker_info const* trackers,
+    tr_tracker_info const *trackers,
     size_t const trackerCount,
     size_t const maxFileCount,
     size_t const maxFileSize,
-    char const* comment,
+    char const *comment,
     bool const isPrivate)
 {
-    void** payloads;
-    size_t* payloadSizes;
+    void **payloads;
+    size_t *payloadSizes;
     size_t payloadCount;
 
     /* build random payloads */
     payloadCount = 1 + tr_rand_int_weak(maxFileCount);
-    payloads = tr_new0(void*, payloadCount);
+    payloads = tr_new0(void *, payloadCount);
     payloadSizes = tr_new0(size_t, payloadCount);
 
     for (size_t i = 0; i < payloadCount; i++)
@@ -247,7 +247,7 @@ static int test_single_directory_random_payload_impl(
     }
 
     /* run the test */
-    test_single_directory_impl(trackers, trackerCount, (void const**)payloads, payloadSizes, payloadCount, comment, isPrivate);
+    test_single_directory_impl(trackers, trackerCount, (void const **)payloads, payloadSizes, payloadCount, comment, isPrivate);
 
     /* cleanup */
     for (size_t i = 0; i < payloadCount; i++)
@@ -269,14 +269,14 @@ static int test_single_directory_random_payload(void)
     tr_tracker_info trackers[16];
     size_t trackerCount;
     bool isPrivate;
-    char const* comment;
+    char const *comment;
 
     trackerCount = 0;
     trackers[trackerCount].tier = trackerCount;
-    trackers[trackerCount].announce = (char*)"udp://tracker.openbittorrent.com:80";
+    trackers[trackerCount].announce = (char *)"udp://tracker.openbittorrent.com:80";
     ++trackerCount;
     trackers[trackerCount].tier = trackerCount;
-    trackers[trackerCount].announce = (char*)"udp://tracker.publicbt.com:80";
+    trackers[trackerCount].announce = (char *)"udp://tracker.publicbt.com:80";
     ++trackerCount;
     comment = "This is the comment";
     isPrivate = false;

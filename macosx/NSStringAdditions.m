@@ -28,42 +28,42 @@
 
 @interface NSString (Private)
 
-+ (NSString*)stringForFileSizeLion:(uint64_t)size showUnitUnless:(NSString*)notAllowedUnit unitsUsed:(NSString**)unitUsed;
++ (NSString *)stringForFileSizeLion:(uint64_t)size showUnitUnless:(NSString *)notAllowedUnit unitsUsed:(NSString **)unitUsed;
 
-+ (NSString*)stringForSpeed:(CGFloat)speed kb:(NSString*)kb mb:(NSString*)mb gb:(NSString*)gb;
++ (NSString *)stringForSpeed:(CGFloat)speed kb:(NSString *)kb mb:(NSString *)mb gb:(NSString *)gb;
 
 @end
 
 @implementation NSString (NSStringAdditions)
 
-+ (NSString*)ellipsis
++ (NSString *)ellipsis
 {
     return @"\xE2\x80\xA6";
 }
 
-- (NSString*)stringByAppendingEllipsis
+- (NSString *)stringByAppendingEllipsis
 {
     return [self stringByAppendingString:[NSString ellipsis]];
 }
 
 #warning use localizedStringWithFormat: directly when 10.9-only and stringsdict translations are in place
-+ (NSString*)formattedUInteger:(NSUInteger)value
++ (NSString *)formattedUInteger:(NSUInteger)value
 {
     return [NSString localizedStringWithFormat:@"%lu", value];
 }
 
 #warning should we take long long instead?
-+ (NSString*)stringForFileSize:(uint64_t)size
++ (NSString *)stringForFileSize:(uint64_t)size
 {
     return [NSByteCountFormatter stringFromByteCount:size countStyle:NSByteCountFormatterCountStyleFile];
 }
 
 #warning should we take long long instead?
-+ (NSString*)stringForFilePartialSize:(uint64_t)partialSize fullSize:(uint64_t)fullSize
++ (NSString *)stringForFilePartialSize:(uint64_t)partialSize fullSize:(uint64_t)fullSize
 {
-    NSByteCountFormatter* fileSizeFormatter = [[NSByteCountFormatter alloc] init];
+    NSByteCountFormatter *fileSizeFormatter = [[NSByteCountFormatter alloc] init];
 
-    NSString* fullString = [fileSizeFormatter stringFromByteCount:fullSize];
+    NSString *fullString = [fileSizeFormatter stringFromByteCount:fullSize];
 
     //figure out the magniture of the two, since we can't rely on comparing the units because of localization and pluralization issues (for example, "1 byte of 2 bytes")
     BOOL partialUnitsSame;
@@ -77,24 +77,24 @@
     }
 
     [fileSizeFormatter setIncludesUnit:!partialUnitsSame];
-    NSString* partialString = [fileSizeFormatter stringFromByteCount:partialSize];
+    NSString *partialString = [fileSizeFormatter stringFromByteCount:partialSize];
 
     return [NSString stringWithFormat:NSLocalizedString(@"%@ of %@", "file size string"), partialString, fullString];
 }
 
-+ (NSString*)stringForSpeed:(CGFloat)speed
++ (NSString *)stringForSpeed:(CGFloat)speed
 {
     return [self stringForSpeed:speed kb:NSLocalizedString(@"KB/s", "Transfer speed (kilobytes per second)")
                              mb:NSLocalizedString(@"MB/s", "Transfer speed (megabytes per second)")
                              gb:NSLocalizedString(@"GB/s", "Transfer speed (gigabytes per second)")];
 }
 
-+ (NSString*)stringForSpeedAbbrev:(CGFloat)speed
++ (NSString *)stringForSpeedAbbrev:(CGFloat)speed
 {
     return [self stringForSpeed:speed kb:@"K" mb:@"M" gb:@"G"];
 }
 
-+ (NSString*)stringForRatio:(CGFloat)ratio
++ (NSString *)stringForRatio:(CGFloat)ratio
 {
     //N/A is different than libtransmission's
     if ((int)ratio == TR_RATIO_NA)
@@ -112,7 +112,7 @@
     }
 }
 
-+ (NSString*)percentString:(CGFloat)progress longDecimals:(BOOL)longDecimals
++ (NSString *)percentString:(CGFloat)progress longDecimals:(BOOL)longDecimals
 {
     if (progress >= 1.0)
         return [NSString localizedStringWithFormat:@"%d%%", 100];
@@ -122,7 +122,7 @@
         return [NSString localizedStringWithFormat:@"%.1f%%", tr_truncd(progress * 100.0, 1)];
 }
 
-+ (NSString*)timeString:(uint64_t)seconds
++ (NSString *)timeString:(uint64_t)seconds
     includesTimeRemainingPhrase:(BOOL)includesTimeRemainingPhrase
                     showSeconds:(BOOL)showSeconds
 {
@@ -130,7 +130,7 @@
                           maxFields:NSUIntegerMax];
 }
 
-+ (NSString*)timeString:(uint64_t)seconds
++ (NSString *)timeString:(uint64_t)seconds
     includesTimeRemainingPhrase:(BOOL)includesTimeRemainingPhrase
                     showSeconds:(BOOL)showSeconds
                       maxFields:(NSUInteger)max
@@ -138,7 +138,7 @@
     NSAssert(![NSApp isOnYosemiteOrBetter], @"you should be using NSDateComponentsFormatter on >= 10.10");
     NSParameterAssert(max > 0);
 
-    NSMutableArray* timeArray = [NSMutableArray arrayWithCapacity:MIN(max, 5u)];
+    NSMutableArray *timeArray = [NSMutableArray arrayWithCapacity:MIN(max, 5u)];
     NSUInteger remaining = seconds; //causes problems for some users when it's a uint64_t
 
     if (seconds >= 31557600) //official amount of seconds in one year
@@ -176,7 +176,7 @@
     if (max > 0 && showSeconds)
         [timeArray addObject:[NSString stringWithFormat:NSLocalizedString(@"%u sec", "time string"), remaining]];
 
-    NSString* timeString = [timeArray componentsJoinedByString:@" "];
+    NSString *timeString = [timeArray componentsJoinedByString:@" "];
 
     if (includesTimeRemainingPhrase)
     {
@@ -186,17 +186,17 @@
     return timeString;
 }
 
-- (NSComparisonResult)compareNumeric:(NSString*)string
+- (NSComparisonResult)compareNumeric:(NSString *)string
 {
     NSStringCompareOptions const comparisonOptions = NSNumericSearch | NSForcedOrderingSearch;
     return [self compare:string options:comparisonOptions range:NSMakeRange(0, [self length]) locale:[NSLocale currentLocale]];
 }
 
-- (NSArray*)betterComponentsSeparatedByCharactersInSet:(NSCharacterSet*)separators
+- (NSArray *)betterComponentsSeparatedByCharactersInSet:(NSCharacterSet *)separators
 {
-    NSMutableArray* components = [NSMutableArray array];
+    NSMutableArray *components = [NSMutableArray array];
 
-    NSCharacterSet* includededCharSet = [separators invertedSet];
+    NSCharacterSet *includededCharSet = [separators invertedSet];
     NSUInteger index = 0;
     NSUInteger const fullLength = [self length];
     do
@@ -226,10 +226,10 @@
 
 @implementation NSString (Private)
 
-+ (NSString*)stringForFileSizeLion:(uint64_t)size showUnitUnless:(NSString*)notAllowedUnit unitsUsed:(NSString**)unitUsed
++ (NSString *)stringForFileSizeLion:(uint64_t)size showUnitUnless:(NSString *)notAllowedUnit unitsUsed:(NSString **)unitUsed
 {
     double convertedSize;
-    NSString* unit;
+    NSString *unit;
     NSUInteger decimals;
     if (size < pow(1000, 2))
     {
@@ -257,12 +257,12 @@
     }
 
     //match Finder's behavior
-    NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
+    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
     [numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
     [numberFormatter setMinimumFractionDigits:0];
     [numberFormatter setMaximumFractionDigits:decimals];
 
-    NSString* fileSizeString = [numberFormatter stringFromNumber:@(convertedSize)];
+    NSString *fileSizeString = [numberFormatter stringFromNumber:@(convertedSize)];
 
     if (!notAllowedUnit || ![unit isEqualToString:notAllowedUnit])
         fileSizeString = [fileSizeString stringByAppendingFormat:@" %@", unit];
@@ -273,7 +273,7 @@
     return fileSizeString;
 }
 
-+ (NSString*)stringForSpeed:(CGFloat)speed kb:(NSString*)kb mb:(NSString*)mb gb:(NSString*)gb
++ (NSString *)stringForSpeed:(CGFloat)speed kb:(NSString *)kb mb:(NSString *)mb gb:(NSString *)gb
 {
     if (speed <= 999.95) //0.0 KB/s to 999.9 KB/s
         return [NSString localizedStringWithFormat:@"%.1f %@", speed, kb];

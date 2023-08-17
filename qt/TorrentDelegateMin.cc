@@ -64,12 +64,12 @@ public:
 
 public:
     ItemLayout(
-        QString const& nameText,
-        QString const& statusText,
-        QIcon const& emblemIcon,
-        QFont const& baseFont,
+        QString const &nameText,
+        QString const &statusText,
+        QIcon const &emblemIcon,
+        QFont const &baseFont,
         Qt::LayoutDirection direction,
-        QPoint const& topLeft,
+        QPoint const &topLeft,
         int width);
 
     QSize size() const
@@ -88,26 +88,26 @@ public:
     }
 
 private:
-    QString elidedText(QFont const& font, QString const& text, int width) const
+    QString elidedText(QFont const &font, QString const &text, int width) const
     {
         return QFontMetrics(font).elidedText(text, Qt::ElideRight, width);
     }
 };
 
 ItemLayout::ItemLayout(
-    QString const& nameText,
-    QString const& statusText,
-    QIcon const& emblemIcon,
-    QFont const& baseFont,
+    QString const &nameText,
+    QString const &statusText,
+    QIcon const &emblemIcon,
+    QFont const &baseFont,
     Qt::LayoutDirection direction,
-    QPoint const& topLeft,
+    QPoint const &topLeft,
     int width)
     : myNameText(nameText)
     , myStatusText(statusText)
     , nameFont(baseFont)
     , statusFont(baseFont)
 {
-    QStyle const* style(qApp->style());
+    QStyle const *style(qApp->style());
     int const iconSize(style->pixelMetric(QStyle::PM_SmallIconSize));
 
     QFontMetrics const nameFM(nameFont);
@@ -147,7 +147,7 @@ ItemLayout::ItemLayout(
 
 } // namespace
 
-QSize TorrentDelegateMin::sizeHint(QStyleOptionViewItem const& option, Torrent const& tor) const
+QSize TorrentDelegateMin::sizeHint(QStyleOptionViewItem const &option, Torrent const &tor) const
 {
     bool const isMagnet(!tor.hasMetadata());
     QSize const m(margin(*qApp->style()));
@@ -162,9 +162,9 @@ QSize TorrentDelegateMin::sizeHint(QStyleOptionViewItem const& option, Torrent c
     return layout.size() + m * 2;
 }
 
-void TorrentDelegateMin::drawTorrent(QPainter* painter, QStyleOptionViewItem const& option, Torrent const& tor) const
+void TorrentDelegateMin::drawTorrent(QPainter *painter, QStyleOptionViewItem const &option, Torrent const &tor) const
 {
-    QStyle const* style(qApp->style());
+    QStyle const *style(qApp->style());
 
     bool const isPaused(tor.isPaused());
     bool const isMagnet(!tor.hasMetadata());

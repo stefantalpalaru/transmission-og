@@ -43,7 +43,7 @@ namespace
 
 typedef Torrent::KeyList KeyList;
 
-void addList(tr_variant* list, KeyList const& keys)
+void addList(tr_variant *list, KeyList const &keys)
 {
     tr_variantListReserve(list, keys.size());
 
@@ -61,7 +61,7 @@ auto const allIds = torrent_ids_t{};
 
 } // namespace
 
-void Session::sessionSet(tr_quark const key, QVariant const& value)
+void Session::sessionSet(tr_quark const key, QVariant const &value)
 {
     tr_variant args;
     tr_variantInitDict(&args, 1);
@@ -93,12 +93,12 @@ void Session::sessionSet(tr_quark const key, QVariant const& value)
 
 void Session::portTest()
 {
-    RpcQueue* q = new RpcQueue();
+    RpcQueue *q = new RpcQueue();
 
     q->add([this]() { return exec("port-test", nullptr); });
 
     q->add(
-        [this](RpcResponse const& r)
+        [this](RpcResponse const &r)
         {
             bool isOpen = false;
 
@@ -120,22 +120,22 @@ void Session::copyMagnetLinkToClipboard(int torrentId)
     tr_variantListAddInt(tr_variantDictAddList(&args, TR_KEY_ids, 1), torrentId);
     tr_variantListAddStr(tr_variantDictAddList(&args, TR_KEY_fields, 1), "magnetLink");
 
-    RpcQueue* q = new RpcQueue();
+    RpcQueue *q = new RpcQueue();
 
     q->add([this, &args]() { return exec(TR_KEY_torrent_get, &args); });
 
     q->add(
-        [](RpcResponse const& r)
+        [](RpcResponse const &r)
         {
-            tr_variant* torrents;
+            tr_variant *torrents;
 
             if (!tr_variantDictFindList(r.args.get(), TR_KEY_torrents, &torrents))
             {
                 return;
             }
 
-            tr_variant* const child = tr_variantListChild(torrents, 0);
-            char const* str;
+            tr_variant *const child = tr_variantListChild(torrents, 0);
+            char const *str;
 
             if (child != nullptr && tr_variantDictFindStr(child, TR_KEY_magnetLink, &str, nullptr))
             {
@@ -293,7 +293,7 @@ void Session::updatePref(int key)
 ****
 ***/
 
-Session::Session(QString const& configDir, Prefs& prefs)
+Session::Session(QString const &configDir, Prefs &prefs)
     : myConfigDir(configDir)
     , myPrefs(prefs)
     , myBlocklistSize(-1)
@@ -373,9 +373,9 @@ void Session::start()
 
         myRpc.start(mySession);
 
-        tr_ctor* ctor = tr_ctorNew(mySession);
+        tr_ctor *ctor = tr_ctorNew(mySession);
         int torrentCount;
-        tr_torrent** torrents = tr_sessionLoadTorrents(mySession, ctor, &torrentCount);
+        tr_torrent **torrents = tr_sessionLoadTorrents(mySession, ctor, &torrentCount);
         tr_free(torrents);
         tr_ctorFree(ctor);
     }
@@ -405,7 +405,7 @@ bool Session::isLocal() const
 namespace
 {
 
-void addOptionalIds(tr_variant* args, torrent_ids_t const& ids)
+void addOptionalIds(tr_variant *args, torrent_ids_t const &ids)
 {
     if (&ids == &recentlyActiveIds)
     {
@@ -413,7 +413,7 @@ void addOptionalIds(tr_variant* args, torrent_ids_t const& ids)
     }
     else if (!ids.empty())
     {
-        tr_variant* idList(tr_variantDictAddList(args, TR_KEY_ids, ids.size()));
+        tr_variant *idList(tr_variantDictAddList(args, TR_KEY_ids, ids.size()));
 
         for (int const i : ids)
         {
@@ -424,7 +424,7 @@ void addOptionalIds(tr_variant* args, torrent_ids_t const& ids)
 
 } // namespace
 
-void Session::torrentSet(torrent_ids_t const& ids, tr_quark const key, double value)
+void Session::torrentSet(torrent_ids_t const &ids, tr_quark const key, double value)
 {
     tr_variant args;
     tr_variantInitDict(&args, 2);
@@ -434,7 +434,7 @@ void Session::torrentSet(torrent_ids_t const& ids, tr_quark const key, double va
     exec(TR_KEY_torrent_set, &args);
 }
 
-void Session::torrentSet(torrent_ids_t const& ids, tr_quark const key, int value)
+void Session::torrentSet(torrent_ids_t const &ids, tr_quark const key, int value)
 {
     tr_variant args;
     tr_variantInitDict(&args, 2);
@@ -444,7 +444,7 @@ void Session::torrentSet(torrent_ids_t const& ids, tr_quark const key, int value
     exec(TR_KEY_torrent_set, &args);
 }
 
-void Session::torrentSet(torrent_ids_t const& ids, tr_quark const key, bool value)
+void Session::torrentSet(torrent_ids_t const &ids, tr_quark const key, bool value)
 {
     tr_variant args;
     tr_variantInitDict(&args, 2);
@@ -454,14 +454,14 @@ void Session::torrentSet(torrent_ids_t const& ids, tr_quark const key, bool valu
     exec(TR_KEY_torrent_set, &args);
 }
 
-void Session::torrentSet(torrent_ids_t const& ids, tr_quark const key, QStringList const& value)
+void Session::torrentSet(torrent_ids_t const &ids, tr_quark const key, QStringList const &value)
 {
     tr_variant args;
     tr_variantInitDict(&args, 2);
     addOptionalIds(&args, ids);
-    tr_variant* list(tr_variantDictAddList(&args, key, value.size()));
+    tr_variant *list(tr_variantDictAddList(&args, key, value.size()));
 
-    for (QString const& str : value)
+    for (QString const &str : value)
     {
         tr_variantListAddStr(list, str.toUtf8().constData());
     }
@@ -469,12 +469,12 @@ void Session::torrentSet(torrent_ids_t const& ids, tr_quark const key, QStringLi
     exec(TR_KEY_torrent_set, &args);
 }
 
-void Session::torrentSet(torrent_ids_t const& ids, tr_quark const key, QList<int> const& value)
+void Session::torrentSet(torrent_ids_t const &ids, tr_quark const key, QList<int> const &value)
 {
     tr_variant args;
     tr_variantInitDict(&args, 2);
     addOptionalIds(&args, ids);
-    tr_variant* list(tr_variantDictAddList(&args, key, value.size()));
+    tr_variant *list(tr_variantDictAddList(&args, key, value.size()));
 
     for (int const i : value)
     {
@@ -484,19 +484,19 @@ void Session::torrentSet(torrent_ids_t const& ids, tr_quark const key, QList<int
     exec(TR_KEY_torrent_set, &args);
 }
 
-void Session::torrentSet(torrent_ids_t const& ids, tr_quark const key, QPair<int, QString> const& value)
+void Session::torrentSet(torrent_ids_t const &ids, tr_quark const key, QPair<int, QString> const &value)
 {
     tr_variant args;
     tr_variantInitDict(&args, 2);
     addOptionalIds(&args, ids);
-    tr_variant* list(tr_variantDictAddList(&args, key, 2));
+    tr_variant *list(tr_variantDictAddList(&args, key, 2));
     tr_variantListAddInt(list, value.first);
     tr_variantListAddStr(list, value.second.toUtf8().constData());
 
     exec(TR_KEY_torrent_set, &args);
 }
 
-void Session::torrentSetLocation(torrent_ids_t const& ids, QString const& location, bool doMove)
+void Session::torrentSetLocation(torrent_ids_t const &ids, QString const &location, bool doMove)
 {
     tr_variant args;
     tr_variantInitDict(&args, 3);
@@ -507,7 +507,7 @@ void Session::torrentSetLocation(torrent_ids_t const& ids, QString const& locati
     exec(TR_KEY_torrent_set_location, &args);
 }
 
-void Session::torrentRenamePath(torrent_ids_t const& ids, QString const& oldpath, QString const& newname)
+void Session::torrentRenamePath(torrent_ids_t const &ids, QString const &oldpath, QString const &newname)
 {
     tr_variant args;
     tr_variantInitDict(&args, 2);
@@ -515,18 +515,18 @@ void Session::torrentRenamePath(torrent_ids_t const& ids, QString const& oldpath
     tr_variantDictAddStr(&args, TR_KEY_path, oldpath.toUtf8().constData());
     tr_variantDictAddStr(&args, TR_KEY_name, newname.toUtf8().constData());
 
-    RpcQueue* q = new RpcQueue();
+    RpcQueue *q = new RpcQueue();
 
     q->add(
         [this, &args]() { return exec("torrent-rename-path", &args); },
-        [](RpcResponse const& r)
+        [](RpcResponse const &r)
         {
-            char const* path = "(unknown)";
-            char const* name = "(unknown)";
+            char const *path = "(unknown)";
+            char const *name = "(unknown)";
             tr_variantDictFindStr(r.args.get(), TR_KEY_path, &path, nullptr);
             tr_variantDictFindStr(r.args.get(), TR_KEY_name, &name, nullptr);
 
-            QMessageBox* d = new QMessageBox(
+            QMessageBox *d = new QMessageBox(
                 QMessageBox::Information,
                 tr("Error Renaming Path"),
                 tr("<p><b>Unable to rename \"%1\" as \"%2\": %3.</b></p><p>Please correct the errors and try again.</p>")
@@ -540,14 +540,14 @@ void Session::torrentRenamePath(torrent_ids_t const& ids, QString const& oldpath
         });
 
     q->add(
-        [this, ids](RpcResponse const& /*r*/) {
+        [this, ids](RpcResponse const & /*r*/) {
             refreshTorrents(ids, { TR_KEY_fileStats, TR_KEY_files, TR_KEY_id, TR_KEY_name });
         });
 
     q->run();
 }
 
-void Session::refreshTorrents(torrent_ids_t const& ids, KeyList const& keys)
+void Session::refreshTorrents(torrent_ids_t const &ids, KeyList const &keys)
 {
     tr_variant args;
     tr_variantInitDict(&args, 3);
@@ -555,16 +555,16 @@ void Session::refreshTorrents(torrent_ids_t const& ids, KeyList const& keys)
     addList(tr_variantDictAddList(&args, TR_KEY_fields, 0), keys);
     addOptionalIds(&args, ids);
 
-    RpcQueue* q = new RpcQueue();
+    RpcQueue *q = new RpcQueue();
 
     q->add([this, &args]() { return exec(TR_KEY_torrent_get, &args); });
 
     bool const allTorrents = ids.empty();
 
     q->add(
-        [this, allTorrents](RpcResponse const& r)
+        [this, allTorrents](RpcResponse const &r)
         {
-            tr_variant* torrents;
+            tr_variant *torrents;
 
             if (tr_variantDictFindList(r.args.get(), TR_KEY_torrents, &torrents))
             {
@@ -580,23 +580,23 @@ void Session::refreshTorrents(torrent_ids_t const& ids, KeyList const& keys)
     q->run();
 }
 
-void Session::refreshDetailInfo(torrent_ids_t const& ids)
+void Session::refreshDetailInfo(torrent_ids_t const &ids)
 {
     refreshTorrents(ids, Torrent::detailInfoKeys);
 }
 
-void Session::refreshExtraStats(torrent_ids_t const& ids)
+void Session::refreshExtraStats(torrent_ids_t const &ids)
 {
     refreshTorrents(ids, Torrent::mainStatKeys + Torrent::detailStatKeys);
 }
 
-void Session::sendTorrentRequest(char const* request, torrent_ids_t const& ids)
+void Session::sendTorrentRequest(char const *request, torrent_ids_t const &ids)
 {
     tr_variant args;
     tr_variantInitDict(&args, 1);
     addOptionalIds(&args, ids);
 
-    RpcQueue* q = new RpcQueue();
+    RpcQueue *q = new RpcQueue();
 
     q->add([this, request, &args]() { return exec(request, &args); });
 
@@ -605,37 +605,37 @@ void Session::sendTorrentRequest(char const* request, torrent_ids_t const& ids)
     q->run();
 }
 
-void Session::pauseTorrents(torrent_ids_t const& ids)
+void Session::pauseTorrents(torrent_ids_t const &ids)
 {
     sendTorrentRequest("torrent-stop", ids);
 }
 
-void Session::startTorrents(torrent_ids_t const& ids)
+void Session::startTorrents(torrent_ids_t const &ids)
 {
     sendTorrentRequest("torrent-start", ids);
 }
 
-void Session::startTorrentsNow(torrent_ids_t const& ids)
+void Session::startTorrentsNow(torrent_ids_t const &ids)
 {
     sendTorrentRequest("torrent-start-now", ids);
 }
 
-void Session::queueMoveTop(torrent_ids_t const& ids)
+void Session::queueMoveTop(torrent_ids_t const &ids)
 {
     sendTorrentRequest("queue-move-top", ids);
 }
 
-void Session::queueMoveUp(torrent_ids_t const& ids)
+void Session::queueMoveUp(torrent_ids_t const &ids)
 {
     sendTorrentRequest("queue-move-up", ids);
 }
 
-void Session::queueMoveDown(torrent_ids_t const& ids)
+void Session::queueMoveDown(torrent_ids_t const &ids)
 {
     sendTorrentRequest("queue-move-down", ids);
 }
 
-void Session::queueMoveBottom(torrent_ids_t const& ids)
+void Session::queueMoveBottom(torrent_ids_t const &ids)
 {
     sendTorrentRequest("queue-move-bottom", ids);
 }
@@ -650,41 +650,41 @@ void Session::refreshAllTorrents()
     refreshTorrents(allIds, Torrent::mainStatKeys);
 }
 
-void Session::initTorrents(torrent_ids_t const& ids)
+void Session::initTorrents(torrent_ids_t const &ids)
 {
     refreshTorrents(ids, Torrent::allMainKeys);
 }
 
 void Session::refreshSessionStats()
 {
-    RpcQueue* q = new RpcQueue();
+    RpcQueue *q = new RpcQueue();
 
     q->add([this]() { return exec("session-stats", nullptr); });
 
-    q->add([this](RpcResponse const& r) { updateStats(r.args.get()); });
+    q->add([this](RpcResponse const &r) { updateStats(r.args.get()); });
 
     q->run();
 }
 
 void Session::refreshSessionInfo()
 {
-    RpcQueue* q = new RpcQueue();
+    RpcQueue *q = new RpcQueue();
 
     q->add([this]() { return exec("session-get", nullptr); });
 
-    q->add([this](RpcResponse const& r) { updateInfo(r.args.get()); });
+    q->add([this](RpcResponse const &r) { updateInfo(r.args.get()); });
 
     q->run();
 }
 
 void Session::updateBlocklist()
 {
-    RpcQueue* q = new RpcQueue();
+    RpcQueue *q = new RpcQueue();
 
     q->add([this]() { return exec("blocklist-update", nullptr); });
 
     q->add(
-        [this](RpcResponse const& r)
+        [this](RpcResponse const &r)
         {
             int64_t blocklistSize;
 
@@ -701,17 +701,17 @@ void Session::updateBlocklist()
 ****
 ***/
 
-RpcResponseFuture Session::exec(tr_quark method, tr_variant* args)
+RpcResponseFuture Session::exec(tr_quark method, tr_variant *args)
 {
     return myRpc.exec(method, args);
 }
 
-RpcResponseFuture Session::exec(char const* method, tr_variant* args)
+RpcResponseFuture Session::exec(char const *method, tr_variant *args)
 {
     return myRpc.exec(method, args);
 }
 
-void Session::updateStats(tr_variant* d, tr_session_stats* stats)
+void Session::updateStats(tr_variant *d, tr_session_stats *stats)
 {
     int64_t i;
 
@@ -743,9 +743,9 @@ void Session::updateStats(tr_variant* d, tr_session_stats* stats)
     stats->ratio = tr_getRatio(stats->uploadedBytes, stats->downloadedBytes);
 }
 
-void Session::updateStats(tr_variant* d)
+void Session::updateStats(tr_variant *d)
 {
-    tr_variant* c;
+    tr_variant *c;
 
     if (tr_variantDictFindDict(d, TR_KEY_current_stats, &c))
     {
@@ -760,16 +760,16 @@ void Session::updateStats(tr_variant* d)
     emit statsUpdated();
 }
 
-void Session::updateInfo(tr_variant* d)
+void Session::updateInfo(tr_variant *d)
 {
     int64_t i;
-    char const* str;
+    char const *str;
 
     disconnect(&myPrefs, SIGNAL(changed(int)), this, SLOT(updatePref(int)));
 
     for (int i = Prefs::FIRST_CORE_PREF; i <= Prefs::LAST_CORE_PREF; ++i)
     {
-        tr_variant const* b(tr_variantDictFind(d, myPrefs.getKey(i)));
+        tr_variant const *b(tr_variantDictFind(d, myPrefs.getKey(i)));
 
         if (b == nullptr)
         {
@@ -778,7 +778,7 @@ void Session::updateInfo(tr_variant* d)
 
         if (i == Prefs::ENCRYPTION)
         {
-            char const* val;
+            char const *val;
 
             if (tr_variantGetStr(b, &val, nullptr))
             {
@@ -841,7 +841,7 @@ void Session::updateInfo(tr_variant* d)
         case CustomVariantType::SortModeType:
         case QVariant::String:
             {
-                char const* val;
+                char const *val;
 
                 if (tr_variantGetStr(b, &val, nullptr))
                 {
@@ -919,7 +919,7 @@ void Session::setBlocklistSize(int64_t i)
     emit blocklistUpdated(i);
 }
 
-void Session::addTorrent(AddData const& addMe, tr_variant* args, bool trashOriginal)
+void Session::addTorrent(AddData const &addMe, tr_variant *args, bool trashOriginal)
 {
     assert(tr_variantDictFind(args, TR_KEY_filename) == nullptr);
     assert(tr_variantDictFind(args, TR_KEY_metainfo) == nullptr);
@@ -952,13 +952,13 @@ void Session::addTorrent(AddData const& addMe, tr_variant* args, bool trashOrigi
         break;
     }
 
-    RpcQueue* q = new RpcQueue();
+    RpcQueue *q = new RpcQueue();
 
     q->add(
         [this, args]() { return exec("torrent-add", args); },
-        [addMe](RpcResponse const& r)
+        [addMe](RpcResponse const &r)
         {
-            QMessageBox* d = new QMessageBox(
+            QMessageBox *d = new QMessageBox(
                 QMessageBox::Warning,
                 tr("Error Adding Torrent"),
                 QString::fromLatin1("<p><b>%1</b></p><p>%2</p>").arg(r.result).arg(addMe.readableName()),
@@ -969,21 +969,21 @@ void Session::addTorrent(AddData const& addMe, tr_variant* args, bool trashOrigi
         });
 
     q->add(
-        [addMe](RpcResponse const& r)
+        [addMe](RpcResponse const &r)
         {
-            tr_variant* dup;
+            tr_variant *dup;
 
             if (!tr_variantDictFindDict(r.args.get(), TR_KEY_torrent_duplicate, &dup))
             {
                 return;
             }
 
-            char const* str;
+            char const *str;
 
             if (tr_variantDictFindStr(dup, TR_KEY_name, &str, nullptr))
             {
                 QString const name = QString::fromUtf8(str);
-                QMessageBox* d = new QMessageBox(
+                QMessageBox *d = new QMessageBox(
                     QMessageBox::Warning,
                     tr("Add Torrent"),
                     tr("<p><b>Unable to add \"%1\".</b></p><p>It is a duplicate of \"%2\" which is already added.</p>")
@@ -1010,7 +1010,7 @@ void Session::addTorrent(AddData const& addMe, tr_variant* args, bool trashOrigi
     q->run();
 }
 
-void Session::addTorrent(AddData const& addMe)
+void Session::addTorrent(AddData const &addMe)
 {
     tr_variant args;
     tr_variantInitDict(&args, 3);
@@ -1018,7 +1018,7 @@ void Session::addTorrent(AddData const& addMe)
     addTorrent(addMe, &args, myPrefs.getBool(Prefs::TRASH_ORIGINAL));
 }
 
-void Session::addNewlyCreatedTorrent(QString const& filename, QString const& localPath)
+void Session::addNewlyCreatedTorrent(QString const &filename, QString const &localPath)
 {
     QByteArray const b64 = AddData(filename).toBase64();
 
@@ -1031,7 +1031,7 @@ void Session::addNewlyCreatedTorrent(QString const& filename, QString const& loc
     exec("torrent-add", &args);
 }
 
-void Session::removeTorrents(torrent_ids_t const& ids, bool deleteFiles)
+void Session::removeTorrents(torrent_ids_t const &ids, bool deleteFiles)
 {
     if (!ids.empty())
     {
@@ -1044,7 +1044,7 @@ void Session::removeTorrents(torrent_ids_t const& ids, bool deleteFiles)
     }
 }
 
-void Session::verifyTorrents(torrent_ids_t const& ids)
+void Session::verifyTorrents(torrent_ids_t const &ids)
 {
     if (!ids.empty())
     {
@@ -1056,7 +1056,7 @@ void Session::verifyTorrents(torrent_ids_t const& ids)
     }
 }
 
-void Session::reannounceTorrents(torrent_ids_t const& ids)
+void Session::reannounceTorrents(torrent_ids_t const &ids)
 {
     if (!ids.empty())
     {

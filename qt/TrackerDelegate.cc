@@ -42,27 +42,27 @@ public:
     QRect textRect;
 
 public:
-    ItemLayout(QString const& text, bool suppressColors, Qt::LayoutDirection direction, QPoint const& topLeft, int width);
+    ItemLayout(QString const &text, bool suppressColors, Qt::LayoutDirection direction, QPoint const &topLeft, int width);
 
     QSize size() const
     {
         return (iconRect | textRect).size();
     }
 
-    QAbstractTextDocumentLayout* textLayout() const
+    QAbstractTextDocumentLayout *textLayout() const
     {
         return myTextDocument.documentLayout();
     }
 };
 
 ItemLayout::ItemLayout(
-    QString const& text,
+    QString const &text,
     bool suppressColors,
     Qt::LayoutDirection direction,
-    QPoint const& topLeft,
+    QPoint const &topLeft,
     int width)
 {
-    QStyle const* style(qApp->style());
+    QStyle const *style(qApp->style());
     QSize const iconSize = FaviconCache::getIconSize();
 
     QRect baseRect(topLeft, QSize(width, 0));
@@ -94,19 +94,19 @@ ItemLayout::ItemLayout(
 ****
 ***/
 
-QSize TrackerDelegate::sizeHint(QStyleOptionViewItem const& option, TrackerInfo const& info) const
+QSize TrackerDelegate::sizeHint(QStyleOptionViewItem const &option, TrackerInfo const &info) const
 {
     ItemLayout const layout(getText(info), true, option.direction, QPoint(0, 0), option.rect.width() - myMargin.width() * 2);
     return layout.size() + myMargin * 2;
 }
 
-QSize TrackerDelegate::sizeHint(QStyleOptionViewItem const& option, QModelIndex const& index) const
+QSize TrackerDelegate::sizeHint(QStyleOptionViewItem const &option, QModelIndex const &index) const
 {
     TrackerInfo const trackerInfo = index.data(TrackerModel::TrackerRole).value<TrackerInfo>();
     return sizeHint(option, trackerInfo);
 }
 
-void TrackerDelegate::paint(QPainter* painter, QStyleOptionViewItem const& option, QModelIndex const& index) const
+void TrackerDelegate::paint(QPainter *painter, QStyleOptionViewItem const &option, QModelIndex const &index) const
 {
     TrackerInfo const trackerInfo = index.data(TrackerModel::TrackerRole).value<TrackerInfo>();
     painter->save();
@@ -117,7 +117,7 @@ void TrackerDelegate::paint(QPainter* painter, QStyleOptionViewItem const& optio
     painter->restore();
 }
 
-void TrackerDelegate::drawTracker(QPainter* painter, QStyleOptionViewItem const& option, TrackerInfo const& inf) const
+void TrackerDelegate::drawTracker(QPainter *painter, QStyleOptionViewItem const &option, TrackerInfo const &inf) const
 {
     bool const isItemSelected((option.state & QStyle::State_Selected) != 0);
     bool const isItemEnabled((option.state & QStyle::State_Enabled) != 0);
@@ -175,7 +175,7 @@ QString timeToStringRounded(int seconds)
 
 } // namespace
 
-QString TrackerDelegate::getText(TrackerInfo const& inf) const
+QString TrackerDelegate::getText(TrackerInfo const &inf) const
 {
     QString key;
     QString str;
@@ -189,7 +189,7 @@ QString TrackerDelegate::getText(TrackerInfo const& inf) const
 
     // hostname
     str += inf.st.isBackup ? QLatin1String("<i>") : QLatin1String("<b>");
-    char* host = nullptr;
+    char *host = nullptr;
     int port = 0;
     tr_urlParse(inf.st.announce.toUtf8().constData(), TR_BAD_SIZE, nullptr, &host, &port, nullptr);
     str += QString::fromLatin1("%1:%2").arg(QString::fromUtf8(host)).arg(port);

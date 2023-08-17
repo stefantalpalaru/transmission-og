@@ -25,12 +25,12 @@
 ****
 ***/
 
-static tr_session* session = NULL;
+static tr_session *session = NULL;
 
 #define check_have_none(tor, totalSize) \
     do \
     { \
-        tr_stat const* tst = tr_torrentStat(tor); \
+        tr_stat const *tst = tr_torrentStat(tor); \
         check_int(tst->activity, ==, TR_STATUS_STOPPED); \
         check_int(tst->error, ==, TR_STAT_OK); \
         check_uint(tst->sizeWhenDone, ==, totalSize); \
@@ -39,9 +39,9 @@ static tr_session* session = NULL;
         check_uint(tst->haveValid, ==, 0); \
     } while (0)
 
-static bool testFileExistsAndConsistsOfThisString(tr_torrent const* tor, tr_file_index_t fileIndex, char const* str)
+static bool testFileExistsAndConsistsOfThisString(tr_torrent const *tor, tr_file_index_t fileIndex, char const *str)
 {
-    char* path;
+    char *path;
     size_t const str_len = strlen(str);
     bool success = false;
 
@@ -52,7 +52,7 @@ static bool testFileExistsAndConsistsOfThisString(tr_torrent const* tor, tr_file
         TR_ASSERT(tr_sys_path_exists(path, NULL));
 
         size_t contents_len;
-        uint8_t* contents = tr_loadFile(path, &contents_len, NULL);
+        uint8_t *contents = tr_loadFile(path, &contents_len, NULL);
 
         success = contents != NULL && str_len == contents_len && memcmp(contents, str, contents_len) == 0;
 
@@ -64,16 +64,16 @@ static bool testFileExistsAndConsistsOfThisString(tr_torrent const* tor, tr_file
 }
 
 static void onRenameDone(
-    tr_torrent* tor UNUSED,
-    char const* oldpath UNUSED,
-    char const* newname UNUSED,
+    tr_torrent *tor UNUSED,
+    char const *oldpath UNUSED,
+    char const *newname UNUSED,
     int error,
-    void* user_data)
+    void *user_data)
 {
-    *(int*)user_data = error;
+    *(int *)user_data = error;
 }
 
-static int torrentRenameAndWait(tr_torrent* tor, char const* oldpath, char const* newname)
+static int torrentRenameAndWait(tr_torrent *tor, char const *oldpath, char const *newname)
 {
     int error = -1;
     tr_torrentRenamePath(tor, oldpath, newname, onRenameDone, &error);
@@ -86,7 +86,7 @@ static int torrentRenameAndWait(tr_torrent* tor, char const* oldpath, char const
     return error;
 }
 
-static void torrentRemoveAndWait(tr_torrent* tor, int expected_torrent_count)
+static void torrentRemoveAndWait(tr_torrent *tor, int expected_torrent_count)
 {
     tr_torrentRemove(tor, false, NULL);
 
@@ -100,25 +100,25 @@ static void torrentRemoveAndWait(tr_torrent* tor, int expected_torrent_count)
 ****
 ***/
 
-static void create_single_file_torrent_contents(char const* top)
+static void create_single_file_torrent_contents(char const *top)
 {
-    char* path = tr_buildPath(top, "hello-world.txt", NULL);
+    char *path = tr_buildPath(top, "hello-world.txt", NULL);
     libtest_create_file_with_string_contents(path, "hello, world!\n");
     tr_free(path);
 }
 
-static tr_torrent* create_torrent_from_base64_metainfo(tr_ctor* ctor, char const* metainfo_base64)
+static tr_torrent *create_torrent_from_base64_metainfo(tr_ctor *ctor, char const *metainfo_base64)
 {
     int err;
     size_t metainfo_len;
-    char* metainfo;
-    tr_torrent* tor;
+    char *metainfo;
+    tr_torrent *tor;
 
     /* create the torrent ctor */
     metainfo = tr_base64_decode_str(metainfo_base64, &metainfo_len);
     TR_ASSERT(metainfo != NULL);
     TR_ASSERT(metainfo_len > 0);
-    tr_ctorSetMetainfo(ctor, (uint8_t*)metainfo, metainfo_len);
+    tr_ctorSetMetainfo(ctor, (uint8_t *)metainfo, metainfo_len);
     tr_ctorSetPaused(ctor, TR_FORCE, true);
 
     /* create the torrent */
@@ -134,11 +134,11 @@ static tr_torrent* create_torrent_from_base64_metainfo(tr_ctor* ctor, char const
 static int test_single_filename_torrent(void)
 {
     uint64_t loaded;
-    tr_torrent* tor;
-    char* tmpstr;
+    tr_torrent *tor;
+    char *tmpstr;
     size_t const totalSize = 14;
-    tr_ctor* ctor;
-    tr_stat const* st;
+    tr_ctor *ctor;
+    tr_stat const *st;
 
     /* this is a single-file torrent whose file is hello-world.txt, holding the string "hello, world!" */
     ctor = tr_ctorNew(session);
@@ -241,9 +241,9 @@ static int test_single_filename_torrent(void)
 ****
 ***/
 
-static void create_multifile_torrent_contents(char const* top)
+static void create_multifile_torrent_contents(char const *top)
 {
-    char* path;
+    char *path;
 
     path = tr_buildPath(top, "Felidae", "Felinae", "Acinonyx", "Cheetah", "Chester", NULL);
     libtest_create_file_with_string_contents(path, "It ain't easy bein' cheesy.\n");
@@ -267,15 +267,15 @@ static void create_multifile_torrent_contents(char const* top)
 static int test_multifile_torrent(void)
 {
     uint64_t loaded;
-    tr_torrent* tor;
-    tr_ctor* ctor;
-    char* str;
-    char* tmp;
+    tr_torrent *tor;
+    tr_ctor *ctor;
+    char *str;
+    char *tmp;
     static size_t const totalSize = 67;
-    tr_stat const* st;
-    tr_file const* files;
-    char const* strings[4];
-    char const* expected_files[4] = {
+    tr_stat const *st;
+    tr_file const *files;
+    char const *strings[4];
+    char const *expected_files[4] = {
         "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Acinonyx" TR_PATH_DELIMITER_STR
         "Cheetah" TR_PATH_DELIMITER_STR "Chester",
         "Felidae" TR_PATH_DELIMITER_STR "Felinae" TR_PATH_DELIMITER_STR "Felis" TR_PATH_DELIMITER_STR
@@ -285,7 +285,7 @@ static int test_multifile_torrent(void)
         "Felidae" TR_PATH_DELIMITER_STR "Pantherinae" TR_PATH_DELIMITER_STR "Panthera" TR_PATH_DELIMITER_STR
         "Tiger" TR_PATH_DELIMITER_STR "Tony",
     };
-    char const* expected_contents[4] = {
+    char const *expected_contents[4] = {
         "It ain't easy bein' cheesy.\n",
         "Inquisitive\n",
         "Tough\n",
@@ -602,14 +602,14 @@ static int test_multifile_torrent(void)
 
 static int test_partial_file(void)
 {
-    tr_torrent* tor;
-    tr_stat const* st;
-    tr_file_stat* fst;
+    tr_torrent *tor;
+    tr_stat const *st;
+    tr_file_stat *fst;
     uint32_t const pieceCount = 33;
     uint32_t const pieceSize = 32768;
     uint32_t const length[] = { 1048576, 4096, 512 };
     uint64_t const totalSize = length[0] + length[1] + length[2];
-    char const* strings[3];
+    char const *strings[3];
 
     /***
     ****  create our test torrent with an incomplete .part file
@@ -652,8 +652,8 @@ static int test_partial_file(void)
 
     for (tr_file_index_t i = 0; i < 3; ++i)
     {
-        char* expected = tr_buildPath(tor->currentDir, strings[i], NULL);
-        char* path = tr_torrentFindFile(tor, i);
+        char *expected = tr_buildPath(tor->currentDir, strings[i], NULL);
+        char *path = tr_torrentFindFile(tor, i);
         check_str(path, ==, expected);
         tr_free(path);
         tr_free(expected);

@@ -27,12 +27,12 @@
 @interface TrackerTableView : NSTableView
 {
     //weak references
-    Torrent* fTorrent;
-    NSArray* fTrackers;
+    Torrent *fTorrent;
+    NSArray *fTrackers;
 }
 
-- (void)setTorrent:(Torrent*)torrent;
-- (void)setTrackers:(NSArray*)trackers;
+- (void)setTorrent:(Torrent *)torrent;
+- (void)setTrackers:(NSArray *)trackers;
 
 - (void)copy:(id)sender;
 - (void)paste:(id)sender;

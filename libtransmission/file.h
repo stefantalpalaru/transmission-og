@@ -34,7 +34,7 @@ extern "C"
 /** @brief Platform-specific invalid file descriptor constant. */
 #define TR_BAD_SYS_FILE (-1)
     /** @brief Platform-specific directory descriptor type. */
-    typedef void* tr_sys_dir_t;
+    typedef void *tr_sys_dir_t;
 /** @brief Platform-specific end-of-line sequence. */
 #define TR_NATIVE_EOL_STR "\n"
 /** @brief Platform-specific end-of-line sequence length. */
@@ -44,7 +44,7 @@ extern "C"
 
 typedef HANDLE tr_sys_file_t;
 #define TR_BAD_SYS_FILE INVALID_HANDLE_VALUE
-typedef struct tr_sys_dir_win32* tr_sys_dir_t;
+typedef struct tr_sys_dir_win32 *tr_sys_dir_t;
 #define TR_NATIVE_EOL_STR "\r\n"
 #define TR_NATIVE_EOL_STR_SIZE 2
 
@@ -146,7 +146,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-    bool tr_sys_path_get_info(char const* path, int flags, tr_sys_path_info* info, struct tr_error** error);
+    bool tr_sys_path_get_info(char const *path, int flags, tr_sys_path_info *info, struct tr_error **error);
 
     /**
  * @brief Portability wrapper for `access()`.
@@ -159,7 +159,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *         be returned in case of error; if you need to distinguish the two,
  *         check if `error` is `NULL` afterwards.
  */
-    bool tr_sys_path_exists(char const* path, struct tr_error** error);
+    bool tr_sys_path_exists(char const *path, struct tr_error **error);
 
     /**
  * @brief Check whether path is relative.
@@ -170,7 +170,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *
  * @return `True` if path is relative, `false` otherwise
  */
-    bool tr_sys_path_is_relative(char const* path);
+    bool tr_sys_path_is_relative(char const *path);
 
     /**
  * @brief Test to see if the two filenames point to the same file.
@@ -185,7 +185,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *         if you need to distinguish the two, check if `error` is `NULL`
  *         afterwards.
  */
-    bool tr_sys_path_is_same(char const* path1, char const* path2, struct tr_error** error);
+    bool tr_sys_path_is_same(char const *path1, char const *path2, struct tr_error **error);
 
     /**
  * @brief Portability wrapper for `realpath()`.
@@ -199,7 +199,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *         when no longer needed), `NULL` otherwise (with `error` set
  *         accordingly).
  */
-    char* tr_sys_path_resolve(char const* path, struct tr_error** error);
+    char *tr_sys_path_resolve(char const *path, struct tr_error **error);
 
     /**
  * @brief Portability wrapper for `basename()`.
@@ -213,7 +213,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *         it when no longer needed), `NULL` otherwise (with `error` set
  *         accordingly).
  */
-    char* tr_sys_path_basename(char const* path, struct tr_error** error);
+    char *tr_sys_path_basename(char const *path, struct tr_error **error);
 
     /**
  * @brief Portability wrapper for `dirname()`.
@@ -227,7 +227,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *         when no longer needed), `NULL` otherwise (with `error` set
  *         accordingly).
  */
-    char* tr_sys_path_dirname(char const* path, struct tr_error** error);
+    char *tr_sys_path_dirname(char const *path, struct tr_error **error);
 
     /**
  * @brief Portability wrapper for `rename()`.
@@ -241,7 +241,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *         Rename will generally only succeed if both source and destination are
  *         on the same partition.
  */
-    bool tr_sys_path_rename(char const* src_path, char const* dst_path, struct tr_error** error);
+    bool tr_sys_path_rename(char const *src_path, char const *dst_path, struct tr_error **error);
 
     /**
  * @brief Portability wrapper for `remove()`.
@@ -254,7 +254,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *         Directory removal will only succeed if it is empty (contains no other
  *         files and directories).
  */
-    bool tr_sys_path_remove(char const* path, struct tr_error** error);
+    bool tr_sys_path_remove(char const *path, struct tr_error **error);
 
     /**
  * @brief Transform path separators to native ones, in-place.
@@ -263,7 +263,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *
  * @return Same path but with native (and uniform) separators.
  */
-    char* tr_sys_path_native_separators(char* path);
+    char *tr_sys_path_native_separators(char *path);
 
     /* File-related wrappers */
 
@@ -278,7 +278,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *         `error` set accordingly). DO NOT pass this descriptor to
  *         @ref tr_sys_file_close (unless you know what you are doing).
  */
-    tr_sys_file_t tr_sys_file_get_std(tr_std_sys_file_t std_file, struct tr_error** error);
+    tr_sys_file_t tr_sys_file_get_std(tr_std_sys_file_t std_file, struct tr_error **error);
 
     /**
  * @brief Portability wrapper for `open()`.
@@ -293,7 +293,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  * @return Opened file descriptor on success, `TR_BAD_SYS_FILE` otherwise (with
  *         `error` set accordingly).
  */
-    tr_sys_file_t tr_sys_file_open(char const* path, int flags, int permissions, struct tr_error** error);
+    tr_sys_file_t tr_sys_file_open(char const *path, int flags, int permissions, struct tr_error **error);
 
     /**
  * @brief Portability wrapper for `mkstemp()`.
@@ -309,7 +309,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  * @return Opened file descriptor on success, `TR_BAD_SYS_FILE` otherwise (with
  *         `error` set accordingly).
  */
-    tr_sys_file_t tr_sys_file_open_temp(char* path_template, struct tr_error** error);
+    tr_sys_file_t tr_sys_file_open_temp(char *path_template, struct tr_error **error);
 
     /**
  * @brief Portability wrapper for `close()`.
@@ -320,7 +320,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-    bool tr_sys_file_close(tr_sys_file_t handle, struct tr_error** error);
+    bool tr_sys_file_close(tr_sys_file_t handle, struct tr_error **error);
 
     /**
  * @brief Portability wrapper for `fstat()`.
@@ -332,7 +332,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-    bool tr_sys_file_get_info(tr_sys_file_t handle, tr_sys_path_info* info, struct tr_error** error);
+    bool tr_sys_file_get_info(tr_sys_file_t handle, tr_sys_path_info *info, struct tr_error **error);
 
     /**
  * @brief Portability wrapper for `lseek()`.
@@ -351,8 +351,8 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
         tr_sys_file_t handle,
         int64_t offset,
         tr_seek_origin_t origin,
-        uint64_t* new_offset,
-        struct tr_error** error);
+        uint64_t *new_offset,
+        struct tr_error **error);
 
     /**
  * @brief Portability wrapper for `read()`.
@@ -367,7 +367,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-    bool tr_sys_file_read(tr_sys_file_t handle, void* buffer, uint64_t size, uint64_t* bytes_read, struct tr_error** error);
+    bool tr_sys_file_read(tr_sys_file_t handle, void *buffer, uint64_t size, uint64_t *bytes_read, struct tr_error **error);
 
     /**
  * @brief Like `pread()`, except that the position is undefined afterwards.
@@ -386,11 +386,11 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  */
     bool tr_sys_file_read_at(
         tr_sys_file_t handle,
-        void* buffer,
+        void *buffer,
         uint64_t size,
         uint64_t offset,
-        uint64_t* bytes_read,
-        struct tr_error** error);
+        uint64_t *bytes_read,
+        struct tr_error **error);
 
     /**
  * @brief Portability wrapper for `write()`.
@@ -407,10 +407,10 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  */
     bool tr_sys_file_write(
         tr_sys_file_t handle,
-        void const* buffer,
+        void const *buffer,
         uint64_t size,
-        uint64_t* bytes_written,
-        struct tr_error** error);
+        uint64_t *bytes_written,
+        struct tr_error **error);
 
     /**
  * @brief Like `pwrite()`, except that the position is undefined afterwards.
@@ -429,11 +429,11 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  */
     bool tr_sys_file_write_at(
         tr_sys_file_t handle,
-        void const* buffer,
+        void const *buffer,
         uint64_t size,
         uint64_t offset,
-        uint64_t* bytes_written,
-        struct tr_error** error);
+        uint64_t *bytes_written,
+        struct tr_error **error);
 
     /**
  * @brief Portability wrapper for `fsync()`.
@@ -444,7 +444,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-    bool tr_sys_file_flush(tr_sys_file_t handle, struct tr_error** error);
+    bool tr_sys_file_flush(tr_sys_file_t handle, struct tr_error **error);
 
     /**
  * @brief Portability wrapper for `ftruncate()`.
@@ -456,7 +456,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-    bool tr_sys_file_truncate(tr_sys_file_t handle, uint64_t size, struct tr_error** error);
+    bool tr_sys_file_truncate(tr_sys_file_t handle, uint64_t size, struct tr_error **error);
 
     /**
  * @brief Tell system to prefetch or discard some part of file which is [not] to be read soon.
@@ -474,7 +474,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
         uint64_t offset,
         uint64_t size,
         tr_sys_file_advice_t advice,
-        struct tr_error** error);
+        struct tr_error **error);
 
     /**
  * @brief Preallocate file to specified size in full or sparse mode.
@@ -487,7 +487,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-    bool tr_sys_file_preallocate(tr_sys_file_t handle, uint64_t size, int flags, struct tr_error** error);
+    bool tr_sys_file_preallocate(tr_sys_file_t handle, uint64_t size, int flags, struct tr_error **error);
 
     /**
  * @brief Portability wrapper for `mmap()` for files.
@@ -501,7 +501,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  * @return Pointer to mapped file data on success, `NULL` otherwise (with
  *         `error` set accordingly).
  */
-    void* tr_sys_file_map_for_reading(tr_sys_file_t handle, uint64_t offset, uint64_t size, struct tr_error** error);
+    void *tr_sys_file_map_for_reading(tr_sys_file_t handle, uint64_t offset, uint64_t size, struct tr_error **error);
 
     /**
  * @brief Portability wrapper for `munmap()` for files.
@@ -513,7 +513,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-    bool tr_sys_file_unmap(void const* address, uint64_t size, struct tr_error** error);
+    bool tr_sys_file_unmap(void const *address, uint64_t size, struct tr_error **error);
 
     /**
  * @brief Portability wrapper for `flock()`.
@@ -528,7 +528,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-    bool tr_sys_file_lock(tr_sys_file_t handle, int operation, struct tr_error** error);
+    bool tr_sys_file_lock(tr_sys_file_t handle, int operation, struct tr_error **error);
 
     /* File-related wrappers (utility) */
 
@@ -553,7 +553,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *         you need to distinguish the two, check if `error` is `NULL`
  *         afterwards.
  */
-    bool tr_sys_file_read_line(tr_sys_file_t handle, char* buffer, size_t buffer_size, struct tr_error** error);
+    bool tr_sys_file_read_line(tr_sys_file_t handle, char *buffer, size_t buffer_size, struct tr_error **error);
 
     /**
  * @brief Portability wrapper for `fputs()`, appending EOL internally.
@@ -571,7 +571,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-    bool tr_sys_file_write_line(tr_sys_file_t handle, char const* buffer, struct tr_error** error);
+    bool tr_sys_file_write_line(tr_sys_file_t handle, char const *buffer, struct tr_error **error);
 
     /**
  * @brief Portability wrapper for `fprintf()`.
@@ -590,7 +590,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-    bool tr_sys_file_write_fmt(tr_sys_file_t handle, char const* format, struct tr_error** error, ...) TR_GNUC_PRINTF(2, 4);
+    bool tr_sys_file_write_fmt(tr_sys_file_t handle, char const *format, struct tr_error **error, ...) TR_GNUC_PRINTF(2, 4);
 
     /* Directory-related wrappers */
 
@@ -604,7 +604,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *         directory (use @ref tr_free to free it when no longer needed) on
  *         success, `NULL` otherwise (with `error` set accordingly).
  */
-    char* tr_sys_dir_get_current(struct tr_error** error);
+    char *tr_sys_dir_get_current(struct tr_error **error);
 
     /**
  * @brief Like `mkdir()`, but makes parent directories if needed.
@@ -618,7 +618,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-    bool tr_sys_dir_create(char const* path, int flags, int permissions, struct tr_error** error);
+    bool tr_sys_dir_create(char const *path, int flags, int permissions, struct tr_error **error);
 
     /**
  * @brief Portability wrapper for `mkdtemp()`.
@@ -633,7 +633,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-    bool tr_sys_dir_create_temp(char* path_template, struct tr_error** error);
+    bool tr_sys_dir_create_temp(char *path_template, struct tr_error **error);
 
     /**
  * @brief Portability wrapper for `opendir()`.
@@ -645,7 +645,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  * @return Opened directory descriptor on success, `TR_BAD_SYS_DIR` otherwise
  *         (with `error` set accordingly).
  */
-    tr_sys_dir_t tr_sys_dir_open(char const* path, struct tr_error** error);
+    tr_sys_dir_t tr_sys_dir_open(char const *path, struct tr_error **error);
 
     /**
  * @brief Portability wrapper for `readdir()`.
@@ -660,7 +660,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *         of directory; if you need to distinguish the two, check if `error`
  *         is `NULL` afterwards.
  */
-    char const* tr_sys_dir_read_name(tr_sys_dir_t handle, struct tr_error** error);
+    char const *tr_sys_dir_read_name(tr_sys_dir_t handle, struct tr_error **error);
 
     /**
  * @brief Portability wrapper for `closedir()`.
@@ -671,7 +671,7 @@ typedef struct tr_sys_dir_win32* tr_sys_dir_t;
  *
  * @return `True` on success, `false` otherwise (with `error` set accordingly).
  */
-    bool tr_sys_dir_close(tr_sys_dir_t handle, struct tr_error** error);
+    bool tr_sys_dir_close(tr_sys_dir_t handle, struct tr_error **error);
 
     /** @} */
     /** @} */

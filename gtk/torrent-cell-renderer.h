@@ -23,7 +23,7 @@ struct TorrentCellRenderer
     GtkCellRenderer parent;
 
     /*< private >*/
-    struct TorrentCellRendererPrivate* priv;
+    struct TorrentCellRendererPrivate *priv;
 };
 
 struct TorrentCellRendererClass
@@ -33,4 +33,4 @@ struct TorrentCellRendererClass
 
 GType torrent_cell_renderer_get_type(void) G_GNUC_CONST;
 
-GtkCellRenderer* torrent_cell_renderer_new(void);
+GtkCellRenderer *torrent_cell_renderer_new(void);

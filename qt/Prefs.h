@@ -130,7 +130,7 @@ public:
     };
 
 public:
-    Prefs(QString const& configDir);
+    Prefs(QString const &configDir);
     virtual ~Prefs();
 
     bool isCore(int key) const
@@ -143,7 +143,7 @@ public:
         return !isCore(key);
     }
 
-    char const* keyStr(int i) const
+    char const *keyStr(int i) const
     {
         return tr_quark_get_string(myItems[i].key, nullptr);
     }
@@ -158,7 +158,7 @@ public:
         return myItems[i].type;
     }
 
-    QVariant const& variant(int i) const
+    QVariant const &variant(int i) const
     {
         return myValues[i];
     }
@@ -176,9 +176,9 @@ public:
     }
 
     template<typename T>
-    void set(int key, T const& value)
+    void set(int key, T const &value)
     {
-        QVariant& v(myValues[key]);
+        QVariant &v(myValues[key]);
         QVariant const tmp = QVariant::fromValue(value);
 
         if (v.isNull() || v != tmp)
@@ -202,10 +202,10 @@ private:
     };
 
 private:
-    void initDefaults(tr_variant*);
+    void initDefaults(tr_variant *);
 
     // Intentionally not implemented
-    void set(int key, char const* value);
+    void set(int key, char const *value);
 
 private:
     QString const myConfigDir;

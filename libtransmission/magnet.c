@@ -39,7 +39,7 @@ static int const base32Lookup[] = {
 
 static int const base32LookupLen = TR_N_ELEMENTS(base32Lookup);
 
-static void base32_to_sha1(uint8_t* out, char const* in, size_t const inlen)
+static void base32_to_sha1(uint8_t *out, char const *in, size_t const inlen)
 {
     TR_ASSERT(inlen == 32);
 
@@ -108,25 +108,25 @@ static void base32_to_sha1(uint8_t* out, char const* in, size_t const inlen)
 #define MAX_TRACKERS 64
 #define MAX_WEBSEEDS 64
 
-tr_magnet_info* tr_magnetParse(char const* uri)
+tr_magnet_info *tr_magnetParse(char const *uri)
 {
     bool got_checksum = false;
     int trCount = 0;
     int wsCount = 0;
-    char* tr[MAX_TRACKERS];
-    char* ws[MAX_WEBSEEDS];
-    char* displayName = NULL;
+    char *tr[MAX_TRACKERS];
+    char *ws[MAX_WEBSEEDS];
+    char *displayName = NULL;
     uint8_t sha1[SHA_DIGEST_LENGTH];
-    tr_magnet_info* info = NULL;
+    tr_magnet_info *info = NULL;
 
     if (uri != NULL && strncmp(uri, "magnet:?", 8) == 0)
     {
-        for (char const* walk = uri + 8; !tr_str_is_empty(walk);)
+        for (char const *walk = uri + 8; !tr_str_is_empty(walk);)
         {
-            char const* key = walk;
-            char const* delim = strchr(key, '=');
-            char const* val = delim == NULL ? NULL : delim + 1;
-            char const* next = strchr(delim == NULL ? key : val, '&');
+            char const *key = walk;
+            char const *delim = strchr(key, '=');
+            char const *val = delim == NULL ? NULL : delim + 1;
+            char const *next = strchr(delim == NULL ? key : val, '&');
             size_t keylen;
             size_t vallen;
 
@@ -158,7 +158,7 @@ tr_magnet_info* tr_magnetParse(char const* uri)
 
             if (keylen == 2 && memcmp(key, "xt", 2) == 0 && val != NULL && strncmp(val, "urn:btih:", 9) == 0)
             {
-                char const* hash = val + 9;
+                char const *hash = val + 9;
                 size_t const hashlen = vallen - 9;
 
                 if (hashlen == 40)
@@ -206,9 +206,9 @@ tr_magnet_info* tr_magnetParse(char const* uri)
         info = tr_new0(tr_magnet_info, 1);
         info->displayName = displayName;
         info->trackerCount = trCount;
-        info->trackers = tr_memdup(tr, sizeof(char*) * trCount);
+        info->trackers = tr_memdup(tr, sizeof(char *) * trCount);
         info->webseedCount = wsCount;
-        info->webseeds = tr_memdup(ws, sizeof(char*) * wsCount);
+        info->webseeds = tr_memdup(ws, sizeof(char *) * wsCount);
         memcpy(info->hash, sha1, sizeof(uint8_t) * SHA_DIGEST_LENGTH);
     }
     else
@@ -229,7 +229,7 @@ tr_magnet_info* tr_magnetParse(char const* uri)
     return info;
 }
 
-void tr_magnetFree(tr_magnet_info* info)
+void tr_magnetFree(tr_magnet_info *info)
 {
     if (info != NULL)
     {
@@ -252,9 +252,9 @@ void tr_magnetFree(tr_magnet_info* info)
     }
 }
 
-void tr_magnetCreateMetainfo(tr_magnet_info const* info, tr_variant* top)
+void tr_magnetCreateMetainfo(tr_magnet_info const *info, tr_variant *top)
 {
-    tr_variant* d;
+    tr_variant *d;
     tr_variantInitDict(top, 4);
 
     /* announce list */
@@ -264,7 +264,7 @@ void tr_magnetCreateMetainfo(tr_magnet_info const* info, tr_variant* top)
     }
     else
     {
-        tr_variant* trackers = tr_variantDictAddList(top, TR_KEY_announce_list, info->trackerCount);
+        tr_variant *trackers = tr_variantDictAddList(top, TR_KEY_announce_list, info->trackerCount);
 
         for (int i = 0; i < info->trackerCount; ++i)
         {
@@ -275,7 +275,7 @@ void tr_magnetCreateMetainfo(tr_magnet_info const* info, tr_variant* top)
     /* webseeds */
     if (info->webseedCount > 0)
     {
-        tr_variant* urls = tr_variantDictAddList(top, TR_KEY_url_list, info->webseedCount);
+        tr_variant *urls = tr_variantDictAddList(top, TR_KEY_url_list, info->webseedCount);
 
         for (int i = 0; i < info->webseedCount; ++i)
         {

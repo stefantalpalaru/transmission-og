@@ -27,9 +27,9 @@ static tr_tracker_info trackers[MAX_TRACKERS];
 static int trackerCount = 0;
 static bool isPrivate = false;
 static bool showVersion = false;
-static char const* comment = NULL;
-static char const* outfile = NULL;
-static char const* infile = NULL;
+static char const *comment = NULL;
+static char const *outfile = NULL;
+static char const *infile = NULL;
 static uint32_t piecesize_kib = 0;
 
 static tr_option options[] = {
@@ -42,15 +42,15 @@ static tr_option options[] = {
     { 0, NULL, NULL, NULL, false, NULL }
 };
 
-static char const* getUsage(void)
+static char const *getUsage(void)
 {
     return "Usage: " MY_NAME " [options] <file|directory>";
 }
 
-static int parseCommandLine(int argc, char const* const* argv)
+static int parseCommandLine(int argc, char const *const *argv)
 {
     int c;
-    char const* optarg;
+    char const *optarg;
 
     while ((c = tr_getopt(getUsage(), argc, argv, options, &optarg)) != TR_OPT_DONE)
     {
@@ -76,7 +76,7 @@ static int parseCommandLine(int argc, char const* const* argv)
             if (trackerCount + 1 < MAX_TRACKERS)
             {
                 trackers[trackerCount].tier = trackerCount;
-                trackers[trackerCount].announce = (char*)optarg;
+                trackers[trackerCount].announce = (char *)optarg;
                 ++trackerCount;
             }
 
@@ -85,7 +85,7 @@ static int parseCommandLine(int argc, char const* const* argv)
         case 's':
             if (optarg != NULL)
             {
-                char* endptr = NULL;
+                char *endptr = NULL;
                 piecesize_kib = strtoul(optarg, &endptr, 10);
 
                 if (endptr != NULL && *endptr == 'M')
@@ -108,10 +108,10 @@ static int parseCommandLine(int argc, char const* const* argv)
     return 0;
 }
 
-static char* tr_getcwd(void)
+static char *tr_getcwd(void)
 {
-    char* result;
-    tr_error* error = NULL;
+    char *result;
+    tr_error *error = NULL;
 
     result = tr_sys_dir_get_current(&error);
 
@@ -125,17 +125,17 @@ static char* tr_getcwd(void)
     return result;
 }
 
-int tr_main(int argc, char* argv[])
+int tr_main(int argc, char *argv[])
 {
-    char* out2 = NULL;
-    tr_metainfo_builder* b = NULL;
+    char *out2 = NULL;
+    tr_metainfo_builder *b = NULL;
 
     tr_logSetLevel(TR_LOG_ERROR);
     tr_formatter_mem_init(MEM_K, MEM_K_STR, MEM_M_STR, MEM_G_STR, MEM_T_STR);
     tr_formatter_size_init(DISK_K, DISK_K_STR, DISK_M_STR, DISK_G_STR, DISK_T_STR);
     tr_formatter_speed_init(SPEED_K, SPEED_K_STR, SPEED_M_STR, SPEED_G_STR, SPEED_T_STR);
 
-    if (parseCommandLine(argc, (char const* const*)argv) != 0)
+    if (parseCommandLine(argc, (char const *const *)argv) != 0)
     {
         return EXIT_FAILURE;
     }
@@ -156,8 +156,8 @@ int tr_main(int argc, char* argv[])
 
     if (outfile == NULL)
     {
-        tr_error* error = NULL;
-        char* base = tr_sys_path_basename(infile, &error);
+        tr_error *error = NULL;
+        char *base = tr_sys_path_basename(infile, &error);
 
         if (base == NULL)
         {
@@ -165,8 +165,8 @@ int tr_main(int argc, char* argv[])
             return EXIT_FAILURE;
         }
 
-        char* end = tr_strdup_printf("%s.torrent", base);
-        char* cwd = tr_getcwd();
+        char *end = tr_strdup_printf("%s.torrent", base);
+        char *cwd = tr_getcwd();
         outfile = out2 = tr_buildPath(cwd, end, NULL);
         tr_free(cwd);
         tr_free(end);

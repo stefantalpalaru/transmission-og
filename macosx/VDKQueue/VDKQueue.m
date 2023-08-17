@@ -27,13 +27,13 @@
 #import <fcntl.h>
 #include <sys/stat.h>
 
-NSString* VDKQueueRenameNotification = @"VDKQueueFileRenamedNotification";
-NSString* VDKQueueWriteNotification = @"VDKQueueFileWrittenToNotification";
-NSString* VDKQueueDeleteNotification = @"VDKQueueFileDeletedNotification";
-NSString* VDKQueueAttributeChangeNotification = @"VDKQueueFileAttributesChangedNotification";
-NSString* VDKQueueSizeIncreaseNotification = @"VDKQueueFileSizeIncreasedNotification";
-NSString* VDKQueueLinkCountChangeNotification = @"VDKQueueLinkCountChangedNotification";
-NSString* VDKQueueAccessRevocationNotification = @"VDKQueueAccessWasRevokedNotification";
+NSString *VDKQueueRenameNotification = @"VDKQueueFileRenamedNotification";
+NSString *VDKQueueWriteNotification = @"VDKQueueFileWrittenToNotification";
+NSString *VDKQueueDeleteNotification = @"VDKQueueFileDeletedNotification";
+NSString *VDKQueueAttributeChangeNotification = @"VDKQueueFileAttributesChangedNotification";
+NSString *VDKQueueSizeIncreaseNotification = @"VDKQueueFileSizeIncreasedNotification";
+NSString *VDKQueueLinkCountChangeNotification = @"VDKQueueLinkCountChangedNotification";
+NSString *VDKQueueAccessRevocationNotification = @"VDKQueueAccessWasRevokedNotification";
 
 #pragma mark -
 #pragma mark VDKQueuePathEntry
@@ -43,14 +43,14 @@ NSString* VDKQueueAccessRevocationNotification = @"VDKQueueAccessWasRevokedNotif
 //  This is a simple model class used to hold info about each path we watch.
 @interface VDKQueuePathEntry : NSObject
 {
-    NSString* _path;
+    NSString *_path;
     int _watchedFD;
     u_int _subscriptionFlags;
 }
 
-- (id)initWithPath:(NSString*)inPath andSubscriptionFlags:(u_int)flags;
+- (id)initWithPath:(NSString *)inPath andSubscriptionFlags:(u_int)flags;
 
-@property(atomic, copy) NSString* path;
+@property(atomic, copy) NSString *path;
 @property(atomic, assign) int watchedFD;
 @property(atomic, assign) u_int subscriptionFlags;
 
@@ -59,7 +59,7 @@ NSString* VDKQueueAccessRevocationNotification = @"VDKQueueAccessWasRevokedNotif
 @implementation VDKQueuePathEntry
 @synthesize path = _path, watchedFD = _watchedFD, subscriptionFlags = _subscriptionFlags;
 
-- (id)initWithPath:(NSString*)inPath andSubscriptionFlags:(u_int)flags;
+- (id)initWithPath:(NSString *)inPath andSubscriptionFlags:(u_int)flags;
 {
     self = [super init];
     if (self)
@@ -130,12 +130,12 @@ NSString* VDKQueueAccessRevocationNotification = @"VDKQueueAccessWasRevokedNotif
 #pragma mark -
 #pragma mark PRIVATE METHODS
 
-- (VDKQueuePathEntry*)addPathToQueue:(NSString*)path notifyingAbout:(u_int)flags
+- (VDKQueuePathEntry *)addPathToQueue:(NSString *)path notifyingAbout:(u_int)flags
 {
     @synchronized(self)
     {
         // Are we already watching this path?
-        VDKQueuePathEntry* pathEntry = _watchedPathEntries[path];
+        VDKQueuePathEntry *pathEntry = _watchedPathEntries[path];
 
         if (pathEntry)
         {
@@ -158,7 +158,7 @@ NSString* VDKQueueAccessRevocationNotification = @"VDKQueueAccessWasRevokedNotif
 
         if (pathEntry)
         {
-            EV_SET(&ev, [pathEntry watchedFD], EVFILT_VNODE, EV_ADD | EV_ENABLE | EV_CLEAR, flags, 0, (__bridge void*)pathEntry);
+            EV_SET(&ev, [pathEntry watchedFD], EVFILT_VNODE, EV_ADD | EV_ENABLE | EV_CLEAR, flags, 0, (__bridge void *)pathEntry);
 
             [pathEntry setSubscriptionFlags:flags];
 
@@ -186,7 +186,7 @@ NSString* VDKQueueAccessRevocationNotification = @"VDKQueueAccessWasRevokedNotif
     struct timespec timeout = { 1, 0 }; // 1 second timeout. Should be longer, but we need this thread to exit when a kqueue is dealloced, so 1 second timeout is quite a while to wait.
     int theFD = _coreQueueFD; // So we don't have to risk accessing iVars when the thread is terminated.
 
-    NSMutableArray* notesToPost = [[NSMutableArray alloc] initWithCapacity:5];
+    NSMutableArray *notesToPost = [[NSMutableArray alloc] initWithCapacity:5];
 
 #if DEBUG_LOG_THREAD_LIFETIME
     NSLog(@"watcherThread started.");
@@ -218,7 +218,7 @@ NSString* VDKQueueAccessRevocationNotification = @"VDKQueueAccessWasRevokedNotif
                         id pe = (__bridge id)(ev.udata);
                         if (pe && [pe respondsToSelector:@selector(path)])
                         {
-                            NSString* fpath = ((VDKQueuePathEntry*)pe).path;
+                            NSString *fpath = ((VDKQueuePathEntry *)pe).path;
                             if (!fpath)
                                 continue;
 
@@ -257,17 +257,17 @@ NSString* VDKQueueAccessRevocationNotification = @"VDKQueueAccessWasRevokedNotif
                                 [notesToPost addObject:VDKQueueAccessRevocationNotification];
                             }
 
-                            NSArray* notes = [[NSArray alloc] initWithArray:notesToPost]; // notesToPost will be changed in the next loop iteration, which will likely occur before the block below runs.
+                            NSArray *notes = [[NSArray alloc] initWithArray:notesToPost]; // notesToPost will be changed in the next loop iteration, which will likely occur before the block below runs.
 
                             // Post the notifications (or call the delegate method) on the main thread.
                             dispatch_async(dispatch_get_main_queue(), ^{
-                                for (NSString* note in notes)
+                                for (NSString *note in notes)
                                 {
                                     [_delegate VDKQueue:self receivedNotification:note forPath:fpath];
 
                                     if (!_delegate || _alwaysPostNotifications)
                                     {
-                                        NSDictionary* userInfoDict = [[NSDictionary alloc] initWithObjects:@[ fpath ]
+                                        NSDictionary *userInfoDict = [[NSDictionary alloc] initWithObjects:@[ fpath ]
                                                                                                    forKeys:@[ @"path" ]];
                                         [[[NSWorkspace sharedWorkspace] notificationCenter] postNotificationName:note object:self
                                                                                                         userInfo:userInfoDict];
@@ -280,7 +280,7 @@ NSString* VDKQueueAccessRevocationNotification = @"VDKQueueAccessWasRevokedNotif
             }
         }
 
-        @catch (NSException* localException)
+        @catch (NSException *localException)
         {
             NSLog(@"Error in VDKQueue watcherThread: %@", localException);
         }
@@ -301,14 +301,14 @@ NSString* VDKQueueAccessRevocationNotification = @"VDKQueueAccessWasRevokedNotif
 #pragma mark PUBLIC METHODS
 #pragma-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
 
-- (void)addPath:(NSString*)aPath
+- (void)addPath:(NSString *)aPath
 {
     if (!aPath)
         return;
 
     @synchronized(self)
     {
-        VDKQueuePathEntry* entry = _watchedPathEntries[aPath];
+        VDKQueuePathEntry *entry = _watchedPathEntries[aPath];
 
         // Only add this path if we don't already have it.
         if (!entry)
@@ -324,14 +324,14 @@ NSString* VDKQueueAccessRevocationNotification = @"VDKQueueAccessWasRevokedNotif
     }
 }
 
-- (void)addPath:(NSString*)aPath notifyingAbout:(u_int)flags
+- (void)addPath:(NSString *)aPath notifyingAbout:(u_int)flags
 {
     if (!aPath)
         return;
 
     @synchronized(self)
     {
-        VDKQueuePathEntry* entry = _watchedPathEntries[aPath];
+        VDKQueuePathEntry *entry = _watchedPathEntries[aPath];
 
         // Only add this path if we don't already have it.
         if (!entry)
@@ -347,14 +347,14 @@ NSString* VDKQueueAccessRevocationNotification = @"VDKQueueAccessWasRevokedNotif
     }
 }
 
-- (void)removePath:(NSString*)aPath
+- (void)removePath:(NSString *)aPath
 {
     if (!aPath)
         return;
 
     @synchronized(self)
     {
-        VDKQueuePathEntry* entry = _watchedPathEntries[aPath];
+        VDKQueuePathEntry *entry = _watchedPathEntries[aPath];
 
         // Remove it only if we're watching it.
         if (entry)

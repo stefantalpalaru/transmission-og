@@ -122,8 +122,8 @@ static int test_ssha1(void)
 {
     struct
     {
-        char const* const plain_text;
-        char const* const ssha1;
+        char const *const plain_text;
+        char const *const ssha1;
     } test_data[] = {
         { "test", "{15ad0621b259a84d24dcd4e75b09004e98a3627bAMbyRHJy" },
         { "QNY)(*#$B)!_X$B !_B#($^!)*&$%CV!#)&$C!@$(P*)", "{10e2d7acbb104d970514a147cd16d51dfa40fb3c0OSwJtOL" },
@@ -133,8 +133,8 @@ static int test_ssha1(void)
 
     for (size_t i = 0; i < TR_N_ELEMENTS(test_data); ++i)
     {
-        char* const phrase = tr_strdup(test_data[i].plain_text);
-        char** hashes = tr_new(char*, HASH_COUNT);
+        char *const phrase = tr_strdup(test_data[i].plain_text);
+        char **hashes = tr_new(char *, HASH_COUNT);
 
         check(tr_ssha1_matches(test_data[i].ssha1, phrase));
         check(tr_ssha1_matches_(test_data[i].ssha1, phrase));
@@ -205,7 +205,7 @@ static int test_random(void)
     return 0;
 }
 
-static bool base64_eq(char const* a, char const* b)
+static bool base64_eq(char const *a, char const *b)
 {
     for (;; ++a, ++b)
     {
@@ -231,8 +231,8 @@ static bool base64_eq(char const* a, char const* b)
 static int test_base64(void)
 {
     size_t len;
-    char* in;
-    char* out;
+    char *in;
+    char *out;
 
     out = tr_base64_encode_str("YOYO!", &len);
     check_uint(len, ==, strlen(out));

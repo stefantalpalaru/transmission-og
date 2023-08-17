@@ -25,15 +25,15 @@
 
 @interface URLSheetWindowController (Private)
 
-- (void)updateOpenButtonForURL:(NSString*)string;
+- (void)updateOpenButtonForURL:(NSString *)string;
 
 @end
 
 @implementation URLSheetWindowController
 
-NSString* urlString = nil;
+NSString *urlString = nil;
 
-- (id)initWithController:(Controller*)controller
+- (id)initWithController:(Controller *)controller
 {
     if ((self = [self initWithWindowNibName:@"URLSheetWindow"]))
     {
@@ -90,12 +90,12 @@ NSString* urlString = nil;
     [NSApp endSheet:[self window] returnCode:0];
 }
 
-- (NSString*)urlString
+- (NSString *)urlString
 {
     return [fTextField stringValue];
 }
 
-- (void)controlTextDidChange:(NSNotification*)notification
+- (void)controlTextDidChange:(NSNotification *)notification
 {
     [self updateOpenButtonForURL:[fTextField stringValue]];
 }
@@ -104,7 +104,7 @@ NSString* urlString = nil;
 
 @implementation URLSheetWindowController (Private)
 
-- (void)updateOpenButtonForURL:(NSString*)string
+- (void)updateOpenButtonForURL:(NSString *)string
 {
     BOOL enable = YES;
     if ([string isEqualToString:@""])

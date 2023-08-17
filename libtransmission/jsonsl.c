@@ -111,14 +111,14 @@ JSONSL_API
 jsonsl_t jsonsl_new(int nlevels)
 {
     unsigned int ii;
-    struct jsonsl_st* jsn;
+    struct jsonsl_st *jsn;
 
     if (nlevels < 2)
     {
         return NULL;
     }
 
-    jsn = (struct jsonsl_st*)calloc(1, sizeof(*jsn) + ((nlevels - 1) * sizeof(struct jsonsl_state_st)));
+    jsn = (struct jsonsl_st *)calloc(1, sizeof(*jsn) + ((nlevels - 1) * sizeof(struct jsonsl_state_st)));
 
     jsn->levels_max = (unsigned int)nlevels;
     jsn->max_callback_level = UINT_MAX;
@@ -165,10 +165,10 @@ void jsonsl_destroy(jsonsl_t jsn)
  * return), false if a special character was examined which requires greater
  * examination.
  */
-static int jsonsl__str_fastparse(jsonsl_t jsn, jsonsl_uchar_t const** bytes_p, size_t* nbytes_p)
+static int jsonsl__str_fastparse(jsonsl_t jsn, jsonsl_uchar_t const **bytes_p, size_t *nbytes_p)
 {
-    jsonsl_uchar_t const* bytes = *bytes_p;
-    jsonsl_uchar_t const* end;
+    jsonsl_uchar_t const *bytes = *bytes_p;
+    jsonsl_uchar_t const *end;
     for (end = bytes + *nbytes_p; bytes != end; bytes++)
     {
         if (
@@ -197,11 +197,11 @@ static int jsonsl__str_fastparse(jsonsl_t jsn, jsonsl_uchar_t const** bytes_p, s
 
 /* Functions exactly like str_fastparse, except it also accepts a 'state'
  * argument, since the number's value is updated in the state. */
-static int jsonsl__num_fastparse(jsonsl_t jsn, jsonsl_uchar_t const** bytes_p, size_t* nbytes_p, struct jsonsl_state_st* state)
+static int jsonsl__num_fastparse(jsonsl_t jsn, jsonsl_uchar_t const **bytes_p, size_t *nbytes_p, struct jsonsl_state_st *state)
 {
     int exhausted = 1;
     size_t nbytes = *nbytes_p;
-    jsonsl_uchar_t const* bytes = *bytes_p;
+    jsonsl_uchar_t const *bytes = *bytes_p;
 
     for (; nbytes; nbytes--, bytes++)
     {
@@ -229,11 +229,11 @@ static int jsonsl__num_fastparse(jsonsl_t jsn, jsonsl_uchar_t const** bytes_p, s
 }
 
 JSONSL_API
-void jsonsl_feed(jsonsl_t jsn, jsonsl_char_t const* bytes, size_t nbytes)
+void jsonsl_feed(jsonsl_t jsn, jsonsl_char_t const *bytes, size_t nbytes)
 {
 
 #define INVOKE_ERROR(eb) \
-    if (jsn->error_callback(jsn, JSONSL_ERROR_##eb, state, (char*)c)) \
+    if (jsn->error_callback(jsn, JSONSL_ERROR_##eb, state, (char *)c)) \
     { \
         goto GT_AGAIN; \
     } \
@@ -242,7 +242,7 @@ void jsonsl_feed(jsonsl_t jsn, jsonsl_char_t const* bytes, size_t nbytes)
 #define STACK_PUSH \
     if (jsn->level >= (levels_max - 1)) \
     { \
-        jsn->error_callback(jsn, JSONSL_ERROR_LEVELS_EXCEEDED, state, (char*)c); \
+        jsn->error_callback(jsn, JSONSL_ERROR_LEVELS_EXCEEDED, state, (char *)c); \
         return; \
     } \
     state = jsn->stack + (++jsn->level); \
@@ -272,7 +272,7 @@ void jsonsl_feed(jsonsl_t jsn, jsonsl_char_t const* bytes, size_t nbytes)
     jsn->expecting = 0; \
     jsn->tok_last = 0;
 
-#define CUR_CHAR (*(jsonsl_uchar_t*)c)
+#define CUR_CHAR (*(jsonsl_uchar_t *)c)
 
 #define DO_CALLBACK(T, action) \
     if (jsn->call_##T && jsn->max_callback_level > state->level && state->ignore_callback == 0) \
@@ -280,11 +280,11 @@ void jsonsl_feed(jsonsl_t jsn, jsonsl_char_t const* bytes, size_t nbytes)
 \
         if (jsn->action_callback_##action) \
         { \
-            jsn->action_callback_##action(jsn, JSONSL_ACTION_##action, state, (jsonsl_char_t*)c); \
+            jsn->action_callback_##action(jsn, JSONSL_ACTION_##action, state, (jsonsl_char_t *)c); \
         } \
         else if (jsn->action_callback) \
         { \
-            jsn->action_callback(jsn, JSONSL_ACTION_##action, state, (jsonsl_char_t*)c); \
+            jsn->action_callback(jsn, JSONSL_ACTION_##action, state, (jsonsl_char_t *)c); \
         } \
         if (jsn->stopfl) \
         { \
@@ -322,9 +322,9 @@ void jsonsl_feed(jsonsl_t jsn, jsonsl_char_t const* bytes, size_t nbytes)
 
 #define CONTINUE_NEXT_CHAR() continue
 
-    jsonsl_uchar_t const* c = (jsonsl_uchar_t*)bytes;
+    jsonsl_uchar_t const *c = (jsonsl_uchar_t *)bytes;
     size_t levels_max = jsn->levels_max;
-    struct jsonsl_state_st* state = jsn->stack + jsn->level;
+    struct jsonsl_state_st *state = jsn->stack + jsn->level;
     jsn->base = bytes;
 
     for (; nbytes; nbytes--, jsn->pos++, c++)
@@ -876,7 +876,7 @@ GT_SPECIAL_BEGIN:
     }
 }
 
-JSONSL_API char const* jsonsl_strerror(jsonsl_error_t err)
+JSONSL_API char const *jsonsl_strerror(jsonsl_error_t err)
 {
     if (err == JSONSL_ERROR_SUCCESS)
     {
@@ -890,7 +890,7 @@ JSONSL_API char const* jsonsl_strerror(jsonsl_error_t err)
     return "<UNKNOWN_ERROR>";
 }
 
-JSONSL_API char const* jsonsl_strtype(jsonsl_type_t type)
+JSONSL_API char const *jsonsl_strtype(jsonsl_type_t type)
 {
 #define X(o, c) \
     if (type == JSONSL_T_##o) \
@@ -908,10 +908,10 @@ JSONSL_API char const* jsonsl_strtype(jsonsl_type_t type)
  */
 #ifndef JSONSL_NO_JPR
 static jsonsl_jpr_type_t populate_component(
-    char* in,
-    struct jsonsl_jpr_component_st* component,
-    char** next,
-    jsonsl_error_t* errp)
+    char *in,
+    struct jsonsl_jpr_component_st *component,
+    char **next,
+    jsonsl_error_t *errp)
 {
     unsigned long pctval;
     char *c = NULL, *outp = NULL, *end = NULL;
@@ -950,7 +950,7 @@ static jsonsl_jpr_type_t populate_component(
     else if (isdigit(*in))
     {
         /* ASCII Numeric */
-        char* endptr;
+        char *endptr;
         component->idx = strtoul(in, &endptr, 10);
         if (endptr && *endptr == '\0')
         {
@@ -1013,12 +1013,12 @@ GT_RET:
 }
 
 JSONSL_API
-jsonsl_jpr_t jsonsl_jpr_new(char const* path, jsonsl_error_t* errp)
+jsonsl_jpr_t jsonsl_jpr_new(char const *path, jsonsl_error_t *errp)
 {
-    char* my_copy = NULL;
+    char *my_copy = NULL;
     int count, curidx;
-    struct jsonsl_jpr_st* ret = NULL;
-    struct jsonsl_jpr_component_st* components = NULL;
+    struct jsonsl_jpr_st *ret = NULL;
+    struct jsonsl_jpr_component_st *components = NULL;
     size_t origlen;
     jsonsl_error_t errstacked;
 
@@ -1039,7 +1039,7 @@ jsonsl_jpr_t jsonsl_jpr_new(char const* path, jsonsl_error_t* errp)
     count = 1;
     path++;
     {
-        char const* c = path;
+        char const *c = path;
         for (; *c; c++)
         {
             if (*c == '/')
@@ -1057,13 +1057,13 @@ jsonsl_jpr_t jsonsl_jpr_new(char const* path, jsonsl_error_t* errp)
         count++;
     }
 
-    components = (struct jsonsl_jpr_component_st*)malloc(sizeof(*components) * count);
+    components = (struct jsonsl_jpr_component_st *)malloc(sizeof(*components) * count);
     if (!components)
     {
         JPR_BAIL(JSONSL_ERROR_ENOMEM);
     }
 
-    my_copy = (char*)malloc(strlen(path) + 1);
+    my_copy = (char *)malloc(strlen(path) + 1);
     if (!my_copy)
     {
         JPR_BAIL(JSONSL_ERROR_ENOMEM);
@@ -1075,7 +1075,7 @@ jsonsl_jpr_t jsonsl_jpr_new(char const* path, jsonsl_error_t* errp)
 
     if (*my_copy)
     {
-        char* cur = my_copy;
+        char *cur = my_copy;
         int pathret = JSONSL_PATH_STRING;
         curidx = 1;
         while (curidx < count)
@@ -1103,12 +1103,12 @@ jsonsl_jpr_t jsonsl_jpr_new(char const* path, jsonsl_error_t* errp)
 
     path--; /*revert path to leading '/' */
     origlen = strlen(path) + 1;
-    ret = (struct jsonsl_jpr_st*)malloc(sizeof(*ret));
+    ret = (struct jsonsl_jpr_st *)malloc(sizeof(*ret));
     if (!ret)
     {
         JPR_BAIL(JSONSL_ERROR_ENOMEM);
     }
-    ret->orig = (char*)malloc(origlen);
+    ret->orig = (char *)malloc(origlen);
     if (!ret->orig)
     {
         JPR_BAIL(JSONSL_ERROR_ENOMEM);
@@ -1152,11 +1152,11 @@ void jsonsl_jpr_destroy(jsonsl_jpr_t jpr)
  */
 static jsonsl_jpr_match_t jsonsl__match_continue(
     jsonsl_jpr_t jpr,
-    struct jsonsl_jpr_component_st const* component,
+    struct jsonsl_jpr_component_st const *component,
     unsigned prlevel,
     unsigned chtype)
 {
-    struct jsonsl_jpr_component_st const* next_comp = component + 1;
+    struct jsonsl_jpr_component_st const *next_comp = component + 1;
     if (prlevel == jpr->ncomponents - 1)
     {
         /* This is the match. Check the expected type of the match against
@@ -1201,12 +1201,12 @@ static jsonsl_jpr_match_t jsonsl__match_continue(
 JSONSL_API
 jsonsl_jpr_match_t jsonsl_path_match(
     jsonsl_jpr_t jpr,
-    struct jsonsl_state_st const* parent,
-    struct jsonsl_state_st const* child,
-    char const* key,
+    struct jsonsl_state_st const *parent,
+    struct jsonsl_state_st const *child,
+    char const *key,
     size_t nkey)
 {
-    struct jsonsl_jpr_component_st const* comp;
+    struct jsonsl_jpr_component_st const *comp;
     if (!parent)
     {
         /* No parent. Return immediately since it's always a match */
@@ -1241,12 +1241,12 @@ jsonsl_jpr_match_t jsonsl_jpr_match(
     jsonsl_jpr_t jpr,
     unsigned int parent_type,
     unsigned int parent_level,
-    char const* key,
+    char const *key,
     size_t nkey)
 {
     /* find our current component. This is the child level */
     int cmpret;
-    struct jsonsl_jpr_component_st* p_component;
+    struct jsonsl_jpr_component_st *p_component;
     p_component = jpr->components + parent_level;
 
     if (parent_level >= jpr->ncomponents)
@@ -1341,16 +1341,16 @@ jsonsl_jpr_match_t jsonsl_jpr_match(
 }
 
 JSONSL_API
-void jsonsl_jpr_match_state_init(jsonsl_t jsn, jsonsl_jpr_t* jprs, size_t njprs)
+void jsonsl_jpr_match_state_init(jsonsl_t jsn, jsonsl_jpr_t *jprs, size_t njprs)
 {
     size_t ii, *firstjmp;
     if (njprs == 0)
     {
         return;
     }
-    jsn->jprs = (jsonsl_jpr_t*)malloc(sizeof(jsonsl_jpr_t) * njprs);
+    jsn->jprs = (jsonsl_jpr_t *)malloc(sizeof(jsonsl_jpr_t) * njprs);
     jsn->jpr_count = njprs;
-    jsn->jpr_root = (size_t*)calloc(1, sizeof(size_t) * njprs * jsn->levels_max);
+    jsn->jpr_root = (size_t *)calloc(1, sizeof(size_t) * njprs * jsn->levels_max);
     memcpy(jsn->jprs, jprs, sizeof(jsonsl_jpr_t) * njprs);
     /* Set the initial jump table values */
 
@@ -1392,12 +1392,12 @@ void jsonsl_jpr_match_state_cleanup(jsonsl_t jsn)
 JSONSL_API
 jsonsl_jpr_t jsonsl_jpr_match_state(
     jsonsl_t jsn,
-    struct jsonsl_state_st* state,
-    char const* key,
+    struct jsonsl_state_st *state,
+    char const *key,
     size_t nkey,
-    jsonsl_jpr_match_t* out)
+    jsonsl_jpr_match_t *out)
 {
-    struct jsonsl_state_st* parent_state;
+    struct jsonsl_state_st *parent_state;
     jsonsl_jpr_t ret = NULL;
 
     /* Jump and JPR tables for our own state and the parent state */
@@ -1463,7 +1463,7 @@ jsonsl_jpr_t jsonsl_jpr_match_state(
     return NULL;
 }
 
-JSONSL_API char const* jsonsl_strmatchtype(jsonsl_jpr_match_t match)
+JSONSL_API char const *jsonsl_strmatchtype(jsonsl_jpr_match_t match)
 {
 #define X(T, v) \
     if (match == JSONSL_MATCH_##T) \
@@ -1475,7 +1475,7 @@ JSONSL_API char const* jsonsl_strmatchtype(jsonsl_jpr_match_t match)
 
 #endif /* JSONSL_WITH_JPR */
 
-static char* jsonsl__writeutf8(uint32_t pt, char* out)
+static char *jsonsl__writeutf8(uint32_t pt, char *out)
 {
 #define ADD_OUTPUT(c) \
     *out = (char)(c); \
@@ -1529,7 +1529,7 @@ static int jsonsl__digit2int(char ch)
 }
 
 /* Assume 's' is at least 4 bytes long */
-static int jsonsl__get_uescape_16(char const* s)
+static int jsonsl__get_uescape_16(char const *s)
 {
     int ret = 0;
     int cur;
@@ -1555,16 +1555,16 @@ static int jsonsl__get_uescape_16(char const* s)
  */
 JSONSL_API
 size_t jsonsl_util_unescape_ex(
-    char const* in,
-    char* out,
+    char const *in,
+    char *out,
     size_t len,
     int const toEscape[128],
-    unsigned* oflags,
-    jsonsl_error_t* err,
-    char const** errat)
+    unsigned *oflags,
+    jsonsl_error_t *err,
+    char const **errat)
 {
-    unsigned char const* c = (unsigned char const*)in;
-    char* begin_p = out;
+    unsigned char const *c = (unsigned char const *)in;
+    char *begin_p = out;
     unsigned oflags_s;
     uint16_t last_codepoint = 0;
 
@@ -1578,7 +1578,7 @@ size_t jsonsl_util_unescape_ex(
     *err = JSONSL_ERROR_##e; \
     if (errat) \
     { \
-        *errat = (char const*)(c + (ptrdiff_t)(offset)); \
+        *errat = (char const *)(c + (ptrdiff_t)(offset)); \
     } \
     return 0;
 
@@ -1637,7 +1637,7 @@ size_t jsonsl_util_unescape_ex(
             UNESCAPE_BAIL(UESCAPE_TOOSHORT, 2);
         }
 
-        uescval = jsonsl__get_uescape_16((char const*)c + 2);
+        uescval = jsonsl__get_uescape_16((char const *)c + 2);
         if (uescval == -1)
         {
             UNESCAPE_BAIL(PERCENT_BADHEX, -1);

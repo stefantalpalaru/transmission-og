@@ -121,21 +121,21 @@ QString Formatter::sizeToString(int64_t bytes)
     return QString::fromUtf8(buf);
 }
 
-QString Formatter::speedToString(Speed const& speed)
+QString Formatter::speedToString(Speed const &speed)
 {
     char buf[128];
     tr_formatter_speed_KBps(buf, speed.KBps(), sizeof(buf));
     return QString::fromUtf8(buf);
 }
 
-QString Formatter::uploadSpeedToString(Speed const& uploadSpeed)
+QString Formatter::uploadSpeedToString(Speed const &uploadSpeed)
 {
     static QChar const uploadSymbol(0x25B4);
 
     return tr("%1 %2").arg(speedToString(uploadSpeed)).arg(uploadSymbol);
 }
 
-QString Formatter::downloadSpeedToString(Speed const& downloadSpeed)
+QString Formatter::downloadSpeedToString(Speed const &downloadSpeed)
 {
     static QChar const downloadSymbol(0x25BE);
 

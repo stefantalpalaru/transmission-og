@@ -64,22 +64,22 @@
 #include "utils.h"
 #include "variant.h"
 
-static struct event* dht_timer = NULL;
+static struct event *dht_timer = NULL;
 static unsigned char myid[20];
-static tr_session* session = NULL;
+static tr_session *session = NULL;
 
-static void timer_callback(evutil_socket_t s, short type, void* ignore);
+static void timer_callback(evutil_socket_t s, short type, void *ignore);
 
 struct bootstrap_closure
 {
-    tr_session* session;
-    uint8_t* nodes;
-    uint8_t* nodes6;
+    tr_session *session;
+    uint8_t *nodes;
+    uint8_t *nodes6;
     size_t len;
     size_t len6;
 };
 
-static bool bootstrap_done(tr_session* session, int af)
+static bool bootstrap_done(tr_session *session, int af)
 {
     int status;
 
@@ -99,7 +99,7 @@ static void nap(int roughly_sec)
     tr_wait_msec(msec);
 }
 
-static int bootstrap_af(tr_session* session)
+static int bootstrap_af(tr_session *session)
 {
     if (bootstrap_done(session, AF_INET6))
     {
@@ -115,11 +115,11 @@ static int bootstrap_af(tr_session* session)
     }
 }
 
-static void bootstrap_from_name(char const* name, tr_port port, int af)
+static void bootstrap_from_name(char const *name, tr_port port, int af)
 {
     struct addrinfo hints;
-    struct addrinfo* info;
-    struct addrinfo* infop;
+    struct addrinfo *info;
+    struct addrinfo *infop;
     char pp[10];
     int rc;
 
@@ -156,9 +156,9 @@ static void bootstrap_from_name(char const* name, tr_port port, int af)
     freeaddrinfo(info);
 }
 
-static void dht_bootstrap(void* closure)
+static void dht_bootstrap(void *closure)
 {
-    struct bootstrap_closure* cl = closure;
+    struct bootstrap_closure *cl = closure;
     int num = cl->len / 6;
     int num6 = cl->len6 / 18;
 
@@ -225,7 +225,7 @@ static void dht_bootstrap(void* closure)
 
     if (!bootstrap_done(cl->session, 0))
     {
-        char* bootstrap_file;
+        char *bootstrap_file;
         tr_sys_file_t f = TR_BAD_SYS_FILE;
 
         bootstrap_file = tr_buildPath(cl->session->configDir, "dht.bootstrap", NULL);
@@ -242,7 +242,7 @@ static void dht_bootstrap(void* closure)
             for (;;)
             {
                 char buf[201];
-                char* p;
+                char *p;
                 int port = 0;
 
                 if (!tr_sys_file_read_line(f, buf, 200, NULL))
@@ -317,18 +317,18 @@ static void dht_bootstrap(void* closure)
     tr_logAddNamedDbg("DHT", "Finished bootstrapping");
 }
 
-int tr_dhtInit(tr_session* ss)
+int tr_dhtInit(tr_session *ss)
 {
     tr_variant benc;
     int rc;
     bool have_id = false;
-    char* dat_file;
-    uint8_t* nodes = NULL;
-    uint8_t* nodes6 = NULL;
-    uint8_t const* raw;
+    char *dat_file;
+    uint8_t *nodes = NULL;
+    uint8_t *nodes6 = NULL;
+    uint8_t const *raw;
     size_t len;
     size_t len6;
-    struct bootstrap_closure* cl;
+    struct bootstrap_closure *cl;
 
     if (session != NULL) /* already initialized */
     {
@@ -423,7 +423,7 @@ fail:
     return -1;
 }
 
-void tr_dhtUninit(tr_session* ss)
+void tr_dhtUninit(tr_session *ss)
 {
     if (session != ss)
     {
@@ -451,7 +451,7 @@ void tr_dhtUninit(tr_session* ss)
         struct sockaddr_in6 sins6[300];
         char compact[300 * 6];
         char compact6[300 * 18];
-        char* dat_file;
+        char *dat_file;
         int num = 300;
         int num6 = 300;
         int n = dht_get_nodes(sins, &num, sins6, &num6);
@@ -495,7 +495,7 @@ void tr_dhtUninit(tr_session* ss)
     session = NULL;
 }
 
-bool tr_dhtEnabled(tr_session const* ss)
+bool tr_dhtEnabled(tr_session const *ss)
 {
     return ss != NULL && ss == session;
 }
@@ -507,9 +507,9 @@ struct getstatus_closure
     sig_atomic_t count;
 };
 
-static void getstatus(void* cl)
+static void getstatus(void *cl)
 {
-    struct getstatus_closure* closure = cl;
+    struct getstatus_closure *closure = cl;
     int good;
     int dubious;
     int incoming;
@@ -536,7 +536,7 @@ static void getstatus(void* cl)
     }
 }
 
-int tr_dhtStatus(tr_session* session, int af, int* nodes_return)
+int tr_dhtStatus(tr_session *session, int af, int *nodes_return)
 {
     struct getstatus_closure closure = { .af = af, .status = -1, .count = -1 };
 
@@ -566,12 +566,12 @@ int tr_dhtStatus(tr_session* session, int af, int* nodes_return)
     return closure.status;
 }
 
-tr_port tr_dhtPort(tr_session* ss)
+tr_port tr_dhtPort(tr_session *ss)
 {
     return tr_dhtEnabled(ss) ? ss->udp_port : 0;
 }
 
-bool tr_dhtAddNode(tr_session* ss, tr_address const* address, tr_port port, bool bootstrap)
+bool tr_dhtAddNode(tr_session *ss, tr_address const *address, tr_port port, bool bootstrap)
 {
     int af = address->type == TR_AF_INET ? AF_INET : AF_INET6;
 
@@ -598,7 +598,7 @@ bool tr_dhtAddNode(tr_session* ss, tr_address const* address, tr_port port, bool
         sin.sin_family = AF_INET;
         memcpy(&sin.sin_addr, &address->addr.addr4, 4);
         sin.sin_port = htons(port);
-        dht_ping_node((struct sockaddr*)&sin, sizeof(sin));
+        dht_ping_node((struct sockaddr *)&sin, sizeof(sin));
         return true;
     }
     else if (address->type == TR_AF_INET6)
@@ -608,14 +608,14 @@ bool tr_dhtAddNode(tr_session* ss, tr_address const* address, tr_port port, bool
         sin6.sin6_family = AF_INET6;
         memcpy(&sin6.sin6_addr, &address->addr.addr6, 16);
         sin6.sin6_port = htons(port);
-        dht_ping_node((struct sockaddr*)&sin6, sizeof(sin6));
+        dht_ping_node((struct sockaddr *)&sin6, sizeof(sin6));
         return true;
     }
 
     return false;
 }
 
-char const* tr_dhtPrintableStatus(int status)
+char const *tr_dhtPrintableStatus(int status)
 {
     switch (status)
     {
@@ -639,18 +639,18 @@ char const* tr_dhtPrintableStatus(int status)
     }
 }
 
-static void callback(void* ignore UNUSED, int event, unsigned char const* info_hash, void const* data, size_t data_len)
+static void callback(void *ignore UNUSED, int event, unsigned char const *info_hash, void const *data, size_t data_len)
 {
     if (event == DHT_EVENT_VALUES || event == DHT_EVENT_VALUES6)
     {
-        tr_torrent* tor;
+        tr_torrent *tor;
         tr_sessionLock(session);
         tor = tr_torrentFindFromHash(session, info_hash);
 
         if (tor != NULL && tr_torrentAllowsDHT(tor))
         {
             size_t n;
-            tr_pex* pex;
+            tr_pex *pex;
 
             if (event == DHT_EVENT_VALUES)
             {
@@ -674,7 +674,7 @@ static void callback(void* ignore UNUSED, int event, unsigned char const* info_h
     }
     else if (event == DHT_EVENT_SEARCH_DONE || event == DHT_EVENT_SEARCH_DONE6)
     {
-        tr_torrent* tor = tr_torrentFindFromHash(session, info_hash);
+        tr_torrent *tor = tr_torrentFindFromHash(session, info_hash);
 
         if (tor != NULL)
         {
@@ -692,7 +692,7 @@ static void callback(void* ignore UNUSED, int event, unsigned char const* info_h
     }
 }
 
-static int tr_dhtAnnounce(tr_torrent* tor, int af, bool announce)
+static int tr_dhtAnnounce(tr_torrent *tor, int af, bool announce)
 {
     int rc;
     int status;
@@ -760,9 +760,9 @@ static int tr_dhtAnnounce(tr_torrent* tor, int af, bool announce)
     return ret;
 }
 
-void tr_dhtUpkeep(tr_session* session)
+void tr_dhtUpkeep(tr_session *session)
 {
-    tr_torrent* tor = NULL;
+    tr_torrent *tor = NULL;
     time_t const now = tr_time();
 
     while ((tor = tr_torrentNext(session, tor)) != NULL)
@@ -788,7 +788,7 @@ void tr_dhtUpkeep(tr_session* session)
     }
 }
 
-void tr_dhtCallback(unsigned char* buf, int buflen, struct sockaddr* from, socklen_t fromlen, void* sv)
+void tr_dhtCallback(unsigned char *buf, int buflen, struct sockaddr *from, socklen_t fromlen, void *sv)
 {
     TR_ASSERT(tr_isSession(sv));
 
@@ -824,7 +824,7 @@ void tr_dhtCallback(unsigned char* buf, int buflen, struct sockaddr* from, sockl
     tr_timerAdd(dht_timer, tosleep, tr_rand_int_weak(1000000));
 }
 
-static void timer_callback(evutil_socket_t s UNUSED, short type UNUSED, void* session)
+static void timer_callback(evutil_socket_t s UNUSED, short type UNUSED, void *session)
 {
     tr_dhtCallback(NULL, 0, NULL, 0, session);
 }
@@ -835,12 +835,12 @@ static void timer_callback(evutil_socket_t s UNUSED, short type UNUSED, void* se
    free to add support to your private copy as long as you don't
    redistribute it. */
 
-int dht_blacklisted(struct sockaddr const* sa UNUSED, int salen UNUSED)
+int dht_blacklisted(struct sockaddr const *sa UNUSED, int salen UNUSED)
 {
     return 0;
 }
 
-void dht_hash(void* hash_return, int hash_size, void const* v1, int len1, void const* v2, int len2, void const* v3, int len3)
+void dht_hash(void *hash_return, int hash_size, void const *v1, int len1, void const *v2, int len2, void const *v3, int len3)
 {
     unsigned char sha1[SHA_DIGEST_LENGTH];
     tr_sha1(sha1, v1, len1, v2, len2, v3, len3, NULL);
@@ -848,20 +848,20 @@ void dht_hash(void* hash_return, int hash_size, void const* v1, int len1, void c
     memcpy(hash_return, sha1, MIN(hash_size, SHA_DIGEST_LENGTH));
 }
 
-int dht_random_bytes(void* buf, size_t size)
+int dht_random_bytes(void *buf, size_t size)
 {
     tr_rand_buffer(buf, size);
     return size;
 }
 
-int dht_sendto(int sockfd, void const* buf, int len, int flags, struct sockaddr const* to, int tolen)
+int dht_sendto(int sockfd, void const *buf, int len, int flags, struct sockaddr const *to, int tolen)
 {
     return sendto(sockfd, buf, len, flags, to, tolen);
 }
 
 #if defined(_WIN32) && !defined(__MINGW32__)
 
-int dht_gettimeofday(struct timeval* tv, struct timezone* tz)
+int dht_gettimeofday(struct timeval *tv, struct timezone *tz)
 {
     TR_ASSERT(tz == NULL);
 

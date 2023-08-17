@@ -61,19 +61,19 @@ struct tr_web_task
     long timeout_secs;
     bool did_connect;
     bool did_timeout;
-    struct evbuffer* response;
-    struct evbuffer* freebuf;
-    char* url;
-    char* range;
-    char* cookies;
-    tr_session* session;
+    struct evbuffer *response;
+    struct evbuffer *freebuf;
+    char *url;
+    char *range;
+    char *cookies;
+    tr_session *session;
     tr_web_done_func done_func;
-    void* done_func_user_data;
-    CURL* curl_easy;
-    struct tr_web_task* next;
+    void *done_func_user_data;
+    CURL *curl_easy;
+    struct tr_web_task *next;
 };
 
-static void task_free(struct tr_web_task* task)
+static void task_free(struct tr_web_task *task)
 {
     if (task->freebuf != NULL)
     {
@@ -90,32 +90,32 @@ static void task_free(struct tr_web_task* task)
 ****
 ***/
 
-static tr_list* paused_easy_handles = NULL;
+static tr_list *paused_easy_handles = NULL;
 
 struct tr_web
 {
     bool curl_verbose;
     bool curl_ssl_verify;
-    char* curl_ca_bundle;
+    char *curl_ca_bundle;
     int close_mode;
-    struct tr_web_task* tasks;
-    tr_lock* taskLock;
-    char* cookie_filename;
+    struct tr_web_task *tasks;
+    tr_lock *taskLock;
+    char *cookie_filename;
 };
 
 /***
 ****
 ***/
 
-static size_t writeFunc(void* ptr, size_t size, size_t nmemb, void* vtask)
+static size_t writeFunc(void *ptr, size_t size, size_t nmemb, void *vtask)
 {
     size_t const byteCount = size * nmemb;
-    struct tr_web_task* task = vtask;
+    struct tr_web_task *task = vtask;
 
     /* webseed downloads should be speed limited */
     if (task->torrentId != -1)
     {
-        tr_torrent* tor = tr_torrentFindFromId(task->session, task->torrentId);
+        tr_torrent *tor = tr_torrentFindFromId(task->session, task->torrentId);
 
         if (tor != NULL && tr_bandwidthClamp(&tor->bandwidth, TR_DOWN, nmemb) == 0)
         {
@@ -125,15 +125,15 @@ static size_t writeFunc(void* ptr, size_t size, size_t nmemb, void* vtask)
     }
 
     evbuffer_add(task->response, ptr, byteCount);
-    dbgmsg("wrote %zu bytes to task %p's buffer", byteCount, (void*)task);
+    dbgmsg("wrote %zu bytes to task %p's buffer", byteCount, (void *)task);
     return byteCount;
 }
 
 #ifdef USE_LIBCURL_SOCKOPT
 
-static int sockoptfunction(void* vtask, curl_socket_t fd, curlsocktype purpose UNUSED)
+static int sockoptfunction(void *vtask, curl_socket_t fd, curlsocktype purpose UNUSED)
 {
-    struct tr_web_task* task = vtask;
+    struct tr_web_task *task = vtask;
     bool const isScrape = strstr(task->url, "scrape") != NULL;
     bool const isAnnounce = strstr(task->url, "announce") != NULL;
 
@@ -142,8 +142,8 @@ static int sockoptfunction(void* vtask, curl_socket_t fd, curlsocktype purpose U
     {
         int const sndbuf = isScrape ? 4096 : 1024;
         int const rcvbuf = isScrape ? 4096 : 3072;
-        setsockopt(fd, SOL_SOCKET, SO_SNDBUF, (void const*)&sndbuf, sizeof(sndbuf));
-        setsockopt(fd, SOL_SOCKET, SO_RCVBUF, (void const*)&rcvbuf, sizeof(rcvbuf));
+        setsockopt(fd, SOL_SOCKET, SO_SNDBUF, (void const *)&sndbuf, sizeof(sndbuf));
+        setsockopt(fd, SOL_SOCKET, SO_RCVBUF, (void const *)&rcvbuf, sizeof(rcvbuf));
     }
 
     /* return nonzero if this function encountered an error */
@@ -152,7 +152,7 @@ static int sockoptfunction(void* vtask, curl_socket_t fd, curlsocktype purpose U
 
 #endif
 
-static CURLcode ssl_context_func(CURL* curl, void* ssl_ctx, void* user_data)
+static CURLcode ssl_context_func(CURL *curl, void *ssl_ctx, void *user_data)
 {
     (void)curl;
     (void)user_data;
@@ -165,7 +165,7 @@ static CURLcode ssl_context_func(CURL* curl, void* ssl_ctx, void* user_data)
 
 #ifdef _WIN32
 
-    curl_version_info_data const* const curl_ver = curl_version_info(CURLVERSION_NOW);
+    curl_version_info_data const *const curl_ver = curl_version_info(CURLVERSION_NOW);
     if (curl_ver->age >= 0 && strncmp(curl_ver->ssl_version, "Schannel", 8) == 0)
     {
         return CURLE_OK;
@@ -212,10 +212,10 @@ static CURLcode ssl_context_func(CURL* curl, void* ssl_ctx, void* user_data)
     return CURLE_OK;
 }
 
-static long getTimeoutFromURL(struct tr_web_task const* task)
+static long getTimeoutFromURL(struct tr_web_task const *task)
 {
     long timeout;
-    tr_session const* session = task->session;
+    tr_session const *session = task->session;
 
     if (session == NULL || session->isClosed)
     {
@@ -237,11 +237,11 @@ static long getTimeoutFromURL(struct tr_web_task const* task)
     return timeout;
 }
 
-static CURL* createEasy(tr_session* s, struct tr_web* web, struct tr_web_task* task)
+static CURL *createEasy(tr_session *s, struct tr_web *web, struct tr_web_task *task)
 {
     bool is_default_value;
-    tr_address const* addr;
-    CURL* e = curl_easy_init();
+    tr_address const *addr;
+    CURL *e = curl_easy_init();
 
     task->curl_easy = e;
     task->timeout_secs = getTimeoutFromURL(task);
@@ -315,10 +315,10 @@ static CURL* createEasy(tr_session* s, struct tr_web* web, struct tr_web_task* t
 ****
 ***/
 
-static void task_finish_func(void* vtask)
+static void task_finish_func(void *vtask)
 {
-    struct tr_web_task* task = vtask;
-    dbgmsg("finished web task %p; got %ld", (void*)task, task->code);
+    struct tr_web_task *task = vtask;
+    dbgmsg("finished web task %p; got %ld", (void *)task, task->code);
 
     if (task->done_func != NULL)
     {
@@ -339,19 +339,19 @@ static void task_finish_func(void* vtask)
 *****
 ****/
 
-static void tr_webThreadFunc(void* vsession);
+static void tr_webThreadFunc(void *vsession);
 
-static struct tr_web_task* tr_webRunImpl(
-    tr_session* session,
+static struct tr_web_task *tr_webRunImpl(
+    tr_session *session,
     int torrentId,
-    char const* url,
-    char const* range,
-    char const* cookies,
+    char const *url,
+    char const *range,
+    char const *cookies,
     tr_web_done_func done_func,
-    void* done_func_user_data,
-    struct evbuffer* buffer)
+    void *done_func_user_data,
+    struct evbuffer *buffer)
 {
-    struct tr_web_task* task = NULL;
+    struct tr_web_task *task = NULL;
 
     if (!session->isClosing)
     {
@@ -385,28 +385,28 @@ static struct tr_web_task* tr_webRunImpl(
     return task;
 }
 
-struct tr_web_task* tr_webRunWithCookies(
-    tr_session* session,
-    char const* url,
-    char const* cookies,
+struct tr_web_task *tr_webRunWithCookies(
+    tr_session *session,
+    char const *url,
+    char const *cookies,
     tr_web_done_func done_func,
-    void* done_func_user_data)
+    void *done_func_user_data)
 {
     return tr_webRunImpl(session, -1, url, NULL, cookies, done_func, done_func_user_data, NULL);
 }
 
-struct tr_web_task* tr_webRun(tr_session* session, char const* url, tr_web_done_func done_func, void* done_func_user_data)
+struct tr_web_task *tr_webRun(tr_session *session, char const *url, tr_web_done_func done_func, void *done_func_user_data)
 {
     return tr_webRunWithCookies(session, url, NULL, done_func, done_func_user_data);
 }
 
-struct tr_web_task* tr_webRunWebseed(
-    tr_torrent* tor,
-    char const* url,
-    char const* range,
+struct tr_web_task *tr_webRunWebseed(
+    tr_torrent *tor,
+    char const *url,
+    char const *range,
     tr_web_done_func done_func,
-    void* done_func_user_data,
-    struct evbuffer* buffer)
+    void *done_func_user_data,
+    struct evbuffer *buffer)
 {
     return tr_webRunImpl(tor->session, tr_torrentId(tor), url, range, NULL, done_func, done_func_user_data, buffer);
 }
@@ -419,7 +419,7 @@ struct tr_web_task* tr_webRunWebseed(
  * can be given as null. At least one must be non-null, and any non-null
  * descriptor set must contain at least one handle to a socket.
  */
-static void tr_select(int nfds, fd_set* r_fd_set, fd_set* w_fd_set, fd_set* c_fd_set, struct timeval* t)
+static void tr_select(int nfds, fd_set *r_fd_set, fd_set *w_fd_set, fd_set *c_fd_set, struct timeval *t)
 {
 #ifdef _WIN32
 
@@ -451,14 +451,14 @@ static void tr_select(int nfds, fd_set* r_fd_set, fd_set* w_fd_set, fd_set* c_fd
 #endif
 }
 
-static void tr_webThreadFunc(void* vsession)
+static void tr_webThreadFunc(void *vsession)
 {
-    char* str;
-    CURLM* multi;
-    struct tr_web* web;
+    char *str;
+    CURLM *multi;
+    struct tr_web *web;
     int taskCount = 0;
-    struct tr_web_task* task;
-    tr_session* session = vsession;
+    struct tr_web_task *task;
+    tr_session *session = vsession;
 
     /* try to enable ssl for https support; but if that fails,
      * try a plain vanilla init */
@@ -501,7 +501,7 @@ static void tr_webThreadFunc(void* vsession)
     {
         long msec;
         int unused;
-        CURLMsg* msg;
+        CURLMsg *msg;
         CURLMcode mcode;
 
         if (web->close_mode == TR_WEB_CLOSE_NOW)
@@ -535,8 +535,8 @@ static void tr_webThreadFunc(void* vsession)
         /* unpause any paused curl handles */
         if (paused_easy_handles != NULL)
         {
-            CURL* handle;
-            tr_list* tmp;
+            CURL *handle;
+            tr_list *tmp;
 
             /* swap paused_easy_handles to prevent oscillation
                between writeFunc this while loop */
@@ -601,10 +601,10 @@ static void tr_webThreadFunc(void* vsession)
             if (msg->msg == CURLMSG_DONE && msg->easy_handle != NULL)
             {
                 double total_time;
-                struct tr_web_task* task;
+                struct tr_web_task *task;
                 long req_bytes_sent;
-                CURL* e = msg->easy_handle;
-                curl_easy_getinfo(e, CURLINFO_PRIVATE, (void*)&task);
+                CURL *e = msg->easy_handle;
+                curl_easy_getinfo(e, CURLINFO_PRIVATE, (void *)&task);
 
                 TR_ASSERT(e == task->curl_easy);
 
@@ -642,7 +642,7 @@ static void tr_webThreadFunc(void* vsession)
     session->web = NULL;
 }
 
-void tr_webClose(tr_session* session, tr_web_close_mode close_mode)
+void tr_webClose(tr_session *session, tr_web_close_mode close_mode)
 {
     if (session->web != NULL)
     {
@@ -658,7 +658,7 @@ void tr_webClose(tr_session* session, tr_web_close_mode close_mode)
     }
 }
 
-void tr_webGetTaskInfo(struct tr_web_task* task, tr_web_task_info info, void* dst)
+void tr_webGetTaskInfo(struct tr_web_task *task, tr_web_task_info info, void *dst)
 {
     curl_easy_getinfo(task->curl_easy, (CURLINFO)info, dst);
 }
@@ -668,7 +668,7 @@ void tr_webGetTaskInfo(struct tr_web_task* task, tr_web_task_info info, void* ds
 ******
 *****/
 
-char const* tr_webGetResponseStr(long code)
+char const *tr_webGetResponseStr(long code)
 {
     switch (code)
     {
@@ -803,7 +803,7 @@ char const* tr_webGetResponseStr(long code)
     }
 }
 
-void tr_http_escape(struct evbuffer* out, char const* str, size_t len, bool escape_slashes)
+void tr_http_escape(struct evbuffer *out, char const *str, size_t len, bool escape_slashes)
 {
     if (str == NULL)
     {
@@ -815,7 +815,7 @@ void tr_http_escape(struct evbuffer* out, char const* str, size_t len, bool esca
         len = strlen(str);
     }
 
-    for (char const* end = str + len; str != end; ++str)
+    for (char const *end = str + len; str != end; ++str)
     {
         if (*str == ',' || *str == '-' || *str == '.' || ('0' <= *str && *str <= '9') || ('A' <= *str && *str <= 'Z') ||
             ('a' <= *str && *str <= 'z') || (*str == '/' && !escape_slashes))
@@ -829,10 +829,10 @@ void tr_http_escape(struct evbuffer* out, char const* str, size_t len, bool esca
     }
 }
 
-char* tr_http_unescape(char const* str, size_t len)
+char *tr_http_unescape(char const *str, size_t len)
 {
-    char* tmp = curl_unescape(str, len);
-    char* ret = tr_strdup(tmp);
+    char *tmp = curl_unescape(str, len);
+    char *ret = tr_strdup(tmp);
     curl_free(tmp);
     return ret;
 }
@@ -843,10 +843,10 @@ static bool is_rfc2396_alnum(uint8_t ch)
         ch == '_' || ch == '~';
 }
 
-void tr_http_escape_sha1(char* out, uint8_t const* sha1_digest)
+void tr_http_escape_sha1(char *out, uint8_t const *sha1_digest)
 {
-    uint8_t const* in = sha1_digest;
-    uint8_t const* end = in + SHA_DIGEST_LENGTH;
+    uint8_t const *in = sha1_digest;
+    uint8_t const *end = in + SHA_DIGEST_LENGTH;
 
     while (in != end)
     {

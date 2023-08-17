@@ -35,7 +35,7 @@ class OptionsDialog : public BaseDialog
     Q_OBJECT
 
 public:
-    OptionsDialog(Session& session, Prefs const& prefs, AddData const& addme, QWidget* parent = nullptr);
+    OptionsDialog(Session &session, Prefs const &prefs, AddData const &addme, QWidget *parent = nullptr);
     virtual ~OptionsDialog();
 
 private:
@@ -49,8 +49,8 @@ private:
 
 private slots:
     void onAccepted();
-    void onPriorityChanged(QSet<int> const& fileIndices, int);
-    void onWantedChanged(QSet<int> const& fileIndices, bool);
+    void onPriorityChanged(QSet<int> const &fileIndices, int);
+    void onWantedChanged(QSet<int> const &fileIndices, bool);
     void onVerify();
     void onTimeout();
 
@@ -60,7 +60,7 @@ private slots:
     void onSessionUpdated();
 
 private:
-    Session& mySession;
+    Session &mySession;
     AddData myAdd;
 
     Ui::OptionsDialog ui;
@@ -69,7 +69,7 @@ private:
     QDir myLocalDestination;
     bool myHaveInfo;
     tr_info myInfo;
-    QPushButton* myVerifyButton;
+    QPushButton *myVerifyButton;
     QVector<int> myPriorities;
     QVector<bool> myWanted;
     FileList myFiles;

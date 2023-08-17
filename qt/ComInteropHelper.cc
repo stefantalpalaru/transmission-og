@@ -41,7 +41,7 @@ bool ComInteropHelper::isConnected() const
     return !m_client->isNull();
 }
 
-QVariant ComInteropHelper::addMetainfo(QString const& metainfo)
+QVariant ComInteropHelper::addMetainfo(QString const &metainfo)
 {
     return m_client->dynamicCall("AddMetainfo(QString)", metainfo);
 }
@@ -56,7 +56,7 @@ void ComInteropHelper::initialize()
     qAxInit();
 }
 
-void ComInteropHelper::registerObject(QObject* parent)
+void ComInteropHelper::registerObject(QObject *parent)
 {
     QAxFactory::startServer();
     QAxFactory::registerActiveObject(new InteropObject(parent));

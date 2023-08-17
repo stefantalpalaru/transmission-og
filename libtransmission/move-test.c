@@ -27,19 +27,19 @@
 ***/
 
 static void zeroes_completeness_func(
-    tr_torrent* torrent UNUSED,
+    tr_torrent *torrent UNUSED,
     tr_completeness completeness,
     bool wasRunning UNUSED,
-    void* user_data)
+    void *user_data)
 {
-    *(tr_completeness*)user_data = completeness;
+    *(tr_completeness *)user_data = completeness;
 }
 
 #define check_file_location(tor, i, expected_path) \
     do \
     { \
-        char* path = tr_torrentFindFile(tor, i); \
-        char* expected = expected_path; \
+        char *path = tr_torrentFindFile(tor, i); \
+        char *expected = expected_path; \
         check_str(path, ==, expected); \
         tr_free(expected); \
         tr_free(path); \
@@ -47,27 +47,27 @@ static void zeroes_completeness_func(
 
 struct test_incomplete_dir_data
 {
-    tr_session* session;
-    tr_torrent* tor;
+    tr_session *session;
+    tr_torrent *tor;
     tr_block_index_t block;
     tr_piece_index_t pieceIndex;
     uint32_t offset;
-    struct evbuffer* buf;
+    struct evbuffer *buf;
     bool done;
 };
 
-static void test_incomplete_dir_threadfunc(void* vdata)
+static void test_incomplete_dir_threadfunc(void *vdata)
 {
-    struct test_incomplete_dir_data* data = vdata;
+    struct test_incomplete_dir_data *data = vdata;
     tr_cacheWriteBlock(data->session->cache, data->tor, 0, data->offset, data->tor->blockSize, data->buf);
     tr_torrentGotBlock(data->tor, data->block);
     data->done = true;
 }
 
-static int test_incomplete_dir_impl(char const* incomplete_dir, char const* download_dir)
+static int test_incomplete_dir_impl(char const *incomplete_dir, char const *download_dir)
 {
-    tr_session* session;
-    tr_torrent* tor;
+    tr_session *session;
+    tr_torrent *tor;
     tr_completeness completeness;
     tr_completeness const completeness_unset = -1;
     time_t const deadline = time(NULL) + 300;
@@ -102,7 +102,7 @@ static int test_incomplete_dir_impl(char const* incomplete_dir, char const* down
     {
         tr_block_index_t first;
         tr_block_index_t last;
-        char* zero_block = tr_new0(char, tor->blockSize);
+        char *zero_block = tr_new0(char, tor->blockSize);
         struct test_incomplete_dir_data data;
 
         data.session = session;
@@ -183,9 +183,9 @@ static int test_incomplete_dir(void)
 static int test_set_location(void)
 {
     int state;
-    char* target_dir;
-    tr_torrent* tor;
-    tr_session* session;
+    char *target_dir;
+    tr_torrent *tor;
+    tr_session *session;
     time_t const deadline = time(NULL) + 300;
 
     /* init the session */

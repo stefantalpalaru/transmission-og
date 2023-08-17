@@ -15,12 +15,12 @@ class IconToolButton : public QToolButton
     Q_OBJECT
 
 public:
-    IconToolButton(QWidget* parent = nullptr);
+    IconToolButton(QWidget *parent = nullptr);
 
     // QWidget
     QSize sizeHint() const override;
 
 protected:
     // QWidget
-    void paintEvent(QPaintEvent* event) override;
+    void paintEvent(QPaintEvent *event) override;
 };

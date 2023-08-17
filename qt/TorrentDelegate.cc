@@ -59,13 +59,13 @@ public:
 
 public:
     ItemLayout(
-        QString const& nameText,
-        QString const& statusText,
-        QString const& progressText,
-        QIcon const& emblemIcon,
-        QFont const& baseFont,
+        QString const &nameText,
+        QString const &statusText,
+        QString const &progressText,
+        QIcon const &emblemIcon,
+        QFont const &baseFont,
         Qt::LayoutDirection direction,
-        QPoint const& topLeft,
+        QPoint const &topLeft,
         int width);
 
     QSize size() const
@@ -89,20 +89,20 @@ public:
     }
 
 private:
-    QString elidedText(QFont const& font, QString const& text, int width) const
+    QString elidedText(QFont const &font, QString const &text, int width) const
     {
         return QFontMetrics(font).elidedText(text, Qt::ElideRight, width);
     }
 };
 
 ItemLayout::ItemLayout(
-    QString const& nameText,
-    QString const& statusText,
-    QString const& progressText,
-    QIcon const& emblemIcon,
-    QFont const& baseFont,
+    QString const &nameText,
+    QString const &statusText,
+    QString const &progressText,
+    QIcon const &emblemIcon,
+    QFont const &baseFont,
     Qt::LayoutDirection direction,
-    QPoint const& topLeft,
+    QPoint const &topLeft,
     int width)
     : myNameText(nameText)
     , myStatusText(statusText)
@@ -111,7 +111,7 @@ ItemLayout::ItemLayout(
     , statusFont(baseFont)
     , progressFont(baseFont)
 {
-    QStyle const* style(qApp->style());
+    QStyle const *style(qApp->style());
     int const iconSize(style->pixelMetric(QStyle::PM_LargeIconSize));
 
     nameFont.setWeight(QFont::Bold);
@@ -147,7 +147,7 @@ ItemLayout::ItemLayout(
 
 } // namespace
 
-TorrentDelegate::TorrentDelegate(QObject* parent)
+TorrentDelegate::TorrentDelegate(QObject *parent)
     : QStyledItemDelegate(parent)
     , myProgressBarStyle(new QStyleOptionProgressBar)
 {
@@ -173,14 +173,14 @@ TorrentDelegate::~TorrentDelegate()
 ****
 ***/
 
-QSize TorrentDelegate::margin(QStyle const& style) const
+QSize TorrentDelegate::margin(QStyle const &style) const
 {
     Q_UNUSED(style)
 
     return QSize(4, 4);
 }
 
-QString TorrentDelegate::progressString(Torrent const& tor)
+QString TorrentDelegate::progressString(Torrent const &tor)
 {
     bool const isMagnet(!tor.hasMetadata());
     bool const isDone(tor.isDone());
@@ -292,7 +292,7 @@ QString TorrentDelegate::progressString(Torrent const& tor)
     return str.trimmed();
 }
 
-QString TorrentDelegate::shortTransferString(Torrent const& tor)
+QString TorrentDelegate::shortTransferString(Torrent const &tor)
 {
     QString str;
     bool const haveMeta(tor.hasMetadata());
@@ -312,7 +312,7 @@ QString TorrentDelegate::shortTransferString(Torrent const& tor)
     return str.trimmed();
 }
 
-QString TorrentDelegate::shortStatusString(Torrent const& tor)
+QString TorrentDelegate::shortStatusString(Torrent const &tor)
 {
     QString str;
 
@@ -335,7 +335,7 @@ QString TorrentDelegate::shortStatusString(Torrent const& tor)
     return str.trimmed();
 }
 
-QString TorrentDelegate::statusString(Torrent const& tor)
+QString TorrentDelegate::statusString(Torrent const &tor)
 {
     QString str;
 
@@ -423,7 +423,7 @@ QString TorrentDelegate::statusString(Torrent const& tor)
 ****
 ***/
 
-QSize TorrentDelegate::sizeHint(QStyleOptionViewItem const& option, Torrent const& tor) const
+QSize TorrentDelegate::sizeHint(QStyleOptionViewItem const &option, Torrent const &tor) const
 {
     QSize const m(margin(*qApp->style()));
     ItemLayout const layout(
@@ -438,7 +438,7 @@ QSize TorrentDelegate::sizeHint(QStyleOptionViewItem const& option, Torrent cons
     return layout.size() + m * 2;
 }
 
-QSize TorrentDelegate::sizeHint(QStyleOptionViewItem const& option, QModelIndex const& index) const
+QSize TorrentDelegate::sizeHint(QStyleOptionViewItem const &option, QModelIndex const &index) const
 {
     // if the font changed, invalidate the height cache
     if (myHeightFont != option.font)
@@ -450,16 +450,16 @@ QSize TorrentDelegate::sizeHint(QStyleOptionViewItem const& option, QModelIndex 
     // ensure the height is cached
     if (!myHeightHint)
     {
-        auto const* tor = index.data(TorrentModel::TorrentRole).value<Torrent const*>();
+        auto const *tor = index.data(TorrentModel::TorrentRole).value<Torrent const *>();
         myHeightHint = sizeHint(option, *tor).height();
     }
 
     return QSize(option.rect.width(), *myHeightHint);
 }
 
-QIcon& TorrentDelegate::getWarningEmblem() const
+QIcon &TorrentDelegate::getWarningEmblem() const
 {
-    auto& icon = myWarningEmblem;
+    auto &icon = myWarningEmblem;
 
     if (icon.isNull())
     {
@@ -474,16 +474,16 @@ QIcon& TorrentDelegate::getWarningEmblem() const
     return icon;
 }
 
-void TorrentDelegate::paint(QPainter* painter, QStyleOptionViewItem const& option, QModelIndex const& index) const
+void TorrentDelegate::paint(QPainter *painter, QStyleOptionViewItem const &option, QModelIndex const &index) const
 {
-    Torrent const* tor(index.data(TorrentModel::TorrentRole).value<Torrent const*>());
+    Torrent const *tor(index.data(TorrentModel::TorrentRole).value<Torrent const *>());
     painter->save();
     painter->setClipRect(option.rect);
     drawTorrent(painter, option, *tor);
     painter->restore();
 }
 
-void TorrentDelegate::setProgressBarPercentDone(QStyleOptionViewItem const& option, Torrent const& tor) const
+void TorrentDelegate::setProgressBarPercentDone(QStyleOptionViewItem const &option, Torrent const &tor) const
 {
     double seedRatioLimit;
 
@@ -504,9 +504,9 @@ void TorrentDelegate::setProgressBarPercentDone(QStyleOptionViewItem const& opti
     }
 }
 
-void TorrentDelegate::drawTorrent(QPainter* painter, QStyleOptionViewItem const& option, Torrent const& tor) const
+void TorrentDelegate::drawTorrent(QPainter *painter, QStyleOptionViewItem const &option, Torrent const &tor) const
 {
-    QStyle const* style(qApp->style());
+    QStyle const *style(qApp->style());
 
     bool const isPaused(tor.isPaused());
 

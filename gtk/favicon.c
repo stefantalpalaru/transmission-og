@@ -17,27 +17,27 @@
 #include <gtk/gtk.h>
 
 #define IMAGE_TYPES 4
-static char const* image_types[IMAGE_TYPES] = { "ico", "png", "gif", "jpg" };
+static char const *image_types[IMAGE_TYPES] = { "ico", "png", "gif", "jpg" };
 
 struct favicon_data
 {
-    tr_session* session;
+    tr_session *session;
     GFunc func;
     gpointer data;
-    char* host;
-    char* contents;
+    char *host;
+    char *contents;
     size_t len;
     int type;
 };
 
-static char* get_url(char const* host, int image_type)
+static char *get_url(char const *host, int image_type)
 {
     return g_strdup_printf("http://%s/favicon.%s", host, image_types[image_type]);
 }
 
-static char* favicon_get_cache_dir(void)
+static char *favicon_get_cache_dir(void)
 {
-    static char* dir = NULL;
+    static char *dir = NULL;
 
     if (dir == NULL)
     {
@@ -48,22 +48,22 @@ static char* favicon_get_cache_dir(void)
     return dir;
 }
 
-static char* favicon_get_cache_filename(char const* host)
+static char *favicon_get_cache_filename(char const *host)
 {
     return g_build_filename(favicon_get_cache_dir(), host, NULL);
 }
 
-static void favicon_save_to_cache(char const* host, void const* data, size_t len)
+static void favicon_save_to_cache(char const *host, void const *data, size_t len)
 {
-    char* filename = favicon_get_cache_filename(host);
+    char *filename = favicon_get_cache_filename(host);
     g_file_set_contents(filename, data, len, NULL);
     g_free(filename);
 }
 
-static GdkPixbuf* favicon_load_from_cache(char const* host)
+static GdkPixbuf *favicon_load_from_cache(char const *host)
 {
-    char* filename = favicon_get_cache_filename(host);
-    GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file_at_size(filename, 16, 16, NULL);
+    char *filename = favicon_get_cache_filename(host);
+    GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file_at_size(filename, 16, 16, NULL);
 
     if (pixbuf == NULL) /* bad file */
     {
@@ -74,13 +74,13 @@ static GdkPixbuf* favicon_load_from_cache(char const* host)
     return pixbuf;
 }
 
-static void favicon_web_done_cb(tr_session*, bool, bool, long, void const*, size_t, void*);
+static void favicon_web_done_cb(tr_session *, bool, bool, long, void const *, size_t, void *);
 
 static gboolean favicon_web_done_idle_cb(gpointer vfav)
 {
-    GdkPixbuf* pixbuf = NULL;
+    GdkPixbuf *pixbuf = NULL;
     gboolean finished = FALSE;
-    struct favicon_data* fav = vfav;
+    struct favicon_data *fav = vfav;
 
     if (fav->len > 0) /* we got something... try to make a pixbuf from it */
     {
@@ -97,7 +97,7 @@ static gboolean favicon_web_done_idle_cb(gpointer vfav)
         }
         else /* keep trying */
         {
-            char* url = get_url(fav->host, fav->type);
+            char *url = get_url(fav->host, fav->type);
 
             g_free(fav->contents);
             fav->contents = NULL;
@@ -120,24 +120,24 @@ static gboolean favicon_web_done_idle_cb(gpointer vfav)
 }
 
 static void favicon_web_done_cb(
-    tr_session* session UNUSED,
+    tr_session *session UNUSED,
     bool did_connect UNUSED,
     bool did_timeout UNUSED,
     long code UNUSED,
-    void const* data,
+    void const *data,
     size_t len,
-    void* vfav)
+    void *vfav)
 {
-    struct favicon_data* fav = vfav;
+    struct favicon_data *fav = vfav;
     fav->contents = g_memdup2(data, len);
     fav->len = len;
 
     gdk_threads_add_idle(favicon_web_done_idle_cb, fav);
 }
 
-void gtr_get_favicon(tr_session* session, char const* host, GFunc pixbuf_ready_func, gpointer pixbuf_ready_func_data)
+void gtr_get_favicon(tr_session *session, char const *host, GFunc pixbuf_ready_func, gpointer pixbuf_ready_func_data)
 {
-    GdkPixbuf* pixbuf = favicon_load_from_cache(host);
+    GdkPixbuf *pixbuf = favicon_load_from_cache(host);
 
     if (pixbuf != NULL)
     {
@@ -145,8 +145,8 @@ void gtr_get_favicon(tr_session* session, char const* host, GFunc pixbuf_ready_f
     }
     else
     {
-        struct favicon_data* data;
-        char* url = get_url(host, 0);
+        struct favicon_data *data;
+        char *url = get_url(host, 0);
 
         data = g_new(struct favicon_data, 1);
         data->session = session;
@@ -160,7 +160,7 @@ void gtr_get_favicon(tr_session* session, char const* host, GFunc pixbuf_ready_f
     }
 }
 
-void gtr_get_favicon_from_url(tr_session* session, char const* url, GFunc pixbuf_ready_func, gpointer pixbuf_ready_func_data)
+void gtr_get_favicon_from_url(tr_session *session, char const *url, GFunc pixbuf_ready_func, gpointer pixbuf_ready_func_data)
 {
     char host[1024];
     gtr_get_host_from_url(host, sizeof(host), url);

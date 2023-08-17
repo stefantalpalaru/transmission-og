@@ -25,10 +25,10 @@
 @interface WebSeedTableView : NSTableView
 {
     //weak references
-    NSArray* fWebSeeds;
+    NSArray *fWebSeeds;
 }
 
-- (void)setWebSeeds:(NSArray*)webSeeds;
+- (void)setWebSeeds:(NSArray *)webSeeds;
 
 - (void)copy:(id)sender;
 

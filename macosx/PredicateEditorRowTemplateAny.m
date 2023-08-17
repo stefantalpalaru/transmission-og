@@ -24,10 +24,10 @@
 
 @implementation PredicateEditorRowTemplateAny
 
-- (NSPredicate*)predicateWithSubpredicates:(NSArray*)subpredicates
+- (NSPredicate *)predicateWithSubpredicates:(NSArray *)subpredicates
 {
     //we only make NSComparisonPredicates
-    NSComparisonPredicate* predicate = (NSComparisonPredicate*)[super predicateWithSubpredicates:subpredicates];
+    NSComparisonPredicate *predicate = (NSComparisonPredicate *)[super predicateWithSubpredicates:subpredicates];
 
     //construct a near-identical predicate
     return [NSComparisonPredicate predicateWithLeftExpression:[predicate leftExpression] rightExpression:[predicate rightExpression]

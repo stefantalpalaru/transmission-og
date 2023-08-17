@@ -24,8 +24,8 @@
 ****
 ***/
 
-static dtr_callbacks const* callbacks = NULL;
-static void* callback_arg = NULL;
+static dtr_callbacks const *callbacks = NULL;
+static void *callback_arg = NULL;
 
 static int signal_pipe[2];
 
@@ -33,7 +33,7 @@ static int signal_pipe[2];
 ****
 ***/
 
-static void set_system_error(tr_error** error, int code, char const* message)
+static void set_system_error(tr_error **error, int code, char const *message)
 {
     tr_error_set(error, code, "%s (%d): %s", message, code, tr_strerror(code));
 }
@@ -72,7 +72,7 @@ static void send_signal_to_pipe(int sig)
     errno = old_errno;
 }
 
-static void* signal_handler_thread_main(void* arg UNUSED)
+static void *signal_handler_thread_main(void *arg UNUSED)
 {
     int sig;
 
@@ -84,7 +84,7 @@ static void* signal_handler_thread_main(void* arg UNUSED)
     return NULL;
 }
 
-static bool create_signal_pipe(tr_error** error)
+static bool create_signal_pipe(tr_error **error)
 {
     if (pipe(signal_pipe) == -1)
     {
@@ -101,7 +101,7 @@ static void destroy_signal_pipe(void)
     close(signal_pipe[1]);
 }
 
-static bool create_signal_handler_thread(pthread_t* thread, tr_error** error)
+static bool create_signal_handler_thread(pthread_t *thread, tr_error **error)
 {
     if (!create_signal_pipe(error))
     {
@@ -126,7 +126,7 @@ static void destroy_signal_handler_thread(pthread_t thread)
     destroy_signal_pipe();
 }
 
-static bool setup_signal_handler(int sig, tr_error** error)
+static bool setup_signal_handler(int sig, tr_error **error)
 {
     assert(sig != 0);
 
@@ -143,7 +143,7 @@ static bool setup_signal_handler(int sig, tr_error** error)
 ****
 ***/
 
-bool dtr_daemon(dtr_callbacks const* cb, void* cb_arg, bool foreground, int* exit_code, tr_error** error)
+bool dtr_daemon(dtr_callbacks const *cb, void *cb_arg, bool foreground, int *exit_code, tr_error **error)
 {
     callbacks = cb;
     callback_arg = cb_arg;

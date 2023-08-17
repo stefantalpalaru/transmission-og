@@ -36,15 +36,15 @@ enum
 ****
 ***/
 
-FilterBarComboBox* FilterBar::createActivityCombo()
+FilterBarComboBox *FilterBar::createActivityCombo()
 {
-    FilterBarComboBox* c = new FilterBarComboBox(this);
-    FilterBarComboBoxDelegate* delegate = new FilterBarComboBoxDelegate(this, c);
+    FilterBarComboBox *c = new FilterBarComboBox(this);
+    FilterBarComboBoxDelegate *delegate = new FilterBarComboBoxDelegate(this, c);
     c->setItemDelegate(delegate);
 
-    QStandardItemModel* model = new QStandardItemModel(this);
+    QStandardItemModel *model = new QStandardItemModel(this);
 
-    QStandardItem* row = new QStandardItem(tr("All"));
+    QStandardItem *row = new QStandardItem(tr("All"));
     row->setData(FilterMode::SHOW_ALL, ActivityRole);
     model->appendRow(row);
 
@@ -107,9 +107,9 @@ void FilterBar::refreshTrackers()
     };
 
     auto torrentsPerHost = std::unordered_map<QString, int>{};
-    for (auto const& tor : myTorrents.torrents())
+    for (auto const &tor : myTorrents.torrents())
     {
-        for (auto const& displayName : tor->trackerDisplayNames())
+        for (auto const &displayName : tor->trackerDisplayNames())
         {
             ++torrentsPerHost[displayName];
         }
@@ -121,10 +121,10 @@ void FilterBar::refreshTrackers()
     item->setData(int(num_trackers), FilterBarComboBox::CountRole);
     item->setData(getCountString(num_trackers), FilterBarComboBox::CountStringRole);
 
-    auto updateTrackerItem = [](QStandardItem* i, auto const& it)
+    auto updateTrackerItem = [](QStandardItem *i, auto const &it)
     {
-        auto const& displayName = it->first;
-        auto const& count = it->second;
+        auto const &displayName = it->first;
+        auto const &count = it->second;
         auto const icon = qApp->faviconCache().find(FaviconCache::getKey(displayName));
         i->setData(displayName, Qt::DisplayRole);
         i->setData(displayName, TrackerRole);
@@ -173,13 +173,13 @@ void FilterBar::refreshTrackers()
     myTrackerCounts.swap(newTrackers);
 }
 
-FilterBarComboBox* FilterBar::createTrackerCombo(QStandardItemModel* model)
+FilterBarComboBox *FilterBar::createTrackerCombo(QStandardItemModel *model)
 {
-    FilterBarComboBox* c = new FilterBarComboBox(this);
-    FilterBarComboBoxDelegate* delegate = new FilterBarComboBoxDelegate(this, c);
+    FilterBarComboBox *c = new FilterBarComboBox(this);
+    FilterBarComboBoxDelegate *delegate = new FilterBarComboBoxDelegate(this, c);
     c->setItemDelegate(delegate);
 
-    QStandardItem* row = new QStandardItem(tr("All"));
+    QStandardItem *row = new QStandardItem(tr("All"));
     row->setData(QString(), TrackerRole);
     int const count = myTorrents.rowCount();
     row->setData(count, FilterBarComboBox::CountRole);
@@ -197,7 +197,7 @@ FilterBarComboBox* FilterBar::createTrackerCombo(QStandardItemModel* model)
 ****
 ***/
 
-FilterBar::FilterBar(Prefs& prefs, TorrentModel const& torrents, TorrentFilter const& filter, QWidget* parent)
+FilterBar::FilterBar(Prefs &prefs, TorrentModel const &torrents, TorrentFilter const &filter, QWidget *parent)
     : QWidget(parent)
     , myPrefs(prefs)
     , myTorrents(torrents)
@@ -205,7 +205,7 @@ FilterBar::FilterBar(Prefs& prefs, TorrentModel const& torrents, TorrentFilter c
     , myRecountTimer(new QTimer(this))
     , myIsBootstrapping(true)
 {
-    QHBoxLayout* h = new QHBoxLayout(this);
+    QHBoxLayout *h = new QHBoxLayout(this);
     h->setContentsMargins(3, 3, 3, 3);
 
     myCountLabel = new QLabel(tr("Show:"), this);
@@ -275,7 +275,7 @@ void FilterBar::refreshPref(int key)
     case Prefs::FILTER_MODE:
         {
             FilterMode const m = myPrefs.get<FilterMode>(key);
-            QAbstractItemModel* model = myActivityCombo->model();
+            QAbstractItemModel *model = myActivityCombo->model();
             QModelIndexList indices = model->match(model->index(0, 0), ActivityRole, m.mode());
             myActivityCombo->setCurrentIndex(indices.isEmpty() ? 0 : indices.first().row());
             break;
@@ -304,7 +304,7 @@ void FilterBar::refreshPref(int key)
     }
 }
 
-void FilterBar::onTextChanged(QString const& str)
+void FilterBar::onTextChanged(QString const &str)
 {
     if (!myIsBootstrapping)
     {
@@ -362,7 +362,7 @@ void FilterBar::recountSoon()
 
 void FilterBar::recount()
 {
-    QAbstractItemModel* model = myActivityCombo->model();
+    QAbstractItemModel *model = myActivityCombo->model();
 
     int torrentsPerMode[FilterMode::NUM_MODES] = {};
     myFilter.countTorrentsPerMode(torrentsPerMode);

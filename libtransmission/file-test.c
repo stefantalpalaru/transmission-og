@@ -32,16 +32,16 @@
 #define HAVE_UNIFIED_BUFFER_CACHE
 #endif
 
-static tr_session* session;
+static tr_session *session;
 
-static char* create_test_dir(char const* name)
+static char *create_test_dir(char const *name)
 {
-    char* const test_dir = tr_buildPath(tr_sessionGetConfigDir(session), name, NULL);
+    char *const test_dir = tr_buildPath(tr_sessionGetConfigDir(session), name, NULL);
     tr_sys_dir_create(test_dir, 0, 0777, NULL);
     return test_dir;
 }
 
-static bool create_symlink(char const* dst_path, char const* src_path, bool dst_is_dir)
+static bool create_symlink(char const *dst_path, char const *src_path, bool dst_is_dir)
 {
 #ifndef _WIN32
 
@@ -51,8 +51,8 @@ static bool create_symlink(char const* dst_path, char const* src_path, bool dst_
 
 #else
 
-    wchar_t* wide_src_path;
-    wchar_t* wide_dst_path;
+    wchar_t *wide_src_path;
+    wchar_t *wide_dst_path;
     bool ret = false;
 
     wide_src_path = tr_win32_utf8_to_native(src_path, -1);
@@ -68,7 +68,7 @@ static bool create_symlink(char const* dst_path, char const* src_path, bool dst_
 #endif
 }
 
-static bool create_hardlink(char const* dst_path, char const* src_path)
+static bool create_hardlink(char const *dst_path, char const *src_path)
 {
 #ifndef _WIN32
 
@@ -76,8 +76,8 @@ static bool create_hardlink(char const* dst_path, char const* src_path)
 
 #else
 
-    wchar_t* wide_src_path = tr_win32_utf8_to_native(src_path, -1);
-    wchar_t* wide_dst_path = tr_win32_utf8_to_native(dst_path, -1);
+    wchar_t *wide_src_path = tr_win32_utf8_to_native(src_path, -1);
+    wchar_t *wide_dst_path = tr_win32_utf8_to_native(dst_path, -1);
 
     bool ret = CreateHardLinkW(wide_dst_path, wide_src_path, NULL);
 
@@ -89,26 +89,26 @@ static bool create_hardlink(char const* dst_path, char const* src_path)
 #endif
 }
 
-static void clear_path_info(tr_sys_path_info* info)
+static void clear_path_info(tr_sys_path_info *info)
 {
     info->type = (tr_sys_path_type_t)-1;
     info->size = (uint64_t)-1;
     info->last_modified_at = (time_t)-1;
 }
 
-static bool path_contains_no_symlinks(char const* path)
+static bool path_contains_no_symlinks(char const *path)
 {
-    char const* p = path;
+    char const *p = path;
 
     while (*p != '\0')
     {
         tr_sys_path_info info;
-        char* pathPart;
-        char const* slashPos = strchr(p, '/');
+        char *pathPart;
+        char const *slashPos = strchr(p, '/');
 
 #ifdef _WIN32
 
-        char const* backslashPos = strchr(p, '\\');
+        char const *backslashPos = strchr(p, '\\');
 
         if (slashPos == NULL || (backslashPos != NULL && backslashPos < slashPos))
         {
@@ -139,7 +139,7 @@ static bool path_contains_no_symlinks(char const* path)
     return true;
 }
 
-static bool validate_permissions(char const* path, unsigned int permissions)
+static bool validate_permissions(char const *path, unsigned int permissions)
 {
 #ifndef _WIN32
 
@@ -159,12 +159,12 @@ static bool validate_permissions(char const* path, unsigned int permissions)
 
 static int test_get_info(void)
 {
-    char* const test_dir = create_test_dir(__FUNCTION__);
+    char *const test_dir = create_test_dir(__FUNCTION__);
     tr_sys_path_info info;
     tr_sys_file_t fd;
-    tr_error* err = NULL;
-    char* path1;
-    char* path2;
+    tr_error *err = NULL;
+    char *path1;
+    char *path2;
     time_t t;
 
     path1 = tr_buildPath(test_dir, "a", NULL);
@@ -274,10 +274,10 @@ static int test_get_info(void)
 
 static int test_path_exists(void)
 {
-    char* const test_dir = create_test_dir(__FUNCTION__);
-    tr_error* err = NULL;
-    char* path1;
-    char* path2;
+    char *const test_dir = create_test_dir(__FUNCTION__);
+    tr_error *err = NULL;
+    char *path1;
+    char *path2;
 
     path1 = tr_buildPath(test_dir, "a", NULL);
     path2 = tr_buildPath(test_dir, "b", NULL);
@@ -385,11 +385,11 @@ static int test_path_is_relative(void)
 
 static int test_path_is_same(void)
 {
-    char* const test_dir = create_test_dir(__FUNCTION__);
-    tr_error* err = NULL;
-    char* path1;
-    char* path2;
-    char* path3;
+    char *const test_dir = create_test_dir(__FUNCTION__);
+    tr_error *err = NULL;
+    char *path1;
+    char *path2;
+    char *path3;
 
     path1 = tr_buildPath(test_dir, "a", NULL);
     path2 = tr_buildPath(test_dir, "b", NULL);
@@ -599,10 +599,10 @@ static int test_path_is_same(void)
 
 static int test_path_resolve(void)
 {
-    char* const test_dir = create_test_dir(__FUNCTION__);
-    tr_error* err = NULL;
-    char* path1;
-    char* path2;
+    char *const test_dir = create_test_dir(__FUNCTION__);
+    tr_error *err = NULL;
+    char *path1;
+    char *path2;
 
     path1 = tr_buildPath(test_dir, "a", NULL);
     path2 = tr_buildPath(test_dir, "b", NULL);
@@ -611,7 +611,7 @@ static int test_path_resolve(void)
 
     if (create_symlink(path2, path1, false))
     {
-        char* tmp;
+        char *tmp;
 
         tmp = tr_sys_path_resolve(path2, &err);
         check_str(tmp, !=, NULL);
@@ -644,7 +644,7 @@ static int test_path_resolve(void)
 #ifdef _WIN32
 
     {
-        char* tmp;
+        char *tmp;
 
         tmp = tr_sys_path_resolve("\\\\127.0.0.1\\NonExistent", &err);
         check_str(tmp, ==, NULL);
@@ -670,16 +670,16 @@ static int test_path_resolve(void)
 
 struct xname_test_data
 {
-    char const* input;
-    char const* output;
+    char const *input;
+    char const *output;
 };
 
-static int test_path_xname(struct xname_test_data const* data, size_t data_size, char* (*func)(char const*, tr_error**))
+static int test_path_xname(struct xname_test_data const *data, size_t data_size, char *(*func)(char const *, tr_error **))
 {
     for (size_t i = 0; i < data_size; ++i)
     {
-        tr_error* err = NULL;
-        char* name = func(data[i].input, &err);
+        tr_error *err = NULL;
+        char *name = func(data[i].input, &err);
 
         if (data[i].output != NULL)
         {
@@ -814,11 +814,11 @@ static int test_path_basename_dirname(void)
 
 static int test_path_rename(void)
 {
-    char* const test_dir = create_test_dir(__FUNCTION__);
-    tr_error* err = NULL;
-    char* path1;
-    char* path2;
-    char* path3;
+    char *const test_dir = create_test_dir(__FUNCTION__);
+    tr_error *err = NULL;
+    char *path1;
+    char *path2;
+    char *path3;
 
     path1 = tr_buildPath(test_dir, "a", NULL);
     path2 = tr_buildPath(test_dir, "b", NULL);
@@ -932,11 +932,11 @@ static int test_path_rename(void)
 
 static int test_path_remove(void)
 {
-    char* const test_dir = create_test_dir(__FUNCTION__);
-    tr_error* err = NULL;
-    char* path1;
-    char* path2;
-    char* path3;
+    char *const test_dir = create_test_dir(__FUNCTION__);
+    tr_error *err = NULL;
+    char *path1;
+    char *path2;
+    char *path3;
 
     path1 = tr_buildPath(test_dir, "a", NULL);
     path2 = tr_buildPath(test_dir, "b", NULL);
@@ -997,8 +997,8 @@ static int test_path_native_separators(void)
 
     struct
     {
-        char* input;
-        char const* output;
+        char *input;
+        char const *output;
     } test_data[] = {
         { path1, "" },
         { path2, TR_IF_WIN32("a", "a") },
@@ -1009,7 +1009,7 @@ static int test_path_native_separators(void)
 
     for (size_t i = 0; i < TR_N_ELEMENTS(test_data); ++i)
     {
-        char* const output = tr_sys_path_native_separators(test_data[i].input);
+        char *const output = tr_sys_path_native_separators(test_data[i].input);
 
         check_str(output, ==, test_data[i].output);
         check_str(test_data[i].input, ==, test_data[i].output);
@@ -1021,9 +1021,9 @@ static int test_path_native_separators(void)
 
 static int test_file_open(void)
 {
-    char* const test_dir = create_test_dir(__FUNCTION__);
-    tr_error* err = NULL;
-    char* path1;
+    char *const test_dir = create_test_dir(__FUNCTION__);
+    tr_error *err = NULL;
+    char *path1;
     tr_sys_file_t fd;
     uint64_t n;
     tr_sys_path_info info;
@@ -1120,9 +1120,9 @@ static int test_file_open(void)
 
 static int test_file_read_write_seek(void)
 {
-    char* const test_dir = create_test_dir(__FUNCTION__);
-    tr_error* err = NULL;
-    char* path1;
+    char *const test_dir = create_test_dir(__FUNCTION__);
+    tr_error *err = NULL;
+    char *path1;
     tr_sys_file_t fd;
     uint64_t n;
     char buf[100];
@@ -1211,9 +1211,9 @@ static int test_file_read_write_seek(void)
 
 static int test_file_truncate(void)
 {
-    char* const test_dir = create_test_dir(__FUNCTION__);
-    tr_error* err = NULL;
-    char* path1;
+    char *const test_dir = create_test_dir(__FUNCTION__);
+    tr_error *err = NULL;
+    char *path1;
     tr_sys_file_t fd;
     tr_sys_path_info info;
 
@@ -1264,9 +1264,9 @@ static int test_file_truncate(void)
 
 static int test_file_preallocate(void)
 {
-    char* const test_dir = create_test_dir(__FUNCTION__);
-    tr_error* err = NULL;
-    char* path1;
+    char *const test_dir = create_test_dir(__FUNCTION__);
+    tr_error *err = NULL;
+    char *path1;
     tr_sys_file_t fd;
     tr_sys_path_info info;
 
@@ -1318,11 +1318,11 @@ static int test_file_preallocate(void)
 
 static int test_file_map(void)
 {
-    char* const test_dir = create_test_dir(__FUNCTION__);
-    tr_error* err = NULL;
-    char* path1;
+    char *const test_dir = create_test_dir(__FUNCTION__);
+    tr_error *err = NULL;
+    char *path1;
     tr_sys_file_t fd;
-    char* view;
+    char *view;
 
     path1 = tr_buildPath(test_dir, "a", NULL);
 
@@ -1359,9 +1359,9 @@ static int test_file_map(void)
 
 static int test_file_utilities(void)
 {
-    char* const test_dir = create_test_dir(__FUNCTION__);
-    tr_error* err = NULL;
-    char* path1;
+    char *const test_dir = create_test_dir(__FUNCTION__);
+    tr_error *err = NULL;
+    char *path1;
     tr_sys_file_t fd;
     char buffer[16];
 
@@ -1457,10 +1457,10 @@ static int test_file_utilities(void)
 
 static int test_dir_create(void)
 {
-    char* const test_dir = create_test_dir(__FUNCTION__);
-    tr_error* err = NULL;
-    char* path1;
-    char* path2;
+    char *const test_dir = create_test_dir(__FUNCTION__);
+    tr_error *err = NULL;
+    char *path1;
+    char *path2;
 
     path1 = tr_buildPath(test_dir, "a", NULL);
     path2 = tr_buildPath(path1, "b", NULL);
@@ -1514,11 +1514,11 @@ static int test_dir_create(void)
     return 0;
 }
 
-static int test_dir_read_impl(char const* path, bool* have1, bool* have2)
+static int test_dir_read_impl(char const *path, bool *have1, bool *have2)
 {
-    tr_error* err = NULL;
+    tr_error *err = NULL;
     tr_sys_dir_t dd;
-    char const* name;
+    char const *name;
 
     *have1 = *have2 = false;
 
@@ -1559,9 +1559,9 @@ static int test_dir_read_impl(char const* path, bool* have1, bool* have2)
 
 static int test_dir_read(void)
 {
-    char* const test_dir = create_test_dir(__FUNCTION__);
-    char* path1;
-    char* path2;
+    char *const test_dir = create_test_dir(__FUNCTION__);
+    char *path1;
+    char *path2;
     bool have1;
     bool have2;
 

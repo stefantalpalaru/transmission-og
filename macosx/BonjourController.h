@@ -24,10 +24,10 @@
 
 @interface BonjourController : NSObject<NSNetServiceDelegate>
 {
-    NSNetService* fService;
+    NSNetService *fService;
 }
 
-+ (BonjourController*)defaultController;
++ (BonjourController *)defaultController;
 + (BOOL)defaultControllerExists;
 
 - (void)startWithPort:(int)port;

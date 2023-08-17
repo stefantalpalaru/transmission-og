@@ -33,7 +33,7 @@ bool InteropHelper::isConnected() const
     return false;
 }
 
-bool InteropHelper::addMetainfo(QString const& metainfo)
+bool InteropHelper::addMetainfo(QString const &metainfo)
 {
 #ifdef ENABLE_DBUS_INTEROP
 
@@ -71,7 +71,7 @@ void InteropHelper::initialize()
 #endif
 }
 
-void InteropHelper::registerObject(QObject* parent)
+void InteropHelper::registerObject(QObject *parent)
 {
 #ifdef ENABLE_DBUS_INTEROP
     DBusInteropHelper::registerObject(parent);

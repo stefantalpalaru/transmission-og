@@ -17,14 +17,14 @@
 namespace
 {
 
-int getHSpacing(QWidget const* w)
+int getHSpacing(QWidget const *w)
 {
     return qMax(3, w->style()->pixelMetric(QStyle::PM_LayoutHorizontalSpacing, nullptr, w));
 }
 
 } // namespace
 
-FilterBarComboBox::FilterBarComboBox(QWidget* parent)
+FilterBarComboBox::FilterBarComboBox(QWidget *parent)
     : QComboBox(parent)
 {
     setSizeAdjustPolicy(QComboBox::AdjustToContents);
@@ -58,7 +58,7 @@ QSize FilterBarComboBox::sizeHint() const
     return calculateSize(maxTextSize, maxCountSize);
 }
 
-QSize FilterBarComboBox::calculateSize(QSize const& textSize, QSize const& countSize) const
+QSize FilterBarComboBox::calculateSize(QSize const &textSize, QSize const &countSize) const
 {
     int const hmargin = getHSpacing(this);
 
@@ -73,7 +73,7 @@ QSize FilterBarComboBox::calculateSize(QSize const& textSize, QSize const& count
     return style()->sizeFromContents(QStyle::CT_ComboBox, &option, contentSize, this).expandedTo(qApp->globalStrut());
 }
 
-void FilterBarComboBox::paintEvent(QPaintEvent* e)
+void FilterBarComboBox::paintEvent(QPaintEvent *e)
 {
     Q_UNUSED(e)
 
@@ -90,7 +90,7 @@ void FilterBarComboBox::paintEvent(QPaintEvent* e)
 
     if (modelIndex.isValid())
     {
-        QStyle* s = style();
+        QStyle *s = style();
         int const hmargin = getHSpacing(this);
 
         QRect rect = s->subControlRect(QStyle::CC_ComboBox, &opt, QStyle::SC_ComboBoxEditField, this);

@@ -175,7 +175,7 @@ Torrent::KeyList const Torrent::detailStatKeys{
 ****
 ***/
 
-Torrent::Torrent(Prefs const& prefs, int id)
+Torrent::Torrent(Prefs const &prefs, int id)
     : myId(id)
     , myPrefs(prefs)
 {
@@ -186,7 +186,7 @@ Torrent::Torrent(Prefs const& prefs, int id)
         {
             int i = 0;
 
-            for (auto const& property : myProperties)
+            for (auto const &property : myProperties)
             {
                 if (property.id != i)
                 {
@@ -261,7 +261,7 @@ bool Torrent::setTime(int i, time_t value)
     assert(0 <= i && i < PROPERTY_COUNT);
     assert(myProperties[i].type == QVariant::DateTime);
 
-    auto& oldval = myValues[i];
+    auto &oldval = myValues[i];
     auto const newval = qlonglong(value);
 
     if (oldval != newval)
@@ -289,14 +289,14 @@ bool Torrent::setSize(int i, qulonglong value)
     return changed;
 }
 
-bool Torrent::setString(int i, char const* value, size_t len)
+bool Torrent::setString(int i, char const *value, size_t len)
 {
     bool changed = false;
 
     assert(0 <= i && i < PROPERTY_COUNT);
     assert(myProperties[i].type == QVariant::String);
 
-    auto& oldval = myValues[i];
+    auto &oldval = myValues[i];
     auto const newval = QString::fromUtf8(value, len);
 
     if (oldval != newval)
@@ -308,7 +308,7 @@ bool Torrent::setString(int i, char const* value, size_t len)
     return changed;
 }
 
-bool Torrent::setIcon(int i, QIcon const& value)
+bool Torrent::setIcon(int i, QIcon const &value)
 {
     assert(0 <= i && i < PROPERTY_COUNT);
     assert(myProperties[i].type == QVariant::Icon);
@@ -384,7 +384,7 @@ QIcon Torrent::getIcon(int i) const
 ****
 ***/
 
-bool Torrent::getSeedRatio(double& ratio) const
+bool Torrent::getSeedRatio(double &ratio) const
 {
     bool isLimited;
 
@@ -411,9 +411,9 @@ bool Torrent::getSeedRatio(double& ratio) const
     return isLimited;
 }
 
-bool Torrent::hasTrackerSubstring(QString const& substr) const
+bool Torrent::hasTrackerSubstring(QString const &substr) const
 {
-    for (auto const& s : trackers())
+    for (auto const &s : trackers())
     {
         if (s.contains(substr, Qt::CaseInsensitive))
         {
@@ -424,7 +424,7 @@ bool Torrent::hasTrackerSubstring(QString const& substr) const
     return false;
 }
 
-int Torrent::compareSeedRatio(Torrent const& that) const
+int Torrent::compareSeedRatio(Torrent const &that) const
 {
     double a;
     double b;
@@ -454,7 +454,7 @@ int Torrent::compareSeedRatio(Torrent const& that) const
     return 0;
 }
 
-int Torrent::compareRatio(Torrent const& that) const
+int Torrent::compareRatio(Torrent const &that) const
 {
     double const a = ratio();
     double const b = that.ratio();
@@ -487,7 +487,7 @@ int Torrent::compareRatio(Torrent const& that) const
     return 0;
 }
 
-int Torrent::compareETA(Torrent const& that) const
+int Torrent::compareETA(Torrent const &that) const
 {
     bool const haveA(hasETA());
     bool const haveB(that.hasETA());
@@ -516,7 +516,7 @@ int Torrent::compareETA(Torrent const& that) const
 
 void Torrent::updateMimeIcon()
 {
-    FileList const& files(myFiles);
+    FileList const &files(myFiles);
 
     QIcon icon;
 
@@ -540,7 +540,7 @@ void Torrent::updateMimeIcon()
 ****
 ***/
 
-bool Torrent::update(tr_quark const* keys, tr_variant** values, size_t n)
+bool Torrent::update(tr_quark const *keys, tr_variant **values, size_t n)
 {
     static bool lookup_initialized = false;
     static int key_to_property_index[TR_N_KEYS];
@@ -564,7 +564,7 @@ bool Torrent::update(tr_quark const* keys, tr_variant** values, size_t n)
     for (size_t pos = 0; pos < n; ++pos)
     {
         tr_quark key = keys[pos];
-        tr_variant* child = values[pos];
+        tr_variant *child = values[pos];
 
         int const property_index = key_to_property_index[key];
 
@@ -603,7 +603,7 @@ bool Torrent::update(tr_quark const* keys, tr_variant** values, size_t n)
 
         case QVariant::String:
             {
-                char const* val;
+                char const *val;
                 size_t len;
 
                 if (tr_variantGetStr(child, &val, &len))
@@ -674,11 +674,11 @@ bool Torrent::update(tr_quark const* keys, tr_variant** values, size_t n)
     auto it = std::find(keys, keys + n, TR_KEY_files);
     if (it != keys + n)
     {
-        tr_variant* files = values[std::distance(keys, it)];
-        char const* str;
+        tr_variant *files = values[std::distance(keys, it)];
+        char const *str;
         int64_t intVal;
         int i = 0;
-        tr_variant* child;
+        tr_variant *child;
 
         myFiles.clear();
         myFiles.reserve(tr_variantListSize(files));
@@ -709,15 +709,15 @@ bool Torrent::update(tr_quark const* keys, tr_variant** values, size_t n)
     it = std::find(keys, keys + n, TR_KEY_fileStats);
     if (it != keys + n)
     {
-        tr_variant* files = values[std::distance(keys, it)];
+        tr_variant *files = values[std::distance(keys, it)];
         int const n = tr_variantListSize(files);
 
         for (int i = 0; i < n && i < myFiles.size(); ++i)
         {
             int64_t intVal;
             bool boolVal;
-            tr_variant* child = tr_variantListChild(files, i);
-            TorrentFile& file(myFiles[i]);
+            tr_variant *child = tr_variantListChild(files, i);
+            TorrentFile &file(myFiles[i]);
 
             if (tr_variantDictFindInt(child, TR_KEY_bytesCompleted, &intVal))
             {
@@ -741,16 +741,16 @@ bool Torrent::update(tr_quark const* keys, tr_variant** values, size_t n)
     it = std::find(keys, keys + n, TR_KEY_trackers);
     if (it != keys + n)
     {
-        tr_variant* v = values[std::distance(keys, it)];
+        tr_variant *v = values[std::distance(keys, it)];
 
         // build the new tracker list
         QStringList trackers;
         trackers.reserve(tr_variantListSize(v));
-        tr_variant* child;
+        tr_variant *child;
         int i = 0;
         while ((child = tr_variantListChild(v, i++)) != nullptr)
         {
-            char const* str;
+            char const *str;
             size_t len;
             if (tr_variantDictFindStr(child, TR_KEY_announce, &str, &len))
             {
@@ -763,7 +763,7 @@ bool Torrent::update(tr_quark const* keys, tr_variant** values, size_t n)
         {
             QStringList displayNames;
             displayNames.reserve(trackers.size());
-            for (auto const& tracker : trackers)
+            for (auto const &tracker : trackers)
             {
                 auto const url = QUrl(tracker);
                 auto const key = qApp->faviconCache().add(url);
@@ -781,8 +781,8 @@ bool Torrent::update(tr_quark const* keys, tr_variant** values, size_t n)
     it = std::find(keys, keys + n, TR_KEY_trackerStats);
     if (it != keys + n)
     {
-        tr_variant* trackerStats = values[std::distance(keys, it)];
-        tr_variant* child;
+        tr_variant *trackerStats = values[std::distance(keys, it)];
+        tr_variant *child;
         TrackerStatsList trackerStatsList;
         int childNum = 0;
 
@@ -791,7 +791,7 @@ bool Torrent::update(tr_quark const* keys, tr_variant** values, size_t n)
             bool b;
             int64_t i;
             size_t len;
-            char const* str;
+            char const *str;
             TrackerStat trackerStat;
 
             if (tr_variantDictFindStr(child, TR_KEY_announce, &str, &len))
@@ -929,8 +929,8 @@ bool Torrent::update(tr_quark const* keys, tr_variant** values, size_t n)
     it = std::find(keys, keys + n, TR_KEY_peers);
     if (it != keys + n)
     {
-        tr_variant* peers = values[std::distance(keys, it)];
-        tr_variant* child;
+        tr_variant *peers = values[std::distance(keys, it)];
+        tr_variant *child;
         PeerList peerList;
         int childNum = 0;
 
@@ -940,7 +940,7 @@ bool Torrent::update(tr_quark const* keys, tr_variant** values, size_t n)
             bool b;
             int64_t i;
             size_t len;
-            char const* str;
+            char const *str;
             Peer peer;
 
             if (tr_variantDictFindStr(child, TR_KEY_address, &str, &len))

@@ -55,7 +55,7 @@ tr_option const opts[] = {
     { 0, nullptr, nullptr, nullptr, false, nullptr }
 };
 
-char const* getUsage()
+char const *getUsage()
 {
     return "Usage:\n"
            "  transmission [OPTIONS...] [torrent files]";
@@ -68,9 +68,9 @@ enum
     MODEL_REFRESH_INTERVAL_MSEC = 3000
 };
 
-bool loadTranslation(QTranslator& translator, QString const& name, QLocale const& locale, QStringList const& searchDirectories)
+bool loadTranslation(QTranslator &translator, QString const &name, QLocale const &locale, QStringList const &searchDirectories)
 {
-    for (QString const& directory : searchDirectories)
+    for (QString const &directory : searchDirectories)
     {
         if (translator.load(locale, name, QLatin1String("_"), directory))
         {
@@ -83,7 +83,7 @@ bool loadTranslation(QTranslator& translator, QString const& name, QLocale const
 
 } // namespace
 
-Application::Application(int& argc, char** argv)
+Application::Application(int &argc, char **argv)
     : QApplication(argc, argv)
     , myPrefs(nullptr)
     , mySession(nullptr)
@@ -129,7 +129,7 @@ Application::Application(int& argc, char** argv)
     // parse the command-line arguments
     int c;
     bool minimized = false;
-    char const* optarg;
+    char const *optarg;
     QString host;
     QString port;
     QString username;
@@ -137,7 +137,7 @@ Application::Application(int& argc, char** argv)
     QString configDir;
     QStringList filenames;
 
-    while ((c = tr_getopt(getUsage(), argc, const_cast<char const**>(argv), opts, &optarg)) != TR_OPT_DONE)
+    while ((c = tr_getopt(getUsage(), argc, const_cast<char const **>(argv), opts, &optarg)) != TR_OPT_DONE)
     {
         switch (c)
         {
@@ -190,7 +190,7 @@ Application::Application(int& argc, char** argv)
     {
         bool delegated = false;
 
-        for (QString const& filename : filenames)
+        for (QString const &filename : filenames)
         {
             QString metainfo;
 
@@ -307,7 +307,7 @@ Application::Application(int& argc, char** argv)
         refreshPref(key);
     }
 
-    QTimer* timer = &myModelTimer;
+    QTimer *timer = &myModelTimer;
     connect(timer, &QTimer::timeout, this, &Application::refreshTorrents);
     timer->setSingleShot(false);
     timer->setInterval(MODEL_REFRESH_INTERVAL_MSEC);
@@ -338,7 +338,7 @@ Application::Application(int& argc, char** argv)
 
     if (!myPrefs->getBool(Prefs::USER_HAS_GIVEN_INFORMED_CONSENT))
     {
-        QMessageBox* dialog = new QMessageBox(
+        QMessageBox *dialog = new QMessageBox(
             QMessageBox::Information,
             QString(),
             tr("<b>Transmission OG is a file sharing program.</b>"),
@@ -357,7 +357,7 @@ Application::Application(int& argc, char** argv)
         dialog->show();
     }
 
-    for (QString const& filename : filenames)
+    for (QString const &filename : filenames)
     {
         addTorrent(filename);
     }
@@ -402,16 +402,16 @@ void Application::quitLater()
     QTimer::singleShot(0, this, SLOT(quit()));
 }
 
-void Application::onTorrentsEdited(torrent_ids_t const& ids)
+void Application::onTorrentsEdited(torrent_ids_t const &ids)
 {
     // the backend's tr_info has changed, so reload those fields
     mySession->initTorrents(ids);
 }
 
-QStringList Application::getNames(torrent_ids_t const& ids) const
+QStringList Application::getNames(torrent_ids_t const &ids) const
 {
     QStringList names;
-    for (auto const& id : ids)
+    for (auto const &id : ids)
     {
         names.push_back(myModel->getTorrentFromId(id)->name());
     }
@@ -420,7 +420,7 @@ QStringList Application::getNames(torrent_ids_t const& ids) const
     return names;
 }
 
-void Application::onTorrentsAdded(torrent_ids_t const& ids)
+void Application::onTorrentsAdded(torrent_ids_t const &ids)
 {
     if (myPrefs->getBool(Prefs::SHOW_NOTIFICATION_ON_ADD))
     {
@@ -430,7 +430,7 @@ void Application::onTorrentsAdded(torrent_ids_t const& ids)
     }
 }
 
-void Application::onTorrentsCompleted(torrent_ids_t const& ids)
+void Application::onTorrentsCompleted(torrent_ids_t const &ids)
 {
     if (myPrefs->getBool(Prefs::SHOW_NOTIFICATION_ON_COMPLETE))
     {
@@ -449,7 +449,7 @@ void Application::onTorrentsCompleted(torrent_ids_t const& ids)
     }
 }
 
-void Application::onTorrentsNeedInfo(torrent_ids_t const& ids)
+void Application::onTorrentsNeedInfo(torrent_ids_t const &ids)
 {
     if (!ids.empty())
     {
@@ -564,7 +564,7 @@ void Application::refreshTorrents()
 ****
 ***/
 
-void Application::addTorrent(AddData const& addme)
+void Application::addTorrent(AddData const &addme)
 {
     if (addme.type == addme.NONE)
     {
@@ -593,7 +593,7 @@ void Application::raise()
     alert(myWindow);
 }
 
-bool Application::notifyApp(QString const& title, QString const& body) const
+bool Application::notifyApp(QString const &title, QString const &body) const
 {
 #ifdef QT_DBUS_LIB
 
@@ -630,7 +630,7 @@ bool Application::notifyApp(QString const& title, QString const& body) const
     return true;
 }
 
-FaviconCache& Application::faviconCache()
+FaviconCache &Application::faviconCache()
 {
     return myFavicons;
 }
@@ -639,7 +639,7 @@ FaviconCache& Application::faviconCache()
 ****
 ***/
 
-int tr_main(int argc, char* argv[])
+int tr_main(int argc, char *argv[])
 {
     InteropHelper::initialize();
 

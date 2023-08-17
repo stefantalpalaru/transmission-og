@@ -29,14 +29,14 @@
 
 struct prefs_dialog_data
 {
-    TrCore* core;
+    TrCore *core;
     gulong core_prefs_tag;
 
-    GtkWidget* freespace_label;
+    GtkWidget *freespace_label;
 
-    GtkWidget* port_label;
-    GtkWidget* port_button;
-    GtkWidget* port_spin;
+    GtkWidget *port_label;
+    GtkWidget *port_button;
+    GtkWidget *port_spin;
 };
 
 /**
@@ -45,11 +45,11 @@ struct prefs_dialog_data
 
 #define PREF_KEY "pref-key"
 
-static void response_cb(GtkDialog* dialog, int response, gpointer unused UNUSED)
+static void response_cb(GtkDialog *dialog, int response, gpointer unused UNUSED)
 {
     if (response == GTK_RESPONSE_HELP)
     {
-        char* uri = g_strconcat(gtr_get_help_uri(), "/html/preferences.html", NULL);
+        char *uri = g_strconcat(gtr_get_help_uri(), "/html/preferences.html", NULL);
         gtr_open_uri(uri);
         g_free(uri);
     }
@@ -60,7 +60,7 @@ static void response_cb(GtkDialog* dialog, int response, gpointer unused UNUSED)
     }
 }
 
-static void toggled_cb(GtkToggleButton* w, gpointer core)
+static void toggled_cb(GtkToggleButton *w, gpointer core)
 {
     tr_quark const key = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(w), PREF_KEY));
     gboolean const flag = gtk_toggle_button_get_active(w);
@@ -68,9 +68,9 @@ static void toggled_cb(GtkToggleButton* w, gpointer core)
     gtr_core_set_pref_bool(TR_CORE(core), key, flag);
 }
 
-static GtkWidget* new_check_button(char const* mnemonic, tr_quark const key, gpointer core)
+static GtkWidget *new_check_button(char const *mnemonic, tr_quark const key, gpointer core)
 {
-    GtkWidget* w = gtk_check_button_new_with_mnemonic(mnemonic);
+    GtkWidget *w = gtk_check_button_new_with_mnemonic(mnemonic);
     g_object_set_data(G_OBJECT(w), PREF_KEY, GINT_TO_POINTER(key));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(w), gtr_pref_flag_get(key));
     g_signal_connect(w, "toggled", G_CALLBACK(toggled_cb), core);
@@ -82,13 +82,13 @@ static GtkWidget* new_check_button(char const* mnemonic, tr_quark const key, gpo
 struct spin_idle_data
 {
     gpointer core;
-    GTimer* last_change;
+    GTimer *last_change;
     gboolean isDouble;
 };
 
 static void spin_idle_data_free(gpointer gdata)
 {
-    struct spin_idle_data* data = gdata;
+    struct spin_idle_data *data = gdata;
 
     g_timer_destroy(data->last_change);
     g_free(data);
@@ -97,8 +97,8 @@ static void spin_idle_data_free(gpointer gdata)
 static gboolean spun_cb_idle(gpointer spin)
 {
     gboolean keep_waiting = TRUE;
-    GObject* o = G_OBJECT(spin);
-    struct spin_idle_data* data = g_object_get_data(o, IDLE_DATA);
+    GObject *o = G_OBJECT(spin);
+    struct spin_idle_data *data = g_object_get_data(o, IDLE_DATA);
 
     /* has the user stopped making changes? */
     if (g_timer_elapsed(data->last_change, NULL) > 0.33F)
@@ -126,12 +126,12 @@ static gboolean spun_cb_idle(gpointer spin)
     return keep_waiting;
 }
 
-static void spun_cb(GtkSpinButton* w, gpointer core, gboolean isDouble)
+static void spun_cb(GtkSpinButton *w, gpointer core, gboolean isDouble)
 {
     /* user may be spinning through many values, so let's hold off
        for a moment to keep from flooding the core with changes */
-    GObject* o = G_OBJECT(w);
-    struct spin_idle_data* data = g_object_get_data(o, IDLE_DATA);
+    GObject *o = G_OBJECT(w);
+    struct spin_idle_data *data = g_object_get_data(o, IDLE_DATA);
 
     if (data == NULL)
     {
@@ -147,19 +147,19 @@ static void spun_cb(GtkSpinButton* w, gpointer core, gboolean isDouble)
     g_timer_start(data->last_change);
 }
 
-static void spun_cb_int(GtkSpinButton* w, gpointer core)
+static void spun_cb_int(GtkSpinButton *w, gpointer core)
 {
     spun_cb(w, core, FALSE);
 }
 
-static void spun_cb_double(GtkSpinButton* w, gpointer core)
+static void spun_cb_double(GtkSpinButton *w, gpointer core)
 {
     spun_cb(w, core, TRUE);
 }
 
-static GtkWidget* new_spin_button(tr_quark const key, gpointer core, int low, int high, int step)
+static GtkWidget *new_spin_button(tr_quark const key, gpointer core, int low, int high, int step)
 {
-    GtkWidget* w = gtk_spin_button_new_with_range(low, high, step);
+    GtkWidget *w = gtk_spin_button_new_with_range(low, high, step);
     g_object_set_data(G_OBJECT(w), PREF_KEY, GINT_TO_POINTER(key));
     gtk_spin_button_set_digits(GTK_SPIN_BUTTON(w), 0);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(w), gtr_pref_int_get(key));
@@ -167,9 +167,9 @@ static GtkWidget* new_spin_button(tr_quark const key, gpointer core, int low, in
     return w;
 }
 
-static GtkWidget* new_spin_button_double(tr_quark const key, gpointer core, double low, double high, double step)
+static GtkWidget *new_spin_button_double(tr_quark const key, gpointer core, double low, double high, double step)
 {
-    GtkWidget* w = gtk_spin_button_new_with_range(low, high, step);
+    GtkWidget *w = gtk_spin_button_new_with_range(low, high, step);
     g_object_set_data(G_OBJECT(w), PREF_KEY, GINT_TO_POINTER(key));
     gtk_spin_button_set_digits(GTK_SPIN_BUTTON(w), 2);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(w), gtr_pref_double_get(key));
@@ -177,18 +177,18 @@ static GtkWidget* new_spin_button_double(tr_quark const key, gpointer core, doub
     return w;
 }
 
-static void entry_changed_cb(GtkEntry* w, gpointer core)
+static void entry_changed_cb(GtkEntry *w, gpointer core)
 {
     tr_quark const key = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(w), PREF_KEY));
-    char const* value = gtk_entry_get_text(w);
+    char const *value = gtk_entry_get_text(w);
 
     gtr_core_set_pref(TR_CORE(core), key, value);
 }
 
-static GtkWidget* new_entry(tr_quark const key, gpointer core)
+static GtkWidget *new_entry(tr_quark const key, gpointer core)
 {
-    GtkWidget* w = gtk_entry_new();
-    char const* value = gtr_pref_string_get(key);
+    GtkWidget *w = gtk_entry_new();
+    char const *value = gtr_pref_string_get(key);
 
     if (value != NULL)
     {
@@ -200,22 +200,22 @@ static GtkWidget* new_entry(tr_quark const key, gpointer core)
     return w;
 }
 
-static void text_buffer_changed_cb(GtkTextBuffer* buffer, gpointer core)
+static void text_buffer_changed_cb(GtkTextBuffer *buffer, gpointer core)
 {
     tr_quark const key = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(buffer), PREF_KEY));
     GtkTextIter start, end;
     gtk_text_buffer_get_bounds(buffer, &start, &end);
-    char const* value = gtk_text_buffer_get_text(buffer, &start, &end, FALSE);
+    char const *value = gtk_text_buffer_get_text(buffer, &start, &end, FALSE);
 
     gtr_core_set_pref(TR_CORE(core), key, value);
 }
 
-static GtkWidget* new_text_view(tr_quark const key, gpointer core)
+static GtkWidget *new_text_view(tr_quark const key, gpointer core)
 {
-    GtkWidget* scroll = gtk_scrolled_window_new(NULL, NULL);
-    GtkWidget* w = gtk_text_view_new();
-    GtkTextBuffer* buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(w));
-    char const* value = gtr_pref_string_get(key);
+    GtkWidget *scroll = gtk_scrolled_window_new(NULL, NULL);
+    GtkWidget *w = gtk_text_view_new();
+    GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(w));
+    char const *value = gtr_pref_string_get(key);
 
     if (value)
     {
@@ -235,18 +235,18 @@ static GtkWidget* new_text_view(tr_quark const key, gpointer core)
     return scroll;
 }
 
-static void chosen_cb(GtkFileChooser* w, gpointer core)
+static void chosen_cb(GtkFileChooser *w, gpointer core)
 {
     tr_quark const key = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(w), PREF_KEY));
-    char* value = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(w));
+    char *value = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(w));
     gtr_core_set_pref(TR_CORE(core), key, value);
     g_free(value);
 }
 
-static GtkWidget* new_path_chooser_button(tr_quark const key, gpointer core)
+static GtkWidget *new_path_chooser_button(tr_quark const key, gpointer core)
 {
-    GtkWidget* w = gtk_file_chooser_button_new(NULL, GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
-    char const* path = gtr_pref_string_get(key);
+    GtkWidget *w = gtk_file_chooser_button_new(NULL, GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
+    char const *path = gtr_pref_string_get(key);
     g_object_set_data(G_OBJECT(w), PREF_KEY, GINT_TO_POINTER(key));
 
     if (path != NULL)
@@ -258,10 +258,10 @@ static GtkWidget* new_path_chooser_button(tr_quark const key, gpointer core)
     return w;
 }
 
-static GtkWidget* new_file_chooser_button(tr_quark const key, gpointer core)
+static GtkWidget *new_file_chooser_button(tr_quark const key, gpointer core)
 {
-    GtkWidget* w = gtk_file_chooser_button_new(NULL, GTK_FILE_CHOOSER_ACTION_OPEN);
-    char const* path = gtr_pref_string_get(key);
+    GtkWidget *w = gtk_file_chooser_button_new(NULL, GTK_FILE_CHOOSER_ACTION_OPEN);
+    char const *path = gtr_pref_string_get(key);
     g_object_set_data(G_OBJECT(w), PREF_KEY, GINT_TO_POINTER(key));
 
     if (path != NULL)
@@ -273,7 +273,7 @@ static GtkWidget* new_file_chooser_button(tr_quark const key, gpointer core)
     return w;
 }
 
-static void target_cb(GtkWidget* tb, gpointer target)
+static void target_cb(GtkWidget *tb, gpointer target)
 {
     gboolean const b = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(tb));
 
@@ -284,12 +284,12 @@ static void target_cb(GtkWidget* tb, gpointer target)
 *****  Download Tab
 ****/
 
-static GtkWidget* downloadingPage(GObject* core, struct prefs_dialog_data* data)
+static GtkWidget *downloadingPage(GObject *core, struct prefs_dialog_data *data)
 {
-    GtkWidget* t;
-    GtkWidget* w;
-    GtkWidget* l;
-    char const* s;
+    GtkWidget *t;
+    GtkWidget *w;
+    GtkWidget *l;
+    char const *s;
     guint row = 0;
 
     t = hig_workarea_create();
@@ -360,12 +360,12 @@ static GtkWidget* downloadingPage(GObject* core, struct prefs_dialog_data* data)
 *****  Torrent Tab
 ****/
 
-static GtkWidget* seedingPage(GObject* core)
+static GtkWidget *seedingPage(GObject *core)
 {
-    GtkWidget* t;
-    GtkWidget* w;
-    GtkWidget* w2;
-    char const* s;
+    GtkWidget *t;
+    GtkWidget *w;
+    GtkWidget *w2;
+    char const *s;
     guint row = 0;
 
     t = hig_workarea_create();
@@ -392,11 +392,11 @@ static GtkWidget* seedingPage(GObject* core)
 *****  Desktop Tab
 ****/
 
-static GtkWidget* desktopPage(GObject* core)
+static GtkWidget *desktopPage(GObject *core)
 {
-    GtkWidget* t;
-    GtkWidget* w;
-    char const* s;
+    GtkWidget *t;
+    GtkWidget *w;
+    char const *s;
     guint row = 0;
 
     t = hig_workarea_create();
@@ -435,14 +435,14 @@ static GtkWidget* desktopPage(GObject* core)
 struct blocklist_data
 {
     gulong updateBlocklistTag;
-    GtkWidget* updateBlocklistButton;
-    GtkWidget* updateBlocklistDialog;
-    GtkWidget* label;
-    GtkWidget* check;
-    TrCore* core;
+    GtkWidget *updateBlocklistButton;
+    GtkWidget *updateBlocklistDialog;
+    GtkWidget *label;
+    GtkWidget *check;
+    TrCore *core;
 };
 
-static void updateBlocklistText(GtkWidget* w, TrCore* core)
+static void updateBlocklistText(GtkWidget *w, TrCore *core)
 {
     char buf1[512];
     char buf2[512];
@@ -453,9 +453,9 @@ static void updateBlocklistText(GtkWidget* w, TrCore* core)
 }
 
 /* prefs dialog is being destroyed, so stop listening to blocklist updates */
-static void privacyPageDestroyed(gpointer gdata, GObject* dead UNUSED)
+static void privacyPageDestroyed(gpointer gdata, GObject *dead UNUSED)
 {
-    struct blocklist_data* data = gdata;
+    struct blocklist_data *data = gdata;
 
     if (data->updateBlocklistTag > 0)
     {
@@ -466,9 +466,9 @@ static void privacyPageDestroyed(gpointer gdata, GObject* dead UNUSED)
 }
 
 /* user hit "close" in the blocklist-update dialog */
-static void onBlocklistUpdateResponse(GtkDialog* dialog, gint response UNUSED, gpointer gdata)
+static void onBlocklistUpdateResponse(GtkDialog *dialog, gint response UNUSED, gpointer gdata)
 {
-    struct blocklist_data* data = gdata;
+    struct blocklist_data *data = gdata;
     gtk_widget_destroy(GTK_WIDGET(dialog));
     gtk_widget_set_sensitive(data->updateBlocklistButton, TRUE);
     data->updateBlocklistDialog = NULL;
@@ -477,13 +477,13 @@ static void onBlocklistUpdateResponse(GtkDialog* dialog, gint response UNUSED, g
 }
 
 /* core says the blocklist was updated */
-static void onBlocklistUpdated(TrCore* core, int n, gpointer gdata)
+static void onBlocklistUpdated(TrCore *core, int n, gpointer gdata)
 {
     bool const success = n >= 0;
     int const count = n >= 0 ? n : tr_blocklistGetRuleCount(gtr_core_session(core));
-    char const* s = ngettext("Blocklist has %'d rule.", "Blocklist has %'d rules.", count);
-    struct blocklist_data* data = gdata;
-    GtkMessageDialog* d = GTK_MESSAGE_DIALOG(data->updateBlocklistDialog);
+    char const *s = ngettext("Blocklist has %'d rule.", "Blocklist has %'d rules.", count);
+    struct blocklist_data *data = gdata;
+    GtkMessageDialog *d = GTK_MESSAGE_DIALOG(data->updateBlocklistDialog);
     gtk_widget_set_sensitive(data->updateBlocklistButton, TRUE);
     gtk_message_dialog_set_markup(d, success ? _("<b>Update succeeded!</b>") : _("<b>Unable to update.</b>"));
     gtk_message_dialog_format_secondary_text(d, s, count);
@@ -491,10 +491,10 @@ static void onBlocklistUpdated(TrCore* core, int n, gpointer gdata)
 }
 
 /* user pushed a button to update the blocklist */
-static void onBlocklistUpdate(GtkButton* w, gpointer gdata)
+static void onBlocklistUpdate(GtkButton *w, gpointer gdata)
 {
-    GtkWidget* d;
-    struct blocklist_data* data = gdata;
+    GtkWidget *d;
+    struct blocklist_data *data = gdata;
     d = gtk_message_dialog_new(
         GTK_WINDOW(gtk_widget_get_toplevel(GTK_WIDGET(w))),
         GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -511,24 +511,24 @@ static void onBlocklistUpdate(GtkButton* w, gpointer gdata)
     data->updateBlocklistTag = g_signal_connect(data->core, "blocklist-updated", G_CALLBACK(onBlocklistUpdated), data);
 }
 
-static void on_blocklist_url_changed(GtkEditable* e, gpointer gbutton)
+static void on_blocklist_url_changed(GtkEditable *e, gpointer gbutton)
 {
-    gchar* url = gtk_editable_get_chars(e, 0, -1);
+    gchar *url = gtk_editable_get_chars(e, 0, -1);
     gboolean const is_url_valid = tr_urlParse(url, TR_BAD_SIZE, NULL, NULL, NULL, NULL);
     gtk_widget_set_sensitive(GTK_WIDGET(gbutton), is_url_valid);
     g_free(url);
 }
 
-static void onIntComboChanged(GtkComboBox* combo_box, gpointer core)
+static void onIntComboChanged(GtkComboBox *combo_box, gpointer core)
 {
     int const val = gtr_combo_box_get_active_enum(combo_box);
     tr_quark const key = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(combo_box), PREF_KEY));
     gtr_core_set_pref_int(TR_CORE(core), key, val);
 }
 
-static GtkWidget* new_encryption_combo(GObject* core, tr_quark const key)
+static GtkWidget *new_encryption_combo(GObject *core, tr_quark const key)
 {
-    GtkWidget* w = gtr_combo_box_new_enum(
+    GtkWidget *w = gtr_combo_box_new_enum(
         _("Allow encryption"),
         TR_CLEAR_PREFERRED,
         _("Prefer encryption"),
@@ -542,15 +542,15 @@ static GtkWidget* new_encryption_combo(GObject* core, tr_quark const key)
     return w;
 }
 
-static GtkWidget* privacyPage(GObject* core)
+static GtkWidget *privacyPage(GObject *core)
 {
-    char const* s;
-    GtkWidget* t;
-    GtkWidget* w;
-    GtkWidget* b;
-    GtkWidget* h;
-    GtkWidget* e;
-    struct blocklist_data* data;
+    char const *s;
+    GtkWidget *t;
+    GtkWidget *w;
+    GtkWidget *b;
+    GtkWidget *h;
+    GtkWidget *e;
+    struct blocklist_data *data;
     guint row = 0;
 
     data = g_new0(struct blocklist_data, 1);
@@ -612,17 +612,17 @@ enum
     N_COLS
 };
 
-static GtkTreeModel* whitelist_tree_model_new(char const* whitelist)
+static GtkTreeModel *whitelist_tree_model_new(char const *whitelist)
 {
-    char** rules;
-    GtkListStore* store = gtk_list_store_new(N_COLS, G_TYPE_STRING, G_TYPE_STRING);
+    char **rules;
+    GtkListStore *store = gtk_list_store_new(N_COLS, G_TYPE_STRING, G_TYPE_STRING);
 
     rules = g_strsplit(whitelist, ",", 0);
 
     for (int i = 0; rules != NULL && rules[i] != NULL; ++i)
     {
         GtkTreeIter iter;
-        char const* s = rules[i];
+        char const *s = rules[i];
 
         while (isspace(*s))
         {
@@ -639,29 +639,29 @@ static GtkTreeModel* whitelist_tree_model_new(char const* whitelist)
 
 struct remote_page
 {
-    TrCore* core;
-    GtkTreeView* view;
-    GtkListStore* store;
-    GtkWidget* remove_button;
-    GSList* widgets;
-    GSList* auth_widgets;
-    GSList* whitelist_widgets;
-    GtkToggleButton* rpc_tb;
-    GtkToggleButton* auth_tb;
-    GtkToggleButton* whitelist_tb;
+    TrCore *core;
+    GtkTreeView *view;
+    GtkListStore *store;
+    GtkWidget *remove_button;
+    GSList *widgets;
+    GSList *auth_widgets;
+    GSList *whitelist_widgets;
+    GtkToggleButton *rpc_tb;
+    GtkToggleButton *auth_tb;
+    GtkToggleButton *whitelist_tb;
 };
 
-static void refreshWhitelist(struct remote_page* page)
+static void refreshWhitelist(struct remote_page *page)
 {
     GtkTreeIter iter;
-    GString* gstr = g_string_new(NULL);
-    GtkTreeModel* model = GTK_TREE_MODEL(page->store);
+    GString *gstr = g_string_new(NULL);
+    GtkTreeModel *model = GTK_TREE_MODEL(page->store);
 
     if (gtk_tree_model_iter_nth_child(model, &iter, NULL, 0))
     {
         do
         {
-            char* address;
+            char *address;
             gtk_tree_model_get(model, &iter, COL_ADDRESS, &address, -1);
             g_string_append(gstr, address);
             g_string_append(gstr, ",");
@@ -676,12 +676,12 @@ static void refreshWhitelist(struct remote_page* page)
     g_string_free(gstr, TRUE);
 }
 
-static void onAddressEdited(GtkCellRendererText* r UNUSED, gchar* path_string, gchar* address, gpointer gpage)
+static void onAddressEdited(GtkCellRendererText *r UNUSED, gchar *path_string, gchar *address, gpointer gpage)
 {
     GtkTreeIter iter;
-    struct remote_page* page = gpage;
-    GtkTreeModel* model = GTK_TREE_MODEL(page->store);
-    GtkTreePath* path = gtk_tree_path_new_from_string(path_string);
+    struct remote_page *page = gpage;
+    GtkTreeModel *model = GTK_TREE_MODEL(page->store);
+    GtkTreePath *path = gtk_tree_path_new_from_string(path_string);
 
     if (gtk_tree_model_get_iter(model, &iter, path))
     {
@@ -692,11 +692,11 @@ static void onAddressEdited(GtkCellRendererText* r UNUSED, gchar* path_string, g
     refreshWhitelist(page);
 }
 
-static void onAddWhitelistClicked(GtkButton* b UNUSED, gpointer gpage)
+static void onAddWhitelistClicked(GtkButton *b UNUSED, gpointer gpage)
 {
     GtkTreeIter iter;
-    GtkTreePath* path;
-    struct remote_page* page = gpage;
+    GtkTreePath *path;
+    struct remote_page *page = gpage;
 
     gtk_list_store_append(page->store, &iter);
     gtk_list_store_set(page->store, &iter, COL_ADDRESS, "0.0.0.0", -1);
@@ -706,10 +706,10 @@ static void onAddWhitelistClicked(GtkButton* b UNUSED, gpointer gpage)
     gtk_tree_path_free(path);
 }
 
-static void onRemoveWhitelistClicked(GtkButton* b UNUSED, gpointer gpage)
+static void onRemoveWhitelistClicked(GtkButton *b UNUSED, gpointer gpage)
 {
-    struct remote_page* page = gpage;
-    GtkTreeSelection* sel = gtk_tree_view_get_selection(page->view);
+    struct remote_page *page = gpage;
+    GtkTreeSelection *sel = gtk_tree_view_get_selection(page->view);
     GtkTreeIter iter;
 
     if (gtk_tree_selection_get_selected(sel, NULL, &iter))
@@ -719,26 +719,26 @@ static void onRemoveWhitelistClicked(GtkButton* b UNUSED, gpointer gpage)
     }
 }
 
-static void refreshRPCSensitivity(struct remote_page* page)
+static void refreshRPCSensitivity(struct remote_page *page)
 {
     int const rpc_active = gtk_toggle_button_get_active(page->rpc_tb);
     int const auth_active = gtk_toggle_button_get_active(page->auth_tb);
     int const whitelist_active = gtk_toggle_button_get_active(page->whitelist_tb);
-    GtkTreeSelection* sel = gtk_tree_view_get_selection(page->view);
+    GtkTreeSelection *sel = gtk_tree_view_get_selection(page->view);
     int const have_addr = gtk_tree_selection_get_selected(sel, NULL, NULL);
     int const n_rules = gtk_tree_model_iter_n_children(GTK_TREE_MODEL(page->store), NULL);
 
-    for (GSList* l = page->widgets; l != NULL; l = l->next)
+    for (GSList *l = page->widgets; l != NULL; l = l->next)
     {
         gtk_widget_set_sensitive(GTK_WIDGET(l->data), rpc_active);
     }
 
-    for (GSList* l = page->auth_widgets; l != NULL; l = l->next)
+    for (GSList *l = page->auth_widgets; l != NULL; l = l->next)
     {
         gtk_widget_set_sensitive(GTK_WIDGET(l->data), rpc_active && auth_active);
     }
 
-    for (GSList* l = page->whitelist_widgets; l != NULL; l = l->next)
+    for (GSList *l = page->whitelist_widgets; l != NULL; l = l->next)
     {
         gtk_widget_set_sensitive(GTK_WIDGET(l->data), rpc_active && whitelist_active);
     }
@@ -746,19 +746,19 @@ static void refreshRPCSensitivity(struct remote_page* page)
     gtk_widget_set_sensitive(page->remove_button, rpc_active && have_addr && n_rules > 1);
 }
 
-static void onRPCToggled(GtkToggleButton* tb UNUSED, gpointer page)
+static void onRPCToggled(GtkToggleButton *tb UNUSED, gpointer page)
 {
     refreshRPCSensitivity(page);
 }
 
-static void onWhitelistSelectionChanged(GtkTreeSelection* sel UNUSED, gpointer page)
+static void onWhitelistSelectionChanged(GtkTreeSelection *sel UNUSED, gpointer page)
 {
     refreshRPCSensitivity(page);
 }
 
-static void onLaunchClutchCB(GtkButton* w UNUSED, gpointer data UNUSED)
+static void onLaunchClutchCB(GtkButton *w UNUSED, gpointer data UNUSED)
 {
-    char* uri;
+    char *uri;
     int const port = gtr_pref_int_get(TR_KEY_rpc_port);
 
     uri = g_strdup_printf("http://localhost:%d/", port);
@@ -768,7 +768,7 @@ static void onLaunchClutchCB(GtkButton* w UNUSED, gpointer data UNUSED)
 
 static void remotePageFree(gpointer gpage)
 {
-    struct remote_page* page = gpage;
+    struct remote_page *page = gpage;
 
     g_slist_free(page->widgets);
     g_slist_free(page->auth_widgets);
@@ -776,14 +776,14 @@ static void remotePageFree(gpointer gpage)
     g_free(page);
 }
 
-static GtkWidget* remotePage(GObject* core)
+static GtkWidget *remotePage(GObject *core)
 {
-    GtkWidget* t;
-    GtkWidget* w;
-    GtkWidget* h;
-    char const* s;
+    GtkWidget *t;
+    GtkWidget *w;
+    GtkWidget *h;
+    char const *s;
     guint row = 0;
-    struct remote_page* page = g_new0(struct remote_page, 1);
+    struct remote_page *page = g_new0(struct remote_page, 1);
 
     page->core = TR_CORE(core);
 
@@ -844,14 +844,14 @@ static GtkWidget* remotePage(GObject* core)
 
     /* access control list */
     {
-        char const* val = gtr_pref_string_get(TR_KEY_rpc_whitelist);
-        GtkTreeModel* m = whitelist_tree_model_new(val);
-        GtkTreeViewColumn* c;
-        GtkCellRenderer* r;
-        GtkTreeSelection* sel;
-        GtkTreeView* v;
-        GtkWidget* w;
-        GtkWidget* h;
+        char const *val = gtr_pref_string_get(TR_KEY_rpc_whitelist);
+        GtkTreeModel *m = whitelist_tree_model_new(val);
+        GtkTreeViewColumn *c;
+        GtkCellRenderer *r;
+        GtkTreeSelection *sel;
+        GtkTreeView *v;
+        GtkWidget *w;
+        GtkWidget *h;
 
         page->store = GTK_LIST_STORE(m);
         w = gtk_tree_view_new_with_model(m);
@@ -916,26 +916,26 @@ static GtkWidget* remotePage(GObject* core)
 
 struct BandwidthPage
 {
-    TrCore* core;
-    GSList* sched_widgets;
+    TrCore *core;
+    GSList *sched_widgets;
 };
 
-static void refreshSchedSensitivity(struct BandwidthPage* p)
+static void refreshSchedSensitivity(struct BandwidthPage *p)
 {
     gboolean const sched_enabled = gtr_pref_flag_get(TR_KEY_alt_speed_time_enabled);
 
-    for (GSList* l = p->sched_widgets; l != NULL; l = l->next)
+    for (GSList *l = p->sched_widgets; l != NULL; l = l->next)
     {
         gtk_widget_set_sensitive(GTK_WIDGET(l->data), sched_enabled);
     }
 }
 
-static void onSchedToggled(GtkToggleButton* tb UNUSED, gpointer user_data)
+static void onSchedToggled(GtkToggleButton *tb UNUSED, gpointer user_data)
 {
     refreshSchedSensitivity(user_data);
 }
 
-static void onTimeComboChanged(GtkComboBox* w, gpointer core)
+static void onTimeComboChanged(GtkComboBox *w, gpointer core)
 {
     GtkTreeIter iter;
 
@@ -948,12 +948,12 @@ static void onTimeComboChanged(GtkComboBox* w, gpointer core)
     }
 }
 
-static GtkWidget* new_time_combo(GObject* core, tr_quark const key)
+static GtkWidget *new_time_combo(GObject *core, tr_quark const key)
 {
     int val;
-    GtkWidget* w;
-    GtkCellRenderer* r;
-    GtkListStore* store;
+    GtkWidget *w;
+    GtkCellRenderer *r;
+    GtkListStore *store;
 
     /* build a store at 15 minute intervals */
     store = gtk_list_store_new(2, G_TYPE_INT, G_TYPE_STRING);
@@ -983,7 +983,7 @@ static GtkWidget* new_time_combo(GObject* core, tr_quark const key)
     return w;
 }
 
-static GtkWidget* new_week_combo(GObject* core, tr_quark const key)
+static GtkWidget *new_week_combo(GObject *core, tr_quark const key)
 {
     // clang-format off
     GtkWidget* w = gtr_combo_box_new_enum(
@@ -1007,23 +1007,23 @@ static GtkWidget* new_week_combo(GObject* core, tr_quark const key)
 
 static void speedPageFree(gpointer gpage)
 {
-    struct BandwidthPage* page = gpage;
+    struct BandwidthPage *page = gpage;
 
     g_slist_free(page->sched_widgets);
     g_free(page);
 }
 
-static GtkWidget* speedPage(GObject* core)
+static GtkWidget *speedPage(GObject *core)
 {
-    char const* s;
-    GtkWidget* t;
-    GtkWidget* l;
-    GtkWidget* w;
-    GtkWidget* w2;
-    GtkWidget* h;
+    char const *s;
+    GtkWidget *t;
+    GtkWidget *l;
+    GtkWidget *w;
+    GtkWidget *w2;
+    GtkWidget *h;
     char buf[512];
     guint row = 0;
-    struct BandwidthPage* page = tr_new0(struct BandwidthPage, 1);
+    struct BandwidthPage *page = tr_new0(struct BandwidthPage, 1);
 
     page->core = TR_CORE(core);
 
@@ -1104,28 +1104,28 @@ static GtkWidget* speedPage(GObject* core)
 
 struct network_page_data
 {
-    TrCore* core;
-    GtkWidget* portLabel;
-    GtkWidget* portButton;
-    GtkWidget* portSpin;
+    TrCore *core;
+    GtkWidget *portLabel;
+    GtkWidget *portButton;
+    GtkWidget *portSpin;
     gulong portTag;
     gulong prefsTag;
 };
 
-static void onCorePrefsChanged(TrCore* core UNUSED, tr_quark const key, gpointer gdata)
+static void onCorePrefsChanged(TrCore *core UNUSED, tr_quark const key, gpointer gdata)
 {
     if (key == TR_KEY_peer_port)
     {
-        struct network_page_data* data = gdata;
+        struct network_page_data *data = gdata;
         gtr_label_set_text(GTK_LABEL(data->portLabel), _("Status unknown"));
         gtk_widget_set_sensitive(data->portButton, TRUE);
         gtk_widget_set_sensitive(data->portSpin, TRUE);
     }
 }
 
-static void networkPageDestroyed(gpointer gdata, GObject* dead UNUSED)
+static void networkPageDestroyed(gpointer gdata, GObject *dead UNUSED)
 {
-    struct network_page_data* data = gdata;
+    struct network_page_data *data = gdata;
 
     if (data->prefsTag > 0)
     {
@@ -1140,10 +1140,10 @@ static void networkPageDestroyed(gpointer gdata, GObject* dead UNUSED)
     g_free(data);
 }
 
-static void onPortTested(TrCore* core UNUSED, gboolean isOpen, gpointer vdata)
+static void onPortTested(TrCore *core UNUSED, gboolean isOpen, gpointer vdata)
 {
-    struct network_page_data* data = vdata;
-    char const* markup = isOpen ? _("Port is <b>open</b>") : _("Port is <b>closed</b>");
+    struct network_page_data *data = vdata;
+    char const *markup = isOpen ? _("Port is <b>open</b>") : _("Port is <b>closed</b>");
 
     // gdk_threads_enter();
     gtk_label_set_markup(GTK_LABEL(data->portLabel), markup);
@@ -1152,9 +1152,9 @@ static void onPortTested(TrCore* core UNUSED, gboolean isOpen, gpointer vdata)
     // gdk_threads_leave();
 }
 
-static void onPortTest(GtkButton* button UNUSED, gpointer vdata)
+static void onPortTest(GtkButton *button UNUSED, gpointer vdata)
 {
-    struct network_page_data* data = vdata;
+    struct network_page_data *data = vdata;
     gtk_widget_set_sensitive(data->portButton, FALSE);
     gtk_widget_set_sensitive(data->portSpin, FALSE);
     gtk_label_set_markup(GTK_LABEL(data->portLabel), _("<i>Testing TCP port…</i>"));
@@ -1167,14 +1167,14 @@ static void onPortTest(GtkButton* button UNUSED, gpointer vdata)
     gtr_core_port_test(data->core);
 }
 
-static GtkWidget* networkPage(GObject* core)
+static GtkWidget *networkPage(GObject *core)
 {
-    GtkWidget* t;
-    GtkWidget* w;
-    GtkWidget* h;
-    GtkWidget* l;
-    char const* s;
-    struct network_page_data* data;
+    GtkWidget *t;
+    GtkWidget *w;
+    GtkWidget *h;
+    GtkWidget *l;
+    char const *s;
+    struct network_page_data *data;
     guint row = 0;
 
     /* register to stop listening to core prefs changes when the page is destroyed */
@@ -1258,9 +1258,9 @@ static GtkWidget* networkPage(GObject* core)
 *****
 ****/
 
-static void on_prefs_dialog_destroyed(gpointer gdata, GObject* dead_dialog G_GNUC_UNUSED)
+static void on_prefs_dialog_destroyed(gpointer gdata, GObject *dead_dialog G_GNUC_UNUSED)
 {
-    struct prefs_dialog_data* data = gdata;
+    struct prefs_dialog_data *data = gdata;
 
     if (data->core_prefs_tag > 0)
     {
@@ -1270,9 +1270,9 @@ static void on_prefs_dialog_destroyed(gpointer gdata, GObject* dead_dialog G_GNU
     g_free(data);
 }
 
-static void on_core_prefs_changed(TrCore* core, tr_quark const key, gpointer gdata)
+static void on_core_prefs_changed(TrCore *core, tr_quark const key, gpointer gdata)
 {
-    struct prefs_dialog_data* data = gdata;
+    struct prefs_dialog_data *data = gdata;
 
 #if 0
 
@@ -1287,16 +1287,16 @@ static void on_core_prefs_changed(TrCore* core, tr_quark const key, gpointer gda
 
     if (key == TR_KEY_download_dir)
     {
-        char const* downloadDir = tr_sessionGetDownloadDir(gtr_core_session(core));
+        char const *downloadDir = tr_sessionGetDownloadDir(gtr_core_session(core));
         gtr_freespace_label_set_dir(data->freespace_label, downloadDir);
     }
 }
 
-GtkWidget* gtr_prefs_dialog_new(GtkWindow* parent, GObject* core)
+GtkWidget *gtr_prefs_dialog_new(GtkWindow *parent, GObject *core)
 {
-    GtkWidget* d;
-    GtkWidget* n;
-    struct prefs_dialog_data* data;
+    GtkWidget *d;
+    GtkWidget *n;
+    struct prefs_dialog_data *data;
     tr_quark const prefs_quarks[] = { TR_KEY_peer_port, TR_KEY_download_dir };
 
     data = g_new0(struct prefs_dialog_data, 1);

@@ -32,29 +32,29 @@ class MakeProgressDialog : public BaseDialog
     Q_OBJECT
 
 public:
-    MakeProgressDialog(Session& session, tr_metainfo_builder& builder, QWidget* parent = nullptr);
+    MakeProgressDialog(Session &session, tr_metainfo_builder &builder, QWidget *parent = nullptr);
 
 private slots:
-    void onButtonBoxClicked(QAbstractButton*);
+    void onButtonBoxClicked(QAbstractButton *);
     void onProgress();
 
 private:
-    Session& mySession;
-    tr_metainfo_builder& myBuilder;
+    Session &mySession;
+    tr_metainfo_builder &myBuilder;
     Ui::MakeProgressDialog ui;
     QTimer myTimer;
 };
 
 } // namespace
 
-MakeProgressDialog::MakeProgressDialog(Session& session, tr_metainfo_builder& builder, QWidget* parent)
+MakeProgressDialog::MakeProgressDialog(Session &session, tr_metainfo_builder &builder, QWidget *parent)
     : BaseDialog(parent)
     , mySession(session)
     , myBuilder(builder)
 {
     ui.setupUi(this);
 
-    connect(ui.dialogButtons, SIGNAL(clicked(QAbstractButton*)), this, SLOT(onButtonBoxClicked(QAbstractButton*)));
+    connect(ui.dialogButtons, SIGNAL(clicked(QAbstractButton *)), this, SLOT(onButtonBoxClicked(QAbstractButton *)));
 
     connect(&myTimer, SIGNAL(timeout()), this, SLOT(onProgress()));
     myTimer.start(100);
@@ -62,7 +62,7 @@ MakeProgressDialog::MakeProgressDialog(Session& session, tr_metainfo_builder& bu
     onProgress();
 }
 
-void MakeProgressDialog::onButtonBoxClicked(QAbstractButton* button)
+void MakeProgressDialog::onButtonBoxClicked(QAbstractButton *button)
 {
     switch (ui.dialogButtons->standardButton(button))
     {
@@ -86,7 +86,7 @@ void MakeProgressDialog::onButtonBoxClicked(QAbstractButton* button)
 void MakeProgressDialog::onProgress()
 {
     // progress bar
-    tr_metainfo_builder const& b = myBuilder;
+    tr_metainfo_builder const &b = myBuilder;
     double const denom = b.pieceCount != 0 ? b.pieceCount : 1;
     ui.progressBar->setValue(static_cast<int>((100.0 * b.pieceIndex) / denom));
 
@@ -149,7 +149,7 @@ void MakeDialog::makeTorrent()
     int tier = 0;
     QVector<tr_tracker_info> trackers;
 
-    for (QString const& line : ui.trackersEdit->toPlainText().split(QLatin1Char('\n')))
+    for (QString const &line : ui.trackersEdit->toPlainText().split(QLatin1Char('\n')))
     {
         QString const announceUrl = line.trimmed();
 
@@ -189,7 +189,7 @@ void MakeDialog::makeTorrent()
         ui.privateCheck->isChecked());
 
     // pop up the dialog
-    MakeProgressDialog* dialog = new MakeProgressDialog(mySession, *myBuilder, this);
+    MakeProgressDialog *dialog = new MakeProgressDialog(mySession, *myBuilder, this);
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     dialog->open();
 }
@@ -238,7 +238,7 @@ void MakeDialog::onSourceChanged()
     ui.sourceSizeLabel->setText(text);
 }
 
-MakeDialog::MakeDialog(Session& session, QWidget* parent)
+MakeDialog::MakeDialog(Session &session, QWidget *parent)
     : BaseDialog(parent)
     , mySession(session)
     , myBuilder(nullptr, &tr_metaInfoBuilderFree)
@@ -251,7 +251,7 @@ MakeDialog::MakeDialog(Session& session, QWidget* parent)
     ui.sourceFolderButton->setMode(PathButton::DirectoryMode);
     ui.sourceFileButton->setMode(PathButton::FileMode);
 
-    ColumnResizer* cr(new ColumnResizer(this));
+    ColumnResizer *cr(new ColumnResizer(this));
     cr->addLayout(ui.filesSectionLayout);
     cr->addLayout(ui.propertiesSectionLayout);
     cr->update();
@@ -277,9 +277,9 @@ MakeDialog::~MakeDialog()
 ****
 ***/
 
-void MakeDialog::dragEnterEvent(QDragEnterEvent* event)
+void MakeDialog::dragEnterEvent(QDragEnterEvent *event)
 {
-    QMimeData const* mime = event->mimeData();
+    QMimeData const *mime = event->mimeData();
 
     if (!mime->urls().isEmpty() && QFileInfo(mime->urls().front().path()).exists())
     {
@@ -287,7 +287,7 @@ void MakeDialog::dragEnterEvent(QDragEnterEvent* event)
     }
 }
 
-void MakeDialog::dropEvent(QDropEvent* event)
+void MakeDialog::dropEvent(QDropEvent *event)
 {
     QString const filename = event->mimeData()->urls().front().path();
     QFileInfo const fileInfo(filename);

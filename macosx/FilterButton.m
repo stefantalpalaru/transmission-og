@@ -25,7 +25,7 @@
 
 @implementation FilterButton
 
-- (id)initWithCoder:(NSCoder*)coder
+- (id)initWithCoder:(NSCoder *)coder
 {
     if ((self = [super initWithCoder:coder]))
     {

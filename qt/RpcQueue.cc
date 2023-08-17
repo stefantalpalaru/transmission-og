@@ -10,7 +10,7 @@
 
 #include "RpcQueue.h"
 
-RpcQueue::RpcQueue(QObject* parent)
+RpcQueue::RpcQueue(QObject *parent)
     : QObject(parent)
     , myTolerateErrors(false)
 {
@@ -63,7 +63,7 @@ void RpcQueue::stepFinished()
     deleteLater();
 }
 
-void RpcQueue::runNext(RpcResponseFuture const& response)
+void RpcQueue::runNext(RpcResponseFuture const &response)
 {
     assert(!myQueue.isEmpty());
 

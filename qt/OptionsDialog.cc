@@ -25,7 +25,7 @@
 ****
 ***/
 
-OptionsDialog::OptionsDialog(Session& session, Prefs const& prefs, AddData const& addme, QWidget* parent)
+OptionsDialog::OptionsDialog(Session &session, Prefs const &prefs, AddData const &addme, QWidget *parent)
     : BaseDialog(parent)
     , mySession(session)
     , myAdd(addme)
@@ -149,7 +149,7 @@ void OptionsDialog::reload()
     clearInfo();
     clearVerify();
 
-    tr_ctor* ctor = tr_ctorNew(nullptr);
+    tr_ctor *ctor = tr_ctorNew(nullptr);
 
     switch (myAdd.type)
     {
@@ -162,7 +162,7 @@ void OptionsDialog::reload()
         break;
 
     case AddData::METAINFO:
-        tr_ctorSetMetainfo(ctor, reinterpret_cast<quint8 const*>(myAdd.metainfo.constData()), myAdd.metainfo.size());
+        tr_ctorSetMetainfo(ctor, reinterpret_cast<quint8 const *>(myAdd.metainfo.constData()), myAdd.metainfo.size());
         break;
 
     default:
@@ -207,7 +207,7 @@ void OptionsDialog::reload()
 
 void OptionsDialog::updateWidgetsLocality()
 {
-    ui.destinationStack->setCurrentWidget(myIsLocal ? static_cast<QWidget*>(ui.destinationButton) : ui.destinationEdit);
+    ui.destinationStack->setCurrentWidget(myIsLocal ? static_cast<QWidget *>(ui.destinationButton) : ui.destinationEdit);
     ui.destinationStack->setFixedHeight(ui.destinationStack->currentWidget()->sizeHint().height());
     ui.destinationLabel->setBuddy(ui.destinationStack->currentWidget());
 
@@ -228,7 +228,7 @@ void OptionsDialog::onSessionUpdated()
     }
 }
 
-void OptionsDialog::onPriorityChanged(QSet<int> const& fileIndices, int priority)
+void OptionsDialog::onPriorityChanged(QSet<int> const &fileIndices, int priority)
 {
     for (int const i : fileIndices)
     {
@@ -236,7 +236,7 @@ void OptionsDialog::onPriorityChanged(QSet<int> const& fileIndices, int priority
     }
 }
 
-void OptionsDialog::onWantedChanged(QSet<int> const& fileIndices, bool isWanted)
+void OptionsDialog::onWantedChanged(QSet<int> const &fileIndices, bool isWanted)
 {
     for (int const i : fileIndices)
     {
@@ -277,7 +277,7 @@ void OptionsDialog::onAccepted()
 
     if (count > 0)
     {
-        tr_variant* l = tr_variantDictAddList(&args, TR_KEY_files_unwanted, count);
+        tr_variant *l = tr_variantDictAddList(&args, TR_KEY_files_unwanted, count);
 
         for (int i = 0, n = myWanted.size(); i < n; ++i)
         {
@@ -293,7 +293,7 @@ void OptionsDialog::onAccepted()
 
     if (count > 0)
     {
-        tr_variant* l = tr_variantDictAddList(&args, TR_KEY_priority_low, count);
+        tr_variant *l = tr_variantDictAddList(&args, TR_KEY_priority_low, count);
 
         for (int i = 0, n = myPriorities.size(); i < n; ++i)
         {
@@ -309,7 +309,7 @@ void OptionsDialog::onAccepted()
 
     if (count > 0)
     {
-        tr_variant* l = tr_variantDictAddList(&args, TR_KEY_priority_high, count);
+        tr_variant *l = tr_variantDictAddList(&args, TR_KEY_priority_high, count);
 
         for (int i = 0, n = myPriorities.size(); i < n; ++i)
         {
@@ -369,7 +369,7 @@ void OptionsDialog::clearVerify()
     myVerifyPiecePos = 0;
     myVerifyTimer.stop();
 
-    for (TorrentFile& f : myFiles)
+    for (TorrentFile &f : myFiles)
     {
         f.have = 0;
     }
@@ -388,7 +388,7 @@ void OptionsDialog::onVerify()
 namespace
 {
 
-uint64_t getPieceSize(tr_info const* info, tr_piece_index_t pieceIndex)
+uint64_t getPieceSize(tr_info const *info, tr_piece_index_t pieceIndex)
 {
     if (pieceIndex != info->pieceCount - 1)
     {
@@ -408,7 +408,7 @@ void OptionsDialog::onTimeout()
         return;
     }
 
-    tr_file const* file = &myInfo.files[myVerifyFileIndex];
+    tr_file const *file = &myInfo.files[myVerifyFileIndex];
 
     if (myVerifyFilePos == 0 && !myVerifyFile.isOpen())
     {
@@ -454,7 +454,7 @@ void OptionsDialog::onTimeout()
         {
             for (auto i = myVerifyBins.begin(), end = myVerifyBins.end(); i != end; ++i)
             {
-                TorrentFile& f(myFiles[i.key()]);
+                TorrentFile &f(myFiles[i.key()]);
                 f.have += i.value();
                 changedFiles.append(f);
             }
@@ -477,7 +477,7 @@ void OptionsDialog::onTimeout()
     {
         uint64_t have = 0;
 
-        for (TorrentFile const& f : myFiles)
+        for (TorrentFile const &f : myFiles)
         {
             have += f.have;
         }

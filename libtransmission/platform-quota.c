@@ -75,11 +75,11 @@
 
 #ifndef _WIN32
 
-static char const* getdev(char const* path)
+static char const *getdev(char const *path)
 {
 #ifdef HAVE_GETMNTENT
 
-    FILE* fp;
+    FILE *fp;
 
 #ifdef __sun
 
@@ -104,7 +104,7 @@ static char const* getdev(char const* path)
 
 #else
 
-    struct mntent* mnt;
+    struct mntent *mnt;
 
     fp = setmntent(_PATH_MOUNTED, "r");
 
@@ -129,7 +129,7 @@ static char const* getdev(char const* path)
 #else /* BSD derived systems */
 
     int n;
-    struct statfs* mnt;
+    struct statfs *mnt;
 
     n = getmntinfo(&mnt, MNT_WAIT);
 
@@ -151,11 +151,11 @@ static char const* getdev(char const* path)
 #endif
 }
 
-static char const* getfstype(char const* device)
+static char const *getfstype(char const *device)
 {
 #ifdef HAVE_GETMNTENT
 
-    FILE* fp;
+    FILE *fp;
 
 #ifdef __sun
 
@@ -180,7 +180,7 @@ static char const* getfstype(char const* device)
 
 #else
 
-    struct mntent* mnt;
+    struct mntent *mnt;
 
     fp = setmntent(_PATH_MOUNTED, "r");
 
@@ -205,7 +205,7 @@ static char const* getfstype(char const* device)
 #else /* BSD derived systems */
 
     int n;
-    struct statfs* mnt;
+    struct statfs *mnt;
 
     n = getmntinfo(&mnt, MNT_WAIT);
 
@@ -227,11 +227,11 @@ static char const* getfstype(char const* device)
 #endif
 }
 
-static char const* getblkdev(char const* path)
+static char const *getblkdev(char const *path)
 {
-    char* c;
-    char* dir;
-    char const* device;
+    char *c;
+    char *dir;
+    char const *device;
 
     dir = tr_strdup(path);
 
@@ -264,9 +264,9 @@ static char const* getblkdev(char const* path)
 
 #include <quota.h>
 
-static int64_t getquota(char const* device)
+static int64_t getquota(char const *device)
 {
-    struct quotahandle* qh;
+    struct quotahandle *qh;
     struct quotakey qk;
     struct quotaval qv;
     int64_t limit;
@@ -313,7 +313,7 @@ static int64_t getquota(char const* device)
 
 #else
 
-static int64_t getquota(char const* device)
+static int64_t getquota(char const *device)
 {
 #if defined(__DragonFly__)
     struct ufs_dqblk dq;
@@ -395,7 +395,7 @@ static int64_t getquota(char const* device)
 
 #ifdef HAVE_XQM
 
-static int64_t getxfsquota(char* device)
+static int64_t getxfsquota(char *device)
 {
     int64_t limit;
     int64_t freespace;
@@ -430,7 +430,7 @@ static int64_t getxfsquota(char* device)
 
 #endif /* _WIN32 */
 
-static int64_t tr_getQuotaFreeSpace(struct tr_device_info const* info)
+static int64_t tr_getQuotaFreeSpace(struct tr_device_info const *info)
 {
     int64_t ret = -1;
 
@@ -456,12 +456,12 @@ static int64_t tr_getQuotaFreeSpace(struct tr_device_info const* info)
     return ret;
 }
 
-static int64_t tr_getDiskFreeSpace(char const* path)
+static int64_t tr_getDiskFreeSpace(char const *path)
 {
 #ifdef _WIN32
 
     int64_t ret = -1;
-    wchar_t* wide_path;
+    wchar_t *wide_path;
 
     wide_path = tr_win32_utf8_to_native(path, -1);
 
@@ -493,9 +493,9 @@ static int64_t tr_getDiskFreeSpace(char const* path)
 #endif
 }
 
-struct tr_device_info* tr_device_info_create(char const* path)
+struct tr_device_info *tr_device_info_create(char const *path)
 {
-    struct tr_device_info* info;
+    struct tr_device_info *info;
 
     info = tr_new0(struct tr_device_info, 1);
     info->path = tr_strdup(path);
@@ -508,7 +508,7 @@ struct tr_device_info* tr_device_info_create(char const* path)
     return info;
 }
 
-void tr_device_info_free(struct tr_device_info* info)
+void tr_device_info_free(struct tr_device_info *info)
 {
     if (info != NULL)
     {
@@ -519,7 +519,7 @@ void tr_device_info_free(struct tr_device_info* info)
     }
 }
 
-int64_t tr_device_info_get_free_space(struct tr_device_info const* info)
+int64_t tr_device_info_get_free_space(struct tr_device_info const *info)
 {
     int64_t free_space;
 

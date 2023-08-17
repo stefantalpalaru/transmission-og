@@ -44,10 +44,10 @@ typedef struct tr_watchdir_inotify
 
     int infd;
     int inwd;
-    struct bufferevent* event;
+    struct bufferevent *event;
 } tr_watchdir_inotify;
 
-#define BACKEND_UPCAST(b) ((tr_watchdir_inotify*)(b))
+#define BACKEND_UPCAST(b) ((tr_watchdir_inotify *)(b))
 
 #define INOTIFY_WATCH_MASK (IN_CLOSE_WRITE | IN_MOVED_TO | IN_CREATE)
 
@@ -55,25 +55,25 @@ typedef struct tr_watchdir_inotify
 ****
 ***/
 
-static void tr_watchdir_inotify_on_first_scan(evutil_socket_t fd UNUSED, short type UNUSED, void* context)
+static void tr_watchdir_inotify_on_first_scan(evutil_socket_t fd UNUSED, short type UNUSED, void *context)
 {
     tr_watchdir_t const handle = context;
 
     tr_watchdir_scan(handle, NULL);
 }
 
-static void tr_watchdir_inotify_on_event(struct bufferevent* event, void* context)
+static void tr_watchdir_inotify_on_event(struct bufferevent *event, void *context)
 {
     TR_ASSERT(context != NULL);
 
     tr_watchdir_t const handle = context;
 #ifdef TR_ENABLE_ASSERTS
-    tr_watchdir_inotify* const backend = BACKEND_UPCAST(tr_watchdir_get_backend(handle));
+    tr_watchdir_inotify *const backend = BACKEND_UPCAST(tr_watchdir_get_backend(handle));
 #endif
     struct inotify_event ev;
     size_t nread;
     size_t name_size = NAME_MAX + 1;
-    char* name = tr_new(char, name_size);
+    char *name = tr_new(char, name_size);
 
     /* Read the size of the struct excluding name into buf. Guaranteed to have at
        least sizeof(ev) available */
@@ -120,9 +120,9 @@ static void tr_watchdir_inotify_on_event(struct bufferevent* event, void* contex
     tr_free(name);
 }
 
-static void tr_watchdir_inotify_free(tr_watchdir_backend* backend_base)
+static void tr_watchdir_inotify_free(tr_watchdir_backend *backend_base)
 {
-    tr_watchdir_inotify* const backend = BACKEND_UPCAST(backend_base);
+    tr_watchdir_inotify *const backend = BACKEND_UPCAST(backend_base);
 
     if (backend == NULL)
     {
@@ -150,10 +150,10 @@ static void tr_watchdir_inotify_free(tr_watchdir_backend* backend_base)
     tr_free(backend);
 }
 
-tr_watchdir_backend* tr_watchdir_inotify_new(tr_watchdir_t handle)
+tr_watchdir_backend *tr_watchdir_inotify_new(tr_watchdir_t handle)
 {
-    char const* const path = tr_watchdir_get_path(handle);
-    tr_watchdir_inotify* backend;
+    char const *const path = tr_watchdir_get_path(handle);
+    tr_watchdir_inotify *backend;
 
     backend = tr_new0(tr_watchdir_inotify, 1);
     backend->base.free_func = &tr_watchdir_inotify_free;

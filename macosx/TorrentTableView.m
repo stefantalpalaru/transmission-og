@@ -53,7 +53,7 @@
 
 @implementation TorrentTableView
 
-- (id)initWithCoder:(NSCoder*)decoder
+- (id)initWithCoder:(NSCoder *)decoder
 {
     if ((self = [super initWithCoder:decoder]))
     {
@@ -61,7 +61,7 @@
 
         fTorrentCell = [[TorrentCell alloc] init];
 
-        NSData* groupData = [fDefaults dataForKey:@"CollapsedGroups"];
+        NSData *groupData = [fDefaults dataForKey:@"CollapsedGroups"];
         if (groupData)
             fCollapsedGroups = [[NSUnarchiver unarchiveObjectWithData:groupData] mutableCopy];
         else
@@ -122,17 +122,17 @@
     [fDefaults setObject:[NSArchiver archivedDataWithRootObject:fCollapsedGroups] forKey:@"CollapsedGroups"];
 }
 
-- (BOOL)outlineView:(NSOutlineView*)outlineView isGroupItem:(id)item
+- (BOOL)outlineView:(NSOutlineView *)outlineView isGroupItem:(id)item
 {
     return ![item isKindOfClass:[Torrent class]];
 }
 
-- (CGFloat)outlineView:(NSOutlineView*)outlineView heightOfRowByItem:(id)item
+- (CGFloat)outlineView:(NSOutlineView *)outlineView heightOfRowByItem:(id)item
 {
     return [item isKindOfClass:[Torrent class]] ? [self rowHeight] : GROUP_SEPARATOR_HEIGHT;
 }
 
-- (NSCell*)outlineView:(NSOutlineView*)outlineView dataCellForTableColumn:(NSTableColumn*)tableColumn item:(id)item
+- (NSCell *)outlineView:(NSOutlineView *)outlineView dataCellForTableColumn:(NSTableColumn *)tableColumn item:(id)item
 {
     BOOL const group = ![item isKindOfClass:[Torrent class]];
     if (!tableColumn)
@@ -141,9 +141,9 @@
         return group ? [tableColumn dataCellForRow:[self rowForItem:item]] : nil;
 }
 
-- (void)outlineView:(NSOutlineView*)outlineView
+- (void)outlineView:(NSOutlineView *)outlineView
     willDisplayCell:(id)cell
-     forTableColumn:(NSTableColumn*)tableColumn
+     forTableColumn:(NSTableColumn *)tableColumn
                item:(id)item
 {
     if ([item isKindOfClass:[Torrent class]])
@@ -177,23 +177,23 @@
     }
 }
 
-- (NSString*)outlineView:(NSOutlineView*)outlineView typeSelectStringForTableColumn:(NSTableColumn*)tableColumn item:(id)item
+- (NSString *)outlineView:(NSOutlineView *)outlineView typeSelectStringForTableColumn:(NSTableColumn *)tableColumn item:(id)item
 {
     if ([item isKindOfClass:[Torrent class]])
-        return [(Torrent*)item name];
+        return [(Torrent *)item name];
     else
         return [[self dataSource] outlineView:outlineView objectValueForTableColumn:[self tableColumnWithIdentifier:@"Group"]
                                        byItem:item];
 }
 
-- (NSString*)outlineView:(NSOutlineView*)outlineView
-          toolTipForCell:(NSCell*)cell
-                    rect:(NSRectPointer)rect
-             tableColumn:(NSTableColumn*)column
-                    item:(id)item
-           mouseLocation:(NSPoint)mouseLocation
+- (NSString *)outlineView:(NSOutlineView *)outlineView
+           toolTipForCell:(NSCell *)cell
+                     rect:(NSRectPointer)rect
+              tableColumn:(NSTableColumn *)column
+                     item:(id)item
+            mouseLocation:(NSPoint)mouseLocation
 {
-    NSString* ident = [column identifier];
+    NSString *ident = [column identifier];
     if ([ident isEqualToString:@"DL"] || [ident isEqualToString:@"DL Image"])
         return NSLocalizedString(@"Download speed", "Torrent table -> group row -> tooltip");
     else if ([ident isEqualToString:@"UL"] || [ident isEqualToString:@"UL Image"])
@@ -228,8 +228,8 @@
         if (![[self itemAtRow:row] isKindOfClass:[Torrent class]])
             continue;
 
-        NSDictionary* userInfo = @{ @"Row" : @(row) };
-        TorrentCell* cell = (TorrentCell*)[self preparedCellAtColumn:-1 row:row];
+        NSDictionary *userInfo = @{ @"Row" : @(row) };
+        TorrentCell *cell = (TorrentCell *)[self preparedCellAtColumn:-1 row:row];
         [cell addTrackingAreasForView:self inRect:[self rectOfRow:row] withUserInfo:userInfo mouseLocation:mouseLocation];
     }
 }
@@ -241,7 +241,7 @@
     fMouseRevealRow = -1;
     fMouseActionRow = -1;
 
-    for (NSTrackingArea* area in [self trackingAreas])
+    for (NSTrackingArea *area in [self trackingAreas])
     {
         if ([area owner] == self && [area userInfo][@"Row"])
             [self removeTrackingArea:area];
@@ -278,15 +278,15 @@
         [self setNeedsDisplayInRect:[self rectOfRow:row]];
 }
 
-- (void)mouseEntered:(NSEvent*)event
+- (void)mouseEntered:(NSEvent *)event
 {
-    NSDictionary* dict = (NSDictionary*)[event userData];
+    NSDictionary *dict = (NSDictionary *)[event userData];
 
-    NSNumber* row;
+    NSNumber *row;
     if ((row = dict[@"Row"]))
     {
         NSInteger rowVal = [row integerValue];
-        NSString* type = dict[@"Type"];
+        NSString *type = dict[@"Type"];
         if ([type isEqualToString:@"Action"])
             fMouseActionRow = rowVal;
         else if ([type isEqualToString:@"Control"])
@@ -304,14 +304,14 @@
     }
 }
 
-- (void)mouseExited:(NSEvent*)event
+- (void)mouseExited:(NSEvent *)event
 {
-    NSDictionary* dict = (NSDictionary*)[event userData];
+    NSDictionary *dict = (NSDictionary *)[event userData];
 
-    NSNumber* row;
+    NSNumber *row;
     if ((row = dict[@"Row"]))
     {
-        NSString* type = dict[@"Type"];
+        NSString *type = dict[@"Type"];
         if ([type isEqualToString:@"Action"])
             fMouseActionRow = -1;
         else if ([type isEqualToString:@"Control"])
@@ -329,7 +329,7 @@
     }
 }
 
-- (void)outlineViewSelectionIsChanging:(NSNotification*)notification
+- (void)outlineViewSelectionIsChanging:(NSNotification *)notification
 {
 #warning elliminate when view-based?
     //if pushing a button, don't change the selected rows
@@ -337,7 +337,7 @@
         [self selectValues:fSelectedValues];
 }
 
-- (void)outlineViewItemDidExpand:(NSNotification*)notification
+- (void)outlineViewItemDidExpand:(NSNotification *)notification
 {
     NSInteger value = [[notification userInfo][@"NSObject"] groupIndex];
     if (value < 0)
@@ -350,7 +350,7 @@
     }
 }
 
-- (void)outlineViewItemDidCollapse:(NSNotification*)notification
+- (void)outlineViewItemDidCollapse:(NSNotification *)notification
 {
     NSInteger value = [[notification userInfo][@"NSObject"] groupIndex];
     if (value < 0)
@@ -360,7 +360,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"OutlineExpandCollapse" object:self];
 }
 
-- (void)mouseDown:(NSEvent*)event
+- (void)mouseDown:(NSEvent *)event
 {
     NSPoint point = [self convertPoint:[event locationInWindow] fromView:nil];
     NSInteger const row = [self rowAtPoint:point];
@@ -410,9 +410,9 @@
         ;
 }
 
-- (void)selectValues:(NSArray*)values
+- (void)selectValues:(NSArray *)values
 {
-    NSMutableIndexSet* indexSet = [NSMutableIndexSet indexSet];
+    NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
 
     for (id item in values)
     {
@@ -440,10 +440,10 @@
     [self selectRowIndexes:indexSet byExtendingSelection:NO];
 }
 
-- (NSArray*)selectedValues
+- (NSArray *)selectedValues
 {
-    NSIndexSet* selectedIndexes = [self selectedRowIndexes];
-    NSMutableArray* values = [NSMutableArray arrayWithCapacity:[selectedIndexes count]];
+    NSIndexSet *selectedIndexes = [self selectedRowIndexes];
+    NSMutableArray *values = [NSMutableArray arrayWithCapacity:[selectedIndexes count]];
 
     for (NSUInteger i = [selectedIndexes firstIndex]; i != NSNotFound; i = [selectedIndexes indexGreaterThanIndex:i])
         [values addObject:[self itemAtRow:i]];
@@ -451,10 +451,10 @@
     return values;
 }
 
-- (NSArray*)selectedTorrents
+- (NSArray *)selectedTorrents
 {
-    NSIndexSet* selectedIndexes = [self selectedRowIndexes];
-    NSMutableArray* torrents = [NSMutableArray arrayWithCapacity:[selectedIndexes count]]; //take a shot at guessing capacity
+    NSIndexSet *selectedIndexes = [self selectedRowIndexes];
+    NSMutableArray *torrents = [NSMutableArray arrayWithCapacity:[selectedIndexes count]]; //take a shot at guessing capacity
 
     for (NSUInteger i = [selectedIndexes firstIndex]; i != NSNotFound; i = [selectedIndexes indexGreaterThanIndex:i])
     {
@@ -463,7 +463,7 @@
             [torrents addObject:item];
         else
         {
-            NSArray* groupTorrents = [item torrents];
+            NSArray *groupTorrents = [item torrents];
             [torrents addObjectsFromArray:groupTorrents];
             if ([self isItemExpanded:item])
                 i += [groupTorrents count];
@@ -473,7 +473,7 @@
     return torrents;
 }
 
-- (NSMenu*)menuForEvent:(NSEvent*)event
+- (NSMenu *)menuForEvent:(NSEvent *)event
 {
     NSInteger row = [self rowAtPoint:[self convertPoint:[event locationInWindow] fromView:nil]];
     if (row >= 0)
@@ -490,14 +490,14 @@
 }
 
 //make sure that the pause buttons become orange when holding down the option key
-- (void)flagsChanged:(NSEvent*)event
+- (void)flagsChanged:(NSEvent *)event
 {
     [self display];
     [super flagsChanged:event];
 }
 
 //option-command-f will focus the filter bar's search field
-- (void)keyDown:(NSEvent*)event
+- (void)keyDown:(NSEvent *)event
 {
     unichar const firstChar = [[event charactersIgnoringModifiers] characterAtIndex:0];
 
@@ -518,16 +518,16 @@
 
 - (void)paste:(id)sender
 {
-    NSURL* url;
+    NSURL *url;
     if ((url = [NSURL URLFromPasteboard:[NSPasteboard generalPasteboard]]))
         [fController openURL:[url absoluteString]];
     else
     {
-        NSArray* items = [[NSPasteboard generalPasteboard] readObjectsForClasses:@[ [NSString class] ] options:nil];
+        NSArray *items = [[NSPasteboard generalPasteboard] readObjectsForClasses:@[ [NSString class] ] options:nil];
         if (items)
         {
-            NSDataDetector* detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
-            for (__strong NSString* pbItem in items)
+            NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
+            for (__strong NSString *pbItem in items)
             {
                 pbItem = [pbItem stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                 if ([pbItem rangeOfString:@"magnet:" options:(NSAnchoredSearch | NSCaseInsensitiveSearch)].location != NSNotFound)
@@ -535,7 +535,7 @@
                 else
                 {
 #warning only accept full text?
-                    for (NSTextCheckingResult* result in [detector matchesInString:pbItem options:0
+                    for (NSTextCheckingResult *result in [detector matchesInString:pbItem options:0
                                                                              range:NSMakeRange(0, [pbItem length])])
                         [fController openURL:[[result URL] absoluteString]];
                 }
@@ -544,7 +544,7 @@
     }
 }
 
-- (BOOL)validateMenuItem:(NSMenuItem*)menuItem
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem
 {
     SEL action = [menuItem action];
 
@@ -553,11 +553,11 @@
         if ([[[NSPasteboard generalPasteboard] types] containsObject:NSURLPboardType])
             return YES;
 
-        NSArray* items = [[NSPasteboard generalPasteboard] readObjectsForClasses:@[ [NSString class] ] options:nil];
+        NSArray *items = [[NSPasteboard generalPasteboard] readObjectsForClasses:@[ [NSString class] ] options:nil];
         if (items)
         {
-            NSDataDetector* detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
-            for (__strong NSString* pbItem in items)
+            NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
+            for (__strong NSString *pbItem in items)
             {
                 pbItem = [pbItem stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                 if (([pbItem rangeOfString:@"magnet:" options:(NSAnchoredSearch | NSCaseInsensitiveSearch)].location != NSNotFound) ||
@@ -572,7 +572,7 @@
     return YES;
 }
 
-- (void)toggleControlForTorrent:(Torrent*)torrent
+- (void)toggleControlForTorrent:(Torrent *)torrent
 {
     if ([torrent isActive])
         [fController stopTorrents:@[ torrent ]];
@@ -587,7 +587,7 @@
     }
 }
 
-- (void)displayTorrentActionPopoverForEvent:(NSEvent*)event
+- (void)displayTorrentActionPopoverForEvent:(NSEvent *)event
 {
     NSInteger const row = [self rowAtPoint:[self convertPoint:[event locationInWindow] fromView:nil]];
     if (row < 0)
@@ -598,11 +598,11 @@
     if (fActionPopoverShown)
         return;
 
-    Torrent* torrent = [self itemAtRow:row];
+    Torrent *torrent = [self itemAtRow:row];
 
-    NSPopover* popover = [[NSPopover alloc] init];
+    NSPopover *popover = [[NSPopover alloc] init];
     [popover setBehavior:NSPopoverBehaviorTransient];
-    InfoOptionsViewController* infoViewController = [[InfoOptionsViewController alloc] init];
+    InfoOptionsViewController *infoViewController = [[InfoOptionsViewController alloc] init];
     [popover setContentViewController:infoViewController];
     [popover setDelegate:self];
 
@@ -612,18 +612,18 @@
 }
 
 //don't show multiple popovers when clicking the gear button repeatedly
-- (void)popoverWillShow:(NSNotification*)notification
+- (void)popoverWillShow:(NSNotification *)notification
 {
     fActionPopoverShown = YES;
 }
 
-- (void)popoverWillClose:(NSNotification*)notification
+- (void)popoverWillClose:(NSNotification *)notification
 {
     fActionPopoverShown = NO;
 }
 
 //eliminate when Lion-only, along with all the menu item instance variables
-- (void)menuNeedsUpdate:(NSMenu*)menu
+- (void)menuNeedsUpdate:(NSMenu *)menu
 {
     //this method seems to be called when it shouldn't be
     if (!fMenuTorrent || ![menu supermenu])
@@ -631,7 +631,7 @@
 
     if (menu == fUploadMenu || menu == fDownloadMenu)
     {
-        NSMenuItem* item;
+        NSMenuItem *item;
         if ([menu numberOfItems] == 3)
         {
             NSInteger const speedLimitActionValue[] = { 0,   5,   10,  20,  30,  40,   50,   75,   100,
@@ -663,7 +663,7 @@
     }
     else if (menu == fRatioMenu)
     {
-        NSMenuItem* item;
+        NSMenuItem *item;
         if ([menu numberOfItems] == 4)
         {
             float const ratioLimitActionValue[] = { 0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0, -1.0 };
@@ -696,7 +696,7 @@
     {
         tr_priority_t const priority = [fMenuTorrent priority];
 
-        NSMenuItem* item = [menu itemWithTag:ACTION_MENU_PRIORITY_HIGH_TAG];
+        NSMenuItem *item = [menu itemWithTag:ACTION_MENU_PRIORITY_HIGH_TAG];
         [item setState:priority == TR_PRI_HIGH ? NSOnState : NSOffState];
 
         item = [menu itemWithTag:ACTION_MENU_PRIORITY_NORMAL_TAG];
@@ -727,7 +727,7 @@
 
 - (void)setGlobalLimit:(id)sender
 {
-    [fMenuTorrent setUseGlobalSpeedLimit:[(NSButton*)sender state] != NSOnState];
+    [fMenuTorrent setUseGlobalSpeedLimit:[(NSButton *)sender state] != NSOnState];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateOptions" object:nil];
 }
@@ -789,7 +789,7 @@
 
 - (void)togglePiecesBar
 {
-    NSMutableArray* progressMarks = [NSMutableArray arrayWithCapacity:16];
+    NSMutableArray *progressMarks = [NSMutableArray arrayWithCapacity:16];
     for (NSAnimationProgress i = 0.0625; i <= 1.0; i += 0.0625)
         [progressMarks addObject:@(i)];
 
@@ -802,7 +802,7 @@
     [fPiecesBarAnimation startAnimation];
 }
 
-- (void)animationDidEnd:(NSAnimation*)animation
+- (void)animationDidEnd:(NSAnimation *)animation
 {
     if (animation == fPiecesBarAnimation)
     {
@@ -810,7 +810,7 @@
     }
 }
 
-- (void)animation:(NSAnimation*)animation didReachProgressMark:(NSAnimationProgress)progress
+- (void)animation:(NSAnimation *)animation didReachProgressMark:(NSAnimationProgress)progress
 {
     if (animation == fPiecesBarAnimation)
     {
@@ -856,7 +856,7 @@
     if (row < 0 || [[self itemAtRow:row] isKindOfClass:[Torrent class]])
         return NO;
 
-    NSString* ident = [[self tableColumns][[self columnAtPoint:point]] identifier];
+    NSString *ident = [[self tableColumns][[self columnAtPoint:point]] identifier];
     return [ident isEqualToString:@"UL"] || [ident isEqualToString:@"UL Image"] || [ident isEqualToString:@"DL"] ||
         [ident isEqualToString:@"DL Image"];
 }

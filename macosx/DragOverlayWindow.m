@@ -32,7 +32,7 @@
 
 @implementation DragOverlayWindow
 
-- (id)initWithLib:(tr_session*)lib forWindow:(NSWindow*)window
+- (id)initWithLib:(tr_session *)lib forWindow:(NSWindow *)window
 {
     if ((self = ([super initWithContentRect:[window frame] styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered
                                       defer:NO])))
@@ -44,7 +44,7 @@
         [self setOpaque:NO];
         [self setHasShadow:NO];
 
-        DragOverlayView* view = [[DragOverlayView alloc] initWithFrame:[self frame]];
+        DragOverlayView *view = [[DragOverlayView alloc] initWithFrame:[self frame]];
         [self setContentView:view];
 
         [self setReleasedWhenClosed:NO];
@@ -76,21 +76,21 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)setTorrents:(NSArray*)files
+- (void)setTorrents:(NSArray *)files
 {
     uint64_t size = 0;
     NSInteger count = 0;
 
-    NSString* name;
+    NSString *name;
     BOOL folder;
     NSInteger fileCount = 0;
 
-    for (NSString* file in files)
+    for (NSString *file in files)
     {
         if ([[[NSWorkspace sharedWorkspace] typeOfFile:file error:NULL] isEqualToString:@"org.bittorrent.torrent"] ||
             [[file pathExtension] caseInsensitiveCompare:@"torrent"] == NSOrderedSame)
         {
-            tr_ctor* ctor = tr_ctorNew(fLib);
+            tr_ctor *ctor = tr_ctorNew(fLib);
             tr_ctorSetMetainfoFromFile(ctor, [file UTF8String]);
             tr_info info;
             if (tr_torrentParse(ctor, &info) == TR_PARSE_OK)
@@ -115,10 +115,10 @@
         return;
 
     //set strings and icon
-    NSString* secondString = [NSString stringForFileSize:size];
+    NSString *secondString = [NSString stringForFileSize:size];
     if (count > 1 || folder)
     {
-        NSString* fileString;
+        NSString *fileString;
         if (fileCount == 1)
             fileString = NSLocalizedString(@"1 file", "Drag overlay -> torrents");
         else
@@ -127,7 +127,7 @@
         secondString = [NSString stringWithFormat:@"%@, %@", fileString, secondString];
     }
 
-    NSImage* icon;
+    NSImage *icon;
     if (count == 1)
         icon = [[NSWorkspace sharedWorkspace] iconForFileType:folder ? NSFileTypeForHFSTypeCode(kGenericFolderIcon) : [name pathExtension]];
     else
@@ -142,7 +142,7 @@
     [self fadeIn];
 }
 
-- (void)setFile:(NSString*)file
+- (void)setFile:(NSString *)file
 {
     [[self contentView] setOverlay:[NSImage imageNamed:@"CreateLarge"]
                           mainLine:NSLocalizedString(@"Create a Torrent File", "Drag overlay -> file")
@@ -150,7 +150,7 @@
     [self fadeIn];
 }
 
-- (void)setURL:(NSString*)url
+- (void)setURL:(NSString *)url
 {
     [[self contentView] setOverlay:[NSImage imageNamed:@"Globe"] mainLine:NSLocalizedString(@"Web Address", "Drag overlay -> url")
                            subLine:url];

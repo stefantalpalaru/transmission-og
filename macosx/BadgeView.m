@@ -27,13 +27,13 @@
 
 @interface BadgeView (Private)
 
-- (void)badge:(NSImage*)badge string:(NSString*)string atHeight:(CGFloat)height adjustForQuit:(BOOL)quit;
+- (void)badge:(NSImage *)badge string:(NSString *)string atHeight:(CGFloat)height adjustForQuit:(BOOL)quit;
 
 @end
 
 @implementation BadgeView
 
-- (id)initWithLib:(tr_session*)lib
+- (id)initWithLib:(tr_session *)lib
 {
     if ((self = [super init]))
     {
@@ -68,7 +68,7 @@
 
     if (fQuitting)
     {
-        NSImage* quitBadge = [NSImage imageNamed:@"QuitBadge"];
+        NSImage *quitBadge = [NSImage imageNamed:@"QuitBadge"];
         [self badge:quitBadge string:NSLocalizedString(@"Quitting", "Dock Badger -> quit")
                  atHeight:(NSHeight(rect) - [quitBadge size].height) * 0.5
             adjustForQuit:YES];
@@ -79,7 +79,7 @@
     CGFloat bottom = 0.0;
     if (upload)
     {
-        NSImage* uploadBadge = [NSImage imageNamed:@"UploadBadge"];
+        NSImage *uploadBadge = [NSImage imageNamed:@"UploadBadge"];
         [self badge:uploadBadge string:[NSString stringForSpeedAbbrev:fUploadRate] atHeight:bottom adjustForQuit:NO];
         if (download)
             bottom += [uploadBadge size].height + BETWEEN_PADDING; //download rate above upload rate
@@ -93,11 +93,11 @@
 
 @implementation BadgeView (Private)
 
-- (void)badge:(NSImage*)badge string:(NSString*)string atHeight:(CGFloat)height adjustForQuit:(BOOL)quit
+- (void)badge:(NSImage *)badge string:(NSString *)string atHeight:(CGFloat)height adjustForQuit:(BOOL)quit
 {
     if (!fAttributes)
     {
-        NSShadow* stringShadow = [[NSShadow alloc] init];
+        NSShadow *stringShadow = [[NSShadow alloc] init];
         [stringShadow setShadowOffset:NSMakeSize(2.0, -2.0)];
         [stringShadow setShadowBlurRadius:4.0];
 

@@ -14,11 +14,11 @@ typedef void (^CompletionBlock)(BOOL);
 
 @interface FileRenameSheetController ()
 
-@property(nonatomic, strong) Torrent* torrent;
-@property(nonatomic, strong) FileListNode* node;
+@property(nonatomic, strong) Torrent *torrent;
+@property(nonatomic, strong) FileListNode *node;
 @property(nonatomic, copy) CompletionBlock completionHandler;
 
-@property(nonatomic, copy) NSString* originalName;
+@property(nonatomic, copy) NSString *originalName;
 
 @end
 
@@ -34,31 +34,31 @@ typedef void (^CompletionBlock)(BOOL);
 @synthesize renameButton = _renameButton;
 @synthesize cancelButton = _cancelButton;
 
-+ (void)presentSheetForTorrent:(Torrent*)torrent
-                modalForWindow:(NSWindow*)window
++ (void)presentSheetForTorrent:(Torrent *)torrent
+                modalForWindow:(NSWindow *)window
              completionHandler:(void (^)(BOOL didRename))completionHandler
 {
     NSParameterAssert(torrent != nil);
     NSParameterAssert(window != nil);
 
-    FileRenameSheetController* renamer = [[FileRenameSheetController alloc] initWithWindowNibName:@"FileRenameSheetController"];
+    FileRenameSheetController *renamer = [[FileRenameSheetController alloc] initWithWindowNibName:@"FileRenameSheetController"];
 
     renamer.torrent = torrent;
     renamer.completionHandler = completionHandler;
 
     [NSApp beginSheet:[renamer window] modalForWindow:window modalDelegate:self
         didEndSelector:@selector(sheetDidEnd:returnCode:contextInfo:)
-           contextInfo:(__bridge_retained void*)(renamer)];
+           contextInfo:(__bridge_retained void *)(renamer)];
 }
 
-+ (void)presentSheetForFileListNode:(FileListNode*)node
-                     modalForWindow:(NSWindow*)window
++ (void)presentSheetForFileListNode:(FileListNode *)node
+                     modalForWindow:(NSWindow *)window
                   completionHandler:(void (^)(BOOL didRename))completionHandler
 {
     NSParameterAssert(node != nil);
     NSParameterAssert(window != nil);
 
-    FileRenameSheetController* renamer = [[FileRenameSheetController alloc] initWithWindowNibName:@"FileRenameSheetController"];
+    FileRenameSheetController *renamer = [[FileRenameSheetController alloc] initWithWindowNibName:@"FileRenameSheetController"];
 
     renamer.torrent = [node torrent];
     renamer.node = node;
@@ -66,12 +66,12 @@ typedef void (^CompletionBlock)(BOOL);
 
     [NSApp beginSheet:[renamer window] modalForWindow:window modalDelegate:self
         didEndSelector:@selector(sheetDidEnd:returnCode:contextInfo:)
-           contextInfo:(__bridge_retained void*)(renamer)];
+           contextInfo:(__bridge_retained void *)(renamer)];
 }
 
-+ (void)sheetDidEnd:(NSWindow*)sheet returnCode:(NSInteger)returnCode contextInfo:(void*)contextInfo
++ (void)sheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
-    FileRenameSheetController* renamer = (__bridge_transfer FileRenameSheetController*)(contextInfo);
+    FileRenameSheetController *renamer = (__bridge_transfer FileRenameSheetController *)(contextInfo);
     NSParameterAssert([renamer isKindOfClass:[FileRenameSheetController class]]);
 
     renamer.completionHandler(returnCode == NSOKButton);
@@ -84,7 +84,7 @@ typedef void (^CompletionBlock)(BOOL);
     [super windowDidLoad];
 
     self.originalName = [self.node name] ?: [self.torrent name];
-    NSString* label = [NSString stringWithFormat:NSLocalizedString(@"Rename the file \"%@\":", "rename sheet label"), self.originalName];
+    NSString *label = [NSString stringWithFormat:NSLocalizedString(@"Rename the file \"%@\":", "rename sheet label"), self.originalName];
     [self.labelField setStringValue:label];
 
     [self.inputField setStringValue:self.originalName];
@@ -140,7 +140,7 @@ typedef void (^CompletionBlock)(BOOL);
     [NSApp endSheet:[self window] returnCode:NSCancelButton];
 }
 
-- (void)controlTextDidChange:(NSNotification*)notification
+- (void)controlTextDidChange:(NSNotification *)notification
 {
     [self.renameButton setEnabled:![[self.inputField stringValue] isEqualToString:@""] &&
                        ![[self.inputField stringValue] isEqualToString:self.originalName]];

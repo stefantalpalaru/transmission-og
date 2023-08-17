@@ -40,9 +40,9 @@
 #define MY_CONFIG_NAME "transmission"
 #define MY_READABLE_NAME "transmission-og-gtk"
 
-static char* gl_confdir = NULL;
+static char *gl_confdir = NULL;
 
-void gtr_pref_init(char const* config_dir)
+void gtr_pref_init(char const *config_dir)
 {
     gl_confdir = g_strdup(config_dir);
 }
@@ -57,9 +57,9 @@ void gtr_pref_init(char const* config_dir)
  * This is where we initialize the preferences file with the default values.
  * If you add a new preferences key, you /must/ add a default value here.
  */
-static void tr_prefs_init_defaults(tr_variant* d)
+static void tr_prefs_init_defaults(tr_variant *d)
 {
-    char const* dir;
+    char const *dir;
 
     dir = g_get_user_special_dir(G_USER_DIRECTORY_DOWNLOAD);
 
@@ -110,7 +110,7 @@ static void tr_prefs_init_defaults(tr_variant* d)
     // clang-format on
 }
 
-static tr_variant* getPrefs(void)
+static tr_variant *getPrefs(void)
 {
     static tr_variant settings;
     static gboolean loaded = FALSE;
@@ -130,7 +130,7 @@ static tr_variant* getPrefs(void)
 ****
 ***/
 
-tr_variant* gtr_pref_get_all(void)
+tr_variant *gtr_pref_get_all(void)
 {
     return getPrefs();
 }
@@ -179,14 +179,14 @@ void gtr_pref_flag_set(tr_quark const key, gboolean value)
 ****
 ***/
 
-char const* gtr_pref_string_get(tr_quark const key)
+char const *gtr_pref_string_get(tr_quark const key)
 {
-    char const* str;
+    char const *str;
 
     return tr_variantDictFindStr(getPrefs(), key, &str, NULL) ? str : NULL;
 }
 
-void gtr_pref_string_set(tr_quark const key, char const* value)
+void gtr_pref_string_set(tr_quark const key, char const *value)
 {
     tr_variantDictAddStr(getPrefs(), key, value);
 }
@@ -195,7 +195,7 @@ void gtr_pref_string_set(tr_quark const key, char const* value)
 ****
 ***/
 
-void gtr_pref_save(tr_session* session)
+void gtr_pref_save(tr_session *session)
 {
     tr_sessionSaveSettings(session, gl_confdir, getPrefs());
 }

@@ -23,7 +23,7 @@
 typedef struct callback_data
 {
     tr_watchdir_t dir;
-    char* name;
+    char *name;
     tr_watchdir_status result;
 } callback_data;
 
@@ -32,7 +32,7 @@ typedef struct callback_data
         NULL, NULL, 0 \
     }
 
-static struct event_base* ev_base = NULL;
+static struct event_base *ev_base = NULL;
 
 extern struct timeval tr_watchdir_generic_interval;
 extern unsigned int tr_watchdir_retry_limit;
@@ -49,9 +49,9 @@ static void process_events(void)
     event_base_dispatch(ev_base);
 }
 
-static tr_watchdir_status callback(tr_watchdir_t dir, char const* name, void* context)
+static tr_watchdir_status callback(tr_watchdir_t dir, char const *name, void *context)
 {
-    callback_data* const data = context;
+    callback_data *const data = context;
 
     if (data->result != TR_WATCHDIR_RETRY)
     {
@@ -68,7 +68,7 @@ static tr_watchdir_status callback(tr_watchdir_t dir, char const* name, void* co
     return data->result;
 }
 
-static void reset_callback_data(callback_data* data, tr_watchdir_status result)
+static void reset_callback_data(callback_data *data, tr_watchdir_status result)
 {
     tr_free(data->name);
 
@@ -77,25 +77,25 @@ static void reset_callback_data(callback_data* data, tr_watchdir_status result)
     data->result = result;
 }
 
-static void create_file(char const* parent_dir, char const* name)
+static void create_file(char const *parent_dir, char const *name)
 {
-    char* const path = tr_buildPath(parent_dir, name, NULL);
+    char *const path = tr_buildPath(parent_dir, name, NULL);
     libtest_create_file_with_string_contents(path, "");
     tr_free(path);
 }
 
-static void create_dir(char const* parent_dir, char const* name)
+static void create_dir(char const *parent_dir, char const *name)
 {
-    char* const path = tr_buildPath(parent_dir, name, NULL);
+    char *const path = tr_buildPath(parent_dir, name, NULL);
     tr_sys_dir_create(path, 0, 0700, NULL);
     tr_free(path);
 }
 
 static tr_watchdir_t create_watchdir(
-    char const* path,
+    char const *path,
     tr_watchdir_cb callback,
-    void* callback_user_data,
-    struct event_base* event_base)
+    void *callback_user_data,
+    struct event_base *event_base)
 {
 #ifdef WATCHDIR_TEST_FORCE_GENERIC
     bool const force_generic = true;
@@ -112,7 +112,7 @@ static tr_watchdir_t create_watchdir(
 
 static int test_construct(void)
 {
-    char* const test_dir = libtest_sandbox_create();
+    char *const test_dir = libtest_sandbox_create();
     tr_watchdir_t wd;
 
     ev_base = event_base_new();
@@ -134,7 +134,7 @@ static int test_construct(void)
 
 static int test_initial_scan(void)
 {
-    char* const test_dir = libtest_sandbox_create();
+    char *const test_dir = libtest_sandbox_create();
 
     ev_base = event_base_new();
 
@@ -182,7 +182,7 @@ static int test_initial_scan(void)
 
 static int test_watch(void)
 {
-    char* const test_dir = libtest_sandbox_create();
+    char *const test_dir = libtest_sandbox_create();
     callback_data wd_data = CB_DATA_STATIC_INIT;
     tr_watchdir_t wd;
 
@@ -231,9 +231,9 @@ static int test_watch(void)
 
 static int test_watch_two_dirs(void)
 {
-    char* const test_dir = libtest_sandbox_create();
-    char* const dir1 = tr_buildPath(test_dir, "a", NULL);
-    char* const dir2 = tr_buildPath(test_dir, "b", NULL);
+    char *const test_dir = libtest_sandbox_create();
+    char *const dir1 = tr_buildPath(test_dir, "a", NULL);
+    char *const dir2 = tr_buildPath(test_dir, "b", NULL);
     callback_data wd1_data = CB_DATA_STATIC_INIT;
     callback_data wd2_data = CB_DATA_STATIC_INIT;
     tr_watchdir_t wd1;
@@ -340,7 +340,7 @@ static int test_watch_two_dirs(void)
 
 static int test_retry(void)
 {
-    char* const test_dir = libtest_sandbox_create();
+    char *const test_dir = libtest_sandbox_create();
     callback_data wd_data = CB_DATA_STATIC_INIT;
     tr_watchdir_t wd;
 

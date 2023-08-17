@@ -23,18 +23,18 @@ struct tr_bindsockets;
 
 typedef struct tr_shared tr_shared;
 
-tr_shared* tr_sharedInit(tr_session*);
+tr_shared *tr_sharedInit(tr_session *);
 
-void tr_sharedClose(tr_session*);
+void tr_sharedClose(tr_session *);
 
-void tr_sharedPortChanged(tr_session*);
+void tr_sharedPortChanged(tr_session *);
 
-void tr_sharedTraversalEnable(tr_shared*, bool isEnabled);
+void tr_sharedTraversalEnable(tr_shared *, bool isEnabled);
 
-tr_port tr_sharedGetPeerPort(tr_shared const* s);
+tr_port tr_sharedGetPeerPort(tr_shared const *s);
 
-bool tr_sharedTraversalIsEnabled(tr_shared const* s);
+bool tr_sharedTraversalIsEnabled(tr_shared const *s);
 
-int tr_sharedTraversalStatus(tr_shared const*);
+int tr_sharedTraversalStatus(tr_shared const *);
 
 /** @} */

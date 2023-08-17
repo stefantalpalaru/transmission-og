@@ -40,22 +40,22 @@
 
 - (void)confirmAdd;
 
-- (void)setDestinationPath:(NSString*)destination determinationType:(TorrentDeterminationType)determinationType;
+- (void)setDestinationPath:(NSString *)destination determinationType:(TorrentDeterminationType)determinationType;
 
 - (void)setGroupsMenu;
 - (void)changeGroupValue:(id)sender;
 
-- (void)sameNameAlertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(void*)contextInfo;
+- (void)sameNameAlertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
 
 @end
 
 @implementation AddWindowController
 
-- (id)initWithTorrent:(Torrent*)torrent
-                          destination:(NSString*)path
+- (id)initWithTorrent:(Torrent *)torrent
+                          destination:(NSString *)path
                       lockDestination:(BOOL)lockDestination
-                           controller:(Controller*)controller
-                          torrentFile:(NSString*)torrentFile
+                           controller:(Controller *)controller
+                          torrentFile:(NSString *)torrentFile
     deleteTorrentCheckEnableInitially:(BOOL)deleteTorrent
                       canToggleDelete:(BOOL)canToggleDelete
 {
@@ -90,7 +90,7 @@
 
     [fFileController setTorrent:fTorrent];
 
-    NSString* name = [fTorrent name];
+    NSString *name = [fTorrent name];
     [[self window] setTitle:name];
     [fNameField setStringValue:name];
     [fNameField setToolTip:name];
@@ -166,14 +166,14 @@
     [fTimer invalidate];
 }
 
-- (Torrent*)torrent
+- (Torrent *)torrent
 {
     return fTorrent;
 }
 
 - (void)setDestination:(id)sender
 {
-    NSOpenPanel* panel = [NSOpenPanel openPanel];
+    NSOpenPanel *panel = [NSOpenPanel openPanel];
 
     [panel setPrompt:NSLocalizedString(@"Select", "Open torrent -> prompt")];
     [panel setAllowsMultipleSelection:NO];
@@ -203,7 +203,7 @@
     if ([[fDestination lastPathComponent] isEqualToString:[fTorrent name]] &&
         [[NSUserDefaults standardUserDefaults] boolForKey:@"WarningFolderDataSameName"])
     {
-        NSAlert* alert = [[NSAlert alloc] init];
+        NSAlert *alert = [[NSAlert alloc] init];
         [alert setMessageText:NSLocalizedString(@"The destination directory and root data directory have the same name.", "Add torrent -> same name -> title")];
         [alert setInformativeText:NSLocalizedString(
                                       @"If you are attempting to use already existing data,"
@@ -281,9 +281,9 @@
     [fTorrent setPriority:priority];
 }
 
-- (void)updateCheckButtons:(NSNotification*)notification
+- (void)updateCheckButtons:(NSNotification *)notification
 {
-    NSString* statusString = [NSString stringForFileSize:[fTorrent size]];
+    NSString *statusString = [NSString stringForFileSize:[fTorrent size]];
     if ([fTorrent isFolder])
     {
         //check buttons
@@ -294,7 +294,7 @@
         [fUncheckAllButton setEnabled:![fTorrent allDownloaded]]; //if there are any checked files that aren't finished
 
         //status field
-        NSString* fileString;
+        NSString *fileString;
         NSInteger count = [fTorrent fileCount];
         if (count != 1)
             fileString = [NSString
@@ -302,7 +302,7 @@
         else
             fileString = NSLocalizedString(@"1 file", "Add torrent -> info");
 
-        NSString* selectedString = [NSString stringWithFormat:NSLocalizedString(@"%@ selected", "Add torrent -> info"),
+        NSString *selectedString = [NSString stringWithFormat:NSLocalizedString(@"%@ selected", "Add torrent -> info"),
                                                               [NSString stringForFileSize:[fTorrent totalSizeSelected]]];
 
         statusString = [NSString stringWithFormat:@"%@, %@ (%@)", fileString, statusString, selectedString];
@@ -311,7 +311,7 @@
     [fStatusField setStringValue:statusString];
 }
 
-- (void)updateGroupMenu:(NSNotification*)notification
+- (void)updateGroupMenu:(NSNotification *)notification
 {
     [self setGroupsMenu];
     if (![fGroupPopUp selectItemWithTag:fGroupValue])
@@ -368,7 +368,7 @@
     [fController askOpenConfirmed:self add:YES];
 }
 
-- (void)setDestinationPath:(NSString*)destination determinationType:(TorrentDeterminationType)determinationType
+- (void)setDestinationPath:(NSString *)destination determinationType:(TorrentDeterminationType)determinationType
 {
     destination = [destination stringByExpandingTildeInPath];
     if (!fDestination || ![fDestination isEqualToString:destination])
@@ -381,13 +381,13 @@
     [fLocationField setStringValue:[fDestination stringByAbbreviatingWithTildeInPath]];
     [fLocationField setToolTip:fDestination];
 
-    ExpandedPathToIconTransformer* iconTransformer = [[ExpandedPathToIconTransformer alloc] init];
+    ExpandedPathToIconTransformer *iconTransformer = [[ExpandedPathToIconTransformer alloc] init];
     [fLocationImageView setImage:[iconTransformer transformedValue:fDestination]];
 }
 
 - (void)setGroupsMenu
 {
-    NSMenu* groupMenu = [[GroupsController groups] groupMenuWithTarget:self action:@selector(changeGroupValue:) isSmall:NO];
+    NSMenu *groupMenu = [[GroupsController groups] groupMenuWithTarget:self action:@selector(changeGroupValue:) isSmall:NO];
     [fGroupPopUp setMenu:groupMenu];
 }
 
@@ -410,7 +410,7 @@
     }
 }
 
-- (void)sameNameAlertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(void*)contextInfo
+- (void)sameNameAlertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
     if ([[alert suppressionButton] state] == NSOnState)
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"WarningFolderDataSameName"];

@@ -28,7 +28,7 @@ static int testPeerId(void)
 
         tr_peerIdInit(peer_id);
 
-        check_uint(strlen((char*)peer_id), ==, PEER_ID_LEN);
+        check_uint(strlen((char *)peer_id), ==, PEER_ID_LEN);
         check_mem(peer_id, ==, PEERID_PREFIX, 8);
 
         for (int j = 8; j < PEER_ID_LEN; ++j)
@@ -46,9 +46,9 @@ static int testPeerId(void)
 static int test_session_id(void)
 {
     tr_session_id_t session_id;
-    char const* session_id_str_1 = NULL;
-    char const* session_id_str_2 = NULL;
-    char const* session_id_str_3 = NULL;
+    char const *session_id_str_1 = NULL;
+    char const *session_id_str_2 = NULL;
+    char const *session_id_str_3 = NULL;
 
     check(!tr_session_id_is_local(NULL));
     check(!tr_session_id_is_local(""));
@@ -120,9 +120,9 @@ static int test_session_id(void)
     check(!tr_session_id_is_local(session_id_str_2));
     check(!tr_session_id_is_local(session_id_str_1));
 
-    tr_free((char*)session_id_str_3);
-    tr_free((char*)session_id_str_2);
-    tr_free((char*)session_id_str_1);
+    tr_free((char *)session_id_str_3);
+    tr_free((char *)session_id_str_2);
+    tr_free((char *)session_id_str_1);
 
     return 0;
 }

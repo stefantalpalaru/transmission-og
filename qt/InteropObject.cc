@@ -10,7 +10,7 @@
 #include "Application.h"
 #include "InteropObject.h"
 
-InteropObject::InteropObject(QObject* parent)
+InteropObject::InteropObject(QObject *parent)
     : QObject(parent)
 {
 }
@@ -21,7 +21,7 @@ bool InteropObject::PresentWindow()
     return true;
 }
 
-bool InteropObject::AddMetainfo(QString const& metainfo)
+bool InteropObject::AddMetainfo(QString const &metainfo)
 {
     AddData addme(metainfo);
 

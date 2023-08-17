@@ -30,14 +30,14 @@ void gtr_icon_refresh(gpointer vindicator UNUSED)
 
 #else
 
-static void activated(GtkStatusIcon* self UNUSED, gpointer user_data UNUSED)
+static void activated(GtkStatusIcon *self UNUSED, gpointer user_data UNUSED)
 {
     gtr_action_activate("toggle-main-window");
 }
 
-static void popup(GtkStatusIcon* self, guint button, guint when, gpointer data UNUSED)
+static void popup(GtkStatusIcon *self, guint button, guint when, gpointer data UNUSED)
 {
-    GtkWidget* w = gtr_action_get_widget("/icon-popup");
+    GtkWidget *w = gtr_action_get_widget("/icon-popup");
 
 #if GTK_CHECK_VERSION(3, 22, 0)
     gtk_menu_popup_at_pointer(GTK_MENU(w), NULL);
@@ -55,9 +55,9 @@ void gtr_icon_refresh(gpointer vicon)
     char down[64];
     char downLimit[64];
     char tip[1024];
-    char const* idle = _("Idle");
-    GtkStatusIcon* icon = GTK_STATUS_ICON(vicon);
-    tr_session* session = gtr_core_session(g_object_get_qdata(G_OBJECT(icon), core_quark()));
+    char const *idle = _("Idle");
+    GtkStatusIcon *icon = GTK_STATUS_ICON(vicon);
+    tr_session *session = gtr_core_session(g_object_get_qdata(G_OBJECT(icon), core_quark()));
 
     /* up */
     KBps = tr_sessionGetRawSpeed_KBps(session, TR_UP);
@@ -114,11 +114,11 @@ void gtr_icon_refresh(gpointer vicon)
 
 #endif
 
-static char const* getIconName(void)
+static char const *getIconName(void)
 {
-    char const* icon_name;
+    char const *icon_name;
 
-    GtkIconTheme* theme = gtk_icon_theme_get_default();
+    GtkIconTheme *theme = gtk_icon_theme_get_default();
 
     /* if the tray's icon is a 48x48 file, use it;
      * otherwise, use the fallback builtin icon */
@@ -128,7 +128,7 @@ static char const* getIconName(void)
     }
     else
     {
-        GtkIconInfo* icon_info = gtk_icon_theme_lookup_icon(theme, TRAY_ICON, 48, GTK_ICON_LOOKUP_USE_BUILTIN);
+        GtkIconInfo *icon_info = gtk_icon_theme_lookup_icon(theme, TRAY_ICON, 48, GTK_ICON_LOOKUP_USE_BUILTIN);
         gboolean const icon_is_builtin = gtk_icon_info_get_filename(icon_info) == NULL;
 
 #if GTK_CHECK_VERSION(3, 8, 0)
@@ -143,13 +143,13 @@ static char const* getIconName(void)
     return icon_name;
 }
 
-gpointer gtr_icon_new(TrCore* core)
+gpointer gtr_icon_new(TrCore *core)
 {
 #ifdef HAVE_LIBAPPINDICATOR
 
-    GtkWidget* w;
-    char const* icon_name = getIconName();
-    AppIndicator* indicator = app_indicator_new(ICON_NAME, icon_name, APP_INDICATOR_CATEGORY_SYSTEM_SERVICES);
+    GtkWidget *w;
+    char const *icon_name = getIconName();
+    AppIndicator *indicator = app_indicator_new(ICON_NAME, icon_name, APP_INDICATOR_CATEGORY_SYSTEM_SERVICES);
     app_indicator_set_status(indicator, APP_INDICATOR_STATUS_ACTIVE);
     w = gtr_action_get_widget("/icon-popup");
     app_indicator_set_menu(indicator, GTK_MENU(w));
@@ -159,8 +159,8 @@ gpointer gtr_icon_new(TrCore* core)
 
 #else
 
-    char const* icon_name = getIconName();
-    GtkStatusIcon* icon = gtk_status_icon_new_from_icon_name(icon_name);
+    char const *icon_name = getIconName();
+    GtkStatusIcon *icon = gtk_status_icon_new_from_icon_name(icon_name);
     g_signal_connect(icon, "activate", G_CALLBACK(activated), NULL);
     g_signal_connect(icon, "popup-menu", G_CALLBACK(popup), NULL);
     g_object_set_qdata(G_OBJECT(icon), core_quark(), core);

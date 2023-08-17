@@ -48,7 +48,7 @@
     [fInfoSectionLabel sizeToFit];
     [fWhereSectionLabel sizeToFit];
 
-    NSArray* labels = @[
+    NSArray *labels = @[
         fPiecesLabel,
         fHashLabel,
         fSecureLabel,
@@ -59,7 +59,7 @@
     ];
 
     CGFloat oldMaxWidth = 0.0, originX, newMaxWidth = 0.0;
-    for (NSTextField* label in labels)
+    for (NSTextField *label in labels)
     {
         NSRect const oldFrame = [label frame];
         if (oldFrame.size.width > oldMaxWidth)
@@ -74,14 +74,14 @@
             newMaxWidth = newWidth;
     }
 
-    for (NSTextField* label in labels)
+    for (NSTextField *label in labels)
     {
         NSRect frame = [label frame];
         frame.origin.x = originX + (newMaxWidth - frame.size.width);
         [label setFrame:frame];
     }
 
-    NSArray* fields = @[
+    NSArray *fields = @[
         fPiecesField,
         fHashField,
         fSecureField,
@@ -92,7 +92,7 @@
     ];
 
     CGFloat const widthIncrease = newMaxWidth - oldMaxWidth;
-    for (NSView* field in fields)
+    for (NSView *field in fields)
     {
         NSRect frame = [field frame];
         frame.origin.x += widthIncrease;
@@ -101,7 +101,7 @@
     }
 }
 
-- (void)setInfoForTorrents:(NSArray*)torrents
+- (void)setInfoForTorrents:(NSArray *)torrents
 {
     //don't check if it's the same in case the metadata changed
     fTorrents = torrents;
@@ -117,9 +117,9 @@
     if ([fTorrents count] != 1)
         return;
 
-    Torrent* torrent = fTorrents[0];
+    Torrent *torrent = fTorrents[0];
 
-    NSString* location = [torrent dataLocation];
+    NSString *location = [torrent dataLocation];
     [fDataLocationField setStringValue:location ? [location stringByAbbreviatingWithTildeInPath] : @""];
     [fDataLocationField setToolTip:location ? location : @""];
 
@@ -128,12 +128,12 @@
 
 - (void)revealDataFile:(id)sender
 {
-    Torrent* torrent = fTorrents[0];
-    NSString* location = [torrent dataLocation];
+    Torrent *torrent = fTorrents[0];
+    NSString *location = [torrent dataLocation];
     if (!location)
         return;
 
-    NSURL* file = [NSURL fileURLWithPath:location];
+    NSURL *file = [NSURL fileURLWithPath:location];
     [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:@[ file ]];
 }
 
@@ -145,25 +145,25 @@
 {
     if ([fTorrents count] == 1)
     {
-        Torrent* torrent = fTorrents[0];
+        Torrent *torrent = fTorrents[0];
 
 #warning candidate for localizedStringWithFormat (although then we'll get two commas)
-        NSString* piecesString = ![torrent isMagnet] ?
+        NSString *piecesString = ![torrent isMagnet] ?
             [NSString stringWithFormat:@"%ld, %@", [torrent pieceCount], [NSString stringForFileSize:[torrent pieceSize]]] :
             @"";
         [fPiecesField setStringValue:piecesString];
 
-        NSString* hashString = [torrent hashString];
+        NSString *hashString = [torrent hashString];
         [fHashField setStringValue:hashString];
         [fHashField setToolTip:hashString];
         [fSecureField setStringValue:[torrent privateTorrent] ?
                           NSLocalizedString(@"Private Torrent, non-tracker peer discovery disabled", "Inspector -> private torrent") :
                           NSLocalizedString(@"Public Torrent", "Inspector -> private torrent")];
 
-        NSString* commentString = [torrent comment];
+        NSString *commentString = [torrent comment];
         [fCommentView setString:commentString];
 
-        NSString* creatorString = [torrent creator];
+        NSString *creatorString = [torrent creator];
         [fCreatorField setStringValue:creatorString];
         [fDateCreatedField setObjectValue:[torrent dateCreated]];
     }

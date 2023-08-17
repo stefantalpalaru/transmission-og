@@ -163,7 +163,7 @@
 ***/
 
 /* Only use this macro to suppress false-positive alignment warnings */
-#define TR_DISCARD_ALIGN(ptr, type) ((type)(void*)(ptr))
+#define TR_DISCARD_ALIGN(ptr, type) ((type)(void *)(ptr))
 
 #define SHA_DIGEST_LENGTH 20
 

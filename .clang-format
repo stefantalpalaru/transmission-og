@@ -30,7 +30,7 @@ MaxEmptyLinesToKeep: 1
 PenaltyBreakAssignment: 1000
 PenaltyBreakBeforeFirstCallParameter: 0
 PenaltyReturnTypeOnItsOwnLine: 1000
-PointerAlignment: Left
+PointerAlignment: Right
 ReflowComments: false
 SortIncludes: false
 SpaceAfterCStyleCast: false

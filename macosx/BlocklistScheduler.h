@@ -24,10 +24,10 @@
 
 @interface BlocklistScheduler : NSObject
 {
-    NSTimer* fTimer;
+    NSTimer *fTimer;
 }
 
-+ (BlocklistScheduler*)scheduler;
++ (BlocklistScheduler *)scheduler;
 
 - (void)updateSchedule;
 - (void)cancelSchedule;

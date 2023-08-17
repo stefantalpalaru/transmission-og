@@ -44,19 +44,19 @@ THE SOFTWARE.
 
 #ifndef WITH_UTP
 
-void utp_close(UTPSocket* socket)
+void utp_close(UTPSocket *socket)
 {
     tr_logAddNamedError(MY_NAME, "utp_close(%p) was called.", socket);
     dbgmsg("utp_close(%p) was called.", socket);
 }
 
-void utp_read_drained(UTPSocket* socket)
+void utp_read_drained(UTPSocket *socket)
 {
     tr_logAddNamedError(MY_NAME, "utp_read_drained(%p) was called.", socket);
     dbgmsg("utp_read_drained(%p) was called.", socket);
 }
 
-bool utp_write(UTPSocket* socket, size_t count)
+bool utp_write(UTPSocket *socket, size_t count)
 {
     tr_logAddNamedError(MY_NAME, "utp_write(%p, %zu) was called.", socket, count);
     dbgmsg("utp_write(%p, %zu) was called.", socket, count);
@@ -64,26 +64,26 @@ bool utp_write(UTPSocket* socket, size_t count)
 }
 
 int tr_utpPacket(
-    unsigned char const* buf UNUSED,
+    unsigned char const *buf UNUSED,
     size_t buflen UNUSED,
-    struct sockaddr const* from UNUSED,
+    struct sockaddr const *from UNUSED,
     socklen_t fromlen UNUSED,
-    tr_session* ss UNUSED)
+    tr_session *ss UNUSED)
 {
     return -1;
 }
 
-struct UTPSocket* utp_create_socket(utp_context* /*ctx*/)
+struct UTPSocket *utp_create_socket(utp_context * /*ctx*/)
 {
     return NULL;
 }
 
-int utp_connect(UTPSocket* /*socket*/, sockaddr const* /*to*/, socklen_t /*tolen*/)
+int utp_connect(UTPSocket * /*socket*/, sockaddr const * /*to*/, socklen_t /*tolen*/)
 {
     return -1;
 }
 
-void tr_utpClose(tr_session* /*session*/)
+void tr_utpClose(tr_session * /*session*/)
 {
 }
 
@@ -93,10 +93,10 @@ void tr_utpClose(tr_session* /*session*/)
 
 #define UTP_INTERVAL_US 500000
 
-static void utp_on_accept(tr_session* const session, utp_socket* const s)
+static void utp_on_accept(tr_session *const session, utp_socket *const s)
 {
     struct sockaddr_storage from_storage;
-    struct sockaddr* from = (struct sockaddr*)&from_storage;
+    struct sockaddr *from = (struct sockaddr *)&from_storage;
     socklen_t fromlen = sizeof(from_storage);
     tr_address addr;
     tr_port port;
@@ -120,33 +120,33 @@ static void utp_on_accept(tr_session* const session, utp_socket* const s)
 }
 
 static void utp_send_to(
-    tr_session* const ss,
-    uint8_t const* const buf,
+    tr_session *const ss,
+    uint8_t const *const buf,
     size_t const buflen,
-    struct sockaddr const* const to,
+    struct sockaddr const *const to,
     socklen_t const tolen)
 {
     if (to->sa_family == AF_INET && ss->udp_socket != TR_BAD_SOCKET)
     {
-        sendto(ss->udp_socket, (void const*)buf, buflen, 0, to, tolen);
+        sendto(ss->udp_socket, (void const *)buf, buflen, 0, to, tolen);
     }
     else if (to->sa_family == AF_INET6 && ss->udp6_socket != TR_BAD_SOCKET)
     {
-        sendto(ss->udp6_socket, (void const*)buf, buflen, 0, to, tolen);
+        sendto(ss->udp6_socket, (void const *)buf, buflen, 0, to, tolen);
     }
 }
 #ifdef TR_UTP_TRACE
 
-static void utp_log(tr_session* const /*session*/, char const* const msg)
+static void utp_log(tr_session *const /*session*/, char const *const msg)
 {
     tr_logAddNamedDbg(MY_NAME, "%s", msg);
 }
 
 #endif
 
-static uint64 utp_callback(utp_callback_arguments* args)
+static uint64 utp_callback(utp_callback_arguments *args)
 {
-    tr_session* const session = (tr_session*)(utp_context_get_userdata(args->context));
+    tr_session *const session = (tr_session *)(utp_context_get_userdata(args->context));
 
     TR_ASSERT(tr_isSession(session));
     TR_ASSERT(session->utp_context == args->context);
@@ -173,7 +173,7 @@ static uint64 utp_callback(utp_callback_arguments* args)
     return 0;
 }
 
-static void reset_timer(tr_session* ss)
+static void reset_timer(tr_session *ss)
 {
     int sec;
     int usec;
@@ -197,9 +197,9 @@ static void reset_timer(tr_session* ss)
     tr_timerAdd(ss->utp_timer, sec, usec);
 }
 
-static void timer_callback(evutil_socket_t s UNUSED, short type UNUSED, void* closure)
+static void timer_callback(evutil_socket_t s UNUSED, short type UNUSED, void *closure)
 {
-    tr_session* session = closure;
+    tr_session *session = closure;
 
     /* utp_internal.cpp says "Should be called each time the UDP socket is drained" but it's tricky with libevent */
     utp_issue_deferred_acks(session->utp_context);
@@ -208,14 +208,14 @@ static void timer_callback(evutil_socket_t s UNUSED, short type UNUSED, void* cl
     reset_timer(session);
 }
 
-void tr_utpInit(tr_session* session)
+void tr_utpInit(tr_session *session)
 {
     if (session->utp_context != NULL)
     {
         return;
     }
 
-    utp_context* const ctx = utp_init(2);
+    utp_context *const ctx = utp_init(2);
 
     if (ctx == NULL)
     {
@@ -242,7 +242,7 @@ void tr_utpInit(tr_session* session)
     session->utp_context = ctx;
 }
 
-bool tr_utpPacket(unsigned char const* buf, size_t buflen, struct sockaddr const* from, socklen_t fromlen, tr_session* ss)
+bool tr_utpPacket(unsigned char const *buf, size_t buflen, struct sockaddr const *from, socklen_t fromlen, tr_session *ss)
 {
     if (!ss->isClosed && ss->utp_timer == NULL)
     {
@@ -264,7 +264,7 @@ bool tr_utpPacket(unsigned char const* buf, size_t buflen, struct sockaddr const
     return ret != 0;
 }
 
-void tr_utpClose(tr_session* session)
+void tr_utpClose(tr_session *session)
 {
     if (session->utp_timer != NULL)
     {

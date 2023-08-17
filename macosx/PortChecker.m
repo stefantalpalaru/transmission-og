@@ -27,7 +27,7 @@
 
 @interface PortChecker (Private)
 
-- (void)startProbe:(NSTimer*)timer;
+- (void)startProbe:(NSTimer *)timer;
 
 - (void)callBackWithStatus:(port_status_t)status;
 
@@ -71,25 +71,25 @@
     [fConnection cancel];
 }
 
-- (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
     [fPortProbeData setLength:0];
 }
 
-- (void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
     [fPortProbeData appendData:data];
 }
 
-- (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     NSLog(@"Unable to get port status: connection failed (%@)", [error localizedDescription]);
     [self callBackWithStatus:PORT_STATUS_ERROR];
 }
 
-- (void)connectionDidFinishLoading:(NSURLConnection*)connection
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    NSString* probeString = [[NSString alloc] initWithData:fPortProbeData encoding:NSUTF8StringEncoding];
+    NSString *probeString = [[NSString alloc] initWithData:fPortProbeData encoding:NSUTF8StringEncoding];
     fPortProbeData = nil;
 
     if (probeString)
@@ -115,11 +115,11 @@
 
 @implementation PortChecker (Private)
 
-- (void)startProbe:(NSTimer*)timer
+- (void)startProbe:(NSTimer *)timer
 {
     fTimer = nil;
 
-    NSURLRequest* portProbeRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:CHECKER_URL([[timer userInfo] integerValue])]
+    NSURLRequest *portProbeRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:CHECKER_URL([[timer userInfo] integerValue])]
                                                       cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
                                                   timeoutInterval:15.0];
 

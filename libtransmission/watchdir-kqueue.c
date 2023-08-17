@@ -49,11 +49,11 @@ typedef struct tr_watchdir_kqueue
 
     int kq;
     int dirfd;
-    struct event* event;
+    struct event *event;
     tr_ptrArray dir_entries;
 } tr_watchdir_kqueue;
 
-#define BACKEND_UPCAST(b) ((tr_watchdir_kqueue*)(b))
+#define BACKEND_UPCAST(b) ((tr_watchdir_kqueue *)(b))
 
 #define KQUEUE_WATCH_MASK (NOTE_WRITE | NOTE_EXTEND)
 
@@ -61,10 +61,10 @@ typedef struct tr_watchdir_kqueue
 ****
 ***/
 
-static void tr_watchdir_kqueue_on_event(evutil_socket_t fd UNUSED, short type UNUSED, void* context)
+static void tr_watchdir_kqueue_on_event(evutil_socket_t fd UNUSED, short type UNUSED, void *context)
 {
     tr_watchdir_t const handle = context;
-    tr_watchdir_kqueue* const backend = BACKEND_UPCAST(tr_watchdir_get_backend(handle));
+    tr_watchdir_kqueue *const backend = BACKEND_UPCAST(tr_watchdir_get_backend(handle));
     struct kevent ke;
     struct timespec const ts = { .tv_sec = 0, .tv_nsec = 0 };
 
@@ -78,9 +78,9 @@ static void tr_watchdir_kqueue_on_event(evutil_socket_t fd UNUSED, short type UN
     tr_watchdir_scan(handle, &backend->dir_entries);
 }
 
-static void tr_watchdir_kqueue_free(tr_watchdir_backend* backend_base)
+static void tr_watchdir_kqueue_free(tr_watchdir_backend *backend_base)
 {
-    tr_watchdir_kqueue* const backend = BACKEND_UPCAST(backend_base);
+    tr_watchdir_kqueue *const backend = BACKEND_UPCAST(backend_base);
 
     if (backend == NULL)
     {
@@ -110,11 +110,11 @@ static void tr_watchdir_kqueue_free(tr_watchdir_backend* backend_base)
     tr_free(backend);
 }
 
-tr_watchdir_backend* tr_watchdir_kqueue_new(tr_watchdir_t handle)
+tr_watchdir_backend *tr_watchdir_kqueue_new(tr_watchdir_t handle)
 {
-    char const* const path = tr_watchdir_get_path(handle);
+    char const *const path = tr_watchdir_get_path(handle);
     struct kevent ke;
-    tr_watchdir_kqueue* backend;
+    tr_watchdir_kqueue *backend;
 
     backend = tr_new0(tr_watchdir_kqueue, 1);
     backend->base.free_func = &tr_watchdir_kqueue_free;

@@ -50,7 +50,7 @@ bool should_print(bool pass)
 #endif
 }
 
-bool libtest_check(char const* file, int line, bool pass, bool condition, char const* condition_str)
+bool libtest_check(char const *file, int line, bool pass, bool condition, char const *condition_str)
 {
     if (should_print(pass))
     {
@@ -61,14 +61,14 @@ bool libtest_check(char const* file, int line, bool pass, bool condition, char c
 }
 
 bool libtest_check_bool(
-    char const* file,
+    char const *file,
     int line,
     bool pass,
     bool lhs,
     bool rhs,
-    char const* lhs_str,
-    char const* op_str,
-    char const* rhs_str)
+    char const *lhs_str,
+    char const *op_str,
+    char const *rhs_str)
 {
     if (should_print(pass))
     {
@@ -90,19 +90,19 @@ bool libtest_check_bool(
 }
 
 bool libtest_check_str(
-    char const* file,
+    char const *file,
     int line,
     bool pass,
-    char const* lhs,
-    char const* rhs,
-    char const* lhs_str,
-    char const* op_str,
-    char const* rhs_str)
+    char const *lhs,
+    char const *rhs,
+    char const *lhs_str,
+    char const *op_str,
+    char const *rhs_str)
 {
     if (should_print(pass))
     {
-        char const* const lhs_quote = lhs != NULL ? "\"" : "";
-        char const* const rhs_quote = rhs != NULL ? "\"" : "";
+        char const *const lhs_quote = lhs != NULL ? "\"" : "";
+        char const *const rhs_quote = rhs != NULL ? "\"" : "";
 
         fprintf(
             stderr,
@@ -125,7 +125,7 @@ bool libtest_check_str(
     return pass;
 }
 
-static void print_mem(FILE* stream, void const* data, size_t size)
+static void print_mem(FILE *stream, void const *data, size_t size)
 {
     if (data == NULL)
     {
@@ -139,7 +139,7 @@ static void print_mem(FILE* stream, void const* data, size_t size)
         return;
     }
 
-    uint8_t const* byte_data = data;
+    uint8_t const *byte_data = data;
 
     fprintf(stream, "x'");
 
@@ -152,15 +152,15 @@ static void print_mem(FILE* stream, void const* data, size_t size)
 }
 
 bool libtest_check_mem(
-    char const* file,
+    char const *file,
     int line,
     bool pass,
-    void const* lhs,
-    void const* rhs,
+    void const *lhs,
+    void const *rhs,
     size_t size,
-    char const* lhs_str,
-    char const* op_str,
-    char const* rhs_str)
+    char const *lhs_str,
+    char const *op_str,
+    char const *rhs_str)
 {
     if (should_print(pass))
     {
@@ -175,14 +175,14 @@ bool libtest_check_mem(
 }
 
 bool libtest_check_int(
-    char const* file,
+    char const *file,
     int line,
     bool pass,
     intmax_t lhs,
     intmax_t rhs,
-    char const* lhs_str,
-    char const* op_str,
-    char const* rhs_str)
+    char const *lhs_str,
+    char const *op_str,
+    char const *rhs_str)
 {
     if (should_print(pass))
     {
@@ -204,14 +204,14 @@ bool libtest_check_int(
 }
 
 bool libtest_check_uint(
-    char const* file,
+    char const *file,
     int line,
     bool pass,
     uintmax_t lhs,
     uintmax_t rhs,
-    char const* lhs_str,
-    char const* op_str,
-    char const* rhs_str)
+    char const *lhs_str,
+    char const *op_str,
+    char const *rhs_str)
 {
     if (should_print(pass))
     {
@@ -233,14 +233,14 @@ bool libtest_check_uint(
 }
 
 bool libtest_check_ptr(
-    char const* file,
+    char const *file,
     int line,
     bool pass,
-    void const* lhs,
-    void const* rhs,
-    char const* lhs_str,
-    char const* op_str,
-    char const* rhs_str)
+    void const *lhs,
+    void const *rhs,
+    char const *lhs_str,
+    char const *op_str,
+    char const *rhs_str)
 {
     if (should_print(pass))
     {
@@ -261,7 +261,7 @@ bool libtest_check_ptr(
     return pass;
 }
 
-int runTests(testFunc const* const tests, int numTests)
+int runTests(testFunc const *const tests, int numTests)
 {
     int ret = 0;
 
@@ -282,10 +282,10 @@ int runTests(testFunc const* const tests, int numTests)
 ****
 ***/
 
-static char* tr_getcwd(void)
+static char *tr_getcwd(void)
 {
-    char* result;
-    tr_error* error = NULL;
+    char *result;
+    tr_error *error = NULL;
 
     result = tr_sys_dir_get_current(&error);
 
@@ -299,16 +299,16 @@ static char* tr_getcwd(void)
     return result;
 }
 
-char* libtest_sandbox_create(void)
+char *libtest_sandbox_create(void)
 {
-    char* path = tr_getcwd();
-    char* sandbox = tr_buildPath(path, "sandbox-XXXXXX", NULL);
+    char *path = tr_getcwd();
+    char *sandbox = tr_buildPath(path, "sandbox-XXXXXX", NULL);
     tr_free(path);
     tr_sys_dir_create_temp(sandbox, NULL);
     return tr_sys_path_native_separators(sandbox);
 }
 
-static void rm_rf(char const* killme)
+static void rm_rf(char const *killme)
 {
     tr_sys_path_info info;
 
@@ -321,13 +321,13 @@ static void rm_rf(char const* killme)
 
     if (odir != TR_BAD_SYS_DIR)
     {
-        char const* name;
+        char const *name;
 
         while ((name = tr_sys_dir_read_name(odir, NULL)) != NULL)
         {
             if (strcmp(name, ".") != 0 && strcmp(name, "..") != 0)
             {
-                char* tmp = tr_buildPath(killme, name, NULL);
+                char *tmp = tr_buildPath(killme, name, NULL);
                 rm_rf(tmp);
                 tr_free(tmp);
             }
@@ -344,7 +344,7 @@ static void rm_rf(char const* killme)
     tr_sys_path_remove(killme, NULL);
 }
 
-void libtest_sandbox_destroy(char const* sandbox)
+void libtest_sandbox_destroy(char const *sandbox)
 {
     rm_rf(sandbox);
 }
@@ -371,15 +371,15 @@ void libtest_sandbox_destroy(char const* sandbox)
 #define SPEED_G_STR "GB/s"
 #define SPEED_T_STR "TB/s"
 
-tr_session* libttest_session_init(tr_variant* settings)
+tr_session *libttest_session_init(tr_variant *settings)
 {
     size_t len;
-    char const* str;
-    char* sandbox;
-    char* path;
+    char const *str;
+    char *sandbox;
+    char *path;
     tr_quark q;
     static bool formatters_inited = false;
-    tr_session* session;
+    tr_session *session;
     tr_variant local_settings;
 
     tr_variantInitDict(&local_settings, 10);
@@ -462,9 +462,9 @@ tr_session* libttest_session_init(tr_variant* settings)
     return session;
 }
 
-void libttest_session_close(tr_session* session)
+void libttest_session_close(tr_session *session)
 {
-    char* sandbox;
+    char *sandbox;
 
     sandbox = tr_strdup(tr_sessionGetConfigDir(session));
     tr_sessionClose(session);
@@ -479,14 +479,14 @@ void libttest_session_close(tr_session* session)
 ****
 ***/
 
-tr_torrent* libttest_zero_torrent_init(tr_session* session)
+tr_torrent *libttest_zero_torrent_init(tr_session *session)
 {
     int err;
     size_t metainfo_len;
-    char* metainfo;
-    char const* metainfo_base64;
-    tr_torrent* tor;
-    tr_ctor* ctor;
+    char *metainfo;
+    char const *metainfo_base64;
+    tr_torrent *tor;
+    tr_ctor *ctor;
 
     /*
        1048576 files-filled-with-zeroes/1048576
@@ -519,7 +519,7 @@ tr_torrent* libttest_zero_torrent_init(tr_session* session)
     TR_ASSERT(metainfo_len > 0);
     TR_ASSERT(session != NULL);
     ctor = tr_ctorNew(session);
-    tr_ctorSetMetainfo(ctor, (uint8_t*)metainfo, metainfo_len);
+    tr_ctorSetMetainfo(ctor, (uint8_t *)metainfo, metainfo_len);
     tr_ctorSetPaused(ctor, TR_FORCE, true);
 
     /* create the torrent */
@@ -533,15 +533,15 @@ tr_torrent* libttest_zero_torrent_init(tr_session* session)
     return tor;
 }
 
-void libttest_zero_torrent_populate(tr_torrent* tor, bool complete)
+void libttest_zero_torrent_populate(tr_torrent *tor, bool complete)
 {
     for (tr_file_index_t i = 0; i < tor->info.fileCount; ++i)
     {
         int err;
         tr_sys_file_t fd;
-        char* path;
-        char* dirname;
-        tr_file const* file = &tor->info.files[i];
+        char *path;
+        char *dirname;
+        tr_file const *file = &tor->info.files[i];
 
         if (!complete && i == 0)
         {
@@ -591,12 +591,12 @@ void libttest_zero_torrent_populate(tr_torrent* tor, bool complete)
 ****
 ***/
 
-static void onVerifyDone(tr_torrent* tor UNUSED, bool aborted UNUSED, void* done)
+static void onVerifyDone(tr_torrent *tor UNUSED, bool aborted UNUSED, void *done)
 {
-    *(bool*)done = true;
+    *(bool *)done = true;
 }
 
-void libttest_blockingTorrentVerify(tr_torrent* tor)
+void libttest_blockingTorrentVerify(tr_torrent *tor)
 {
     TR_ASSERT(tor->session != NULL);
     TR_ASSERT(!tr_amInEventThread(tor->session));
@@ -611,10 +611,10 @@ void libttest_blockingTorrentVerify(tr_torrent* tor)
     }
 }
 
-static void build_parent_dir(char const* path)
+static void build_parent_dir(char const *path)
 {
-    char* dir;
-    tr_error* error = NULL;
+    char *dir;
+    tr_error *error = NULL;
     int const tmperr = errno;
 
     dir = tr_sys_path_dirname(path, NULL);
@@ -625,7 +625,7 @@ static void build_parent_dir(char const* path)
     errno = tmperr;
 }
 
-void libtest_create_file_with_contents(char const* path, void const* payload, size_t n)
+void libtest_create_file_with_contents(char const *path, void const *payload, size_t n)
 {
     tr_sys_file_t fd;
     int const tmperr = errno;
@@ -641,17 +641,17 @@ void libtest_create_file_with_contents(char const* path, void const* payload, si
     errno = tmperr;
 }
 
-void libtest_create_file_with_string_contents(char const* path, char const* str)
+void libtest_create_file_with_string_contents(char const *path, char const *str)
 {
     libtest_create_file_with_contents(path, str, strlen(str));
 }
 
-void libtest_create_tmpfile_with_contents(char* tmpl, void const* payload, size_t n)
+void libtest_create_tmpfile_with_contents(char *tmpl, void const *payload, size_t n)
 {
     tr_sys_file_t fd;
     int const tmperr = errno;
     uint64_t n_left = n;
-    tr_error* error = NULL;
+    tr_error *error = NULL;
 
     build_parent_dir(tmpl);
 

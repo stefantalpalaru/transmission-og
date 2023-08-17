@@ -24,7 +24,7 @@
 
 @implementation PrefsWindow
 
-- (void)keyDown:(NSEvent*)event
+- (void)keyDown:(NSEvent *)event
 {
     if ([event keyCode] == 53) //esc key
         [self close];

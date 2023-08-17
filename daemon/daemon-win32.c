@@ -28,8 +28,8 @@
 #define SERVICE_CONTROL_PRESHUTDOWN 0x0000000F
 #endif
 
-static dtr_callbacks const* callbacks = NULL;
-static void* callback_arg = NULL;
+static dtr_callbacks const *callbacks = NULL;
+static void *callback_arg = NULL;
 
 static LPCWSTR const service_name = L"TransmissionOGDaemon";
 
@@ -42,16 +42,16 @@ static HANDLE service_stop_thread = NULL;
 ****
 ***/
 
-static void set_system_error(tr_error** error, DWORD code, char const* message)
+static void set_system_error(tr_error **error, DWORD code, char const *message)
 {
-    char* const system_message = tr_win32_format_message(code);
+    char *const system_message = tr_win32_format_message(code);
     tr_error_set(error, code, "%s (0x%08lx): %s", message, code, system_message);
     tr_free(system_message);
 }
 
-static void do_log_system_error(char const* file, int line, tr_log_level level, DWORD code, char const* message)
+static void do_log_system_error(char const *file, int line, tr_log_level level, DWORD code, char const *message)
 {
-    char* const system_message = tr_win32_format_message(code);
+    char *const system_message = tr_win32_format_message(code);
     tr_logAddMessage(file, line, level, "[dtr_daemon] %s (0x%08lx): %s", message, code, system_message);
     tr_free(system_message);
 }
@@ -107,7 +107,7 @@ static void update_service_status(
     }
 }
 
-static unsigned int __stdcall service_stop_thread_main(void* param)
+static unsigned int __stdcall service_stop_thread_main(void *param)
 {
     callbacks->on_stop(callback_arg);
 
@@ -169,14 +169,14 @@ static DWORD WINAPI handle_service_ctrl(DWORD control_code, DWORD event_type, LP
     return ERROR_CALL_NOT_IMPLEMENTED;
 }
 
-static unsigned int __stdcall service_thread_main(void* context)
+static unsigned int __stdcall service_thread_main(void *context)
 {
     (void)context;
 
     return callbacks->on_start(callback_arg, false);
 }
 
-static VOID WINAPI service_main(DWORD argc, LPWSTR* argv)
+static VOID WINAPI service_main(DWORD argc, LPWSTR *argv)
 {
     (void)argc;
     (void)argv;
@@ -228,7 +228,7 @@ static VOID WINAPI service_main(DWORD argc, LPWSTR* argv)
 ****
 ***/
 
-bool dtr_daemon(dtr_callbacks const* cb, void* cb_arg, bool foreground, int* exit_code, tr_error** error)
+bool dtr_daemon(dtr_callbacks const *cb, void *cb_arg, bool foreground, int *exit_code, tr_error **error)
 {
     callbacks = cb;
     callback_arg = cb_arg;

@@ -35,7 +35,7 @@ static void handle_sigchld(int i UNUSED)
     /* FIXME: Call old handler, if any */
 }
 
-static void set_system_error(tr_error** error, int code, char const* what)
+static void set_system_error(tr_error **error, int code, char const *what)
 {
     if (error == NULL)
     {
@@ -52,7 +52,7 @@ static void set_system_error(tr_error** error, int code, char const* what)
     }
 }
 
-static bool tr_spawn_async_in_child(tr_error** error, char* const* cmd, char* const* env, char const* work_dir, int pipe_fd)
+static bool tr_spawn_async_in_child(tr_error **error, char *const *cmd, char *const *env, char const *work_dir, int pipe_fd)
 {
     ssize_t count;
 
@@ -88,7 +88,7 @@ fail:
     return false;
 }
 
-static bool tr_spawn_async_in_parent(int pipe_fd, tr_error** error)
+static bool tr_spawn_async_in_parent(int pipe_fd, tr_error **error)
 {
     int child_errno;
     ssize_t count;
@@ -121,7 +121,7 @@ static bool tr_spawn_async_in_parent(int pipe_fd, tr_error** error)
     return true;
 }
 
-bool tr_spawn_async(char* const* cmd, char* const* env, char const* work_dir, tr_error** error)
+bool tr_spawn_async(char *const *cmd, char *const *env, char const *work_dir, tr_error **error)
 {
     static bool sigchld_handler_set = false;
 

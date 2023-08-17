@@ -22,7 +22,7 @@
 ****
 ***/
 
-void tr_dh_align_key(uint8_t* key_buffer, size_t key_size, size_t buffer_size)
+void tr_dh_align_key(uint8_t *key_buffer, size_t key_size, size_t buffer_size)
 {
     TR_ASSERT(key_size <= buffer_size);
 
@@ -41,7 +41,7 @@ void tr_dh_align_key(uint8_t* key_buffer, size_t key_size, size_t buffer_size)
 ****
 ***/
 
-bool tr_sha1(uint8_t* hash, void const* data1, int data1_length, ...)
+bool tr_sha1(uint8_t *hash, void const *data1, int data1_length, ...)
 {
     tr_sha1_ctx_t sha;
 
@@ -53,11 +53,11 @@ bool tr_sha1(uint8_t* hash, void const* data1, int data1_length, ...)
     if (tr_sha1_update(sha, data1, data1_length))
     {
         va_list vl;
-        void const* data;
+        void const *data;
 
         va_start(vl, data1_length);
 
-        while ((data = va_arg(vl, void const*)) != NULL)
+        while ((data = va_arg(vl, void const *)) != NULL)
         {
             int const data_length = va_arg(vl, int);
             TR_ASSERT(data_length >= 0);
@@ -119,7 +119,7 @@ int tr_rand_int_weak(int upper_bound)
 ****
 ***/
 
-char* tr_ssha1(char const* plain_text)
+char *tr_ssha1(char const *plain_text)
 {
     TR_ASSERT(plain_text != NULL);
 
@@ -129,7 +129,7 @@ char* tr_ssha1(char const* plain_text)
         salter_len = 64
     };
 
-    static char const* salter =
+    static char const *salter =
         "0123456789"
         "abcdefghijklmnopqrstuvwxyz"
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -155,7 +155,7 @@ char* tr_ssha1(char const* plain_text)
     return tr_strdup(buf);
 }
 
-bool tr_ssha1_matches(char const* ssha1, char const* plain_text)
+bool tr_ssha1_matches(char const *ssha1, char const *plain_text)
 {
     TR_ASSERT(ssha1 != NULL);
     TR_ASSERT(plain_text != NULL);
@@ -171,25 +171,25 @@ bool tr_ssha1_matches(char const* ssha1, char const* plain_text)
     }
 
     /* extract the salt */
-    char const* const salt = ssha1 + brace_and_hash_len;
+    char const *const salt = ssha1 + brace_and_hash_len;
     size_t const salt_len = source_len - brace_and_hash_len;
 
     uint8_t buf[SHA_DIGEST_LENGTH * 2 + 1];
 
     /* hash pass + salt */
     tr_sha1(buf, plain_text, (int)strlen(plain_text), salt, (int)salt_len, NULL);
-    tr_sha1_to_hex((char*)buf, buf);
+    tr_sha1_to_hex((char *)buf, buf);
 
-    return strncmp(ssha1 + brace_len, (char const*)buf, SHA_DIGEST_LENGTH * 2) == 0;
+    return strncmp(ssha1 + brace_len, (char const *)buf, SHA_DIGEST_LENGTH * 2) == 0;
 }
 
 /***
 ****
 ***/
 
-void* tr_base64_encode(void const* input, size_t input_length, size_t* output_length)
+void *tr_base64_encode(void const *input, size_t input_length, size_t *output_length)
 {
-    char* ret;
+    char *ret;
 
     if (input != NULL)
     {
@@ -236,14 +236,14 @@ void* tr_base64_encode(void const* input, size_t input_length, size_t* output_le
     return ret;
 }
 
-void* tr_base64_encode_str(char const* input, size_t* output_length)
+void *tr_base64_encode_str(char const *input, size_t *output_length)
 {
     return tr_base64_encode(input, input == NULL ? 0 : strlen(input), output_length);
 }
 
-void* tr_base64_decode(void const* input, size_t input_length, size_t* output_length)
+void *tr_base64_decode(void const *input, size_t input_length, size_t *output_length)
 {
-    char* ret;
+    char *ret;
 
     if (input != NULL)
     {
@@ -284,7 +284,7 @@ void* tr_base64_decode(void const* input, size_t input_length, size_t* output_le
     return ret;
 }
 
-void* tr_base64_decode_str(char const* input, size_t* output_length)
+void *tr_base64_decode_str(char const *input, size_t *output_length)
 {
     return tr_base64_decode(input, input == NULL ? 0 : strlen(input), output_length);
 }

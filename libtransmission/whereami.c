@@ -77,11 +77,11 @@ extern "C"
 #endif
 #include <stdbool.h>
 
-    static int WAI_PREFIX(getModulePath_)(HMODULE module, char* out, int capacity, int* dirname_length)
+    static int WAI_PREFIX(getModulePath_)(HMODULE module, char *out, int capacity, int *dirname_length)
     {
         wchar_t buffer1[MAX_PATH];
         wchar_t buffer2[MAX_PATH];
-        wchar_t* path = NULL;
+        wchar_t *path = NULL;
         int length = -1;
         bool ok;
 
@@ -99,9 +99,9 @@ extern "C"
                 DWORD size_ = size;
                 do
                 {
-                    wchar_t* path_;
+                    wchar_t *path_;
 
-                    path_ = (wchar_t*)WAI_REALLOC(path, sizeof(wchar_t) * size_ * 2);
+                    path_ = (wchar_t *)WAI_REALLOC(path, sizeof(wchar_t) * size_ * 2);
                     if (!path_)
                         break;
                     size_ *= 2;
@@ -148,12 +148,12 @@ extern "C"
         return ok ? length : -1;
     }
 
-    WAI_NOINLINE WAI_FUNCSPEC int WAI_PREFIX(getExecutablePath)(char* out, int capacity, int* dirname_length)
+    WAI_NOINLINE WAI_FUNCSPEC int WAI_PREFIX(getExecutablePath)(char *out, int capacity, int *dirname_length)
     {
         return WAI_PREFIX(getModulePath_)(NULL, out, capacity, dirname_length);
     }
 
-    WAI_NOINLINE WAI_FUNCSPEC int WAI_PREFIX(getModulePath)(char* out, int capacity, int* dirname_length)
+    WAI_NOINLINE WAI_FUNCSPEC int WAI_PREFIX(getModulePath)(char *out, int capacity, int *dirname_length)
     {
         HMODULE module;
         int length = -1;
@@ -201,10 +201,10 @@ extern "C"
 #endif
 
 WAI_FUNCSPEC
-int WAI_PREFIX(getExecutablePath)(char* out, int capacity, int* dirname_length)
+int WAI_PREFIX(getExecutablePath)(char *out, int capacity, int *dirname_length)
 {
     char buffer[PATH_MAX];
-    char* resolved = NULL;
+    char *resolved = NULL;
     int length = -1;
     bool ok;
 
@@ -257,10 +257,10 @@ int WAI_PREFIX(getExecutablePath)(char* out, int capacity, int* dirname_length)
 #endif
 #include <stdbool.h>
 
-WAI_NOINLINE WAI_FUNCSPEC int WAI_PREFIX(getModulePath)(char* out, int capacity, int* dirname_length)
+WAI_NOINLINE WAI_FUNCSPEC int WAI_PREFIX(getModulePath)(char *out, int capacity, int *dirname_length)
 {
     int length = -1;
-    FILE* maps = NULL;
+    FILE *maps = NULL;
 
     for (int r = 0; r < WAI_PROC_SELF_MAPS_RETRY; ++r)
     {
@@ -296,7 +296,7 @@ WAI_NOINLINE WAI_FUNCSPEC int WAI_PREFIX(getModulePath)(char* out, int capacity,
                 uint64_t addr = (uintptr_t)WAI_RETURN_ADDRESS();
                 if (low <= addr && addr <= high)
                 {
-                    char* resolved;
+                    char *resolved;
 
                     resolved = realpath(path, buffer);
                     if (!resolved)
@@ -314,7 +314,7 @@ WAI_NOINLINE WAI_FUNCSPEC int WAI_PREFIX(getModulePath)(char* out, int capacity,
                             break;
                         }
 
-                        char* begin = (char*)mmap(0, offset, PROT_READ, MAP_SHARED, fd, 0);
+                        char *begin = (char *)mmap(0, offset, PROT_READ, MAP_SHARED, fd, 0);
                         if (begin == MAP_FAILED)
                         {
                             close(fd);
@@ -322,12 +322,12 @@ WAI_NOINLINE WAI_FUNCSPEC int WAI_PREFIX(getModulePath)(char* out, int capacity,
                             break;
                         }
 
-                        char* p = begin + offset - 30; // minimum size of local file header
+                        char *p = begin + offset - 30; // minimum size of local file header
                         while (p >= begin) // scan backwards
                         {
-                            if (*((uint32_t*)p) == 0x04034b50UL) // local file header signature found
+                            if (*((uint32_t *)p) == 0x04034b50UL) // local file header signature found
                             {
-                                uint16_t length_ = *((uint16_t*)(p + 26));
+                                uint16_t length_ = *((uint16_t *)(p + 26));
 
                                 if (length + 2 + length_ < (int)sizeof(buffer))
                                 {
@@ -390,12 +390,12 @@ WAI_NOINLINE WAI_FUNCSPEC int WAI_PREFIX(getModulePath)(char* out, int capacity,
 #include <stdbool.h>
 
 WAI_FUNCSPEC
-int WAI_PREFIX(getExecutablePath)(char* out, int capacity, int* dirname_length)
+int WAI_PREFIX(getExecutablePath)(char *out, int capacity, int *dirname_length)
 {
     char buffer1[PATH_MAX];
     char buffer2[PATH_MAX];
-    char* path = buffer1;
-    char* resolved = NULL;
+    char *path = buffer1;
+    char *resolved = NULL;
     int length = -1;
     bool ok;
 
@@ -404,7 +404,7 @@ int WAI_PREFIX(getExecutablePath)(char* out, int capacity, int* dirname_length)
         uint32_t size = (uint32_t)sizeof(buffer1);
         if (_NSGetExecutablePath(path, &size) == -1)
         {
-            path = (char*)WAI_MALLOC(size);
+            path = (char *)WAI_MALLOC(size);
             if (!_NSGetExecutablePath(path, &size))
                 break;
         }
@@ -440,10 +440,10 @@ int WAI_PREFIX(getExecutablePath)(char* out, int capacity, int* dirname_length)
     return ok ? length : -1;
 }
 
-WAI_NOINLINE WAI_FUNCSPEC int WAI_PREFIX(getModulePath)(char* out, int capacity, int* dirname_length)
+WAI_NOINLINE WAI_FUNCSPEC int WAI_PREFIX(getModulePath)(char *out, int capacity, int *dirname_length)
 {
     char buffer[PATH_MAX];
-    char* resolved = NULL;
+    char *resolved = NULL;
     int length = -1;
 
     for (;;)
@@ -497,12 +497,12 @@ WAI_NOINLINE WAI_FUNCSPEC int WAI_PREFIX(getModulePath)(char* out, int capacity,
 #endif
 
 WAI_FUNCSPEC
-int WAI_PREFIX(getExecutablePath)(char* out, int capacity, int* dirname_length)
+int WAI_PREFIX(getExecutablePath)(char *out, int capacity, int *dirname_length)
 {
     char buffer1[PATH_MAX];
     char buffer2[PATH_MAX];
-    char* resolved = NULL;
-    FILE* self_exe = NULL;
+    char *resolved = NULL;
+    FILE *self_exe = NULL;
     int length = -1;
     bool ok;
 
@@ -546,10 +546,10 @@ int WAI_PREFIX(getExecutablePath)(char* out, int capacity, int* dirname_length)
 }
 
 WAI_FUNCSPEC
-int WAI_PREFIX(getModulePath)(char* out, int capacity, int* dirname_length)
+int WAI_PREFIX(getModulePath)(char *out, int capacity, int *dirname_length)
 {
     char buffer[PATH_MAX];
-    char* resolved = NULL;
+    char *resolved = NULL;
     int length = -1;
 
     for (;;)
@@ -605,13 +605,13 @@ int WAI_PREFIX(getModulePath)(char* out, int capacity, int* dirname_length)
 #include <unistd.h>
 
 WAI_FUNCSPEC
-int WAI_PREFIX(getExecutablePath)(char* out, int capacity, int* dirname_length)
+int WAI_PREFIX(getExecutablePath)(char *out, int capacity, int *dirname_length)
 {
     char buffer1[4096];
     char buffer2[PATH_MAX];
     char buffer3[PATH_MAX];
-    char** argv = (char**)buffer1;
-    char* resolved = NULL;
+    char **argv = (char **)buffer1;
+    char *resolved = NULL;
     int length = -1;
     bool ok;
 
@@ -625,7 +625,7 @@ int WAI_PREFIX(getExecutablePath)(char* out, int capacity, int* dirname_length)
 
         if (size > sizeof(buffer1))
         {
-            argv = (char**)WAI_MALLOC(size);
+            argv = (char **)WAI_MALLOC(size);
             if (!argv)
                 break;
         }
@@ -641,17 +641,17 @@ int WAI_PREFIX(getExecutablePath)(char* out, int capacity, int* dirname_length)
         }
         else
         {
-            char const* PATH = getenv("PATH");
+            char const *PATH = getenv("PATH");
             if (!PATH)
                 break;
 
             size_t argv0_length = strlen(argv[0]);
 
-            char const* begin = PATH;
+            char const *begin = PATH;
             while (1)
             {
-                char const* separator = strchr(begin, ':');
-                char const* end = separator ? separator : begin + strlen(begin);
+                char const *separator = strchr(begin, ':');
+                char const *end = separator ? separator : begin + strlen(begin);
 
                 if (end - begin > 0)
                 {
@@ -701,7 +701,7 @@ int WAI_PREFIX(getExecutablePath)(char* out, int capacity, int* dirname_length)
         }
     }
 
-    if (argv != (char**)buffer1)
+    if (argv != (char **)buffer1)
         WAI_FREE(argv);
 
     return ok ? length : -1;
@@ -710,12 +710,12 @@ int WAI_PREFIX(getExecutablePath)(char* out, int capacity, int* dirname_length)
 #else
 
 WAI_FUNCSPEC
-int WAI_PREFIX(getExecutablePath)(char* out, int capacity, int* dirname_length)
+int WAI_PREFIX(getExecutablePath)(char *out, int capacity, int *dirname_length)
 {
     char buffer1[PATH_MAX];
     char buffer2[PATH_MAX];
-    char* path = buffer1;
-    char* resolved = NULL;
+    char *path = buffer1;
+    char *resolved = NULL;
     int length = -1;
     bool ok;
 
@@ -761,10 +761,10 @@ int WAI_PREFIX(getExecutablePath)(char* out, int capacity, int* dirname_length)
 
 #endif
 
-WAI_NOINLINE WAI_FUNCSPEC int WAI_PREFIX(getModulePath)(char* out, int capacity, int* dirname_length)
+WAI_NOINLINE WAI_FUNCSPEC int WAI_PREFIX(getModulePath)(char *out, int capacity, int *dirname_length)
 {
     char buffer[PATH_MAX];
-    char* resolved = NULL;
+    char *resolved = NULL;
     int length = -1;
 
     for (;;)

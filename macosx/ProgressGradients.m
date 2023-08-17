@@ -25,16 +25,16 @@
 
 @implementation ProgressGradients (Private)
 
-+ (NSGradient*)progressGradientForRed:(CGFloat)redComponent green:(CGFloat)greenComponent blue:(CGFloat)blueComponent
++ (NSGradient *)progressGradientForRed:(CGFloat)redComponent green:(CGFloat)greenComponent blue:(CGFloat)blueComponent
 {
     CGFloat const alpha = [[NSUserDefaults standardUserDefaults] boolForKey:@"SmallView"] ? 0.27 : 1.0;
 
-    NSColor* baseColor = [NSColor colorWithCalibratedRed:redComponent green:greenComponent blue:blueComponent alpha:alpha];
+    NSColor *baseColor = [NSColor colorWithCalibratedRed:redComponent green:greenComponent blue:blueComponent alpha:alpha];
 
-    NSColor* color2 = [NSColor colorWithCalibratedRed:redComponent * 0.95 green:greenComponent * 0.95 blue:blueComponent * 0.95
+    NSColor *color2 = [NSColor colorWithCalibratedRed:redComponent * 0.95 green:greenComponent * 0.95 blue:blueComponent * 0.95
                                                 alpha:alpha];
 
-    NSColor* color3 = [NSColor colorWithCalibratedRed:redComponent * 0.85 green:greenComponent * 0.85 blue:blueComponent * 0.85
+    NSColor *color3 = [NSColor colorWithCalibratedRed:redComponent * 0.85 green:greenComponent * 0.85 blue:blueComponent * 0.85
                                                 alpha:alpha];
 
     return [[NSGradient alloc] initWithColorsAndLocations:baseColor, 0.0, color2, 0.5, color3, 0.5, baseColor, 1.0, nil];
@@ -44,7 +44,7 @@
 
 @implementation ProgressGradients
 
-+ (NSGradient*)progressWhiteGradient
++ (NSGradient *)progressWhiteGradient
 {
     if ([NSApp isDarkMode])
     {
@@ -56,7 +56,7 @@
     }
 }
 
-+ (NSGradient*)progressGrayGradient
++ (NSGradient *)progressGrayGradient
 {
     if ([NSApp isDarkMode])
     {
@@ -68,7 +68,7 @@
     }
 }
 
-+ (NSGradient*)progressLightGrayGradient
++ (NSGradient *)progressLightGrayGradient
 {
     if ([NSApp isDarkMode])
     {
@@ -80,7 +80,7 @@
     }
 }
 
-+ (NSGradient*)progressBlueGradient
++ (NSGradient *)progressBlueGradient
 {
     if ([NSApp isDarkMode])
     {
@@ -92,7 +92,7 @@
     }
 }
 
-+ (NSGradient*)progressDarkBlueGradient
++ (NSGradient *)progressDarkBlueGradient
 {
     if ([NSApp isDarkMode])
     {
@@ -104,7 +104,7 @@
     }
 }
 
-+ (NSGradient*)progressGreenGradient
++ (NSGradient *)progressGreenGradient
 {
     if ([NSApp isDarkMode])
     {
@@ -116,7 +116,7 @@
     }
 }
 
-+ (NSGradient*)progressLightGreenGradient
++ (NSGradient *)progressLightGreenGradient
 {
     if ([NSApp isDarkMode])
     {
@@ -128,7 +128,7 @@
     }
 }
 
-+ (NSGradient*)progressDarkGreenGradient
++ (NSGradient *)progressDarkGreenGradient
 {
     if ([NSApp isDarkMode])
     {
@@ -140,7 +140,7 @@
     }
 }
 
-+ (NSGradient*)progressRedGradient
++ (NSGradient *)progressRedGradient
 {
     if ([NSApp isDarkMode])
     {
@@ -152,7 +152,7 @@
     }
 }
 
-+ (NSGradient*)progressYellowGradient
++ (NSGradient *)progressYellowGradient
 {
     if ([NSApp isDarkMode])
     {

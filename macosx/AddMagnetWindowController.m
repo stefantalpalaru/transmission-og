@@ -35,18 +35,18 @@
 
 - (void)confirmAdd;
 
-- (void)setDestinationPath:(NSString*)destination determinationType:(TorrentDeterminationType)determinationType;
+- (void)setDestinationPath:(NSString *)destination determinationType:(TorrentDeterminationType)determinationType;
 
 - (void)setGroupsMenu;
 - (void)changeGroupValue:(id)sender;
 
-- (void)sameNameAlertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(void*)contextInfo;
+- (void)sameNameAlertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
 
 @end
 
 @implementation AddMagnetWindowController
 
-- (id)initWithTorrent:(Torrent*)torrent destination:(NSString*)path controller:(Controller*)controller
+- (id)initWithTorrent:(Torrent *)torrent destination:(NSString *)path controller:(Controller *)controller
 {
     if ((self = [super initWithWindowNibName:@"AddMagnetWindow"]))
     {
@@ -65,7 +65,7 @@
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateGroupMenu:) name:@"UpdateGroups" object:nil];
 
-    NSString* name = [fTorrent name];
+    NSString *name = [fTorrent name];
     [[self window] setTitle:name];
     [fNameField setStringValue:name];
     [fNameField setToolTip:name];
@@ -172,14 +172,14 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (Torrent*)torrent
+- (Torrent *)torrent
 {
     return fTorrent;
 }
 
 - (void)setDestination:(id)sender
 {
-    NSOpenPanel* panel = [NSOpenPanel openPanel];
+    NSOpenPanel *panel = [NSOpenPanel openPanel];
 
     [panel setPrompt:NSLocalizedString(@"Select", "Open torrent -> prompt")];
     [panel setAllowsMultipleSelection:NO];
@@ -206,7 +206,7 @@
     if ([[fDestination lastPathComponent] isEqualToString:[fTorrent name]] &&
         [[NSUserDefaults standardUserDefaults] boolForKey:@"WarningFolderDataSameName"])
     {
-        NSAlert* alert = [[NSAlert alloc] init];
+        NSAlert *alert = [[NSAlert alloc] init];
         [alert setMessageText:NSLocalizedString(@"The destination directory and root data directory have the same name.", "Add torrent -> same name -> title")];
         [alert setInformativeText:NSLocalizedString(
                                       @"If you are attempting to use already existing data,"
@@ -258,7 +258,7 @@
     [fTorrent setPriority:priority];
 }
 
-- (void)updateGroupMenu:(NSNotification*)notification
+- (void)updateGroupMenu:(NSNotification *)notification
 {
     [self setGroupsMenu];
     if (![fGroupPopUp selectItemWithTag:fGroupValue])
@@ -284,7 +284,7 @@
     [fController askOpenMagnetConfirmed:self add:YES];
 }
 
-- (void)setDestinationPath:(NSString*)destination determinationType:(TorrentDeterminationType)determinationType
+- (void)setDestinationPath:(NSString *)destination determinationType:(TorrentDeterminationType)determinationType
 {
     destination = [destination stringByExpandingTildeInPath];
     if (!fDestination || ![fDestination isEqualToString:destination])
@@ -297,13 +297,13 @@
     [fLocationField setStringValue:[fDestination stringByAbbreviatingWithTildeInPath]];
     [fLocationField setToolTip:fDestination];
 
-    ExpandedPathToIconTransformer* iconTransformer = [[ExpandedPathToIconTransformer alloc] init];
+    ExpandedPathToIconTransformer *iconTransformer = [[ExpandedPathToIconTransformer alloc] init];
     [fLocationImageView setImage:[iconTransformer transformedValue:fDestination]];
 }
 
 - (void)setGroupsMenu
 {
-    NSMenu* groupMenu = [[GroupsController groups] groupMenuWithTarget:self action:@selector(changeGroupValue:) isSmall:NO];
+    NSMenu *groupMenu = [[GroupsController groups] groupMenuWithTarget:self action:@selector(changeGroupValue:) isSmall:NO];
     [fGroupPopUp setMenu:groupMenu];
 }
 
@@ -323,7 +323,7 @@
         ;
 }
 
-- (void)sameNameAlertDidEnd:(NSAlert*)alert returnCode:(NSInteger)returnCode contextInfo:(void*)contextInfo
+- (void)sameNameAlertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
     if ([[alert suppressionButton] state] == NSOnState)
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"WarningFolderDataSameName"];

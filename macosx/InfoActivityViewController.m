@@ -56,7 +56,7 @@
     [fDatesSectionLabel sizeToFit];
     [fTimeSectionLabel sizeToFit];
 
-    NSArray* labels = @[
+    NSArray *labels = @[
         fStateLabel,
         fProgressLabel,
         fHaveLabel,
@@ -73,7 +73,7 @@
     ];
 
     CGFloat oldMaxWidth = 0.0, originX, newMaxWidth = 0.0;
-    for (NSTextField* label in labels)
+    for (NSTextField *label in labels)
     {
         NSRect const oldFrame = [label frame];
         if (oldFrame.size.width > oldMaxWidth)
@@ -88,14 +88,14 @@
             newMaxWidth = newWidth;
     }
 
-    for (NSTextField* label in labels)
+    for (NSTextField *label in labels)
     {
         NSRect frame = [label frame];
         frame.origin.x = originX + (newMaxWidth - frame.size.width);
         [label setFrame:frame];
     }
 
-    NSArray* fields = @[
+    NSArray *fields = @[
         fDateAddedField,
         fDateCompletedField,
         fDateActivityField,
@@ -112,7 +112,7 @@
     ];
 
     CGFloat const widthIncrease = newMaxWidth - oldMaxWidth;
-    for (NSView* field in fields)
+    for (NSView *field in fields)
     {
         NSRect frame = [field frame];
         frame.origin.x += widthIncrease;
@@ -131,7 +131,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)setInfoForTorrents:(NSArray*)torrents
+- (void)setInfoForTorrents:(NSArray *)torrents
 {
     //don't check if it's the same in case the metadata changed
     fTorrents = torrents;
@@ -149,8 +149,8 @@
         return;
 
     uint64_t have = 0, haveVerified = 0, downloadedTotal = 0, uploadedTotal = 0, failedHash = 0;
-    NSDate* lastActivity = nil;
-    for (Torrent* torrent in fTorrents)
+    NSDate *lastActivity = nil;
+    for (Torrent *torrent in fTorrents)
     {
         have += [torrent haveTotal];
         haveVerified += [torrent haveVerified];
@@ -158,7 +158,7 @@
         uploadedTotal += [torrent uploadedTotal];
         failedHash += [torrent failedHash];
 
-        NSDate* nextLastActivity;
+        NSDate *nextLastActivity;
         if ((nextLastActivity = [torrent dateActivity]))
             lastActivity = lastActivity ? [lastActivity laterDate:nextLastActivity] : nextLastActivity;
     }
@@ -167,7 +167,7 @@
         [fHaveField setStringValue:[NSString stringForFileSize:0]];
     else
     {
-        NSString* verifiedString = [NSString stringWithFormat:NSLocalizedString(@"%@ verified", "Inspector -> Activity tab -> have"),
+        NSString *verifiedString = [NSString stringWithFormat:NSLocalizedString(@"%@ verified", "Inspector -> Activity tab -> have"),
                                                               [NSString stringForFileSize:haveVerified]];
         if (have == haveVerified)
             [fHaveField setStringValue:verifiedString];
@@ -183,14 +183,14 @@
 
     if (numberSelected == 1)
     {
-        Torrent* torrent = fTorrents[0];
+        Torrent *torrent = fTorrents[0];
 
         [fStateField setStringValue:[torrent stateString]];
 
-        NSString* progressString = [NSString percentString:[torrent progress] longDecimals:YES];
+        NSString *progressString = [NSString percentString:[torrent progress] longDecimals:YES];
         if ([torrent isFolder])
         {
-            NSString* progressSelectedString = [NSString
+            NSString *progressSelectedString = [NSString
                 stringWithFormat:NSLocalizedString(@"%@ selected", "Inspector -> Activity tab -> progress"),
                                  [NSString percentString:[torrent progressDone] longDecimals:YES]];
             progressString = [progressString stringByAppendingFormat:@" (%@)", progressSelectedString];
@@ -199,7 +199,7 @@
 
         [fRatioField setStringValue:[NSString stringForRatio:[torrent ratio]]];
 
-        NSString* errorMessage = [torrent errorMessage];
+        NSString *errorMessage = [torrent errorMessage];
         if (![errorMessage isEqualToString:[fErrorMessageView string]])
             [fErrorMessageView setString:errorMessage];
 
@@ -210,7 +210,7 @@
 
         if ([NSApp isOnYosemiteOrBetter])
         {
-            static NSDateComponentsFormatter* timeFormatter;
+            static NSDateComponentsFormatter *timeFormatter;
             static dispatch_once_t onceToken;
             dispatch_once(&onceToken, ^{
                 timeFormatter = [NSDateComponentsFormatter new];
@@ -300,7 +300,7 @@
     }
     else
     {
-        Torrent* torrent = fTorrents[0];
+        Torrent *torrent = fTorrents[0];
 
         BOOL const piecesAvailableSegment = [[NSUserDefaults standardUserDefaults] boolForKey:@"PiecesViewShowAvailability"];
         [fPiecesControl setSelected:piecesAvailableSegment forSegment:PIECES_CONTROL_AVAILABLE];

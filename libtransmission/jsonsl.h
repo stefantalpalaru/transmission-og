@@ -99,9 +99,9 @@ typedef unsigned char jsonsl_uchar_t;
 #define JSONSL_MAX_LEVELS 512
 
     struct jsonsl_st;
-    typedef struct jsonsl_st* jsonsl_t;
+    typedef struct jsonsl_st *jsonsl_t;
 
-    typedef struct jsonsl_jpr_st* jsonsl_jpr_t;
+    typedef struct jsonsl_jpr_st *jsonsl_jpr_t;
 
 /**
  * This flag is true when AND'd against a type whose value
@@ -357,7 +357,7 @@ typedef unsigned char jsonsl_uchar_t;
     /**
      * Otherwise, this is a simple void * pointer for anything you want
      */
-    void* data;
+    void *data;
 #endif /* JSONSL_STATE_USER_FIELDS */
     };
 
@@ -421,7 +421,7 @@ typedef unsigned char jsonsl_uchar_t;
  * this action.
  */
     typedef void (
-        *jsonsl_stack_callback)(jsonsl_t jsn, jsonsl_action_t action, struct jsonsl_state_st* state, jsonsl_char_t const* at);
+        *jsonsl_stack_callback)(jsonsl_t jsn, jsonsl_action_t action, struct jsonsl_state_st *state, jsonsl_char_t const *at);
 
     /**
  * This is called when an error is encountered.
@@ -441,7 +441,7 @@ typedef unsigned char jsonsl_uchar_t;
  * @return zero to bail, nonzero to try again (this only makes sense if
  * the input buffer has been modified by this callback)
  */
-    typedef int (*jsonsl_error_callback)(jsonsl_t jsn, jsonsl_error_t error, struct jsonsl_state_st* state, jsonsl_char_t* at);
+    typedef int (*jsonsl_error_callback)(jsonsl_t jsn, jsonsl_error_t error, struct jsonsl_state_st *state, jsonsl_char_t *at);
 
     struct jsonsl_st
     {
@@ -460,7 +460,7 @@ typedef unsigned char jsonsl_uchar_t;
         size_t pos;
 
         /** This is the 'bytes' variable passed to feed() */
-        jsonsl_char_t const* base;
+        jsonsl_char_t const *base;
 
         /** Callback invoked for PUSH actions */
         jsonsl_stack_callback action_callback_PUSH;
@@ -529,7 +529,7 @@ typedef unsigned char jsonsl_uchar_t;
         } options;
 
         /** Put anything here */
-        void* data;
+        void *data;
 
         /*@{*/
         /** Private */
@@ -541,10 +541,10 @@ typedef unsigned char jsonsl_uchar_t;
 
 #ifndef JSONSL_NO_JPR
         size_t jpr_count;
-        jsonsl_jpr_t* jprs;
+        jsonsl_jpr_t *jprs;
 
         /* Root pointer for JPR matching information */
-        size_t* jpr_root;
+        size_t *jpr_root;
 #endif /* JSONSL_NO_JPR */
         /*@}*/
 
@@ -572,7 +572,7 @@ typedef unsigned char jsonsl_uchar_t;
  * @param nbytes size of new data
  */
     JSONSL_API
-    void jsonsl_feed(jsonsl_t jsn, jsonsl_char_t const* bytes, size_t nbytes);
+    void jsonsl_feed(jsonsl_t jsn, jsonsl_char_t const *bytes, size_t nbytes);
 
     /**
  * Resets the internal parser state. This does not free the parser
@@ -598,7 +598,7 @@ typedef unsigned char jsonsl_uchar_t;
  * @param jsn the lexer
  * @param cur the current nest, which should be a struct jsonsl_nest_st
  */
-    static JSONSL_INLINE struct jsonsl_state_st* jsonsl_last_state(jsonsl_t const jsn, struct jsonsl_state_st const* state)
+    static JSONSL_INLINE struct jsonsl_state_st *jsonsl_last_state(jsonsl_t const jsn, struct jsonsl_state_st const *state)
     {
         /* Don't complain about overriding array bounds */
         if (state->level > 1)
@@ -618,7 +618,7 @@ typedef unsigned char jsonsl_uchar_t;
  * @param the lexer
  * @return A pointer to the child.
  */
-    static JSONSL_INLINE struct jsonsl_state_st* jsonsl_last_child(jsonsl_t const jsn, struct jsonsl_state_st const* parent)
+    static JSONSL_INLINE struct jsonsl_state_st *jsonsl_last_child(jsonsl_t const jsn, struct jsonsl_state_st const *parent)
     {
         return jsn->stack + (parent->level + 1);
     }
@@ -656,9 +656,9 @@ typedef unsigned char jsonsl_uchar_t;
  * return NULL
  */
     JSONSL_API
-    char const* jsonsl_strerror(jsonsl_error_t err);
+    char const *jsonsl_strerror(jsonsl_error_t err);
     JSONSL_API
-    char const* jsonsl_strtype(jsonsl_type_t jt);
+    char const *jsonsl_strtype(jsonsl_type_t jt);
 
     /**
  * Dumps global metrics to the screen. This is a noop unless
@@ -742,7 +742,7 @@ typedef unsigned char jsonsl_uchar_t;
     struct jsonsl_jpr_component_st
     {
         /** The string the component points to */
-        char* pstr;
+        char *pstr;
         /** if this is a numeric type, the number is 'cached' here */
         unsigned long idx;
         /** The length of the string */
@@ -762,7 +762,7 @@ typedef unsigned char jsonsl_uchar_t;
     struct jsonsl_jpr_st
     {
         /** Path components */
-        struct jsonsl_jpr_component_st* components;
+        struct jsonsl_jpr_component_st *components;
         size_t ncomponents;
 
         /**Type of the match to be expected. If nonzero, will be compared against
@@ -770,10 +770,10 @@ typedef unsigned char jsonsl_uchar_t;
         unsigned match_type;
 
         /** Base of allocated string for components */
-        char* basestr;
+        char *basestr;
 
         /** The original match string. Useful for returning to the user */
-        char* orig;
+        char *orig;
         size_t norig;
     };
 
@@ -787,7 +787,7 @@ typedef unsigned char jsonsl_uchar_t;
  * @return a new jsonsl_jpr_t object, or NULL on error.
  */
     JSONSL_API
-    jsonsl_jpr_t jsonsl_jpr_new(char const* path, jsonsl_error_t* errp);
+    jsonsl_jpr_t jsonsl_jpr_new(char const *path, jsonsl_error_t *errp);
 
     /**
  * Destroy a JPR object
@@ -818,7 +818,7 @@ typedef unsigned char jsonsl_uchar_t;
         jsonsl_jpr_t jpr,
         unsigned int parent_type,
         unsigned int parent_level,
-        char const* key,
+        char const *key,
         size_t nkey);
 
     /**
@@ -849,9 +849,9 @@ typedef unsigned char jsonsl_uchar_t;
     JSONSL_API
     jsonsl_jpr_match_t jsonsl_path_match(
         jsonsl_jpr_t jpr,
-        struct jsonsl_state_st const* parent,
-        struct jsonsl_state_st const* child,
-        char const* key,
+        struct jsonsl_state_st const *parent,
+        struct jsonsl_state_st const *child,
+        char const *key,
         size_t nkey);
 
     /**
@@ -871,7 +871,7 @@ typedef unsigned char jsonsl_uchar_t;
  * @param njprs How many elements in the jprs array.
  */
     JSONSL_API
-    void jsonsl_jpr_match_state_init(jsonsl_t jsn, jsonsl_jpr_t* jprs, size_t njprs);
+    void jsonsl_jpr_match_state_init(jsonsl_t jsn, jsonsl_jpr_t *jprs, size_t njprs);
 
     /**
  * This follows the same semantics as the normal match,
@@ -896,10 +896,10 @@ typedef unsigned char jsonsl_uchar_t;
     JSONSL_API
     jsonsl_jpr_t jsonsl_jpr_match_state(
         jsonsl_t jsn,
-        struct jsonsl_state_st* state,
-        char const* key,
+        struct jsonsl_state_st *state,
+        char const *key,
         size_t nkey,
-        jsonsl_jpr_match_t* out);
+        jsonsl_jpr_match_t *out);
 
     /**
  * Cleanup any memory allocated and any states set by
@@ -913,7 +913,7 @@ typedef unsigned char jsonsl_uchar_t;
  * Return a string representation of the match result returned by match()
  */
     JSONSL_API
-    char const* jsonsl_strmatchtype(jsonsl_jpr_match_t match);
+    char const *jsonsl_strmatchtype(jsonsl_jpr_match_t match);
 
     /* @}*/
 
@@ -967,13 +967,13 @@ typedef unsigned char jsonsl_uchar_t;
  */
     JSONSL_API
     size_t jsonsl_util_unescape_ex(
-        char const* in,
-        char* out,
+        char const *in,
+        char *out,
         size_t len,
         int const toEscape[128],
-        unsigned* oflags,
-        jsonsl_error_t* err,
-        char const** errat);
+        unsigned *oflags,
+        jsonsl_error_t *err,
+        char const **errat);
 
 /**
  * Convenience macro to avoid passing too many parameters

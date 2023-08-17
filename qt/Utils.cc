@@ -49,7 +49,7 @@ namespace
 
 #ifdef _WIN32
 
-void addAssociatedFileIcon(QFileInfo const& fileInfo, UINT iconSize, QIcon& icon)
+void addAssociatedFileIcon(QFileInfo const &fileInfo, UINT iconSize, QIcon &icon)
 {
     QString const pixmapCacheKey = QLatin1String("tr_file_ext_") + QString::number(iconSize) + QLatin1Char('_') +
         fileInfo.suffix();
@@ -63,7 +63,7 @@ void addAssociatedFileIcon(QFileInfo const& fileInfo, UINT iconSize, QIcon& icon
         SHFILEINFO shellFileInfo;
 
         if (::SHGetFileInfoW(
-                reinterpret_cast<wchar_t const*>(filename.utf16()),
+                reinterpret_cast<wchar_t const *>(filename.utf16()),
                 FILE_ATTRIBUTE_NORMAL,
                 &shellFileInfo,
                 sizeof(shellFileInfo),
@@ -87,7 +87,7 @@ void addAssociatedFileIcon(QFileInfo const& fileInfo, UINT iconSize, QIcon& icon
 
 #endif
 
-bool isSlashChar(QChar const& c)
+bool isSlashChar(QChar const &c)
 {
     return c == QLatin1Char('/') || c == QLatin1Char('\\');
 }
@@ -116,14 +116,14 @@ QIcon fileIcon()
 
 std::unordered_map<QString, QIcon> iconCache;
 
-QIcon const getMimeIcon(QString const& filename)
+QIcon const getMimeIcon(QString const &filename)
 {
     // If the suffix doesn't match a mime type, treat it as a folder.
     // This heuristic is fast and yields good results for torrent names.
     static std::unordered_set<QString> suffixes;
     if (suffixes.empty())
     {
-        for (auto const& type : QMimeDatabase().allMimeTypes())
+        for (auto const &type : QMimeDatabase().allMimeTypes())
         {
             auto const tmp = type.suffixes();
             suffixes.insert(tmp.begin(), tmp.end());
@@ -136,7 +136,7 @@ QIcon const getMimeIcon(QString const& filename)
         return folderIcon();
     }
 
-    QIcon& icon = iconCache[ext];
+    QIcon &icon = iconCache[ext];
     if (icon.isNull()) // cache miss
     {
         QMimeDatabase mimeDb;
@@ -172,7 +172,7 @@ QIcon Utils::getFileIcon()
     return fileIcon();
 }
 
-QIcon Utils::guessMimeIcon(QString const& filename)
+QIcon Utils::guessMimeIcon(QString const &filename)
 {
 #ifdef _WIN32
 
@@ -199,7 +199,7 @@ QIcon Utils::guessMimeIcon(QString const& filename)
 #endif
 }
 
-QIcon Utils::getIconFromIndex(QModelIndex const& index)
+QIcon Utils::getIconFromIndex(QModelIndex const &index)
 {
     QVariant const variant = index.data(Qt::DecorationRole);
 
@@ -216,11 +216,11 @@ QIcon Utils::getIconFromIndex(QModelIndex const& index)
     }
 }
 
-bool Utils::isValidUtf8(char const* s)
+bool Utils::isValidUtf8(char const *s)
 {
     int n; // number of bytes in a UTF-8 sequence
 
-    for (char const* c = s; *c != '\0'; c += n)
+    for (char const *c = s; *c != '\0'; c += n)
     {
         if ((*c & 0x80) == 0x00)
         {
@@ -267,7 +267,7 @@ bool Utils::isValidUtf8(char const* s)
     return true;
 }
 
-QString Utils::removeTrailingDirSeparator(QString const& path)
+QString Utils::removeTrailingDirSeparator(QString const &path)
 {
     int i = path.size();
 
@@ -279,7 +279,7 @@ QString Utils::removeTrailingDirSeparator(QString const& path)
     return path.left(i);
 }
 
-int Utils::measureViewItem(QAbstractItemView* view, QString const& text)
+int Utils::measureViewItem(QAbstractItemView *view, QString const &text)
 {
     QStyleOptionViewItem option;
     option.initFrom(view);
@@ -293,7 +293,7 @@ int Utils::measureViewItem(QAbstractItemView* view, QString const& text)
         .width();
 }
 
-int Utils::measureHeaderItem(QHeaderView* view, QString const& text)
+int Utils::measureHeaderItem(QHeaderView *view, QString const &text)
 {
     QStyleOptionHeader option;
     option.initFrom(view);
@@ -303,7 +303,7 @@ int Utils::measureHeaderItem(QHeaderView* view, QString const& text)
     return view->style()->sizeFromContents(QStyle::CT_HeaderSection, &option, QSize(), view).width();
 }
 
-QColor Utils::getFadedColor(QColor const& color)
+QColor Utils::getFadedColor(QColor const &color)
 {
     QColor fadedColor(color);
     fadedColor.setAlpha(128);

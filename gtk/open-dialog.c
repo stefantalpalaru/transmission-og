@@ -27,30 +27,30 @@
 
 #define N_RECENT 4
 
-static GSList* get_recent_destinations(void)
+static GSList *get_recent_destinations(void)
 {
-    GSList* list = NULL;
+    GSList *list = NULL;
 
     for (int i = 0; i < N_RECENT; ++i)
     {
         char key[64];
-        char const* val;
+        char const *val;
         g_snprintf(key, sizeof(key), "recent-download-dir-%d", i + 1);
 
         if ((val = gtr_pref_string_get(tr_quark_new(key, TR_BAD_SIZE))) != NULL)
         {
-            list = g_slist_append(list, (void*)val);
+            list = g_slist_append(list, (void *)val);
         }
     }
 
     return list;
 }
 
-static void save_recent_destination(TrCore* core, char const* dir)
+static void save_recent_destination(TrCore *core, char const *dir)
 {
     int i;
-    GSList* l;
-    GSList* list = get_recent_destinations();
+    GSList *l;
+    GSList *list = get_recent_destinations();
 
     if (dir == NULL)
     {
@@ -64,7 +64,7 @@ static void save_recent_destination(TrCore* core, char const* dir)
     }
 
     /* add it to the front of the list */
-    list = g_slist_prepend(list, (void*)dir);
+    list = g_slist_prepend(list, (void *)dir);
 
     /* make local copies of the strings that aren't
      * invalidated by gtr_pref_string_set() */
@@ -94,19 +94,19 @@ static void save_recent_destination(TrCore* core, char const* dir)
 
 struct OpenData
 {
-    TrCore* core;
-    GtkWidget* file_list;
-    GtkWidget* run_check;
-    GtkWidget* trash_check;
-    GtkWidget* priority_combo;
-    GtkWidget* freespace_label;
-    char* filename;
-    char* downloadDir;
-    tr_torrent* tor;
-    tr_ctor* ctor;
+    TrCore *core;
+    GtkWidget *file_list;
+    GtkWidget *run_check;
+    GtkWidget *trash_check;
+    GtkWidget *priority_combo;
+    GtkWidget *freespace_label;
+    char *filename;
+    char *downloadDir;
+    tr_torrent *tor;
+    tr_ctor *ctor;
 };
 
-static void removeOldTorrent(struct OpenData* o)
+static void removeOldTorrent(struct OpenData *o)
 {
     if (o->tor != NULL)
     {
@@ -116,9 +116,9 @@ static void removeOldTorrent(struct OpenData* o)
     }
 }
 
-static void addResponseCB(GtkDialog* dialog, gint response, gpointer gdata)
+static void addResponseCB(GtkDialog *dialog, gint response, gpointer gdata)
 {
-    struct OpenData* o = gdata;
+    struct OpenData *o = gdata;
 
     if (o->tor != NULL)
     {
@@ -153,7 +153,7 @@ static void addResponseCB(GtkDialog* dialog, gint response, gpointer gdata)
     gtk_widget_destroy(GTK_WIDGET(dialog));
 }
 
-static void updateTorrent(struct OpenData* o)
+static void updateTorrent(struct OpenData *o)
 {
     gboolean const isLocalFile = tr_ctorGetSourceFile(o->ctor) != NULL;
     gtk_widget_set_sensitive(o->trash_check, isLocalFile);
@@ -179,10 +179,10 @@ static void updateTorrent(struct OpenData* o)
  * The `filename' tests here are to prevent us from losing the current
  * metadata when that happens.
  */
-static void sourceChanged(GtkFileChooserButton* b, gpointer gdata)
+static void sourceChanged(GtkFileChooserButton *b, gpointer gdata)
 {
-    struct OpenData* o = gdata;
-    char* filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(b));
+    struct OpenData *o = gdata;
+    char *filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(b));
 
     /* maybe instantiate a torrent */
     if (filename != NULL || o->tor == NULL)
@@ -190,7 +190,7 @@ static void sourceChanged(GtkFileChooserButton* b, gpointer gdata)
         int err = 0;
         bool new_file = false;
         int duplicate_id = 0;
-        tr_torrent* torrent;
+        tr_torrent *torrent;
 
         if (filename != NULL && (o->filename == NULL || !tr_sys_path_is_same(filename, o->filename, NULL)))
         {
@@ -211,7 +211,7 @@ static void sourceChanged(GtkFileChooserButton* b, gpointer gdata)
         }
         else if (new_file)
         {
-            tr_torrent* tor;
+            tr_torrent *tor;
 
             if (duplicate_id != 0)
             {
@@ -231,10 +231,10 @@ static void sourceChanged(GtkFileChooserButton* b, gpointer gdata)
     g_free(filename);
 }
 
-static void downloadDirChanged(GtkFileChooserButton* b, gpointer gdata)
+static void downloadDirChanged(GtkFileChooserButton *b, gpointer gdata)
 {
-    struct OpenData* data = gdata;
-    char* fname = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(b));
+    struct OpenData *data = gdata;
+    char *fname = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(b));
 
     if (fname != NULL && (data->downloadDir == NULL || !tr_sys_path_is_same(fname, data->downloadDir, NULL)))
     {
@@ -248,9 +248,9 @@ static void downloadDirChanged(GtkFileChooserButton* b, gpointer gdata)
     g_free(fname);
 }
 
-static void addTorrentFilters(GtkFileChooser* chooser)
+static void addTorrentFilters(GtkFileChooser *chooser)
 {
-    GtkFileFilter* filter;
+    GtkFileFilter *filter;
 
     filter = gtk_file_filter_new();
     gtk_file_filter_set_name(filter, _("Torrent files"));
@@ -267,18 +267,18 @@ static void addTorrentFilters(GtkFileChooser* chooser)
 *****
 ****/
 
-GtkWidget* gtr_torrent_options_dialog_new(GtkWindow* parent, TrCore* core, tr_ctor* ctor)
+GtkWidget *gtr_torrent_options_dialog_new(GtkWindow *parent, TrCore *core, tr_ctor *ctor)
 {
-    char const* str;
-    GtkWidget* w;
-    GtkWidget* d;
-    GtkGrid* grid;
+    char const *str;
+    GtkWidget *w;
+    GtkWidget *d;
+    GtkGrid *grid;
     int row;
-    GtkWidget* l;
-    GtkWidget* source_chooser;
-    struct OpenData* data;
+    GtkWidget *l;
+    GtkWidget *source_chooser;
+    struct OpenData *data;
     bool flag;
-    GSList* list;
+    GSList *list;
 
     /* make the dialog */
     d = gtk_dialog_new_with_buttons(
@@ -347,7 +347,7 @@ GtkWidget* gtr_torrent_options_dialog_new(GtkWindow* parent, TrCore* core, tr_ct
 
     list = get_recent_destinations();
 
-    for (GSList* walk = list; walk != NULL; walk = walk->next)
+    for (GSList *walk = list; walk != NULL; walk = walk->next)
     {
         gtk_file_chooser_add_shortcut_folder(GTK_FILE_CHOOSER(w), walk->data, NULL);
     }
@@ -426,9 +426,9 @@ GtkWidget* gtr_torrent_options_dialog_new(GtkWindow* parent, TrCore* core, tr_ct
 *****
 ****/
 
-static void onOpenDialogResponse(GtkDialog* dialog, int response, gpointer core)
+static void onOpenDialogResponse(GtkDialog *dialog, int response, gpointer core)
 {
-    char* folder;
+    char *folder;
 
     /* remember this folder the next time we use this dialog */
     folder = gtk_file_chooser_get_current_folder(GTK_FILE_CHOOSER(dialog));
@@ -437,13 +437,13 @@ static void onOpenDialogResponse(GtkDialog* dialog, int response, gpointer core)
 
     if (response == GTK_RESPONSE_ACCEPT)
     {
-        GtkFileChooser* chooser = GTK_FILE_CHOOSER(dialog);
-        GtkWidget* w = gtk_file_chooser_get_extra_widget(chooser);
-        GtkToggleButton* tb = GTK_TOGGLE_BUTTON(w);
+        GtkFileChooser *chooser = GTK_FILE_CHOOSER(dialog);
+        GtkWidget *w = gtk_file_chooser_get_extra_widget(chooser);
+        GtkToggleButton *tb = GTK_TOGGLE_BUTTON(w);
         gboolean const do_start = gtr_pref_flag_get(TR_KEY_start_added_torrents);
         gboolean const do_prompt = gtk_toggle_button_get_active(tb);
         gboolean const do_notify = FALSE;
-        GSList* files = gtk_file_chooser_get_files(chooser);
+        GSList *files = gtk_file_chooser_get_files(chooser);
 
         gtr_core_add_files(core, files, do_start, do_prompt, do_notify);
         g_slist_foreach(files, (GFunc)(GCallback)g_object_unref, NULL);
@@ -453,11 +453,11 @@ static void onOpenDialogResponse(GtkDialog* dialog, int response, gpointer core)
     gtk_widget_destroy(GTK_WIDGET(dialog));
 }
 
-GtkWidget* gtr_torrent_open_from_file_dialog_new(GtkWindow* parent, TrCore* core)
+GtkWidget *gtr_torrent_open_from_file_dialog_new(GtkWindow *parent, TrCore *core)
 {
-    GtkWidget* w;
-    GtkWidget* c;
-    char const* folder;
+    GtkWidget *w;
+    GtkWidget *c;
+    char const *folder;
 
     w = gtk_file_chooser_dialog_new(
         _("Open a Torrent"),
@@ -489,14 +489,14 @@ GtkWidget* gtr_torrent_open_from_file_dialog_new(GtkWindow* parent, TrCore* core
 ****
 ***/
 
-static void onOpenURLResponse(GtkDialog* dialog, int response, gpointer user_data)
+static void onOpenURLResponse(GtkDialog *dialog, int response, gpointer user_data)
 {
     bool handled = false;
 
     if (response == GTK_RESPONSE_ACCEPT)
     {
-        GtkWidget* e = GTK_WIDGET(g_object_get_data(G_OBJECT(dialog), "url-entry"));
-        char* url = g_strdup(gtk_entry_get_text(GTK_ENTRY(e)));
+        GtkWidget *e = GTK_WIDGET(g_object_get_data(G_OBJECT(dialog), "url-entry"));
+        char *url = g_strdup(gtk_entry_get_text(GTK_ENTRY(e)));
         g_strstrip(url);
 
         if (url != NULL)
@@ -522,12 +522,12 @@ static void onOpenURLResponse(GtkDialog* dialog, int response, gpointer user_dat
     }
 }
 
-GtkWidget* gtr_torrent_open_from_url_dialog_new(GtkWindow* parent, TrCore* core)
+GtkWidget *gtr_torrent_open_from_url_dialog_new(GtkWindow *parent, TrCore *core)
 {
     guint row;
-    GtkWidget* e;
-    GtkWidget* t;
-    GtkWidget* w;
+    GtkWidget *e;
+    GtkWidget *t;
+    GtkWidget *w;
 
     w = gtk_dialog_new_with_buttons(
         _("Open URL"),

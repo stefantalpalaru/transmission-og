@@ -14,7 +14,7 @@ QString const FilterMode::names[NUM_MODES] = {
     QLatin1String("show-verifying"), QLatin1String("show-error"),
 };
 
-int FilterMode::modeFromName(QString const& name)
+int FilterMode::modeFromName(QString const &name)
 {
     for (int i = 0; i < NUM_MODES; ++i)
     {
@@ -34,7 +34,7 @@ QString const SortMode::names[NUM_MODES] = {
     QLatin1String("sort-by-id"),
 };
 
-int SortMode::modeFromName(QString const& name)
+int SortMode::modeFromName(QString const &name)
 {
     for (int i = 0; i < NUM_MODES; ++i)
     {

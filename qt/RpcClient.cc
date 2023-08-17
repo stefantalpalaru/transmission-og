@@ -32,7 +32,7 @@
 namespace
 {
 
-void destroyVariant(tr_variant* json)
+void destroyVariant(tr_variant *json)
 {
     tr_variantFree(json);
     tr_free(json);
@@ -45,7 +45,7 @@ TrVariantPtr createVariant()
 
 } // namespace
 
-RpcClient::RpcClient(QObject* parent)
+RpcClient::RpcClient(QObject *parent)
     : QObject(parent)
     , mySession(nullptr)
     , myNAM(nullptr)
@@ -67,12 +67,12 @@ void RpcClient::stop()
     }
 }
 
-void RpcClient::start(tr_session* session)
+void RpcClient::start(tr_session *session)
 {
     mySession = session;
 }
 
-void RpcClient::start(QUrl const& url)
+void RpcClient::start(QUrl const &url)
 {
     myUrl = url;
 }
@@ -92,17 +92,17 @@ bool RpcClient::isLocal() const
     return false;
 }
 
-QUrl const& RpcClient::url() const
+QUrl const &RpcClient::url() const
 {
     return myUrl;
 }
 
-RpcResponseFuture RpcClient::exec(tr_quark method, tr_variant* args)
+RpcResponseFuture RpcClient::exec(tr_quark method, tr_variant *args)
 {
     return exec(tr_quark_get_string(method, nullptr), args);
 }
 
-RpcResponseFuture RpcClient::exec(char const* method, tr_variant* args)
+RpcResponseFuture RpcClient::exec(char const *method, tr_variant *args)
 {
     TrVariantPtr json = createVariant();
     tr_variantInitDict(json.get(), 3);
@@ -121,7 +121,7 @@ int64_t RpcClient::getNextTag()
     return myNextTag++;
 }
 
-void RpcClient::sendNetworkRequest(TrVariantPtr json, QFutureInterface<RpcResponse> const& promise)
+void RpcClient::sendNetworkRequest(TrVariantPtr json, QFutureInterface<RpcResponse> const &promise)
 {
     QNetworkRequest request;
     request.setUrl(myUrl);
@@ -136,11 +136,11 @@ void RpcClient::sendNetworkRequest(TrVariantPtr json, QFutureInterface<RpcRespon
     }
 
     size_t rawJsonDataLength;
-    char* rawJsonData = tr_variantToStr(json.get(), TR_VARIANT_FMT_JSON_LEAN, &rawJsonDataLength);
+    char *rawJsonData = tr_variantToStr(json.get(), TR_VARIANT_FMT_JSON_LEAN, &rawJsonDataLength);
     QByteArray jsonData(rawJsonData, rawJsonDataLength);
     tr_free(rawJsonData);
 
-    QNetworkReply* reply = networkAccessManager()->post(request, jsonData);
+    QNetworkReply *reply = networkAccessManager()->post(request, jsonData);
     reply->setProperty(REQUEST_DATA_PROPERTY_KEY, QVariant::fromValue(json));
     reply->setProperty(REQUEST_FUTUREINTERFACE_PROPERTY_KEY, QVariant::fromValue(promise));
 
@@ -151,7 +151,7 @@ void RpcClient::sendNetworkRequest(TrVariantPtr json, QFutureInterface<RpcRespon
     std::cerr << "sending "
               << "POST " << qPrintable(myUrl.path()) << std::endl;
 
-    for (QByteArray const& b : request.rawHeaderList())
+    for (QByteArray const &b : request.rawHeaderList())
     {
         std::cerr << b.constData() << ": " << request.rawHeader(b).constData() << std::endl;
     }
@@ -160,7 +160,7 @@ void RpcClient::sendNetworkRequest(TrVariantPtr json, QFutureInterface<RpcRespon
 #endif
 }
 
-void RpcClient::sendLocalRequest(TrVariantPtr json, QFutureInterface<RpcResponse> const& promise, int64_t tag)
+void RpcClient::sendLocalRequest(TrVariantPtr json, QFutureInterface<RpcResponse> const &promise, int64_t tag)
 {
     myLocalRequests.insert(tag, promise);
     tr_rpc_request_exec_json(mySession, json.get(), localSessionCallback, this);
@@ -189,17 +189,17 @@ RpcResponseFuture RpcClient::sendRequest(TrVariantPtr json)
     return promise.future();
 }
 
-QNetworkAccessManager* RpcClient::networkAccessManager()
+QNetworkAccessManager *RpcClient::networkAccessManager()
 {
     if (myNAM == nullptr)
     {
         myNAM = new QNetworkAccessManager();
 
-        connect(myNAM, SIGNAL(finished(QNetworkReply*)), this, SLOT(networkRequestFinished(QNetworkReply*)));
+        connect(myNAM, SIGNAL(finished(QNetworkReply *)), this, SLOT(networkRequestFinished(QNetworkReply *)));
 
         connect(
             myNAM,
-            SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
+            SIGNAL(authenticationRequired(QNetworkReply *, QAuthenticator *)),
             this,
             SIGNAL(httpAuthenticationRequired()));
     }
@@ -207,11 +207,11 @@ QNetworkAccessManager* RpcClient::networkAccessManager()
     return myNAM;
 }
 
-void RpcClient::localSessionCallback(tr_session* s, tr_variant* response, void* vself)
+void RpcClient::localSessionCallback(tr_session *s, tr_variant *response, void *vself)
 {
     Q_UNUSED(s)
 
-    RpcClient* self = static_cast<RpcClient*>(vself);
+    RpcClient *self = static_cast<RpcClient *>(vself);
 
     TrVariantPtr json = createVariant();
     *json = *response;
@@ -222,7 +222,7 @@ void RpcClient::localSessionCallback(tr_session* s, tr_variant* response, void* 
     QMetaObject::invokeMethod(self, "localRequestFinished", Qt::QueuedConnection, Q_ARG(TrVariantPtr, json));
 }
 
-void RpcClient::networkRequestFinished(QNetworkReply* reply)
+void RpcClient::networkRequestFinished(QNetworkReply *reply)
 {
     reply->deleteLater();
 
@@ -232,7 +232,7 @@ void RpcClient::networkRequestFinished(QNetworkReply* reply)
 #ifdef DEBUG_HTTP
     std::cerr << "http response header: " << std::endl;
 
-    for (QByteArray const& b : reply->rawHeaderList())
+    for (QByteArray const &b : reply->rawHeaderList())
     {
         std::cerr << b.constData() << ": " << reply->rawHeader(b).constData() << std::endl;
     }
@@ -289,7 +289,7 @@ void RpcClient::localRequestFinished(TrVariantPtr response)
     promise.reportFinished(&result);
 }
 
-int64_t RpcClient::parseResponseTag(tr_variant& json)
+int64_t RpcClient::parseResponseTag(tr_variant &json)
 {
     int64_t tag;
 
@@ -301,11 +301,11 @@ int64_t RpcClient::parseResponseTag(tr_variant& json)
     return tag;
 }
 
-RpcResponse RpcClient::parseResponseData(tr_variant& json)
+RpcResponse RpcClient::parseResponseData(tr_variant &json)
 {
     RpcResponse ret;
 
-    char const* result;
+    char const *result;
 
     if (tr_variantDictFindStr(&json, TR_KEY_result, &result, nullptr))
     {
@@ -313,7 +313,7 @@ RpcResponse RpcClient::parseResponseData(tr_variant& json)
         ret.success = std::strcmp(result, "success") == 0;
     }
 
-    tr_variant* args;
+    tr_variant *args;
 
     if (tr_variantDictFindDict(&json, TR_KEY_arguments, &args))
     {

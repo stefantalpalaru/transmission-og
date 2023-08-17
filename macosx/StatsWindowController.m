@@ -32,21 +32,21 @@
 - (void)updateStats;
 
 - (void)performResetStats;
-- (void)resetSheetClosed:(NSAlert*)alert returnCode:(NSInteger)code contextInfo:(void*)info;
+- (void)resetSheetClosed:(NSAlert *)alert returnCode:(NSInteger)code contextInfo:(void *)info;
 
 @end
 
 @implementation StatsWindowController
 
-StatsWindowController* fStatsWindowInstance = nil;
-tr_session* fLib = NULL;
-+ (StatsWindowController*)statsWindow
+StatsWindowController *fStatsWindowInstance = nil;
+tr_session *fLib = NULL;
++ (StatsWindowController *)statsWindow
 {
     if (!fStatsWindowInstance)
     {
         if ((fStatsWindowInstance = [[self alloc] init]))
         {
-            fLib = [(Controller*)[NSApp delegate] sessionHandle];
+            fLib = [(Controller *)[NSApp delegate] sessionHandle];
         }
     }
     return fStatsWindowInstance;
@@ -80,10 +80,10 @@ tr_session* fLib = NULL;
     //size of all labels
     CGFloat const oldWidth = [fUploadedLabelField frame].size.width;
 
-    NSArray* labels = @[ fUploadedLabelField, fDownloadedLabelField, fRatioLabelField, fTimeLabelField, fNumOpenedLabelField ];
+    NSArray *labels = @[ fUploadedLabelField, fDownloadedLabelField, fRatioLabelField, fTimeLabelField, fNumOpenedLabelField ];
 
     CGFloat maxWidth = CGFLOAT_MIN;
-    for (NSTextField* label in labels)
+    for (NSTextField *label in labels)
     {
         [label sizeToFit];
 
@@ -91,7 +91,7 @@ tr_session* fLib = NULL;
         maxWidth = MAX(maxWidth, width);
     }
 
-    for (NSTextField* label in labels)
+    for (NSTextField *label in labels)
     {
         NSRect frame = [label frame];
         frame.size.width = maxWidth;
@@ -122,9 +122,9 @@ tr_session* fLib = NULL;
     fStatsWindowInstance = nil;
 }
 
-+ (void)restoreWindowWithIdentifier:(NSString*)identifier
-                              state:(NSCoder*)state
-                  completionHandler:(void (^)(NSWindow*, NSError*))completionHandler
++ (void)restoreWindowWithIdentifier:(NSString *)identifier
+                              state:(NSCoder *)state
+                  completionHandler:(void (^)(NSWindow *, NSError *))completionHandler
 {
     NSAssert1([identifier isEqualToString:@"StatsWindow"], @"Trying to restore unexpected identifier %@", identifier);
 
@@ -139,7 +139,7 @@ tr_session* fLib = NULL;
         return;
     }
 
-    NSAlert* alert = [[NSAlert alloc] init];
+    NSAlert *alert = [[NSAlert alloc] init];
     [alert setMessageText:NSLocalizedString(@"Are you sure you want to reset usage statistics?", "Stats reset -> title")];
     [alert setInformativeText:NSLocalizedString(
                                   @"This will clear the global statistics displayed by Transmission OG."
@@ -155,7 +155,7 @@ tr_session* fLib = NULL;
                         contextInfo:nil];
 }
 
-- (NSString*)windowFrameAutosaveName
+- (NSString *)windowFrameAutosaveName
 {
     return @"StatsWindow";
 }
@@ -170,7 +170,7 @@ tr_session* fLib = NULL;
     tr_sessionGetCumulativeStats(fLib, &statsAll);
     tr_sessionGetStats(fLib, &statsSession);
 
-    NSByteCountFormatter* byteFormatter = [[NSByteCountFormatter alloc] init];
+    NSByteCountFormatter *byteFormatter = [[NSByteCountFormatter alloc] init];
     [byteFormatter setAllowedUnits:NSByteCountFormatterUseBytes];
 
     [fUploadedField setStringValue:[NSString stringForFileSize:statsSession.uploadedBytes]];
@@ -187,14 +187,14 @@ tr_session* fLib = NULL;
 
     [fRatioField setStringValue:[NSString stringForRatio:statsSession.ratio]];
 
-    NSString* totalRatioString = statsAll.ratio != TR_RATIO_NA ?
+    NSString *totalRatioString = statsAll.ratio != TR_RATIO_NA ?
         [NSString stringWithFormat:NSLocalizedString(@"%@ total", "stats total"), [NSString stringForRatio:statsAll.ratio]] :
         NSLocalizedString(@"Total N/A", "stats total");
     [fRatioAllField setStringValue:totalRatioString];
 
     if ([NSApp isOnYosemiteOrBetter])
     {
-        static NSDateComponentsFormatter* timeFormatter;
+        static NSDateComponentsFormatter *timeFormatter;
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
             timeFormatter = [NSDateComponentsFormatter new];
@@ -230,7 +230,7 @@ tr_session* fLib = NULL;
     [self updateStats];
 }
 
-- (void)resetSheetClosed:(NSAlert*)alert returnCode:(NSInteger)code contextInfo:(void*)info
+- (void)resetSheetClosed:(NSAlert *)alert returnCode:(NSInteger)code contextInfo:(void *)info
 {
     [[alert window] orderOut:nil];
 

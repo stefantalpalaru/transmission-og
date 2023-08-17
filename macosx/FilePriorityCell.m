@@ -53,7 +53,7 @@
     return self;
 }
 
-- (id)copyWithZone:(NSZone*)zone
+- (id)copyWithZone:(NSZone *)zone
 {
     id value = [super copyWithZone:zone];
     [value setRepresentedObject:[self representedObject]];
@@ -79,16 +79,16 @@
         break;
     }
 
-    Torrent* torrent = [(FileListNode*)[self representedObject] torrent];
-    [torrent setFilePriority:priority forIndexes:[(FileListNode*)[self representedObject] indexes]];
+    Torrent *torrent = [(FileListNode *)[self representedObject] torrent];
+    [torrent setFilePriority:priority forIndexes:[(FileListNode *)[self representedObject] indexes]];
 
-    FileOutlineView* controlView = (FileOutlineView*)[self controlView];
+    FileOutlineView *controlView = (FileOutlineView *)[self controlView];
     [controlView setNeedsDisplay:YES];
 }
 
-- (void)addTrackingAreasForView:(NSView*)controlView
+- (void)addTrackingAreasForView:(NSView *)controlView
                          inRect:(NSRect)cellFrame
-                   withUserInfo:(NSDictionary*)userInfo
+                   withUserInfo:(NSDictionary *)userInfo
                   mouseLocation:(NSPoint)mouseLocation
 {
     NSTrackingAreaOptions options = NSTrackingEnabledDuringMouseDrag | NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways;
@@ -99,7 +99,7 @@
         [controlView setNeedsDisplayInRect:cellFrame];
     }
 
-    NSTrackingArea* area = [[NSTrackingArea alloc] initWithRect:cellFrame options:options owner:controlView userInfo:userInfo];
+    NSTrackingArea *area = [[NSTrackingArea alloc] initWithRect:cellFrame options:options owner:controlView userInfo:userInfo];
     [controlView addTrackingArea:area];
 }
 
@@ -108,11 +108,11 @@
     fHoverRow = hovered;
 }
 
-- (void)drawWithFrame:(NSRect)cellFrame inView:(NSView*)controlView
+- (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
 {
-    FileListNode* node = [self representedObject];
-    Torrent* torrent = [node torrent];
-    NSSet* priorities = [torrent filePrioritiesForIndexes:[node indexes]];
+    FileListNode *node = [self representedObject];
+    Torrent *torrent = [node torrent];
+    NSSet *priorities = [torrent filePrioritiesForIndexes:[node indexes]];
 
     NSUInteger const count = [priorities count];
     if (fHoverRow && count > 0)
@@ -125,38 +125,38 @@
     }
     else
     {
-        NSMutableArray* images = [NSMutableArray arrayWithCapacity:MAX(count, 1u)];
+        NSMutableArray *images = [NSMutableArray arrayWithCapacity:MAX(count, 1u)];
         CGFloat totalWidth;
 
         if (count == 0)
         {
             //if ([self backgroundStyle] != NSBackgroundStyleDark)
             {
-                NSImage* image = [[NSImage imageNamed:@"PriorityNormalTemplate"] imageWithColor:[NSColor lightGrayColor]];
+                NSImage *image = [[NSImage imageNamed:@"PriorityNormalTemplate"] imageWithColor:[NSColor lightGrayColor]];
                 [images addObject:image];
                 totalWidth = [image size].width;
             }
         }
         else
         {
-            NSColor* priorityColor = [self backgroundStyle] == NSBackgroundStyleDark ? [NSColor whiteColor] : [NSColor darkGrayColor];
+            NSColor *priorityColor = [self backgroundStyle] == NSBackgroundStyleDark ? [NSColor whiteColor] : [NSColor darkGrayColor];
 
             totalWidth = 0.0;
             if ([priorities containsObject:@(TR_PRI_LOW)])
             {
-                NSImage* image = [[NSImage imageNamed:@"PriorityLowTemplate"] imageWithColor:priorityColor];
+                NSImage *image = [[NSImage imageNamed:@"PriorityLowTemplate"] imageWithColor:priorityColor];
                 [images addObject:image];
                 totalWidth += [image size].width;
             }
             if ([priorities containsObject:@(TR_PRI_NORMAL)])
             {
-                NSImage* image = [[NSImage imageNamed:@"PriorityNormalTemplate"] imageWithColor:priorityColor];
+                NSImage *image = [[NSImage imageNamed:@"PriorityNormalTemplate"] imageWithColor:priorityColor];
                 [images addObject:image];
                 totalWidth += [image size].width;
             }
             if ([priorities containsObject:@(TR_PRI_HIGH)])
             {
-                NSImage* image = [[NSImage imageNamed:@"PriorityHighTemplate"] imageWithColor:priorityColor];
+                NSImage *image = [[NSImage imageNamed:@"PriorityHighTemplate"] imageWithColor:priorityColor];
                 [images addObject:image];
                 totalWidth += [image size].width;
             }
@@ -167,7 +167,7 @@
 
         CGFloat currentWidth = floor(NSMidX(cellFrame) - totalWidth * 0.5);
 
-        for (NSImage* image in images)
+        for (NSImage *image in images)
         {
             NSSize const imageSize = [image size];
             NSRect const imageRect = NSMakeRect(

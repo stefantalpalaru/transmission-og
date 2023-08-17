@@ -44,23 +44,23 @@ struct metadata_node
 
 struct tr_incomplete_metadata
 {
-    uint8_t* metadata;
+    uint8_t *metadata;
     int metadata_size;
     int pieceCount;
 
     /** sorted from least to most recently requested */
-    struct metadata_node* piecesNeeded;
+    struct metadata_node *piecesNeeded;
     int piecesNeededCount;
 };
 
-static void incompleteMetadataFree(struct tr_incomplete_metadata* m)
+static void incompleteMetadataFree(struct tr_incomplete_metadata *m)
 {
     tr_free(m->metadata);
     tr_free(m->piecesNeeded);
     tr_free(m);
 }
 
-bool tr_torrentSetMetadataSizeHint(tr_torrent* tor, int64_t size)
+bool tr_torrentSetMetadataSizeHint(tr_torrent *tor, int64_t size)
 {
     if (tr_torrentHasMetadata(tor))
     {
@@ -81,7 +81,7 @@ bool tr_torrentSetMetadataSizeHint(tr_torrent* tor, int64_t size)
         return false;
     }
 
-    struct tr_incomplete_metadata* m = tr_new(struct tr_incomplete_metadata, 1);
+    struct tr_incomplete_metadata *m = tr_new(struct tr_incomplete_metadata, 1);
 
     if (m == NULL)
     {
@@ -110,10 +110,10 @@ bool tr_torrentSetMetadataSizeHint(tr_torrent* tor, int64_t size)
     return true;
 }
 
-static size_t findInfoDictOffset(tr_torrent const* tor)
+static size_t findInfoDictOffset(tr_torrent const *tor)
 {
     size_t fileLen;
-    uint8_t* fileContents;
+    uint8_t *fileContents;
     size_t offset = 0;
 
     /* load the file, and find the info dict's offset inside the file */
@@ -123,13 +123,13 @@ static size_t findInfoDictOffset(tr_torrent const* tor)
 
         if (tr_variantFromBenc(&top, fileContents, fileLen) == 0)
         {
-            tr_variant* infoDict;
+            tr_variant *infoDict;
 
             if (tr_variantDictFindDict(&top, TR_KEY_info, &infoDict))
             {
                 size_t infoLen;
-                char* infoContents = tr_variantToStr(infoDict, TR_VARIANT_FMT_BENC, &infoLen);
-                uint8_t const* i = (uint8_t const*)tr_memmem((char*)fileContents, fileLen, infoContents, infoLen);
+                char *infoContents = tr_variantToStr(infoDict, TR_VARIANT_FMT_BENC, &infoLen);
+                uint8_t const *i = (uint8_t const *)tr_memmem((char *)fileContents, fileLen, infoContents, infoLen);
                 offset = i != NULL ? i - fileContents : 0;
                 tr_free(infoContents);
             }
@@ -143,7 +143,7 @@ static size_t findInfoDictOffset(tr_torrent const* tor)
     return offset;
 }
 
-static void ensureInfoDictOffsetIsCached(tr_torrent* tor)
+static void ensureInfoDictOffsetIsCached(tr_torrent *tor)
 {
     TR_ASSERT(tr_torrentHasMetadata(tor));
 
@@ -154,13 +154,13 @@ static void ensureInfoDictOffsetIsCached(tr_torrent* tor)
     }
 }
 
-void* tr_torrentGetMetadataPiece(tr_torrent* tor, int piece, size_t* len)
+void *tr_torrentGetMetadataPiece(tr_torrent *tor, int piece, size_t *len)
 {
     TR_ASSERT(tr_isTorrent(tor));
     TR_ASSERT(piece >= 0);
     TR_ASSERT(len != NULL);
 
-    char* ret = NULL;
+    char *ret = NULL;
 
     if (tr_torrentHasMetadata(tor))
     {
@@ -182,7 +182,7 @@ void* tr_torrentGetMetadataPiece(tr_torrent* tor, int piece, size_t* len)
 
                 if (0 < l && l <= METADATA_PIECE_SIZE)
                 {
-                    char* buf = tr_new(char, l);
+                    char *buf = tr_new(char, l);
                     uint64_t n;
 
                     if (tr_sys_file_read(fd, buf, l, &n, NULL) && n == l)
@@ -205,7 +205,7 @@ void* tr_torrentGetMetadataPiece(tr_torrent* tor, int piece, size_t* len)
     return ret;
 }
 
-void tr_torrentSetMetadataPiece(tr_torrent* tor, int piece, void const* data, int len)
+void tr_torrentSetMetadataPiece(tr_torrent *tor, int piece, void const *data, int len)
 {
     TR_ASSERT(tr_isTorrent(tor));
     TR_ASSERT(data != NULL);
@@ -214,7 +214,7 @@ void tr_torrentSetMetadataPiece(tr_torrent* tor, int piece, void const* data, in
     dbgmsg(tor, "got metadata piece %d of %d bytes", piece, len);
 
     /* are we set up to download metadata? */
-    struct tr_incomplete_metadata* m = tor->incompleteMetadata;
+    struct tr_incomplete_metadata *m = tor->incompleteMetadata;
 
     if (m == NULL)
     {
@@ -287,7 +287,7 @@ void tr_torrentSetMetadataPiece(tr_torrent* tor, int piece, void const* data, in
             {
                 /* yay we have bencoded metainfo... merge it into our .torrent file */
                 tr_variant newMetainfo;
-                char* path = tr_strdup(tor->info.torrent);
+                char *path = tr_strdup(tor->info.torrent);
 
                 if (tr_variantFromFile(&newMetainfo, TR_VARIANT_FMT_BENC, path, NULL))
                 {
@@ -360,12 +360,12 @@ void tr_torrentSetMetadataPiece(tr_torrent* tor, int piece, void const* data, in
     }
 }
 
-bool tr_torrentGetNextMetadataRequest(tr_torrent* tor, time_t now, int* setme_piece)
+bool tr_torrentGetNextMetadataRequest(tr_torrent *tor, time_t now, int *setme_piece)
 {
     TR_ASSERT(tr_isTorrent(tor));
 
     bool have_request = false;
-    struct tr_incomplete_metadata* m = tor->incompleteMetadata;
+    struct tr_incomplete_metadata *m = tor->incompleteMetadata;
 
     if (m != NULL && m->piecesNeededCount > 0 && m->piecesNeeded[0].requestedAt + MIN_REPEAT_INTERVAL_SECS < now)
     {
@@ -384,7 +384,7 @@ bool tr_torrentGetNextMetadataRequest(tr_torrent* tor, time_t now, int* setme_pi
     return have_request;
 }
 
-double tr_torrentGetMetadataPercent(tr_torrent const* tor)
+double tr_torrentGetMetadataPercent(tr_torrent const *tor)
 {
     double ret;
 
@@ -394,7 +394,7 @@ double tr_torrentGetMetadataPercent(tr_torrent const* tor)
     }
     else
     {
-        struct tr_incomplete_metadata const* m = tor->incompleteMetadata;
+        struct tr_incomplete_metadata const *m = tor->incompleteMetadata;
 
         if (m == NULL || m->pieceCount == 0)
         {
@@ -410,10 +410,10 @@ double tr_torrentGetMetadataPercent(tr_torrent const* tor)
 }
 
 /* FIXME: this should be renamed tr_metainfoGetMagnetLink() and moved to metainfo.c for consistency */
-char* tr_torrentInfoGetMagnetLink(tr_info const* inf)
+char *tr_torrentInfoGetMagnetLink(tr_info const *inf)
 {
-    char const* name;
-    struct evbuffer* s = evbuffer_new();
+    char const *name;
+    struct evbuffer *s = evbuffer_new();
 
     evbuffer_add_printf(s, "magnet:?xt=urn:btih:%s", inf->hashString);
 

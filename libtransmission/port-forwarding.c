@@ -24,7 +24,7 @@
 #include "upnp.h"
 #include "utils.h"
 
-static char const* getKey(void)
+static char const *getKey(void)
 {
     return _("Port Forwarding");
 }
@@ -38,18 +38,18 @@ struct tr_shared
     tr_port_forwarding natpmpStatus;
     tr_port_forwarding upnpStatus;
 
-    tr_upnp* upnp;
-    tr_natpmp* natpmp;
-    tr_session* session;
+    tr_upnp *upnp;
+    tr_natpmp *natpmp;
+    tr_session *session;
 
-    struct event* timer;
+    struct event *timer;
 };
 
 /***
 ****
 ***/
 
-static char const* getNatStateStr(int state)
+static char const *getNatStateStr(int state)
 {
     switch (state)
     {
@@ -70,7 +70,7 @@ static char const* getNatStateStr(int state)
     }
 }
 
-static void natPulse(tr_shared* s, bool do_check)
+static void natPulse(tr_shared *s, bool do_check)
 {
     int oldStatus;
     int newStatus;
@@ -113,7 +113,7 @@ static void natPulse(tr_shared* s, bool do_check)
     }
 }
 
-static void set_evtimer_from_status(tr_shared* s)
+static void set_evtimer_from_status(tr_shared *s)
 {
     int sec = 0;
     int usec = 0;
@@ -145,9 +145,9 @@ static void set_evtimer_from_status(tr_shared* s)
     }
 }
 
-static void onTimer(evutil_socket_t fd UNUSED, short what UNUSED, void* vshared)
+static void onTimer(evutil_socket_t fd UNUSED, short what UNUSED, void *vshared)
 {
-    tr_shared* s = vshared;
+    tr_shared *s = vshared;
 
     TR_ASSERT(s != NULL);
     TR_ASSERT(s->timer != NULL);
@@ -164,9 +164,9 @@ static void onTimer(evutil_socket_t fd UNUSED, short what UNUSED, void* vshared)
 ****
 ***/
 
-tr_shared* tr_sharedInit(tr_session* session)
+tr_shared *tr_sharedInit(tr_session *session)
 {
-    tr_shared* s = tr_new0(tr_shared, 1);
+    tr_shared *s = tr_new0(tr_shared, 1);
 
     s->session = session;
     s->isEnabled = false;
@@ -176,7 +176,7 @@ tr_shared* tr_sharedInit(tr_session* session)
     return s;
 }
 
-static void stop_timer(tr_shared* s)
+static void stop_timer(tr_shared *s)
 {
     if (s->timer != NULL)
     {
@@ -185,7 +185,7 @@ static void stop_timer(tr_shared* s)
     }
 }
 
-static void stop_forwarding(tr_shared* s)
+static void stop_forwarding(tr_shared *s)
 {
     tr_logAddNamedInfo(getKey(), "%s", _("Stopped"));
     natPulse(s, false);
@@ -201,9 +201,9 @@ static void stop_forwarding(tr_shared* s)
     stop_timer(s);
 }
 
-void tr_sharedClose(tr_session* session)
+void tr_sharedClose(tr_session *session)
 {
-    tr_shared* s = session->shared;
+    tr_shared *s = session->shared;
 
     s->isShuttingDown = true;
     stop_forwarding(s);
@@ -211,13 +211,13 @@ void tr_sharedClose(tr_session* session)
     tr_free(s);
 }
 
-static void start_timer(tr_shared* s)
+static void start_timer(tr_shared *s)
 {
     s->timer = evtimer_new(s->session->event_base, onTimer, s);
     set_evtimer_from_status(s);
 }
 
-void tr_sharedTraversalEnable(tr_shared* s, bool isEnabled)
+void tr_sharedTraversalEnable(tr_shared *s, bool isEnabled)
 {
     if ((s->isEnabled = isEnabled))
     {
@@ -229,9 +229,9 @@ void tr_sharedTraversalEnable(tr_shared* s, bool isEnabled)
     }
 }
 
-void tr_sharedPortChanged(tr_session* session)
+void tr_sharedPortChanged(tr_session *session)
 {
-    tr_shared* s = session->shared;
+    tr_shared *s = session->shared;
 
     if (s->isEnabled)
     {
@@ -241,12 +241,12 @@ void tr_sharedPortChanged(tr_session* session)
     }
 }
 
-bool tr_sharedTraversalIsEnabled(tr_shared const* s)
+bool tr_sharedTraversalIsEnabled(tr_shared const *s)
 {
     return s->isEnabled;
 }
 
-int tr_sharedTraversalStatus(tr_shared const* s)
+int tr_sharedTraversalStatus(tr_shared const *s)
 {
     return MAX(s->natpmpStatus, s->upnpStatus);
 }

@@ -19,7 +19,7 @@
 #include "Formatter.h"
 #include "Utils.h" // mime icons
 
-QHash<QString, int> const& FileTreeItem::getMyChildRows()
+QHash<QString, int> const &FileTreeItem::getMyChildRows()
 {
     size_t const n = childCount();
 
@@ -47,7 +47,7 @@ FileTreeItem::~FileTreeItem()
     }
 }
 
-void FileTreeItem::appendChild(FileTreeItem* child)
+void FileTreeItem::appendChild(FileTreeItem *child)
 {
     size_t const n = childCount();
     child->myParent = this;
@@ -55,9 +55,9 @@ void FileTreeItem::appendChild(FileTreeItem* child)
     myFirstUnhashedRow = n;
 }
 
-FileTreeItem* FileTreeItem::child(QString const& filename)
+FileTreeItem *FileTreeItem::child(QString const &filename)
 {
-    FileTreeItem* item(nullptr);
+    FileTreeItem *item(nullptr);
 
     int const row = getMyChildRows().value(filename, -1);
 
@@ -180,7 +180,7 @@ QVariant FileTreeItem::data(int column, int role) const
     return value;
 }
 
-void FileTreeItem::getSubtreeWantedSize(uint64_t& have, uint64_t& total) const
+void FileTreeItem::getSubtreeWantedSize(uint64_t &have, uint64_t &total) const
 {
     if (myIsWanted)
     {
@@ -188,7 +188,7 @@ void FileTreeItem::getSubtreeWantedSize(uint64_t& have, uint64_t& total) const
         total += myTotalSize;
     }
 
-    for (FileTreeItem const* const i : myChildren)
+    for (FileTreeItem const *const i : myChildren)
     {
         i->getSubtreeWantedSize(have, total);
     }
@@ -228,7 +228,7 @@ uint64_t FileTreeItem::size() const
     return total;
 }
 
-std::pair<int, int> FileTreeItem::update(QString const& name, bool wanted, int priority, uint64_t haveSize, bool updateFields)
+std::pair<int, int> FileTreeItem::update(QString const &name, bool wanted, int priority, uint64_t haveSize, bool updateFields)
 {
     int changed_count = 0;
     int changed_columns[4];
@@ -322,7 +322,7 @@ int FileTreeItem::priority() const
         }
     }
 
-    for (FileTreeItem const* const child : myChildren)
+    for (FileTreeItem const *const child : myChildren)
     {
         i |= child->priority();
     }
@@ -330,7 +330,7 @@ int FileTreeItem::priority() const
     return i;
 }
 
-void FileTreeItem::setSubtreePriority(int i, QSet<int>& ids)
+void FileTreeItem::setSubtreePriority(int i, QSet<int> &ids)
 {
     if (myPriority != i)
     {
@@ -342,7 +342,7 @@ void FileTreeItem::setSubtreePriority(int i, QSet<int>& ids)
         }
     }
 
-    for (FileTreeItem* const child : myChildren)
+    for (FileTreeItem *const child : myChildren)
     {
         child->setSubtreePriority(i, ids);
     }
@@ -357,7 +357,7 @@ int FileTreeItem::isSubtreeWanted() const
 
     int wanted(-1);
 
-    for (FileTreeItem const* const child : myChildren)
+    for (FileTreeItem const *const child : myChildren)
     {
         int const childWanted = child->isSubtreeWanted();
 
@@ -380,7 +380,7 @@ int FileTreeItem::isSubtreeWanted() const
     return wanted;
 }
 
-void FileTreeItem::setSubtreeWanted(bool b, QSet<int>& ids)
+void FileTreeItem::setSubtreeWanted(bool b, QSet<int> &ids)
 {
     if (myIsWanted != b)
     {
@@ -392,7 +392,7 @@ void FileTreeItem::setSubtreeWanted(bool b, QSet<int>& ids)
         }
     }
 
-    for (FileTreeItem* const child : myChildren)
+    for (FileTreeItem *const child : myChildren)
     {
         child->setSubtreeWanted(b, ids);
     }
@@ -401,7 +401,7 @@ void FileTreeItem::setSubtreeWanted(bool b, QSet<int>& ids)
 QString FileTreeItem::path() const
 {
     QString itemPath;
-    FileTreeItem const* item = this;
+    FileTreeItem const *item = this;
 
     while (item != nullptr && !item->name().isEmpty())
     {

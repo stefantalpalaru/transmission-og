@@ -26,17 +26,17 @@
 
 @interface GlobalOptionsPopoverViewController : NSViewController
 {
-    tr_session* fHandle;
-    NSUserDefaults* fDefaults;
+    tr_session *fHandle;
+    NSUserDefaults *fDefaults;
 
     IBOutlet NSTextField *fUploadLimitField, *fDownloadLimitField;
 
     IBOutlet NSTextField *fRatioStopField, *fIdleStopField;
 
-    NSString* fInitialString;
+    NSString *fInitialString;
 }
 
-- (id)initWithHandle:(tr_session*)handle;
+- (id)initWithHandle:(tr_session *)handle;
 
 - (IBAction)updatedDisplayString:(id)sender;
 

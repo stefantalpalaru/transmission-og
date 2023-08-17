@@ -53,10 +53,10 @@ namespace
 
 class PreferenceWidget
 {
-    static char const* const PREF_KEY;
+    static char const *const PREF_KEY;
 
 public:
-    explicit PreferenceWidget(QObject* object)
+    explicit PreferenceWidget(QObject *object)
         : m_object(object)
     {
     }
@@ -64,21 +64,21 @@ public:
     template<typename T>
     bool is() const
     {
-        return qobject_cast<T*>(m_object) != nullptr;
+        return qobject_cast<T *>(m_object) != nullptr;
     }
 
     template<typename T>
-    T const* as() const
+    T const *as() const
     {
         assert(is<T>());
-        return static_cast<T const*>(m_object);
+        return static_cast<T const *>(m_object);
     }
 
     template<typename T>
-    T* as()
+    T *as()
     {
         assert(is<T>());
-        return static_cast<T*>(m_object);
+        return static_cast<T *>(m_object);
     }
 
     void setPrefKey(int key)
@@ -92,10 +92,10 @@ public:
     }
 
 private:
-    QObject* const m_object;
+    QObject *const m_object;
 };
 
-char const* const PreferenceWidget::PREF_KEY = "pref-key";
+char const *const PreferenceWidget::PREF_KEY = "pref-key";
 
 int qtDayToTrDay(int day)
 {
@@ -161,7 +161,7 @@ QString qtDayName(int day)
 
 } // namespace
 
-bool PrefsDialog::updateWidgetValue(QWidget* widget, int prefKey)
+bool PrefsDialog::updateWidgetValue(QWidget *widget, int prefKey)
 {
     PreferenceWidget prefWidget(widget);
 
@@ -205,7 +205,7 @@ bool PrefsDialog::updateWidgetValue(QWidget* widget, int prefKey)
     return true;
 }
 
-void PrefsDialog::linkWidgetToPref(QWidget* widget, int prefKey)
+void PrefsDialog::linkWidgetToPref(QWidget *widget, int prefKey)
 {
     PreferenceWidget prefWidget(widget);
 
@@ -279,7 +279,7 @@ void PrefsDialog::lineEditingFinished()
 
     if (prefWidget.is<QLineEdit>())
     {
-        QLineEdit const* const lineEdit = prefWidget.as<QLineEdit>();
+        QLineEdit const *const lineEdit = prefWidget.as<QLineEdit>();
 
         if (lineEdit->isModified())
         {
@@ -288,7 +288,7 @@ void PrefsDialog::lineEditingFinished()
     }
 }
 
-void PrefsDialog::pathChanged(QString const& path)
+void PrefsDialog::pathChanged(QString const &path)
 {
     PreferenceWidget const prefWidget(sender());
 
@@ -304,7 +304,7 @@ void PrefsDialog::plainTextChanged()
 
     if (prefWidget.is<QPlainTextEdit>())
     {
-        QPlainTextEdit const* const plainTextEdit = prefWidget.as<QPlainTextEdit>();
+        QPlainTextEdit const *const plainTextEdit = prefWidget.as<QPlainTextEdit>();
 
         if (plainTextEdit->document()->isModified())
         {
@@ -342,7 +342,7 @@ void PrefsDialog::initRemoteTab()
 
 void PrefsDialog::altSpeedDaysEdited(int i)
 {
-    int const value = qobject_cast<QComboBox*>(sender())->itemData(i).toInt();
+    int const value = qobject_cast<QComboBox *>(sender())->itemData(i).toInt();
     setPref(Prefs::ALT_SPEED_LIMIT_TIME_DAY, value);
 }
 
@@ -387,7 +387,7 @@ void PrefsDialog::initSpeedTab()
     mySchedWidgets << ui.altSpeedLimitStartTimeEdit << ui.altSpeedLimitToLabel << ui.altSpeedLimitEndTimeEdit
                    << ui.altSpeedLimitDaysLabel << ui.altSpeedLimitDaysCombo;
 
-    ColumnResizer* cr(new ColumnResizer(this));
+    ColumnResizer *cr(new ColumnResizer(this));
     cr->addLayout(ui.speedLimitsSectionLayout);
     cr->addLayout(ui.altSpeedLimitsSectionLayout);
     cr->update();
@@ -443,7 +443,7 @@ void PrefsDialog::initNetworkTab()
     linkWidgetToPref(ui.enableLpdCheck, Prefs::LPD_ENABLED);
     linkWidgetToPref(ui.defaultTrackersPlainTextEdit, Prefs::DEFAULT_TRACKERS);
 
-    ColumnResizer* cr(new ColumnResizer(this));
+    ColumnResizer *cr(new ColumnResizer(this));
     cr->addLayout(ui.incomingPeersSectionLayout);
     cr->addLayout(ui.peerLimitsSectionLayout);
     cr->update();
@@ -456,7 +456,7 @@ void PrefsDialog::initNetworkTab()
 ****
 ***/
 
-void PrefsDialog::onBlocklistDialogDestroyed(QObject* o)
+void PrefsDialog::onBlocklistDialogDestroyed(QObject *o)
 {
     Q_UNUSED(o)
 
@@ -491,7 +491,7 @@ void PrefsDialog::onUpdateBlocklistClicked()
 
 void PrefsDialog::encryptionEdited(int i)
 {
-    int const value(qobject_cast<QComboBox*>(sender())->itemData(i).toInt());
+    int const value(qobject_cast<QComboBox *>(sender())->itemData(i).toInt());
     setPref(Prefs::ENCRYPTION, value);
 }
 
@@ -508,7 +508,7 @@ void PrefsDialog::initPrivacyTab()
 
     myBlockWidgets << ui.blocklistEdit << ui.blocklistStatusLabel << ui.updateBlocklistButton << ui.autoUpdateBlocklistCheck;
 
-    ColumnResizer* cr(new ColumnResizer(this));
+    ColumnResizer *cr(new ColumnResizer(this));
     cr->addLayout(ui.encryptionSectionLayout);
     cr->addLayout(ui.blocklistSectionLayout);
     cr->update();
@@ -593,7 +593,7 @@ void PrefsDialog::initDownloadingTab()
     linkWidgetToPref(ui.completionScriptButton, Prefs::SCRIPT_TORRENT_DONE_FILENAME);
     linkWidgetToPref(ui.completionScriptEdit, Prefs::SCRIPT_TORRENT_DONE_FILENAME);
 
-    ColumnResizer* cr(new ColumnResizer(this));
+    ColumnResizer *cr(new ColumnResizer(this));
     cr->addLayout(ui.addingSectionLayout);
     cr->addLayout(ui.downloadQueueSectionLayout);
     cr->addLayout(ui.incompleteSectionLayout);
@@ -607,11 +607,11 @@ void PrefsDialog::initDownloadingTab()
 
 void PrefsDialog::updateDownloadingWidgetsLocality()
 {
-    ui.watchDirStack->setCurrentWidget(myIsLocal ? static_cast<QWidget*>(ui.watchDirButton) : ui.watchDirEdit);
-    ui.downloadDirStack->setCurrentWidget(myIsLocal ? static_cast<QWidget*>(ui.downloadDirButton) : ui.downloadDirEdit);
-    ui.incompleteDirStack->setCurrentWidget(myIsLocal ? static_cast<QWidget*>(ui.incompleteDirButton) : ui.incompleteDirEdit);
+    ui.watchDirStack->setCurrentWidget(myIsLocal ? static_cast<QWidget *>(ui.watchDirButton) : ui.watchDirEdit);
+    ui.downloadDirStack->setCurrentWidget(myIsLocal ? static_cast<QWidget *>(ui.downloadDirButton) : ui.downloadDirEdit);
+    ui.incompleteDirStack->setCurrentWidget(myIsLocal ? static_cast<QWidget *>(ui.incompleteDirButton) : ui.incompleteDirEdit);
     ui.completionScriptStack->setCurrentWidget(
-        myIsLocal ? static_cast<QWidget*>(ui.completionScriptButton) : ui.completionScriptEdit);
+        myIsLocal ? static_cast<QWidget *>(ui.completionScriptButton) : ui.completionScriptEdit);
 
     ui.watchDirStack->setFixedHeight(ui.watchDirStack->currentWidget()->sizeHint().height());
     ui.downloadDirStack->setFixedHeight(ui.downloadDirStack->currentWidget()->sizeHint().height());
@@ -625,7 +625,7 @@ void PrefsDialog::updateDownloadingWidgetsLocality()
 ****
 ***/
 
-PrefsDialog::PrefsDialog(Session& session, Prefs& prefs, QWidget* parent)
+PrefsDialog::PrefsDialog(Session &session, Prefs &prefs, QWidget *parent)
     : BaseDialog(parent)
     , mySession(session)
     , myPrefs(prefs)
@@ -658,7 +658,7 @@ PrefsDialog::PrefsDialog(Session& session, Prefs& prefs, QWidget* parent)
     // that don't work in remote sessions
     if (!myIsServer)
     {
-        for (QWidget* const w : myUnsupportedWhenRemote)
+        for (QWidget *const w : myUnsupportedWhenRemote)
         {
             w->setToolTip(tr("Not supported by remote sessions"));
             w->setEnabled(false);
@@ -672,7 +672,7 @@ PrefsDialog::~PrefsDialog()
 {
 }
 
-void PrefsDialog::setPref(int key, QVariant const& v)
+void PrefsDialog::setPref(int key, QVariant const &v)
 {
     myPrefs.set(key, v);
     refreshPref(key);
@@ -713,17 +713,17 @@ void PrefsDialog::refreshPref(int key)
             bool const whitelist(myPrefs.getBool(Prefs::RPC_WHITELIST_ENABLED));
             bool const auth(myPrefs.getBool(Prefs::RPC_AUTH_REQUIRED));
 
-            for (QWidget* const w : myWebWhitelistWidgets)
+            for (QWidget *const w : myWebWhitelistWidgets)
             {
                 w->setEnabled(enabled && whitelist);
             }
 
-            for (QWidget* const w : myWebAuthWidgets)
+            for (QWidget *const w : myWebAuthWidgets)
             {
                 w->setEnabled(enabled && auth);
             }
 
-            for (QWidget* const w : myWebWidgets)
+            for (QWidget *const w : myWebWidgets)
             {
                 w->setEnabled(enabled);
             }
@@ -735,7 +735,7 @@ void PrefsDialog::refreshPref(int key)
         {
             bool const enabled = myPrefs.getBool(key);
 
-            for (QWidget* const w : mySchedWidgets)
+            for (QWidget *const w : mySchedWidgets)
             {
                 w->setEnabled(enabled);
             }
@@ -747,7 +747,7 @@ void PrefsDialog::refreshPref(int key)
         {
             bool const enabled = myPrefs.getBool(key);
 
-            for (QWidget* const w : myBlockWidgets)
+            for (QWidget *const w : myBlockWidgets)
             {
                 w->setEnabled(enabled);
             }
@@ -768,7 +768,7 @@ void PrefsDialog::refreshPref(int key)
 
     if (it != myWidgets.end())
     {
-        QWidget* w(it.value());
+        QWidget *w(it.value());
 
         w->blockSignals(true);
 
@@ -776,7 +776,7 @@ void PrefsDialog::refreshPref(int key)
         {
             if (key == Prefs::ENCRYPTION)
             {
-                QComboBox* comboBox(qobject_cast<QComboBox*>(w));
+                QComboBox *comboBox(qobject_cast<QComboBox *>(w));
                 int const index = comboBox->findData(myPrefs.getInt(key));
                 comboBox->setCurrentIndex(index);
             }

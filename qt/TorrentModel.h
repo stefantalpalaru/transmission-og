@@ -35,46 +35,46 @@ public:
         TorrentRole = Qt::UserRole
     };
 
-    explicit TorrentModel(Prefs const& prefs);
+    explicit TorrentModel(Prefs const &prefs);
     virtual ~TorrentModel() override;
     void clear();
 
-    bool hasTorrent(QString const& hashString) const;
+    bool hasTorrent(QString const &hashString) const;
 
-    Torrent* getTorrentFromId(int id);
-    Torrent const* getTorrentFromId(int id) const;
+    Torrent *getTorrentFromId(int id);
+    Torrent const *getTorrentFromId(int id) const;
 
-    using torrents_t = QVector<Torrent*>;
-    torrents_t const& torrents() const
+    using torrents_t = QVector<Torrent *>;
+    torrents_t const &torrents() const
     {
         return myTorrents;
     }
 
     // QAbstractItemModel
-    int rowCount(QModelIndex const& parent = QModelIndex()) const override;
-    QVariant data(QModelIndex const& index, int role = Qt::DisplayRole) const override;
+    int rowCount(QModelIndex const &parent = QModelIndex()) const override;
+    QVariant data(QModelIndex const &index, int role = Qt::DisplayRole) const override;
 
 public slots:
-    void updateTorrents(tr_variant* torrentList, bool isCompleteList);
-    void removeTorrents(tr_variant* torrentList);
+    void updateTorrents(tr_variant *torrentList, bool isCompleteList);
+    void removeTorrents(tr_variant *torrentList);
 
 signals:
-    void torrentsAdded(torrent_ids_t const&);
-    void torrentsChanged(torrent_ids_t const&);
-    void torrentsCompleted(torrent_ids_t const&);
-    void torrentsEdited(torrent_ids_t const&);
-    void torrentsNeedInfo(torrent_ids_t const&);
+    void torrentsAdded(torrent_ids_t const &);
+    void torrentsChanged(torrent_ids_t const &);
+    void torrentsCompleted(torrent_ids_t const &);
+    void torrentsEdited(torrent_ids_t const &);
+    void torrentsNeedInfo(torrent_ids_t const &);
 
 private:
-    void rowsAdd(torrents_t const& torrents);
-    void rowsRemove(torrents_t const& torrents);
-    void rowsEmitChanged(torrent_ids_t const& ids);
+    void rowsAdd(torrents_t const &torrents);
+    void rowsRemove(torrents_t const &torrents);
+    void rowsEmitChanged(torrent_ids_t const &ids);
 
     std::optional<int> getRow(int id) const;
     using span_t = std::pair<int, int>;
-    std::vector<span_t> getSpans(torrent_ids_t const& ids) const;
+    std::vector<span_t> getSpans(torrent_ids_t const &ids) const;
 
-    Prefs const& myPrefs;
+    Prefs const &myPrefs;
     torrent_ids_t myAlreadyAdded;
     torrents_t myTorrents;
 };

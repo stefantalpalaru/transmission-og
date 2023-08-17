@@ -12,4 +12,4 @@
 
 #include <gtk/gtk.h>
 
-GtkWidget* gtr_relocate_dialog_new(GtkWindow* parent, TrCore* core, GSList* torrentIds);
+GtkWidget *gtr_relocate_dialog_new(GtkWindow *parent, TrCore *core, GSList *torrentIds);

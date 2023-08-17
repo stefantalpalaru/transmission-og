@@ -27,16 +27,16 @@
 
 @interface BlocklistDownloaderViewController (Private)
 
-- (id)initWithPrefsController:(PrefsController*)prefsController;
+- (id)initWithPrefsController:(PrefsController *)prefsController;
 - (void)startDownload;
-- (void)failureSheetClosed:(NSAlert*)alert returnCode:(NSInteger)code contextInfo:(void*)info;
+- (void)failureSheetClosed:(NSAlert *)alert returnCode:(NSInteger)code contextInfo:(void *)info;
 
 @end
 
 @implementation BlocklistDownloaderViewController
 
-BlocklistDownloaderViewController* fBLViewController = nil;
-+ (void)downloadWithPrefsController:(PrefsController*)prefsController
+BlocklistDownloaderViewController *fBLViewController = nil;
++ (void)downloadWithPrefsController:(PrefsController *)prefsController
 {
     if (!fBLViewController)
     {
@@ -73,12 +73,12 @@ BlocklistDownloaderViewController* fBLViewController = nil;
 
 - (void)setStatusProgressForCurrentSize:(NSUInteger)currentSize expectedSize:(long long)expectedSize
 {
-    NSString* string = NSLocalizedString(@"Downloading blocklist", "Blocklist -> message");
+    NSString *string = NSLocalizedString(@"Downloading blocklist", "Blocklist -> message");
     if (expectedSize != NSURLResponseUnknownLength)
     {
         [fProgressBar setIndeterminate:NO];
 
-        NSString* substring = [NSString stringForFilePartialSize:currentSize fullSize:expectedSize];
+        NSString *substring = [NSString stringForFilePartialSize:currentSize fullSize:expectedSize];
         string = [string stringByAppendingFormat:@" (%@)", substring];
         [fProgressBar setDoubleValue:(double)currentSize / expectedSize];
     }
@@ -106,12 +106,12 @@ BlocklistDownloaderViewController* fBLViewController = nil;
     fBLViewController = nil;
 }
 
-- (void)setFailed:(NSString*)error
+- (void)setFailed:(NSString *)error
 {
     [NSApp endSheet:fStatusWindow];
     [fStatusWindow orderOut:self];
 
-    NSAlert* alert = [[NSAlert alloc] init];
+    NSAlert *alert = [[NSAlert alloc] init];
     [alert addButtonWithTitle:NSLocalizedString(@"OK", "Blocklist -> button")];
     [alert setMessageText:NSLocalizedString(@"Download of the blocklist failed.", "Blocklist -> message")];
     [alert setAlertStyle:NSWarningAlertStyle];
@@ -127,7 +127,7 @@ BlocklistDownloaderViewController* fBLViewController = nil;
 
 @implementation BlocklistDownloaderViewController (Private)
 
-- (id)initWithPrefsController:(PrefsController*)prefsController
+- (id)initWithPrefsController:(PrefsController *)prefsController
 {
     if ((self = [super init]))
     {
@@ -142,13 +142,13 @@ BlocklistDownloaderViewController* fBLViewController = nil;
     //load window and show as sheet
     [[NSBundle mainBundle] loadNibNamed:@"BlocklistStatusWindow" owner:self topLevelObjects:NULL];
 
-    BlocklistDownloader* downloader = [BlocklistDownloader downloader];
+    BlocklistDownloader *downloader = [BlocklistDownloader downloader];
     [downloader setViewController:self]; //do before showing the sheet to ensure it doesn't slide out with placeholder text
 
     [NSApp beginSheet:fStatusWindow modalForWindow:[fPrefsController window] modalDelegate:nil didEndSelector:nil contextInfo:nil];
 }
 
-- (void)failureSheetClosed:(NSAlert*)alert returnCode:(NSInteger)code contextInfo:(void*)info
+- (void)failureSheetClosed:(NSAlert *)alert returnCode:(NSInteger)code contextInfo:(void *)info
 {
     [[alert window] orderOut:self];
 

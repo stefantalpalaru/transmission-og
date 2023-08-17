@@ -15,13 +15,13 @@ class FileTreeDelegate : public QItemDelegate
     Q_OBJECT
 
 public:
-    FileTreeDelegate(QObject* parent = nullptr)
+    FileTreeDelegate(QObject *parent = nullptr)
         : QItemDelegate(parent)
     {
     }
 
 public:
     // QAbstractItemDelegate
-    QSize sizeHint(QStyleOptionViewItem const&, QModelIndex const&) const override;
-    void paint(QPainter*, QStyleOptionViewItem const&, QModelIndex const&) const override;
+    QSize sizeHint(QStyleOptionViewItem const &, QModelIndex const &) const override;
+    void paint(QPainter *, QStyleOptionViewItem const &, QModelIndex const &) const override;
 };

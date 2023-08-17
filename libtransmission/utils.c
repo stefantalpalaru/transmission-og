@@ -64,7 +64,7 @@ time_t __tr_current_time = 0;
 ****
 ***/
 
-struct tm* tr_localtime_r(time_t const* _clock, struct tm* _result)
+struct tm *tr_localtime_r(time_t const *_clock, struct tm *_result)
 {
 #ifdef HAVE_LOCALTIME_R
 
@@ -72,7 +72,7 @@ struct tm* tr_localtime_r(time_t const* _clock, struct tm* _result)
 
 #else
 
-    struct tm* p = localtime(_clock);
+    struct tm *p = localtime(_clock);
 
     if (p != NULL)
     {
@@ -84,7 +84,7 @@ struct tm* tr_localtime_r(time_t const* _clock, struct tm* _result)
 #endif
 }
 
-int tr_gettimeofday(struct timeval* tv)
+int tr_gettimeofday(struct timeval *tv)
 {
 #ifdef _WIN32
 
@@ -124,9 +124,9 @@ int tr_gettimeofday(struct timeval* tv)
 ****
 ***/
 
-void* tr_malloc(size_t size)
+void *tr_malloc(size_t size)
 {
-    void* res = NULL;
+    void *res = NULL;
 
     if (size != 0)
     {
@@ -141,9 +141,9 @@ void* tr_malloc(size_t size)
     return res;
 }
 
-void* tr_malloc0(size_t size)
+void *tr_malloc0(size_t size)
 {
-    void* res = NULL;
+    void *res = NULL;
 
     if (size != 0)
     {
@@ -158,9 +158,9 @@ void* tr_malloc0(size_t size)
     return res;
 }
 
-void* tr_realloc(void* p, size_t size)
+void *tr_realloc(void *p, size_t size)
 {
-    void* res = NULL;
+    void *res = NULL;
 
     if (size != 0)
     {
@@ -179,7 +179,7 @@ void* tr_realloc(void* p, size_t size)
     return res;
 }
 
-void tr_free(void* p)
+void tr_free(void *p)
 {
     if (p != NULL)
     {
@@ -187,7 +187,7 @@ void tr_free(void* p)
     }
 }
 
-void tr_free_ptrv(void* const* p)
+void tr_free_ptrv(void *const *p)
 {
     if (p == NULL)
     {
@@ -201,7 +201,7 @@ void tr_free_ptrv(void* const* p)
     }
 }
 
-void* tr_memdup(void const* src, size_t byteCount)
+void *tr_memdup(void const *src, size_t byteCount)
 {
     return memcpy(tr_malloc(byteCount), src, byteCount);
 }
@@ -210,12 +210,12 @@ void* tr_memdup(void const* src, size_t byteCount)
 ****
 ***/
 
-char const* tr_strip_positional_args(char const* str)
+char const *tr_strip_positional_args(char const *str)
 {
-    char* out;
+    char *out;
     static size_t bufsize = 0;
-    static char* buf = NULL;
-    char const* in = str;
+    static char *buf = NULL;
+    char const *in = str;
     size_t const len = str != NULL ? strlen(str) : 0;
 
     if (buf == NULL || bufsize < len)
@@ -232,7 +232,7 @@ char const* tr_strip_positional_args(char const* str)
 
         if (*str == '%' && isdigit(str[1]))
         {
-            char const* tmp = str + 1;
+            char const *tmp = str + 1;
 
             while (isdigit(*tmp))
             {
@@ -259,7 +259,7 @@ char const* tr_strip_positional_args(char const* str)
 ***
 **/
 
-void tr_timerAdd(struct event* timer, int seconds, int microseconds)
+void tr_timerAdd(struct event *timer, int seconds, int microseconds)
 {
     struct timeval tv;
     tv.tv_sec = seconds;
@@ -272,7 +272,7 @@ void tr_timerAdd(struct event* timer, int seconds, int microseconds)
     evtimer_add(timer, &tv);
 }
 
-void tr_timerAddMsec(struct event* timer, int msec)
+void tr_timerAddMsec(struct event *timer, int msec)
 {
     int const seconds = msec / 1000;
     int const usec = (msec % 1000) * 1000;
@@ -283,13 +283,13 @@ void tr_timerAddMsec(struct event* timer, int msec)
 ***
 **/
 
-uint8_t* tr_loadFile(char const* path, size_t* size, tr_error** error)
+uint8_t *tr_loadFile(char const *path, size_t *size, tr_error **error)
 {
-    uint8_t* buf;
+    uint8_t *buf;
     tr_sys_path_info info;
     tr_sys_file_t fd;
-    tr_error* my_error = NULL;
-    char const* const err_fmt = _("Couldn't read \"%1$s\": %2$s");
+    tr_error *my_error = NULL;
+    char const *const err_fmt = _("Couldn't read \"%1$s\": %2$s");
 
     /* try to stat the file */
     if (!tr_sys_path_get_info(path, 0, &info, &my_error))
@@ -339,11 +339,11 @@ uint8_t* tr_loadFile(char const* path, size_t* size, tr_error** error)
     return buf;
 }
 
-char* tr_buildPath(char const* first_element, ...)
+char *tr_buildPath(char const *first_element, ...)
 {
-    char const* element;
-    char* buf;
-    char* pch;
+    char const *element;
+    char *buf;
+    char *pch;
     va_list vl;
     size_t bufLen = 0;
 
@@ -354,7 +354,7 @@ char* tr_buildPath(char const* first_element, ...)
     while (element != NULL)
     {
         bufLen += strlen(element) + 1;
-        element = va_arg(vl, char const*);
+        element = va_arg(vl, char const *);
     }
 
     pch = buf = tr_new(char, bufLen);
@@ -375,7 +375,7 @@ char* tr_buildPath(char const* first_element, ...)
         memcpy(pch, element, elementLen);
         pch += elementLen;
         *pch++ = TR_PATH_DELIMITER;
-        element = va_arg(vl, char const*);
+        element = va_arg(vl, char const *);
     }
 
     va_end(vl);
@@ -393,15 +393,15 @@ char* tr_buildPath(char const* first_element, ...)
     return buf;
 }
 
-char* tr_get_program_dir(void)
+char *tr_get_program_dir(void)
 {
-    char* path = NULL;
+    char *path = NULL;
     int length, dirname_length;
 
     length = wai_getExecutablePath(NULL, 0, &dirname_length);
     if (length > 0)
     {
-        path = (char*)tr_malloc(length + 1);
+        path = (char *)tr_malloc(length + 1);
         wai_getExecutablePath(path, length, &dirname_length);
         path[dirname_length] = '\0';
     }
@@ -409,7 +409,7 @@ char* tr_get_program_dir(void)
     return path;
 }
 
-int64_t tr_getDirFreeSpace(char const* dir)
+int64_t tr_getDirFreeSpace(char const *dir)
 {
     int64_t free_space;
 
@@ -420,7 +420,7 @@ int64_t tr_getDirFreeSpace(char const* dir)
     }
     else
     {
-        struct tr_device_info* info;
+        struct tr_device_info *info;
         info = tr_device_info_create(dir);
         free_space = tr_device_info_get_free_space(info);
         tr_device_info_free(info);
@@ -433,10 +433,10 @@ int64_t tr_getDirFreeSpace(char const* dir)
 *****
 ****/
 
-char* evbuffer_free_to_str(struct evbuffer* buf, size_t* result_len)
+char *evbuffer_free_to_str(struct evbuffer *buf, size_t *result_len)
 {
     size_t const n = evbuffer_get_length(buf);
-    char* ret = tr_new(char, n + 1);
+    char *ret = tr_new(char, n + 1);
     evbuffer_copyout(buf, ret, n);
     evbuffer_free(buf);
     ret[n] = '\0';
@@ -449,14 +449,14 @@ char* evbuffer_free_to_str(struct evbuffer* buf, size_t* result_len)
     return ret;
 }
 
-char* tr_strdup(void const* in)
+char *tr_strdup(void const *in)
 {
     return tr_strndup(in, in != NULL ? strlen(in) : 0);
 }
 
-char* tr_strndup(void const* in, size_t len)
+char *tr_strndup(void const *in, size_t len)
 {
-    char* out = NULL;
+    char *out = NULL;
 
     if (len == TR_BAD_SIZE)
     {
@@ -476,7 +476,7 @@ char* tr_strndup(void const* in, size_t len)
     return out;
 }
 
-char const* tr_memmem(char const* haystack, size_t haystacklen, char const* needle, size_t needlelen)
+char const *tr_memmem(char const *haystack, size_t haystacklen, char const *needle, size_t needlelen)
 {
 #ifdef HAVE_MEMMEM
 
@@ -507,7 +507,7 @@ char const* tr_memmem(char const* haystack, size_t haystacklen, char const* need
 #endif
 }
 
-char const* tr_strcasestr(char const* haystack, char const* needle)
+char const *tr_strcasestr(char const *haystack, char const *needle)
 {
 #ifdef HAVE_STRCASESTR
 
@@ -524,10 +524,10 @@ char const* tr_strcasestr(char const* haystack, char const* needle)
 #endif
 }
 
-char* tr_strdup_printf(char const* fmt, ...)
+char *tr_strdup_printf(char const *fmt, ...)
 {
     va_list ap;
-    char* ret;
+    char *ret;
 
     va_start(ap, fmt);
     ret = tr_strdup_vprintf(fmt, ap);
@@ -536,16 +536,16 @@ char* tr_strdup_printf(char const* fmt, ...)
     return ret;
 }
 
-char* tr_strdup_vprintf(char const* fmt, va_list args)
+char *tr_strdup_vprintf(char const *fmt, va_list args)
 {
-    struct evbuffer* buf = evbuffer_new();
+    struct evbuffer *buf = evbuffer_new();
     evbuffer_add_vprintf(buf, fmt, args);
     return evbuffer_free_to_str(buf, NULL);
 }
 
-char const* tr_strerror(int i)
+char const *tr_strerror(int i)
 {
-    char const* ret = strerror(i);
+    char const *ret = strerror(i);
 
     if (ret == NULL)
     {
@@ -555,7 +555,7 @@ char const* tr_strerror(int i)
     return ret;
 }
 
-int tr_strcmp0(char const* str1, char const* str2)
+int tr_strcmp0(char const *str1, char const *str2)
 {
     if (str1 != NULL && str2 != NULL)
     {
@@ -575,7 +575,7 @@ int tr_strcmp0(char const* str1, char const* str2)
     return 0;
 }
 
-int tr_memcmp0(void const* lhs, void const* rhs, size_t size)
+int tr_memcmp0(void const *lhs, void const *rhs, size_t size)
 {
     if (lhs != NULL && rhs != NULL)
     {
@@ -600,7 +600,7 @@ int tr_memcmp0(void const* lhs, void const* rhs, size_t size)
 ****/
 
 /* https://bugs.launchpad.net/percona-patches/+bug/526863/+attachment/1160199/+files/solaris_10_fix.patch */
-char* tr_strsep(char** str, char const* delims)
+char *tr_strsep(char **str, char const *delims)
 {
 #ifdef HAVE_STRSEP
 
@@ -608,7 +608,7 @@ char* tr_strsep(char** str, char const* delims)
 
 #else
 
-    char* token;
+    char *token;
 
     if (*str == NULL) /* no more tokens */
     {
@@ -637,7 +637,7 @@ char* tr_strsep(char** str, char const* delims)
 #endif
 }
 
-char* tr_strjoin(char const* const* arr, size_t len, char const* delim)
+char *tr_strjoin(char const *const *arr, size_t len, char const *delim)
 {
     size_t total_len = 1;
     size_t delim_len = strlen(delim);
@@ -648,8 +648,8 @@ char* tr_strjoin(char const* const* arr, size_t len, char const* delim)
 
     total_len += len > 0 ? (len - 1) * delim_len : 0;
 
-    char* const ret = tr_new(char, total_len);
-    char* p = ret;
+    char *const ret = tr_new(char, total_len);
+    char *p = ret;
 
     for (size_t i = 0; i < len; ++i)
     {
@@ -668,7 +668,7 @@ char* tr_strjoin(char const* const* arr, size_t len, char const* delim)
     return ret;
 }
 
-char* tr_strstrip(char* str)
+char *tr_strstrip(char *str)
 {
     if (str != NULL)
     {
@@ -694,7 +694,7 @@ char* tr_strstrip(char* str)
     return str;
 }
 
-bool tr_str_has_suffix(char const* str, char const* suffix)
+bool tr_str_has_suffix(char const *str, char const *suffix)
 {
     size_t str_len;
     size_t suffix_len;
@@ -752,7 +752,7 @@ void tr_wait_msec(long int msec)
 ****
 ***/
 
-int tr_snprintf(char* buf, size_t buflen, char const* fmt, ...)
+int tr_snprintf(char *buf, size_t buflen, char const *fmt, ...)
 {
     int len;
     va_list args;
@@ -768,7 +768,7 @@ int tr_snprintf(char* buf, size_t buflen, char const* fmt, ...)
  * will be copied. Always NUL terminates (unless siz == 0).
  * Returns strlen (src); if retval >= siz, truncation occurred.
  */
-size_t tr_strlcpy(char* dst, void const* src, size_t siz)
+size_t tr_strlcpy(char *dst, void const *src, size_t siz)
 {
     TR_ASSERT(dst != NULL);
     TR_ASSERT(src != NULL);
@@ -779,8 +779,8 @@ size_t tr_strlcpy(char* dst, void const* src, size_t siz)
 
 #else
 
-    char* d = dst;
-    char const* s = src;
+    char *d = dst;
+    char const *s = src;
     size_t n = siz;
 
     /* Copy as many bytes as will fit */
@@ -808,7 +808,7 @@ size_t tr_strlcpy(char* dst, void const* src, size_t siz)
         }
     }
 
-    return s - (char const*)src - 1; /* count does not include NUL */
+    return s - (char const *)src - 1; /* count does not include NUL */
 
 #endif
 }
@@ -837,10 +837,10 @@ double tr_getRatio(uint64_t numerator, uint64_t denominator)
     return ratio;
 }
 
-void tr_binary_to_hex(void const* input, char* output, size_t byte_length)
+void tr_binary_to_hex(void const *input, char *output, size_t byte_length)
 {
     static char const hex[] = "0123456789abcdef";
-    uint8_t const* input_octets = input;
+    uint8_t const *input_octets = input;
 
     /* go from back to front to allow for in-place conversion */
     input_octets += byte_length;
@@ -856,10 +856,10 @@ void tr_binary_to_hex(void const* input, char* output, size_t byte_length)
     }
 }
 
-void tr_hex_to_binary(char const* input, void* output, size_t byte_length)
+void tr_hex_to_binary(char const *input, void *output, size_t byte_length)
 {
     static char const hex[] = "0123456789abcdef";
-    uint8_t* output_octets = output;
+    uint8_t *output_octets = output;
 
     for (size_t i = 0; i < byte_length; ++i)
     {
@@ -873,7 +873,7 @@ void tr_hex_to_binary(char const* input, void* output, size_t byte_length)
 ****
 ***/
 
-static bool isValidURLChars(char const* url, size_t url_len)
+static bool isValidURLChars(char const *url, size_t url_len)
 {
     // clang-format off
     static char const rfc2396_valid_chars[] =
@@ -902,7 +902,7 @@ static bool isValidURLChars(char const* url, size_t url_len)
     return true;
 }
 
-bool tr_urlIsValidTracker(char const* url)
+bool tr_urlIsValidTracker(char const *url)
 {
     if (url == NULL)
     {
@@ -915,7 +915,7 @@ bool tr_urlIsValidTracker(char const* url)
         (memcmp(url, "http://", 7) == 0 || memcmp(url, "https://", 8) == 0 || memcmp(url, "udp://", 6) == 0);
 }
 
-bool tr_urlIsValid(char const* url, size_t url_len)
+bool tr_urlIsValid(char const *url, size_t url_len)
 {
     if (url == NULL)
     {
@@ -932,16 +932,16 @@ bool tr_urlIsValid(char const* url, size_t url_len)
          memcmp(url, "sftp://", 7) == 0);
 }
 
-bool tr_addressIsIP(char const* str)
+bool tr_addressIsIP(char const *str)
 {
     tr_address tmp;
     return tr_address_from_string(&tmp, str);
 }
 
-static int parse_port(char const* port, size_t port_len)
+static int parse_port(char const *port, size_t port_len)
 {
-    char* tmp = tr_strndup(port, port_len);
-    char* end;
+    char *tmp = tr_strndup(port, port_len);
+    char *end;
 
     long port_num = strtol(tmp, &end, 10);
 
@@ -955,11 +955,11 @@ static int parse_port(char const* port, size_t port_len)
     return (int)port_num;
 }
 
-static int get_port_for_scheme(char const* scheme, size_t scheme_len)
+static int get_port_for_scheme(char const *scheme, size_t scheme_len)
 {
     struct known_scheme
     {
-        char const* name;
+        char const *name;
         int port;
     };
 
@@ -974,7 +974,7 @@ static int get_port_for_scheme(char const* scheme, size_t scheme_len)
     };
     // clang-format on
 
-    for (struct known_scheme const* s = known_schemes; s->name != NULL; ++s)
+    for (struct known_scheme const *s = known_schemes; s->name != NULL; ++s)
     {
         if (scheme_len == strlen(s->name) && memcmp(scheme, s->name, scheme_len) == 0)
         {
@@ -985,15 +985,15 @@ static int get_port_for_scheme(char const* scheme, size_t scheme_len)
     return -1;
 }
 
-bool tr_urlParse(char const* url, size_t url_len, char** setme_scheme, char** setme_host, int* setme_port, char** setme_path)
+bool tr_urlParse(char const *url, size_t url_len, char **setme_scheme, char **setme_host, int *setme_port, char **setme_path)
 {
     if (url_len == TR_BAD_SIZE)
     {
         url_len = strlen(url);
     }
 
-    char const* scheme = url;
-    char const* scheme_end = tr_memmem(scheme, url_len, "://", 3);
+    char const *scheme = url;
+    char const *scheme_end = tr_memmem(scheme, url_len, "://", 3);
 
     if (scheme_end == NULL)
     {
@@ -1010,8 +1010,8 @@ bool tr_urlParse(char const* url, size_t url_len, char** setme_scheme, char** se
     url += scheme_len + 3;
     url_len -= scheme_len + 3;
 
-    char const* authority = url;
-    char const* authority_end = memchr(authority, '/', url_len);
+    char const *authority = url;
+    char const *authority_end = memchr(authority, '/', url_len);
 
     if (authority_end == NULL)
     {
@@ -1028,7 +1028,7 @@ bool tr_urlParse(char const* url, size_t url_len, char** setme_scheme, char** se
     url += authority_len;
     url_len -= authority_len;
 
-    char const* host_end = memchr(authority, ':', authority_len);
+    char const *host_end = memchr(authority, ':', authority_len);
 
     size_t const host_len = host_end != NULL ? (size_t)(host_end - authority) : authority_len;
 
@@ -1073,9 +1073,9 @@ bool tr_urlParse(char const* url, size_t url_len, char** setme_scheme, char** se
 ****
 ***/
 
-void tr_removeElementFromArray(void* array, unsigned int index_to_remove, size_t sizeof_element, size_t nmemb)
+void tr_removeElementFromArray(void *array, unsigned int index_to_remove, size_t sizeof_element, size_t nmemb)
 {
-    char* a = array;
+    char *a = array;
 
     memmove(
         a + sizeof_element * index_to_remove,
@@ -1084,15 +1084,15 @@ void tr_removeElementFromArray(void* array, unsigned int index_to_remove, size_t
 }
 
 int tr_lowerBound(
-    void const* key,
-    void const* base,
+    void const *key,
+    void const *base,
     size_t nmemb,
     size_t size,
     tr_voidptr_compare_func compar,
-    bool* exact_match)
+    bool *exact_match)
 {
     size_t first = 0;
-    char const* cbase = base;
+    char const *cbase = base;
     bool exact = false;
 
     while (nmemb != 0)
@@ -1132,8 +1132,8 @@ int tr_lowerBound(
     do \
     { \
         register size_t __size = (size); \
-        register char* __a = (a); \
-        register char* __b = (b); \
+        register char *__a = (a); \
+        register char *__b = (b); \
         if (__a != __b) \
         { \
             do \
@@ -1146,7 +1146,7 @@ int tr_lowerBound(
     } while (0)
 
 static size_t quickfindPartition(
-    char* base,
+    char *base,
     size_t left,
     size_t right,
     size_t size,
@@ -1193,7 +1193,7 @@ static size_t quickfindPartition(
     return storeIndex;
 }
 
-static void quickfindFirstK(char* base, size_t left, size_t right, size_t size, tr_voidptr_compare_func compar, size_t k)
+static void quickfindFirstK(char *base, size_t left, size_t right, size_t size, tr_voidptr_compare_func compar, size_t k)
 {
     if (right > left)
     {
@@ -1214,7 +1214,7 @@ static void quickfindFirstK(char* base, size_t left, size_t right, size_t size, 
 
 #ifdef TR_ENABLE_ASSERTS
 
-static void checkBestScoresComeFirst(char* base, size_t nmemb, size_t size, tr_voidptr_compare_func compar, size_t k)
+static void checkBestScoresComeFirst(char *base, size_t nmemb, size_t size, tr_voidptr_compare_func compar, size_t k)
 {
     size_t worstFirstPos = 0;
 
@@ -1239,7 +1239,7 @@ static void checkBestScoresComeFirst(char* base, size_t nmemb, size_t size, tr_v
 
 #endif
 
-void tr_quickfindFirstK(void* base, size_t nmemb, size_t size, tr_voidptr_compare_func compar, size_t k)
+void tr_quickfindFirstK(void *base, size_t nmemb, size_t size, tr_voidptr_compare_func compar, size_t k)
 {
     if (k < nmemb)
     {
@@ -1255,10 +1255,10 @@ void tr_quickfindFirstK(void* base, size_t nmemb, size_t size, tr_voidptr_compar
 ****
 ***/
 
-static char* strip_non_utf8(char const* in, size_t inlen)
+static char *strip_non_utf8(char const *in, size_t inlen)
 {
-    char const* end;
-    struct evbuffer* buf = evbuffer_new();
+    char const *end;
+    struct evbuffer *buf = evbuffer_new();
 
     while (!tr_utf8_validate(in, inlen, &end))
     {
@@ -1274,27 +1274,27 @@ static char* strip_non_utf8(char const* in, size_t inlen)
     return evbuffer_free_to_str(buf, NULL);
 }
 
-static char* to_utf8(char const* in, size_t inlen)
+static char *to_utf8(char const *in, size_t inlen)
 {
-    char* ret = NULL;
+    char *ret = NULL;
 
 #ifdef HAVE_ICONV
 
-    char const* encodings[] = { "CURRENT", "ISO-8859-15" };
+    char const *encodings[] = { "CURRENT", "ISO-8859-15" };
     size_t const buflen = inlen * 4 + 10;
-    char* out = tr_new(char, buflen);
+    char *out = tr_new(char, buflen);
 
     for (size_t i = 0; ret == NULL && i < TR_N_ELEMENTS(encodings); ++i)
     {
 #ifdef ICONV_SECOND_ARGUMENT_IS_CONST
-        char const* inbuf = in;
+        char const *inbuf = in;
 #else
-        char* inbuf = (char*)in;
+        char *inbuf = (char *)in;
 #endif
-        char* outbuf = out;
+        char *outbuf = out;
         size_t inbytesleft = inlen;
         size_t outbytesleft = buflen;
-        char const* test_encoding = encodings[i];
+        char const *test_encoding = encodings[i];
 
         iconv_t cd = iconv_open("UTF-8", test_encoding);
 
@@ -1321,10 +1321,10 @@ static char* to_utf8(char const* in, size_t inlen)
     return ret;
 }
 
-char* tr_utf8clean(char const* str, size_t max_len)
+char *tr_utf8clean(char const *str, size_t max_len)
 {
-    char* ret;
-    char const* end;
+    char *ret;
+    char const *end;
 
     if (max_len == TR_BAD_SIZE)
     {
@@ -1346,19 +1346,19 @@ char* tr_utf8clean(char const* str, size_t max_len)
 
 #ifdef _WIN32
 
-char* tr_win32_native_to_utf8(wchar_t const* text, int text_size)
+char *tr_win32_native_to_utf8(wchar_t const *text, int text_size)
 {
     return tr_win32_native_to_utf8_ex(text, text_size, 0, 0, NULL);
 }
 
-char* tr_win32_native_to_utf8_ex(
-    wchar_t const* text,
+char *tr_win32_native_to_utf8_ex(
+    wchar_t const *text,
     int text_size,
     int extra_chars_before,
     int extra_chars_after,
-    int* real_result_size)
+    int *real_result_size)
 {
-    char* ret = NULL;
+    char *ret = NULL;
     int size;
 
     if (text_size == -1)
@@ -1396,19 +1396,19 @@ fail:
     return NULL;
 }
 
-wchar_t* tr_win32_utf8_to_native(char const* text, int text_size)
+wchar_t *tr_win32_utf8_to_native(char const *text, int text_size)
 {
     return tr_win32_utf8_to_native_ex(text, text_size, 0, 0, NULL);
 }
 
-wchar_t* tr_win32_utf8_to_native_ex(
-    char const* text,
+wchar_t *tr_win32_utf8_to_native_ex(
+    char const *text,
     int text_size,
     int extra_chars_before,
     int extra_chars_after,
-    int* real_result_size)
+    int *real_result_size)
 {
-    wchar_t* ret = NULL;
+    wchar_t *ret = NULL;
     int size;
 
     if (text_size == -1)
@@ -1446,11 +1446,11 @@ fail:
     return NULL;
 }
 
-char* tr_win32_format_message(uint32_t code)
+char *tr_win32_format_message(uint32_t code)
 {
-    wchar_t* wide_text = NULL;
+    wchar_t *wide_text = NULL;
     DWORD wide_size;
-    char* text = NULL;
+    char *text = NULL;
     size_t text_size;
 
     wide_size = FormatMessageW(
@@ -1488,10 +1488,10 @@ char* tr_win32_format_message(uint32_t code)
     return text;
 }
 
-void tr_win32_make_args_utf8(int* argc, char*** argv)
+void tr_win32_make_args_utf8(int *argc, char ***argv)
 {
     int my_argc;
-    wchar_t** my_wide_argv;
+    wchar_t **my_wide_argv;
 
     my_wide_argv = CommandLineToArgvW(GetCommandLineW(), &my_argc);
 
@@ -1502,7 +1502,7 @@ void tr_win32_make_args_utf8(int* argc, char*** argv)
 
     TR_ASSERT(*argc == my_argc);
 
-    char** my_argv = tr_new(char*, my_argc + 1);
+    char **my_argv = tr_new(char *, my_argc + 1);
     int processed_argc = 0;
 
     for (int i = 0; i < my_argc; ++i, ++processed_argc)
@@ -1537,7 +1537,7 @@ void tr_win32_make_args_utf8(int* argc, char*** argv)
     LocalFree(my_wide_argv);
 }
 
-int tr_main_win32(int argc, char** argv, int (*real_main)(int, char**))
+int tr_main_win32(int argc, char **argv, int (*real_main)(int, char **))
 {
     tr_win32_make_args_utf8(&argc, &argv);
     SetConsoleCP(CP_UTF8);
@@ -1561,14 +1561,14 @@ struct number_range
  * This should be a single number (ex. "6") or a range (ex. "6-9").
  * Anything else is an error and will return failure.
  */
-static bool parseNumberSection(char const* str, size_t len, struct number_range* setme)
+static bool parseNumberSection(char const *str, size_t len, struct number_range *setme)
 {
     long a;
     long b;
     bool success;
-    char* end;
+    char *end;
     int const error = errno;
-    char* tmp = tr_strndup(str, len);
+    char *tmp = tr_strndup(str, len);
 
     errno = 0;
     a = b = strtol(tmp, &end, 10);
@@ -1583,7 +1583,7 @@ static bool parseNumberSection(char const* str, size_t len, struct number_range*
     }
     else
     {
-        char const* pch = end + 1;
+        char const *pch = end + 1;
         b = strtol(pch, &end, 10);
 
         if (errno != 0 || pch == end)
@@ -1609,10 +1609,10 @@ static bool parseNumberSection(char const* str, size_t len, struct number_range*
     return success;
 }
 
-int compareInt(void const* va, void const* vb)
+int compareInt(void const *va, void const *vb)
 {
-    int const a = *(int const*)va;
-    int const b = *(int const*)vb;
+    int const a = *(int const *)va;
+    int const b = *(int const *)vb;
     return a - b;
 }
 
@@ -1623,13 +1623,13 @@ int compareInt(void const* va, void const* vb)
  * It's the caller's responsibility to call tr_free () on the returned array.
  * If a fragment of the string can't be parsed, NULL is returned.
  */
-int* tr_parseNumberRange(char const* str_in, size_t len, int* setmeCount)
+int *tr_parseNumberRange(char const *str_in, size_t len, int *setmeCount)
 {
     int n = 0;
-    int* uniq = NULL;
-    char* str = tr_strndup(str_in, len);
-    char const* walk;
-    tr_list* ranges = NULL;
+    int *uniq = NULL;
+    char *str = tr_strndup(str_in, len);
+    char const *walk;
+    tr_list *ranges = NULL;
     bool success = true;
 
     walk = str;
@@ -1637,7 +1637,7 @@ int* tr_parseNumberRange(char const* str_in, size_t len, int* setmeCount)
     while (!tr_str_is_empty(walk) && success)
     {
         struct number_range range;
-        char const* pch = strchr(walk, ',');
+        char const *pch = strchr(walk, ',');
 
         if (pch != NULL)
         {
@@ -1664,14 +1664,14 @@ int* tr_parseNumberRange(char const* str_in, size_t len, int* setmeCount)
     else
     {
         int n2;
-        int* sorted = NULL;
+        int *sorted = NULL;
 
         /* build a sorted number array */
         n = n2 = 0;
 
-        for (tr_list* l = ranges; l != NULL; l = l->next)
+        for (tr_list *l = ranges; l != NULL; l = l->next)
         {
-            struct number_range const* r = l->data;
+            struct number_range const *r = l->data;
             n += r->high + 1 - r->low;
         }
 
@@ -1684,9 +1684,9 @@ int* tr_parseNumberRange(char const* str_in, size_t len, int* setmeCount)
         }
         else
         {
-            for (tr_list* l = ranges; l != NULL; l = l->next)
+            for (tr_list *l = ranges; l != NULL; l = l->next)
             {
-                struct number_range const* r = l->data;
+                struct number_range const *r = l->data;
 
                 for (int i = r->low; i <= r->high; ++i)
                 {
@@ -1731,7 +1731,7 @@ int* tr_parseNumberRange(char const* str_in, size_t len, int* setmeCount)
 
 double tr_truncd(double x, int precision)
 {
-    char* pt;
+    char *pt;
     char buf[128];
     tr_snprintf(buf, sizeof(buf), "%.*f", DBL_DIG, x);
 
@@ -1744,13 +1744,13 @@ double tr_truncd(double x, int precision)
 }
 
 /* return a truncated double as a string */
-static char* tr_strtruncd(char* buf, double x, int precision, size_t buflen)
+static char *tr_strtruncd(char *buf, double x, int precision, size_t buflen)
 {
     tr_snprintf(buf, buflen, "%.*f", precision, tr_truncd(x, precision));
     return buf;
 }
 
-char* tr_strpercent(char* buf, double x, size_t buflen)
+char *tr_strpercent(char *buf, double x, size_t buflen)
 {
     if (x < 100.0)
     {
@@ -1764,7 +1764,7 @@ char* tr_strpercent(char* buf, double x, size_t buflen)
     return buf;
 }
 
-char* tr_strratio(char* buf, size_t buflen, double ratio, char const* infinity)
+char *tr_strratio(char *buf, size_t buflen, double ratio, char const *infinity)
 {
     if ((int)ratio == TR_RATIO_NA)
     {
@@ -1786,11 +1786,11 @@ char* tr_strratio(char* buf, size_t buflen, double ratio, char const* infinity)
 ****
 ***/
 
-bool tr_moveFile(char const* oldpath, char const* newpath, tr_error** error)
+bool tr_moveFile(char const *oldpath, char const *newpath, tr_error **error)
 {
     tr_sys_file_t in;
     tr_sys_file_t out;
-    char* buf = NULL;
+    char *buf = NULL;
     tr_sys_path_info info;
     uint64_t bytesLeft;
     size_t const buflen = 1024 * 1024; /* 1024 KiB buffer */
@@ -1810,7 +1810,7 @@ bool tr_moveFile(char const* oldpath, char const* newpath, tr_error** error)
 
     /* make sure the target directory exists */
     {
-        char* newdir = tr_sys_path_dirname(newpath, error);
+        char *newdir = tr_sys_path_dirname(newpath, error);
         bool const i = newdir != NULL && tr_sys_dir_create(newdir, TR_SYS_DIR_CREATE_PARENTS, 0777, error);
         tr_free(newdir);
 
@@ -1881,7 +1881,7 @@ bool tr_moveFile(char const* oldpath, char const* newpath, tr_error** error)
     }
 
     {
-        tr_error* my_error = NULL;
+        tr_error *my_error = NULL;
 
         if (!tr_sys_path_remove(oldpath, &my_error))
         {
@@ -1897,10 +1897,10 @@ bool tr_moveFile(char const* oldpath, char const* newpath, tr_error** error)
 ****
 ***/
 
-void* tr_valloc(size_t bufLen)
+void *tr_valloc(size_t bufLen)
 {
     size_t allocLen;
-    void* buf = NULL;
+    void *buf = NULL;
     static size_t pageSize = 0;
 
     if (pageSize == 0)
@@ -2001,7 +2001,7 @@ uint64_t tr_ntohll(uint64_t x)
 
 struct formatter_unit
 {
-    char* name;
+    char *name;
     int64_t value;
 };
 
@@ -2019,12 +2019,12 @@ enum
 };
 
 static void formatter_init(
-    struct formatter_units* units,
+    struct formatter_units *units,
     unsigned int kilo,
-    char const* kb,
-    char const* mb,
-    char const* gb,
-    char const* tb)
+    char const *kb,
+    char const *mb,
+    char const *gb,
+    char const *tb)
 {
     uint64_t value;
 
@@ -2045,12 +2045,12 @@ static void formatter_init(
     units->units[TR_FMT_TB].value = value;
 }
 
-static char* formatter_get_size_str(struct formatter_units const* u, char* buf, int64_t bytes, size_t buflen)
+static char *formatter_get_size_str(struct formatter_units const *u, char *buf, int64_t bytes, size_t buflen)
 {
     int precision;
     double value;
-    char const* units;
-    struct formatter_unit const* unit;
+    char const *units;
+    struct formatter_unit const *unit;
 
     if (bytes < u->units[1].value)
     {
@@ -2091,12 +2091,12 @@ static char* formatter_get_size_str(struct formatter_units const* u, char* buf, 
 
 static struct formatter_units size_units;
 
-void tr_formatter_size_init(unsigned int kilo, char const* kb, char const* mb, char const* gb, char const* tb)
+void tr_formatter_size_init(unsigned int kilo, char const *kb, char const *mb, char const *gb, char const *tb)
 {
     formatter_init(&size_units, kilo, kb, mb, gb, tb);
 }
 
-char* tr_formatter_size_B(char* buf, int64_t bytes, size_t buflen)
+char *tr_formatter_size_B(char *buf, int64_t bytes, size_t buflen)
 {
     return formatter_get_size_str(&size_units, buf, bytes, buflen);
 }
@@ -2105,13 +2105,13 @@ static struct formatter_units speed_units;
 
 unsigned int tr_speed_K = 0U;
 
-void tr_formatter_speed_init(unsigned int kilo, char const* kb, char const* mb, char const* gb, char const* tb)
+void tr_formatter_speed_init(unsigned int kilo, char const *kb, char const *mb, char const *gb, char const *tb)
 {
     tr_speed_K = kilo;
     formatter_init(&speed_units, kilo, kb, mb, gb, tb);
 }
 
-char* tr_formatter_speed_KBps(char* buf, double KBps, size_t buflen)
+char *tr_formatter_speed_KBps(char *buf, double KBps, size_t buflen)
 {
     double const K = speed_units.units[TR_FMT_KB].value;
     double speed = KBps;
@@ -2145,21 +2145,21 @@ static struct formatter_units mem_units;
 
 unsigned int tr_mem_K = 0U;
 
-void tr_formatter_mem_init(unsigned int kilo, char const* kb, char const* mb, char const* gb, char const* tb)
+void tr_formatter_mem_init(unsigned int kilo, char const *kb, char const *mb, char const *gb, char const *tb)
 {
     tr_mem_K = kilo;
     formatter_init(&mem_units, kilo, kb, mb, gb, tb);
 }
 
-char* tr_formatter_mem_B(char* buf, int64_t bytes_per_second, size_t buflen)
+char *tr_formatter_mem_B(char *buf, int64_t bytes_per_second, size_t buflen)
 {
     return formatter_get_size_str(&mem_units, buf, bytes_per_second, buflen);
 }
 
-void tr_formatter_get_units(void* vdict)
+void tr_formatter_get_units(void *vdict)
 {
-    tr_variant* l;
-    tr_variant* dict = vdict;
+    tr_variant *l;
+    tr_variant *dict = vdict;
 
     tr_variantDictReserve(dict, 6);
 
@@ -2192,7 +2192,7 @@ void tr_formatter_get_units(void* vdict)
 ****  ENVIRONMENT
 ***/
 
-bool tr_env_key_exists(char const* key)
+bool tr_env_key_exists(char const *key)
 {
     TR_ASSERT(key != NULL);
 
@@ -2203,7 +2203,7 @@ bool tr_env_key_exists(char const* key)
 #endif
 }
 
-int tr_env_get_int(char const* key, int default_value)
+int tr_env_get_int(char const *key, int default_value)
 {
     TR_ASSERT(key != NULL);
 
@@ -2218,7 +2218,7 @@ int tr_env_get_int(char const* key, int default_value)
 
 #else
 
-    char const* value = getenv(key);
+    char const *value = getenv(key);
 
     if (!tr_str_is_empty(value))
     {
@@ -2230,14 +2230,14 @@ int tr_env_get_int(char const* key, int default_value)
     return default_value;
 }
 
-char* tr_env_get_string(char const* key, char const* default_value)
+char *tr_env_get_string(char const *key, char const *default_value)
 {
     TR_ASSERT(key != NULL);
 
 #ifdef _WIN32
 
-    wchar_t* wide_key = tr_win32_utf8_to_native(key, -1);
-    char* value = NULL;
+    wchar_t *wide_key = tr_win32_utf8_to_native(key, -1);
+    char *value = NULL;
 
     if (wide_key != NULL)
     {
@@ -2245,7 +2245,7 @@ char* tr_env_get_string(char const* key, char const* default_value)
 
         if (size != 0)
         {
-            wchar_t* const wide_value = tr_new(wchar_t, size);
+            wchar_t *const wide_value = tr_new(wchar_t, size);
 
             if (GetEnvironmentVariableW(wide_key, wide_value, size) == size - 1)
             {
@@ -2267,11 +2267,11 @@ char* tr_env_get_string(char const* key, char const* default_value)
 
 #else
 
-    char* value = getenv(key);
+    char *value = getenv(key);
 
     if (value == NULL)
     {
-        value = (char*)default_value;
+        value = (char *)default_value;
     }
 
     if (value != NULL)
@@ -2284,13 +2284,13 @@ char* tr_env_get_string(char const* key, char const* default_value)
 #endif
 }
 
-void tr_env_set_string(char const* key, char const* value)
+void tr_env_set_string(char const *key, char const *value)
 {
     TR_ASSERT(key != NULL);
 
 #ifdef _WIN32
-    wchar_t* wide_key = tr_win32_utf8_to_native(key, -1);
-    wchar_t* wide_value = tr_win32_utf8_to_native(value, -1);
+    wchar_t *wide_key = tr_win32_utf8_to_native(key, -1);
+    wchar_t *wide_value = tr_win32_utf8_to_native(value, -1);
 
     if (wide_key != NULL && wide_value != NULL)
     {

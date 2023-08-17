@@ -24,7 +24,7 @@
 #include "upnp.h"
 #include "utils.h"
 
-static char const* getKey(void)
+static char const *getKey(void)
 {
     return _("Port Forwarding (UPnP)");
 }
@@ -47,7 +47,7 @@ struct tr_upnp
     char lanaddr[16];
     struct
     {
-        char const* proto;
+        char const *proto;
         char proto_no[8];
         char id[8];
     } pinhole[2]; // TCP and UDP
@@ -59,9 +59,9 @@ struct tr_upnp
 ***
 **/
 
-tr_upnp* tr_upnpInit(void)
+tr_upnp *tr_upnpInit(void)
 {
-    tr_upnp* ret = tr_new0(tr_upnp, 1);
+    tr_upnp *ret = tr_new0(tr_upnp, 1);
 
     ret->state = TR_UPNP_DISCOVER;
     ret->port = -1;
@@ -73,7 +73,7 @@ tr_upnp* tr_upnpInit(void)
     return ret;
 }
 
-void tr_upnpClose(tr_upnp* handle)
+void tr_upnpClose(tr_upnp *handle)
 {
     TR_ASSERT(!handle->isMapped);
     TR_ASSERT(handle->state == TR_UPNP_IDLE || handle->state == TR_UPNP_ERR || handle->state == TR_UPNP_DISCOVER);
@@ -90,9 +90,9 @@ void tr_upnpClose(tr_upnp* handle)
 ***  Wrappers for miniupnpc functions
 **/
 
-static struct UPNPDev* tr_upnpDiscover(int msec)
+static struct UPNPDev *tr_upnpDiscover(int msec)
 {
-    struct UPNPDev* ret;
+    struct UPNPDev *ret;
     bool have_err;
 
 #if (MINIUPNPC_API_VERSION >= 8) /* adds ipv6 and error args */
@@ -118,7 +118,7 @@ static struct UPNPDev* tr_upnpDiscover(int msec)
     return ret;
 }
 
-static int tr_upnpGetSpecificPortMappingEntry(tr_upnp* handle, char const* proto)
+static int tr_upnpGetSpecificPortMappingEntry(tr_upnp *handle, char const *proto)
 {
     int err;
     char intClient[16];
@@ -168,7 +168,7 @@ static int tr_upnpGetSpecificPortMappingEntry(tr_upnp* handle, char const* proto
     return err;
 }
 
-static int tr_upnpAddPortMapping(tr_upnp const* handle, char const* proto, tr_port port, char const* desc)
+static int tr_upnpAddPortMapping(tr_upnp const *handle, char const *proto, tr_port port, char const *desc)
 {
     int err;
     char portStr[16];
@@ -213,7 +213,7 @@ static int tr_upnpAddPortMapping(tr_upnp const* handle, char const* proto, tr_po
     return err;
 }
 
-static void tr_upnpDeletePortMapping(tr_upnp const* handle, char const* proto, tr_port port)
+static void tr_upnpDeletePortMapping(tr_upnp const *handle, char const *proto, tr_port port)
 {
     char portStr[16];
 
@@ -222,9 +222,9 @@ static void tr_upnpDeletePortMapping(tr_upnp const* handle, char const* proto, t
     UPNP_DeletePortMapping(handle->urls.controlURL, handle->data.first.servicetype, portStr, proto, NULL);
 }
 
-static bool tr_upnpCanPinhole(tr_upnp const* handle)
+static bool tr_upnpCanPinhole(tr_upnp const *handle)
 {
-    unsigned char const* ipv6 = tr_globalIPv6();
+    unsigned char const *ipv6 = tr_globalIPv6();
     if (ipv6 == NULL)
     {
         return false;
@@ -244,7 +244,7 @@ static bool tr_upnpCanPinhole(tr_upnp const* handle)
     return true;
 }
 
-static void tr_upnpDeletePinholes(tr_upnp* handle)
+static void tr_upnpDeletePinholes(tr_upnp *handle)
 {
     int res;
 
@@ -309,10 +309,10 @@ static void tr_upnpDeletePinholes(tr_upnp* handle)
 
 #define TR_PINHOLE_LEASE_TIME "3600"
 
-static void tr_upnpAddOrUpdatePinholes(tr_upnp* handle, tr_port port)
+static void tr_upnpAddOrUpdatePinholes(tr_upnp *handle, tr_port port)
 {
     int res;
-    unsigned char const* ipv6 = tr_globalIPv6();
+    unsigned char const *ipv6 = tr_globalIPv6();
     char ipv6_str[INET6_ADDRSTRLEN];
     evutil_inet_ntop(AF_INET6, ipv6, ipv6_str, INET6_ADDRSTRLEN);
 
@@ -438,13 +438,13 @@ enum
     UPNP_IGD_INVALID = 3
 };
 
-int tr_upnpPulse(tr_upnp* handle, int port, bool isEnabled, bool doPortCheck)
+int tr_upnpPulse(tr_upnp *handle, int port, bool isEnabled, bool doPortCheck)
 {
     int ret;
 
     if (isEnabled && handle->state == TR_UPNP_DISCOVER)
     {
-        struct UPNPDev* devlist;
+        struct UPNPDev *devlist;
 
         devlist = tr_upnpDiscover(2000);
 

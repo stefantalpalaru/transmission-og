@@ -31,7 +31,7 @@ bool DBusInteropHelper::isConnected() const
     return QDBusConnection::sessionBus().isConnected();
 }
 
-QVariant DBusInteropHelper::addMetainfo(QString const& metainfo)
+QVariant DBusInteropHelper::addMetainfo(QString const &metainfo)
 {
     QDBusMessage request = QDBusMessage::createMethodCall(
         DBUS_SERVICE,
@@ -44,7 +44,7 @@ QVariant DBusInteropHelper::addMetainfo(QString const& metainfo)
     return response.isValid() ? QVariant(response.value()) : QVariant();
 }
 
-void DBusInteropHelper::registerObject(QObject* parent)
+void DBusInteropHelper::registerObject(QObject *parent)
 {
     QDBusConnection bus = QDBusConnection::sessionBus();
 

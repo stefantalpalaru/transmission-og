@@ -19,44 +19,44 @@
 namespace
 {
 
-int getHSpacing(QWidget const* w)
+int getHSpacing(QWidget const *w)
 {
     return qMax(3, w->style()->pixelMetric(QStyle::PM_LayoutHorizontalSpacing, nullptr, w));
 }
 
 } // namespace
 
-FilterBarComboBoxDelegate::FilterBarComboBoxDelegate(QObject* parent, QComboBox* combo)
+FilterBarComboBoxDelegate::FilterBarComboBoxDelegate(QObject *parent, QComboBox *combo)
     : QItemDelegate(parent)
     , myCombo(combo)
 {
 }
 
-bool FilterBarComboBoxDelegate::isSeparator(QModelIndex const& index)
+bool FilterBarComboBoxDelegate::isSeparator(QModelIndex const &index)
 {
     return index.data(Qt::AccessibleDescriptionRole).toString() == QLatin1String("separator");
 }
 
-void FilterBarComboBoxDelegate::setSeparator(QAbstractItemModel* model, QModelIndex const& index)
+void FilterBarComboBoxDelegate::setSeparator(QAbstractItemModel *model, QModelIndex const &index)
 {
     model->setData(index, QString::fromLatin1("separator"), Qt::AccessibleDescriptionRole);
 
-    if (QStandardItemModel* m = qobject_cast<QStandardItemModel*>(model))
+    if (QStandardItemModel *m = qobject_cast<QStandardItemModel *>(model))
     {
-        if (QStandardItem* item = m->itemFromIndex(index))
+        if (QStandardItem *item = m->itemFromIndex(index))
         {
             item->setFlags(item->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
         }
     }
 }
 
-void FilterBarComboBoxDelegate::paint(QPainter* painter, QStyleOptionViewItem const& option, QModelIndex const& index) const
+void FilterBarComboBoxDelegate::paint(QPainter *painter, QStyleOptionViewItem const &option, QModelIndex const &index) const
 {
     if (isSeparator(index))
     {
         QRect rect = option.rect;
 
-        if (QAbstractItemView const* view = qobject_cast<QAbstractItemView const*>(option.widget))
+        if (QAbstractItemView const *view = qobject_cast<QAbstractItemView const *>(option.widget))
         {
             rect.setWidth(view->viewport()->width());
         }
@@ -104,7 +104,7 @@ void FilterBarComboBoxDelegate::paint(QPainter* painter, QStyleOptionViewItem co
     }
 }
 
-QSize FilterBarComboBoxDelegate::sizeHint(QStyleOptionViewItem const& option, QModelIndex const& index) const
+QSize FilterBarComboBoxDelegate::sizeHint(QStyleOptionViewItem const &option, QModelIndex const &index) const
 {
     if (isSeparator(index))
     {
@@ -113,7 +113,7 @@ QSize FilterBarComboBoxDelegate::sizeHint(QStyleOptionViewItem const& option, QM
     }
     else
     {
-        QStyle* s = myCombo->style();
+        QStyle *s = myCombo->style();
         int const hmargin = getHSpacing(myCombo);
 
         QSize size = QItemDelegate::sizeHint(option, index);

@@ -24,9 +24,9 @@
 
 @implementation NSImage (NSImageAdditions)
 
-- (NSImage*)imageWithColor:(NSColor*)color
+- (NSImage *)imageWithColor:(NSColor *)color
 {
-    NSImage* coloredImage = [self copy];
+    NSImage *coloredImage = [self copy];
 
     [coloredImage lockFocus];
 

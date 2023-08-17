@@ -31,8 +31,8 @@
     {
         if (![NSApp isOnYosemiteOrBetter])
         {
-            NSColor* lightColor = [NSColor colorWithCalibratedRed:235.0 / 255.0 green:235.0 / 255.0 blue:235.0 / 255.0 alpha:1.0];
-            NSColor* darkColor = [NSColor colorWithCalibratedRed:205.0 / 255.0 green:205.0 / 255.0 blue:205.0 / 255.0 alpha:1.0];
+            NSColor *lightColor = [NSColor colorWithCalibratedRed:235.0 / 255.0 green:235.0 / 255.0 blue:235.0 / 255.0 alpha:1.0];
+            NSColor *darkColor = [NSColor colorWithCalibratedRed:205.0 / 255.0 green:205.0 / 255.0 blue:205.0 / 255.0 alpha:1.0];
             fGradient = [[NSGradient alloc] initWithStartingColor:lightColor endingColor:darkColor];
         }
     }
@@ -67,7 +67,7 @@
     {
         NSInteger count = 0;
         NSRect gridRects[2];
-        NSColor* colorRects[2];
+        NSColor *colorRects[2];
 
         NSRect lineBorderRect = NSMakeRect(NSMinX(rect), NSHeight([self bounds]) - 1.0, NSWidth(rect), 1.0);
         if (NSIntersectsRect(lineBorderRect, rect))

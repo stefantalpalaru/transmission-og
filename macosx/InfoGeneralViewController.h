@@ -26,23 +26,23 @@
 
 @interface InfoGeneralViewController : NSViewController<InfoViewController>
 {
-    NSArray* fTorrents;
+    NSArray *fTorrents;
 
     BOOL fSet;
 
     IBOutlet NSTextField *fPiecesField, *fHashField, *fSecureField, *fDataLocationField, *fCreatorField, *fDateCreatedField;
 
-    IBOutlet NSTextView* fCommentView;
+    IBOutlet NSTextView *fCommentView;
 
-    IBOutlet NSButton* fRevealDataButton;
+    IBOutlet NSButton *fRevealDataButton;
 
     //remove when we switch to auto layout on 10.7
     IBOutlet NSTextField *fPiecesLabel, *fHashLabel, *fSecureLabel, *fCreatorLabel, *fDateCreatedLabel, *fCommentLabel, *fDataLocationLabel;
     IBOutlet NSTextField *fInfoSectionLabel, *fWhereSectionLabel;
-    IBOutlet NSScrollView* fCommentScrollView;
+    IBOutlet NSScrollView *fCommentScrollView;
 }
 
-- (void)setInfoForTorrents:(NSArray*)torrents;
+- (void)setInfoForTorrents:(NSArray *)torrents;
 - (void)updateInfo;
 
 - (void)revealDataFile:(id)sender;

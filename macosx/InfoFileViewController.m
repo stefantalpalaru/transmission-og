@@ -30,7 +30,7 @@
 
 - (void)setupInfo;
 
-- (BOOL)canQuickLookFile:(FileListNode*)item;
+- (BOOL)canQuickLookFile:(FileListNode *)item;
 
 @end
 
@@ -82,7 +82,7 @@
     [fCheckAllButton setFrame:checkAllFrame];
 }
 
-- (void)setInfoForTorrents:(NSArray*)torrents
+- (void)setInfoForTorrents:(NSArray *)torrents
 {
     //don't check if it's the same in case the metadata changed
     fTorrents = torrents;
@@ -100,7 +100,7 @@
         [fFileController refresh];
 
 #warning use TorrentFileCheckChange notification as well
-        Torrent* torrent = fTorrents[0];
+        Torrent *torrent = fTorrents[0];
         if ([torrent isFolder])
         {
             NSInteger const filesCheckState = [torrent
@@ -131,16 +131,16 @@
     [fFileController uncheckAll];
 }
 
-- (NSArray*)quickLookURLs
+- (NSArray *)quickLookURLs
 {
-    FileOutlineView* fileOutlineView = [fFileController outlineView];
-    Torrent* torrent = fTorrents[0];
-    NSIndexSet* indexes = [fileOutlineView selectedRowIndexes];
-    NSMutableArray* urlArray = [NSMutableArray arrayWithCapacity:[indexes count]];
+    FileOutlineView *fileOutlineView = [fFileController outlineView];
+    Torrent *torrent = fTorrents[0];
+    NSIndexSet *indexes = [fileOutlineView selectedRowIndexes];
+    NSMutableArray *urlArray = [NSMutableArray arrayWithCapacity:[indexes count]];
 
     for (NSUInteger i = [indexes firstIndex]; i != NSNotFound; i = [indexes indexGreaterThanIndex:i])
     {
-        FileListNode* item = [fileOutlineView itemAtRow:i];
+        FileListNode *item = [fileOutlineView itemAtRow:i];
         if ([self canQuickLookFile:item])
             [urlArray addObject:[NSURL fileURLWithPath:[torrent fileLocation:item]]];
     }
@@ -153,12 +153,12 @@
     if ([fTorrents count] != 1)
         return NO;
 
-    Torrent* torrent = fTorrents[0];
+    Torrent *torrent = fTorrents[0];
     if (![torrent isFolder])
         return NO;
 
-    FileOutlineView* fileOutlineView = [fFileController outlineView];
-    NSIndexSet* indexes = [fileOutlineView selectedRowIndexes];
+    FileOutlineView *fileOutlineView = [fFileController outlineView];
+    NSIndexSet *indexes = [fileOutlineView selectedRowIndexes];
 
     for (NSUInteger i = [indexes firstIndex]; i != NSNotFound; i = [indexes indexGreaterThanIndex:i])
         if ([self canQuickLookFile:[fileOutlineView itemAtRow:i]])
@@ -169,15 +169,15 @@
 
 - (NSRect)quickLookSourceFrameForPreviewItem:(id<QLPreviewItem>)item
 {
-    FileOutlineView* fileOutlineView = [fFileController outlineView];
+    FileOutlineView *fileOutlineView = [fFileController outlineView];
 
-    NSString* fullPath = [(NSURL*)item path];
-    Torrent* torrent = fTorrents[0];
+    NSString *fullPath = [(NSURL *)item path];
+    Torrent *torrent = fTorrents[0];
     NSRange visibleRows = [fileOutlineView rowsInRect:[fileOutlineView bounds]];
 
     for (NSUInteger row = visibleRows.location; row < NSMaxRange(visibleRows); row++)
     {
-        FileListNode* rowItem = [fileOutlineView itemAtRow:row];
+        FileListNode *rowItem = [fileOutlineView itemAtRow:row];
         if ([[torrent fileLocation:rowItem] isEqualToString:fullPath])
         {
             NSRect frame = [fileOutlineView iconRectForRow:row];
@@ -205,7 +205,7 @@
 
     if ([fTorrents count] == 1)
     {
-        Torrent* torrent = fTorrents[0];
+        Torrent *torrent = fTorrents[0];
 
         [fFileController setTorrent:torrent];
 
@@ -231,9 +231,9 @@
     fSet = YES;
 }
 
-- (BOOL)canQuickLookFile:(FileListNode*)item
+- (BOOL)canQuickLookFile:(FileListNode *)item
 {
-    Torrent* torrent = fTorrents[0];
+    Torrent *torrent = fTorrents[0];
     return ([item isFolder] || [torrent fileProgress:item] >= 1.0) && [torrent fileLocation:item];
 }
 

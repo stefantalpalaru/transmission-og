@@ -34,7 +34,7 @@
 *****
 ****/
 
-static char const* get_event_string(tr_announce_request const* req)
+static char const *get_event_string(tr_announce_request const *req)
 {
     if (req->partial_seed)
     {
@@ -47,11 +47,11 @@ static char const* get_event_string(tr_announce_request const* req)
     return tr_announce_event_get_string(req->event);
 }
 
-static char* announce_url_new(tr_session const* session, tr_announce_request const* req)
+static char *announce_url_new(tr_session const *session, tr_announce_request const *req)
 {
-    char const* str;
-    unsigned char const* ipv6;
-    struct evbuffer* buf = evbuffer_new();
+    char const *str;
+    unsigned char const *ipv6;
+    struct evbuffer *buf = evbuffer_new();
     char escaped_info_hash[SHA_DIGEST_LENGTH * 3 + 1];
 
     tr_http_escape_sha1(escaped_info_hash, req->info_hash);
@@ -129,18 +129,18 @@ static char* announce_url_new(tr_session const* session, tr_announce_request con
     return evbuffer_free_to_str(buf, NULL);
 }
 
-static tr_pex* listToPex(tr_variant* peerList, size_t* setme_len)
+static tr_pex *listToPex(tr_variant *peerList, size_t *setme_len)
 {
     size_t n = 0;
     size_t const len = tr_variantListSize(peerList);
-    tr_pex* pex = tr_new0(tr_pex, len);
+    tr_pex *pex = tr_new0(tr_pex, len);
 
     for (size_t i = 0; i < len; ++i)
     {
         int64_t port;
-        char const* ip;
+        char const *ip;
         tr_address addr;
-        tr_variant* peer = tr_variantListChild(peerList, i);
+        tr_variant *peer = tr_variantListChild(peerList, i);
 
         if (peer == NULL)
         {
@@ -185,13 +185,13 @@ struct announce_data
 {
     tr_announce_response response;
     tr_announce_response_func response_func;
-    void* response_func_user_data;
+    void *response_func_user_data;
     char log_name[128];
 };
 
-static void on_announce_done_eventthread(void* vdata)
+static void on_announce_done_eventthread(void *vdata)
 {
-    struct announce_data* data = vdata;
+    struct announce_data *data = vdata;
 
     if (data->response_func != NULL)
     {
@@ -207,16 +207,16 @@ static void on_announce_done_eventthread(void* vdata)
 }
 
 static void on_announce_done(
-    tr_session* session,
+    tr_session *session,
     bool did_connect,
     bool did_timeout,
     long response_code,
-    void const* msg,
+    void const *msg,
     size_t msglen,
-    void* vdata)
+    void *vdata)
 {
-    tr_announce_response* response;
-    struct announce_data* data = vdata;
+    tr_announce_response *response;
+    struct announce_data *data = vdata;
 
     response = &data->response;
     response->did_connect = did_connect;
@@ -225,8 +225,8 @@ static void on_announce_done(
 
     if (response_code != HTTP_OK)
     {
-        char const* fmt = _("Tracker gave HTTP response code %1$ld (%2$s)");
-        char const* response_str = tr_webGetResponseStr(response_code);
+        char const *fmt = _("Tracker gave HTTP response code %1$ld (%2$s)");
+        char const *response_str = tr_webGetResponseStr(response_code);
         response->errmsg = tr_strdup_printf(fmt, response_code, response_str);
     }
     else
@@ -243,7 +243,7 @@ static void on_announce_done(
             else
             {
                 size_t len;
-                char* str = tr_variantToStr(&benc, TR_VARIANT_FMT_JSON, &len);
+                char *str = tr_variantToStr(&benc, TR_VARIANT_FMT_JSON, &len);
                 fprintf(stderr, "%s", "Announce response:\n< ");
 
                 for (size_t i = 0; i < len; ++i)
@@ -260,9 +260,9 @@ static void on_announce_done(
         {
             int64_t i;
             size_t len;
-            tr_variant* tmp;
-            char const* str;
-            uint8_t const* raw;
+            tr_variant *tmp;
+            char const *str;
+            uint8_t const *raw;
 
             if (tr_variantDictFindStr(&benc, TR_KEY_failure_reason, &str, &len))
             {
@@ -332,13 +332,13 @@ static void on_announce_done(
 }
 
 void tr_tracker_http_announce(
-    tr_session* session,
-    tr_announce_request const* request,
+    tr_session *session,
+    tr_announce_request const *request,
     tr_announce_response_func response_func,
-    void* response_func_user_data)
+    void *response_func_user_data)
 {
-    struct announce_data* d;
-    char* url = announce_url_new(session, request);
+    struct announce_data *d;
+    char *url = announce_url_new(session, request);
 
     d = tr_new0(struct announce_data, 1);
     d->response.seeders = -1;
@@ -365,13 +365,13 @@ struct scrape_data
 {
     tr_scrape_response response;
     tr_scrape_response_func response_func;
-    void* response_func_user_data;
+    void *response_func_user_data;
     char log_name[128];
 };
 
-static void on_scrape_done_eventthread(void* vdata)
+static void on_scrape_done_eventthread(void *vdata)
 {
-    struct scrape_data* data = vdata;
+    struct scrape_data *data = vdata;
 
     if (data->response_func != NULL)
     {
@@ -384,16 +384,16 @@ static void on_scrape_done_eventthread(void* vdata)
 }
 
 static void on_scrape_done(
-    tr_session* session,
+    tr_session *session,
     bool did_connect,
     bool did_timeout,
     long response_code,
-    void const* msg,
+    void const *msg,
     size_t msglen,
-    void* vdata)
+    void *vdata)
 {
-    tr_scrape_response* response;
-    struct scrape_data* data = vdata;
+    tr_scrape_response *response;
+    struct scrape_data *data = vdata;
 
     response = &data->response;
     response->did_connect = did_connect;
@@ -402,18 +402,18 @@ static void on_scrape_done(
 
     if (response_code != HTTP_OK)
     {
-        char const* fmt = _("Tracker gave HTTP response code %1$ld (%2$s)");
-        char const* response_str = tr_webGetResponseStr(response_code);
+        char const *fmt = _("Tracker gave HTTP response code %1$ld (%2$s)");
+        char const *response_str = tr_webGetResponseStr(response_code);
         response->errmsg = tr_strdup_printf(fmt, response_code, response_str);
     }
     else
     {
         tr_variant top;
         int64_t intVal;
-        tr_variant* files;
-        tr_variant* flags;
+        tr_variant *files;
+        tr_variant *flags;
         size_t len;
-        char const* str;
+        char const *str;
         bool const variant_loaded = tr_variantFromBenc(&top, msg, msglen) == 0;
 
         if (tr_env_key_exists("TR_CURL_VERBOSE"))
@@ -425,7 +425,7 @@ static void on_scrape_done(
             else
             {
                 size_t len;
-                char* str = tr_variantToStr(&top, TR_VARIANT_FMT_JSON, &len);
+                char *str = tr_variantToStr(&top, TR_VARIANT_FMT_JSON, &len);
                 fprintf(stderr, "%s", "Scrape response:\n< ");
 
                 for (size_t i = 0; i < len; ++i)
@@ -456,14 +456,14 @@ static void on_scrape_done(
             if (tr_variantDictFindDict(&top, TR_KEY_files, &files))
             {
                 tr_quark key;
-                tr_variant* val;
+                tr_variant *val;
 
                 for (int i = 0; tr_variantDictChild(files, i, &key, &val); ++i)
                 {
                     /* populate the corresponding row in our response array */
                     for (int j = 0; j < response->row_count; ++j)
                     {
-                        struct tr_scrape_response_row* row = &response->rows[j];
+                        struct tr_scrape_response_row *row = &response->rows[j];
 
                         if (memcmp(tr_quark_get_string(key, NULL), row->info_hash, SHA_DIGEST_LENGTH) == 0)
                         {
@@ -500,10 +500,10 @@ static void on_scrape_done(
     tr_runInEventThread(session, on_scrape_done_eventthread, data);
 }
 
-static char* scrape_url_new(tr_scrape_request const* req)
+static char *scrape_url_new(tr_scrape_request const *req)
 {
     char delimiter;
-    struct evbuffer* buf = evbuffer_new();
+    struct evbuffer *buf = evbuffer_new();
 
     evbuffer_add_printf(buf, "%s", req->url);
     delimiter = strchr(req->url, '?') != NULL ? '&' : '?';
@@ -520,13 +520,13 @@ static char* scrape_url_new(tr_scrape_request const* req)
 }
 
 void tr_tracker_http_scrape(
-    tr_session* session,
-    tr_scrape_request const* request,
+    tr_session *session,
+    tr_scrape_request const *request,
     tr_scrape_response_func response_func,
-    void* response_func_user_data)
+    void *response_func_user_data)
 {
-    struct scrape_data* d;
-    char* url = scrape_url_new(request);
+    struct scrape_data *d;
+    char *url = scrape_url_new(request);
 
     d = tr_new0(struct scrape_data, 1);
     d->response.url = tr_strdup(request->url);

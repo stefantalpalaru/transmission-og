@@ -61,7 +61,7 @@ static void set_socket_buffers(tr_socket_t fd, bool large)
     char err_buf[512];
 
     size = large ? RECV_BUFFER_SIZE : SMALL_BUFFER_SIZE;
-    rc = setsockopt(fd, SOL_SOCKET, SO_RCVBUF, (void const*)&size, sizeof(size));
+    rc = setsockopt(fd, SOL_SOCKET, SO_RCVBUF, (void const *)&size, sizeof(size));
 
     if (rc < 0)
     {
@@ -69,7 +69,7 @@ static void set_socket_buffers(tr_socket_t fd, bool large)
     }
 
     size = large ? SEND_BUFFER_SIZE : SMALL_BUFFER_SIZE;
-    rc = setsockopt(fd, SOL_SOCKET, SO_SNDBUF, (void const*)&size, sizeof(size));
+    rc = setsockopt(fd, SOL_SOCKET, SO_SNDBUF, (void const *)&size, sizeof(size));
 
     if (rc < 0)
     {
@@ -78,14 +78,14 @@ static void set_socket_buffers(tr_socket_t fd, bool large)
 
     if (large)
     {
-        rc = getsockopt(fd, SOL_SOCKET, SO_RCVBUF, (void*)&rbuf, &rbuf_len);
+        rc = getsockopt(fd, SOL_SOCKET, SO_RCVBUF, (void *)&rbuf, &rbuf_len);
 
         if (rc < 0)
         {
             rbuf = 0;
         }
 
-        rc = getsockopt(fd, SOL_SOCKET, SO_SNDBUF, (void*)&sbuf, &sbuf_len);
+        rc = getsockopt(fd, SOL_SOCKET, SO_SNDBUF, (void *)&sbuf, &sbuf_len);
 
         if (rc < 0)
         {
@@ -110,7 +110,7 @@ static void set_socket_buffers(tr_socket_t fd, bool large)
     }
 }
 
-void tr_udpSetSocketBuffers(tr_session* session)
+void tr_udpSetSocketBuffers(tr_session *session)
 {
     bool utp = tr_sessionIsUTPEnabled(session);
 
@@ -128,12 +128,12 @@ void tr_udpSetSocketBuffers(tr_session* session)
 /* BEP-32 has a rather nice explanation of why we need to bind to one
    IPv6 address, if I may say so myself. */
 
-static void rebind_ipv6(tr_session* ss, bool force)
+static void rebind_ipv6(tr_session *ss, bool force)
 {
     bool is_default;
-    struct tr_address const* public_addr;
+    struct tr_address const *public_addr;
     struct sockaddr_in6 sin6;
-    unsigned char const* ipv6 = tr_globalIPv6();
+    unsigned char const *ipv6 = tr_globalIPv6();
     tr_socket_t s = TR_BAD_SOCKET;
     int rc;
     int one = 1;
@@ -166,7 +166,7 @@ static void rebind_ipv6(tr_session* ss, bool force)
 #ifdef IPV6_V6ONLY
     /* Since we always open an IPv4 socket on the same port, this
        shouldn't matter.  But I'm superstitious. */
-    setsockopt(s, IPPROTO_IPV6, IPV6_V6ONLY, (void const*)&one, sizeof(one));
+    setsockopt(s, IPPROTO_IPV6, IPV6_V6ONLY, (void const *)&one, sizeof(one));
 #endif
 
     memset(&sin6, 0, sizeof(sin6));
@@ -185,7 +185,7 @@ static void rebind_ipv6(tr_session* ss, bool force)
         sin6.sin6_addr = public_addr->addr.addr6;
     }
 
-    rc = bind(s, (struct sockaddr*)&sin6, sizeof(sin6));
+    rc = bind(s, (struct sockaddr *)&sin6, sizeof(sin6));
 
     if (rc == -1)
     {
@@ -238,7 +238,7 @@ fail:
     }
 }
 
-static void event_callback(evutil_socket_t s, short type UNUSED, void* sv)
+static void event_callback(evutil_socket_t s, short type UNUSED, void *sv)
 {
     TR_ASSERT(tr_isSession(sv));
     TR_ASSERT(type == EV_READ);
@@ -247,10 +247,10 @@ static void event_callback(evutil_socket_t s, short type UNUSED, void* sv)
     socklen_t fromlen;
     unsigned char buf[4096];
     struct sockaddr_storage from;
-    tr_session* ss = sv;
+    tr_session *ss = sv;
 
     fromlen = sizeof(from);
-    rc = recvfrom(s, (void*)buf, 4096 - 1, 0, (struct sockaddr*)&from, &fromlen);
+    rc = recvfrom(s, (void *)buf, 4096 - 1, 0, (struct sockaddr *)&from, &fromlen);
 
     /* Since most packets we receive here are ÂµTP, make quick inline
        checks for the other protocols.  The logic is as follows:
@@ -266,7 +266,7 @@ static void event_callback(evutil_socket_t s, short type UNUSED, void* sv)
             if (tr_sessionAllowsDHT(ss))
             {
                 buf[rc] = '\0'; /* required by the DHT code */
-                tr_dhtCallback(buf, rc, (struct sockaddr*)&from, fromlen, sv);
+                tr_dhtCallback(buf, rc, (struct sockaddr *)&from, fromlen, sv);
             }
         }
         else if (rc >= 8 && buf[0] == 0 && buf[1] == 0 && buf[2] == 0 && buf[3] <= 3)
@@ -282,7 +282,7 @@ static void event_callback(evutil_socket_t s, short type UNUSED, void* sv)
         {
             if (tr_sessionIsUTPEnabled(ss))
             {
-                rc = tr_utpPacket(buf, rc, (struct sockaddr*)&from, fromlen, ss);
+                rc = tr_utpPacket(buf, rc, (struct sockaddr *)&from, fromlen, ss);
 
                 if (rc == 0)
                 {
@@ -293,13 +293,13 @@ static void event_callback(evutil_socket_t s, short type UNUSED, void* sv)
     }
 }
 
-void tr_udpInit(tr_session* ss)
+void tr_udpInit(tr_session *ss)
 {
     TR_ASSERT(ss->udp_socket == TR_BAD_SOCKET);
     TR_ASSERT(ss->udp6_socket == TR_BAD_SOCKET);
 
     bool is_default;
-    struct tr_address const* public_addr;
+    struct tr_address const *public_addr;
     struct sockaddr_in sin;
     int rc;
 
@@ -328,7 +328,7 @@ void tr_udpInit(tr_session* ss)
     }
 
     sin.sin_port = htons(ss->udp_port);
-    rc = bind(ss->udp_socket, (struct sockaddr*)&sin, sizeof(sin));
+    rc = bind(ss->udp_socket, (struct sockaddr *)&sin, sizeof(sin));
 
     if (rc == -1)
     {
@@ -379,7 +379,7 @@ ipv6:
     }
 }
 
-void tr_udpUninit(tr_session* ss)
+void tr_udpUninit(tr_session *ss)
 {
     tr_dhtUninit(ss);
 

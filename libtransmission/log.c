@@ -21,8 +21,8 @@
 tr_log_level __tr_message_level = TR_LOG_ERROR;
 
 static bool myQueueEnabled = false;
-static tr_log_message* myQueue = NULL;
-static tr_log_message** myQueueTail = &myQueue;
+static tr_log_message *myQueue = NULL;
+static tr_log_message **myQueueTail = &myQueue;
 static int myQueueLength = 0;
 
 #ifndef _WIN32
@@ -33,7 +33,7 @@ static inline bool IsDebuggerPresent(void)
     return false;
 }
 
-static inline void OutputDebugStringA(void const* unused UNUSED)
+static inline void OutputDebugStringA(void const *unused UNUSED)
 {
 }
 
@@ -52,9 +52,9 @@ tr_log_level tr_logGetLevel(void)
 ****
 ***/
 
-static tr_lock* getMessageLock(void)
+static tr_lock *getMessageLock(void)
 {
-    static tr_lock* l = NULL;
+    static tr_lock *l = NULL;
 
     if (l == NULL)
     {
@@ -105,9 +105,9 @@ bool tr_logGetQueueEnabled(void)
     return myQueueEnabled;
 }
 
-tr_log_message* tr_logGetQueue(void)
+tr_log_message *tr_logGetQueue(void)
 {
-    tr_log_message* ret;
+    tr_log_message *ret;
     tr_lockLock(getMessageLock());
 
     ret = myQueue;
@@ -119,9 +119,9 @@ tr_log_message* tr_logGetQueue(void)
     return ret;
 }
 
-void tr_logFreeQueue(tr_log_message* list)
+void tr_logFreeQueue(tr_log_message *list)
 {
-    tr_log_message* next;
+    tr_log_message *next;
 
     while (list != NULL)
     {
@@ -137,7 +137,7 @@ void tr_logFreeQueue(tr_log_message* list)
 ***
 **/
 
-char* tr_logGetTimeStr(char* buf, size_t buflen)
+char *tr_logGetTimeStr(char *buf, size_t buflen)
 {
     char tmp[64];
     struct tm now_tm;
@@ -168,7 +168,7 @@ bool tr_logGetDeepEnabled(void)
     return deepLoggingIsActive != 0;
 }
 
-void tr_logAddDeep(char const* file, int line, char const* name, char const* fmt, ...)
+void tr_logAddDeep(char const *file, int line, char const *name, char const *fmt, ...)
 {
     tr_sys_file_t const fp = tr_logGetFile();
 
@@ -176,10 +176,10 @@ void tr_logAddDeep(char const* file, int line, char const* name, char const* fmt
     {
         va_list args;
         char timestr[64];
-        char* message;
+        char *message;
         size_t message_len;
-        struct evbuffer* buf = evbuffer_new();
-        char* base = tr_sys_path_basename(file, NULL);
+        struct evbuffer *buf = evbuffer_new();
+        char *base = tr_sys_path_basename(file, NULL);
 
         evbuffer_add_printf(buf, "[%s] ", tr_logGetTimeStr(timestr, sizeof(timestr)));
 
@@ -210,7 +210,7 @@ void tr_logAddDeep(char const* file, int line, char const* name, char const* fmt
 ****
 ***/
 
-void tr_logAddMessage(char const* file, int line, tr_log_level level, char const* name, char const* fmt, ...)
+void tr_logAddMessage(char const *file, int line, tr_log_level level, char const *name, char const *fmt, ...)
 {
     int const err = errno; /* message logging shouldn't affect errno */
     char buf[1024];
@@ -250,7 +250,7 @@ void tr_logAddMessage(char const* file, int line, tr_log_level level, char const
     {
         if (tr_logGetQueueEnabled())
         {
-            tr_log_message* newmsg;
+            tr_log_message *newmsg;
             newmsg = tr_new0(tr_log_message, 1);
             newmsg->level = level;
             newmsg->when = tr_time();
@@ -265,7 +265,7 @@ void tr_logAddMessage(char const* file, int line, tr_log_level level, char const
 
             if (myQueueLength > TR_LOG_MAX_QUEUE_LENGTH)
             {
-                tr_log_message* old = myQueue;
+                tr_log_message *old = myQueue;
                 myQueue = old->next;
                 old->next = NULL;
                 tr_logFreeQueue(old);

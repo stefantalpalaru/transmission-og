@@ -34,9 +34,9 @@
 
 static int test_strip_positional_args(void)
 {
-    char const* in;
-    char const* out;
-    char const* expected;
+    char const *in;
+    char const *out;
+    char const *expected;
 
     in = "Hello %1$s foo %2$.*f";
     expected = "Hello %s foo %.*f";
@@ -53,8 +53,8 @@ static int test_strip_positional_args(void)
 
 static int test_strstrip(void)
 {
-    char* in;
-    char* out;
+    char *in;
+    char *out;
 
     /* strstrip */
     in = tr_strdup("   test    ");
@@ -82,29 +82,29 @@ static int test_strstrip(void)
 
 static int test_strjoin(void)
 {
-    char* out;
+    char *out;
 
-    char const* in1[] = { "one", "two" };
+    char const *in1[] = { "one", "two" };
     out = tr_strjoin(in1, 2, ", ");
     check_str(out, ==, "one, two");
     tr_free(out);
 
-    char const* in2[] = { "hello" };
+    char const *in2[] = { "hello" };
     out = tr_strjoin(in2, 1, "###");
     check_str(out, ==, "hello");
     tr_free(out);
 
-    char const* in3[] = { "a", "b", "ccc", "d", "eeeee" };
+    char const *in3[] = { "a", "b", "ccc", "d", "eeeee" };
     out = tr_strjoin(in3, 5, " ");
     check_str(out, ==, "a b ccc d eeeee");
     tr_free(out);
 
-    char const* in4[] = { "7", "ate", "9" };
+    char const *in4[] = { "7", "ate", "9" };
     out = tr_strjoin(in4, 3, "");
     check_str(out, ==, "7ate9");
     tr_free(out);
 
-    char const** in5;
+    char const **in5;
     out = tr_strjoin(in5, 0, "a");
     check_str(out, ==, "");
     tr_free(out);
@@ -114,7 +114,7 @@ static int test_strjoin(void)
 
 static int test_buildpath(void)
 {
-    char* out;
+    char *out;
 
     out = tr_buildPath("foo", "bar", NULL);
     check_str(out, ==, "foo" TR_PATH_DELIMITER_STR "bar");
@@ -129,8 +129,8 @@ static int test_buildpath(void)
 
 static int test_utf8(void)
 {
-    char const* in;
-    char* out;
+    char const *in;
+    char *out;
 
     in = "hello world";
     out = tr_utf8clean(in, TR_BAD_SIZE);
@@ -178,7 +178,7 @@ static int test_utf8(void)
 static int test_numbers(void)
 {
     int count;
-    int* numbers;
+    int *numbers;
 
     numbers = tr_parseNumberRange("1-10,13,16-19", TR_BAD_SIZE, &count);
     check_int(count, ==, 15);
@@ -216,10 +216,10 @@ static int test_numbers(void)
     return 0;
 }
 
-static int compareInts(void const* va, void const* vb)
+static int compareInts(void const *va, void const *vb)
 {
-    int const a = *(int const*)va;
-    int const b = *(int const*)vb;
+    int const a = *(int const *)va;
+    int const b = *(int const *)vb;
     return a - b;
 }
 
@@ -258,7 +258,7 @@ static int test_lowerbound(void)
     return 0;
 }
 
-static int test_quickFindFirst_Iteration(size_t const k, size_t const n, int* buf, int range)
+static int test_quickFindFirst_Iteration(size_t const k, size_t const n, int *buf, int range)
 {
     int highest_low;
     int lowest_high;
@@ -304,7 +304,7 @@ static int test_quickfindFirst(void)
     size_t const k = 10;
     size_t const n = 100;
     size_t const n_trials = 1000;
-    int* buf = tr_new(int, n);
+    int *buf = tr_new(int, n);
 
     for (size_t i = 0; i < n_trials; ++i)
     {
@@ -376,11 +376,11 @@ static int test_array(void)
 static int test_url(void)
 {
     int port;
-    char* scheme;
-    char* host;
-    char* path;
-    char* str;
-    char const* url;
+    char *scheme;
+    char *host;
+    char *path;
+    char *str;
+    char const *url;
 
     url = "http://1";
     check(tr_urlParse(url, TR_BAD_SIZE, &scheme, &host, &port, &path));
@@ -460,12 +460,12 @@ static int test_truncd(void)
     return 0;
 }
 
-static char* test_strdup_printf_valist(char const* fmt, ...) TR_GNUC_PRINTF(1, 2);
+static char *test_strdup_printf_valist(char const *fmt, ...) TR_GNUC_PRINTF(1, 2);
 
-static char* test_strdup_printf_valist(char const* fmt, ...)
+static char *test_strdup_printf_valist(char const *fmt, ...)
 {
     va_list args;
-    char* ret;
+    char *ret;
 
     va_start(args, fmt);
     ret = tr_strdup_vprintf(fmt, args);
@@ -476,9 +476,9 @@ static char* test_strdup_printf_valist(char const* fmt, ...)
 
 static int test_strdup_printf(void)
 {
-    char* s;
-    char* s2;
-    char* s3;
+    char *s;
+    char *s2;
+    char *s3;
 
     s = tr_strdup_printf("%s", "test");
     check_str(s, ==, "test");
@@ -521,9 +521,9 @@ static int test_strdup_printf(void)
 
 static int test_env(void)
 {
-    char const* test_key = "TR_TEST_ENV";
+    char const *test_key = "TR_TEST_ENV";
     int x;
-    char* s;
+    char *s;
 
     unsetenv(test_key);
 

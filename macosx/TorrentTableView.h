@@ -32,25 +32,25 @@
 
 @interface TorrentTableView : NSOutlineView<NSOutlineViewDelegate, NSAnimationDelegate, NSPopoverDelegate>
 {
-    IBOutlet Controller* fController;
+    IBOutlet Controller *fController;
 
-    TorrentCell* fTorrentCell;
+    TorrentCell *fTorrentCell;
 
-    NSUserDefaults* fDefaults;
+    NSUserDefaults *fDefaults;
 
-    NSMutableIndexSet* fCollapsedGroups;
+    NSMutableIndexSet *fCollapsedGroups;
 
     IBOutlet NSMenu *fContextRow, *fContextNoRow;
 
     NSInteger fMouseRow, fMouseControlRow, fMouseRevealRow, fMouseActionRow;
-    NSArray* fSelectedValues;
+    NSArray *fSelectedValues;
 
     IBOutlet NSMenu *fActionMenu, *fUploadMenu, *fDownloadMenu, *fRatioMenu, *fPriorityMenu;
-    IBOutlet NSMenuItem* fGlobalLimitItem;
-    Torrent* fMenuTorrent;
+    IBOutlet NSMenuItem *fGlobalLimitItem;
+    Torrent *fMenuTorrent;
 
     CGFloat fPiecesBarPercent;
-    NSAnimation* fPiecesBarAnimation;
+    NSAnimation *fPiecesBarAnimation;
 
     BOOL fActionPopoverShown;
 }
@@ -66,17 +66,17 @@
 - (void)setRevealButtonHover:(NSInteger)row;
 - (void)setActionButtonHover:(NSInteger)row;
 
-- (void)selectValues:(NSArray*)values;
-- (NSArray*)selectedValues;
-- (NSArray*)selectedTorrents;
+- (void)selectValues:(NSArray *)values;
+- (NSArray *)selectedValues;
+- (NSArray *)selectedTorrents;
 
 - (NSRect)iconRectForRow:(NSInteger)row;
 
 - (void)paste:(id)sender;
 
-- (void)toggleControlForTorrent:(Torrent*)torrent;
+- (void)toggleControlForTorrent:(Torrent *)torrent;
 
-- (void)displayTorrentActionPopoverForEvent:(NSEvent*)event;
+- (void)displayTorrentActionPopoverForEvent:(NSEvent *)event;
 
 - (void)setQuickLimitMode:(id)sender;
 - (void)setQuickLimit:(id)sender;

@@ -10,7 +10,7 @@
 
 #include <gtk/gtk.h>
 
-GtkWidget* gtr_prefs_dialog_new(GtkWindow* parent, GObject* core);
+GtkWidget *gtr_prefs_dialog_new(GtkWindow *parent, GObject *core);
 
 /* if you add a key here,  you /must/ add its
  * default in tr_prefs_init_defaults(void) */

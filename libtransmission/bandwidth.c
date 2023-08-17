@@ -22,7 +22,7 @@
 ****
 ***/
 
-static unsigned int getSpeed_Bps(struct bratecontrol const* r, unsigned int interval_msec, uint64_t now)
+static unsigned int getSpeed_Bps(struct bratecontrol const *r, unsigned int interval_msec, uint64_t now)
 {
     if (now == 0)
     {
@@ -33,7 +33,7 @@ static unsigned int getSpeed_Bps(struct bratecontrol const* r, unsigned int inte
     {
         uint64_t bytes = 0;
         uint64_t const cutoff = now - interval_msec;
-        struct bratecontrol* rvolatile = (struct bratecontrol*)r;
+        struct bratecontrol *rvolatile = (struct bratecontrol *)r;
 
         for (int i = r->newest; r->transfers[i].date > cutoff;)
         {
@@ -57,7 +57,7 @@ static unsigned int getSpeed_Bps(struct bratecontrol const* r, unsigned int inte
     return r->cache_val;
 }
 
-static void bytesUsed(uint64_t const now, struct bratecontrol* r, size_t size)
+static void bytesUsed(uint64_t const now, struct bratecontrol *r, size_t size)
 {
     if (r->transfers[r->newest].date + GRANULARITY_MSEC >= now)
     {
@@ -83,10 +83,10 @@ static void bytesUsed(uint64_t const now, struct bratecontrol* r, size_t size)
 *******
 ******/
 
-static int compareBandwidth(void const* va, void const* vb)
+static int compareBandwidth(void const *va, void const *vb)
 {
-    tr_bandwidth const* a = va;
-    tr_bandwidth const* b = vb;
+    tr_bandwidth const *a = va;
+    tr_bandwidth const *b = vb;
     return a->uniqueKey - b->uniqueKey;
 }
 
@@ -94,7 +94,7 @@ static int compareBandwidth(void const* va, void const* vb)
 ****
 ***/
 
-void tr_bandwidthConstruct(tr_bandwidth* b, tr_session* session, tr_bandwidth* parent)
+void tr_bandwidthConstruct(tr_bandwidth *b, tr_session *session, tr_bandwidth *parent)
 {
     static unsigned int uniqueKey = 0;
 
@@ -107,7 +107,7 @@ void tr_bandwidthConstruct(tr_bandwidth* b, tr_session* session, tr_bandwidth* p
     tr_bandwidthSetParent(b, parent);
 }
 
-void tr_bandwidthDestruct(tr_bandwidth* b)
+void tr_bandwidthDestruct(tr_bandwidth *b)
 {
     TR_ASSERT(tr_isBandwidth(b));
 
@@ -121,7 +121,7 @@ void tr_bandwidthDestruct(tr_bandwidth* b)
 ****
 ***/
 
-void tr_bandwidthSetParent(tr_bandwidth* b, tr_bandwidth* parent)
+void tr_bandwidthSetParent(tr_bandwidth *b, tr_bandwidth *parent)
 {
     TR_ASSERT(tr_isBandwidth(b));
     TR_ASSERT(b != parent);
@@ -150,11 +150,11 @@ void tr_bandwidthSetParent(tr_bandwidth* b, tr_bandwidth* parent)
 ***/
 
 static void allocateBandwidth(
-    tr_bandwidth* b,
+    tr_bandwidth *b,
     tr_priority_t parent_priority,
     tr_direction dir,
     unsigned int period_msec,
-    tr_ptrArray* peer_pool)
+    tr_ptrArray *peer_pool)
 {
     TR_ASSERT(tr_isBandwidth(b));
     TR_ASSERT(tr_isDirection(dir));
@@ -178,7 +178,7 @@ static void allocateBandwidth(
     /* traverse & repeat for the subtree */
     if (true)
     {
-        struct tr_bandwidth** children = (struct tr_bandwidth**)tr_ptrArrayBase(&b->children);
+        struct tr_bandwidth **children = (struct tr_bandwidth **)tr_ptrArrayBase(&b->children);
 
         for (int i = 0, n = tr_ptrArraySize(&b->children); i < n; ++i)
         {
@@ -187,11 +187,11 @@ static void allocateBandwidth(
     }
 }
 
-static void phaseOne(tr_ptrArray* peerArray, tr_direction dir)
+static void phaseOne(tr_ptrArray *peerArray, tr_direction dir)
 {
     int n;
     int peerCount = tr_ptrArraySize(peerArray);
-    struct tr_peerIo** peers = (struct tr_peerIo**)tr_ptrArrayBase(peerArray);
+    struct tr_peerIo **peers = (struct tr_peerIo **)tr_ptrArrayBase(peerArray);
 
     /* First phase of IO. Tries to distribute bandwidth fairly to keep faster
      * peers from starving the others. Loop through the peers, giving each a
@@ -216,7 +216,7 @@ static void phaseOne(tr_ptrArray* peerArray, tr_direction dir)
         if (bytesUsed != (int)increment)
         {
             /* peer is done writing for now; move it to the end of the list */
-            tr_peerIo* pio = peers[i];
+            tr_peerIo *pio = peers[i];
             peers[i] = peers[n - 1];
             peers[n - 1] = pio;
             --n;
@@ -224,25 +224,25 @@ static void phaseOne(tr_ptrArray* peerArray, tr_direction dir)
     }
 }
 
-void tr_bandwidthAllocate(tr_bandwidth* b, tr_direction dir, unsigned int period_msec)
+void tr_bandwidthAllocate(tr_bandwidth *b, tr_direction dir, unsigned int period_msec)
 {
     int peerCount;
     tr_ptrArray tmp = TR_PTR_ARRAY_INIT;
     tr_ptrArray low = TR_PTR_ARRAY_INIT;
     tr_ptrArray high = TR_PTR_ARRAY_INIT;
     tr_ptrArray normal = TR_PTR_ARRAY_INIT;
-    struct tr_peerIo** peers;
+    struct tr_peerIo **peers;
 
     /* allocateBandwidth () is a helper function with two purposes:
      * 1. allocate bandwidth to b and its subtree
      * 2. accumulate an array of all the peerIos from b and its subtree. */
     allocateBandwidth(b, TR_PRI_LOW, dir, period_msec, &tmp);
-    peers = (struct tr_peerIo**)tr_ptrArrayBase(&tmp);
+    peers = (struct tr_peerIo **)tr_ptrArrayBase(&tmp);
     peerCount = tr_ptrArraySize(&tmp);
 
     for (int i = 0; i < peerCount; ++i)
     {
-        tr_peerIo* io = peers[i];
+        tr_peerIo *io = peers[i];
         tr_peerIoRef(io);
 
         tr_peerIoFlushOutgoingProtocolMsgs(io);
@@ -289,7 +289,7 @@ void tr_bandwidthAllocate(tr_bandwidth* b, tr_direction dir, unsigned int period
     tr_ptrArrayDestruct(&tmp, NULL);
 }
 
-void tr_bandwidthSetPeer(tr_bandwidth* b, tr_peerIo* peer)
+void tr_bandwidthSetPeer(tr_bandwidth *b, tr_peerIo *peer)
 {
     TR_ASSERT(tr_isBandwidth(b));
     TR_ASSERT(peer == NULL || tr_isPeerIo(peer));
@@ -301,7 +301,7 @@ void tr_bandwidthSetPeer(tr_bandwidth* b, tr_peerIo* peer)
 ****
 ***/
 
-static unsigned int bandwidthClamp(tr_bandwidth const* b, uint64_t now, tr_direction dir, unsigned int byteCount)
+static unsigned int bandwidthClamp(tr_bandwidth const *b, uint64_t now, tr_direction dir, unsigned int byteCount)
 {
     TR_ASSERT(tr_isBandwidth(b));
     TR_ASSERT(tr_isDirection(dir));
@@ -353,12 +353,12 @@ static unsigned int bandwidthClamp(tr_bandwidth const* b, uint64_t now, tr_direc
     return byteCount;
 }
 
-unsigned int tr_bandwidthClamp(tr_bandwidth const* b, tr_direction dir, unsigned int byteCount)
+unsigned int tr_bandwidthClamp(tr_bandwidth const *b, tr_direction dir, unsigned int byteCount)
 {
     return bandwidthClamp(b, 0, dir, byteCount);
 }
 
-unsigned int tr_bandwidthGetRawSpeed_Bps(tr_bandwidth const* b, uint64_t const now, tr_direction const dir)
+unsigned int tr_bandwidthGetRawSpeed_Bps(tr_bandwidth const *b, uint64_t const now, tr_direction const dir)
 {
     TR_ASSERT(tr_isBandwidth(b));
     TR_ASSERT(tr_isDirection(dir));
@@ -366,7 +366,7 @@ unsigned int tr_bandwidthGetRawSpeed_Bps(tr_bandwidth const* b, uint64_t const n
     return getSpeed_Bps(&b->band[dir].raw, HISTORY_MSEC, now);
 }
 
-unsigned int tr_bandwidthGetPieceSpeed_Bps(tr_bandwidth const* b, uint64_t const now, tr_direction const dir)
+unsigned int tr_bandwidthGetPieceSpeed_Bps(tr_bandwidth const *b, uint64_t const now, tr_direction const dir)
 {
     TR_ASSERT(tr_isBandwidth(b));
     TR_ASSERT(tr_isDirection(dir));
@@ -374,12 +374,12 @@ unsigned int tr_bandwidthGetPieceSpeed_Bps(tr_bandwidth const* b, uint64_t const
     return getSpeed_Bps(&b->band[dir].piece, HISTORY_MSEC, now);
 }
 
-void tr_bandwidthUsed(tr_bandwidth* b, tr_direction dir, size_t byteCount, bool isPieceData, uint64_t now)
+void tr_bandwidthUsed(tr_bandwidth *b, tr_direction dir, size_t byteCount, bool isPieceData, uint64_t now)
 {
     TR_ASSERT(tr_isBandwidth(b));
     TR_ASSERT(tr_isDirection(dir));
 
-    struct tr_band* band = &b->band[dir];
+    struct tr_band *band = &b->band[dir];
 
     if (band->isLimited && isPieceData)
     {

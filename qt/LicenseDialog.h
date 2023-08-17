@@ -17,7 +17,7 @@ class LicenseDialog : public BaseDialog
     Q_OBJECT
 
 public:
-    LicenseDialog(QWidget* parent = nullptr);
+    LicenseDialog(QWidget *parent = nullptr);
 
     virtual ~LicenseDialog()
     {

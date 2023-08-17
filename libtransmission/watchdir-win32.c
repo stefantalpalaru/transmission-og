@@ -48,11 +48,11 @@ typedef struct tr_watchdir_win32
     OVERLAPPED overlapped;
     DWORD buffer[8 * 1024 / sizeof(DWORD)];
     evutil_socket_t notify_pipe[2];
-    struct bufferevent* event;
+    struct bufferevent *event;
     HANDLE thread;
 } tr_watchdir_win32;
 
-#define BACKEND_UPCAST(b) ((tr_watchdir_win32*)(b))
+#define BACKEND_UPCAST(b) ((tr_watchdir_win32 *)(b))
 
 #define WIN32_WATCH_MASK (FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_SIZE | FILE_NOTIFY_CHANGE_LAST_WRITE)
 
@@ -101,10 +101,10 @@ static BOOL tr_get_overlapped_result_ex(
     return GetOverlappedResult(handle, overlapped, bytes_transferred, FALSE);
 }
 
-static unsigned int __stdcall tr_watchdir_win32_thread(void* context)
+static unsigned int __stdcall tr_watchdir_win32_thread(void *context)
 {
     tr_watchdir_t const handle = context;
-    tr_watchdir_win32* const backend = BACKEND_UPCAST(tr_watchdir_get_backend(handle));
+    tr_watchdir_win32 *const backend = BACKEND_UPCAST(tr_watchdir_get_backend(handle));
     DWORD bytes_transferred;
 
     while (tr_get_overlapped_result_ex(backend->fd, &backend->overlapped, &bytes_transferred, INFINITE, FALSE))
@@ -113,12 +113,12 @@ static unsigned int __stdcall tr_watchdir_win32_thread(void* context)
 
         while (info->NextEntryOffset != 0)
         {
-            *((BYTE**)&info) += info->NextEntryOffset;
+            *((BYTE **)&info) += info->NextEntryOffset;
         }
 
-        info->NextEntryOffset = bytes_transferred - ((BYTE*)info - (BYTE*)backend->buffer);
+        info->NextEntryOffset = bytes_transferred - ((BYTE *)info - (BYTE *)backend->buffer);
 
-        send(backend->notify_pipe[1], (char const*)backend->buffer, bytes_transferred, 0);
+        send(backend->notify_pipe[1], (char const *)backend->buffer, bytes_transferred, 0);
 
         if (!ReadDirectoryChangesW(
                 backend->fd,
@@ -143,19 +143,19 @@ static unsigned int __stdcall tr_watchdir_win32_thread(void* context)
     return 0;
 }
 
-static void tr_watchdir_win32_on_first_scan(evutil_socket_t fd UNUSED, short type UNUSED, void* context)
+static void tr_watchdir_win32_on_first_scan(evutil_socket_t fd UNUSED, short type UNUSED, void *context)
 {
     tr_watchdir_t const handle = context;
 
     tr_watchdir_scan(handle, NULL);
 }
 
-static void tr_watchdir_win32_on_event(struct bufferevent* event, void* context)
+static void tr_watchdir_win32_on_event(struct bufferevent *event, void *context)
 {
     tr_watchdir_t const handle = context;
     size_t nread;
     size_t name_size = MAX_PATH * sizeof(WCHAR);
-    char* buffer = tr_malloc(sizeof(FILE_NOTIFY_INFORMATION) + name_size);
+    char *buffer = tr_malloc(sizeof(FILE_NOTIFY_INFORMATION) + name_size);
     PFILE_NOTIFY_INFORMATION ev = (PFILE_NOTIFY_INFORMATION)buffer;
     size_t const header_size = offsetof(FILE_NOTIFY_INFORMATION, FileName);
 
@@ -203,7 +203,7 @@ static void tr_watchdir_win32_on_event(struct bufferevent* event, void* context)
 
         if (ev->Action == FILE_ACTION_ADDED || ev->Action == FILE_ACTION_MODIFIED || ev->Action == FILE_ACTION_RENAMED_NEW_NAME)
         {
-            char* name = tr_win32_native_to_utf8(ev->FileName, ev->FileNameLength / sizeof(WCHAR));
+            char *name = tr_win32_native_to_utf8(ev->FileName, ev->FileNameLength / sizeof(WCHAR));
 
             if (name != NULL)
             {
@@ -216,9 +216,9 @@ static void tr_watchdir_win32_on_event(struct bufferevent* event, void* context)
     tr_free(buffer);
 }
 
-static void tr_watchdir_win32_free(tr_watchdir_backend* backend_base)
+static void tr_watchdir_win32_free(tr_watchdir_backend *backend_base)
 {
-    tr_watchdir_win32* const backend = BACKEND_UPCAST(backend_base);
+    tr_watchdir_win32 *const backend = BACKEND_UPCAST(backend_base);
 
     if (backend == NULL)
     {
@@ -261,11 +261,11 @@ static void tr_watchdir_win32_free(tr_watchdir_backend* backend_base)
     tr_free(backend);
 }
 
-tr_watchdir_backend* tr_watchdir_win32_new(tr_watchdir_t handle)
+tr_watchdir_backend *tr_watchdir_win32_new(tr_watchdir_t handle)
 {
-    char const* const path = tr_watchdir_get_path(handle);
-    wchar_t* wide_path;
-    tr_watchdir_win32* backend;
+    char const *const path = tr_watchdir_get_path(handle);
+    wchar_t *wide_path;
+    tr_watchdir_win32 *backend;
 
     backend = tr_new0(tr_watchdir_win32, 1);
     backend->base.free_func = &tr_watchdir_win32_free;

@@ -15,7 +15,7 @@
 namespace
 {
 
-int itemColumnSpan(QGridLayout* layout, QLayoutItem const* item)
+int itemColumnSpan(QGridLayout *layout, QLayoutItem const *item)
 {
     for (int i = 0, count = layout->count(); i < count; ++i)
     {
@@ -34,7 +34,7 @@ int itemColumnSpan(QGridLayout* layout, QLayoutItem const* item)
 
 } // namespace
 
-ColumnResizer::ColumnResizer(QObject* parent)
+ColumnResizer::ColumnResizer(QObject *parent)
     : QObject(parent)
     , myTimer(new QTimer(this))
     , myLayouts()
@@ -43,13 +43,13 @@ ColumnResizer::ColumnResizer(QObject* parent)
     connect(myTimer, SIGNAL(timeout()), SLOT(update()));
 }
 
-void ColumnResizer::addLayout(QGridLayout* layout)
+void ColumnResizer::addLayout(QGridLayout *layout)
 {
     myLayouts << layout;
     scheduleUpdate();
 }
 
-bool ColumnResizer::eventFilter(QObject* object, QEvent* event)
+bool ColumnResizer::eventFilter(QObject *object, QEvent *event)
 {
     if (event->type() == QEvent::Resize)
     {
@@ -63,11 +63,11 @@ void ColumnResizer::update()
 {
     int maxWidth = 0;
 
-    for (QGridLayout* const layout : myLayouts)
+    for (QGridLayout *const layout : myLayouts)
     {
         for (int i = 0, count = layout->rowCount(); i < count; ++i)
         {
-            QLayoutItem* item = layout->itemAtPosition(i, 0);
+            QLayoutItem *item = layout->itemAtPosition(i, 0);
 
             if (item == nullptr || itemColumnSpan(layout, item) > 1)
             {
@@ -78,7 +78,7 @@ void ColumnResizer::update()
         }
     }
 
-    for (QGridLayout* const layout : myLayouts)
+    for (QGridLayout *const layout : myLayouts)
     {
         layout->setColumnMinimumWidth(0, maxWidth);
     }

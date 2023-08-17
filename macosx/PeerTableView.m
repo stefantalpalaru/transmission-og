@@ -24,7 +24,7 @@
 
 @implementation PeerTableView
 
-- (void)mouseDown:(NSEvent*)event
+- (void)mouseDown:(NSEvent *)event
 {
     NSPoint point = [self convertPoint:[event locationInWindow] fromView:nil];
     if ([self rowAtPoint:point] != -1 && [self columnAtPoint:point] == [self columnWithIdentifier:@"Progress"])

@@ -125,7 +125,7 @@ Prefs::PrefItem Prefs::myItems[] = {
 ****
 ***/
 
-Prefs::Prefs(QString const& configDir)
+Prefs::Prefs(QString const &configDir)
     : myConfigDir(configDir)
 {
     assert(sizeof(myItems) / sizeof(myItems[0]) == PREFS_COUNT);
@@ -153,9 +153,9 @@ Prefs::Prefs(QString const& configDir)
         double d;
         bool boolVal;
         int64_t intVal;
-        char const* str;
+        char const *str;
         size_t strLen;
-        tr_variant* b(tr_variantDictFind(&top, myItems[i].key));
+        tr_variant *b(tr_variantDictFind(&top, myItems[i].key));
 
         switch (myItems[i].type)
         {
@@ -238,7 +238,7 @@ Prefs::~Prefs()
         }
 
         tr_quark const key = myItems[i].key;
-        QVariant const& val = myValues[i];
+        QVariant const &val = myValues[i];
 
         switch (myItems[i].type)
         {
@@ -257,7 +257,7 @@ Prefs::~Prefs()
         case QVariant::String:
             {
                 QByteArray const ba(val.toByteArray());
-                char const* s = ba.constData();
+                char const *s = ba.constData();
 
                 if (Utils::isValidUtf8(s))
                 {
@@ -310,7 +310,7 @@ Prefs::~Prefs()
  * This is where we initialize the preferences file with the default values.
  * If you add a new preferences key, you /must/ add a default value here.
  */
-void Prefs::initDefaults(tr_variant* d)
+void Prefs::initDefaults(tr_variant *d)
 {
     tr_variantDictReserve(d, 38);
     tr_variantDictAddBool(d, TR_KEY_blocklist_updates_enabled, true);

@@ -30,19 +30,19 @@ public:
     };
 
 public:
-    TorrentFilter(Prefs const& prefs);
+    TorrentFilter(Prefs const &prefs);
     virtual ~TorrentFilter();
 
-    void countTorrentsPerMode(int* setmeCounts) const;
+    void countTorrentsPerMode(int *setmeCounts) const;
 
 protected:
     // QSortFilterProxyModel
-    bool filterAcceptsRow(int, QModelIndex const&) const override;
-    bool lessThan(QModelIndex const&, QModelIndex const&) const override;
+    bool filterAcceptsRow(int, QModelIndex const &) const override;
+    bool lessThan(QModelIndex const &, QModelIndex const &) const override;
 
 private:
-    bool activityFilterAcceptsTorrent(Torrent const* tor, FilterMode const& mode) const;
-    bool trackerFilterAcceptsTorrent(Torrent const* tor, QString const& tracker) const;
+    bool activityFilterAcceptsTorrent(Torrent const *tor, FilterMode const &mode) const;
+    bool trackerFilterAcceptsTorrent(Torrent const *tor, QString const &tracker) const;
 
 private slots:
     void onPrefChanged(int key);
@@ -50,5 +50,5 @@ private slots:
 
 private:
     QTimer myRefilterTimer;
-    Prefs const& myPrefs;
+    Prefs const &myPrefs;
 };

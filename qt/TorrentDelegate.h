@@ -22,29 +22,29 @@ class TorrentDelegate : public QStyledItemDelegate
     Q_OBJECT
 
 public:
-    explicit TorrentDelegate(QObject* parent = nullptr);
+    explicit TorrentDelegate(QObject *parent = nullptr);
     virtual ~TorrentDelegate();
 
     // QAbstractItemDelegate
-    QSize sizeHint(QStyleOptionViewItem const& option, QModelIndex const& index) const override;
-    void paint(QPainter* painter, QStyleOptionViewItem const& option, QModelIndex const& index) const override;
+    QSize sizeHint(QStyleOptionViewItem const &option, QModelIndex const &index) const override;
+    void paint(QPainter *painter, QStyleOptionViewItem const &option, QModelIndex const &index) const override;
 
 protected:
-    QSize margin(QStyle const& style) const;
-    void setProgressBarPercentDone(QStyleOptionViewItem const& option, Torrent const&) const;
-    QIcon& getWarningEmblem() const;
+    QSize margin(QStyle const &style) const;
+    void setProgressBarPercentDone(QStyleOptionViewItem const &option, Torrent const &) const;
+    QIcon &getWarningEmblem() const;
 
     // Our own overridables
-    virtual QSize sizeHint(QStyleOptionViewItem const&, Torrent const&) const;
-    virtual void drawTorrent(QPainter* painter, QStyleOptionViewItem const& option, Torrent const&) const;
+    virtual QSize sizeHint(QStyleOptionViewItem const &, Torrent const &) const;
+    virtual void drawTorrent(QPainter *painter, QStyleOptionViewItem const &option, Torrent const &) const;
 
-    static QString statusString(Torrent const& tor);
-    static QString progressString(Torrent const& tor);
-    static QString shortStatusString(Torrent const& tor);
-    static QString shortTransferString(Torrent const& tor);
+    static QString statusString(Torrent const &tor);
+    static QString progressString(Torrent const &tor);
+    static QString shortStatusString(Torrent const &tor);
+    static QString shortTransferString(Torrent const &tor);
 
 protected:
-    QStyleOptionProgressBar* myProgressBarStyle;
+    QStyleOptionProgressBar *myProgressBarStyle;
 
     static QColor blueBrush;
     static QColor greenBrush;

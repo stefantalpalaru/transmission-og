@@ -25,7 +25,7 @@
 #define LIFETIME_SECS 3600
 #define COMMAND_WAIT_SECS 8
 
-static char const* getKey(void)
+static char const *getKey(void)
 {
     return _("Port Forwarding (NAT-PMP)");
 }
@@ -60,7 +60,7 @@ struct tr_natpmp
 ***
 **/
 
-static void logVal(char const* func, int ret)
+static void logVal(char const *func, int ret)
 {
     if (ret == NATPMP_TRYAGAIN)
     {
@@ -84,9 +84,9 @@ static void logVal(char const* func, int ret)
     }
 }
 
-struct tr_natpmp* tr_natpmpInit(void)
+struct tr_natpmp *tr_natpmpInit(void)
 {
-    struct tr_natpmp* nat;
+    struct tr_natpmp *nat;
 
     nat = tr_new0(struct tr_natpmp, 1);
     nat->state = TR_NATPMP_DISCOVER;
@@ -96,7 +96,7 @@ struct tr_natpmp* tr_natpmpInit(void)
     return nat;
 }
 
-void tr_natpmpClose(tr_natpmp* nat)
+void tr_natpmpClose(tr_natpmp *nat)
 {
     if (nat != NULL)
     {
@@ -105,17 +105,17 @@ void tr_natpmpClose(tr_natpmp* nat)
     }
 }
 
-static bool canSendCommand(struct tr_natpmp const* nat)
+static bool canSendCommand(struct tr_natpmp const *nat)
 {
     return tr_time() >= nat->command_time;
 }
 
-static void setCommandTime(struct tr_natpmp* nat)
+static void setCommandTime(struct tr_natpmp *nat)
 {
     nat->command_time = tr_time() + COMMAND_WAIT_SECS;
 }
 
-int tr_natpmpPulse(struct tr_natpmp* nat, tr_port private_port, bool is_enabled, tr_port* public_port)
+int tr_natpmpPulse(struct tr_natpmp *nat, tr_port private_port, bool is_enabled, tr_port *public_port)
 {
     int ret;
 

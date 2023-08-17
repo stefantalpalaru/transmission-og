@@ -33,9 +33,9 @@
 
 @interface GroupsPrefsController ()
 
-@property(nonatomic, strong) IBOutlet NSWindow* groupRulesSheetWindow;
-@property(nonatomic, weak) IBOutlet NSPredicateEditor* ruleEditor;
-@property(nonatomic, weak) IBOutlet NSLayoutConstraint* ruleEditorHeightConstraint;
+@property(nonatomic, strong) IBOutlet NSWindow *groupRulesSheetWindow;
+@property(nonatomic, weak) IBOutlet NSPredicateEditor *ruleEditor;
+@property(nonatomic, weak) IBOutlet NSLayoutConstraint *ruleEditorHeightConstraint;
 
 @end
 
@@ -61,29 +61,29 @@
     [self updateSelectedGroup];
 }
 
-- (NSInteger)numberOfRowsInTableView:(NSTableView*)tableview
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableview
 {
     return [[GroupsController groups] numberOfGroups];
 }
 
-- (id)tableView:(NSTableView*)tableView objectValueForTableColumn:(NSTableColumn*)tableColumn row:(NSInteger)row
+- (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    GroupsController* groupsController = [GroupsController groups];
+    GroupsController *groupsController = [GroupsController groups];
     NSInteger groupsIndex = [groupsController indexForRow:row];
 
-    NSString* identifier = [tableColumn identifier];
+    NSString *identifier = [tableColumn identifier];
     if ([identifier isEqualToString:@"Color"])
         return [groupsController imageForIndex:groupsIndex];
     else
         return [groupsController nameForIndex:groupsIndex];
 }
 
-- (void)tableViewSelectionDidChange:(NSNotification*)notification
+- (void)tableViewSelectionDidChange:(NSNotification *)notification
 {
     [self updateSelectedGroup];
 }
 
-- (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if (object == fSelectedColorView && [fTableView numberOfSelectedRows] == 1)
     {
@@ -93,7 +93,7 @@
     }
 }
 
-- (void)controlTextDidEndEditing:(NSNotification*)notification
+- (void)controlTextDidEndEditing:(NSNotification *)notification
 {
     if ([notification object] == fSelectedColorNameField)
     {
@@ -103,19 +103,19 @@
     }
 }
 
-- (BOOL)tableView:(NSTableView*)tableView writeRowsWithIndexes:(NSIndexSet*)rowIndexes toPasteboard:(NSPasteboard*)pboard
+- (BOOL)tableView:(NSTableView *)tableView writeRowsWithIndexes:(NSIndexSet *)rowIndexes toPasteboard:(NSPasteboard *)pboard
 {
     [pboard declareTypes:@[ GROUP_TABLE_VIEW_DATA_TYPE ] owner:self];
     [pboard setData:[NSKeyedArchiver archivedDataWithRootObject:rowIndexes] forType:GROUP_TABLE_VIEW_DATA_TYPE];
     return YES;
 }
 
-- (NSDragOperation)tableView:(NSTableView*)tableView
+- (NSDragOperation)tableView:(NSTableView *)tableView
                 validateDrop:(id<NSDraggingInfo>)info
                  proposedRow:(NSInteger)row
        proposedDropOperation:(NSTableViewDropOperation)operation
 {
-    NSPasteboard* pasteboard = [info draggingPasteboard];
+    NSPasteboard *pasteboard = [info draggingPasteboard];
     if ([[pasteboard types] containsObject:GROUP_TABLE_VIEW_DATA_TYPE])
     {
         [fTableView setDropRow:row dropOperation:NSTableViewDropAbove];
@@ -125,15 +125,15 @@
     return NSDragOperationNone;
 }
 
-- (BOOL)tableView:(NSTableView*)tableView
+- (BOOL)tableView:(NSTableView *)tableView
        acceptDrop:(id<NSDraggingInfo>)info
               row:(NSInteger)newRow
     dropOperation:(NSTableViewDropOperation)operation
 {
-    NSPasteboard* pasteboard = [info draggingPasteboard];
+    NSPasteboard *pasteboard = [info draggingPasteboard];
     if ([[pasteboard types] containsObject:GROUP_TABLE_VIEW_DATA_TYPE])
     {
-        NSIndexSet* indexes = [NSKeyedUnarchiver unarchiveObjectWithData:[pasteboard dataForType:GROUP_TABLE_VIEW_DATA_TYPE]];
+        NSIndexSet *indexes = [NSKeyedUnarchiver unarchiveObjectWithData:[pasteboard dataForType:GROUP_TABLE_VIEW_DATA_TYPE]];
         NSInteger oldRow = [indexes firstIndex];
 
         if (oldRow < newRow)
@@ -202,7 +202,7 @@
 
 - (void)customDownloadLocationSheetShow:(id)sender
 {
-    NSOpenPanel* panel = [NSOpenPanel openPanel];
+    NSOpenPanel *panel = [NSOpenPanel openPanel];
 
     [panel setPrompt:NSLocalizedString(@"Select", "Preferences -> Open panel prompt")];
     [panel setAllowsMultipleSelection:NO];
@@ -214,7 +214,7 @@
         NSInteger const index = [[GroupsController groups] indexForRow:[fTableView selectedRow]];
         if (result == NSFileHandlingPanelOKButton)
         {
-            NSString* path = [[panel URLs][0] path];
+            NSString *path = [[panel URLs][0] path];
             [[GroupsController groups] setCustomDownloadLocation:path forIndex:index];
             [[GroupsController groups] setUsesCustomDownloadLocation:YES forIndex:index];
         }
@@ -271,7 +271,7 @@
         [[NSBundle mainBundle] loadNibNamed:@"GroupRules" owner:self topLevelObjects:NULL];
 
     NSInteger index = [[GroupsController groups] indexForRow:[fTableView selectedRow]];
-    NSPredicate* predicate = [[GroupsController groups] autoAssignRulesForIndex:index];
+    NSPredicate *predicate = [[GroupsController groups] autoAssignRulesForIndex:index];
     [self.ruleEditor setObjectValue:predicate];
 
     if ([self.ruleEditor numberOfRows] == 0)
@@ -302,16 +302,16 @@
     NSInteger index = [[GroupsController groups] indexForRow:[fTableView selectedRow]];
     [[GroupsController groups] setUsesAutoAssignRules:YES forIndex:index];
 
-    NSPredicate* predicate = [self.ruleEditor objectValue];
+    NSPredicate *predicate = [self.ruleEditor objectValue];
     [[GroupsController groups] setAutoAssignRules:predicate forIndex:index];
 
     [fAutoAssignRulesEnableCheck setState:[[GroupsController groups] usesAutoAssignRulesForIndex:index]];
     [fAutoAssignRulesEditButton setEnabled:[fAutoAssignRulesEnableCheck state] == NSOnState];
 }
 
-- (void)ruleEditorRowsDidChange:(NSNotification*)notification
+- (void)ruleEditorRowsDidChange:(NSNotification *)notification
 {
-    NSScrollView* ruleEditorScrollView = [self.ruleEditor enclosingScrollView];
+    NSScrollView *ruleEditorScrollView = [self.ruleEditor enclosingScrollView];
 
     CGFloat const rowHeight = [self.ruleEditor rowHeight];
     CGFloat const bordersHeight = [ruleEditorScrollView frame].size.height - [ruleEditorScrollView contentSize].height;
@@ -366,12 +366,12 @@
     [fCustomLocationEnableCheck setEnabled:YES];
     [fCustomLocationPopUp setEnabled:hasCustomLocation];
 
-    NSString* location = [[GroupsController groups] customDownloadLocationForIndex:index];
+    NSString *location = [[GroupsController groups] customDownloadLocationForIndex:index];
     if (location)
     {
-        ExpandedPathToPathTransformer* pathTransformer = [[ExpandedPathToPathTransformer alloc] init];
+        ExpandedPathToPathTransformer *pathTransformer = [[ExpandedPathToPathTransformer alloc] init];
         [[fCustomLocationPopUp itemAtIndex:0] setTitle:[pathTransformer transformedValue:location]];
-        ExpandedPathToIconTransformer* iconTransformer = [[ExpandedPathToIconTransformer alloc] init];
+        ExpandedPathToIconTransformer *iconTransformer = [[ExpandedPathToIconTransformer alloc] init];
         [[fCustomLocationPopUp itemAtIndex:0] setImage:[iconTransformer transformedValue:location]];
     }
     else

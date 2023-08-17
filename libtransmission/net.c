@@ -59,7 +59,7 @@ tr_address const tr_inaddr_any = {
     .addr.addr4.s_addr = INADDR_ANY,
 };
 
-char* tr_net_strerror(char* buf, size_t buflen, int err)
+char *tr_net_strerror(char *buf, size_t buflen, int err)
 {
     *buf = '\0';
 
@@ -81,7 +81,7 @@ char* tr_net_strerror(char* buf, size_t buflen, int err)
     return buf;
 }
 
-char const* tr_address_to_string_with_buf(tr_address const* addr, char* buf, size_t buflen)
+char const *tr_address_to_string_with_buf(tr_address const *addr, char *buf, size_t buflen)
 {
     TR_ASSERT(tr_address_is_valid(addr));
 
@@ -101,13 +101,13 @@ char const* tr_address_to_string_with_buf(tr_address const* addr, char* buf, siz
  * This function is suitable to be called from libTransmission's networking code,
  * which is single-threaded.
  */
-char const* tr_address_to_string(tr_address const* addr)
+char const *tr_address_to_string(tr_address const *addr)
 {
     static char buf[INET6_ADDRSTRLEN];
     return tr_address_to_string_with_buf(addr, buf, sizeof(buf));
 }
 
-bool tr_address_from_string(tr_address* dst, char const* src)
+bool tr_address_from_string(tr_address *dst, char const *src)
 {
     bool ok;
 
@@ -134,7 +134,7 @@ bool tr_address_from_string(tr_address* dst, char const* src)
  * >0 if a > b
  * 0  if a == b
  */
-int tr_address_compare(tr_address const* a, tr_address const* b)
+int tr_address_compare(tr_address const *a, tr_address const *b)
 {
     static int const sizes[2] = { sizeof(struct in_addr), sizeof(struct in6_addr) };
 
@@ -157,7 +157,7 @@ void tr_netSetTOS(tr_socket_t s, int tos, tr_address_type type)
     {
 #if defined(IP_TOS) && !defined(_WIN32)
 
-        if (setsockopt(s, IPPROTO_IP, IP_TOS, (void const*)&tos, sizeof(tos)) == -1)
+        if (setsockopt(s, IPPROTO_IP, IP_TOS, (void const *)&tos, sizeof(tos)) == -1)
         {
             char err_buf[512];
             tr_net_strerror(err_buf, sizeof(err_buf), sockerrno);
@@ -174,7 +174,7 @@ void tr_netSetTOS(tr_socket_t s, int tos, tr_address_type type)
     else if (type == TR_AF_INET6)
     {
 #if defined(IPV6_TCLASS) && !defined(_WIN32)
-        if (setsockopt(s, IPPROTO_IPV6, IPV6_TCLASS, (void const*)&tos, sizeof(tos)) == -1)
+        if (setsockopt(s, IPPROTO_IPV6, IPV6_TCLASS, (void const *)&tos, sizeof(tos)) == -1)
         {
             char err_buf[512];
             tr_net_strerror(err_buf, sizeof(err_buf), sockerrno);
@@ -195,11 +195,11 @@ void tr_netSetTOS(tr_socket_t s, int tos, tr_address_type type)
     }
 }
 
-void tr_netSetCongestionControl(tr_socket_t s, char const* algorithm)
+void tr_netSetCongestionControl(tr_socket_t s, char const *algorithm)
 {
 #ifdef TCP_CONGESTION
 
-    if (setsockopt(s, IPPROTO_TCP, TCP_CONGESTION, (void const*)algorithm, strlen(algorithm) + 1) == -1)
+    if (setsockopt(s, IPPROTO_TCP, TCP_CONGESTION, (void const *)algorithm, strlen(algorithm) + 1) == -1)
     {
         char err_buf[512];
         tr_logAddNamedInfo(
@@ -217,11 +217,11 @@ void tr_netSetCongestionControl(tr_socket_t s, char const* algorithm)
 #endif
 }
 
-bool tr_address_from_sockaddr_storage(tr_address* setme_addr, tr_port* setme_port, struct sockaddr_storage const* from)
+bool tr_address_from_sockaddr_storage(tr_address *setme_addr, tr_port *setme_port, struct sockaddr_storage const *from)
 {
     if (from->ss_family == AF_INET)
     {
-        struct sockaddr_in* sin = (struct sockaddr_in*)from;
+        struct sockaddr_in *sin = (struct sockaddr_in *)from;
         setme_addr->type = TR_AF_INET;
         setme_addr->addr.addr4.s_addr = sin->sin_addr.s_addr;
         *setme_port = sin->sin_port;
@@ -230,7 +230,7 @@ bool tr_address_from_sockaddr_storage(tr_address* setme_addr, tr_port* setme_por
 
     if (from->ss_family == AF_INET6)
     {
-        struct sockaddr_in6* sin6 = (struct sockaddr_in6*)from;
+        struct sockaddr_in6 *sin6 = (struct sockaddr_in6 *)from;
         setme_addr->type = TR_AF_INET6;
         setme_addr->addr.addr6 = sin6->sin6_addr;
         *setme_port = sin6->sin6_port;
@@ -240,7 +240,7 @@ bool tr_address_from_sockaddr_storage(tr_address* setme_addr, tr_port* setme_por
     return false;
 }
 
-static socklen_t setup_sockaddr(tr_address const* addr, tr_port port, struct sockaddr_storage* sockaddr)
+static socklen_t setup_sockaddr(tr_address const *addr, tr_port port, struct sockaddr_storage *sockaddr)
 {
     TR_ASSERT(tr_address_is_valid(addr));
 
@@ -267,7 +267,7 @@ static socklen_t setup_sockaddr(tr_address const* addr, tr_port port, struct soc
     }
 }
 
-struct tr_peer_socket tr_netOpenPeerSocket(tr_session* session, tr_address const* addr, tr_port port, bool clientIsSeed)
+struct tr_peer_socket tr_netOpenPeerSocket(tr_session *session, tr_address const *addr, tr_port port, bool clientIsSeed)
 {
     TR_ASSERT(tr_address_is_valid(addr));
 
@@ -277,7 +277,7 @@ struct tr_peer_socket tr_netOpenPeerSocket(tr_session* session, tr_address const
     tr_socket_t s;
     struct sockaddr_storage sock;
     socklen_t addrlen;
-    tr_address const* source_addr;
+    tr_address const *source_addr;
     socklen_t sourcelen;
     struct sockaddr_storage source_sock;
     char err_buf[512];
@@ -299,7 +299,7 @@ struct tr_peer_socket tr_netOpenPeerSocket(tr_session* session, tr_address const
     {
         int n = 8192;
 
-        if (setsockopt(s, SOL_SOCKET, SO_RCVBUF, (void const*)&n, sizeof(n)) == -1)
+        if (setsockopt(s, SOL_SOCKET, SO_RCVBUF, (void const *)&n, sizeof(n)) == -1)
         {
             tr_logAddInfo(
                 "Unable to set SO_RCVBUF on socket %" PRIdMAX ": %s",
@@ -321,7 +321,7 @@ struct tr_peer_socket tr_netOpenPeerSocket(tr_session* session, tr_address const
     TR_ASSERT(source_addr != NULL);
     sourcelen = setup_sockaddr(source_addr, 0, &source_sock);
 
-    if (bind(s, (struct sockaddr*)&source_sock, sourcelen) == -1)
+    if (bind(s, (struct sockaddr *)&source_sock, sourcelen) == -1)
     {
         tr_logAddError(
             _("Couldn't set source address %s on %" PRIdMAX ": %s"),
@@ -332,7 +332,7 @@ struct tr_peer_socket tr_netOpenPeerSocket(tr_session* session, tr_address const
         return ret;
     }
 
-    if (connect(s, (struct sockaddr*)&sock, addrlen) == -1 &&
+    if (connect(s, (struct sockaddr *)&sock, addrlen) == -1 &&
 #ifdef _WIN32
         sockerrno != WSAEWOULDBLOCK &&
 #endif
@@ -370,8 +370,8 @@ struct tr_peer_socket tr_netOpenPeerSocket(tr_session* session, tr_address const
 }
 
 struct tr_peer_socket tr_netOpenPeerUTPSocket(
-    tr_session* session,
-    tr_address const* addr,
+    tr_session *session,
+    tr_address const *addr,
     tr_port port,
     bool clientIsSeed UNUSED)
 {
@@ -381,11 +381,11 @@ struct tr_peer_socket tr_netOpenPeerUTPSocket(
     {
         struct sockaddr_storage ss;
         socklen_t const sslen = setup_sockaddr(addr, port, &ss);
-        utp_socket* const socket = utp_create_socket(session->utp_context);
+        utp_socket *const socket = utp_create_socket(session->utp_context);
 
         if (socket != NULL)
         {
-            if (utp_connect(socket, (struct sockaddr*)&ss, sslen) != -1)
+            if (utp_connect(socket, (struct sockaddr *)&ss, sslen) != -1)
             {
                 ret = tr_peer_socket_utp_create(socket);
             }
@@ -399,7 +399,7 @@ struct tr_peer_socket tr_netOpenPeerUTPSocket(
     return ret;
 }
 
-static tr_socket_t tr_netBindTCPImpl(tr_address const* addr, tr_port port, bool suppressMsgs, int* errOut)
+static tr_socket_t tr_netBindTCPImpl(tr_address const *addr, tr_port port, bool suppressMsgs, int *errOut)
 {
     TR_ASSERT(tr_address_is_valid(addr));
 
@@ -425,14 +425,14 @@ static tr_socket_t tr_netBindTCPImpl(tr_address const* addr, tr_port port, bool 
     }
 
     optval = 1;
-    setsockopt(fd, SOL_SOCKET, SO_KEEPALIVE, (void const*)&optval, sizeof(optval));
-    setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, (void const*)&optval, sizeof(optval));
+    setsockopt(fd, SOL_SOCKET, SO_KEEPALIVE, (void const *)&optval, sizeof(optval));
+    setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, (void const *)&optval, sizeof(optval));
 
 #ifdef IPV6_V6ONLY
 
     if (addr->type == TR_AF_INET6)
     {
-        if (setsockopt(fd, IPPROTO_IPV6, IPV6_V6ONLY, (void const*)&optval, sizeof(optval)) == -1)
+        if (setsockopt(fd, IPPROTO_IPV6, IPV6_V6ONLY, (void const *)&optval, sizeof(optval)) == -1)
         {
             if (sockerrno != ENOPROTOOPT) /* if the kernel doesn't support it, ignore it */
             {
@@ -447,14 +447,14 @@ static tr_socket_t tr_netBindTCPImpl(tr_address const* addr, tr_port port, bool 
 
     addrlen = setup_sockaddr(addr, htons(port), &sock);
 
-    if (bind(fd, (struct sockaddr*)&sock, addrlen) == -1)
+    if (bind(fd, (struct sockaddr *)&sock, addrlen) == -1)
     {
         int const err = sockerrno;
 
         if (!suppressMsgs)
         {
-            char const* fmt;
-            char const* hint;
+            char const *fmt;
+            char const *hint;
             char err_buf[512];
 
             if (err == EADDRINUSE)
@@ -495,7 +495,7 @@ static tr_socket_t tr_netBindTCPImpl(tr_address const* addr, tr_port port, bool 
 #endif
 
     optval = 5;
-    setsockopt(fd, SOL_TCP, TCP_FASTOPEN, (void const*)&optval, sizeof(optval));
+    setsockopt(fd, SOL_TCP, TCP_FASTOPEN, (void const *)&optval, sizeof(optval));
 
 #endif
 
@@ -509,7 +509,7 @@ static tr_socket_t tr_netBindTCPImpl(tr_address const* addr, tr_port port, bool 
     return fd;
 }
 
-tr_socket_t tr_netBindTCP(tr_address const* addr, tr_port port, bool suppressMsgs)
+tr_socket_t tr_netBindTCP(tr_address const *addr, tr_port port, bool suppressMsgs)
 {
     int unused;
     return tr_netBindTCPImpl(addr, port, suppressMsgs, &unused);
@@ -541,7 +541,7 @@ bool tr_net_hasIPv6(tr_port port)
     return result;
 }
 
-tr_socket_t tr_netAccept(tr_session* session, tr_socket_t b, tr_address* addr, tr_port* port)
+tr_socket_t tr_netAccept(tr_session *session, tr_socket_t b, tr_address *addr, tr_port *port)
 {
     tr_socket_t fd = tr_fdSocketAccept(session, b, addr, port);
 
@@ -559,7 +559,7 @@ void tr_netCloseSocket(tr_socket_t fd)
     evutil_closesocket(fd);
 }
 
-void tr_netClose(tr_session* session, tr_socket_t s)
+void tr_netClose(tr_session *session, tr_socket_t s)
 {
     tr_fdSocketClose(session, s);
 }
@@ -574,7 +574,7 @@ void tr_netClose(tr_session* session, tr_socket_t s)
    there is no official interface to get this information, we create
    a connected UDP socket (connected UDP... hmm...) and check its source
    address. */
-static int get_source_address(struct sockaddr const* dst, socklen_t dst_len, struct sockaddr* src, socklen_t* src_len)
+static int get_source_address(struct sockaddr const *dst, socklen_t dst_len, struct sockaddr *src, socklen_t *src_len)
 {
     tr_socket_t s;
     int rc;
@@ -614,11 +614,11 @@ fail:
 }
 
 /* We all hate NATs. */
-static int global_unicast_address(struct sockaddr_storage* ss)
+static int global_unicast_address(struct sockaddr_storage *ss)
 {
     if (ss->ss_family == AF_INET)
     {
-        unsigned char const* a = (unsigned char*)&((struct sockaddr_in*)ss)->sin_addr;
+        unsigned char const *a = (unsigned char *)&((struct sockaddr_in *)ss)->sin_addr;
 
         if (a[0] == 0 || a[0] == 127 || a[0] >= 224 || a[0] == 10 || (a[0] == 172 && a[1] >= 16 && a[1] <= 31) ||
             (a[0] == 192 && a[1] == 168))
@@ -630,7 +630,7 @@ static int global_unicast_address(struct sockaddr_storage* ss)
     }
     else if (ss->ss_family == AF_INET6)
     {
-        unsigned char const* a = (unsigned char*)&((struct sockaddr_in6*)ss)->sin6_addr;
+        unsigned char const *a = (unsigned char *)&((struct sockaddr_in6 *)ss)->sin6_addr;
         /* 2000::/3 */
         return (a[0] & 0xE0) == 0x20 ? 1 : 0;
     }
@@ -641,13 +641,13 @@ static int global_unicast_address(struct sockaddr_storage* ss)
     }
 }
 
-static int tr_globalAddress(int af, void* addr, int* addr_len)
+static int tr_globalAddress(int af, void *addr, int *addr_len)
 {
     struct sockaddr_storage ss;
     socklen_t sslen = sizeof(ss);
     struct sockaddr_in sin;
     struct sockaddr_in6 sin6;
-    struct sockaddr* sa;
+    struct sockaddr *sa;
     socklen_t salen;
     int rc;
 
@@ -658,7 +658,7 @@ static int tr_globalAddress(int af, void* addr, int* addr_len)
         sin.sin_family = AF_INET;
         evutil_inet_pton(AF_INET, "91.121.74.28", &sin.sin_addr);
         sin.sin_port = htons(6969);
-        sa = (struct sockaddr*)&sin;
+        sa = (struct sockaddr *)&sin;
         salen = sizeof(sin);
         break;
 
@@ -669,7 +669,7 @@ static int tr_globalAddress(int af, void* addr, int* addr_len)
            a native IPv6 address, not Teredo or 6to4. */
         evutil_inet_pton(AF_INET6, "2001:1890:1112:1::20", &sin6.sin6_addr);
         sin6.sin6_port = htons(6969);
-        sa = (struct sockaddr*)&sin6;
+        sa = (struct sockaddr *)&sin6;
         salen = sizeof(sin6);
         break;
 
@@ -677,7 +677,7 @@ static int tr_globalAddress(int af, void* addr, int* addr_len)
         return -1;
     }
 
-    rc = get_source_address(sa, salen, (struct sockaddr*)&ss, &sslen);
+    rc = get_source_address(sa, salen, (struct sockaddr *)&ss, &sslen);
 
     if (rc < 0)
     {
@@ -697,7 +697,7 @@ static int tr_globalAddress(int af, void* addr, int* addr_len)
             return -1;
         }
 
-        memcpy(addr, &((struct sockaddr_in*)&ss)->sin_addr, 4);
+        memcpy(addr, &((struct sockaddr_in *)&ss)->sin_addr, 4);
         *addr_len = 4;
         return 1;
 
@@ -707,7 +707,7 @@ static int tr_globalAddress(int af, void* addr, int* addr_len)
             return -1;
         }
 
-        memcpy(addr, &((struct sockaddr_in6*)&ss)->sin6_addr, 16);
+        memcpy(addr, &((struct sockaddr_in6 *)&ss)->sin6_addr, 16);
         *addr_len = 16;
         return 1;
 
@@ -717,7 +717,7 @@ static int tr_globalAddress(int af, void* addr, int* addr_len)
 }
 
 /* Return our global IPv6 address, with caching. */
-unsigned char const* tr_globalIPv6(void)
+unsigned char const *tr_globalIPv6(void)
 {
     static unsigned char ipv6[16];
     static time_t last_time = 0;
@@ -741,19 +741,19 @@ unsigned char const* tr_globalIPv6(void)
 ****
 ***/
 
-static bool isIPv4MappedAddress(tr_address const* addr)
+static bool isIPv4MappedAddress(tr_address const *addr)
 {
     return addr->type == TR_AF_INET6 && IN6_IS_ADDR_V4MAPPED(&addr->addr.addr6);
 }
 
-static bool isIPv6LinkLocalAddress(tr_address const* addr)
+static bool isIPv6LinkLocalAddress(tr_address const *addr)
 {
     return addr->type == TR_AF_INET6 && IN6_IS_ADDR_LINKLOCAL(&addr->addr.addr6);
 }
 
 /* isMartianAddr was written by Juliusz Chroboczek,
    and is covered under the same license as third-party/dht/dht.c. */
-static bool isMartianAddr(struct tr_address const* a)
+static bool isMartianAddr(struct tr_address const *a)
 {
     TR_ASSERT(tr_address_is_valid(a));
 
@@ -763,13 +763,13 @@ static bool isMartianAddr(struct tr_address const* a)
     {
     case TR_AF_INET:
         {
-            unsigned char const* address = (unsigned char const*)&a->addr.addr4;
+            unsigned char const *address = (unsigned char const *)&a->addr.addr4;
             return address[0] == 0 || address[0] == 127 || (address[0] & 0xE0) == 0xE0;
         }
 
     case TR_AF_INET6:
         {
-            unsigned char const* address = (unsigned char const*)&a->addr.addr6;
+            unsigned char const *address = (unsigned char const *)&a->addr.addr6;
             return address[0] == 0xFF || (memcmp(address, zeroes, 15) == 0 && (address[15] == 0 || address[15] == 1));
         }
 
@@ -778,7 +778,7 @@ static bool isMartianAddr(struct tr_address const* a)
     }
 }
 
-bool tr_address_is_valid_for_peers(tr_address const* addr, tr_port port)
+bool tr_address_is_valid_for_peers(tr_address const *addr, tr_port port)
 {
     return port != 0 && tr_address_is_valid(addr) && !isIPv6LinkLocalAddress(addr) && !isIPv4MappedAddress(addr) &&
         !isMartianAddr(addr);

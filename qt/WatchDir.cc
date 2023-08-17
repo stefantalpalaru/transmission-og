@@ -22,7 +22,7 @@
 ****
 ***/
 
-WatchDir::WatchDir(TorrentModel const& model)
+WatchDir::WatchDir(TorrentModel const &model)
     : myModel(model)
     , myWatcher(nullptr)
 {
@@ -32,11 +32,11 @@ WatchDir::WatchDir(TorrentModel const& model)
 ****
 ***/
 
-int WatchDir::metainfoTest(QString const& filename) const
+int WatchDir::metainfoTest(QString const &filename) const
 {
     int ret;
     tr_info inf;
-    tr_ctor* ctor = tr_ctorNew(nullptr);
+    tr_ctor *ctor = tr_ctorNew(nullptr);
 
     // parse
     tr_ctorSetMetainfoFromFile(ctor, filename.toUtf8().constData());
@@ -67,7 +67,7 @@ int WatchDir::metainfoTest(QString const& filename) const
 
 void WatchDir::onTimeout()
 {
-    QTimer* t = qobject_cast<QTimer*>(sender());
+    QTimer *t = qobject_cast<QTimer *>(sender());
     QString const filename = t->objectName();
 
     if (metainfoTest(filename) == OK)
@@ -78,7 +78,7 @@ void WatchDir::onTimeout()
     t->deleteLater();
 }
 
-void WatchDir::setPath(QString const& path, bool isEnabled)
+void WatchDir::setPath(QString const &path, bool isEnabled)
 {
     // clear out any remnants of the previous watcher, if any
     myWatchDirFiles.clear();
@@ -103,14 +103,14 @@ void WatchDir::setPath(QString const& path, bool isEnabled)
     }
 }
 
-void WatchDir::watcherActivated(QString const& path)
+void WatchDir::watcherActivated(QString const &path)
 {
     QDir const dir(path);
 
     // get the list of files currently in the watch directory
     QSet<QString> files;
 
-    for (QString const& str : dir.entryList(QDir::Readable | QDir::Files))
+    for (QString const &str : dir.entryList(QDir::Readable | QDir::Files))
     {
         files.insert(str);
     }
@@ -119,7 +119,7 @@ void WatchDir::watcherActivated(QString const& path)
     QSet<QString> const newFiles(files - myWatchDirFiles);
     QString const torrentSuffix = QString::fromUtf8(".torrent");
 
-    for (QString const& name : newFiles)
+    for (QString const &name : newFiles)
     {
         if (name.endsWith(torrentSuffix, Qt::CaseInsensitive))
         {
@@ -137,7 +137,7 @@ void WatchDir::watcherActivated(QString const& path)
             case ERROR:
                 {
                     // give the .torrent a few seconds to finish downloading
-                    QTimer* t = new QTimer(this);
+                    QTimer *t = new QTimer(this);
                     t->setObjectName(dir.absoluteFilePath(name));
                     t->setSingleShot(true);
                     connect(t, SIGNAL(timeout()), this, SLOT(onTimeout()));
@@ -159,7 +159,7 @@ void WatchDir::rescanAllWatchedDirectories()
         return;
     }
 
-    for (QString const& path : myWatcher->directories())
+    for (QString const &path : myWatcher->directories())
     {
         watcherActivated(path);
     }

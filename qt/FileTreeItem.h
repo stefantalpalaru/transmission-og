@@ -33,7 +33,7 @@ public:
     /* *INDENT-ON* */
 
 public:
-    FileTreeItem(QString const& name = QString(), int fileIndex = -1, uint64_t size = 0)
+    FileTreeItem(QString const &name = QString(), int fileIndex = -1, uint64_t size = 0)
         : myName(name)
         , myFileIndex(fileIndex)
         , myTotalSize(size)
@@ -48,10 +48,10 @@ public:
     ~FileTreeItem();
 
 public:
-    void appendChild(FileTreeItem* child);
-    FileTreeItem* child(QString const& filename);
+    void appendChild(FileTreeItem *child);
+    FileTreeItem *child(QString const &filename);
 
-    FileTreeItem* child(int row)
+    FileTreeItem *child(int row)
     {
         return myChildren.at(row);
     }
@@ -61,27 +61,27 @@ public:
         return myChildren.size();
     }
 
-    FileTreeItem* parent()
+    FileTreeItem *parent()
     {
         return myParent;
     }
 
-    FileTreeItem const* parent() const
+    FileTreeItem const *parent() const
     {
         return myParent;
     }
 
     int row() const;
 
-    QString const& name() const
+    QString const &name() const
     {
         return myName;
     }
 
     QVariant data(int column, int role) const;
-    std::pair<int, int> update(QString const& name, bool want, int priority, uint64_t have, bool updateFields);
-    void setSubtreeWanted(bool, QSet<int>& fileIds);
-    void setSubtreePriority(int priority, QSet<int>& fileIds);
+    std::pair<int, int> update(QString const &name, bool want, int priority, uint64_t have, bool updateFields);
+    void setSubtreeWanted(bool, QSet<int> &fileIds);
+    void setSubtreePriority(int priority, QSet<int> &fileIds);
 
     int fileIndex() const
     {
@@ -101,18 +101,18 @@ public:
 private:
     QString priorityString() const;
     QString sizeString() const;
-    void getSubtreeWantedSize(uint64_t& have, uint64_t& total) const;
+    void getSubtreeWantedSize(uint64_t &have, uint64_t &total) const;
     double progress() const;
     uint64_t size() const;
-    QHash<QString, int> const& getMyChildRows();
+    QHash<QString, int> const &getMyChildRows();
 
 private:
     QString myName;
     int const myFileIndex;
     uint64_t const myTotalSize;
 
-    FileTreeItem* myParent;
-    QList<FileTreeItem*> myChildren;
+    FileTreeItem *myParent;
+    QList<FileTreeItem *> myChildren;
     QHash<QString, int> myChildRows;
     int myPriority;
     bool myIsWanted;

@@ -26,7 +26,7 @@
 
 @interface InfoOptionsViewController : NSViewController<InfoViewController>
 {
-    NSArray* fTorrents;
+    NSArray *fTorrents;
 
     BOOL fSet;
 
@@ -40,10 +40,10 @@
     IBOutlet NSTextField *fSeedingLimitsSectionLabel, *fRatioLabel, *fInactivityLabel;
     IBOutlet NSTextField *fAdvancedSectionLabel, *fMaxConnectionsLabel;
 
-    NSString* fInitialString;
+    NSString *fInitialString;
 }
 
-- (void)setInfoForTorrents:(NSArray*)torrents;
+- (void)setInfoForTorrents:(NSArray *)torrents;
 - (void)updateInfo;
 - (void)updateOptions;
 

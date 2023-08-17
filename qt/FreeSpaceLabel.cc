@@ -23,7 +23,7 @@ static int const INTERVAL_MSEC = 15000;
 
 } // namespace
 
-FreeSpaceLabel::FreeSpaceLabel(QWidget* parent)
+FreeSpaceLabel::FreeSpaceLabel(QWidget *parent)
     : QLabel(parent)
     , mySession(nullptr)
     , myTimer(this)
@@ -34,7 +34,7 @@ FreeSpaceLabel::FreeSpaceLabel(QWidget* parent)
     connect(&myTimer, SIGNAL(timeout()), this, SLOT(onTimer()));
 }
 
-void FreeSpaceLabel::setSession(Session& session)
+void FreeSpaceLabel::setSession(Session &session)
 {
     if (mySession == &session)
     {
@@ -45,7 +45,7 @@ void FreeSpaceLabel::setSession(Session& session)
     onTimer();
 }
 
-void FreeSpaceLabel::setPath(QString const& path)
+void FreeSpaceLabel::setPath(QString const &path)
 {
     if (myPath != path)
     {
@@ -68,12 +68,12 @@ void FreeSpaceLabel::onTimer()
     tr_variantInitDict(&args, 1);
     tr_variantDictAddStr(&args, TR_KEY_path, myPath.toUtf8().constData());
 
-    RpcQueue* q = new RpcQueue();
+    RpcQueue *q = new RpcQueue();
 
     q->add([this, &args]() { return mySession->exec("free-space", &args); });
 
     q->add(
-        [this](RpcResponse const& r)
+        [this](RpcResponse const &r)
         {
             QString str;
 
@@ -91,7 +91,7 @@ void FreeSpaceLabel::onTimer()
 
             // update the tooltip
             size_t len = 0;
-            char const* path = nullptr;
+            char const *path = nullptr;
             tr_variantDictFindStr(r.args.get(), TR_KEY_path, &path, &len);
             str = QString::fromUtf8(path, len);
             setToolTip(QDir::toNativeSeparators(str));

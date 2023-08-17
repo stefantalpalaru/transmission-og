@@ -16,7 +16,7 @@
 #include "TorrentModel.h"
 #include "Utils.h"
 
-TorrentFilter::TorrentFilter(Prefs const& prefs)
+TorrentFilter::TorrentFilter(Prefs const &prefs)
     : myPrefs(prefs)
 {
     connect(&myPrefs, &Prefs::changed, this, &TorrentFilter::onPrefChanged);
@@ -98,11 +98,11 @@ int compare(T const a, T const b)
 
 } // namespace
 
-bool TorrentFilter::lessThan(QModelIndex const& left, QModelIndex const& right) const
+bool TorrentFilter::lessThan(QModelIndex const &left, QModelIndex const &right) const
 {
     int val = 0;
-    Torrent const* a = sourceModel()->data(left, TorrentModel::TorrentRole).value<Torrent const*>();
-    Torrent const* b = sourceModel()->data(right, TorrentModel::TorrentRole).value<Torrent const*>();
+    Torrent const *a = sourceModel()->data(left, TorrentModel::TorrentRole).value<Torrent const *>();
+    Torrent const *b = sourceModel()->data(right, TorrentModel::TorrentRole).value<Torrent const *>();
 
     switch (myPrefs.get<SortMode>(Prefs::SORT_MODE).mode())
     {
@@ -236,12 +236,12 @@ bool TorrentFilter::lessThan(QModelIndex const& left, QModelIndex const& right) 
 ****
 ***/
 
-bool TorrentFilter::trackerFilterAcceptsTorrent(Torrent const* tor, QString const& tracker) const
+bool TorrentFilter::trackerFilterAcceptsTorrent(Torrent const *tor, QString const &tracker) const
 {
     return tracker.isEmpty() || tor->hasTrackerSubstring(tracker);
 }
 
-bool TorrentFilter::activityFilterAcceptsTorrent(Torrent const* tor, FilterMode const& m) const
+bool TorrentFilter::activityFilterAcceptsTorrent(Torrent const *tor, FilterMode const &m) const
 {
     bool accepts;
 
@@ -283,10 +283,10 @@ bool TorrentFilter::activityFilterAcceptsTorrent(Torrent const* tor, FilterMode 
     return accepts;
 }
 
-bool TorrentFilter::filterAcceptsRow(int sourceRow, QModelIndex const& sourceParent) const
+bool TorrentFilter::filterAcceptsRow(int sourceRow, QModelIndex const &sourceParent) const
 {
     QModelIndex childIndex = sourceModel()->index(sourceRow, 0, sourceParent);
-    Torrent const* tor = childIndex.model()->data(childIndex, TorrentModel::TorrentRole).value<Torrent const*>();
+    Torrent const *tor = childIndex.model()->data(childIndex, TorrentModel::TorrentRole).value<Torrent const *>();
     bool accepts = true;
 
     if (accepts)
@@ -314,11 +314,11 @@ bool TorrentFilter::filterAcceptsRow(int sourceRow, QModelIndex const& sourcePar
     return accepts;
 }
 
-void TorrentFilter::countTorrentsPerMode(int* setmeCounts) const
+void TorrentFilter::countTorrentsPerMode(int *setmeCounts) const
 {
     std::fill_n(setmeCounts, static_cast<std::size_t>(FilterMode::NUM_MODES), 0);
 
-    for (auto const& tor : dynamic_cast<TorrentModel*>(sourceModel())->torrents())
+    for (auto const &tor : dynamic_cast<TorrentModel *>(sourceModel())->torrents())
     {
         for (int mode = 0; mode < FilterMode::NUM_MODES; ++mode)
         {

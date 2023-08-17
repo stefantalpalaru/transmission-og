@@ -12,15 +12,15 @@
 
 @implementation ShareToolbarItem
 
-- (NSMenuItem*)menuFormRepresentation
+- (NSMenuItem *)menuFormRepresentation
 {
-    NSMenuItem* menuItem = [[NSMenuItem alloc] initWithTitle:[self label] action:nil keyEquivalent:@""];
+    NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:[self label] action:nil keyEquivalent:@""];
     [menuItem setEnabled:[[self target] validateToolbarItem:self]];
 
     if ([menuItem isEnabled])
     {
-        NSMenu* servicesMenu = [[NSMenu alloc] initWithTitle:@""];
-        for (NSMenuItem* item in [[ShareTorrentFileHelper sharedHelper] menuItems])
+        NSMenu *servicesMenu = [[NSMenu alloc] initWithTitle:@""];
+        for (NSMenuItem *item in [[ShareTorrentFileHelper sharedHelper] menuItems])
         {
             [servicesMenu addItem:item];
         }

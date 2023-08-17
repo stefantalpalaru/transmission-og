@@ -38,7 +38,7 @@ extern "C"
      * character), otherwise `-1`
      */
     WAI_FUNCSPEC
-    int WAI_PREFIX(getExecutablePath)(char* out, int capacity, int* dirname_length);
+    int WAI_PREFIX(getExecutablePath)(char *out, int capacity, int *dirname_length);
 
     /**
      * Returns the path to the current module
@@ -59,7 +59,7 @@ extern "C"
      * character), otherwise `-1`
      */
     WAI_FUNCSPEC
-    int WAI_PREFIX(getModulePath)(char* out, int capacity, int* dirname_length);
+    int WAI_PREFIX(getModulePath)(char *out, int capacity, int *dirname_length);
 
 #ifdef __cplusplus
 }

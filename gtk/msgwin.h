@@ -10,4 +10,4 @@
 
 #include "tr-core.h"
 
-GtkWidget* gtr_message_log_window_new(GtkWindow* parent, TrCore* core);
+GtkWidget *gtr_message_log_window_new(GtkWindow *parent, TrCore *core);

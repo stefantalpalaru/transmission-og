@@ -29,7 +29,7 @@
 #warning remove ivars in header when 64-bit only (or it compiles in 32-bit mode)
 @synthesize torrent = fTorrent;
 
-- (id)initWithTrackerStat:(tr_tracker_stat*)stat torrent:(Torrent*)torrent
+- (id)initWithTrackerStat:(tr_tracker_stat *)stat torrent:(Torrent *)torrent
 {
     if ((self = [super init]))
     {
@@ -40,12 +40,12 @@
     return self;
 }
 
-- (NSString*)description
+- (NSString *)description
 {
     return [@"Tracker: " stringByAppendingString:[self fullAnnounceAddress]];
 }
 
-- (id)copyWithZone:(NSZone*)zone
+- (id)copyWithZone:(NSZone *)zone
 {
     //this object is essentially immutable after initial setup
     return self;
@@ -65,12 +65,12 @@
     return [self tier] == [object tier] && [[self fullAnnounceAddress] isEqualToString:[object fullAnnounceAddress]];
 }
 
-- (NSString*)host
+- (NSString *)host
 {
     return @(fStat.host);
 }
 
-- (NSString*)fullAnnounceAddress
+- (NSString *)fullAnnounceAddress
 {
     return @(fStat.announce);
 }
@@ -100,12 +100,12 @@
     return fStat.downloadCount;
 }
 
-- (NSString*)lastAnnounceStatusString
+- (NSString *)lastAnnounceStatusString
 {
-    NSString* dateString;
+    NSString *dateString;
     if (fStat.hasAnnounced)
     {
-        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateStyle:NSDateFormatterFullStyle];
         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
         [dateFormatter setDoesRelativeDateFormatting:YES];
@@ -115,14 +115,14 @@
     else
         dateString = NSLocalizedString(@"N/A", "Tracker last announce");
 
-    NSString* baseString;
+    NSString *baseString;
     if (fStat.hasAnnounced && fStat.lastAnnounceTimedOut)
         baseString = [NSLocalizedString(@"Announce timed out", "Tracker last announce") stringByAppendingFormat:@": %@", dateString];
     else if (fStat.hasAnnounced && !fStat.lastAnnounceSucceeded)
     {
         baseString = NSLocalizedString(@"Announce error", "Tracker last announce");
 
-        NSString* errorString = @(fStat.lastAnnounceResult);
+        NSString *errorString = @(fStat.lastAnnounceResult);
         if ([errorString isEqualToString:@""])
             baseString = [baseString stringByAppendingFormat:@": %@", dateString];
         else
@@ -133,7 +133,7 @@
         baseString = [NSLocalizedString(@"Last Announce", "Tracker last announce") stringByAppendingFormat:@": %@", dateString];
         if (fStat.hasAnnounced && fStat.lastAnnounceSucceeded && fStat.lastAnnouncePeerCount > 0)
         {
-            NSString* peerString;
+            NSString *peerString;
             if (fStat.lastAnnouncePeerCount == 1)
                 peerString = NSLocalizedString(@"got 1 peer", "Tracker last announce");
             else
@@ -145,7 +145,7 @@
     return baseString;
 }
 
-- (NSString*)nextAnnounceStatusString
+- (NSString *)nextAnnounceStatusString
 {
     switch (fStat.announceState)
     {
@@ -156,10 +156,10 @@
         {
             NSTimeInterval const nextAnnounceTimeLeft = fStat.nextAnnounceTime - [[NSDate date] timeIntervalSince1970];
 
-            NSString* timeString;
+            NSString *timeString;
             if ([NSApp isOnYosemiteOrBetter])
             {
-                static NSDateComponentsFormatter* formatter;
+                static NSDateComponentsFormatter *formatter;
                 static dispatch_once_t onceToken;
                 dispatch_once(&onceToken, ^{
                     formatter = [NSDateComponentsFormatter new];
@@ -189,12 +189,12 @@
     }
 }
 
-- (NSString*)lastScrapeStatusString
+- (NSString *)lastScrapeStatusString
 {
-    NSString* dateString;
+    NSString *dateString;
     if (fStat.hasScraped)
     {
-        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateStyle:NSDateFormatterFullStyle];
         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
         [dateFormatter setDoesRelativeDateFormatting:YES];
@@ -204,14 +204,14 @@
     else
         dateString = NSLocalizedString(@"N/A", "Tracker last scrape");
 
-    NSString* baseString;
+    NSString *baseString;
     if (fStat.hasScraped && fStat.lastScrapeTimedOut)
         baseString = [NSLocalizedString(@"Scrape timed out", "Tracker last scrape") stringByAppendingFormat:@": %@", dateString];
     else if (fStat.hasScraped && !fStat.lastScrapeSucceeded)
     {
         baseString = NSLocalizedString(@"Scrape error", "Tracker last scrape");
 
-        NSString* errorString = @(fStat.lastScrapeResult);
+        NSString *errorString = @(fStat.lastScrapeResult);
         if ([errorString isEqualToString:@""])
             baseString = [baseString stringByAppendingFormat:@": %@", dateString];
         else

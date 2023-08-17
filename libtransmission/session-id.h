@@ -13,7 +13,7 @@ extern "C"
 {
 #endif
 
-    typedef struct tr_session_id* tr_session_id_t;
+    typedef struct tr_session_id *tr_session_id_t;
 
     /**
      * Create new session identifier object.
@@ -36,7 +36,7 @@ extern "C"
      *
      * @return String representation of current session identifier.
      */
-    char const* tr_session_id_get_current(tr_session_id_t session_id);
+    char const *tr_session_id_get_current(tr_session_id_t session_id);
 
     /**
      * Check if session ID corresponds to session running on the same machine as
@@ -50,7 +50,7 @@ extern "C"
      *
      * @return `True` if session is valid and local, `false` otherwise.
      */
-    bool tr_session_id_is_local(char const* session_id);
+    bool tr_session_id_is_local(char const *session_id);
 
 #ifdef __cplusplus
 }

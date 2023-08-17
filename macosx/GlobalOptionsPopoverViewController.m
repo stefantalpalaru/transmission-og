@@ -24,7 +24,7 @@
 
 @implementation GlobalOptionsPopoverViewController
 
-- (id)initWithHandle:(tr_session*)handle
+- (id)initWithHandle:(tr_session *)handle
 {
     if ((self = [super initWithNibName:@"GlobalOptionsPopover" bundle:nil]))
     {
@@ -138,14 +138,14 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGlobalOptions" object:nil];
 }
 
-- (BOOL)control:(NSControl*)control textShouldBeginEditing:(NSText*)fieldEditor
+- (BOOL)control:(NSControl *)control textShouldBeginEditing:(NSText *)fieldEditor
 {
     fInitialString = [control stringValue];
 
     return YES;
 }
 
-- (BOOL)control:(NSControl*)control didFailToFormatString:(NSString*)string errorDescription:(NSString*)error
+- (BOOL)control:(NSControl *)control didFailToFormatString:(NSString *)string errorDescription:(NSString *)error
 {
     NSBeep();
     if (fInitialString)

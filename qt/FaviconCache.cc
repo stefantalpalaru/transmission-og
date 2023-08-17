@@ -21,7 +21,7 @@
 FaviconCache::FaviconCache()
 {
     myNAM = new QNetworkAccessManager();
-    connect(myNAM, SIGNAL(finished(QNetworkReply*)), this, SLOT(onRequestFinished(QNetworkReply*)));
+    connect(myNAM, SIGNAL(finished(QNetworkReply *)), this, SLOT(onRequestFinished(QNetworkReply *)));
 }
 
 FaviconCache::~FaviconCache()
@@ -62,7 +62,7 @@ void FaviconCache::ensureCacheDirHasBeenScanned()
 
         QStringList files = cacheDir.entryList(QDir::Files | QDir::Readable);
 
-        for (QString const& file : files)
+        for (QString const &file : files)
         {
             QPixmap pixmap;
             pixmap.load(cacheDir.absoluteFilePath(file));
@@ -79,14 +79,14 @@ void FaviconCache::ensureCacheDirHasBeenScanned()
 ****
 ***/
 
-QString FaviconCache::getDisplayName(QString const& key)
+QString FaviconCache::getDisplayName(QString const &key)
 {
     auto name = key;
     name[0] = name.at(0).toTitleCase();
     return name;
 }
 
-QString FaviconCache::getKey(QUrl const& url)
+QString FaviconCache::getKey(QUrl const &url)
 {
     auto host = url.host();
 
@@ -99,7 +99,7 @@ QString FaviconCache::getKey(QUrl const& url)
     return pos < 0 ? host : host.remove(0, pos + 1);
 }
 
-QString FaviconCache::getKey(QString const& displayName)
+QString FaviconCache::getKey(QString const &displayName)
 {
     return displayName.toLower();
 }
@@ -109,14 +109,14 @@ QSize FaviconCache::getIconSize()
     return QSize(16, 16);
 }
 
-QPixmap FaviconCache::find(QString const& key)
+QPixmap FaviconCache::find(QString const &key)
 {
     ensureCacheDirHasBeenScanned();
 
     return myPixmaps[key];
 }
 
-QString FaviconCache::add(QUrl const& url)
+QString FaviconCache::add(QUrl const &url)
 {
     ensureCacheDirHasBeenScanned();
 
@@ -132,7 +132,7 @@ QString FaviconCache::add(QUrl const& url)
         QStringList suffixes;
         suffixes << QLatin1String("ico") << QLatin1String("png") << QLatin1String("gif") << QLatin1String("jpg");
 
-        for (QString const& suffix : suffixes)
+        for (QString const &suffix : suffixes)
         {
             myNAM->get(QNetworkRequest(path + suffix));
         }
@@ -141,7 +141,7 @@ QString FaviconCache::add(QUrl const& url)
     return key;
 }
 
-void FaviconCache::onRequestFinished(QNetworkReply* reply)
+void FaviconCache::onRequestFinished(QNetworkReply *reply)
 {
     auto const key = getKey(reply->url());
 

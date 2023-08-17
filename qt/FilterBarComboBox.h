@@ -23,7 +23,7 @@ public:
     };
 
 public:
-    FilterBarComboBox(QWidget* parent = nullptr);
+    FilterBarComboBox(QWidget *parent = nullptr);
 
     // QWidget
     QSize minimumSizeHint() const override;
@@ -31,8 +31,8 @@ public:
 
 protected:
     // QWidget
-    void paintEvent(QPaintEvent* e) override;
+    void paintEvent(QPaintEvent *e) override;
 
 private:
-    QSize calculateSize(QSize const& textSize, QSize const& countSize) const;
+    QSize calculateSize(QSize const &textSize, QSize const &countSize) const;
 };

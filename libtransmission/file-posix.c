@@ -71,7 +71,7 @@
 #endif
 #endif
 
-static void set_system_error(tr_error** error, int code)
+static void set_system_error(tr_error **error, int code)
 {
     if (error == NULL)
     {
@@ -81,7 +81,7 @@ static void set_system_error(tr_error** error, int code)
     tr_error_set_literal(error, code, tr_strerror(code));
 }
 
-static void set_system_error_if_file_found(tr_error** error, int code)
+static void set_system_error_if_file_found(tr_error **error, int code)
 {
     if (code != ENOENT)
     {
@@ -89,7 +89,7 @@ static void set_system_error_if_file_found(tr_error** error, int code)
     }
 }
 
-static void stat_to_sys_path_info(struct stat const* sb, tr_sys_path_info* info)
+static void stat_to_sys_path_info(struct stat const *sb, tr_sys_path_info *info)
 {
     if (S_ISREG(sb->st_mode))
     {
@@ -138,7 +138,7 @@ static void set_file_for_single_pass(tr_sys_file_t handle)
 
 #ifndef HAVE_MKDIRP
 
-static bool create_path_require_dir(char const* path, tr_error** error)
+static bool create_path_require_dir(char const *path, tr_error **error)
 {
     struct stat sb;
 
@@ -157,29 +157,29 @@ static bool create_path_require_dir(char const* path, tr_error** error)
     return true;
 }
 
-static bool create_path(char const* path_in, int permissions, tr_error** error)
+static bool create_path(char const *path_in, int permissions, tr_error **error)
 {
     /* make a temporary copy of path */
-    char* path = tr_strdup(path_in);
+    char *path = tr_strdup(path_in);
 
     /* walk past the root */
-    char* p = path;
+    char *p = path;
 
     while (*p == TR_PATH_DELIMITER)
     {
         ++p;
     }
 
-    char* path_end = p + strlen(p);
+    char *path_end = p + strlen(p);
 
     while (path_end > path && *path_end == TR_PATH_DELIMITER)
     {
         --path_end;
     }
 
-    char* pp;
+    char *pp;
     bool ret = false;
-    tr_error* my_error = NULL;
+    tr_error *my_error = NULL;
 
     /* Go one level up on each iteration and attempt to create */
     for (pp = path_end; pp != NULL; pp = strrchr(p, TR_PATH_DELIMITER))
@@ -253,7 +253,7 @@ cleanup:
 
 #endif
 
-bool tr_sys_path_exists(char const* path, tr_error** error)
+bool tr_sys_path_exists(char const *path, tr_error **error)
 {
     TR_ASSERT(path != NULL);
 
@@ -267,7 +267,7 @@ bool tr_sys_path_exists(char const* path, tr_error** error)
     return ret;
 }
 
-bool tr_sys_path_get_info(char const* path, int flags, tr_sys_path_info* info, tr_error** error)
+bool tr_sys_path_get_info(char const *path, int flags, tr_sys_path_info *info, tr_error **error)
 {
     TR_ASSERT(path != NULL);
     TR_ASSERT(info != NULL);
@@ -296,14 +296,14 @@ bool tr_sys_path_get_info(char const* path, int flags, tr_sys_path_info* info, t
     return ret;
 }
 
-bool tr_sys_path_is_relative(char const* path)
+bool tr_sys_path_is_relative(char const *path)
 {
     TR_ASSERT(path != NULL);
 
     return path[0] != '/';
 }
 
-bool tr_sys_path_is_same(char const* path1, char const* path2, tr_error** error)
+bool tr_sys_path_is_same(char const *path1, char const *path2, tr_error **error)
 {
     TR_ASSERT(path1 != NULL);
     TR_ASSERT(path2 != NULL);
@@ -324,12 +324,12 @@ bool tr_sys_path_is_same(char const* path1, char const* path2, tr_error** error)
     return ret;
 }
 
-char* tr_sys_path_resolve(char const* path, tr_error** error)
+char *tr_sys_path_resolve(char const *path, tr_error **error)
 {
     TR_ASSERT(path != NULL);
 
-    char* ret = NULL;
-    char* tmp = NULL;
+    char *ret = NULL;
+    char *tmp = NULL;
 
 #if defined(HAVE_CANONICALIZE_FILE_NAME)
 
@@ -370,12 +370,12 @@ char* tr_sys_path_resolve(char const* path, tr_error** error)
     return ret;
 }
 
-char* tr_sys_path_basename(char const* path, tr_error** error)
+char *tr_sys_path_basename(char const *path, tr_error **error)
 {
     TR_ASSERT(path != NULL);
 
-    char* ret = NULL;
-    char* tmp;
+    char *ret = NULL;
+    char *tmp;
 
     tmp = tr_strdup(path);
     ret = basename(tmp);
@@ -394,12 +394,12 @@ char* tr_sys_path_basename(char const* path, tr_error** error)
     return ret;
 }
 
-char* tr_sys_path_dirname(char const* path, tr_error** error)
+char *tr_sys_path_dirname(char const *path, tr_error **error)
 {
     TR_ASSERT(path != NULL);
 
-    char* tmp = tr_strdup(path);
-    char* ret = dirname(tmp);
+    char *tmp = tr_strdup(path);
+    char *ret = dirname(tmp);
 
     if (ret != NULL)
     {
@@ -415,7 +415,7 @@ char* tr_sys_path_dirname(char const* path, tr_error** error)
     return ret;
 }
 
-bool tr_sys_path_rename(char const* src_path, char const* dst_path, tr_error** error)
+bool tr_sys_path_rename(char const *src_path, char const *dst_path, tr_error **error)
 {
     TR_ASSERT(src_path != NULL);
     TR_ASSERT(dst_path != NULL);
@@ -430,7 +430,7 @@ bool tr_sys_path_rename(char const* src_path, char const* dst_path, tr_error** e
     return ret;
 }
 
-bool tr_sys_path_remove(char const* path, tr_error** error)
+bool tr_sys_path_remove(char const *path, tr_error **error)
 {
     TR_ASSERT(path != NULL);
 
@@ -444,12 +444,12 @@ bool tr_sys_path_remove(char const* path, tr_error** error)
     return ret;
 }
 
-char* tr_sys_path_native_separators(char* path)
+char *tr_sys_path_native_separators(char *path)
 {
     return path;
 }
 
-tr_sys_file_t tr_sys_file_get_std(tr_std_sys_file_t std_file, tr_error** error)
+tr_sys_file_t tr_sys_file_get_std(tr_std_sys_file_t std_file, tr_error **error)
 {
     tr_sys_file_t ret = TR_BAD_SYS_FILE;
 
@@ -475,7 +475,7 @@ tr_sys_file_t tr_sys_file_get_std(tr_std_sys_file_t std_file, tr_error** error)
     return ret;
 }
 
-tr_sys_file_t tr_sys_file_open(char const* path, int flags, int permissions, tr_error** error)
+tr_sys_file_t tr_sys_file_open(char const *path, int flags, int permissions, tr_error **error)
 {
     TR_ASSERT(path != NULL);
     TR_ASSERT((flags & (TR_SYS_FILE_READ | TR_SYS_FILE_WRITE)) != 0);
@@ -518,7 +518,7 @@ tr_sys_file_t tr_sys_file_open(char const* path, int flags, int permissions, tr_
     return ret;
 }
 
-tr_sys_file_t tr_sys_file_open_temp(char* path_template, tr_error** error)
+tr_sys_file_t tr_sys_file_open_temp(char *path_template, tr_error **error)
 {
     TR_ASSERT(path_template != NULL);
 
@@ -534,7 +534,7 @@ tr_sys_file_t tr_sys_file_open_temp(char* path_template, tr_error** error)
     return ret;
 }
 
-bool tr_sys_file_close(tr_sys_file_t handle, tr_error** error)
+bool tr_sys_file_close(tr_sys_file_t handle, tr_error **error)
 {
     TR_ASSERT(handle != TR_BAD_SYS_FILE);
 
@@ -548,7 +548,7 @@ bool tr_sys_file_close(tr_sys_file_t handle, tr_error** error)
     return ret;
 }
 
-bool tr_sys_file_get_info(tr_sys_file_t handle, tr_sys_path_info* info, tr_error** error)
+bool tr_sys_file_get_info(tr_sys_file_t handle, tr_sys_path_info *info, tr_error **error)
 {
     TR_ASSERT(handle != TR_BAD_SYS_FILE);
     TR_ASSERT(info != NULL);
@@ -568,7 +568,7 @@ bool tr_sys_file_get_info(tr_sys_file_t handle, tr_sys_path_info* info, tr_error
     return ret;
 }
 
-bool tr_sys_file_seek(tr_sys_file_t handle, int64_t offset, tr_seek_origin_t origin, uint64_t* new_offset, tr_error** error)
+bool tr_sys_file_seek(tr_sys_file_t handle, int64_t offset, tr_seek_origin_t origin, uint64_t *new_offset, tr_error **error)
 {
     TR_STATIC_ASSERT(TR_SEEK_SET == SEEK_SET, "values should match");
     TR_STATIC_ASSERT(TR_SEEK_CUR == SEEK_CUR, "values should match");
@@ -601,7 +601,7 @@ bool tr_sys_file_seek(tr_sys_file_t handle, int64_t offset, tr_seek_origin_t ori
     return ret;
 }
 
-bool tr_sys_file_read(tr_sys_file_t handle, void* buffer, uint64_t size, uint64_t* bytes_read, tr_error** error)
+bool tr_sys_file_read(tr_sys_file_t handle, void *buffer, uint64_t size, uint64_t *bytes_read, tr_error **error)
 {
     TR_ASSERT(handle != TR_BAD_SYS_FILE);
     TR_ASSERT(buffer != NULL || size == 0);
@@ -632,11 +632,11 @@ bool tr_sys_file_read(tr_sys_file_t handle, void* buffer, uint64_t size, uint64_
 
 bool tr_sys_file_read_at(
     tr_sys_file_t handle,
-    void* buffer,
+    void *buffer,
     uint64_t size,
     uint64_t offset,
-    uint64_t* bytes_read,
-    tr_error** error)
+    uint64_t *bytes_read,
+    tr_error **error)
 {
     TR_ASSERT(handle != TR_BAD_SYS_FILE);
     TR_ASSERT(buffer != NULL || size == 0);
@@ -682,7 +682,7 @@ bool tr_sys_file_read_at(
     return ret;
 }
 
-bool tr_sys_file_write(tr_sys_file_t handle, void const* buffer, uint64_t size, uint64_t* bytes_written, tr_error** error)
+bool tr_sys_file_write(tr_sys_file_t handle, void const *buffer, uint64_t size, uint64_t *bytes_written, tr_error **error)
 {
     TR_ASSERT(handle != TR_BAD_SYS_FILE);
     TR_ASSERT(buffer != NULL || size == 0);
@@ -713,11 +713,11 @@ bool tr_sys_file_write(tr_sys_file_t handle, void const* buffer, uint64_t size, 
 
 bool tr_sys_file_write_at(
     tr_sys_file_t handle,
-    void const* buffer,
+    void const *buffer,
     uint64_t size,
     uint64_t offset,
-    uint64_t* bytes_written,
-    tr_error** error)
+    uint64_t *bytes_written,
+    tr_error **error)
 {
     TR_ASSERT(handle != TR_BAD_SYS_FILE);
     TR_ASSERT(buffer != NULL || size == 0);
@@ -763,7 +763,7 @@ bool tr_sys_file_write_at(
     return ret;
 }
 
-bool tr_sys_file_flush(tr_sys_file_t handle, tr_error** error)
+bool tr_sys_file_flush(tr_sys_file_t handle, tr_error **error)
 {
     TR_ASSERT(handle != TR_BAD_SYS_FILE);
 
@@ -777,7 +777,7 @@ bool tr_sys_file_flush(tr_sys_file_t handle, tr_error** error)
     return ret;
 }
 
-bool tr_sys_file_truncate(tr_sys_file_t handle, uint64_t size, tr_error** error)
+bool tr_sys_file_truncate(tr_sys_file_t handle, uint64_t size, tr_error **error)
 {
     TR_ASSERT(handle != TR_BAD_SYS_FILE);
 
@@ -791,7 +791,7 @@ bool tr_sys_file_truncate(tr_sys_file_t handle, uint64_t size, tr_error** error)
     return ret;
 }
 
-bool tr_sys_file_advise(tr_sys_file_t handle, uint64_t offset, uint64_t size, tr_sys_file_advice_t advice, tr_error** error)
+bool tr_sys_file_advise(tr_sys_file_t handle, uint64_t offset, uint64_t size, tr_sys_file_advice_t advice, tr_error **error)
 {
     TR_ASSERT(handle != TR_BAD_SYS_FILE);
     TR_ASSERT(size > 0);
@@ -849,7 +849,7 @@ skip_darwin_fcntl:
     return ret;
 }
 
-bool tr_sys_file_preallocate(tr_sys_file_t handle, uint64_t size, int flags, tr_error** error)
+bool tr_sys_file_preallocate(tr_sys_file_t handle, uint64_t size, int flags, tr_error **error)
 {
     TR_ASSERT(handle != TR_BAD_SYS_FILE);
 
@@ -953,12 +953,12 @@ out:
     return ret;
 }
 
-void* tr_sys_file_map_for_reading(tr_sys_file_t handle, uint64_t offset, uint64_t size, tr_error** error)
+void *tr_sys_file_map_for_reading(tr_sys_file_t handle, uint64_t offset, uint64_t size, tr_error **error)
 {
     TR_ASSERT(handle != TR_BAD_SYS_FILE);
     TR_ASSERT(size > 0);
 
-    void* ret = mmap(NULL, size, PROT_READ, MAP_SHARED, handle, offset);
+    void *ret = mmap(NULL, size, PROT_READ, MAP_SHARED, handle, offset);
 
     if (ret == MAP_FAILED)
     {
@@ -969,12 +969,12 @@ void* tr_sys_file_map_for_reading(tr_sys_file_t handle, uint64_t offset, uint64_
     return ret;
 }
 
-bool tr_sys_file_unmap(void const* address, uint64_t size, tr_error** error)
+bool tr_sys_file_unmap(void const *address, uint64_t size, tr_error **error)
 {
     TR_ASSERT(address != NULL);
     TR_ASSERT(size > 0);
 
-    bool ret = munmap((void*)address, size) != -1;
+    bool ret = munmap((void *)address, size) != -1;
 
     if (!ret)
     {
@@ -984,7 +984,7 @@ bool tr_sys_file_unmap(void const* address, uint64_t size, tr_error** error)
     return ret;
 }
 
-bool tr_sys_file_lock(tr_sys_file_t handle, int operation, tr_error** error)
+bool tr_sys_file_lock(tr_sys_file_t handle, int operation, tr_error **error)
 {
     TR_ASSERT(handle != TR_BAD_SYS_FILE);
     TR_ASSERT((operation & ~(TR_SYS_FILE_LOCK_SH | TR_SYS_FILE_LOCK_EX | TR_SYS_FILE_LOCK_NB | TR_SYS_FILE_LOCK_UN)) == 0);
@@ -1071,16 +1071,16 @@ bool tr_sys_file_lock(tr_sys_file_t handle, int operation, tr_error** error)
     return ret;
 }
 
-char* tr_sys_dir_get_current(tr_error** error)
+char *tr_sys_dir_get_current(tr_error **error)
 {
-    char* ret;
+    char *ret;
 
     ret = getcwd(NULL, 0);
 
     if (ret == NULL && (errno == EINVAL || errno == ERANGE))
     {
         size_t size = PATH_MAX;
-        char* tmp = NULL;
+        char *tmp = NULL;
 
         do
         {
@@ -1111,12 +1111,12 @@ char* tr_sys_dir_get_current(tr_error** error)
     return ret;
 }
 
-bool tr_sys_dir_create(char const* path, int flags, int permissions, tr_error** error)
+bool tr_sys_dir_create(char const *path, int flags, int permissions, tr_error **error)
 {
     TR_ASSERT(path != NULL);
 
     bool ret;
-    tr_error* my_error = NULL;
+    tr_error *my_error = NULL;
 
     if ((flags & TR_SYS_DIR_CREATE_PARENTS) != 0)
     {
@@ -1161,7 +1161,7 @@ bool tr_sys_dir_create(char const* path, int flags, int permissions, tr_error** 
     return ret;
 }
 
-bool tr_sys_dir_create_temp(char* path_template, tr_error** error)
+bool tr_sys_dir_create_temp(char *path_template, tr_error **error)
 {
     TR_ASSERT(path_template != NULL);
 
@@ -1185,11 +1185,11 @@ bool tr_sys_dir_create_temp(char* path_template, tr_error** error)
     return ret;
 }
 
-tr_sys_dir_t tr_sys_dir_open(char const* path, tr_error** error)
+tr_sys_dir_t tr_sys_dir_open(char const *path, tr_error **error)
 {
     TR_ASSERT(path != NULL);
 
-    DIR* ret = opendir(path);
+    DIR *ret = opendir(path);
 
     if (ret == NULL)
     {
@@ -1200,14 +1200,14 @@ tr_sys_dir_t tr_sys_dir_open(char const* path, tr_error** error)
     return (tr_sys_dir_t)ret;
 }
 
-char const* tr_sys_dir_read_name(tr_sys_dir_t handle, tr_error** error)
+char const *tr_sys_dir_read_name(tr_sys_dir_t handle, tr_error **error)
 {
     TR_ASSERT(handle != TR_BAD_SYS_DIR);
 
-    char const* ret = NULL;
+    char const *ret = NULL;
 
     errno = 0;
-    struct dirent* entry = readdir((DIR*)handle);
+    struct dirent *entry = readdir((DIR *)handle);
 
     if (entry != NULL)
     {
@@ -1221,11 +1221,11 @@ char const* tr_sys_dir_read_name(tr_sys_dir_t handle, tr_error** error)
     return ret;
 }
 
-bool tr_sys_dir_close(tr_sys_dir_t handle, tr_error** error)
+bool tr_sys_dir_close(tr_sys_dir_t handle, tr_error **error)
 {
     TR_ASSERT(handle != TR_BAD_SYS_DIR);
 
-    bool ret = closedir((DIR*)handle) != -1;
+    bool ret = closedir((DIR *)handle) != -1;
 
     if (!ret)
     {

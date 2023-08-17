@@ -21,7 +21,7 @@ class StatsDialog : public BaseDialog
     Q_OBJECT
 
 public:
-    StatsDialog(Session&, QWidget* parent = nullptr);
+    StatsDialog(Session &, QWidget *parent = nullptr);
     ~StatsDialog() override;
 
     // QWidget
@@ -31,9 +31,9 @@ private slots:
     void updateStats();
 
 private:
-    Session& mySession;
+    Session &mySession;
 
     Ui::StatsDialog ui;
 
-    QTimer* myTimer;
+    QTimer *myTimer;
 };

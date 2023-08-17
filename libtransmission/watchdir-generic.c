@@ -36,11 +36,11 @@ typedef struct tr_watchdir_generic
 {
     tr_watchdir_backend base;
 
-    struct event* event;
+    struct event *event;
     tr_ptrArray dir_entries;
 } tr_watchdir_generic;
 
-#define BACKEND_UPCAST(b) ((tr_watchdir_generic*)(b))
+#define BACKEND_UPCAST(b) ((tr_watchdir_generic *)(b))
 
 /* Non-static and mutable for unit tests */
 struct timeval tr_watchdir_generic_interval = { .tv_sec = 10, .tv_usec = 0 };
@@ -49,17 +49,17 @@ struct timeval tr_watchdir_generic_interval = { .tv_sec = 10, .tv_usec = 0 };
 ****
 ***/
 
-static void tr_watchdir_generic_on_event(evutil_socket_t fd UNUSED, short type UNUSED, void* context)
+static void tr_watchdir_generic_on_event(evutil_socket_t fd UNUSED, short type UNUSED, void *context)
 {
     tr_watchdir_t const handle = context;
-    tr_watchdir_generic* const backend = BACKEND_UPCAST(tr_watchdir_get_backend(handle));
+    tr_watchdir_generic *const backend = BACKEND_UPCAST(tr_watchdir_get_backend(handle));
 
     tr_watchdir_scan(handle, &backend->dir_entries);
 }
 
-static void tr_watchdir_generic_free(tr_watchdir_backend* backend_base)
+static void tr_watchdir_generic_free(tr_watchdir_backend *backend_base)
 {
-    tr_watchdir_generic* const backend = BACKEND_UPCAST(backend_base);
+    tr_watchdir_generic *const backend = BACKEND_UPCAST(backend_base);
 
     if (backend == NULL)
     {
@@ -79,9 +79,9 @@ static void tr_watchdir_generic_free(tr_watchdir_backend* backend_base)
     tr_free(backend);
 }
 
-tr_watchdir_backend* tr_watchdir_generic_new(tr_watchdir_t handle)
+tr_watchdir_backend *tr_watchdir_generic_new(tr_watchdir_t handle)
 {
-    tr_watchdir_generic* backend;
+    tr_watchdir_generic *backend;
 
     backend = tr_new0(tr_watchdir_generic, 1);
     backend->base.free_func = &tr_watchdir_generic_free;

@@ -33,10 +33,10 @@ class DetailsDialog : public BaseDialog
     Q_OBJECT
 
 public:
-    DetailsDialog(Session&, Prefs&, TorrentModel const&, QWidget* parent = nullptr);
+    DetailsDialog(Session &, Prefs &, TorrentModel const &, QWidget *parent = nullptr);
     virtual ~DetailsDialog();
 
-    void setIds(torrent_ids_t const& ids);
+    void setIds(torrent_ids_t const &ids);
 
     // QWidget
     QSize sizeHint() const override
@@ -53,7 +53,7 @@ private:
 
     void getNewData();
 
-    QIcon getStockIcon(QString const& freedesktop_name, int fallback);
+    QIcon getStockIcon(QString const &freedesktop_name, int fallback);
     void setEnabled(bool);
 
 private slots:
@@ -61,8 +61,8 @@ private slots:
     void refreshPref(int key);
     void onTimer();
 
-    void onTorrentEdited(torrent_ids_t const& ids);
-    void onTorrentsChanged(torrent_ids_t const& ids);
+    void onTorrentEdited(torrent_ids_t const &ids);
+    void onTorrentsChanged(torrent_ids_t const &ids);
 
     // Tracker tab
     void onTrackerSelectionChanged();
@@ -73,10 +73,10 @@ private slots:
     void onShowBackupTrackersToggled(bool);
 
     // Files tab
-    void onFilePriorityChanged(QSet<int> const& fileIndices, int);
-    void onFileWantedChanged(QSet<int> const& fileIndices, bool);
-    void onPathEdited(QString const& oldpath, QString const& newname);
-    void onOpenRequested(QString const& path);
+    void onFilePriorityChanged(QSet<int> const &fileIndices, int);
+    void onFileWantedChanged(QSet<int> const &fileIndices, bool);
+    void onPathEdited(QString const &oldpath, QString const &newname);
+    void onOpenRequested(QString const &path);
 
     // Options tab
     void onBandwidthPriorityChanged(int);
@@ -89,9 +89,9 @@ private slots:
     void onIdleLimitChanged();
 
 private:
-    Session& mySession;
-    Prefs& myPrefs;
-    TorrentModel const& myModel;
+    Session &mySession;
+    Prefs &myPrefs;
+    TorrentModel const &myModel;
 
     Ui::DetailsDialog ui;
 
@@ -100,9 +100,9 @@ private:
     bool myChangedTorrents;
     bool myHavePendingRefresh;
 
-    TrackerModel* myTrackerModel;
-    TrackerModelFilter* myTrackerFilter;
-    TrackerDelegate* myTrackerDelegate;
+    TrackerModel *myTrackerModel;
+    TrackerModelFilter *myTrackerFilter;
+    TrackerDelegate *myTrackerDelegate;
 
-    QMap<QString, QTreeWidgetItem*> myPeers;
+    QMap<QString, QTreeWidgetItem *> myPeers;
 };

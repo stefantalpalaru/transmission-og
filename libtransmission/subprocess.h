@@ -8,4 +8,4 @@
 
 #pragma once
 
-bool tr_spawn_async(char* const* cmd, char* const* env, char const* work_dir, struct tr_error** error);
+bool tr_spawn_async(char *const *cmd, char *const *env, char const *work_dir, struct tr_error **error);

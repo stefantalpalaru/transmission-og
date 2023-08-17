@@ -36,17 +36,17 @@
 struct delete_data
 {
     gboolean delete_files;
-    GSList* torrent_ids;
-    TrCore* core;
+    GSList *torrent_ids;
+    TrCore *core;
 };
 
-static void on_remove_dialog_response(GtkDialog* dialog, gint response, gpointer gdd)
+static void on_remove_dialog_response(GtkDialog *dialog, gint response, gpointer gdd)
 {
-    struct delete_data* dd = gdd;
+    struct delete_data *dd = gdd;
 
     if (response == GTK_RESPONSE_ACCEPT)
     {
-        for (GSList* l = dd->torrent_ids; l != NULL; l = l->next)
+        for (GSList *l = dd->torrent_ids; l != NULL; l = l->next)
         {
             gtr_core_remove_torrent(dd->core, GPOINTER_TO_INT(l->data), dd->delete_files);
         }
@@ -57,12 +57,12 @@ static void on_remove_dialog_response(GtkDialog* dialog, gint response, gpointer
     g_free(dd);
 }
 
-void gtr_confirm_remove(GtkWindow* parent, TrCore* core, GSList* torrent_ids, gboolean delete_files)
+void gtr_confirm_remove(GtkWindow *parent, TrCore *core, GSList *torrent_ids, gboolean delete_files)
 {
-    GtkWidget* d;
-    GString* primary_text;
-    GString* secondary_text;
-    struct delete_data* dd;
+    GtkWidget *d;
+    GString *primary_text;
+    GString *secondary_text;
+    struct delete_data *dd;
     int connected = 0;
     int incomplete = 0;
     int const count = g_slist_length(torrent_ids);
@@ -77,11 +77,11 @@ void gtr_confirm_remove(GtkWindow* parent, TrCore* core, GSList* torrent_ids, gb
     dd->torrent_ids = torrent_ids;
     dd->delete_files = delete_files;
 
-    for (GSList* l = torrent_ids; l != NULL; l = l->next)
+    for (GSList *l = torrent_ids; l != NULL; l = l->next)
     {
         int const id = GPOINTER_TO_INT(l->data);
-        tr_torrent* tor = gtr_core_find_torrent(core, id);
-        tr_stat const* stat = tr_torrentStat(tor);
+        tr_torrent *tor = gtr_core_find_torrent(core, id);
+        tr_stat const *stat = tr_torrentStat(tor);
 
         if (stat->leftUntilDone != 0)
         {

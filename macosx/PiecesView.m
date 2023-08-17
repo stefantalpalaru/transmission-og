@@ -58,7 +58,7 @@ enum
     tr_free(fPieces);
 }
 
-- (void)setTorrent:(Torrent*)torrent
+- (void)setTorrent:(Torrent *)torrent
 {
     [self clearView];
 
@@ -74,10 +74,10 @@ enum
         fExtraBorder = (width - ((fWidth + BETWEEN) * fAcross + BETWEEN)) / 2;
     }
 
-    NSImage* back = [[NSImage alloc] initWithSize:[self bounds].size];
+    NSImage *back = [[NSImage alloc] initWithSize:[self bounds].size];
     [back lockFocus];
 
-    NSGradient* gradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.4]
+    NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.4]
                                                          endingColor:[NSColor colorWithCalibratedWhite:0.2 alpha:0.4]];
     [gradient drawInRect:[self bounds] angle:90.0];
     [back unlockFocus];
@@ -101,33 +101,33 @@ enum
     //determine if first time
     BOOL const first = fPieces == NULL;
     if (first)
-        fPieces = (int8_t*)tr_malloc(fNumPieces * sizeof(int8_t));
+        fPieces = (int8_t *)tr_malloc(fNumPieces * sizeof(int8_t));
 
-    int8_t* pieces = NULL;
-    float* piecesPercent = NULL;
+    int8_t *pieces = NULL;
+    float *piecesPercent = NULL;
 
     BOOL const showAvailablity = [[NSUserDefaults standardUserDefaults] boolForKey:@"PiecesViewShowAvailability"];
     if (showAvailablity)
     {
-        pieces = (int8_t*)tr_malloc(fNumPieces * sizeof(int8_t));
+        pieces = (int8_t *)tr_malloc(fNumPieces * sizeof(int8_t));
         [fTorrent getAvailability:pieces size:fNumPieces];
     }
     else
     {
-        piecesPercent = (float*)tr_malloc(fNumPieces * sizeof(float));
+        piecesPercent = (float *)tr_malloc(fNumPieces * sizeof(float));
         [fTorrent getAmountFinished:piecesPercent size:fNumPieces];
     }
 
-    NSImage* image = [self image];
+    NSImage *image = [self image];
 
     NSRect fillRects[fNumPieces];
-    NSColor* fillColors[fNumPieces];
+    NSColor *fillColors[fNumPieces];
 
     NSInteger usedCount = 0;
 
     for (NSInteger index = 0; index < fNumPieces; index++)
     {
-        NSColor* pieceColor = nil;
+        NSColor *pieceColor = nil;
 
         if (showAvailablity ? pieces[index] == -1 : piecesPercent[index] == 1.0)
         {
@@ -165,7 +165,7 @@ enum
         {
             //always redraw "mixed"
             CGFloat percent = showAvailablity ? (CGFloat)pieces[index] / HIGH_PEERS : piecesPercent[index];
-            NSColor* fullColor = showAvailablity ? fGreenAvailabilityColor : fBluePieceColor;
+            NSColor *fullColor = showAvailablity ? fGreenAvailabilityColor : fBluePieceColor;
             pieceColor = [[NSColor whiteColor] blendedColorWithFraction:percent ofColor:fullColor];
             fPieces[index] = PIECE_SOME;
         }
@@ -196,12 +196,12 @@ enum
     tr_free(piecesPercent);
 }
 
-- (BOOL)acceptsFirstMouse:(NSEvent*)event
+- (BOOL)acceptsFirstMouse:(NSEvent *)event
 {
     return YES;
 }
 
-- (void)mouseDown:(NSEvent*)event
+- (void)mouseDown:(NSEvent *)event
 {
     if (fTorrent)
     {

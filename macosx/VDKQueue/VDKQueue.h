@@ -86,13 +86,13 @@
 //      Object          =   the instance of VDKQueue that was watching for changes
 //      userInfo.path   =   the file path where the change was observed
 //
-extern NSString* VDKQueueRenameNotification;
-extern NSString* VDKQueueWriteNotification;
-extern NSString* VDKQueueDeleteNotification;
-extern NSString* VDKQueueAttributeChangeNotification;
-extern NSString* VDKQueueSizeIncreaseNotification;
-extern NSString* VDKQueueLinkCountChangeNotification;
-extern NSString* VDKQueueAccessRevocationNotification;
+extern NSString *VDKQueueRenameNotification;
+extern NSString *VDKQueueWriteNotification;
+extern NSString *VDKQueueDeleteNotification;
+extern NSString *VDKQueueAttributeChangeNotification;
+extern NSString *VDKQueueSizeIncreaseNotification;
+extern NSString *VDKQueueLinkCountChangeNotification;
+extern NSString *VDKQueueAccessRevocationNotification;
 
 //
 //  Or, instead of subscribing to notifications, you can specify a delegate and implement this method to respond to kQueue events.
@@ -102,7 +102,7 @@ extern NSString* VDKQueueAccessRevocationNotification;
 @protocol VDKQueueDelegate<NSObject>
 @required
 
-- (void)VDKQueue:(VDKQueue*)queue receivedNotification:(NSString*)noteName forPath:(NSString*)fpath;
+- (void)VDKQueue:(VDKQueue *)queue receivedNotification:(NSString *)noteName forPath:(NSString *)fpath;
 
 @end
 
@@ -113,7 +113,7 @@ extern NSString* VDKQueueAccessRevocationNotification;
 
   @private
     int _coreQueueFD; // The actual kqueue ID (Unix file descriptor).
-    NSMutableDictionary* _watchedPathEntries; // List of VDKQueuePathEntries. Keys are NSStrings of the path that each VDKQueuePathEntry is for.
+    NSMutableDictionary *_watchedPathEntries; // List of VDKQueuePathEntries. Keys are NSStrings of the path that each VDKQueuePathEntry is for.
     BOOL _keepWatcherThreadRunning; // Set to NO to cancel the thread that watches _coreQueueFD for kQueue events
 }
 
@@ -123,10 +123,10 @@ extern NSString* VDKQueueAccessRevocationNotification;
 //
 //  Warning: You must pass full, root-relative paths. Do not pass tilde-abbreviated paths or file URLs.
 //
-- (void)addPath:(NSString*)aPath;
-- (void)addPath:(NSString*)aPath notifyingAbout:(u_int)flags; // See note above for values to pass in "flags"
+- (void)addPath:(NSString *)aPath;
+- (void)addPath:(NSString *)aPath notifyingAbout:(u_int)flags; // See note above for values to pass in "flags"
 
-- (void)removePath:(NSString*)aPath;
+- (void)removePath:(NSString *)aPath;
 - (void)removeAllPaths;
 
 - (NSUInteger)numberOfWatchedPaths; //  Returns the number of paths that this VDKQueue instance is actively watching.

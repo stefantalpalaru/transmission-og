@@ -14,7 +14,7 @@
 #include "tr-assert.h"
 #include "utils.h"
 
-bool tr_sys_file_read_line(tr_sys_file_t handle, char* buffer, size_t buffer_size, tr_error** error)
+bool tr_sys_file_read_line(tr_sys_file_t handle, char *buffer, size_t buffer_size, tr_error **error)
 {
     TR_ASSERT(handle != TR_BAD_SYS_FILE);
     TR_ASSERT(buffer != NULL);
@@ -78,7 +78,7 @@ bool tr_sys_file_read_line(tr_sys_file_t handle, char* buffer, size_t buffer_siz
     return ret;
 }
 
-bool tr_sys_file_write_line(tr_sys_file_t handle, char const* buffer, tr_error** error)
+bool tr_sys_file_write_line(tr_sys_file_t handle, char const *buffer, tr_error **error)
 {
     TR_ASSERT(handle != TR_BAD_SYS_FILE);
     TR_ASSERT(buffer != NULL);
@@ -93,13 +93,13 @@ bool tr_sys_file_write_line(tr_sys_file_t handle, char const* buffer, tr_error**
     return ret;
 }
 
-bool tr_sys_file_write_fmt(tr_sys_file_t handle, char const* format, tr_error** error, ...)
+bool tr_sys_file_write_fmt(tr_sys_file_t handle, char const *format, tr_error **error, ...)
 {
     TR_ASSERT(handle != TR_BAD_SYS_FILE);
     TR_ASSERT(format != NULL);
 
     bool ret = false;
-    char* buffer;
+    char *buffer;
     va_list args;
 
     va_start(args, error);

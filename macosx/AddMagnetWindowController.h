@@ -29,30 +29,30 @@
 
 @interface AddMagnetWindowController : NSWindowController
 {
-    IBOutlet NSImageView* fLocationImageView;
+    IBOutlet NSImageView *fLocationImageView;
     IBOutlet NSTextField *fNameField, *fLocationField;
-    IBOutlet NSButton* fStartCheck;
+    IBOutlet NSButton *fStartCheck;
     IBOutlet NSPopUpButton *fGroupPopUp, *fPriorityPopUp;
 
     //remove these when switching to auto layout
-    IBOutlet NSTextField* fMagnetLinkLabel;
+    IBOutlet NSTextField *fMagnetLinkLabel;
     IBOutlet NSTextField *fDownloadToLabel, *fGroupLabel, *fPriorityLabel;
-    IBOutlet NSButton* fChangeDestinationButton;
-    IBOutlet NSBox* fDownloadToBox;
+    IBOutlet NSButton *fChangeDestinationButton;
+    IBOutlet NSBox *fDownloadToBox;
     IBOutlet NSButton *fAddButton, *fCancelButton;
 
-    Controller* fController;
+    Controller *fController;
 
-    Torrent* fTorrent;
-    NSString* fDestination;
+    Torrent *fTorrent;
+    NSString *fDestination;
 
     NSInteger fGroupValue;
     TorrentDeterminationType fGroupDeterminationType;
 }
 
-- (id)initWithTorrent:(Torrent*)torrent destination:(NSString*)path controller:(Controller*)controller;
+- (id)initWithTorrent:(Torrent *)torrent destination:(NSString *)path controller:(Controller *)controller;
 
-- (Torrent*)torrent;
+- (Torrent *)torrent;
 
 - (void)setDestination:(id)sender;
 
@@ -61,6 +61,6 @@
 
 - (void)changePriority:(id)sender;
 
-- (void)updateGroupMenu:(NSNotification*)notification;
+- (void)updateGroupMenu:(NSNotification *)notification;
 
 @end

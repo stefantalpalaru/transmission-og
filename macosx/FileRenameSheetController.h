@@ -13,28 +13,28 @@
 
 @interface FileRenameSheetController : NSWindowController
 {
-    Torrent* _torrent;
-    FileListNode* _node;
+    Torrent *_torrent;
+    FileListNode *_node;
     void (^_completionHandler)(BOOL);
-    NSString* _originalName;
+    NSString *_originalName;
 
-    IBOutlet NSTextField* __weak _labelField;
-    IBOutlet NSTextField* __weak _inputField;
-    IBOutlet NSButton* __weak _renameButton;
-    IBOutlet NSButton* __weak _cancelButton;
+    IBOutlet NSTextField *__weak _labelField;
+    IBOutlet NSTextField *__weak _inputField;
+    IBOutlet NSButton *__weak _renameButton;
+    IBOutlet NSButton *__weak _cancelButton;
 }
 
-+ (void)presentSheetForTorrent:(Torrent*)torrent
-                modalForWindow:(NSWindow*)window
++ (void)presentSheetForTorrent:(Torrent *)torrent
+                modalForWindow:(NSWindow *)window
              completionHandler:(void (^)(BOOL didRename))completionHandler;
-+ (void)presentSheetForFileListNode:(FileListNode*)node
-                     modalForWindow:(NSWindow*)window
++ (void)presentSheetForFileListNode:(FileListNode *)node
+                     modalForWindow:(NSWindow *)window
                   completionHandler:(void (^)(BOOL didRename))completionHandler;
 
-@property(weak) IBOutlet NSTextField* labelField;
-@property(weak) IBOutlet NSTextField* inputField;
-@property(weak) IBOutlet NSButton* renameButton;
-@property(weak) IBOutlet NSButton* cancelButton;
+@property(weak) IBOutlet NSTextField *labelField;
+@property(weak) IBOutlet NSTextField *inputField;
+@property(weak) IBOutlet NSButton *renameButton;
+@property(weak) IBOutlet NSButton *cancelButton;
 
 - (IBAction)rename:(id)sender;
 - (IBAction)cancelRename:(id)sender;

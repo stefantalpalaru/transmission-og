@@ -16,7 +16,7 @@
 ****
 ***/
 
-static void tr_cpReset(tr_completion* cp)
+static void tr_cpReset(tr_completion *cp)
 {
     cp->sizeNow = 0;
     cp->sizeWhenDoneIsDirty = true;
@@ -24,14 +24,14 @@ static void tr_cpReset(tr_completion* cp)
     tr_bitfieldSetHasNone(&cp->blockBitfield);
 }
 
-void tr_cpConstruct(tr_completion* cp, tr_torrent* tor)
+void tr_cpConstruct(tr_completion *cp, tr_torrent *tor)
 {
     cp->tor = tor;
     tr_bitfieldConstruct(&cp->blockBitfield, tor->blockCount);
     tr_cpReset(cp);
 }
 
-void tr_cpBlockInit(tr_completion* cp, tr_bitfield const* b)
+void tr_cpBlockInit(tr_completion *cp, tr_bitfield const *b)
 {
     tr_cpReset(cp);
 
@@ -55,7 +55,7 @@ void tr_cpBlockInit(tr_completion* cp, tr_bitfield const* b)
 ****
 ***/
 
-tr_completeness tr_cpGetStatus(tr_completion const* cp)
+tr_completeness tr_cpGetStatus(tr_completion const *cp)
 {
     if (tr_cpHasAll(cp))
     {
@@ -75,11 +75,11 @@ tr_completeness tr_cpGetStatus(tr_completion const* cp)
     return TR_LEECH;
 }
 
-void tr_cpPieceRem(tr_completion* cp, tr_piece_index_t piece)
+void tr_cpPieceRem(tr_completion *cp, tr_piece_index_t piece)
 {
     tr_block_index_t f;
     tr_block_index_t l;
-    tr_torrent const* tor = cp->tor;
+    tr_torrent const *tor = cp->tor;
 
     tr_torGetPieceBlockRange(cp->tor, piece, &f, &l);
 
@@ -96,7 +96,7 @@ void tr_cpPieceRem(tr_completion* cp, tr_piece_index_t piece)
     tr_bitfieldRemRange(&cp->blockBitfield, f, l + 1);
 }
 
-void tr_cpPieceAdd(tr_completion* cp, tr_piece_index_t piece)
+void tr_cpPieceAdd(tr_completion *cp, tr_piece_index_t piece)
 {
     tr_block_index_t f;
     tr_block_index_t l;
@@ -108,9 +108,9 @@ void tr_cpPieceAdd(tr_completion* cp, tr_piece_index_t piece)
     }
 }
 
-void tr_cpBlockAdd(tr_completion* cp, tr_block_index_t block)
+void tr_cpBlockAdd(tr_completion *cp, tr_block_index_t block)
 {
-    tr_torrent const* tor = cp->tor;
+    tr_torrent const *tor = cp->tor;
 
     if (!tr_cpBlockIsComplete(cp, block))
     {
@@ -128,14 +128,14 @@ void tr_cpBlockAdd(tr_completion* cp, tr_block_index_t block)
 ****
 ***/
 
-uint64_t tr_cpHaveValid(tr_completion const* ccp)
+uint64_t tr_cpHaveValid(tr_completion const *ccp)
 {
     if (ccp->haveValidIsDirty)
     {
         uint64_t size = 0;
-        tr_completion* cp = (tr_completion*)ccp; /* mutable */
-        tr_torrent const* tor = ccp->tor;
-        tr_info const* info = &tor->info;
+        tr_completion *cp = (tr_completion *)ccp; /* mutable */
+        tr_torrent const *tor = ccp->tor;
+        tr_info const *info = &tor->info;
 
         for (tr_piece_index_t i = 0; i < info->pieceCount; ++i)
         {
@@ -152,14 +152,14 @@ uint64_t tr_cpHaveValid(tr_completion const* ccp)
     return ccp->haveValidLazy;
 }
 
-uint64_t tr_cpSizeWhenDone(tr_completion const* ccp)
+uint64_t tr_cpSizeWhenDone(tr_completion const *ccp)
 {
     if (ccp->sizeWhenDoneIsDirty)
     {
         uint64_t size = 0;
-        tr_torrent const* tor = ccp->tor;
-        tr_info const* inf = tr_torrentInfo(tor);
-        tr_completion* cp = (tr_completion*)ccp; /* mutable */
+        tr_torrent const *tor = ccp->tor;
+        tr_info const *inf = tr_torrentInfo(tor);
+        tr_completion *cp = (tr_completion *)ccp; /* mutable */
 
         if (tr_cpHasAll(ccp))
         {
@@ -206,7 +206,7 @@ uint64_t tr_cpSizeWhenDone(tr_completion const* ccp)
     return ccp->sizeWhenDoneLazy;
 }
 
-uint64_t tr_cpLeftUntilDone(tr_completion const* cp)
+uint64_t tr_cpLeftUntilDone(tr_completion const *cp)
 {
     uint64_t const sizeWhenDone = tr_cpSizeWhenDone(cp);
 
@@ -215,7 +215,7 @@ uint64_t tr_cpLeftUntilDone(tr_completion const* cp)
     return sizeWhenDone - cp->sizeNow;
 }
 
-void tr_cpGetAmountDone(tr_completion const* cp, float* tab, int tabCount)
+void tr_cpGetAmountDone(tr_completion const *cp, float *tab, int tabCount)
 {
     bool const seed = tr_cpHasAll(cp);
     float const interval = cp->tor->info.pieceCount / (float)tabCount;
@@ -237,7 +237,7 @@ void tr_cpGetAmountDone(tr_completion const* cp, float* tab, int tabCount)
     }
 }
 
-size_t tr_cpMissingBlocksInPiece(tr_completion const* cp, tr_piece_index_t piece)
+size_t tr_cpMissingBlocksInPiece(tr_completion const *cp, tr_piece_index_t piece)
 {
     if (tr_cpHasAll(cp))
     {
@@ -252,7 +252,7 @@ size_t tr_cpMissingBlocksInPiece(tr_completion const* cp, tr_piece_index_t piece
     }
 }
 
-size_t tr_cpMissingBytesInPiece(tr_completion const* cp, tr_piece_index_t piece)
+size_t tr_cpMissingBytesInPiece(tr_completion const *cp, tr_piece_index_t piece)
 {
     if (tr_cpHasAll(cp))
     {
@@ -285,7 +285,7 @@ size_t tr_cpMissingBytesInPiece(tr_completion const* cp, tr_piece_index_t piece)
     }
 }
 
-bool tr_cpFileIsComplete(tr_completion const* cp, tr_file_index_t i)
+bool tr_cpFileIsComplete(tr_completion const *cp, tr_file_index_t i)
 {
     if (cp->tor->info.files[i].length == 0)
     {
@@ -300,11 +300,11 @@ bool tr_cpFileIsComplete(tr_completion const* cp, tr_file_index_t i)
     }
 }
 
-void* tr_cpCreatePieceBitfield(tr_completion const* cp, size_t* byte_count)
+void *tr_cpCreatePieceBitfield(tr_completion const *cp, size_t *byte_count)
 {
     TR_ASSERT(tr_torrentHasMetadata(cp->tor));
 
-    void* ret;
+    void *ret;
     tr_piece_index_t n;
     tr_bitfield pieces;
 
@@ -317,7 +317,7 @@ void* tr_cpCreatePieceBitfield(tr_completion const* cp, size_t* byte_count)
     }
     else if (!tr_cpHasNone(cp))
     {
-        bool* flags = tr_new(bool, n);
+        bool *flags = tr_new(bool, n);
 
         for (tr_piece_index_t i = 0; i < n; ++i)
         {
@@ -333,7 +333,7 @@ void* tr_cpCreatePieceBitfield(tr_completion const* cp, size_t* byte_count)
     return ret;
 }
 
-double tr_cpPercentComplete(tr_completion const* cp)
+double tr_cpPercentComplete(tr_completion const *cp)
 {
     double const ratio = tr_getRatio(cp->sizeNow, cp->tor->info.totalSize);
 
@@ -351,7 +351,7 @@ double tr_cpPercentComplete(tr_completion const* cp)
     }
 }
 
-double tr_cpPercentDone(tr_completion const* cp)
+double tr_cpPercentDone(tr_completion const *cp)
 {
     double const ratio = tr_getRatio(cp->sizeNow, tr_cpSizeWhenDone(cp));
     int const iratio = (int)ratio;

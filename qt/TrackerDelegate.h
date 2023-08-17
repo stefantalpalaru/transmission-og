@@ -20,7 +20,7 @@ class TrackerDelegate : public QItemDelegate
     Q_OBJECT
 
 public:
-    TrackerDelegate(QObject* parent = nullptr)
+    TrackerDelegate(QObject *parent = nullptr)
         : QItemDelegate(parent)
         , myShowMore(false)
     {
@@ -29,14 +29,14 @@ public:
     void setShowMore(bool b);
 
     // QAbstractItemDelegate
-    QSize sizeHint(QStyleOptionViewItem const& option, QModelIndex const& index) const override;
-    void paint(QPainter* painter, QStyleOptionViewItem const& option, QModelIndex const& index) const override;
+    QSize sizeHint(QStyleOptionViewItem const &option, QModelIndex const &index) const override;
+    void paint(QPainter *painter, QStyleOptionViewItem const &option, QModelIndex const &index) const override;
 
 protected:
-    QString getText(TrackerInfo const&) const;
+    QString getText(TrackerInfo const &) const;
 
-    QSize sizeHint(QStyleOptionViewItem const&, TrackerInfo const&) const;
-    void drawTracker(QPainter*, QStyleOptionViewItem const&, TrackerInfo const&) const;
+    QSize sizeHint(QStyleOptionViewItem const &, TrackerInfo const &) const;
+    void drawTracker(QPainter *, QStyleOptionViewItem const &, TrackerInfo const &) const;
 
 private:
     bool myShowMore;

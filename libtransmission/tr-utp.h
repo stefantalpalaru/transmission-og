@@ -27,8 +27,8 @@ THE SOFTWARE.
 #error only libtransmission should #include this header.
 #endif
 
-void tr_utpInit(tr_session* session);
+void tr_utpInit(tr_session *session);
 
-bool tr_utpPacket(unsigned char const* buf, size_t buflen, struct sockaddr const* from, socklen_t fromlen, tr_session* ss);
+bool tr_utpPacket(unsigned char const *buf, size_t buflen, struct sockaddr const *from, socklen_t fromlen, tr_session *ss);
 
-void tr_utpClose(tr_session*);
+void tr_utpClose(tr_session *);

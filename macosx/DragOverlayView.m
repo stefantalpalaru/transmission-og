@@ -32,13 +32,13 @@
     if ((self = [super initWithFrame:frame]))
     {
         //create attributes
-        NSShadow* stringShadow = [[NSShadow alloc] init];
+        NSShadow *stringShadow = [[NSShadow alloc] init];
         [stringShadow setShadowOffset:NSMakeSize(2.0, -2.0)];
         [stringShadow setShadowBlurRadius:4.0];
 
         NSFont *bigFont = [NSFont boldSystemFontOfSize:18.0], *smallFont = [NSFont systemFontOfSize:14.0];
 
-        NSMutableParagraphStyle* paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+        NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
         [paragraphStyle setLineBreakMode:NSLineBreakByTruncatingMiddle];
 
         fMainLineAttributes = [[NSDictionary alloc]
@@ -62,7 +62,7 @@
     return self;
 }
 
-- (void)setOverlay:(NSImage*)icon mainLine:(NSString*)mainLine subLine:(NSString*)subLine
+- (void)setOverlay:(NSImage *)icon mainLine:(NSString *)mainLine subLine:(NSString *)subLine
 {
     //create badge
     NSRect const badgeRect = NSMakeRect(0.0, 0.0, 325.0, 84.0);
@@ -70,7 +70,7 @@
     fBadge = [[NSImage alloc] initWithSize:badgeRect.size];
     [fBadge lockFocus];
 
-    NSBezierPath* bp = [NSBezierPath bezierPathWithRoundedRect:badgeRect xRadius:15.0 yRadius:15.0];
+    NSBezierPath *bp = [NSBezierPath bezierPathWithRoundedRect:badgeRect xRadius:15.0 yRadius:15.0];
     [[NSColor colorWithCalibratedWhite:0.0 alpha:0.75] set];
     [bp fill];
 

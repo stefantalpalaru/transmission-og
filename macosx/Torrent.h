@@ -37,21 +37,21 @@ typedef enum
 
 @interface Torrent : NSObject<NSCopying, QLPreviewItem>
 {
-    tr_torrent* fHandle;
-    tr_info const* fInfo;
-    tr_stat const* fStat;
+    tr_torrent *fHandle;
+    tr_info const *fInfo;
+    tr_stat const *fStat;
 
-    NSUserDefaults* fDefaults;
+    NSUserDefaults *fDefaults;
 
-    NSImage* fIcon;
+    NSImage *fIcon;
 
-    NSString* fHashString;
+    NSString *fHashString;
 
-    tr_file_stat* fFileStat;
+    tr_file_stat *fFileStat;
     NSArray *fFileList, *fFlatFileList;
 
-    NSIndexSet* fPreviousFinishedIndexes;
-    NSDate* fPreviousFinishedIndexesDate;
+    NSIndexSet *fPreviousFinishedIndexes;
+    NSDate *fPreviousFinishedIndexesDate;
 
     BOOL fRemoveWhenFinishSeeding;
 
@@ -65,23 +65,23 @@ typedef enum
     BOOL fTimeMachineExcludeInitialized;
 }
 
-- (id)initWithPath:(NSString*)path location:(NSString*)location deleteTorrentFile:(BOOL)torrentDelete lib:(tr_session*)lib;
-- (id)initWithTorrentStruct:(tr_torrent*)torrentStruct location:(NSString*)location lib:(tr_session*)lib;
-- (id)initWithMagnetAddress:(NSString*)address location:(NSString*)location lib:(tr_session*)lib;
-- (id)initWithHistory:(NSDictionary*)history lib:(tr_session*)lib forcePause:(BOOL)pause;
+- (id)initWithPath:(NSString *)path location:(NSString *)location deleteTorrentFile:(BOOL)torrentDelete lib:(tr_session *)lib;
+- (id)initWithTorrentStruct:(tr_torrent *)torrentStruct location:(NSString *)location lib:(tr_session *)lib;
+- (id)initWithMagnetAddress:(NSString *)address location:(NSString *)location lib:(tr_session *)lib;
+- (id)initWithHistory:(NSDictionary *)history lib:(tr_session *)lib forcePause:(BOOL)pause;
 
-- (NSDictionary*)history;
+- (NSDictionary *)history;
 
 - (void)closeRemoveTorrent:(BOOL)trashFiles;
 
-- (void)changeDownloadFolderBeforeUsing:(NSString*)folder determinationType:(TorrentDeterminationType)determinationType;
+- (void)changeDownloadFolderBeforeUsing:(NSString *)folder determinationType:(TorrentDeterminationType)determinationType;
 
-- (NSString*)currentDirectory;
+- (NSString *)currentDirectory;
 
-- (void)getAvailability:(int8_t*)tab size:(NSInteger)size;
-- (void)getAmountFinished:(float*)tab size:(NSInteger)size;
-- (NSIndexSet*)previousFinishedPieces;
-- (void)setPreviousFinishedPieces:(NSIndexSet*)indexes;
+- (void)getAvailability:(int8_t *)tab size:(NSInteger)size;
+- (void)getAmountFinished:(float *)tab size:(NSInteger)size;
+- (NSIndexSet *)previousFinishedPieces;
+- (void)setPreviousFinishedPieces:(NSIndexSet *)indexes;
 
 - (void)update;
 
@@ -101,7 +101,7 @@ typedef enum
 - (void)resetCache;
 
 - (BOOL)isMagnet;
-- (NSString*)magnetLink;
+- (NSString *)magnetLink;
 
 - (CGFloat)ratio;
 - (tr_ratiolimit)ratioSetting;
@@ -132,40 +132,40 @@ typedef enum
 - (tr_priority_t)priority;
 - (void)setPriority:(tr_priority_t)priority;
 
-+ (BOOL)trashFile:(NSString*)path error:(NSError**)error;
-- (void)moveTorrentDataFileTo:(NSString*)folder;
-- (void)copyTorrentFileTo:(NSString*)path;
++ (BOOL)trashFile:(NSString *)path error:(NSError **)error;
+- (void)moveTorrentDataFileTo:(NSString *)folder;
+- (void)copyTorrentFileTo:(NSString *)path;
 
 - (BOOL)alertForRemainingDiskSpace;
 
-- (NSImage*)icon;
+- (NSImage *)icon;
 
-- (NSString*)name;
+- (NSString *)name;
 - (BOOL)isFolder;
 - (uint64_t)size;
 - (uint64_t)sizeLeft;
 
-- (NSMutableArray*)allTrackerStats;
-- (NSArray*)allTrackersFlat; //used by GroupRules
-- (BOOL)addTrackerToNewTier:(NSString*)tracker;
-- (void)removeTrackers:(NSSet*)trackers;
+- (NSMutableArray *)allTrackerStats;
+- (NSArray *)allTrackersFlat; //used by GroupRules
+- (BOOL)addTrackerToNewTier:(NSString *)tracker;
+- (void)removeTrackers:(NSSet *)trackers;
 
-- (NSString*)comment;
-- (NSString*)creator;
-- (NSDate*)dateCreated;
+- (NSString *)comment;
+- (NSString *)creator;
+- (NSDate *)dateCreated;
 
 - (NSInteger)pieceSize;
 - (NSInteger)pieceCount;
-- (NSString*)hashString;
+- (NSString *)hashString;
 - (BOOL)privateTorrent;
 
-- (NSString*)torrentLocation;
-- (NSString*)dataLocation;
-- (NSString*)fileLocation:(FileListNode*)node;
+- (NSString *)torrentLocation;
+- (NSString *)dataLocation;
+- (NSString *)fileLocation:(FileListNode *)node;
 
-- (void)renameTorrent:(NSString*)newName completionHandler:(void (^)(BOOL didRename))completionHandler;
-- (void)renameFileNode:(FileListNode*)node
-              withName:(NSString*)newName
+- (void)renameTorrent:(NSString *)newName completionHandler:(void (^)(BOOL didRename))completionHandler;
+- (void)renameFileNode:(FileListNode *)node
+              withName:(NSString *)newName
      completionHandler:(void (^)(BOOL didRename))completionHandler;
 
 - (CGFloat)progress;
@@ -184,19 +184,19 @@ typedef enum
 - (BOOL)isFinishedSeeding;
 - (BOOL)isError;
 - (BOOL)isAnyErrorOrWarning;
-- (NSString*)errorMessage;
+- (NSString *)errorMessage;
 
-- (NSArray*)peers;
+- (NSArray *)peers;
 
 - (NSUInteger)webSeedCount;
-- (NSArray*)webSeeds;
+- (NSArray *)webSeeds;
 
-- (NSString*)progressString;
-- (NSString*)statusString;
-- (NSString*)shortStatusString;
-- (NSString*)remainingTimeString;
+- (NSString *)progressString;
+- (NSString *)statusString;
+- (NSString *)shortStatusString;
+- (NSString *)remainingTimeString;
 
-- (NSString*)stateString;
+- (NSString *)stateString;
 - (NSInteger)totalPeersConnected;
 - (NSInteger)totalPeersTracker;
 - (NSInteger)totalPeersIncoming;
@@ -223,27 +223,27 @@ typedef enum
 - (void)setGroupValue:(NSInteger)groupValue determinationType:(TorrentDeterminationType)determinationType;
 ;
 - (NSInteger)groupOrderValue;
-- (void)checkGroupValueForRemoval:(NSNotification*)notification;
+- (void)checkGroupValueForRemoval:(NSNotification *)notification;
 
-- (NSArray*)fileList;
-- (NSArray*)flatFileList;
+- (NSArray *)fileList;
+- (NSArray *)flatFileList;
 - (NSInteger)fileCount;
 - (void)updateFileStat;
 
 //methods require fileStats to have been updated recently to be accurate
-- (CGFloat)fileProgress:(FileListNode*)node;
+- (CGFloat)fileProgress:(FileListNode *)node;
 - (BOOL)canChangeDownloadCheckForFile:(NSUInteger)index;
-- (BOOL)canChangeDownloadCheckForFiles:(NSIndexSet*)indexSet;
-- (NSInteger)checkForFiles:(NSIndexSet*)indexSet;
-- (void)setFileCheckState:(NSInteger)state forIndexes:(NSIndexSet*)indexSet;
-- (void)setFilePriority:(tr_priority_t)priority forIndexes:(NSIndexSet*)indexSet;
-- (BOOL)hasFilePriority:(tr_priority_t)priority forIndexes:(NSIndexSet*)indexSet;
-- (NSSet*)filePrioritiesForIndexes:(NSIndexSet*)indexSet;
+- (BOOL)canChangeDownloadCheckForFiles:(NSIndexSet *)indexSet;
+- (NSInteger)checkForFiles:(NSIndexSet *)indexSet;
+- (void)setFileCheckState:(NSInteger)state forIndexes:(NSIndexSet *)indexSet;
+- (void)setFilePriority:(tr_priority_t)priority forIndexes:(NSIndexSet *)indexSet;
+- (BOOL)hasFilePriority:(tr_priority_t)priority forIndexes:(NSIndexSet *)indexSet;
+- (NSSet *)filePrioritiesForIndexes:(NSIndexSet *)indexSet;
 
-- (NSDate*)dateAdded;
-- (NSDate*)dateCompleted;
-- (NSDate*)dateActivity;
-- (NSDate*)dateActivityOrAdd;
+- (NSDate *)dateAdded;
+- (NSDate *)dateCompleted;
+- (NSDate *)dateActivity;
+- (NSDate *)dateActivityOrAdd;
 
 - (NSInteger)secondsDownloading;
 - (NSInteger)secondsSeeding;
@@ -254,8 +254,8 @@ typedef enum
 - (void)updateTimeMachineExclude;
 
 - (NSInteger)stateSortKey;
-- (NSString*)trackerSortKey;
+- (NSString *)trackerSortKey;
 
-- (tr_torrent*)torrentStruct;
+- (tr_torrent *)torrentStruct;
 
 @end

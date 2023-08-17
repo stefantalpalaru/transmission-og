@@ -20,9 +20,9 @@
 
 static int test_elements(void)
 {
-    char const* in;
+    char const *in;
     tr_variant top;
-    char const* str;
+    char const *str;
     bool f;
     double d;
     int64_t i;
@@ -70,10 +70,10 @@ static int test_elements(void)
 
 static int test_utf8(void)
 {
-    char const* in = "{ \"key\": \"Letöltések\" }";
+    char const *in = "{ \"key\": \"Letöltések\" }";
     tr_variant top;
-    char const* str;
-    char* json;
+    char const *str;
+    char *json;
     int err;
     tr_quark const key = tr_quark_new("key", 3);
 
@@ -142,7 +142,7 @@ static int test_utf8(void)
 
 static int test1(void)
 {
-    char const*
+    char const *
         in = "{\n"
              "    \"headers\": {\n"
              "        \"type\": \"request\",\n"
@@ -156,11 +156,11 @@ static int test1(void)
              "    }\n"
              "}\n";
     tr_variant top;
-    tr_variant* headers;
-    tr_variant* body;
-    tr_variant* args;
-    tr_variant* ids;
-    char const* str;
+    tr_variant *headers;
+    tr_variant *body;
+    tr_variant *args;
+    tr_variant *ids;
+    char const *str;
     int64_t i;
     int const err = tr_variantFromJson(&top, in, strlen(in));
 
@@ -192,7 +192,7 @@ static int test1(void)
 static int test2(void)
 {
     tr_variant top;
-    char const* in = " ";
+    char const *in = " ";
     int err;
 
     top.type = 0;
@@ -206,14 +206,14 @@ static int test2(void)
 
 static int test3(void)
 {
-    char const*
+    char const *
         in = "{ \"error\": 2,"
              "  \"errorString\": \"torrent not registered with this tracker 6UHsVW'*C\","
              "  \"eta\": 262792,"
              "  \"id\": 25,"
              "  \"leftUntilDone\": 2275655680 }";
     tr_variant top;
-    char const* str;
+    char const *str;
 
     int const err = tr_variantFromJson(&top, in, strlen(in));
     check_int(err, ==, 0);
@@ -226,9 +226,9 @@ static int test3(void)
 
 static int test_unescape(void)
 {
-    char const* in = "{ \"string-1\": \"\\/usr\\/lib\" }";
+    char const *in = "{ \"string-1\": \"\\/usr\\/lib\" }";
     tr_variant top;
-    char const* str;
+    char const *str;
 
     int const err = tr_variantFromJson(&top, in, strlen(in));
     check_int(err, ==, 0);
@@ -241,7 +241,7 @@ static int test_unescape(void)
 
 int main(void)
 {
-    char const* comma_locales[] = {
+    char const *comma_locales[] = {
         "da_DK.UTF-8",
         "fr_FR.UTF-8",
         "ru_RU.UTF-8",

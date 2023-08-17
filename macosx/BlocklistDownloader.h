@@ -33,21 +33,21 @@ typedef enum
 
 @interface BlocklistDownloader : NSObject<NSURLDownloadDelegate>
 {
-    NSURLDownload* fDownload;
+    NSURLDownload *fDownload;
 
-    BlocklistDownloaderViewController* fViewController;
+    BlocklistDownloaderViewController *fViewController;
 
-    NSString* fDestination;
+    NSString *fDestination;
     NSUInteger fCurrentSize;
     long long fExpectedSize;
 
     blocklistDownloadState fState;
 }
 
-+ (BlocklistDownloader*)downloader; //starts download if not already occuring
++ (BlocklistDownloader *)downloader; //starts download if not already occuring
 + (BOOL)isRunning;
 
-- (void)setViewController:(BlocklistDownloaderViewController*)viewController;
+- (void)setViewController:(BlocklistDownloaderViewController *)viewController;
 
 - (void)cancelDownload;
 

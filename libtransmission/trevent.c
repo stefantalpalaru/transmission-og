@@ -54,7 +54,7 @@ static int pgpipe(tr_pipe_end_t handles[2])
     serv_addr.sin_port = htons(0);
     serv_addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
 
-    if (bind(s, (SOCKADDR*)&serv_addr, len) == SOCKET_ERROR)
+    if (bind(s, (SOCKADDR *)&serv_addr, len) == SOCKET_ERROR)
     {
         tr_logAddDebug("pgpipe failed to bind: %ui", WSAGetLastError());
         closesocket(s);
@@ -68,7 +68,7 @@ static int pgpipe(tr_pipe_end_t handles[2])
         return -1;
     }
 
-    if (getsockname(s, (SOCKADDR*)&serv_addr, &len) == SOCKET_ERROR)
+    if (getsockname(s, (SOCKADDR *)&serv_addr, &len) == SOCKET_ERROR)
     {
         tr_logAddDebug("pgpipe failed to getsockname: %ui", WSAGetLastError());
         closesocket(s);
@@ -82,14 +82,14 @@ static int pgpipe(tr_pipe_end_t handles[2])
         return -1;
     }
 
-    if (connect(handles[1], (SOCKADDR*)&serv_addr, len) == SOCKET_ERROR)
+    if (connect(handles[1], (SOCKADDR *)&serv_addr, len) == SOCKET_ERROR)
     {
         tr_logAddDebug("pgpipe failed to connect socket: %ui", WSAGetLastError());
         closesocket(s);
         return -1;
     }
 
-    if ((handles[0] = accept(s, (SOCKADDR*)&serv_addr, &len)) == INVALID_SOCKET)
+    if ((handles[0] = accept(s, (SOCKADDR *)&serv_addr, &len)) == INVALID_SOCKET)
     {
         tr_logAddDebug("pgpipe failed to accept socket: %ui", WSAGetLastError());
         closesocket(handles[1]);
@@ -102,7 +102,7 @@ static int pgpipe(tr_pipe_end_t handles[2])
     return 0;
 }
 
-static int piperead(tr_pipe_end_t s, void* buf, int len)
+static int piperead(tr_pipe_end_t s, void *buf, int len)
 {
     int ret = recv(s, buf, len, 0);
 
@@ -136,7 +136,7 @@ static int piperead(tr_pipe_end_t s, void* buf, int len)
 }
 
 #define pipe(a) pgpipe(a)
-#define pipewrite(a, b, c) send(a, (char*)b, c, 0)
+#define pipewrite(a, b, c) send(a, (char *)b, c, 0)
 
 #else
 typedef int tr_pipe_end_t;
@@ -152,26 +152,26 @@ typedef struct tr_event_handle
 {
     bool die;
     tr_pipe_end_t fds[2];
-    tr_lock* lock;
-    tr_session* session;
-    tr_thread* thread;
-    struct event_base* base;
-    struct event* pipeEvent;
+    tr_lock *lock;
+    tr_session *session;
+    tr_thread *thread;
+    struct event_base *base;
+    struct event *pipeEvent;
 } tr_event_handle;
 
 struct tr_run_data
 {
-    void (*func)(void*);
-    void* user_data;
+    void (*func)(void *);
+    void *user_data;
 };
 
 #define dbgmsg(...) tr_logAddDeepNamed("event", __VA_ARGS__)
 
-static void readFromPipe(evutil_socket_t fd, short eventType, void* veh)
+static void readFromPipe(evutil_socket_t fd, short eventType, void *veh)
 {
     char ch;
     int ret;
-    tr_event_handle* eh = veh;
+    tr_event_handle *eh = veh;
 
     dbgmsg("readFromPipe: eventType is %hd", eventType);
 
@@ -219,7 +219,7 @@ static void readFromPipe(evutil_socket_t fd, short eventType, void* veh)
     }
 }
 
-static void logFunc(int severity, char const* message)
+static void logFunc(int severity, char const *message)
 {
     if (severity >= _EVENT_LOG_ERR)
     {
@@ -231,10 +231,10 @@ static void logFunc(int severity, char const* message)
     }
 }
 
-static void libeventThreadFunc(void* veh)
+static void libeventThreadFunc(void *veh)
 {
-    struct event_base* base;
-    tr_event_handle* eh = veh;
+    struct event_base *base;
+    tr_event_handle *eh = veh;
 
 #ifndef _WIN32
     /* Don't exit when writing on a broken socket */
@@ -269,9 +269,9 @@ static void libeventThreadFunc(void* veh)
     tr_logAddDebug("Closing libevent thread");
 }
 
-void tr_eventInit(tr_session* session)
+void tr_eventInit(tr_session *session)
 {
-    tr_event_handle* eh;
+    tr_event_handle *eh;
 
     session->events = NULL;
 
@@ -293,7 +293,7 @@ void tr_eventInit(tr_session* session)
     }
 }
 
-void tr_eventClose(tr_session* session)
+void tr_eventClose(tr_session *session)
 {
     TR_ASSERT(tr_isSession(session));
 
@@ -311,7 +311,7 @@ void tr_eventClose(tr_session* session)
 ***
 **/
 
-bool tr_amInEventThread(tr_session const* session)
+bool tr_amInEventThread(tr_session const *session)
 {
     TR_ASSERT(tr_isSession(session));
     TR_ASSERT(session->events != NULL);
@@ -323,7 +323,7 @@ bool tr_amInEventThread(tr_session const* session)
 ***
 **/
 
-void tr_runInEventThread(tr_session* session, void (*func)(void*), void* user_data)
+void tr_runInEventThread(tr_session *session, void (*func)(void *), void *user_data)
 {
     TR_ASSERT(tr_isSession(session));
     TR_ASSERT(session->events != NULL);
@@ -338,7 +338,7 @@ void tr_runInEventThread(tr_session* session, void (*func)(void*), void* user_da
         char ch;
         ev_ssize_t res_1;
         ev_ssize_t res_2;
-        tr_event_handle* e = session->events;
+        tr_event_handle *e = session->events;
         struct tr_run_data data;
 
         tr_lockLock(e->lock);

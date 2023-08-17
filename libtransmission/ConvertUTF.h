@@ -126,51 +126,51 @@ extern "C"
 #endif
 
     ConversionResult ConvertUTF8toUTF16(
-        UTF8 const** sourceStart,
-        UTF8 const* sourceEnd,
-        UTF16** targetStart,
-        UTF16* targetEnd,
+        UTF8 const **sourceStart,
+        UTF8 const *sourceEnd,
+        UTF16 **targetStart,
+        UTF16 *targetEnd,
         ConversionFlags flags);
 
     ConversionResult ConvertUTF16toUTF8(
-        UTF16 const** sourceStart,
-        UTF16 const* sourceEnd,
-        UTF8** targetStart,
-        UTF8* targetEnd,
+        UTF16 const **sourceStart,
+        UTF16 const *sourceEnd,
+        UTF8 **targetStart,
+        UTF8 *targetEnd,
         ConversionFlags flags);
 
     ConversionResult ConvertUTF8toUTF32(
-        UTF8 const** sourceStart,
-        UTF8 const* sourceEnd,
-        UTF32** targetStart,
-        UTF32* targetEnd,
+        UTF8 const **sourceStart,
+        UTF8 const *sourceEnd,
+        UTF32 **targetStart,
+        UTF32 *targetEnd,
         ConversionFlags flags);
 
     ConversionResult ConvertUTF32toUTF8(
-        UTF32 const** sourceStart,
-        UTF32 const* sourceEnd,
-        UTF8** targetStart,
-        UTF8* targetEnd,
+        UTF32 const **sourceStart,
+        UTF32 const *sourceEnd,
+        UTF8 **targetStart,
+        UTF8 *targetEnd,
         ConversionFlags flags);
 
     ConversionResult ConvertUTF16toUTF32(
-        UTF16 const** sourceStart,
-        UTF16 const* sourceEnd,
-        UTF32** targetStart,
-        UTF32* targetEnd,
+        UTF16 const **sourceStart,
+        UTF16 const *sourceEnd,
+        UTF32 **targetStart,
+        UTF32 *targetEnd,
         ConversionFlags flags);
 
     ConversionResult ConvertUTF32toUTF16(
-        UTF32 const** sourceStart,
-        UTF32 const* sourceEnd,
-        UTF16** targetStart,
-        UTF16* targetEnd,
+        UTF32 const **sourceStart,
+        UTF32 const *sourceEnd,
+        UTF16 **targetStart,
+        UTF16 *targetEnd,
         ConversionFlags flags);
 
-    Boolean isLegalUTF8Sequence(UTF8 const* source, UTF8 const* sourceEnd);
+    Boolean isLegalUTF8Sequence(UTF8 const *source, UTF8 const *sourceEnd);
 
     /* intended to work the same as g_utf8_validate */
-    Boolean tr_utf8_validate(char const* str, size_t max_len, char const** end);
+    Boolean tr_utf8_validate(char const *str, size_t max_len, char const **end);
 
 #ifdef __cplusplus
 }

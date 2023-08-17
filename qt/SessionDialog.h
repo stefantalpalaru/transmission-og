@@ -22,7 +22,7 @@ class SessionDialog : public BaseDialog
     Q_OBJECT
 
 public:
-    SessionDialog(Session& session, Prefs& prefs, QWidget* parent = nullptr);
+    SessionDialog(Session &session, Prefs &prefs, QWidget *parent = nullptr);
 
 public slots:
     // QDialog
@@ -32,8 +32,8 @@ private slots:
     void resensitize();
 
 private:
-    Session& mySession;
-    Prefs& myPrefs;
+    Session &mySession;
+    Prefs &myPrefs;
 
     Ui::SessionDialog ui;
 

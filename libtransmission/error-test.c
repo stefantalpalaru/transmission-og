@@ -13,7 +13,7 @@
 
 static int test_error_set(void)
 {
-    tr_error* err = NULL;
+    tr_error *err = NULL;
 
     tr_error_prefix(&err, "error: ");
     check_ptr(err, ==, NULL);
@@ -42,8 +42,8 @@ static int test_error_set(void)
 
 static int test_error_propagate(void)
 {
-    tr_error* err = NULL;
-    tr_error* err2 = NULL;
+    tr_error *err = NULL;
+    tr_error *err2 = NULL;
 
     tr_error_set_literal(&err, 1, "oops");
     check_ptr(err, !=, NULL);

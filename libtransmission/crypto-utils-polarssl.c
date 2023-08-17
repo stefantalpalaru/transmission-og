@@ -48,7 +48,7 @@ typedef API(sha1_context) api_sha1_context;
 typedef API(arc4_context) api_arc4_context;
 typedef API(dhm_context) api_dhm_context;
 
-static void log_polarssl_error(int error_code, char const* file, int line)
+static void log_polarssl_error(int error_code, char const *file, int line)
 {
     if (tr_logLevelIsActive(TR_LOG_ERROR))
     {
@@ -68,7 +68,7 @@ static void log_polarssl_error(int error_code, char const* file, int line)
 
 #define log_error(error_code) log_polarssl_error((error_code), __FILE__, __LINE__)
 
-static bool check_polarssl_result(int result, int expected_result, char const* file, int line)
+static bool check_polarssl_result(int result, int expected_result, char const *file, int line)
 {
     bool const ret = result == expected_result;
 
@@ -87,7 +87,7 @@ static bool check_polarssl_result(int result, int expected_result, char const* f
 ****
 ***/
 
-static int my_rand(void* context UNUSED, unsigned char* buffer, size_t buffer_size)
+static int my_rand(void *context UNUSED, unsigned char *buffer, size_t buffer_size)
 {
     for (size_t i = 0; i < buffer_size; ++i)
     {
@@ -97,7 +97,7 @@ static int my_rand(void* context UNUSED, unsigned char* buffer, size_t buffer_si
     return 0;
 }
 
-static api_ctr_drbg_context* get_rng(void)
+static api_ctr_drbg_context *get_rng(void)
 {
     static api_ctr_drbg_context rng;
     static bool rng_initialized = false;
@@ -122,9 +122,9 @@ static api_ctr_drbg_context* get_rng(void)
     return &rng;
 }
 
-static tr_lock* get_rng_lock(void)
+static tr_lock *get_rng_lock(void)
 {
-    static tr_lock* lock = NULL;
+    static tr_lock *lock = NULL;
 
     if (lock == NULL)
     {
@@ -140,7 +140,7 @@ static tr_lock* get_rng_lock(void)
 
 tr_sha1_ctx_t tr_sha1_init(void)
 {
-    api_sha1_context* handle = tr_new0(api_sha1_context, 1);
+    api_sha1_context *handle = tr_new0(api_sha1_context, 1);
 
 #if API_VERSION_NUMBER >= 0x01030800
     API(sha1_init)(handle);
@@ -150,7 +150,7 @@ tr_sha1_ctx_t tr_sha1_init(void)
     return handle;
 }
 
-bool tr_sha1_update(tr_sha1_ctx_t handle, void const* data, size_t data_length)
+bool tr_sha1_update(tr_sha1_ctx_t handle, void const *data, size_t data_length)
 {
     TR_ASSERT(handle != NULL);
 
@@ -165,7 +165,7 @@ bool tr_sha1_update(tr_sha1_ctx_t handle, void const* data, size_t data_length)
     return true;
 }
 
-bool tr_sha1_final(tr_sha1_ctx_t handle, uint8_t* hash)
+bool tr_sha1_final(tr_sha1_ctx_t handle, uint8_t *hash)
 {
     if (hash != NULL)
     {
@@ -188,7 +188,7 @@ bool tr_sha1_final(tr_sha1_ctx_t handle, uint8_t* hash)
 
 tr_rc4_ctx_t tr_rc4_new(void)
 {
-    api_arc4_context* handle = tr_new0(api_arc4_context, 1);
+    api_arc4_context *handle = tr_new0(api_arc4_context, 1);
 
 #if API_VERSION_NUMBER >= 0x01030800
     API(arc4_init)(handle);
@@ -206,7 +206,7 @@ void tr_rc4_free(tr_rc4_ctx_t handle)
     tr_free(handle);
 }
 
-void tr_rc4_set_key(tr_rc4_ctx_t handle, uint8_t const* key, size_t key_length)
+void tr_rc4_set_key(tr_rc4_ctx_t handle, uint8_t const *key, size_t key_length)
 {
     TR_ASSERT(handle != NULL);
     TR_ASSERT(key != NULL);
@@ -214,7 +214,7 @@ void tr_rc4_set_key(tr_rc4_ctx_t handle, uint8_t const* key, size_t key_length)
     API(arc4_setup)(handle, key, key_length);
 }
 
-void tr_rc4_process(tr_rc4_ctx_t handle, void const* input, void* output, size_t length)
+void tr_rc4_process(tr_rc4_ctx_t handle, void const *input, void *output, size_t length)
 {
     TR_ASSERT(handle != NULL);
 
@@ -234,15 +234,15 @@ void tr_rc4_process(tr_rc4_ctx_t handle, void const* input, void* output, size_t
 ***/
 
 tr_dh_ctx_t tr_dh_new(
-    uint8_t const* prime_num,
+    uint8_t const *prime_num,
     size_t prime_num_length,
-    uint8_t const* generator_num,
+    uint8_t const *generator_num,
     size_t generator_num_length)
 {
     TR_ASSERT(prime_num != NULL);
     TR_ASSERT(generator_num != NULL);
 
-    api_dhm_context* handle = tr_new0(api_dhm_context, 1);
+    api_dhm_context *handle = tr_new0(api_dhm_context, 1);
 
 #if API_VERSION_NUMBER >= 0x01030800
     API(dhm_init)(handle);
@@ -270,12 +270,12 @@ void tr_dh_free(tr_dh_ctx_t handle)
     API(dhm_free)(handle);
 }
 
-bool tr_dh_make_key(tr_dh_ctx_t raw_handle, size_t private_key_length, uint8_t* public_key, size_t* public_key_length)
+bool tr_dh_make_key(tr_dh_ctx_t raw_handle, size_t private_key_length, uint8_t *public_key, size_t *public_key_length)
 {
     TR_ASSERT(raw_handle != NULL);
     TR_ASSERT(public_key != NULL);
 
-    api_dhm_context* handle = raw_handle;
+    api_dhm_context *handle = raw_handle;
 
     if (public_key_length != NULL)
     {
@@ -285,13 +285,13 @@ bool tr_dh_make_key(tr_dh_ctx_t raw_handle, size_t private_key_length, uint8_t* 
     return check_result(API(dhm_make_public)(handle, private_key_length, public_key, handle->len, my_rand, NULL));
 }
 
-tr_dh_secret_t tr_dh_agree(tr_dh_ctx_t raw_handle, uint8_t const* other_public_key, size_t other_public_key_length)
+tr_dh_secret_t tr_dh_agree(tr_dh_ctx_t raw_handle, uint8_t const *other_public_key, size_t other_public_key_length)
 {
     TR_ASSERT(raw_handle != NULL);
     TR_ASSERT(other_public_key != NULL);
 
-    api_dhm_context* handle = raw_handle;
-    struct tr_dh_secret* ret;
+    api_dhm_context *handle = raw_handle;
+    struct tr_dh_secret *ret;
     size_t secret_key_length;
 
     if (!check_result(API(dhm_read_public)(handle, other_public_key, other_public_key_length)))
@@ -327,12 +327,12 @@ tr_dh_secret_t tr_dh_agree(tr_dh_ctx_t raw_handle, uint8_t const* other_public_k
 ****
 ***/
 
-bool tr_rand_buffer(void* buffer, size_t length)
+bool tr_rand_buffer(void *buffer, size_t length)
 {
     TR_ASSERT(buffer != NULL);
 
     bool ret;
-    tr_lock* rng_lock = get_rng_lock();
+    tr_lock *rng_lock = get_rng_lock();
 
     tr_lockLock(rng_lock);
     ret = check_result(API(ctr_drbg_random)(get_rng(), buffer, length));

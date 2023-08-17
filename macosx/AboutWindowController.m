@@ -26,8 +26,8 @@
 
 @implementation AboutWindowController
 
-AboutWindowController* fAboutBoxInstance = nil;
-+ (AboutWindowController*)aboutController
+AboutWindowController *fAboutBoxInstance = nil;
++ (AboutWindowController *)aboutController
 {
     if (!fAboutBoxInstance)
         fAboutBoxInstance = [[self alloc] initWithWindowNibName:@"AboutWindow"];
@@ -69,7 +69,7 @@ AboutWindowController* fAboutBoxInstance = nil;
 
 - (IBAction)showLicense:(id)sender
 {
-    NSString* licenseText = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"COPYING" ofType:nil]
+    NSString *licenseText = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"COPYING" ofType:nil]
                                                   usedEncoding:nil
                                                          error:NULL];
     [fLicenseView setString:licenseText];

@@ -67,8 +67,8 @@
 - (void)drawRegularBar:(NSRect)barRect;
 - (void)drawPiecesBar:(NSRect)barRect;
 
-- (NSRect)rectForMinimalStatusWithString:(NSAttributedString*)string inBounds:(NSRect)bounds;
-- (NSRect)rectForTitleWithString:(NSAttributedString*)string withRightBound:(CGFloat)rightBound inBounds:(NSRect)bounds;
+- (NSRect)rectForMinimalStatusWithString:(NSAttributedString *)string inBounds:(NSRect)bounds;
+- (NSRect)rectForTitleWithString:(NSAttributedString *)string withRightBound:(CGFloat)rightBound inBounds:(NSRect)bounds;
 - (NSRect)rectForProgressWithStringInBounds:(NSRect)bounds;
 - (NSRect)rectForStatusWithStringInBounds:(NSRect)bounds;
 - (NSRect)barRectRegForBounds:(NSRect)bounds;
@@ -78,12 +78,12 @@
 - (NSRect)revealButtonRectForBounds:(NSRect)bounds;
 - (NSRect)actionButtonRectForBounds:(NSRect)bounds;
 
-- (NSAttributedString*)attributedTitle;
-- (NSAttributedString*)attributedStatusString:(NSString*)string;
+- (NSAttributedString *)attributedTitle;
+- (NSAttributedString *)attributedStatusString:(NSString *)string;
 
-- (NSString*)buttonString;
-- (NSString*)statusString;
-- (NSString*)minimalStatusString;
+- (NSString *)buttonString;
+- (NSString *)statusString;
+- (NSString *)minimalStatusString;
 
 @end
 
@@ -96,7 +96,7 @@
     {
         fDefaults = [NSUserDefaults standardUserDefaults];
 
-        NSMutableParagraphStyle* paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+        NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
         [paragraphStyle setLineBreakMode:NSLineBreakByTruncatingMiddle];
 
         fTitleAttributes = [[NSMutableDictionary alloc] initWithCapacity:3];
@@ -114,7 +114,7 @@
     return self;
 }
 
-- (id)copyWithZone:(NSZone*)zone
+- (id)copyWithZone:(NSZone *)zone
 {
     id value = [super copyWithZone:zone];
     [value setRepresentedObject:[self representedObject]];
@@ -128,7 +128,7 @@
     return NSMakeRect(NSMinX(bounds) + PADDING_HORIZONTAL, ceil(NSMidY(bounds) - imageSize * 0.5), imageSize, imageSize);
 }
 
-- (NSCellHitResult)hitTestForEvent:(NSEvent*)event inRect:(NSRect)cellFrame ofView:(NSView*)controlView
+- (NSCellHitResult)hitTestForEvent:(NSEvent *)event inRect:(NSRect)cellFrame ofView:(NSView *)controlView
 {
     NSPoint point = [controlView convertPoint:[event locationInWindow] fromView:nil];
 
@@ -144,7 +144,7 @@
     return YES;
 }
 
-- (BOOL)trackMouse:(NSEvent*)event inRect:(NSRect)cellFrame ofView:(NSView*)controlView untilMouseUp:(BOOL)flag
+- (BOOL)trackMouse:(NSEvent *)event inRect:(NSRect)cellFrame ofView:(NSView *)controlView untilMouseUp:(BOOL)flag
 {
     fTracking = YES;
 
@@ -158,7 +158,7 @@
     NSRect const revealRect = [self revealButtonRectForBounds:cellFrame];
     BOOL const checkReveal = NSMouseInRect(point, revealRect, [controlView isFlipped]);
 
-    [(TorrentTableView*)controlView removeTrackingAreas];
+    [(TorrentTableView *)controlView removeTrackingAreas];
 
     while ([event type] != NSLeftMouseUp)
     {
@@ -198,17 +198,17 @@
     {
         fMouseDownControlButton = NO;
 
-        [(TorrentTableView*)controlView toggleControlForTorrent:[self representedObject]];
+        [(TorrentTableView *)controlView toggleControlForTorrent:[self representedObject]];
     }
     else if (fMouseDownRevealButton)
     {
         fMouseDownRevealButton = NO;
         [controlView setNeedsDisplayInRect:cellFrame];
 
-        NSString* location = [[self representedObject] dataLocation];
+        NSString *location = [[self representedObject] dataLocation];
         if (location)
         {
-            NSURL* file = [NSURL fileURLWithPath:location];
+            NSURL *file = [NSURL fileURLWithPath:location];
             [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:@[ file ]];
         }
     }
@@ -220,9 +220,9 @@
     return YES;
 }
 
-- (void)addTrackingAreasForView:(NSView*)controlView
+- (void)addTrackingAreasForView:(NSView *)controlView
                          inRect:(NSRect)cellFrame
-                   withUserInfo:(NSDictionary*)userInfo
+                   withUserInfo:(NSDictionary *)userInfo
                   mouseLocation:(NSPoint)mouseLocation
 {
     NSTrackingAreaOptions const options = NSTrackingEnabledDuringMouseDrag | NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways;
@@ -234,12 +234,12 @@
         if (NSMouseInRect(mouseLocation, cellFrame, [controlView isFlipped]))
         {
             rowOptions |= NSTrackingAssumeInside;
-            [(TorrentTableView*)controlView setRowHover:[userInfo[@"Row"] integerValue]];
+            [(TorrentTableView *)controlView setRowHover:[userInfo[@"Row"] integerValue]];
         }
 
-        NSMutableDictionary* rowInfo = [userInfo mutableCopy];
+        NSMutableDictionary *rowInfo = [userInfo mutableCopy];
         rowInfo[@"Type"] = @"Row";
-        NSTrackingArea* area = [[NSTrackingArea alloc] initWithRect:cellFrame options:rowOptions owner:controlView userInfo:rowInfo];
+        NSTrackingArea *area = [[NSTrackingArea alloc] initWithRect:cellFrame options:rowOptions owner:controlView userInfo:rowInfo];
         [controlView addTrackingArea:area];
     }
 
@@ -249,12 +249,12 @@
     if (NSMouseInRect(mouseLocation, controlButtonRect, [controlView isFlipped]))
     {
         controlOptions |= NSTrackingAssumeInside;
-        [(TorrentTableView*)controlView setControlButtonHover:[userInfo[@"Row"] integerValue]];
+        [(TorrentTableView *)controlView setControlButtonHover:[userInfo[@"Row"] integerValue]];
     }
 
-    NSMutableDictionary* controlInfo = [userInfo mutableCopy];
+    NSMutableDictionary *controlInfo = [userInfo mutableCopy];
     controlInfo[@"Type"] = @"Control";
-    NSTrackingArea* area = [[NSTrackingArea alloc] initWithRect:controlButtonRect options:controlOptions owner:controlView
+    NSTrackingArea *area = [[NSTrackingArea alloc] initWithRect:controlButtonRect options:controlOptions owner:controlView
                                                        userInfo:controlInfo];
     [controlView addTrackingArea:area];
 
@@ -264,10 +264,10 @@
     if (NSMouseInRect(mouseLocation, revealButtonRect, [controlView isFlipped]))
     {
         revealOptions |= NSTrackingAssumeInside;
-        [(TorrentTableView*)controlView setRevealButtonHover:[userInfo[@"Row"] integerValue]];
+        [(TorrentTableView *)controlView setRevealButtonHover:[userInfo[@"Row"] integerValue]];
     }
 
-    NSMutableDictionary* revealInfo = [userInfo mutableCopy];
+    NSMutableDictionary *revealInfo = [userInfo mutableCopy];
     revealInfo[@"Type"] = @"Reveal";
     area = [[NSTrackingArea alloc] initWithRect:revealButtonRect options:revealOptions owner:controlView userInfo:revealInfo];
     [controlView addTrackingArea:area];
@@ -278,10 +278,10 @@
     if (NSMouseInRect(mouseLocation, actionButtonRect, [controlView isFlipped]))
     {
         actionOptions |= NSTrackingAssumeInside;
-        [(TorrentTableView*)controlView setActionButtonHover:[userInfo[@"Row"] integerValue]];
+        [(TorrentTableView *)controlView setActionButtonHover:[userInfo[@"Row"] integerValue]];
     }
 
-    NSMutableDictionary* actionInfo = [userInfo mutableCopy];
+    NSMutableDictionary *actionInfo = [userInfo mutableCopy];
     actionInfo[@"Type"] = @"Action";
     area = [[NSTrackingArea alloc] initWithRect:actionButtonRect options:actionOptions owner:controlView userInfo:actionInfo];
     [controlView addTrackingArea:area];
@@ -312,9 +312,9 @@
     fMouseDownActionButton = pushed;
 }
 
-- (void)drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView*)controlView
+- (void)drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
 {
-    Torrent* torrent = [self representedObject];
+    Torrent *torrent = [self representedObject];
     NSAssert(torrent != nil, @"can't have a TorrentCell without a Torrent");
 
     BOOL const minimal = [fDefaults boolForKey:@"SmallView"];
@@ -340,14 +340,14 @@
                 *darkGroupColor = [groupColor blendedColorWithFraction:0.2 ofColor:[NSColor whiteColor]];
 
         //border
-        NSBezierPath* bp = [NSBezierPath bezierPathWithRoundedRect:groupRect xRadius:radius yRadius:radius];
+        NSBezierPath *bp = [NSBezierPath bezierPathWithRoundedRect:groupRect xRadius:radius yRadius:radius];
         [darkGroupColor set];
         [bp setLineWidth:2.0];
         [bp stroke];
 
         //inside
         bp = [NSBezierPath bezierPathWithRoundedRect:groupRect xRadius:radius yRadius:radius];
-        NSGradient* gradient = [[NSGradient alloc] initWithStartingColor:[groupColor blendedColorWithFraction:0.7
+        NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:[groupColor blendedColorWithFraction:0.7
                                                                                                       ofColor:[NSColor whiteColor]]
                                                              endingColor:darkGroupColor];
         [gradient drawInBezierPath:bp angle:90.0];
@@ -358,14 +358,14 @@
     //icon
     if (!minimal || !(!fTracking && fHoverAction)) //don't show in minimal mode when hovered over
     {
-        NSImage* icon = (minimal && error) ? [NSImage imageNamed:NSImageNameCaution] : [torrent icon];
+        NSImage *icon = (minimal && error) ? [NSImage imageNamed:NSImageNameCaution] : [torrent icon];
         [icon drawInRect:iconRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil];
     }
 
     //error badge
     if (error && !minimal)
     {
-        NSImage* errorImage = [NSImage imageNamed:NSImageNameCaution];
+        NSImage *errorImage = [NSImage imageNamed:NSImageNameCaution];
         NSRect const errorRect = NSMakeRect(NSMaxX(iconRect) - ERROR_IMAGE_SIZE, NSMaxY(iconRect) - ERROR_IMAGE_SIZE, ERROR_IMAGE_SIZE, ERROR_IMAGE_SIZE);
         [errorImage drawInRect:errorRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES
                          hints:nil];
@@ -388,7 +388,7 @@
     CGFloat minimalTitleRightBound;
     if (minimal)
     {
-        NSAttributedString* minimalString = [self attributedStatusString:[self minimalStatusString]];
+        NSAttributedString *minimalString = [self attributedStatusString:[self minimalStatusString]];
         NSRect minimalStatusRect = [self rectForMinimalStatusWithString:minimalString inBounds:cellFrame];
 
         if (!fHover)
@@ -400,7 +400,7 @@
     //progress
     if (!minimal)
     {
-        NSAttributedString* progressString = [self attributedStatusString:[torrent progressString]];
+        NSAttributedString *progressString = [self attributedStatusString:[torrent progressString]];
         NSRect progressRect = [self rectForProgressWithStringInBounds:cellFrame];
 
         [progressString drawInRect:progressRect];
@@ -409,7 +409,7 @@
     if (!minimal || fHover)
     {
         //control button
-        NSString* controlImageSuffix;
+        NSString *controlImageSuffix;
         if (fMouseDownControlButton)
             controlImageSuffix = @"On";
         else if (!fTracking && fHoverControl)
@@ -417,7 +417,7 @@
         else
             controlImageSuffix = @"Off";
 
-        NSImage* controlImage;
+        NSImage *controlImage;
         if ([torrent isActive])
             controlImage = [NSImage imageNamed:[@"Pause" stringByAppendingString:controlImageSuffix]];
         else
@@ -436,7 +436,7 @@
         minimalTitleRightBound = MIN(minimalTitleRightBound, NSMinX(controlRect));
 
         //reveal button
-        NSString* revealImageString;
+        NSString *revealImageString;
         if (fMouseDownRevealButton)
             revealImageString = @"RevealOn";
         else if (!fTracking && fHoverReveal)
@@ -444,7 +444,7 @@
         else
             revealImageString = @"RevealOff";
 
-        NSImage* revealImage = [NSImage imageNamed:revealImageString];
+        NSImage *revealImage = [NSImage imageNamed:revealImageString];
         [revealImage drawInRect:[self revealButtonRectForBounds:cellFrame] fromRect:NSZeroRect operation:NSCompositeSourceOver
                        fraction:1.0
                  respectFlipped:YES
@@ -452,7 +452,7 @@
 
 //action button
 #warning image should use new gear
-        NSString* actionImageString;
+        NSString *actionImageString;
         if (fMouseDownActionButton)
 #warning we can get rid of this on 10.7
             actionImageString = @"ActionOn";
@@ -463,7 +463,7 @@
 
         if (actionImageString)
         {
-            NSImage* actionImage = [NSImage imageNamed:actionImageString];
+            NSImage *actionImage = [NSImage imageNamed:actionImageString];
             [actionImage drawInRect:[self actionButtonRectForBounds:cellFrame] fromRect:NSZeroRect
                           operation:NSCompositeSourceOver
                            fraction:1.0
@@ -473,7 +473,7 @@
     }
 
     //title
-    NSAttributedString* titleString = [self attributedTitle];
+    NSAttributedString *titleString = [self attributedTitle];
     NSRect titleRect = [self rectForTitleWithString:titleString withRightBound:minimalTitleRightBound inBounds:cellFrame];
     [titleString drawInRect:titleRect];
 
@@ -486,8 +486,8 @@
             PRIORITY_ICON_WIDTH,
             PRIORITY_ICON_HEIGHT);
 
-        NSColor* priorityColor = [self backgroundStyle] == NSBackgroundStyleDark ? [NSColor whiteColor] : [NSColor labelColor];
-        NSImage* priorityImage = [[NSImage imageNamed:([torrent priority] == TR_PRI_HIGH ? @"PriorityHighTemplate" : @"PriorityLowTemplate")]
+        NSColor *priorityColor = [self backgroundStyle] == NSBackgroundStyleDark ? [NSColor whiteColor] : [NSColor labelColor];
+        NSImage *priorityImage = [[NSImage imageNamed:([torrent priority] == TR_PRI_HIGH ? @"PriorityHighTemplate" : @"PriorityLowTemplate")]
             imageWithColor:priorityColor];
         [priorityImage drawInRect:priorityRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0
                    respectFlipped:YES
@@ -497,12 +497,12 @@
     //status
     if (!minimal)
     {
-        NSAttributedString* statusString = [self attributedStatusString:[self statusString]];
+        NSAttributedString *statusString = [self attributedStatusString:[self statusString]];
         [statusString drawInRect:[self rectForStatusWithStringInBounds:cellFrame]];
     }
 }
 
-- (NSRect)expansionFrameWithFrame:(NSRect)cellFrame inView:(NSView*)view
+- (NSRect)expansionFrameWithFrame:(NSRect)cellFrame inView:(NSView *)view
 {
     BOOL minimal = [fDefaults boolForKey:@"SmallView"];
 
@@ -510,7 +510,7 @@
     CGFloat minimalTitleRightBound;
     if (minimal)
     {
-        NSAttributedString* minimalString = [self attributedStatusString:[self minimalStatusString]];
+        NSAttributedString *minimalString = [self attributedStatusString:[self minimalStatusString]];
         NSRect minimalStatusRect = [self rectForMinimalStatusWithString:minimalString inBounds:cellFrame];
 
         minimalTitleRightBound = NSMinX(minimalStatusRect);
@@ -522,7 +522,7 @@
         minimalTitleRightBound = MIN(minimalTitleRightBound, NSMinX(controlRect));
     }
 
-    NSAttributedString* titleString = [self attributedTitle];
+    NSAttributedString *titleString = [self attributedTitle];
     NSRect realRect = [self rectForTitleWithString:titleString withRightBound:minimalTitleRightBound inBounds:cellFrame];
 
     NSAssert([titleString size].width >= NSWidth(realRect), @"Full rect width should not be less than the used title rect width!");
@@ -537,13 +537,13 @@
     return NSZeroRect;
 }
 
-- (void)drawWithExpansionFrame:(NSRect)cellFrame inView:(NSView*)view
+- (void)drawWithExpansionFrame:(NSRect)cellFrame inView:(NSView *)view
 {
     cellFrame.origin.x += PADDING_EXPANSION_FRAME;
     cellFrame.origin.y += PADDING_EXPANSION_FRAME;
 
     fTitleAttributes[NSForegroundColorAttributeName] = [NSColor labelColor];
-    NSAttributedString* titleString = [self attributedTitle];
+    NSAttributedString *titleString = [self attributedTitle];
     [titleString drawInRect:cellFrame];
 }
 
@@ -555,7 +555,7 @@
 {
     BOOL const minimal = [fDefaults boolForKey:@"SmallView"];
 
-    CGFloat const piecesBarPercent = [(TorrentTableView*)[self controlView] piecesBarPercent];
+    CGFloat const piecesBarPercent = [(TorrentTableView *)[self controlView] piecesBarPercent];
     if (piecesBarPercent > 0.0)
     {
         NSRect piecesBarRect, regularBarRect;
@@ -571,14 +571,14 @@
         [self drawRegularBar:barRect];
     }
 
-    NSColor* borderColor = minimal ? fBarMinimalBorderColor : fBarBorderColor;
+    NSColor *borderColor = minimal ? fBarMinimalBorderColor : fBarBorderColor;
     [borderColor set];
     [NSBezierPath strokeRect:NSInsetRect(barRect, 0.5, 0.5)];
 }
 
 - (void)drawRegularBar:(NSRect)barRect
 {
-    Torrent* torrent = [self representedObject];
+    Torrent *torrent = [self representedObject];
 
     NSRect haveRect, missingRect;
     NSDivideRect(barRect, &haveRect, &missingRect, round([torrent progress] * NSWidth(barRect)), NSMinXEdge);
@@ -646,7 +646,7 @@
 
 - (void)drawPiecesBar:(NSRect)barRect
 {
-    Torrent* torrent = [self representedObject];
+    Torrent *torrent = [self representedObject];
 
     //fill an all-white bar for magnet links
     if ([torrent isMagnet])
@@ -657,10 +657,10 @@
     }
 
     NSInteger pieceCount = MIN([torrent pieceCount], MAX_PIECES);
-    float* piecesPercent = malloc(pieceCount * sizeof(float));
+    float *piecesPercent = malloc(pieceCount * sizeof(float));
     [torrent getAmountFinished:piecesPercent size:pieceCount];
 
-    NSBitmapImageRep* bitmap = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:nil pixelsWide:pieceCount pixelsHigh:1
+    NSBitmapImageRep *bitmap = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:nil pixelsWide:pieceCount pixelsHigh:1
                                                                     bitsPerSample:8
                                                                   samplesPerPixel:4
                                                                          hasAlpha:YES
@@ -669,12 +669,12 @@
                                                                       bytesPerRow:0
                                                                      bitsPerPixel:0];
 
-    NSIndexSet* previousFinishedIndexes = [torrent previousFinishedPieces];
-    NSMutableIndexSet* finishedIndexes = [NSMutableIndexSet indexSet];
+    NSIndexSet *previousFinishedIndexes = [torrent previousFinishedPieces];
+    NSMutableIndexSet *finishedIndexes = [NSMutableIndexSet indexSet];
 
     for (NSInteger i = 0; i < pieceCount; i++)
     {
-        NSColor* pieceColor;
+        NSColor *pieceColor;
         if (piecesPercent[i] == 1.0f)
         {
             if (previousFinishedIndexes && ![previousFinishedIndexes containsIndex:i])
@@ -700,7 +700,7 @@
                  hints:nil];
 }
 
-- (NSRect)rectForMinimalStatusWithString:(NSAttributedString*)string inBounds:(NSRect)bounds
+- (NSRect)rectForMinimalStatusWithString:(NSAttributedString *)string inBounds:(NSRect)bounds
 {
     NSRect result;
     result.size = [string size];
@@ -711,7 +711,7 @@
     return result;
 }
 
-- (NSRect)rectForTitleWithString:(NSAttributedString*)string withRightBound:(CGFloat)rightBound inBounds:(NSRect)bounds
+- (NSRect)rectForTitleWithString:(NSAttributedString *)string withRightBound:(CGFloat)rightBound inBounds:(NSRect)bounds
 {
     BOOL const minimal = [fDefaults boolForKey:@"SmallView"];
 
@@ -730,7 +730,7 @@
         result.size.width = NSMaxX(bounds) - NSMinX(result) - PADDING_HORIZONTAL;
     }
 
-    if ([(Torrent*)[self representedObject] priority] != TR_PRI_NORMAL)
+    if ([(Torrent *)[self representedObject] priority] != TR_PRI_NORMAL)
         result.size.width -= PRIORITY_ICON_WIDTH + PADDING_BETWEEN_TITLE_AND_PRIORITY;
     result.size.width = MIN(NSWidth(result), [string size].width);
 
@@ -826,24 +826,24 @@
     return NSMakeRect(NSMidX(iconRect) - ACTION_BUTTON_WIDTH * 0.5, NSMidY(iconRect) - ACTION_BUTTON_WIDTH * 0.5, ACTION_BUTTON_WIDTH, ACTION_BUTTON_WIDTH);
 }
 
-- (NSAttributedString*)attributedTitle
+- (NSAttributedString *)attributedTitle
 {
-    NSString* title = [(Torrent*)[self representedObject] name];
+    NSString *title = [(Torrent *)[self representedObject] name];
     return [[NSAttributedString alloc] initWithString:title attributes:fTitleAttributes];
 }
 
-- (NSAttributedString*)attributedStatusString:(NSString*)string
+- (NSAttributedString *)attributedStatusString:(NSString *)string
 {
     return [[NSAttributedString alloc] initWithString:string attributes:fStatusAttributes];
 }
 
-- (NSString*)buttonString
+- (NSString *)buttonString
 {
     if (fMouseDownRevealButton || (!fTracking && fHoverReveal))
         return NSLocalizedString(@"Show the data file in Finder", "Torrent cell -> button info");
     else if (fMouseDownControlButton || (!fTracking && fHoverControl))
     {
-        Torrent* torrent = [self representedObject];
+        Torrent *torrent = [self representedObject];
         if ([torrent isActive])
             return NSLocalizedString(@"Pause the transfer", "Torrent Table -> tooltip");
         else
@@ -862,18 +862,18 @@
         return nil;
 }
 
-- (NSString*)statusString
+- (NSString *)statusString
 {
-    NSString* buttonString;
+    NSString *buttonString;
     if ((buttonString = [self buttonString]))
         return buttonString;
     else
         return [[self representedObject] statusString];
 }
 
-- (NSString*)minimalStatusString
+- (NSString *)minimalStatusString
 {
-    Torrent* torrent = [self representedObject];
+    Torrent *torrent = [self representedObject];
     return [fDefaults boolForKey:@"DisplaySmallStatusRegular"] ? [torrent shortStatusString] : [torrent remainingTimeString];
 }
 

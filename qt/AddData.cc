@@ -15,7 +15,7 @@
 #include "AddData.h"
 #include "Utils.h"
 
-int AddData::set(QString const& key)
+int AddData::set(QString const &key)
 {
     if (Utils::isMagnetLink(key))
     {
@@ -45,11 +45,11 @@ int AddData::set(QString const& key)
     else
     {
         size_t len;
-        void* raw = tr_base64_decode(key.toUtf8().constData(), key.toUtf8().size(), &len);
+        void *raw = tr_base64_decode(key.toUtf8().constData(), key.toUtf8().size(), &len);
 
         if (raw != nullptr)
         {
-            metainfo.append(static_cast<char const*>(raw), int(len));
+            metainfo.append(static_cast<char const *>(raw), int(len));
             tr_free(raw);
             type = METAINFO;
         }
@@ -69,8 +69,8 @@ QByteArray AddData::toBase64() const
     if (!metainfo.isEmpty())
     {
         size_t len;
-        void* b64 = tr_base64_encode(metainfo.constData(), metainfo.size(), &len);
-        ret = QByteArray(static_cast<char const*>(b64), int(len));
+        void *b64 = tr_base64_encode(metainfo.constData(), metainfo.size(), &len);
+        ret = QByteArray(static_cast<char const *>(b64), int(len));
         tr_free(b64);
     }
 
@@ -98,9 +98,9 @@ QString AddData::readableName() const
     case METAINFO:
         {
             tr_info inf;
-            tr_ctor* ctor = tr_ctorNew(nullptr);
+            tr_ctor *ctor = tr_ctorNew(nullptr);
 
-            tr_ctorSetMetainfo(ctor, reinterpret_cast<quint8 const*>(metainfo.constData()), metainfo.size());
+            tr_ctorSetMetainfo(ctor, reinterpret_cast<quint8 const *>(metainfo.constData()), metainfo.size());
 
             if (tr_torrentParse(ctor, &inf) == TR_PARSE_OK)
             {

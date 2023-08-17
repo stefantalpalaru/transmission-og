@@ -37,12 +37,12 @@ public:
 public:
     TrackerModel() = default;
 
-    void refresh(TorrentModel const&, torrent_ids_t const& ids);
-    int find(int torrentId, QString const& url) const;
+    void refresh(TorrentModel const &, torrent_ids_t const &ids);
+    int find(int torrentId, QString const &url) const;
 
     // QAbstractItemModel
-    int rowCount(QModelIndex const& parent = QModelIndex()) const override;
-    QVariant data(QModelIndex const& index, int role = Qt::DisplayRole) const override;
+    int rowCount(QModelIndex const &parent = QModelIndex()) const override;
+    QVariant data(QModelIndex const &index, int role = Qt::DisplayRole) const override;
 
 private:
     typedef QVector<TrackerInfo> rows_t;

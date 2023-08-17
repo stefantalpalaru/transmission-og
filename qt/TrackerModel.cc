@@ -14,14 +14,14 @@
 #include "TorrentModel.h"
 #include "TrackerModel.h"
 
-int TrackerModel::rowCount(QModelIndex const& parent) const
+int TrackerModel::rowCount(QModelIndex const &parent) const
 {
     Q_UNUSED(parent)
 
     return parent.isValid() ? 0 : myRows.size();
 }
 
-QVariant TrackerModel::data(QModelIndex const& index, int role) const
+QVariant TrackerModel::data(QModelIndex const &index, int role) const
 {
     QVariant var;
 
@@ -29,7 +29,7 @@ QVariant TrackerModel::data(QModelIndex const& index, int role) const
 
     if (0 <= row && row < myRows.size())
     {
-        TrackerInfo const& trackerInfo = myRows.at(row);
+        TrackerInfo const &trackerInfo = myRows.at(row);
 
         switch (role)
         {
@@ -59,7 +59,7 @@ QVariant TrackerModel::data(QModelIndex const& index, int role) const
 
 struct CompareTrackers
 {
-    bool operator()(TrackerInfo const& a, TrackerInfo const& b) const
+    bool operator()(TrackerInfo const &a, TrackerInfo const &b) const
     {
         if (a.torrentId != b.torrentId)
         {
@@ -80,20 +80,20 @@ struct CompareTrackers
     }
 };
 
-void TrackerModel::refresh(TorrentModel const& torrentModel, torrent_ids_t const& ids)
+void TrackerModel::refresh(TorrentModel const &torrentModel, torrent_ids_t const &ids)
 {
     // build a list of the TrackerInfos
     QVector<TrackerInfo> trackers;
 
     for (int const id : ids)
     {
-        Torrent const* tor = torrentModel.getTorrentFromId(id);
+        Torrent const *tor = torrentModel.getTorrentFromId(id);
 
         if (tor != nullptr)
         {
             TrackerStatsList const trackerList = tor->trackerStats();
 
-            for (TrackerStat const& st : trackerList)
+            for (TrackerStat const &st : trackerList)
             {
                 TrackerInfo trackerInfo;
                 trackerInfo.st = st;
@@ -142,11 +142,11 @@ void TrackerModel::refresh(TorrentModel const& torrentModel, torrent_ids_t const
     }
 }
 
-int TrackerModel::find(int torrentId, QString const& url) const
+int TrackerModel::find(int torrentId, QString const &url) const
 {
     for (int i = 0, n = myRows.size(); i < n; ++i)
     {
-        TrackerInfo const& inf = myRows.at(i);
+        TrackerInfo const &inf = myRows.at(i);
 
         if (inf.torrentId == torrentId && url == inf.st.announce)
         {

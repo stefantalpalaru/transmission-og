@@ -36,20 +36,20 @@ struct tr_stats_handle
     bool isDirty;
 };
 
-static char* getOldFilename(tr_session const* session)
+static char *getOldFilename(tr_session const *session)
 {
     return tr_buildPath(tr_sessionGetConfigDir(session), "stats.benc", NULL);
 }
 
-static char* getFilename(tr_session const* session)
+static char *getFilename(tr_session const *session)
 {
     return tr_buildPath(tr_sessionGetConfigDir(session), "stats.json", NULL);
 }
 
-static void loadCumulativeStats(tr_session const* session, tr_session_stats* setme)
+static void loadCumulativeStats(tr_session const *session, tr_session_stats *setme)
 {
     tr_variant top;
-    char* filename;
+    char *filename;
     bool loaded = false;
 
     filename = getFilename(session);
@@ -96,9 +96,9 @@ static void loadCumulativeStats(tr_session const* session, tr_session_stats* set
     }
 }
 
-static void saveCumulativeStats(tr_session const* session, tr_session_stats const* s)
+static void saveCumulativeStats(tr_session const *session, tr_session_stats const *s)
 {
-    char* filename;
+    char *filename;
     tr_variant top;
 
     tr_variantInitDict(&top, 5);
@@ -120,9 +120,9 @@ static void saveCumulativeStats(tr_session const* session, tr_session_stats cons
 ****
 ***/
 
-void tr_statsInit(tr_session* session)
+void tr_statsInit(tr_session *session)
 {
-    struct tr_stats_handle* stats = tr_new0(struct tr_stats_handle, 1);
+    struct tr_stats_handle *stats = tr_new0(struct tr_stats_handle, 1);
 
     loadCumulativeStats(session, &stats->old);
     stats->single.sessionCount = 1;
@@ -130,14 +130,14 @@ void tr_statsInit(tr_session* session)
     session->sessionStats = stats;
 }
 
-static struct tr_stats_handle* getStats(tr_session const* session)
+static struct tr_stats_handle *getStats(tr_session const *session)
 {
     return session != NULL ? session->sessionStats : NULL;
 }
 
-void tr_statsSaveDirty(tr_session* session)
+void tr_statsSaveDirty(tr_session *session)
 {
-    struct tr_stats_handle* h = getStats(session);
+    struct tr_stats_handle *h = getStats(session);
 
     if (h != NULL && h->isDirty)
     {
@@ -148,7 +148,7 @@ void tr_statsSaveDirty(tr_session* session)
     }
 }
 
-void tr_statsClose(tr_session* session)
+void tr_statsClose(tr_session *session)
 {
     tr_statsSaveDirty(session);
 
@@ -160,12 +160,12 @@ void tr_statsClose(tr_session* session)
 ****
 ***/
 
-static void updateRatio(tr_session_stats* setme)
+static void updateRatio(tr_session_stats *setme)
 {
     setme->ratio = tr_getRatio(setme->uploadedBytes, setme->downloadedBytes);
 }
 
-static void addStats(tr_session_stats* setme, tr_session_stats const* a, tr_session_stats const* b)
+static void addStats(tr_session_stats *setme, tr_session_stats const *a, tr_session_stats const *b)
 {
     setme->uploadedBytes = a->uploadedBytes + b->uploadedBytes;
     setme->downloadedBytes = a->downloadedBytes + b->downloadedBytes;
@@ -175,9 +175,9 @@ static void addStats(tr_session_stats* setme, tr_session_stats const* a, tr_sess
     updateRatio(setme);
 }
 
-void tr_sessionGetStats(tr_session const* session, tr_session_stats* setme)
+void tr_sessionGetStats(tr_session const *session, tr_session_stats *setme)
 {
-    struct tr_stats_handle const* stats = getStats(session);
+    struct tr_stats_handle const *stats = getStats(session);
 
     if (stats != NULL)
     {
@@ -187,9 +187,9 @@ void tr_sessionGetStats(tr_session const* session, tr_session_stats* setme)
     }
 }
 
-void tr_sessionGetCumulativeStats(tr_session const* session, tr_session_stats* setme)
+void tr_sessionGetCumulativeStats(tr_session const *session, tr_session_stats *setme)
 {
-    struct tr_stats_handle const* stats = getStats(session);
+    struct tr_stats_handle const *stats = getStats(session);
     tr_session_stats current = TR_SESSION_STATS_INIT;
 
     if (stats != NULL)
@@ -199,7 +199,7 @@ void tr_sessionGetCumulativeStats(tr_session const* session, tr_session_stats* s
     }
 }
 
-void tr_sessionClearStats(tr_session* session)
+void tr_sessionClearStats(tr_session *session)
 {
     tr_session_stats zero;
 
@@ -219,9 +219,9 @@ void tr_sessionClearStats(tr_session* session)
 ***
 **/
 
-void tr_statsAddUploaded(tr_session* session, uint32_t bytes)
+void tr_statsAddUploaded(tr_session *session, uint32_t bytes)
 {
-    struct tr_stats_handle* s;
+    struct tr_stats_handle *s;
 
     if ((s = getStats(session)) != NULL)
     {
@@ -230,9 +230,9 @@ void tr_statsAddUploaded(tr_session* session, uint32_t bytes)
     }
 }
 
-void tr_statsAddDownloaded(tr_session* session, uint32_t bytes)
+void tr_statsAddDownloaded(tr_session *session, uint32_t bytes)
 {
-    struct tr_stats_handle* s;
+    struct tr_stats_handle *s;
 
     if ((s = getStats(session)) != NULL)
     {
@@ -241,9 +241,9 @@ void tr_statsAddDownloaded(tr_session* session, uint32_t bytes)
     }
 }
 
-void tr_statsFileCreated(tr_session* session)
+void tr_statsFileCreated(tr_session *session)
 {
-    struct tr_stats_handle* s;
+    struct tr_stats_handle *s;
 
     if ((s = getStats(session)) != NULL)
     {

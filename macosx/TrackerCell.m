@@ -38,29 +38,29 @@
 
 @interface TrackerCell (Private)
 
-- (NSImage*)favIcon;
-- (void)loadTrackerIcon:(NSString*)baseAddress;
+- (NSImage *)favIcon;
+- (void)loadTrackerIcon:(NSString *)baseAddress;
 
 - (NSRect)imageRectForBounds:(NSRect)bounds;
-- (NSRect)rectForNameWithString:(NSAttributedString*)string inBounds:(NSRect)bounds;
-- (NSRect)rectForCountWithString:(NSAttributedString*)string withAboveRect:(NSRect)aboveRect inBounds:(NSRect)bounds;
-- (NSRect)rectForCountLabelWithString:(NSAttributedString*)string withRightRect:(NSRect)rightRect inBounds:(NSRect)bounds;
-- (NSRect)rectForStatusWithString:(NSAttributedString*)string
+- (NSRect)rectForNameWithString:(NSAttributedString *)string inBounds:(NSRect)bounds;
+- (NSRect)rectForCountWithString:(NSAttributedString *)string withAboveRect:(NSRect)aboveRect inBounds:(NSRect)bounds;
+- (NSRect)rectForCountLabelWithString:(NSAttributedString *)string withRightRect:(NSRect)rightRect inBounds:(NSRect)bounds;
+- (NSRect)rectForStatusWithString:(NSAttributedString *)string
                     withAboveRect:(NSRect)aboveRect
                     withRightRect:(NSRect)rightRect
                          inBounds:(NSRect)bounds;
 
-- (NSAttributedString*)attributedName;
-- (NSAttributedString*)attributedStatusWithString:(NSString*)statusString;
-- (NSAttributedString*)attributedCount:(NSInteger)count;
+- (NSAttributedString *)attributedName;
+- (NSAttributedString *)attributedStatusWithString:(NSString *)statusString;
+- (NSAttributedString *)attributedCount:(NSInteger)count;
 
 @end
 
 @implementation TrackerCell
 
 //make the favicons accessible to all tracker cells
-NSCache* fTrackerIconCache;
-NSMutableSet* fTrackerIconLoading;
+NSCache *fTrackerIconCache;
+NSMutableSet *fTrackerIconLoading;
 
 + (void)initialize
 {
@@ -72,7 +72,7 @@ NSMutableSet* fTrackerIconLoading;
 {
     if ((self = [super init]))
     {
-        NSMutableParagraphStyle* paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+        NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
         [paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
 
         fNameAttributes = [[NSMutableDictionary alloc]
@@ -84,9 +84,9 @@ NSMutableSet* fTrackerIconLoading;
     return self;
 }
 
-- (id)copyWithZone:(NSZone*)zone
+- (id)copyWithZone:(NSZone *)zone
 {
-    TrackerCell* copy = [super copyWithZone:zone];
+    TrackerCell *copy = [super copyWithZone:zone];
 
     copy->fNameAttributes = fNameAttributes;
     copy->fStatusAttributes = fStatusAttributes;
@@ -94,7 +94,7 @@ NSMutableSet* fTrackerIconLoading;
     return copy;
 }
 
-- (void)drawWithFrame:(NSRect)cellFrame inView:(NSView*)controlView
+- (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
 {
     //icon
     [[self favIcon] drawInRect:[self imageRectForBounds:cellFrame] fromRect:NSZeroRect operation:NSCompositeSourceOver
@@ -115,58 +115,58 @@ NSMutableSet* fTrackerIconLoading;
     fNameAttributes[NSForegroundColorAttributeName] = nameColor;
     fStatusAttributes[NSForegroundColorAttributeName] = statusColor;
 
-    TrackerNode* node = (TrackerNode*)[self objectValue];
+    TrackerNode *node = (TrackerNode *)[self objectValue];
 
     //name
-    NSAttributedString* nameString = [self attributedName];
+    NSAttributedString *nameString = [self attributedName];
     NSRect const nameRect = [self rectForNameWithString:nameString inBounds:cellFrame];
     [nameString drawInRect:nameRect];
 
     //count strings
-    NSAttributedString* seederString = [self attributedCount:[node totalSeeders]];
+    NSAttributedString *seederString = [self attributedCount:[node totalSeeders]];
     NSRect const seederRect = [self rectForCountWithString:seederString withAboveRect:nameRect inBounds:cellFrame];
     [seederString drawInRect:seederRect];
 
-    NSAttributedString* leecherString = [self attributedCount:[node totalLeechers]];
+    NSAttributedString *leecherString = [self attributedCount:[node totalLeechers]];
     NSRect const leecherRect = [self rectForCountWithString:leecherString withAboveRect:seederRect inBounds:cellFrame];
     [leecherString drawInRect:leecherRect];
 
-    NSAttributedString* downloadedString = [self attributedCount:[node totalDownloaded]];
+    NSAttributedString *downloadedString = [self attributedCount:[node totalDownloaded]];
     NSRect const downloadedRect = [self rectForCountWithString:downloadedString withAboveRect:leecherRect inBounds:cellFrame];
     [downloadedString drawInRect:downloadedRect];
 
     //count label strings
-    NSString* seederLabelBaseString = [NSLocalizedString(@"Seeders", "tracker peer stat") stringByAppendingFormat:@": "];
-    NSAttributedString* seederLabelString = [self attributedStatusWithString:seederLabelBaseString];
+    NSString *seederLabelBaseString = [NSLocalizedString(@"Seeders", "tracker peer stat") stringByAppendingFormat:@": "];
+    NSAttributedString *seederLabelString = [self attributedStatusWithString:seederLabelBaseString];
     NSRect const seederLabelRect = [self rectForCountLabelWithString:seederLabelString withRightRect:seederRect inBounds:cellFrame];
     [seederLabelString drawInRect:seederLabelRect];
 
-    NSString* leecherLabelBaseString = [NSLocalizedString(@"Leechers", "tracker peer stat") stringByAppendingFormat:@": "];
-    NSAttributedString* leecherLabelString = [self attributedStatusWithString:leecherLabelBaseString];
+    NSString *leecherLabelBaseString = [NSLocalizedString(@"Leechers", "tracker peer stat") stringByAppendingFormat:@": "];
+    NSAttributedString *leecherLabelString = [self attributedStatusWithString:leecherLabelBaseString];
     NSRect const leecherLabelRect = [self rectForCountLabelWithString:leecherLabelString withRightRect:leecherRect
                                                              inBounds:cellFrame];
     [leecherLabelString drawInRect:leecherLabelRect];
 
-    NSString* downloadedLabelBaseString = [NSLocalizedString(@"Downloaded", "tracker peer stat") stringByAppendingFormat:@": "];
-    NSAttributedString* downloadedLabelString = [self attributedStatusWithString:downloadedLabelBaseString];
+    NSString *downloadedLabelBaseString = [NSLocalizedString(@"Downloaded", "tracker peer stat") stringByAppendingFormat:@": "];
+    NSAttributedString *downloadedLabelString = [self attributedStatusWithString:downloadedLabelBaseString];
     NSRect const downloadedLabelRect = [self rectForCountLabelWithString:downloadedLabelString withRightRect:downloadedRect
                                                                 inBounds:cellFrame];
     [downloadedLabelString drawInRect:downloadedLabelRect];
 
     //status strings
-    NSAttributedString* lastAnnounceString = [self attributedStatusWithString:[node lastAnnounceStatusString]];
+    NSAttributedString *lastAnnounceString = [self attributedStatusWithString:[node lastAnnounceStatusString]];
     NSRect const lastAnnounceRect = [self rectForStatusWithString:lastAnnounceString withAboveRect:nameRect
                                                     withRightRect:seederLabelRect
                                                          inBounds:cellFrame];
     [lastAnnounceString drawInRect:lastAnnounceRect];
 
-    NSAttributedString* nextAnnounceString = [self attributedStatusWithString:[node nextAnnounceStatusString]];
+    NSAttributedString *nextAnnounceString = [self attributedStatusWithString:[node nextAnnounceStatusString]];
     NSRect const nextAnnounceRect = [self rectForStatusWithString:nextAnnounceString withAboveRect:lastAnnounceRect
                                                     withRightRect:leecherLabelRect
                                                          inBounds:cellFrame];
     [nextAnnounceString drawInRect:nextAnnounceRect];
 
-    NSAttributedString* lastScrapeString = [self attributedStatusWithString:[node lastScrapeStatusString]];
+    NSAttributedString *lastScrapeString = [self attributedStatusWithString:[node lastScrapeStatusString]];
     NSRect const lastScrapeRect = [self rectForStatusWithString:lastScrapeString withAboveRect:nextAnnounceRect
                                                   withRightRect:downloadedLabelRect
                                                        inBounds:cellFrame];
@@ -177,20 +177,20 @@ NSMutableSet* fTrackerIconLoading;
 
 @implementation TrackerCell (Private)
 
-- (NSImage*)favIcon
+- (NSImage *)favIcon
 {
     id icon = nil;
-    NSURL* address = [NSURL URLWithString:[(TrackerNode*)[self objectValue] fullAnnounceAddress]];
-    NSString* host;
+    NSURL *address = [NSURL URLWithString:[(TrackerNode *)[self objectValue] fullAnnounceAddress]];
+    NSString *host;
     if ((host = [address host]))
     {
         //don't try to parse ip address
         BOOL const separable = !tr_addressIsIP([host UTF8String]);
 
-        NSArray* hostComponents = separable ? [host componentsSeparatedByString:@"."] : nil;
+        NSArray *hostComponents = separable ? [host componentsSeparatedByString:@"."] : nil;
 
         //let's try getting the tracker address without using any subdomains
-        NSString* baseAddress;
+        NSString *baseAddress;
         if (separable && [hostComponents count] > 1)
             baseAddress = [NSString stringWithFormat:@"http://%@.%@", hostComponents[[hostComponents count] - 2], [hostComponents lastObject]];
         else
@@ -205,7 +205,7 @@ NSMutableSet* fTrackerIconLoading;
 }
 
 #warning better favicon detection
-- (void)loadTrackerIcon:(NSString*)baseAddress
+- (void)loadTrackerIcon:(NSString *)baseAddress
 {
     if ([fTrackerIconLoading containsObject:baseAddress])
     {
@@ -214,17 +214,17 @@ NSMutableSet* fTrackerIconLoading;
     [fTrackerIconLoading addObject:baseAddress];
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSImage* icon = nil;
+        NSImage *icon = nil;
 
-        NSArray<NSString*>* filenamesToTry = @[ @"favicon.png", @"favicon.ico" ];
-        for (NSString* filename in filenamesToTry)
+        NSArray<NSString *> *filenamesToTry = @[ @"favicon.png", @"favicon.ico" ];
+        for (NSString *filename in filenamesToTry)
         {
-            NSURL* favIconUrl = [NSURL URLWithString:[baseAddress stringByAppendingPathComponent:filename]];
+            NSURL *favIconUrl = [NSURL URLWithString:[baseAddress stringByAppendingPathComponent:filename]];
 
-            NSURLRequest* request = [NSURLRequest requestWithURL:favIconUrl cachePolicy:NSURLRequestUseProtocolCachePolicy
+            NSURLRequest *request = [NSURLRequest requestWithURL:favIconUrl cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                  timeoutInterval:30.0];
 
-            NSData* iconData = [NSURLConnection sendSynchronousRequest:request returningResponse:NULL error:NULL];
+            NSData *iconData = [NSURLConnection sendSynchronousRequest:request returningResponse:NULL error:NULL];
             if (iconData)
             {
                 icon = [[NSImage alloc] initWithData:iconData];
@@ -255,7 +255,7 @@ NSMutableSet* fTrackerIconLoading;
     return NSMakeRect(NSMinX(bounds) + PADDING_HORIZONAL, NSMinY(bounds) + PADDING_ABOVE_ICON, ICON_SIZE, ICON_SIZE);
 }
 
-- (NSRect)rectForNameWithString:(NSAttributedString*)string inBounds:(NSRect)bounds
+- (NSRect)rectForNameWithString:(NSAttributedString *)string inBounds:(NSRect)bounds
 {
     NSRect result;
     result.origin.x = NSMinX(bounds) + PADDING_HORIZONAL + ICON_SIZE + PADDING_BETWEEN_ICON_AND_NAME;
@@ -267,7 +267,7 @@ NSMutableSet* fTrackerIconLoading;
     return result;
 }
 
-- (NSRect)rectForCountWithString:(NSAttributedString*)string withAboveRect:(NSRect)aboveRect inBounds:(NSRect)bounds
+- (NSRect)rectForCountWithString:(NSAttributedString *)string withAboveRect:(NSRect)aboveRect inBounds:(NSRect)bounds
 {
     return NSMakeRect(
         NSMaxX(bounds) - PADDING_HORIZONAL - COUNT_WIDTH,
@@ -276,7 +276,7 @@ NSMutableSet* fTrackerIconLoading;
         [string size].height);
 }
 
-- (NSRect)rectForCountLabelWithString:(NSAttributedString*)string withRightRect:(NSRect)rightRect inBounds:(NSRect)bounds
+- (NSRect)rectForCountLabelWithString:(NSAttributedString *)string withRightRect:(NSRect)rightRect inBounds:(NSRect)bounds
 {
     NSRect result = rightRect;
     result.size.width = [string size].width;
@@ -285,7 +285,7 @@ NSMutableSet* fTrackerIconLoading;
     return result;
 }
 
-- (NSRect)rectForStatusWithString:(NSAttributedString*)string
+- (NSRect)rectForStatusWithString:(NSAttributedString *)string
                     withAboveRect:(NSRect)aboveRect
                     withRightRect:(NSRect)rightRect
                          inBounds:(NSRect)bounds
@@ -300,20 +300,20 @@ NSMutableSet* fTrackerIconLoading;
     return result;
 }
 
-- (NSAttributedString*)attributedName
+- (NSAttributedString *)attributedName
 {
-    NSString* name = [(TrackerNode*)[self objectValue] host];
+    NSString *name = [(TrackerNode *)[self objectValue] host];
     return [[NSAttributedString alloc] initWithString:name attributes:fNameAttributes];
 }
 
-- (NSAttributedString*)attributedStatusWithString:(NSString*)statusString
+- (NSAttributedString *)attributedStatusWithString:(NSString *)statusString
 {
     return [[NSAttributedString alloc] initWithString:statusString attributes:fStatusAttributes];
 }
 
-- (NSAttributedString*)attributedCount:(NSInteger)count
+- (NSAttributedString *)attributedCount:(NSInteger)count
 {
-    NSString* countString = count != -1 ? [NSString stringWithFormat:@"%ld", count] : NSLocalizedString(@"N/A", "tracker peer stat");
+    NSString *countString = count != -1 ? [NSString stringWithFormat:@"%ld", count] : NSLocalizedString(@"N/A", "tracker peer stat");
     return [[NSAttributedString alloc] initWithString:countString attributes:fStatusAttributes];
 }
 

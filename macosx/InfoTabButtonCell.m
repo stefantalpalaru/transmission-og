@@ -29,7 +29,7 @@
 {
     if (![NSApp isOnMojaveOrBetter])
     {
-        NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+        NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
         [nc addObserver:self selector:@selector(updateControlTint:) name:NSControlTintDidChangeNotification object:NSApp];
     }
 
@@ -44,7 +44,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)setControlView:(NSView*)controlView
+- (void)setControlView:(NSView *)controlView
 {
     BOOL const hadControlView = [self controlView] != nil;
 
@@ -52,7 +52,7 @@
 
     if (!hadControlView)
     {
-        [(NSMatrix*)[self controlView] setToolTip:[self title] forCell:self];
+        [(NSMatrix *)[self controlView] setToolTip:[self title] forCell:self];
         [self setSelectedTab:fSelected];
     }
 }
@@ -70,16 +70,16 @@
         return;
 
     NSInteger row, col;
-    [(NSMatrix*)[self controlView] getRow:&row column:&col ofCell:self];
-    NSRect tabRect = [(NSMatrix*)[self controlView] cellFrameAtRow:row column:col];
+    [(NSMatrix *)[self controlView] getRow:&row column:&col ofCell:self];
+    NSRect tabRect = [(NSMatrix *)[self controlView] cellFrameAtRow:row column:col];
     tabRect.origin.x = 0.0;
     tabRect.origin.y = 0.0;
 
-    NSImage* tabImage = [[NSImage alloc] initWithSize:tabRect.size];
+    NSImage *tabImage = [[NSImage alloc] initWithSize:tabRect.size];
 
     [tabImage lockFocus];
 
-    NSGradient* gradient;
+    NSGradient *gradient;
     if (fSelected)
     {
         NSColor *lightColor, *darkColor;
@@ -99,14 +99,14 @@
     {
         if ([NSApp isDarkMode])
         {
-            NSColor* darkColor = [NSColor colorWithCalibratedRed:60.0 / 255.0 green:60.0 / 255.0 blue:60.0 / 255.0 alpha:1.0];
-            NSColor* lightColor = [NSColor colorWithCalibratedRed:90.0 / 255.0 green:90.0 / 255.0 blue:90.0 / 255.0 alpha:1.0];
+            NSColor *darkColor = [NSColor colorWithCalibratedRed:60.0 / 255.0 green:60.0 / 255.0 blue:60.0 / 255.0 alpha:1.0];
+            NSColor *lightColor = [NSColor colorWithCalibratedRed:90.0 / 255.0 green:90.0 / 255.0 blue:90.0 / 255.0 alpha:1.0];
             gradient = [[NSGradient alloc] initWithStartingColor:lightColor endingColor:darkColor];
         }
         else
         {
-            NSColor* lightColor = [NSColor colorWithCalibratedRed:245.0 / 255.0 green:245.0 / 255.0 blue:245.0 / 255.0 alpha:1.0];
-            NSColor* darkColor = [NSColor colorWithCalibratedRed:215.0 / 255.0 green:215.0 / 255.0 blue:215.0 / 255.0 alpha:1.0];
+            NSColor *lightColor = [NSColor colorWithCalibratedRed:245.0 / 255.0 green:245.0 / 255.0 blue:245.0 / 255.0 alpha:1.0];
+            NSColor *darkColor = [NSColor colorWithCalibratedRed:215.0 / 255.0 green:215.0 / 255.0 blue:215.0 / 255.0 alpha:1.0];
             gradient = [[NSGradient alloc] initWithStartingColor:lightColor endingColor:darkColor];
         }
     }
@@ -145,7 +145,7 @@
     [self setImage:tabImage];
 }
 
-- (void)updateControlTint:(NSNotification*)notification
+- (void)updateControlTint:(NSNotification *)notification
 {
     NSAssert(![NSApp isOnMojaveOrBetter], @"should not be observing control tint color when accent color is available");
 

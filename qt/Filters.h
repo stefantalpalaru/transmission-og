@@ -34,7 +34,7 @@ public:
     {
     }
 
-    FilterMode(QString const& name)
+    FilterMode(QString const &name)
         : myMode(modeFromName(name))
     {
     }
@@ -44,14 +44,14 @@ public:
         return myMode;
     }
 
-    QString const& name() const
+    QString const &name() const
     {
         return names[myMode];
     }
 
-    static int modeFromName(QString const& name);
+    static int modeFromName(QString const &name);
 
-    static QString const& nameFromMode(int mode)
+    static QString const &nameFromMode(int mode)
     {
         return names[mode];
     }
@@ -88,7 +88,7 @@ public:
     {
     }
 
-    SortMode(QString const& name)
+    SortMode(QString const &name)
         : myMode(modeFromName(name))
     {
     }
@@ -98,13 +98,13 @@ public:
         return myMode;
     }
 
-    QString const& name() const
+    QString const &name() const
     {
         return names[myMode];
     }
 
-    static int modeFromName(QString const& name);
-    static QString const& nameFromMode(int mode);
+    static int modeFromName(QString const &name);
+    static QString const &nameFromMode(int mode);
 
 private:
     int myMode;

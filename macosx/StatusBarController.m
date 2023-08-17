@@ -46,7 +46,7 @@ typedef enum
 
 @implementation StatusBarController
 
-- (id)initWithLib:(tr_session*)lib
+- (id)initWithLib:(tr_session *)lib
 {
     if ((self = [super initWithNibName:@"StatusBar" bundle:nil]))
     {
@@ -145,7 +145,7 @@ typedef enum
 
 - (void)setStatusLabel:(id)sender
 {
-    NSString* statusLabel;
+    NSString *statusLabel;
     switch ([sender tag])
     {
     case STATUS_RATIO_TOTAL_TAG:
@@ -176,7 +176,7 @@ typedef enum
 
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SpeedLimit"])
     {
-        NSString* speedString = [NSString stringWithFormat:@"%@ (%@)",
+        NSString *speedString = [NSString stringWithFormat:@"%@ (%@)",
                                                            NSLocalizedString(@"%d KB/s", "Status Bar -> speed tooltip"),
                                                            NSLocalizedString(@"Speed Limit", "Status Bar -> speed tooltip")];
 
@@ -206,14 +206,14 @@ typedef enum
     [fTotalDLField setToolTip:downloadText];
 }
 
-- (BOOL)validateMenuItem:(NSMenuItem*)menuItem
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem
 {
     SEL const action = [menuItem action];
 
     //enable sort options
     if (action == @selector(setStatusLabel:))
     {
-        NSString* statusLabel;
+        NSString *statusLabel;
         switch ([menuItem tag])
         {
         case STATUS_RATIO_TOTAL_TAG:

@@ -63,15 +63,15 @@ static UTF32 const halfMask = 0x3FFUL;
 /* --------------------------------------------------------------------- */
 
 ConversionResult ConvertUTF32toUTF16(
-    UTF32 const** sourceStart,
-    UTF32 const* sourceEnd,
-    UTF16** targetStart,
-    UTF16* targetEnd,
+    UTF32 const **sourceStart,
+    UTF32 const *sourceEnd,
+    UTF16 **targetStart,
+    UTF16 *targetEnd,
     ConversionFlags flags)
 {
     ConversionResult result = conversionOK;
-    UTF32 const* source = *sourceStart;
-    UTF16* target = *targetStart;
+    UTF32 const *source = *sourceStart;
+    UTF16 *target = *targetStart;
     while (source < sourceEnd)
     {
         UTF32 ch;
@@ -135,19 +135,19 @@ ConversionResult ConvertUTF32toUTF16(
 /* --------------------------------------------------------------------- */
 
 ConversionResult ConvertUTF16toUTF32(
-    UTF16 const** sourceStart,
-    UTF16 const* sourceEnd,
-    UTF32** targetStart,
-    UTF32* targetEnd,
+    UTF16 const **sourceStart,
+    UTF16 const *sourceEnd,
+    UTF32 **targetStart,
+    UTF32 *targetEnd,
     ConversionFlags flags)
 {
     ConversionResult result = conversionOK;
-    UTF16 const* source = *sourceStart;
-    UTF32* target = *targetStart;
+    UTF16 const *source = *sourceStart;
+    UTF32 *target = *targetStart;
     UTF32 ch, ch2;
     while (source < sourceEnd)
     {
-        UTF16 const* oldSource = source; /*  In case we have to back up because of target overflow. */
+        UTF16 const *oldSource = source; /*  In case we have to back up because of target overflow. */
         ch = *source++;
         /* If we have a surrogate pair, convert to UTF32 first. */
         if (ch >= UNI_SUR_HIGH_START && ch <= UNI_SUR_HIGH_END)
@@ -257,22 +257,22 @@ static UTF8 const firstByteMark[7] = { 0x00, 0x00, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC 
 /* --------------------------------------------------------------------- */
 
 ConversionResult ConvertUTF16toUTF8(
-    UTF16 const** sourceStart,
-    UTF16 const* sourceEnd,
-    UTF8** targetStart,
-    UTF8* targetEnd,
+    UTF16 const **sourceStart,
+    UTF16 const *sourceEnd,
+    UTF8 **targetStart,
+    UTF8 *targetEnd,
     ConversionFlags flags)
 {
     ConversionResult result = conversionOK;
-    UTF16 const* source = *sourceStart;
-    UTF8* target = *targetStart;
+    UTF16 const *source = *sourceStart;
+    UTF8 *target = *targetStart;
     while (source < sourceEnd)
     {
         UTF32 ch;
         unsigned short bytesToWrite = 0;
         UTF32 const byteMask = 0xBF;
         UTF32 const byteMark = 0x80;
-        UTF16 const* oldSource = source; /* In case we have to back up because of target overflow. */
+        UTF16 const *oldSource = source; /* In case we have to back up because of target overflow. */
         ch = *source++;
         /* If we have a surrogate pair, convert to UTF32 first. */
         if (ch >= UNI_SUR_HIGH_START && ch <= UNI_SUR_HIGH_END)
@@ -379,10 +379,10 @@ ConversionResult ConvertUTF16toUTF8(
  * definition of UTF-8 goes up to 4-byte sequences.
  */
 
-static Boolean isLegalUTF8(UTF8 const* source, int length)
+static Boolean isLegalUTF8(UTF8 const *source, int length)
 {
     UTF8 a;
-    UTF8 const* srcptr = source + length;
+    UTF8 const *srcptr = source + length;
     switch (length)
     {
     default:
@@ -441,7 +441,7 @@ static Boolean isLegalUTF8(UTF8 const* source, int length)
  * This is not used here; it's just exported.
  */
 
-Boolean isLegalUTF8Sequence(UTF8 const* source, UTF8 const* sourceEnd)
+Boolean isLegalUTF8Sequence(UTF8 const *source, UTF8 const *sourceEnd)
 {
     int length;
     if (source == sourceEnd)
@@ -471,10 +471,10 @@ Boolean isLegalUTF8Sequence(UTF8 const* source, UTF8 const* sourceEnd)
  * This is a variation of isLegalUTF8Sequence () that behaves like g_utf8_validate ().
  * In addition to knowing if the sequence is legal, it also tells you the last good character.
  */
-Boolean tr_utf8_validate(char const* str, size_t max_len, char const** end)
+Boolean tr_utf8_validate(char const *str, size_t max_len, char const **end)
 {
-    UTF8 const* source = (UTF8 const*)str;
-    UTF8 const* sourceEnd;
+    UTF8 const *source = (UTF8 const *)str;
+    UTF8 const *sourceEnd;
 
     if (max_len == 0)
         return true;
@@ -487,7 +487,7 @@ Boolean tr_utf8_validate(char const* str, size_t max_len, char const** end)
     if (source == sourceEnd)
     {
         if (end != NULL)
-            *end = (char const*)source;
+            *end = (char const *)source;
         return true;
     }
 
@@ -497,20 +497,20 @@ Boolean tr_utf8_validate(char const* str, size_t max_len, char const** end)
         if (source + length > sourceEnd)
         {
             if (end != NULL)
-                *end = (char const*)source;
+                *end = (char const *)source;
             return false;
         }
         if (!isLegalUTF8(source, length))
         {
             if (end != NULL)
-                *end = (char const*)source;
+                *end = (char const *)source;
             return false;
         }
         source += length;
         if (source >= sourceEnd)
         {
             if (end != NULL)
-                *end = (char const*)source;
+                *end = (char const *)source;
             return true;
         }
     }
@@ -519,15 +519,15 @@ Boolean tr_utf8_validate(char const* str, size_t max_len, char const** end)
 /* --------------------------------------------------------------------- */
 
 ConversionResult ConvertUTF8toUTF16(
-    UTF8 const** sourceStart,
-    UTF8 const* sourceEnd,
-    UTF16** targetStart,
-    UTF16* targetEnd,
+    UTF8 const **sourceStart,
+    UTF8 const *sourceEnd,
+    UTF16 **targetStart,
+    UTF16 *targetEnd,
     ConversionFlags flags)
 {
     ConversionResult result = conversionOK;
-    UTF8 const* source = *sourceStart;
-    UTF16* target = *targetStart;
+    UTF8 const *source = *sourceStart;
+    UTF16 *target = *targetStart;
     while (source < sourceEnd)
     {
         UTF32 ch = 0;
@@ -635,15 +635,15 @@ ConversionResult ConvertUTF8toUTF16(
 /* --------------------------------------------------------------------- */
 
 ConversionResult ConvertUTF32toUTF8(
-    UTF32 const** sourceStart,
-    UTF32 const* sourceEnd,
-    UTF8** targetStart,
-    UTF8* targetEnd,
+    UTF32 const **sourceStart,
+    UTF32 const *sourceEnd,
+    UTF8 **targetStart,
+    UTF8 *targetEnd,
     ConversionFlags flags)
 {
     ConversionResult result = conversionOK;
-    UTF32 const* source = *sourceStart;
-    UTF8* target = *targetStart;
+    UTF32 const *source = *sourceStart;
+    UTF8 *target = *targetStart;
     while (source < sourceEnd)
     {
         UTF32 ch;
@@ -723,15 +723,15 @@ ConversionResult ConvertUTF32toUTF8(
 /* --------------------------------------------------------------------- */
 
 ConversionResult ConvertUTF8toUTF32(
-    UTF8 const** sourceStart,
-    UTF8 const* sourceEnd,
-    UTF32** targetStart,
-    UTF32* targetEnd,
+    UTF8 const **sourceStart,
+    UTF8 const *sourceEnd,
+    UTF32 **targetStart,
+    UTF32 *targetEnd,
     ConversionFlags flags)
 {
     ConversionResult result = conversionOK;
-    UTF8 const* source = *sourceStart;
-    UTF32* target = *targetStart;
+    UTF8 const *source = *sourceStart;
+    UTF32 *target = *targetStart;
     while (source < sourceEnd)
     {
         UTF32 ch = 0;
