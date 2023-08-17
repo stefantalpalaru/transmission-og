@@ -24,43 +24,42 @@
 
 @class Torrent;
 
-@interface FileListNode : NSObject<NSCopying>
-{
-    NSMutableIndexSet* fIndexes;
+@interface FileListNode : NSObject<NSCopying> {
+    NSMutableIndexSet *fIndexes;
 
-    NSString* fName;
-    NSString* fPath;
-    Torrent* __weak fTorrent;
+    NSString *fName;
+    NSString *fPath;
+    Torrent *__weak fTorrent;
     uint64_t fSize;
-    NSImage* fIcon;
+    NSImage *fIcon;
     BOOL fIsFolder;
-    NSMutableArray* fChildren;
+    NSMutableArray *fChildren;
 }
 
-@property(nonatomic, copy, readonly) NSString* name;
-@property(nonatomic, copy, readonly) NSString* path;
+@property(nonatomic, copy, readonly) NSString *name;
+@property(nonatomic, copy, readonly) NSString *path;
 
-@property(nonatomic, weak, readonly) Torrent* torrent;
+@property(nonatomic, weak, readonly) Torrent *torrent;
 
 @property(nonatomic, readonly) uint64_t size;
-@property(nonatomic, strong, readonly) NSImage* icon;
+@property(nonatomic, strong, readonly) NSImage *icon;
 @property(nonatomic, readonly) BOOL isFolder;
-@property(nonatomic, strong, readonly) NSMutableArray* children;
+@property(nonatomic, strong, readonly) NSMutableArray *children;
 
-@property(nonatomic, strong, readonly) NSIndexSet* indexes;
+@property(nonatomic, strong, readonly) NSIndexSet *indexes;
 
-- (id)initWithFolderName:(NSString*)name path:(NSString*)path torrent:(Torrent*)torrent;
-- (id)initWithFileName:(NSString*)name
-                  path:(NSString*)path
+- (id)initWithFolderName:(NSString *)name path:(NSString *)path torrent:(Torrent *)torrent;
+- (id)initWithFileName:(NSString *)name
+                  path:(NSString *)path
                   size:(uint64_t)size
                  index:(NSUInteger)index
-               torrent:(Torrent*)torrent;
+               torrent:(Torrent *)torrent;
 
-- (void)insertChild:(FileListNode*)child;
+- (void)insertChild:(FileListNode *)child;
 - (void)insertIndex:(NSUInteger)index withSize:(uint64_t)size;
 
-- (NSString*)description;
+- (NSString *)description;
 
-- (BOOL)updateFromOldName:(NSString*)oldName toNewName:(NSString*)newName inPath:(NSString*)path;
+- (BOOL)updateFromOldName:(NSString *)oldName toNewName:(NSString *)newName inPath:(NSString *)path;
 
 @end

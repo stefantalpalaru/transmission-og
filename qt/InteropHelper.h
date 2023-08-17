@@ -19,15 +19,14 @@ class QAxObject;
 class QString;
 class QVariant;
 
-class InteropHelper
-{
+class InteropHelper {
 public:
     bool isConnected() const;
 
-    bool addMetainfo(QString const& metainfo);
+    bool addMetainfo(QString const &metainfo);
 
     static void initialize();
-    static void registerObject(QObject* parent);
+    static void registerObject(QObject *parent);
 
 private:
 #ifdef ENABLE_DBUS_INTEROP

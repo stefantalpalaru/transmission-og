@@ -26,46 +26,45 @@
 
 @class PortChecker;
 
-@interface PrefsController : NSWindowController<NSToolbarDelegate>
-{
-    tr_session* fHandle;
-    NSUserDefaults* fDefaults;
+@interface PrefsController : NSWindowController<NSToolbarDelegate> {
+    tr_session *fHandle;
+    NSUserDefaults *fDefaults;
     BOOL fHasLoaded;
 
     IBOutlet NSView *fGeneralView, *fTransfersView, *fBandwidthView, *fPeersView, *fNetworkView, *fRemoteView, *fGroupsView;
 
-    NSString* fInitialString;
+    NSString *fInitialString;
 
-    IBOutlet NSButton* fSystemPreferencesButton;
-    IBOutlet NSTextField* fCheckForUpdatesLabel;
+    IBOutlet NSButton *fSystemPreferencesButton;
+    IBOutlet NSTextField *fCheckForUpdatesLabel;
     IBOutlet NSButton *fCheckForUpdatesButton, *fCheckForUpdatesBetaButton;
 
     IBOutlet NSPopUpButton *fFolderPopUp, *fIncompleteFolderPopUp, *fImportFolderPopUp, *fDoneScriptPopUp;
-    IBOutlet NSButton* fShowMagnetAddWindowCheck;
+    IBOutlet NSButton *fShowMagnetAddWindowCheck;
     IBOutlet NSTextField *fRatioStopField, *fIdleStopField, *fQueueDownloadField, *fQueueSeedField, *fStalledField;
 
     IBOutlet NSTextField *fUploadField, *fDownloadField, *fSpeedLimitUploadField, *fSpeedLimitDownloadField;
-    IBOutlet NSPopUpButton* fAutoSpeedDayTypePopUp;
+    IBOutlet NSPopUpButton *fAutoSpeedDayTypePopUp;
 
     IBOutlet NSTextField *fPeersGlobalField, *fPeersTorrentField, *fBlocklistURLField, *fBlocklistMessageField, *fBlocklistDateField;
-    IBOutlet NSButton* fBlocklistButton;
+    IBOutlet NSButton *fBlocklistButton;
 
-    PortChecker* fPortChecker;
+    PortChecker *fPortChecker;
     IBOutlet NSTextField *fPortField, *fPortStatusField;
-    IBOutlet NSButton* fNatCheck;
-    IBOutlet NSImageView* fPortStatusImage;
-    IBOutlet NSProgressIndicator* fPortStatusProgress;
-    NSTimer* fPortStatusTimer;
+    IBOutlet NSButton *fNatCheck;
+    IBOutlet NSImageView *fPortStatusImage;
+    IBOutlet NSProgressIndicator *fPortStatusProgress;
+    NSTimer *fPortStatusTimer;
     int fPeerPort, fNatStatus;
 
     IBOutlet NSTextField *fRPCPortField, *fRPCPasswordField;
-    IBOutlet NSTableView* fRPCWhitelistTable;
-    NSMutableArray* fRPCWhitelistArray;
-    IBOutlet NSSegmentedControl* fRPCAddRemoveControl;
-    NSString* fRPCPassword;
+    IBOutlet NSTableView *fRPCWhitelistTable;
+    NSMutableArray *fRPCWhitelistArray;
+    IBOutlet NSSegmentedControl *fRPCAddRemoveControl;
+    NSString *fRPCPassword;
 }
 
-- (id)initWithHandle:(tr_session*)handle;
+- (id)initWithHandle:(tr_session *)handle;
 
 - (void)setAutoUpdateToBeta:(id)sender;
 
@@ -74,9 +73,9 @@
 - (void)setRandomPortOnStart:(id)sender;
 - (void)setNat:(id)sender;
 - (void)updatePortStatus;
-- (void)portCheckerDidFinishProbing:(PortChecker*)portChecker;
+- (void)portCheckerDidFinishProbing:(PortChecker *)portChecker;
 
-- (NSArray*)sounds;
+- (NSArray *)sounds;
 - (void)setSound:(id)sender;
 
 - (void)setUTP:(id)sender;
@@ -101,7 +100,7 @@
 
 - (void)setBadge:(id)sender;
 
-- (IBAction)openNotificationSystemPrefs:(NSButton*)sender;
+- (IBAction)openNotificationSystemPrefs:(NSButton *)sender;
 
 - (void)resetWarnings:(id)sender;
 
@@ -145,8 +144,8 @@
 - (void)setAutoSpeedLimit:(id)sender;
 - (void)setAutoSpeedLimitTime:(id)sender;
 - (void)setAutoSpeedLimitDay:(id)sender;
-+ (NSInteger)dateToTimeSum:(NSDate*)date;
-+ (NSDate*)timeSumToDate:(NSInteger)sum;
++ (NSInteger)dateToTimeSum:(NSDate *)date;
++ (NSDate *)timeSumToDate:(NSInteger)sum;
 
 - (void)setAutoImport:(id)sender;
 - (void)importFolderSheetShow:(id)sender;

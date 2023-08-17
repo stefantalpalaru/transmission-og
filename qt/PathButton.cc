@@ -18,7 +18,7 @@
 #include "PathButton.h"
 #include "Utils.h"
 
-PathButton::PathButton(QWidget* parent)
+PathButton::PathButton(QWidget *parent)
     : QToolButton(parent)
     , myMode(DirectoryMode)
     , myTitle()
@@ -36,8 +36,7 @@ PathButton::PathButton(QWidget* parent)
 
 void PathButton::setMode(Mode mode)
 {
-    if (myMode == mode)
-    {
+    if (myMode == mode) {
         return;
     }
 
@@ -46,20 +45,19 @@ void PathButton::setMode(Mode mode)
     updateAppearance();
 }
 
-void PathButton::setTitle(QString const& title)
+void PathButton::setTitle(QString const &title)
 {
     myTitle = title;
 }
 
-void PathButton::setNameFilter(QString const& nameFilter)
+void PathButton::setNameFilter(QString const &nameFilter)
 {
     myNameFilter = nameFilter;
 }
 
-void PathButton::setPath(QString const& path)
+void PathButton::setPath(QString const &path)
 {
-    if (myPath == path)
-    {
+    if (myPath == path) {
         return;
     }
 
@@ -70,7 +68,7 @@ void PathButton::setPath(QString const& path)
     emit pathChanged(myPath);
 }
 
-QString const& PathButton::path() const
+QString const &PathButton::path() const
 {
     return myPath;
 }
@@ -81,7 +79,7 @@ QSize PathButton::sizeHint() const
     return QSize(qMin(sh.width(), 150), sh.height());
 }
 
-void PathButton::paintEvent(QPaintEvent* /*event*/)
+void PathButton::paintEvent(QPaintEvent * /*event*/)
 {
     QStylePainter painter(this);
     QStyleOptionToolButton option;
@@ -92,8 +90,7 @@ void PathButton::paintEvent(QPaintEvent* /*event*/)
 
     int textWidth = width() - (fakeSizeHint.width() - fakeContentSize.width()) - iconSize().width() - 6;
 
-    if (popupMode() == MenuButtonPopup)
-    {
+    if (popupMode() == MenuButtonPopup) {
         textWidth -= style()->pixelMetric(QStyle::PM_MenuButtonIndicator, &option, this);
     }
 
@@ -106,29 +103,23 @@ void PathButton::paintEvent(QPaintEvent* /*event*/)
 
 void PathButton::onClicked()
 {
-    QFileDialog* dialog = new QFileDialog(window(), effectiveTitle());
+    QFileDialog *dialog = new QFileDialog(window(), effectiveTitle());
     dialog->setFileMode(isDirMode() ? QFileDialog::Directory : QFileDialog::ExistingFile);
 
-    if (isDirMode())
-    {
+    if (isDirMode()) {
         dialog->setOption(QFileDialog::ShowDirsOnly);
     }
 
-    if (!myNameFilter.isEmpty())
-    {
+    if (!myNameFilter.isEmpty()) {
         dialog->setNameFilter(myNameFilter);
     }
 
     QFileInfo const pathInfo(myPath);
 
-    if (!myPath.isEmpty() && pathInfo.exists())
-    {
-        if (pathInfo.isDir())
-        {
+    if (!myPath.isEmpty() && pathInfo.exists()) {
+        if (pathInfo.isDir()) {
             dialog->setDirectory(pathInfo.absoluteFilePath());
-        }
-        else
-        {
+        } else {
             dialog->setDirectory(pathInfo.absolutePath());
             dialog->selectFile(pathInfo.fileName());
         }
@@ -140,10 +131,9 @@ void PathButton::onClicked()
     dialog->open();
 }
 
-void PathButton::onFileSelected(QString const& path)
+void PathButton::onFileSelected(QString const &path)
 {
-    if (!path.isEmpty())
-    {
+    if (!path.isEmpty()) {
         setPath(path);
     }
 }
@@ -157,13 +147,11 @@ void PathButton::updateAppearance()
 
     QIcon icon;
 
-    if (!myPath.isEmpty() && pathInfo.exists())
-    {
+    if (!myPath.isEmpty() && pathInfo.exists()) {
         icon = iconProvider.icon(myPath);
     }
 
-    if (icon.isNull())
-    {
+    if (icon.isNull()) {
         icon = iconProvider.icon(isDirMode() ? QFileIconProvider::Folder : QFileIconProvider::File);
     }
 
@@ -181,8 +169,7 @@ bool PathButton::isDirMode() const
 
 QString PathButton::effectiveTitle() const
 {
-    if (!myTitle.isEmpty())
-    {
+    if (!myTitle.isEmpty()) {
         return myTitle;
     }
 

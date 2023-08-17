@@ -12,4 +12,4 @@
 
 #include <gtk/gtk.h>
 
-GtkWidget* gtr_torrent_creation_dialog_new(GtkWindow* parent, TrCore* core);
+GtkWidget *gtr_torrent_creation_dialog_new(GtkWindow *parent, TrCore *core);

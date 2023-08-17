@@ -14,8 +14,8 @@
 
 static int test1(void)
 {
-    char const* uri;
-    tr_magnet_info* info;
+    char const *uri;
+    tr_magnet_info *info;
     uint8_t const dec[] = { 210, 53, 64, 16, 163, 202, 74, 222, 91, 116, 39, 187, 9, 58, 98, 163, 137, 159, 243, 129 };
 
     uri =

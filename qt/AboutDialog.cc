@@ -18,7 +18,7 @@
 #include "LicenseDialog.h"
 #include "Utils.h"
 
-AboutDialog::AboutDialog(QWidget* parent)
+AboutDialog::AboutDialog(QWidget *parent)
     : BaseDialog(parent)
     , myLicenseDialog()
 {
@@ -28,7 +28,7 @@ AboutDialog::AboutDialog(QWidget* parent)
     ui.titleLabel->setText(
         tr("<b style='font-size:x-large'>Transmission OG %1</b>").arg(QString::fromUtf8(LONG_VERSION_STRING)));
 
-    QPushButton* b;
+    QPushButton *b;
 
     b = ui.dialogButtons->addButton(tr("C&redits"), QDialogButtonBox::ActionRole);
     connect(b, SIGNAL(clicked()), this, SLOT(showCredits()));

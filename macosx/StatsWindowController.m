@@ -32,21 +32,19 @@
 - (void)updateStats;
 
 - (void)performResetStats;
-- (void)resetSheetClosed:(NSAlert*)alert returnCode:(NSInteger)code contextInfo:(void*)info;
+- (void)resetSheetClosed:(NSAlert *)alert returnCode:(NSInteger)code contextInfo:(void *)info;
 
 @end
 
 @implementation StatsWindowController
 
-StatsWindowController* fStatsWindowInstance = nil;
-tr_session* fLib = NULL;
-+ (StatsWindowController*)statsWindow
+StatsWindowController *fStatsWindowInstance = nil;
+tr_session *fLib = NULL;
++ (StatsWindowController *)statsWindow
 {
-    if (!fStatsWindowInstance)
-    {
-        if ((fStatsWindowInstance = [[self alloc] init]))
-        {
-            fLib = [(Controller*)[NSApp delegate] sessionHandle];
+    if (!fStatsWindowInstance) {
+        if ((fStatsWindowInstance = [[self alloc] init])) {
+            fLib = [(Controller *)[NSApp delegate] sessionHandle];
         }
     }
     return fStatsWindowInstance;
@@ -70,40 +68,38 @@ tr_session* fLib = NULL;
 
     [[self window] setTitle:NSLocalizedString(@"Statistics", "Stats window -> title")];
 
-    //set label text
+    // set label text
     [fUploadedLabelField setStringValue:[NSLocalizedString(@"Uploaded", "Stats window -> label") stringByAppendingString:@":"]];
     [fDownloadedLabelField setStringValue:[NSLocalizedString(@"Downloaded", "Stats window -> label") stringByAppendingString:@":"]];
     [fRatioLabelField setStringValue:[NSLocalizedString(@"Ratio", "Stats window -> label") stringByAppendingString:@":"]];
     [fTimeLabelField setStringValue:[NSLocalizedString(@"Running Time", "Stats window -> label") stringByAppendingString:@":"]];
     [fNumOpenedLabelField setStringValue:[NSLocalizedString(@"Program Started", "Stats window -> label") stringByAppendingString:@":"]];
 
-    //size of all labels
+    // size of all labels
     CGFloat const oldWidth = [fUploadedLabelField frame].size.width;
 
-    NSArray* labels = @[ fUploadedLabelField, fDownloadedLabelField, fRatioLabelField, fTimeLabelField, fNumOpenedLabelField ];
+    NSArray *labels = @[ fUploadedLabelField, fDownloadedLabelField, fRatioLabelField, fTimeLabelField, fNumOpenedLabelField ];
 
     CGFloat maxWidth = CGFLOAT_MIN;
-    for (NSTextField* label in labels)
-    {
+    for (NSTextField *label in labels) {
         [label sizeToFit];
 
         CGFloat const width = [label frame].size.width;
         maxWidth = MAX(maxWidth, width);
     }
 
-    for (NSTextField* label in labels)
-    {
+    for (NSTextField *label in labels) {
         NSRect frame = [label frame];
         frame.size.width = maxWidth;
         [label setFrame:frame];
     }
 
-    //resize window for new label width - fields are set in nib to adjust correctly
+    // resize window for new label width - fields are set in nib to adjust correctly
     NSRect windowRect = [[self window] frame];
     windowRect.size.width += maxWidth - oldWidth;
     [[self window] setFrame:windowRect display:YES];
 
-    //resize reset button
+    // resize reset button
     CGFloat const oldButtonWidth = [fResetButton frame].size.width;
 
     [fResetButton setTitle:NSLocalizedString(@"Reset", "Stats window -> reset button")];
@@ -122,9 +118,9 @@ tr_session* fLib = NULL;
     fStatsWindowInstance = nil;
 }
 
-+ (void)restoreWindowWithIdentifier:(NSString*)identifier
-                              state:(NSCoder*)state
-                  completionHandler:(void (^)(NSWindow*, NSError*))completionHandler
++ (void)restoreWindowWithIdentifier:(NSString *)identifier
+                              state:(NSCoder *)state
+                  completionHandler:(void (^)(NSWindow *, NSError *))completionHandler
 {
     NSAssert1([identifier isEqualToString:@"StatsWindow"], @"Trying to restore unexpected identifier %@", identifier);
 
@@ -133,13 +129,12 @@ tr_session* fLib = NULL;
 
 - (void)resetStats:(id)sender
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"WarningResetStats"])
-    {
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"WarningResetStats"]) {
         [self performResetStats];
         return;
     }
 
-    NSAlert* alert = [[NSAlert alloc] init];
+    NSAlert *alert = [[NSAlert alloc] init];
     [alert setMessageText:NSLocalizedString(@"Are you sure you want to reset usage statistics?", "Stats reset -> title")];
     [alert setInformativeText:NSLocalizedString(
                                   @"This will clear the global statistics displayed by Transmission OG."
@@ -155,7 +150,7 @@ tr_session* fLib = NULL;
                         contextInfo:nil];
 }
 
-- (NSString*)windowFrameAutosaveName
+- (NSString *)windowFrameAutosaveName
 {
     return @"StatsWindow";
 }
@@ -170,7 +165,7 @@ tr_session* fLib = NULL;
     tr_sessionGetCumulativeStats(fLib, &statsAll);
     tr_sessionGetStats(fLib, &statsSession);
 
-    NSByteCountFormatter* byteFormatter = [[NSByteCountFormatter alloc] init];
+    NSByteCountFormatter *byteFormatter = [[NSByteCountFormatter alloc] init];
     [byteFormatter setAllowedUnits:NSByteCountFormatterUseBytes];
 
     [fUploadedField setStringValue:[NSString stringForFileSize:statsSession.uploadedBytes]];
@@ -187,14 +182,13 @@ tr_session* fLib = NULL;
 
     [fRatioField setStringValue:[NSString stringForRatio:statsSession.ratio]];
 
-    NSString* totalRatioString = statsAll.ratio != TR_RATIO_NA ?
+    NSString *totalRatioString = statsAll.ratio != TR_RATIO_NA ?
         [NSString stringWithFormat:NSLocalizedString(@"%@ total", "stats total"), [NSString stringForRatio:statsAll.ratio]] :
         NSLocalizedString(@"Total N/A", "stats total");
     [fRatioAllField setStringValue:totalRatioString];
 
-    if ([NSApp isOnYosemiteOrBetter])
-    {
-        static NSDateComponentsFormatter* timeFormatter;
+    if ([NSApp isOnYosemiteOrBetter]) {
+        static NSDateComponentsFormatter *timeFormatter;
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
             timeFormatter = [NSDateComponentsFormatter new];
@@ -207,9 +201,7 @@ tr_session* fLib = NULL;
         [fTimeField setStringValue:[timeFormatter stringFromTimeInterval:statsSession.secondsActive]];
         [fTimeAllField setStringValue:[NSString stringWithFormat:NSLocalizedString(@"%@ total", "stats total"),
                                                                  [timeFormatter stringFromTimeInterval:statsAll.secondsActive]]];
-    }
-    else
-    {
+    } else {
         [fTimeField setStringValue:[NSString timeString:statsSession.secondsActive includesTimeRemainingPhrase:NO showSeconds:NO]];
         [fTimeAllField setStringValue:[NSString stringWithFormat:NSLocalizedString(@"%@ total", "stats total"),
                                                                  [NSString timeString:statsAll.secondsActive
@@ -230,7 +222,7 @@ tr_session* fLib = NULL;
     [self updateStats];
 }
 
-- (void)resetSheetClosed:(NSAlert*)alert returnCode:(NSInteger)code contextInfo:(void*)info
+- (void)resetSheetClosed:(NSAlert *)alert returnCode:(NSInteger)code contextInfo:(void *)info
 {
     [[alert window] orderOut:nil];
 

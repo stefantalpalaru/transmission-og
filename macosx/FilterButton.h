@@ -22,8 +22,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface FilterButton : NSButton
-{
+@interface FilterButton : NSButton {
     NSUInteger fCount;
 }
 

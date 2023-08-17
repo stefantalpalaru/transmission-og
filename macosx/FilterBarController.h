@@ -35,13 +35,12 @@
 
 #define GROUP_FILTER_ALL_TAG -2
 
-@interface FilterBarController : NSViewController
-{
+@interface FilterBarController : NSViewController {
     IBOutlet FilterButton *fNoFilterButton, *fActiveFilterButton, *fDownloadFilterButton, *fSeedFilterButton, *fPauseFilterButton;
 
-    IBOutlet NSSearchField* fSearchField;
+    IBOutlet NSSearchField *fSearchField;
 
-    IBOutlet NSPopUpButton* fGroupsButton;
+    IBOutlet NSPopUpButton *fGroupsButton;
 }
 
 - (id)init;
@@ -53,7 +52,7 @@
 - (void)setGroupFilter:(id)sender;
 - (void)reset:(BOOL)updateUI;
 
-- (NSArray*)searchStrings;
+- (NSArray *)searchStrings;
 - (void)focusSearchField;
 
 - (void)setCountAll:(NSUInteger)all

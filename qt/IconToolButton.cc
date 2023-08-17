@@ -13,10 +13,9 @@
 
 #include "IconToolButton.h"
 
-IconToolButton::IconToolButton(QWidget* parent)
+IconToolButton::IconToolButton(QWidget *parent)
     : QToolButton(parent)
-{
-}
+{}
 
 QSize IconToolButton::sizeHint() const
 {
@@ -29,7 +28,7 @@ QSize IconToolButton::sizeHint() const
     return size.expandedTo(iconSize() + QSize(8, 8));
 }
 
-void IconToolButton::paintEvent(QPaintEvent* /*event*/)
+void IconToolButton::paintEvent(QPaintEvent * /*event*/)
 {
     QStylePainter painter(this);
     QStyleOptionToolButton option;

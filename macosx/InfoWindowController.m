@@ -44,8 +44,7 @@
 
 #define INVALID -99
 
-typedef enum
-{
+typedef enum {
     TAB_GENERAL_TAG = 0,
     TAB_ACTIVITY_TAG = 1,
     TAB_TRACKERS_TAG = 2,
@@ -57,7 +56,7 @@ typedef enum
 @interface InfoWindowController (Private)
 
 - (void)resetInfo;
-- (void)resetInfoForTorrent:(NSNotification*)notification;
+- (void)resetInfoForTorrent:(NSNotification *)notification;
 
 @end
 
@@ -73,8 +72,8 @@ typedef enum
 {
     [fNoneSelectedField setStringValue:NSLocalizedString(@"No Torrents Selected", "Inspector -> selected torrents")];
 
-    //window location and size
-    NSPanel* window = (NSPanel*)[self window];
+    // window location and size
+    NSPanel *window = (NSPanel *)[self window];
 
     [window setFloatingPanel:NO];
 
@@ -91,7 +90,7 @@ typedef enum
 
     [window setBecomesKeyOnlyIfNeeded:YES];
 
-    //set tab tooltips
+    // set tab tooltips
     [fTabMatrix setToolTip:NSLocalizedString(@"General Info", "Inspector -> tab") forCell:[fTabMatrix cellWithTag:TAB_GENERAL_TAG]];
     [fTabMatrix setToolTip:NSLocalizedString(@"Activity", "Inspector -> tab") forCell:[fTabMatrix cellWithTag:TAB_ACTIVITY_TAG]];
     [fTabMatrix setToolTip:NSLocalizedString(@"Trackers", "Inspector -> tab") forCell:[fTabMatrix cellWithTag:TAB_TRACKERS_TAG]];
@@ -99,9 +98,9 @@ typedef enum
     [fTabMatrix setToolTip:NSLocalizedString(@"Files", "Inspector -> tab") forCell:[fTabMatrix cellWithTag:TAB_FILE_TAG]];
     [fTabMatrix setToolTip:NSLocalizedString(@"Options", "Inspector -> tab") forCell:[fTabMatrix cellWithTag:TAB_OPTIONS_TAG]];
 
-    //set selected tab
+    // set selected tab
     fCurrentTabTag = INVALID;
-    NSString* identifier = [[NSUserDefaults standardUserDefaults] stringForKey:@"InspectorSelected"];
+    NSString *identifier = [[NSUserDefaults standardUserDefaults] stringForKey:@"InspectorSelected"];
     NSInteger tag;
     if ([identifier isEqualToString:TAB_INFO_IDENT])
         tag = TAB_GENERAL_TAG;
@@ -115,7 +114,7 @@ typedef enum
         tag = TAB_FILE_TAG;
     else if ([identifier isEqualToString:TAB_OPTIONS_IDENT])
         tag = TAB_OPTIONS_TAG;
-    else //safety
+    else // safety
     {
         [[NSUserDefaults standardUserDefaults] setObject:TAB_INFO_IDENT forKey:@"InspectorSelected"];
         tag = TAB_GENERAL_TAG;
@@ -123,11 +122,11 @@ typedef enum
     [fTabMatrix selectCellWithTag:tag];
     [self setTab:nil];
 
-    //set blank inspector
+    // set blank inspector
     [self setInfoForTorrents:[NSArray array]];
 
-    //allow for update notifications
-    NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+    // allow for update notifications
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(resetInfoForTorrent:) name:@"ResetInspector" object:nil];
     [nc addObserver:self selector:@selector(updateInfoStats) name:@"UpdateStats" object:nil];
     [nc addObserver:self selector:@selector(updateOptions) name:@"UpdateOptions" object:nil];
@@ -141,7 +140,7 @@ typedef enum
         [fViewController saveViewSize];
 }
 
-- (void)setInfoForTorrents:(NSArray*)torrents
+- (void)setInfoForTorrents:(NSArray *)torrents
 {
     if (fTorrents && [fTorrents isEqualToArray:torrents])
         return;
@@ -151,14 +150,14 @@ typedef enum
     [self resetInfo];
 }
 
-- (NSRect)windowWillUseStandardFrame:(NSWindow*)window defaultFrame:(NSRect)defaultFrame
+- (NSRect)windowWillUseStandardFrame:(NSWindow *)window defaultFrame:(NSRect)defaultFrame
 {
     NSRect windowRect = [window frame];
     windowRect.size.width = [window minSize].width;
     return windowRect;
 }
 
-- (void)windowWillClose:(NSNotification*)notification
+- (void)windowWillClose:(NSNotification *)notification
 {
     if (fCurrentTabTag == TAB_FILE_TAG && ([QLPreviewPanel sharedPreviewPanelExists] && [[QLPreviewPanel sharedPreviewPanel] isVisible]))
         [[QLPreviewPanel sharedPreviewPanel] reloadData];
@@ -171,12 +170,11 @@ typedef enum
     if (fCurrentTabTag == oldTabTag)
         return;
 
-    //take care of old view
+    // take care of old view
     CGFloat oldHeight = 0;
-    if (oldTabTag != INVALID)
-    {
-        //deselect old tab item
-        [(InfoTabButtonCell*)[fTabMatrix cellWithTag:oldTabTag] setSelectedTab:NO];
+    if (oldTabTag != INVALID) {
+        // deselect old tab item
+        [(InfoTabButtonCell *)[fTabMatrix cellWithTag:oldTabTag] setSelectedTab:NO];
 
         if ([fViewController respondsToSelector:@selector(saveViewSize)])
             [fViewController saveViewSize];
@@ -184,20 +182,18 @@ typedef enum
         if ([fViewController respondsToSelector:@selector(clearView)])
             [fViewController clearView];
 
-        NSView* oldView = [fViewController view];
+        NSView *oldView = [fViewController view];
         oldHeight = NSHeight([oldView frame]);
 
-        //remove old view
+        // remove old view
         [oldView removeFromSuperview];
     }
 
-    //set new tab item
-    NSString* identifier;
-    switch (fCurrentTabTag)
-    {
+    // set new tab item
+    NSString *identifier;
+    switch (fCurrentTabTag) {
     case TAB_GENERAL_TAG:
-        if (!fGeneralViewController)
-        {
+        if (!fGeneralViewController) {
             fGeneralViewController = [[InfoGeneralViewController alloc] init];
             [fGeneralViewController setInfoForTorrents:fTorrents];
         }
@@ -206,8 +202,7 @@ typedef enum
         identifier = TAB_INFO_IDENT;
         break;
     case TAB_ACTIVITY_TAG:
-        if (!fActivityViewController)
-        {
+        if (!fActivityViewController) {
             fActivityViewController = [[InfoActivityViewController alloc] init];
             [fActivityViewController setInfoForTorrents:fTorrents];
         }
@@ -216,8 +211,7 @@ typedef enum
         identifier = TAB_ACTIVITY_IDENT;
         break;
     case TAB_TRACKERS_TAG:
-        if (!fTrackersViewController)
-        {
+        if (!fTrackersViewController) {
             fTrackersViewController = [[InfoTrackersViewController alloc] init];
             [fTrackersViewController setInfoForTorrents:fTorrents];
         }
@@ -226,8 +220,7 @@ typedef enum
         identifier = TAB_TRACKER_IDENT;
         break;
     case TAB_PEERS_TAG:
-        if (!fPeersViewController)
-        {
+        if (!fPeersViewController) {
             fPeersViewController = [[InfoPeersViewController alloc] init];
             [fPeersViewController setInfoForTorrents:fTorrents];
         }
@@ -236,8 +229,7 @@ typedef enum
         identifier = TAB_PEERS_IDENT;
         break;
     case TAB_FILE_TAG:
-        if (!fFileViewController)
-        {
+        if (!fFileViewController) {
             fFileViewController = [[InfoFileViewController alloc] init];
             [fFileViewController setInfoForTorrents:fTorrents];
         }
@@ -246,8 +238,7 @@ typedef enum
         identifier = TAB_FILES_IDENT;
         break;
     case TAB_OPTIONS_TAG:
-        if (!fOptionsViewController)
-        {
+        if (!fOptionsViewController) {
             fOptionsViewController = [[InfoOptionsViewController alloc] init];
             [fOptionsViewController setInfoForTorrents:fTorrents];
         }
@@ -262,14 +253,14 @@ typedef enum
 
     [[NSUserDefaults standardUserDefaults] setObject:identifier forKey:@"InspectorSelected"];
 
-    NSWindow* window = [self window];
+    NSWindow *window = [self window];
 
     [window setTitle:[NSString stringWithFormat:@"%@ - %@", [fViewController title], NSLocalizedString(@"Torrent Inspector", "Inspector -> title")]];
 
-    //selected tab item
-    [(InfoTabButtonCell*)[fTabMatrix selectedCell] setSelectedTab:YES];
+    // selected tab item
+    [(InfoTabButtonCell *)[fTabMatrix selectedCell] setSelectedTab:YES];
 
-    NSView* view = [fViewController view];
+    NSView *view = [fViewController view];
 
     [fViewController updateInfo];
 
@@ -282,13 +273,12 @@ typedef enum
     CGFloat const minWindowWidth = MAX(fMinWindowWidth, [view fittingSize].width);
     windowRect.size.width = MAX(NSWidth(windowRect), minWindowWidth);
 
-    if ([fViewController respondsToSelector:@selector(saveViewSize)]) //a little bit hacky, but avoids requiring an extra method
+    if ([fViewController respondsToSelector:@selector(saveViewSize)]) // a little bit hacky, but avoids requiring an extra
+                                                                      // method
     {
-        if ([window screen])
-        {
+        if ([window screen]) {
             CGFloat const screenHeight = NSHeight([[window screen] visibleFrame]);
-            if (NSHeight(windowRect) > screenHeight)
-            {
+            if (NSHeight(windowRect) > screenHeight) {
                 CGFloat const difference = screenHeight - NSHeight(windowRect);
                 windowRect.origin.y -= difference;
                 windowRect.size.height += difference;
@@ -299,9 +289,7 @@ typedef enum
 
         [window setMinSize:NSMakeSize(minWindowWidth, NSHeight(windowRect) - NSHeight(viewRect) + TAB_MIN_HEIGHT)];
         [window setMaxSize:NSMakeSize(FLT_MAX, FLT_MAX)];
-    }
-    else
-    {
+    } else {
         [window setMinSize:NSMakeSize(minWindowWidth, NSHeight(windowRect))];
         [window setMaxSize:NSMakeSize(FLT_MAX, NSHeight(windowRect))];
     }
@@ -344,7 +332,7 @@ typedef enum
     [self setTab:nil];
 }
 
-- (void)swipeWithEvent:(NSEvent*)event
+- (void)swipeWithEvent:(NSEvent *)event
 {
     if ([event deltaX] < 0.0)
         [self setNextTab];
@@ -362,7 +350,7 @@ typedef enum
     [fOptionsViewController updateOptions];
 }
 
-- (NSArray*)quickLookURLs
+- (NSArray *)quickLookURLs
 {
     return [fFileViewController quickLookURLs];
 }
@@ -387,10 +375,8 @@ typedef enum
 - (void)resetInfo
 {
     NSUInteger const numberSelected = [fTorrents count];
-    if (numberSelected != 1)
-    {
-        if (numberSelected > 0)
-        {
+    if (numberSelected != 1) {
+        if (numberSelected > 0) {
             [fImageView setImage:[NSImage imageNamed:NSImageNameMultipleDocuments]];
 
             [fNameField setStringValue:[NSString stringWithFormat:NSLocalizedString(@"%@ Torrents Selected", "Inspector -> selected torrents"),
@@ -399,18 +385,16 @@ typedef enum
 
             uint64_t size = 0;
             NSUInteger fileCount = 0, magnetCount = 0;
-            for (Torrent* torrent in fTorrents)
-            {
+            for (Torrent *torrent in fTorrents) {
                 size += [torrent size];
                 fileCount += [torrent fileCount];
                 if ([torrent isMagnet])
                     ++magnetCount;
             }
 
-            NSMutableArray* fileStrings = [NSMutableArray arrayWithCapacity:2];
-            if (fileCount > 0)
-            {
-                NSString* fileString;
+            NSMutableArray *fileStrings = [NSMutableArray arrayWithCapacity:2];
+            if (fileCount > 0) {
+                NSString *fileString;
                 if (fileCount == 1)
                     fileString = NSLocalizedString(@"1 file", "Inspector -> selected torrents");
                 else
@@ -418,9 +402,8 @@ typedef enum
                                                             [NSString formattedUInteger:fileCount]];
                 [fileStrings addObject:fileString];
             }
-            if (magnetCount > 0)
-            {
-                NSString* magnetString;
+            if (magnetCount > 0) {
+                NSString *magnetString;
                 if (magnetCount == 1)
                     magnetString = NSLocalizedString(@"1 magnetized transfer", "Inspector -> selected torrents");
                 else
@@ -429,31 +412,26 @@ typedef enum
                 [fileStrings addObject:magnetString];
             }
 
-            NSString* fileString = [fileStrings componentsJoinedByString:@" + "];
+            NSString *fileString = [fileStrings componentsJoinedByString:@" + "];
 
-            if (magnetCount < numberSelected)
-            {
+            if (magnetCount < numberSelected) {
                 [fBasicInfoField
                     setStringValue:[NSString stringWithFormat:@"%@, %@",
                                                               fileString,
                                                               [NSString stringWithFormat:NSLocalizedString(@"%@ total", "Inspector -> selected torrents"),
                                                                                          [NSString stringForFileSize:size]]]];
 
-                NSByteCountFormatter* formatter = [[NSByteCountFormatter alloc] init];
+                NSByteCountFormatter *formatter = [[NSByteCountFormatter alloc] init];
                 [formatter setAllowedUnits:NSByteCountFormatterUseBytes];
                 [fBasicInfoField setToolTip:[formatter stringFromByteCount:size]];
-            }
-            else
-            {
+            } else {
                 [fBasicInfoField setStringValue:fileString];
                 [fBasicInfoField setToolTip:nil];
             }
             [fBasicInfoField setHidden:NO];
 
             [fNoneSelectedField setHidden:YES];
-        }
-        else
-        {
+        } else {
             [fImageView setImage:[NSImage imageNamed:NSImageNameApplicationIcon]];
             [fNoneSelectedField setHidden:NO];
 
@@ -462,24 +440,20 @@ typedef enum
         }
 
         [fNameField setToolTip:nil];
-    }
-    else
-    {
-        Torrent* torrent = fTorrents[0];
+    } else {
+        Torrent *torrent = fTorrents[0];
 
         [fImageView setImage:[torrent icon]];
 
-        NSString* name = [torrent name];
+        NSString *name = [torrent name];
         [fNameField setStringValue:name];
         [fNameField setToolTip:name];
         [fNameField setHidden:NO];
 
-        if (![torrent isMagnet])
-        {
-            NSString* basicString = [NSString stringForFileSize:[torrent size]];
-            if ([torrent isFolder])
-            {
-                NSString* fileString;
+        if (![torrent isMagnet]) {
+            NSString *basicString = [NSString stringForFileSize:[torrent size]];
+            if ([torrent isFolder]) {
+                NSString *fileString;
                 NSUInteger const fileCount = [torrent fileCount];
                 if (fileCount == 1)
                     fileString = NSLocalizedString(@"1 file", "Inspector -> selected torrents");
@@ -490,12 +464,10 @@ typedef enum
             }
             [fBasicInfoField setStringValue:basicString];
 
-            NSByteCountFormatter* formatter = [[NSByteCountFormatter alloc] init];
+            NSByteCountFormatter *formatter = [[NSByteCountFormatter alloc] init];
             [formatter setAllowedUnits:NSByteCountFormatterUseBytes];
             [fBasicInfoField setToolTip:[formatter stringFromByteCount:[torrent size]]];
-        }
-        else
-        {
+        } else {
             [fBasicInfoField setStringValue:NSLocalizedString(@"Magnetized transfer", "Inspector -> selected torrents")];
             [fBasicInfoField setToolTip:nil];
         }
@@ -514,9 +486,9 @@ typedef enum
     [fViewController updateInfo];
 }
 
-- (void)resetInfoForTorrent:(NSNotification*)notification
+- (void)resetInfoForTorrent:(NSNotification *)notification
 {
-    Torrent* torrent = [notification userInfo][@"Torrent"];
+    Torrent *torrent = [notification userInfo][@"Torrent"];
     if (fTorrents && (!torrent || [fTorrents containsObject:torrent]))
         [self resetInfo];
 }

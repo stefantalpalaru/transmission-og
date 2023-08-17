@@ -24,14 +24,13 @@
 
 #import "FileOutlineView.h"
 
-@interface FilePriorityCell : NSSegmentedCell
-{
+@interface FilePriorityCell : NSSegmentedCell {
     BOOL fHoverRow;
 }
 
-- (void)addTrackingAreasForView:(NSView*)controlView
+- (void)addTrackingAreasForView:(NSView *)controlView
                          inRect:(NSRect)cellFrame
-                   withUserInfo:(NSDictionary*)userInfo
+                   withUserInfo:(NSDictionary *)userInfo
                   mouseLocation:(NSPoint)mouseLocation;
 
 - (void)setHovered:(BOOL)hovered;

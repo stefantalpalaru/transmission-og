@@ -45,20 +45,17 @@
 
 #include "SqueezeLabel.h"
 
-SqueezeLabel::SqueezeLabel(QString const& text, QWidget* parent)
+SqueezeLabel::SqueezeLabel(QString const &text, QWidget *parent)
     : QLabel(text, parent)
-{
-}
+{}
 
-SqueezeLabel::SqueezeLabel(QWidget* parent)
+SqueezeLabel::SqueezeLabel(QWidget *parent)
     : QLabel(parent)
-{
-}
+{}
 
-void SqueezeLabel::paintEvent(QPaintEvent* paintEvent)
+void SqueezeLabel::paintEvent(QPaintEvent *paintEvent)
 {
-    if (hasFocus() && (textInteractionFlags() & (Qt::TextSelectableByKeyboard | Qt::TextSelectableByMouse)) != 0)
-    {
+    if (hasFocus() && (textInteractionFlags() & (Qt::TextSelectableByKeyboard | Qt::TextSelectableByMouse)) != 0) {
         return QLabel::paintEvent(paintEvent);
     }
 

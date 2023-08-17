@@ -24,17 +24,16 @@
 
 #include <libtransmission/transmission.h>
 
-@interface BadgeView : NSView
-{
-    tr_session* fLib;
+@interface BadgeView : NSView {
+    tr_session *fLib;
 
-    NSMutableDictionary* fAttributes;
+    NSMutableDictionary *fAttributes;
 
     CGFloat fDownloadRate, fUploadRate;
     BOOL fQuitting;
 }
 
-- (id)initWithLib:(tr_session*)lib;
+- (id)initWithLib:(tr_session *)lib;
 
 - (BOOL)setRatesWithDownload:(CGFloat)downloadRate upload:(CGFloat)uploadRate;
 - (void)setQuitting;

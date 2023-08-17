@@ -16,52 +16,46 @@
 
 tr_ptrArray const TR_PTR_ARRAY_INIT = TR_PTR_ARRAY_INIT_STATIC;
 
-void tr_ptrArrayDestruct(tr_ptrArray* p, PtrArrayForeachFunc func)
+void tr_ptrArrayDestruct(tr_ptrArray *p, PtrArrayForeachFunc func)
 {
     TR_ASSERT(p != NULL);
     TR_ASSERT(p->items != NULL || p->n_items == 0);
 
-    if (func != NULL)
-    {
+    if (func != NULL) {
         tr_ptrArrayForeach(p, func);
     }
 
     tr_free(p->items);
 }
 
-void tr_ptrArrayForeach(tr_ptrArray* t, PtrArrayForeachFunc func)
+void tr_ptrArrayForeach(tr_ptrArray *t, PtrArrayForeachFunc func)
 {
     TR_ASSERT(t != NULL);
     TR_ASSERT(t->items != NULL || t->n_items == 0);
     TR_ASSERT(func != NULL);
 
-    for (int i = 0; i < t->n_items; ++i)
-    {
+    for (int i = 0; i < t->n_items; ++i) {
         func(t->items[i]);
     }
 }
 
-void** tr_ptrArrayPeek(tr_ptrArray* t, int* size)
+void **tr_ptrArrayPeek(tr_ptrArray *t, int *size)
 {
     *size = t->n_items;
     return t->items;
 }
 
-int tr_ptrArrayInsert(tr_ptrArray* t, void* ptr, int pos)
+int tr_ptrArrayInsert(tr_ptrArray *t, void *ptr, int pos)
 {
-    if (t->n_items >= t->n_alloc)
-    {
+    if (t->n_items >= t->n_alloc) {
         t->n_alloc = MAX(FLOOR, t->n_alloc * 2);
-        t->items = tr_renew(void*, t->items, t->n_alloc);
+        t->items = tr_renew(void *, t->items, t->n_alloc);
     }
 
-    if (pos < 0 || pos > t->n_items)
-    {
+    if (pos < 0 || pos > t->n_items) {
         pos = t->n_items;
-    }
-    else
-    {
-        memmove(t->items + pos + 1, t->items + pos, sizeof(void*) * (t->n_items - pos));
+    } else {
+        memmove(t->items + pos + 1, t->items + pos, sizeof(void *) * (t->n_items - pos));
     }
 
     t->items[pos] = ptr;
@@ -69,22 +63,20 @@ int tr_ptrArrayInsert(tr_ptrArray* t, void* ptr, int pos)
     return pos;
 }
 
-void* tr_ptrArrayPop(tr_ptrArray* t)
+void *tr_ptrArrayPop(tr_ptrArray *t)
 {
-    void* ret = NULL;
+    void *ret = NULL;
 
-    if (t->n_items != 0)
-    {
+    if (t->n_items != 0) {
         ret = t->items[--t->n_items];
     }
 
     return ret;
 }
 
-void tr_ptrArrayErase(tr_ptrArray* t, int begin, int end)
+void tr_ptrArrayErase(tr_ptrArray *t, int begin, int end)
 {
-    if (end < 0)
-    {
+    if (end < 0) {
         end = t->n_items;
     }
 
@@ -92,7 +84,7 @@ void tr_ptrArrayErase(tr_ptrArray* t, int begin, int end)
     TR_ASSERT(begin < end);
     TR_ASSERT(end <= t->n_items);
 
-    memmove(t->items + begin, t->items + end, sizeof(void*) * (t->n_items - end));
+    memmove(t->items + begin, t->items + end, sizeof(void *) * (t->n_items - end));
 
     t->n_items -= end - begin;
 }
@@ -101,51 +93,40 @@ void tr_ptrArrayErase(tr_ptrArray* t, int begin, int end)
 ***
 **/
 
-int tr_ptrArrayLowerBound(tr_ptrArray const* t, void const* ptr, tr_voidptr_compare_func compare, bool* exact_match)
+int tr_ptrArrayLowerBound(tr_ptrArray const *t, void const *ptr, tr_voidptr_compare_func compare, bool *exact_match)
 {
     int pos = -1;
     bool match = false;
 
-    if (t->n_items == 0)
-    {
+    if (t->n_items == 0) {
         pos = 0;
-    }
-    else
-    {
+    } else {
         int first = 0;
         int last = t->n_items - 1;
 
-        for (;;)
-        {
+        for (;;) {
             int const half = (last - first) / 2;
             int const c = compare(t->items[first + half], ptr);
 
-            if (c < 0)
-            {
+            if (c < 0) {
                 int const new_first = first + half + 1;
 
-                if (new_first > last)
-                {
+                if (new_first > last) {
                     pos = new_first;
                     break;
                 }
 
                 first = new_first;
-            }
-            else if (c > 0)
-            {
+            } else if (c > 0) {
                 int const new_last = first + half - 1;
 
-                if (new_last < first)
-                {
+                if (new_last < first) {
                     pos = first;
                     break;
                 }
 
                 last = new_last;
-            }
-            else
-            {
+            } else {
                 match = true;
                 pos = first + half;
                 break;
@@ -153,8 +134,7 @@ int tr_ptrArrayLowerBound(tr_ptrArray const* t, void const* ptr, tr_voidptr_comp
         }
     }
 
-    if (exact_match != NULL)
-    {
+    if (exact_match != NULL) {
         *exact_match = match;
     }
 
@@ -168,30 +148,27 @@ int tr_ptrArrayLowerBound(tr_ptrArray const* t, void const* ptr, tr_voidptr_comp
 
 #else
 
-static void assertArrayIsSortedAndUnique(tr_ptrArray const* t, tr_voidptr_compare_func compare)
+static void assertArrayIsSortedAndUnique(tr_ptrArray const *t, tr_voidptr_compare_func compare)
 {
-    for (int i = 0; i < t->n_items - 2; ++i)
-    {
+    for (int i = 0; i < t->n_items - 2; ++i) {
         TR_ASSERT(compare(t->items[i], t->items[i + 1]) < 0);
     }
 }
 
-static void assertIndexIsSortedAndUnique(tr_ptrArray const* t, int pos, tr_voidptr_compare_func compare)
+static void assertIndexIsSortedAndUnique(tr_ptrArray const *t, int pos, tr_voidptr_compare_func compare)
 {
-    if (pos > 0)
-    {
+    if (pos > 0) {
         TR_ASSERT(compare(t->items[pos - 1], t->items[pos]) < 0);
     }
 
-    if (pos + 1 < t->n_items)
-    {
+    if (pos + 1 < t->n_items) {
         TR_ASSERT(compare(t->items[pos], t->items[pos + 1]) < 0);
     }
 }
 
 #endif
 
-int tr_ptrArrayInsertSorted(tr_ptrArray* t, void* ptr, tr_voidptr_compare_func compare)
+int tr_ptrArrayInsertSorted(tr_ptrArray *t, void *ptr, tr_voidptr_compare_func compare)
 {
     int pos;
     int ret;
@@ -204,25 +181,24 @@ int tr_ptrArrayInsertSorted(tr_ptrArray* t, void* ptr, tr_voidptr_compare_func c
     return ret;
 }
 
-void* tr_ptrArrayFindSorted(tr_ptrArray* t, void const* ptr, tr_voidptr_compare_func compare)
+void *tr_ptrArrayFindSorted(tr_ptrArray *t, void const *ptr, tr_voidptr_compare_func compare)
 {
     bool match = false;
     int const pos = tr_ptrArrayLowerBound(t, ptr, compare, &match);
     return match ? t->items[pos] : NULL;
 }
 
-static void* tr_ptrArrayRemoveSortedValue(tr_ptrArray* t, void const* ptr, tr_voidptr_compare_func compare)
+static void *tr_ptrArrayRemoveSortedValue(tr_ptrArray *t, void const *ptr, tr_voidptr_compare_func compare)
 {
     int pos;
     bool match;
-    void* ret = NULL;
+    void *ret = NULL;
 
     assertArrayIsSortedAndUnique(t, compare);
 
     pos = tr_ptrArrayLowerBound(t, ptr, compare, &match);
 
-    if (match)
-    {
+    if (match) {
         ret = t->items[pos];
         TR_ASSERT(compare(ret, ptr) == 0);
         tr_ptrArrayErase(t, pos, pos + 1);
@@ -232,9 +208,9 @@ static void* tr_ptrArrayRemoveSortedValue(tr_ptrArray* t, void const* ptr, tr_vo
     return ret;
 }
 
-void tr_ptrArrayRemoveSortedPointer(tr_ptrArray* t, void const* ptr, tr_voidptr_compare_func compare)
+void tr_ptrArrayRemoveSortedPointer(tr_ptrArray *t, void const *ptr, tr_voidptr_compare_func compare)
 {
-    void* removed = tr_ptrArrayRemoveSortedValue(t, ptr, compare);
+    void *removed = tr_ptrArrayRemoveSortedValue(t, ptr, compare);
 
 #ifndef TR_ENABLE_ASSERTS
 

@@ -12,11 +12,9 @@
 #include <QString>
 #include <QVariant>
 
-class FilterMode
-{
+class FilterMode {
 public:
-    enum
-    {
+    enum {
         SHOW_ALL,
         SHOW_ACTIVE,
         SHOW_DOWNLOADING,
@@ -31,27 +29,25 @@ public:
 public:
     FilterMode(int mode = SHOW_ALL)
         : myMode(mode)
-    {
-    }
+    {}
 
-    FilterMode(QString const& name)
+    FilterMode(QString const &name)
         : myMode(modeFromName(name))
-    {
-    }
+    {}
 
     int mode() const
     {
         return myMode;
     }
 
-    QString const& name() const
+    QString const &name() const
     {
         return names[myMode];
     }
 
-    static int modeFromName(QString const& name);
+    static int modeFromName(QString const &name);
 
-    static QString const& nameFromMode(int mode)
+    static QString const &nameFromMode(int mode)
     {
         return names[mode];
     }
@@ -64,11 +60,9 @@ private:
 
 Q_DECLARE_METATYPE(FilterMode)
 
-class SortMode
-{
+class SortMode {
 public:
-    enum
-    {
+    enum {
         SORT_BY_ACTIVITY,
         SORT_BY_AGE,
         SORT_BY_ETA,
@@ -85,26 +79,24 @@ public:
 public:
     SortMode(int mode = SORT_BY_ID)
         : myMode(mode)
-    {
-    }
+    {}
 
-    SortMode(QString const& name)
+    SortMode(QString const &name)
         : myMode(modeFromName(name))
-    {
-    }
+    {}
 
     int mode() const
     {
         return myMode;
     }
 
-    QString const& name() const
+    QString const &name() const
     {
         return names[myMode];
     }
 
-    static int modeFromName(QString const& name);
-    static QString const& nameFromMode(int mode);
+    static int modeFromName(QString const &name);
+    static QString const &nameFromMode(int mode);
 
 private:
     int myMode;

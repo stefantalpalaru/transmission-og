@@ -16,34 +16,30 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
-enum
-{
-    TR_RESPONSE_RESET = 1
+enum { TR_RESPONSE_RESET = 1 };
+
+struct stat_ui {
+    GtkLabel *one_up_lb;
+    GtkLabel *one_down_lb;
+    GtkLabel *one_ratio_lb;
+    GtkLabel *one_time_lb;
+
+    GtkLabel *all_up_lb;
+    GtkLabel *all_down_lb;
+    GtkLabel *all_ratio_lb;
+    GtkLabel *all_time_lb;
+
+    GtkLabel *all_sessions_lb;
+
+    TrCore *core;
 };
 
-struct stat_ui
-{
-    GtkLabel* one_up_lb;
-    GtkLabel* one_down_lb;
-    GtkLabel* one_ratio_lb;
-    GtkLabel* one_time_lb;
-
-    GtkLabel* all_up_lb;
-    GtkLabel* all_down_lb;
-    GtkLabel* all_ratio_lb;
-    GtkLabel* all_time_lb;
-
-    GtkLabel* all_sessions_lb;
-
-    TrCore* core;
-};
-
-static void setLabel(GtkLabel* l, char const* str)
+static void setLabel(GtkLabel *l, char const *str)
 {
     gtr_label_set_text(l, str);
 }
 
-static void setLabelFromRatio(GtkLabel* l, double d)
+static void setLabelFromRatio(GtkLabel *l, double d)
 {
     char buf[128];
 
@@ -54,11 +50,11 @@ static void setLabelFromRatio(GtkLabel* l, double d)
 static gboolean updateStats(gpointer gdata)
 {
     char buf[128];
-    char const* fmt;
+    char const *fmt;
     tr_session_stats one;
     tr_session_stats all;
     size_t const buflen = sizeof(buf);
-    struct stat_ui* ui = gdata;
+    struct stat_ui *ui = gdata;
 
     tr_sessionGetStats(gtr_core_session(ui->core), &one);
     tr_sessionGetCumulativeStats(gtr_core_session(ui->core), &all);
@@ -79,28 +75,26 @@ static gboolean updateStats(gpointer gdata)
     return G_SOURCE_CONTINUE;
 }
 
-static void dialogDestroyed(gpointer p, GObject* dialog UNUSED)
+static void dialogDestroyed(gpointer p, GObject *dialog UNUSED)
 {
     g_source_remove(GPOINTER_TO_UINT(p));
 }
 
-static void dialogResponse(GtkDialog* dialog, gint response, gpointer gdata)
+static void dialogResponse(GtkDialog *dialog, gint response, gpointer gdata)
 {
-    struct stat_ui* ui = gdata;
+    struct stat_ui *ui = gdata;
 
-    if (response == TR_RESPONSE_RESET)
-    {
-        char const* primary = _("Reset your statistics?");
-        char const* secondary = _(
+    if (response == TR_RESPONSE_RESET) {
+        char const *primary = _("Reset your statistics?");
+        char const *secondary = _(
             "These statistics are for your information only. "
             "Resetting them doesn't affect the statistics logged by your BitTorrent trackers.");
         int const flags = GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL;
-        GtkWidget* w = gtk_message_dialog_new(GTK_WINDOW(dialog), flags, GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE, "%s", primary);
+        GtkWidget *w = gtk_message_dialog_new(GTK_WINDOW(dialog), flags, GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE, "%s", primary);
         gtk_dialog_add_buttons(GTK_DIALOG(w), GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, _("_Reset"), TR_RESPONSE_RESET, NULL);
         gtk_message_dialog_format_secondary_text(GTK_MESSAGE_DIALOG(w), "%s", secondary);
 
-        if (gtk_dialog_run(GTK_DIALOG(w)) == TR_RESPONSE_RESET)
-        {
+        if (gtk_dialog_run(GTK_DIALOG(w)) == TR_RESPONSE_RESET) {
             tr_sessionClearStats(gtr_core_session(ui->core));
             updateStats(ui);
         }
@@ -108,20 +102,19 @@ static void dialogResponse(GtkDialog* dialog, gint response, gpointer gdata)
         gtk_widget_destroy(w);
     }
 
-    if (response == GTK_RESPONSE_CLOSE)
-    {
+    if (response == GTK_RESPONSE_CLOSE) {
         gtk_widget_destroy(GTK_WIDGET(dialog));
     }
 }
 
-GtkWidget* gtr_stats_dialog_new(GtkWindow* parent, TrCore* core)
+GtkWidget *gtr_stats_dialog_new(GtkWindow *parent, TrCore *core)
 {
     guint i;
-    GtkWidget* d;
-    GtkWidget* t;
-    GtkWidget* l;
+    GtkWidget *d;
+    GtkWidget *t;
+    GtkWidget *l;
     guint row = 0;
-    struct stat_ui* ui = g_new0(struct stat_ui, 1);
+    struct stat_ui *ui = g_new0(struct stat_ui, 1);
 
     d = gtk_dialog_new_with_buttons(
         _("Statistics"),

@@ -26,8 +26,7 @@ static void handle_sigchld(int i UNUSED)
 {
     int rc;
 
-    do
-    {
+    do {
         /* FIXME: Only check for our own PIDs */
         rc = waitpid(-1, NULL, WNOHANG);
     } while (rc > 0 || (rc == -1 && errno == EINTR));
@@ -35,45 +34,36 @@ static void handle_sigchld(int i UNUSED)
     /* FIXME: Call old handler, if any */
 }
 
-static void set_system_error(tr_error** error, int code, char const* what)
+static void set_system_error(tr_error **error, int code, char const *what)
 {
-    if (error == NULL)
-    {
+    if (error == NULL) {
         return;
     }
 
-    if (what == NULL)
-    {
+    if (what == NULL) {
         tr_error_set_literal(error, code, tr_strerror(code));
-    }
-    else
-    {
+    } else {
         tr_error_set(error, code, "%s failed: %s", what, tr_strerror(code));
     }
 }
 
-static bool tr_spawn_async_in_child(tr_error** error, char* const* cmd, char* const* env, char const* work_dir, int pipe_fd)
+static bool tr_spawn_async_in_child(tr_error **error, char *const *cmd, char *const *env, char const *work_dir, int pipe_fd)
 {
     ssize_t count;
 
-    if (env != NULL)
-    {
-        for (size_t i = 0; env[i] != NULL; ++i)
-        {
-            if (putenv(env[i]) != 0)
-            {
+    if (env != NULL) {
+        for (size_t i = 0; env[i] != NULL; ++i) {
+            if (putenv(env[i]) != 0) {
                 goto fail;
             }
         }
     }
 
-    if (work_dir != NULL && chdir(work_dir) == -1)
-    {
+    if (work_dir != NULL && chdir(work_dir) == -1) {
         goto fail;
     }
 
-    if (execvp(cmd[0], cmd) == -1)
-    {
+    if (execvp(cmd[0], cmd) == -1) {
         goto fail;
     }
 
@@ -81,37 +71,30 @@ static bool tr_spawn_async_in_child(tr_error** error, char* const* cmd, char* co
 
 fail:
     count = write(pipe_fd, &errno, sizeof(errno));
-    if (count == -1)
-    {
+    if (count == -1) {
         set_system_error(error, errno, "Write to pipe");
     }
     return false;
 }
 
-static bool tr_spawn_async_in_parent(int pipe_fd, tr_error** error)
+static bool tr_spawn_async_in_parent(int pipe_fd, tr_error **error)
 {
     int child_errno;
     ssize_t count;
 
     TR_STATIC_ASSERT(sizeof(child_errno) == sizeof(errno), "");
 
-    do
-    {
+    do {
         count = read(pipe_fd, &child_errno, sizeof(child_errno));
     } while (count == -1 && errno == EINTR);
 
     close(pipe_fd);
 
-    if (count == -1)
-    {
+    if (count == -1) {
         /* Read failed (what to do?) */
-    }
-    else if (count == 0)
-    {
+    } else if (count == 0) {
         /* Child successfully exec-ed */
-    }
-    else
-    {
+    } else {
         TR_ASSERT((size_t)count == sizeof(child_errno));
 
         set_system_error(error, child_errno, "Child process setup");
@@ -121,15 +104,13 @@ static bool tr_spawn_async_in_parent(int pipe_fd, tr_error** error)
     return true;
 }
 
-bool tr_spawn_async(char* const* cmd, char* const* env, char const* work_dir, tr_error** error)
+bool tr_spawn_async(char *const *cmd, char *const *env, char const *work_dir, tr_error **error)
 {
     static bool sigchld_handler_set = false;
 
-    if (!sigchld_handler_set)
-    {
+    if (!sigchld_handler_set) {
         /* FIXME: "The effects of signal() in a multithreaded process are unspecified." (c) man 2 signal */
-        if (signal(SIGCHLD, &handle_sigchld) == SIG_ERR)
-        {
+        if (signal(SIGCHLD, &handle_sigchld) == SIG_ERR) {
             set_system_error(error, errno, "Call to signal()");
             return false;
         }
@@ -139,14 +120,12 @@ bool tr_spawn_async(char* const* cmd, char* const* env, char const* work_dir, tr
 
     int pipe_fds[2];
 
-    if (pipe(pipe_fds) == -1)
-    {
+    if (pipe(pipe_fds) == -1) {
         set_system_error(error, errno, "Call to pipe()");
         return false;
     }
 
-    if (fcntl(pipe_fds[1], F_SETFD, fcntl(pipe_fds[1], F_GETFD) | FD_CLOEXEC) == -1)
-    {
+    if (fcntl(pipe_fds[1], F_SETFD, fcntl(pipe_fds[1], F_GETFD) | FD_CLOEXEC) == -1) {
         set_system_error(error, errno, "Call to fcntl()");
         close(pipe_fds[0]);
         close(pipe_fds[1]);
@@ -155,18 +134,15 @@ bool tr_spawn_async(char* const* cmd, char* const* env, char const* work_dir, tr
 
     int const child_pid = fork();
 
-    if (child_pid == -1)
-    {
+    if (child_pid == -1) {
         set_system_error(error, errno, "Call to fork()");
         return false;
     }
 
-    if (child_pid == 0)
-    {
+    if (child_pid == 0) {
         close(pipe_fds[0]);
 
-        if (!tr_spawn_async_in_child(error, cmd, env, work_dir, pipe_fds[1]))
-        {
+        if (!tr_spawn_async_in_child(error, cmd, env, work_dir, pipe_fds[1])) {
             _exit(0);
         }
     }

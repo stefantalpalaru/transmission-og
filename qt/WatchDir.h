@@ -16,38 +16,32 @@ class QFileSystemWatcher;
 
 class TorrentModel;
 
-class WatchDir : public QObject
-{
+class WatchDir : public QObject {
     Q_OBJECT
 
 public:
-    WatchDir(TorrentModel const&);
+    WatchDir(TorrentModel const &);
 
-    void setPath(QString const& path, bool isEnabled);
+    void setPath(QString const &path, bool isEnabled);
 
 signals:
-    void torrentFileAdded(QString const& filename);
+    void torrentFileAdded(QString const &filename);
 
 private:
-    enum
-    {
-        OK,
-        DUPLICATE,
-        ERROR
-    };
+    enum { OK, DUPLICATE, ERROR };
 
 private:
-    int metainfoTest(QString const& filename) const;
+    int metainfoTest(QString const &filename) const;
 
 private slots:
-    void watcherActivated(QString const& path);
+    void watcherActivated(QString const &path);
     void onTimeout();
 
     void rescanAllWatchedDirectories();
 
 private:
-    TorrentModel const& myModel;
+    TorrentModel const &myModel;
 
     QSet<QString> myWatchDirFiles;
-    QFileSystemWatcher* myWatcher;
+    QFileSystemWatcher *myWatcher;
 };

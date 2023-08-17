@@ -25,18 +25,17 @@
 
 @interface URLSheetWindowController (Private)
 
-- (void)updateOpenButtonForURL:(NSString*)string;
+- (void)updateOpenButtonForURL:(NSString *)string;
 
 @end
 
 @implementation URLSheetWindowController
 
-NSString* urlString = nil;
+NSString *urlString = nil;
 
-- (id)initWithController:(Controller*)controller
+- (id)initWithController:(Controller *)controller
 {
-    if ((self = [self initWithWindowNibName:@"URLSheetWindow"]))
-    {
+    if ((self = [self initWithWindowNibName:@"URLSheetWindow"])) {
         fController = controller;
     }
     return self;
@@ -46,8 +45,7 @@ NSString* urlString = nil;
 {
     [fLabelField setStringValue:NSLocalizedString(@"Internet address of torrent file:", "URL sheet label")];
 
-    if (urlString)
-    {
+    if (urlString) {
         [fTextField setStringValue:urlString];
         [fTextField selectText:self];
 
@@ -60,7 +58,7 @@ NSString* urlString = nil;
     [fOpenButton sizeToFit];
     [fCancelButton sizeToFit];
 
-    //size the two buttons the same
+    // size the two buttons the same
     NSRect openFrame = [fOpenButton frame];
     openFrame.size.width += 10.0;
     NSRect cancelFrame = [fCancelButton frame];
@@ -71,7 +69,8 @@ NSString* urlString = nil;
     else
         openFrame.size.width = NSWidth(cancelFrame);
 
-    openFrame.origin.x = NSWidth([[self window] frame]) - NSWidth(openFrame) - 20.0 + 6.0; //I don't know why the extra 6.0 is needed
+    openFrame.origin.x = NSWidth([[self window] frame]) - NSWidth(openFrame) - 20.0 + 6.0; // I don't know why the extra 6.0 is
+                                                                                           // needed
     [fOpenButton setFrame:openFrame];
 
     cancelFrame.origin.x = NSMinX(openFrame) - NSWidth(cancelFrame);
@@ -90,12 +89,12 @@ NSString* urlString = nil;
     [NSApp endSheet:[self window] returnCode:0];
 }
 
-- (NSString*)urlString
+- (NSString *)urlString
 {
     return [fTextField stringValue];
 }
 
-- (void)controlTextDidChange:(NSNotification*)notification
+- (void)controlTextDidChange:(NSNotification *)notification
 {
     [self updateOpenButtonForURL:[fTextField stringValue]];
 }
@@ -104,13 +103,12 @@ NSString* urlString = nil;
 
 @implementation URLSheetWindowController (Private)
 
-- (void)updateOpenButtonForURL:(NSString*)string
+- (void)updateOpenButtonForURL:(NSString *)string
 {
     BOOL enable = YES;
     if ([string isEqualToString:@""])
         enable = NO;
-    else
-    {
+    else {
         NSRange prefixRange = [string rangeOfString:@"://"];
         if (prefixRange.location != NSNotFound && [string length] == NSMaxRange(prefixRange))
             enable = NO;

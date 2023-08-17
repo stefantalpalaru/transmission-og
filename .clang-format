@@ -15,7 +15,10 @@ AllowShortLoopsOnASingleLine: false
 AlwaysBreakBeforeMultilineStrings: true
 BinPackArguments: false
 BinPackParameters: false
-BreakBeforeBraces: Allman
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterFunction: true
+  SplitEmptyFunction: false
 BreakBeforeTernaryOperators: false
 BreakStringLiterals: false
 ColumnLimit: 128
@@ -29,9 +32,11 @@ IndentWidth: 4
 MaxEmptyLinesToKeep: 1
 PenaltyBreakAssignment: 1000
 PenaltyBreakBeforeFirstCallParameter: 0
+PenaltyBreakComment: 0
+PenaltyBreakOpenParenthesis: 1
 PenaltyReturnTypeOnItsOwnLine: 1000
-PointerAlignment: Left
-ReflowComments: false
+PointerAlignment: Right
+ReflowComments: true
 SortIncludes: false
 SpaceAfterCStyleCast: false
 SpacesBeforeTrailingComments: 1

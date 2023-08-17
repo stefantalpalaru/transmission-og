@@ -39,20 +39,18 @@
 
 #define MY_NAME "tr_crypto_utils"
 
-static void log_openssl_error(char const* file, int line)
+static void log_openssl_error(char const *file, int line)
 {
     unsigned long const error_code = ERR_get_error();
 
-    if (tr_logLevelIsActive(TR_LOG_ERROR))
-    {
+    if (tr_logLevelIsActive(TR_LOG_ERROR)) {
         char buf[512];
 
 #ifndef TR_LIGHTWEIGHT
 
         static bool strings_loaded = false;
 
-        if (!strings_loaded)
-        {
+        if (!strings_loaded) {
 #if OPENSSL_VERSION_NUMBER < 0x10100000 || (defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER < 0x20700000)
             ERR_load_crypto_strings();
 #else
@@ -71,12 +69,11 @@ static void log_openssl_error(char const* file, int line)
 
 #define log_error() log_openssl_error(__FILE__, __LINE__)
 
-static bool check_openssl_result(int result, int expected_result, bool expected_equal, char const* file, int line)
+static bool check_openssl_result(int result, int expected_result, bool expected_equal, char const *file, int line)
 {
     bool const ret = (result == expected_result) == expected_equal;
 
-    if (!ret)
-    {
+    if (!ret) {
         log_openssl_error(file, line);
     }
 
@@ -87,12 +84,11 @@ static bool check_openssl_result(int result, int expected_result, bool expected_
 #define check_result_eq(result, x_result) check_openssl_result((result), (x_result), true, __FILE__, __LINE__)
 #define check_result_neq(result, x_result) check_openssl_result((result), (x_result), false, __FILE__, __LINE__)
 
-static bool check_openssl_pointer(void* pointer, char const* file, int line)
+static bool check_openssl_pointer(void *pointer, char const *file, int line)
 {
     bool const ret = pointer != NULL;
 
-    if (!ret)
-    {
+    if (!ret) {
         log_openssl_error(file, line);
     }
 
@@ -107,10 +103,9 @@ static bool check_openssl_pointer(void* pointer, char const* file, int line)
 
 tr_sha1_ctx_t tr_sha1_init(void)
 {
-    EVP_MD_CTX* handle = EVP_MD_CTX_create();
+    EVP_MD_CTX *handle = EVP_MD_CTX_create();
 
-    if (check_result(EVP_DigestInit_ex(handle, EVP_sha1(), NULL)))
-    {
+    if (check_result(EVP_DigestInit_ex(handle, EVP_sha1(), NULL))) {
         return handle;
     }
 
@@ -118,12 +113,11 @@ tr_sha1_ctx_t tr_sha1_init(void)
     return NULL;
 }
 
-bool tr_sha1_update(tr_sha1_ctx_t handle, void const* data, size_t data_length)
+bool tr_sha1_update(tr_sha1_ctx_t handle, void const *data, size_t data_length)
 {
     TR_ASSERT(handle != NULL);
 
-    if (data_length == 0)
-    {
+    if (data_length == 0) {
         return true;
     }
 
@@ -132,12 +126,11 @@ bool tr_sha1_update(tr_sha1_ctx_t handle, void const* data, size_t data_length)
     return check_result(EVP_DigestUpdate(handle, data, data_length));
 }
 
-bool tr_sha1_final(tr_sha1_ctx_t handle, uint8_t* hash)
+bool tr_sha1_final(tr_sha1_ctx_t handle, uint8_t *hash)
 {
     bool ret = true;
 
-    if (hash != NULL)
-    {
+    if (hash != NULL) {
         TR_ASSERT(handle != NULL);
 
         unsigned int hash_length;
@@ -157,22 +150,20 @@ bool tr_sha1_final(tr_sha1_ctx_t handle, uint8_t* hash)
 
 #if OPENSSL_VERSION_NUMBER < 0x0090802fL
 
-static EVP_CIPHER_CTX* openssl_evp_cipher_context_new(void)
+static EVP_CIPHER_CTX *openssl_evp_cipher_context_new(void)
 {
-    EVP_CIPHER_CTX* handle = tr_new(EVP_CIPHER_CTX, 1);
+    EVP_CIPHER_CTX *handle = tr_new(EVP_CIPHER_CTX, 1);
 
-    if (handle != NULL)
-    {
+    if (handle != NULL) {
         EVP_CIPHER_CTX_init(handle);
     }
 
     return handle;
 }
 
-static void openssl_evp_cipher_context_free(EVP_CIPHER_CTX* handle)
+static void openssl_evp_cipher_context_free(EVP_CIPHER_CTX *handle)
 {
-    if (handle == NULL)
-    {
+    if (handle == NULL) {
         return;
     }
 
@@ -193,21 +184,18 @@ tr_rc4_ctx_t tr_rc4_new(void)
 {
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
     // https://github.com/openssl/openssl/blob/master/README-PROVIDERS.md#loading-providers
-    if (!tr_openssl_providers_loaded)
-    {
+    if (!tr_openssl_providers_loaded) {
         OSSL_PROVIDER *legacy, *deflt;
 
         legacy = OSSL_PROVIDER_load(NULL, "legacy");
-        if (legacy == NULL)
-        {
+        if (legacy == NULL) {
             printf("OpenSSL error: failed to load 'Legacy' provider.\n");
             log_error();
             exit(EXIT_FAILURE);
         }
 
         deflt = OSSL_PROVIDER_load(NULL, "default");
-        if (deflt == NULL)
-        {
+        if (deflt == NULL) {
             printf("OpenSSL error: failed to load 'Default' provider.\n");
             log_error();
             exit(EXIT_FAILURE);
@@ -216,10 +204,9 @@ tr_rc4_ctx_t tr_rc4_new(void)
         tr_openssl_providers_loaded = true;
     }
 #endif
-    EVP_CIPHER_CTX* handle = EVP_CIPHER_CTX_new();
+    EVP_CIPHER_CTX *handle = EVP_CIPHER_CTX_new();
 
-    if (check_result(EVP_CipherInit_ex(handle, EVP_rc4(), NULL, NULL, NULL, -1)))
-    {
+    if (check_result(EVP_CipherInit_ex(handle, EVP_rc4(), NULL, NULL, NULL, -1))) {
         return handle;
     }
 
@@ -229,33 +216,30 @@ tr_rc4_ctx_t tr_rc4_new(void)
 
 void tr_rc4_free(tr_rc4_ctx_t handle)
 {
-    if (handle == NULL)
-    {
+    if (handle == NULL) {
         return;
     }
 
     EVP_CIPHER_CTX_free(handle);
 }
 
-void tr_rc4_set_key(tr_rc4_ctx_t handle, uint8_t const* key, size_t key_length)
+void tr_rc4_set_key(tr_rc4_ctx_t handle, uint8_t const *key, size_t key_length)
 {
     TR_ASSERT(handle != NULL);
     TR_ASSERT(key != NULL);
 
-    if (!check_result(EVP_CIPHER_CTX_set_key_length(handle, key_length)))
-    {
+    if (!check_result(EVP_CIPHER_CTX_set_key_length(handle, key_length))) {
         return;
     }
 
     check_result(EVP_CipherInit_ex(handle, NULL, NULL, key, NULL, -1));
 }
 
-void tr_rc4_process(tr_rc4_ctx_t handle, void const* input, void* output, size_t length)
+void tr_rc4_process(tr_rc4_ctx_t handle, void const *input, void *output, size_t length)
 {
     TR_ASSERT(handle != NULL);
 
-    if (length == 0)
-    {
+    if (length == 0) {
         return;
     }
 
@@ -273,57 +257,50 @@ void tr_rc4_process(tr_rc4_ctx_t handle, void const* input, void* output, size_t
 
 #if OPENSSL_VERSION_NUMBER < 0x10100000 || (defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER < 0x20700000)
 
-static inline int DH_set0_pqg(DH* dh, BIGNUM* p, BIGNUM* q, BIGNUM* g)
+static inline int DH_set0_pqg(DH *dh, BIGNUM *p, BIGNUM *q, BIGNUM *g)
 {
     /* If the fields p and g in d are NULL, the corresponding input
      * parameters MUST be non-NULL. q may remain NULL.
      */
-    if ((dh->p == NULL && p == NULL) || (dh->g == NULL && g == NULL))
-    {
+    if ((dh->p == NULL && p == NULL) || (dh->g == NULL && g == NULL)) {
         return 0;
     }
 
-    if (p != NULL)
-    {
+    if (p != NULL) {
         BN_free(dh->p);
         dh->p = p;
     }
 
-    if (q != NULL)
-    {
+    if (q != NULL) {
         BN_free(dh->q);
         dh->q = q;
     }
 
-    if (g != NULL)
-    {
+    if (g != NULL) {
         BN_free(dh->g);
         dh->g = g;
     }
 
-    if (q != NULL)
-    {
+    if (q != NULL) {
         dh->length = BN_num_bits(q);
     }
 
     return 1;
 }
 
-static inline int DH_set_length(DH* dh, long length)
+static inline int DH_set_length(DH *dh, long length)
 {
     dh->length = length;
     return 1;
 }
 
-static inline void DH_get0_key(DH const* dh, BIGNUM const** pub_key, BIGNUM const** priv_key)
+static inline void DH_get0_key(DH const *dh, BIGNUM const **pub_key, BIGNUM const **priv_key)
 {
-    if (pub_key != NULL)
-    {
+    if (pub_key != NULL) {
         *pub_key = dh->pub_key;
     }
 
-    if (priv_key != NULL)
-    {
+    if (priv_key != NULL) {
         *priv_key = dh->priv_key;
     }
 }
@@ -331,23 +308,22 @@ static inline void DH_get0_key(DH const* dh, BIGNUM const** pub_key, BIGNUM cons
 #endif
 
 tr_dh_ctx_t tr_dh_new(
-    uint8_t const* prime_num,
+    uint8_t const *prime_num,
     size_t prime_num_length,
-    uint8_t const* generator_num,
+    uint8_t const *generator_num,
     size_t generator_num_length)
 {
     TR_ASSERT(prime_num != NULL);
     TR_ASSERT(generator_num != NULL);
 
-    DH* handle = DH_new();
-    BIGNUM* p;
-    BIGNUM* g;
+    DH *handle = DH_new();
+    BIGNUM *p;
+    BIGNUM *g;
 
     p = BN_bin2bn(prime_num, prime_num_length, NULL);
     g = BN_bin2bn(generator_num, generator_num_length, NULL);
 
-    if (!check_pointer(p) || !check_pointer(g) || DH_set0_pqg(handle, p, NULL, g) == 0)
-    {
+    if (!check_pointer(p) || !check_pointer(g) || DH_set0_pqg(handle, p, NULL, g) == 0) {
         BN_free(p);
         BN_free(g);
         DH_free(handle);
@@ -359,28 +335,26 @@ tr_dh_ctx_t tr_dh_new(
 
 void tr_dh_free(tr_dh_ctx_t handle)
 {
-    if (handle == NULL)
-    {
+    if (handle == NULL) {
         return;
     }
 
     DH_free(handle);
 }
 
-bool tr_dh_make_key(tr_dh_ctx_t raw_handle, size_t private_key_length, uint8_t* public_key, size_t* public_key_length)
+bool tr_dh_make_key(tr_dh_ctx_t raw_handle, size_t private_key_length, uint8_t *public_key, size_t *public_key_length)
 {
     TR_ASSERT(raw_handle != NULL);
     TR_ASSERT(public_key != NULL);
 
-    DH* handle = raw_handle;
+    DH *handle = raw_handle;
     int dh_size;
     int my_public_key_length;
-    BIGNUM const* my_public_key;
+    BIGNUM const *my_public_key;
 
     DH_set_length(handle, private_key_length * 8);
 
-    if (!check_result(DH_generate_key(handle)))
-    {
+    if (!check_result(DH_generate_key(handle))) {
         return false;
     }
 
@@ -391,26 +365,24 @@ bool tr_dh_make_key(tr_dh_ctx_t raw_handle, size_t private_key_length, uint8_t* 
 
     tr_dh_align_key(public_key, my_public_key_length, dh_size);
 
-    if (public_key_length != NULL)
-    {
+    if (public_key_length != NULL) {
         *public_key_length = dh_size;
     }
 
     return true;
 }
 
-tr_dh_secret_t tr_dh_agree(tr_dh_ctx_t handle, uint8_t const* other_public_key, size_t other_public_key_length)
+tr_dh_secret_t tr_dh_agree(tr_dh_ctx_t handle, uint8_t const *other_public_key, size_t other_public_key_length)
 {
     TR_ASSERT(handle != NULL);
     TR_ASSERT(other_public_key != NULL);
 
-    struct tr_dh_secret* ret;
+    struct tr_dh_secret *ret;
     int dh_size;
     int secret_key_length;
-    BIGNUM* other_key;
+    BIGNUM *other_key;
 
-    if (!check_pointer(other_key = BN_bin2bn(other_public_key, other_public_key_length, NULL)))
-    {
+    if (!check_pointer(other_key = BN_bin2bn(other_public_key, other_public_key_length, NULL))) {
         return NULL;
     }
 
@@ -419,12 +391,9 @@ tr_dh_secret_t tr_dh_agree(tr_dh_ctx_t handle, uint8_t const* other_public_key, 
 
     secret_key_length = DH_compute_key(ret->key, other_key, handle);
 
-    if (check_result_neq(secret_key_length, -1))
-    {
+    if (check_result_neq(secret_key_length, -1)) {
         tr_dh_secret_align(ret, secret_key_length);
-    }
-    else
-    {
+    } else {
         tr_dh_secret_free(ret);
         ret = NULL;
     }
@@ -439,8 +408,7 @@ tr_dh_secret_t tr_dh_agree(tr_dh_ctx_t handle, uint8_t const* other_public_key, 
 
 tr_x509_store_t tr_ssl_get_x509_store(tr_ssl_ctx_t handle)
 {
-    if (handle == NULL)
-    {
+    if (handle == NULL) {
         return NULL;
     }
 
@@ -455,14 +423,13 @@ bool tr_x509_store_add(tr_x509_store_t handle, tr_x509_cert_t cert)
     return check_result(X509_STORE_add_cert(handle, cert));
 }
 
-tr_x509_cert_t tr_x509_cert_new(void const* der, size_t der_length)
+tr_x509_cert_t tr_x509_cert_new(void const *der, size_t der_length)
 {
     TR_ASSERT(der != NULL);
 
-    X509* const ret = d2i_X509(NULL, (unsigned char const**)&der, der_length);
+    X509 *const ret = d2i_X509(NULL, (unsigned char const **)&der, der_length);
 
-    if (ret == NULL)
-    {
+    if (ret == NULL) {
         log_error();
     }
 
@@ -471,8 +438,7 @@ tr_x509_cert_t tr_x509_cert_new(void const* der, size_t der_length)
 
 void tr_x509_cert_free(tr_x509_cert_t handle)
 {
-    if (handle == NULL)
-    {
+    if (handle == NULL) {
         return;
     }
 
@@ -483,7 +449,7 @@ void tr_x509_cert_free(tr_x509_cert_t handle)
 ****
 ***/
 
-bool tr_rand_buffer(void* buffer, size_t length)
+bool tr_rand_buffer(void *buffer, size_t length)
 {
     TR_ASSERT(buffer != NULL);
 

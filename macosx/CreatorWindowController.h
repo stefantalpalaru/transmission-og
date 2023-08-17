@@ -25,32 +25,31 @@
 #include <libtransmission/transmission.h>
 #include <libtransmission/makemeta.h>
 
-@interface CreatorWindowController : NSWindowController
-{
-    IBOutlet NSImageView* fIconView;
+@interface CreatorWindowController : NSWindowController {
+    IBOutlet NSImageView *fIconView;
     IBOutlet NSTextField *fNameField, *fStatusField, *fPiecesField, *fLocationField;
-    IBOutlet NSTableView* fTrackerTable;
-    IBOutlet NSSegmentedControl* fTrackerAddRemoveControl;
-    IBOutlet NSTextView* fCommentView;
+    IBOutlet NSTableView *fTrackerTable;
+    IBOutlet NSSegmentedControl *fTrackerAddRemoveControl;
+    IBOutlet NSTextView *fCommentView;
     IBOutlet NSButton *fPrivateCheck, *fOpenCheck;
 
-    IBOutlet NSView* fProgressView;
-    IBOutlet NSProgressIndicator* fProgressIndicator;
+    IBOutlet NSView *fProgressView;
+    IBOutlet NSProgressIndicator *fProgressIndicator;
 
-    tr_metainfo_builder* fInfo;
+    tr_metainfo_builder *fInfo;
     NSURL *fPath, *fLocation;
-    NSMutableArray* fTrackers;
+    NSMutableArray *fTrackers;
 
-    NSTimer* fTimer;
+    NSTimer *fTimer;
     BOOL fStarted, fOpenWhenCreated;
 
-    NSUserDefaults* fDefaults;
+    NSUserDefaults *fDefaults;
 }
 
-+ (CreatorWindowController*)createTorrentFile:(tr_session*)handle;
-+ (CreatorWindowController*)createTorrentFile:(tr_session*)handle forFile:(NSURL*)file;
++ (CreatorWindowController *)createTorrentFile:(tr_session *)handle;
++ (CreatorWindowController *)createTorrentFile:(tr_session *)handle forFile:(NSURL *)file;
 
-- (id)initWithHandle:(tr_session*)handle path:(NSURL*)path;
+- (id)initWithHandle:(tr_session *)handle path:(NSURL *)path;
 
 - (IBAction)setLocation:(id)sender;
 - (IBAction)create:(id)sender;

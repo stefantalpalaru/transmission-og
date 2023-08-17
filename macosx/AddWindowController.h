@@ -28,43 +28,45 @@
 @class FileOutlineController;
 @class Torrent;
 
-@interface AddWindowController : NSWindowController
-{
+@interface AddWindowController : NSWindowController {
     IBOutlet NSImageView *fIconView, *fLocationImageView;
     IBOutlet NSTextField *fNameField, *fStatusField, *fLocationField;
     IBOutlet NSButton *fStartCheck, *fDeleteCheck;
     IBOutlet NSPopUpButton *fGroupPopUp, *fPriorityPopUp;
-    IBOutlet NSProgressIndicator* fVerifyIndicator;
+    IBOutlet NSProgressIndicator *fVerifyIndicator;
 
-    IBOutlet NSTextField* fFileFilterField;
+    IBOutlet NSTextField *fFileFilterField;
     IBOutlet NSButton *fCheckAllButton, *fUncheckAllButton;
 
-    IBOutlet FileOutlineController* fFileController;
-    IBOutlet NSScrollView* fFileScrollView;
+    IBOutlet FileOutlineController *fFileController;
+    IBOutlet NSScrollView *fFileScrollView;
 
-    Controller* fController;
+    Controller *fController;
 
-    Torrent* fTorrent;
+    Torrent *fTorrent;
     NSString *fDestination, *fTorrentFile;
     BOOL fLockDestination;
 
     BOOL fDeleteTorrentEnableInitially, fCanToggleDelete;
     NSInteger fGroupValue;
 
-    NSTimer* fTimer;
+    NSTimer *fTimer;
 
     TorrentDeterminationType fGroupValueDetermination;
 }
 
-- (id)initWithTorrent:(Torrent*)torrent
-                          destination:(NSString*)path
+- (id)initWithTorrent:(Torrent *)torrent
+                          destination:(NSString *)path
                       lockDestination:(BOOL)lockDestination
-                           controller:(Controller*)controller
-                          torrentFile:(NSString*)torrentFile
+                           controller:(Controller *)controller
+                          torrentFile:(NSString *)torrentFile
     deleteTorrentCheckEnableInitially:(BOOL)deleteTorrent
-                      canToggleDelete:(BOOL)canToggleDelete; //if canToggleDelete is NO, we will also not delete the file regardless of the delete check's state (this is so it can be disabled and checked for a downloaded torrent, where the file's already deleted)
+                      canToggleDelete:(BOOL)canToggleDelete; // if canToggleDelete is NO, we will also not delete the file
+                                                             // regardless of the delete check's state (this is so it can be
+                                                             // disabled and checked for a downloaded torrent, where the file's
+                                                             // already deleted)
 
-- (Torrent*)torrent;
+- (Torrent *)torrent;
 
 - (void)setDestination:(id)sender;
 
@@ -79,8 +81,8 @@
 
 - (void)changePriority:(id)sender;
 
-- (void)updateCheckButtons:(NSNotification*)notification;
+- (void)updateCheckButtons:(NSNotification *)notification;
 
-- (void)updateGroupMenu:(NSNotification*)notification;
+- (void)updateGroupMenu:(NSNotification *)notification;
 
 @end

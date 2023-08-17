@@ -12,12 +12,11 @@ class QObject;
 class QString;
 class QVariant;
 
-class DBusInteropHelper
-{
+class DBusInteropHelper {
 public:
     bool isConnected() const;
 
-    QVariant addMetainfo(QString const& metainfo);
+    QVariant addMetainfo(QString const &metainfo);
 
-    static void registerObject(QObject* parent);
+    static void registerObject(QObject *parent);
 };

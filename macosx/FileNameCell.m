@@ -40,11 +40,11 @@
 
 @interface FileNameCell (Private)
 
-- (NSRect)rectForTitleWithString:(NSAttributedString*)string inBounds:(NSRect)bounds;
-- (NSRect)rectForStatusWithString:(NSAttributedString*)string withTitleRect:(NSRect)titleRect inBounds:(NSRect)bounds;
+- (NSRect)rectForTitleWithString:(NSAttributedString *)string inBounds:(NSRect)bounds;
+- (NSRect)rectForStatusWithString:(NSAttributedString *)string withTitleRect:(NSRect)titleRect inBounds:(NSRect)bounds;
 
-- (NSAttributedString*)attributedTitle;
-- (NSAttributedString*)attributedStatus;
+- (NSAttributedString *)attributedTitle;
+- (NSAttributedString *)attributedStatus;
 
 @end
 
@@ -52,15 +52,14 @@
 
 - (id)init
 {
-    if ((self = [super init]))
-    {
-        NSMutableParagraphStyle* paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    if ((self = [super init])) {
+        NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
         [paragraphStyle setLineBreakMode:NSLineBreakByTruncatingMiddle];
 
         fTitleAttributes = [[NSMutableDictionary alloc]
             initWithObjectsAndKeys:[NSFont messageFontOfSize:12.0], NSFontAttributeName, paragraphStyle, NSParagraphStyleAttributeName, nil];
 
-        NSMutableParagraphStyle* statusParagraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+        NSMutableParagraphStyle *statusParagraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
         [statusParagraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
 
         fStatusAttributes = [[NSMutableDictionary alloc]
@@ -69,9 +68,9 @@
     return self;
 }
 
-- (id)copyWithZone:(NSZone*)zone
+- (id)copyWithZone:(NSZone *)zone
 {
-    FileNameCell* copy = [super copyWithZone:zone];
+    FileNameCell *copy = [super copyWithZone:zone];
 
     copy->fTitleAttributes = fTitleAttributes;
     copy->fStatusAttributes = fStatusAttributes;
@@ -79,9 +78,9 @@
     return copy;
 }
 
-- (NSImage*)image
+- (NSImage *)image
 {
-    FileListNode* node = (FileListNode*)[self objectValue];
+    FileListNode *node = (FileListNode *)[self objectValue];
     return [node icon];
 }
 
@@ -91,16 +90,16 @@
 
     result.origin.x += PADDING_HORIZONAL;
 
-    CGFloat const IMAGE_SIZE = [(FileListNode*)[self objectValue] isFolder] ? IMAGE_FOLDER_SIZE : IMAGE_ICON_SIZE;
+    CGFloat const IMAGE_SIZE = [(FileListNode *)[self objectValue] isFolder] ? IMAGE_FOLDER_SIZE : IMAGE_ICON_SIZE;
     result.origin.y += (result.size.height - IMAGE_SIZE) * 0.5;
     result.size = NSMakeSize(IMAGE_SIZE, IMAGE_SIZE);
 
     return result;
 }
 
-- (void)drawWithFrame:(NSRect)cellFrame inView:(NSView*)controlView
+- (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
 {
-    //icon
+    // icon
     [[self image] drawInRect:[self imageRectForBounds:cellFrame] fromRect:NSZeroRect operation:NSCompositeSourceOver
                     fraction:1.0
               respectFlipped:YES
@@ -109,10 +108,9 @@
     NSColor *titleColor, *statusColor;
     if ([self backgroundStyle] == NSBackgroundStyleDark)
         titleColor = statusColor = [NSColor whiteColor];
-    else if ([[(FileListNode*)[self objectValue] torrent] checkForFiles:[(FileListNode*)[self objectValue] indexes]] == NSOffState)
+    else if ([[(FileListNode *)[self objectValue] torrent] checkForFiles:[(FileListNode *)[self objectValue] indexes]] == NSOffState)
         titleColor = statusColor = [NSColor disabledControlTextColor];
-    else
-    {
+    else {
         titleColor = [NSColor controlTextColor];
         statusColor = [NSColor secondaryLabelColor];
     }
@@ -120,25 +118,24 @@
     fTitleAttributes[NSForegroundColorAttributeName] = titleColor;
     fStatusAttributes[NSForegroundColorAttributeName] = statusColor;
 
-    //title
-    NSAttributedString* titleString = [self attributedTitle];
+    // title
+    NSAttributedString *titleString = [self attributedTitle];
     NSRect titleRect = [self rectForTitleWithString:titleString inBounds:cellFrame];
     [titleString drawInRect:titleRect];
 
-    //status
-    NSAttributedString* statusString = [self attributedStatus];
+    // status
+    NSAttributedString *statusString = [self attributedStatus];
     NSRect statusRect = [self rectForStatusWithString:statusString withTitleRect:titleRect inBounds:cellFrame];
     [statusString drawInRect:statusRect];
 }
 
-- (NSRect)expansionFrameWithFrame:(NSRect)cellFrame inView:(NSView*)view
+- (NSRect)expansionFrameWithFrame:(NSRect)cellFrame inView:(NSView *)view
 {
-    NSAttributedString* titleString = [self attributedTitle];
+    NSAttributedString *titleString = [self attributedTitle];
     NSRect realRect = [self rectForTitleWithString:titleString inBounds:cellFrame];
 
     if ([titleString size].width > NSWidth(realRect) &&
-        NSMouseInRect([view convertPoint:[[view window] mouseLocationOutsideOfEventStream] fromView:nil], realRect, [view isFlipped]))
-    {
+        NSMouseInRect([view convertPoint:[[view window] mouseLocationOutsideOfEventStream] fromView:nil], realRect, [view isFlipped])) {
         realRect.size.width = [titleString size].width;
         return NSInsetRect(realRect, -PADDING_EXPANSION_FRAME, -PADDING_EXPANSION_FRAME);
     }
@@ -146,13 +143,13 @@
     return NSZeroRect;
 }
 
-- (void)drawWithExpansionFrame:(NSRect)cellFrame inView:(NSView*)view
+- (void)drawWithExpansionFrame:(NSRect)cellFrame inView:(NSView *)view
 {
     cellFrame.origin.x += PADDING_EXPANSION_FRAME;
     cellFrame.origin.y += PADDING_EXPANSION_FRAME;
 
     fTitleAttributes[NSForegroundColorAttributeName] = [NSColor controlTextColor];
-    NSAttributedString* titleString = [self attributedTitle];
+    NSAttributedString *titleString = [self attributedTitle];
     [titleString drawInRect:cellFrame];
 }
 
@@ -160,20 +157,17 @@
 
 @implementation FileNameCell (Private)
 
-- (NSRect)rectForTitleWithString:(NSAttributedString*)string inBounds:(NSRect)bounds
+- (NSRect)rectForTitleWithString:(NSAttributedString *)string inBounds:(NSRect)bounds
 {
     NSSize const titleSize = [string size];
 
-    //no right padding, so that there's not too much space between this and the priority image
+    // no right padding, so that there's not too much space between this and the priority image
     NSRect result;
-    if (![(FileListNode*)[self objectValue] isFolder])
-    {
+    if (![(FileListNode *)[self objectValue] isFolder]) {
         result.origin.x = NSMinX(bounds) + PADDING_HORIZONAL + IMAGE_ICON_SIZE + PADDING_BETWEEN_IMAGE_AND_TITLE;
         result.origin.y = NSMinY(bounds) + PADDING_ABOVE_TITLE_FILE;
         result.size.width = NSMaxX(bounds) - NSMinX(result);
-    }
-    else
-    {
+    } else {
         result.origin.x = NSMinX(bounds) + PADDING_HORIZONAL + IMAGE_FOLDER_SIZE + PADDING_BETWEEN_IMAGE_AND_TITLE;
         result.origin.y = NSMidY(bounds) - titleSize.height * 0.5;
         result.size.width = MIN(titleSize.width, NSMaxX(bounds) - NSMinX(result));
@@ -183,19 +177,16 @@
     return result;
 }
 
-- (NSRect)rectForStatusWithString:(NSAttributedString*)string withTitleRect:(NSRect)titleRect inBounds:(NSRect)bounds
+- (NSRect)rectForStatusWithString:(NSAttributedString *)string withTitleRect:(NSRect)titleRect inBounds:(NSRect)bounds
 {
     NSSize const statusSize = [string size];
 
     NSRect result;
-    if (![(FileListNode*)[self objectValue] isFolder])
-    {
+    if (![(FileListNode *)[self objectValue] isFolder]) {
         result.origin.x = NSMinX(titleRect);
         result.origin.y = NSMaxY(bounds) - PADDING_BELOW_STATUS_FILE - statusSize.height;
         result.size.width = NSWidth(titleRect);
-    }
-    else
-    {
+    } else {
         result.origin.x = NSMaxX(titleRect) + PADDING_BETWEEN_NAME_AND_FOLDER_STATUS;
         result.origin.y = NSMaxY(titleRect) - statusSize.height - 1.0;
         result.size.width = NSMaxX(bounds) - NSMaxX(titleRect);
@@ -205,21 +196,21 @@
     return result;
 }
 
-- (NSAttributedString*)attributedTitle
+- (NSAttributedString *)attributedTitle
 {
-    NSString* title = [(FileListNode*)[self objectValue] name];
+    NSString *title = [(FileListNode *)[self objectValue] name];
     return [[NSAttributedString alloc] initWithString:title attributes:fTitleAttributes];
 }
 
-- (NSAttributedString*)attributedStatus
+- (NSAttributedString *)attributedStatus
 {
-    FileListNode* node = (FileListNode*)[self objectValue];
-    Torrent* torrent = [node torrent];
+    FileListNode *node = (FileListNode *)[self objectValue];
+    Torrent *torrent = [node torrent];
 
     CGFloat const progress = [torrent fileProgress:node];
-    NSString* percentString = [NSString percentString:progress longDecimals:YES];
+    NSString *percentString = [NSString percentString:progress longDecimals:YES];
 
-    NSString* status = [NSString stringWithFormat:NSLocalizedString(@"%@ of %@", "Inspector -> Files tab -> file status string"),
+    NSString *status = [NSString stringWithFormat:NSLocalizedString(@"%@ of %@", "Inspector -> Files tab -> file status string"),
                                                   percentString,
                                                   [NSString stringForFileSize:[node size]]];
 

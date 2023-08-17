@@ -14,11 +14,10 @@
 
 static int test_static_quarks(void)
 {
-    for (int i = 0; i < TR_N_KEYS; i++)
-    {
+    for (int i = 0; i < TR_N_KEYS; i++) {
         tr_quark q;
         size_t len;
-        char const* str;
+        char const *str;
 
         str = tr_quark_get_string((tr_quark)i, &len);
         check_uint(len, ==, strlen(str));
@@ -26,12 +25,11 @@ static int test_static_quarks(void)
         check_int((int)q, ==, i);
     }
 
-    for (int i = 0; i + 1 < TR_N_KEYS; i++)
-    {
+    for (int i = 0; i + 1 < TR_N_KEYS; i++) {
         size_t len1;
         size_t len2;
-        char const* str1;
-        char const* str2;
+        char const *str1;
+        char const *str2;
 
         str1 = tr_quark_get_string((tr_quark)i, &len1);
         str2 = tr_quark_get_string((tr_quark)(i + 1), &len2);

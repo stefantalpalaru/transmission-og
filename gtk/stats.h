@@ -12,4 +12,4 @@
 
 #include <gtk/gtk.h>
 
-GtkWidget* gtr_stats_dialog_new(GtkWindow* parent, TrCore* core);
+GtkWidget *gtr_stats_dialog_new(GtkWindow *parent, TrCore *core);

@@ -26,42 +26,39 @@
 
 @implementation TrackerTableView
 
-- (void)mouseDown:(NSEvent*)event
+- (void)mouseDown:(NSEvent *)event
 {
     [[self window] makeKeyWindow];
     [super mouseDown:event];
 }
 
-- (void)setTorrent:(Torrent*)torrent
+- (void)setTorrent:(Torrent *)torrent
 {
     fTorrent = torrent;
 }
 
-- (void)setTrackers:(NSArray*)trackers
+- (void)setTrackers:(NSArray *)trackers
 {
     fTrackers = trackers;
 }
 
 - (void)copy:(id)sender
 {
-    NSMutableArray* addresses = [NSMutableArray arrayWithCapacity:[fTrackers count]];
-    NSIndexSet* indexes = [self selectedRowIndexes];
-    for (NSUInteger i = [indexes firstIndex]; i != NSNotFound; i = [indexes indexGreaterThanIndex:i])
-    {
+    NSMutableArray *addresses = [NSMutableArray arrayWithCapacity:[fTrackers count]];
+    NSIndexSet *indexes = [self selectedRowIndexes];
+    for (NSUInteger i = [indexes firstIndex]; i != NSNotFound; i = [indexes indexGreaterThanIndex:i]) {
         id item = fTrackers[i];
-        if (![item isKindOfClass:[TrackerNode class]])
-        {
+        if (![item isKindOfClass:[TrackerNode class]]) {
             for (++i; i < [fTrackers count] && [fTrackers[i] isKindOfClass:[TrackerNode class]]; ++i)
-                [addresses addObject:[(TrackerNode*)fTrackers[i] fullAnnounceAddress]];
+                [addresses addObject:[(TrackerNode *)fTrackers[i] fullAnnounceAddress]];
             --i;
-        }
-        else
-            [addresses addObject:[(TrackerNode*)item fullAnnounceAddress]];
+        } else
+            [addresses addObject:[(TrackerNode *)item fullAnnounceAddress]];
     }
 
-    NSString* text = [addresses componentsJoinedByString:@"\n"];
+    NSString *text = [addresses componentsJoinedByString:@"\n"];
 
-    NSPasteboard* pb = [NSPasteboard generalPasteboard];
+    NSPasteboard *pb = [NSPasteboard generalPasteboard];
     [pb clearContents];
     [pb writeObjects:@[ text ]];
 }
@@ -72,22 +69,21 @@
 
     BOOL added = NO;
 
-    NSArray* items = [[NSPasteboard generalPasteboard] readObjectsForClasses:@[ [NSString class] ] options:nil];
+    NSArray *items = [[NSPasteboard generalPasteboard] readObjectsForClasses:@[ [NSString class] ] options:nil];
     NSAssert(items != nil, @"no string items to paste; should not be able to call this method");
 
-    for (NSString* pbItem in items)
-    {
-        for (NSString* item in [pbItem componentsSeparatedByString:@"\n"])
+    for (NSString *pbItem in items) {
+        for (NSString *item in [pbItem componentsSeparatedByString:@"\n"])
             if ([fTorrent addTrackerToNewTier:item])
                 added = YES;
     }
 
-    //none added
+    // none added
     if (!added)
         NSBeep();
 }
 
-- (BOOL)validateMenuItem:(NSMenuItem*)menuItem
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem
 {
     SEL const action = [menuItem action];
 

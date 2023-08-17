@@ -17,7 +17,7 @@ static int test_list(void)
 {
     size_t len;
     int64_t i;
-    char const* str;
+    char const *str;
     tr_variant top;
 
     tr_rpc_parse_list_str(&top, "12", TR_BAD_SIZE);
@@ -68,19 +68,19 @@ static int test_list(void)
 ****
 ***/
 
-static void rpc_response_func(tr_session* session UNUSED, tr_variant* response, void* setme)
+static void rpc_response_func(tr_session *session UNUSED, tr_variant *response, void *setme)
 {
-    *(tr_variant*)setme = *response;
+    *(tr_variant *)setme = *response;
     tr_variantInitBool(response, false);
 }
 
 static int test_session_get_and_set(void)
 {
-    tr_session* session;
+    tr_session *session;
     tr_variant request;
     tr_variant response;
-    tr_variant* args;
-    tr_torrent* tor;
+    tr_variant *args;
+    tr_torrent *tor;
 
     session = libttest_session_init(NULL);
     tor = libttest_zero_torrent_init(session);

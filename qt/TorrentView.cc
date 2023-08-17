@@ -12,17 +12,16 @@
 
 #include "TorrentView.h"
 
-class TorrentView::HeaderWidget : public QWidget
-{
+class TorrentView::HeaderWidget : public QWidget {
 public:
-    HeaderWidget(TorrentView* parent)
+    HeaderWidget(TorrentView *parent)
         : QWidget(parent)
         , myText()
     {
         setFont(qApp->font("QMiniFont"));
     }
 
-    void setText(QString const& text)
+    void setText(QString const &text)
     {
         myText = text;
         update();
@@ -41,7 +40,7 @@ public:
 
 protected:
     // QWidget
-    virtual void paintEvent(QPaintEvent* /*event*/)
+    virtual void paintEvent(QPaintEvent * /*event*/)
     {
         QStyleOptionHeader option;
         option.initFrom(this);
@@ -55,42 +54,39 @@ protected:
         painter.drawItemText(option.rect, Qt::AlignCenter, option.palette, true, myText, QPalette::ButtonText);
     }
 
-    virtual void mouseDoubleClickEvent(QMouseEvent* /*event*/)
+    virtual void mouseDoubleClickEvent(QMouseEvent * /*event*/)
     {
-        emit static_cast<TorrentView*>(parent())->headerDoubleClicked();
+        emit static_cast<TorrentView *>(parent())->headerDoubleClicked();
     }
 
 private:
     QString myText;
 };
 
-TorrentView::TorrentView(QWidget* parent)
+TorrentView::TorrentView(QWidget *parent)
     : QListView(parent)
     , myHeaderWidget(new HeaderWidget(this))
-{
-}
+{}
 
-void TorrentView::setHeaderText(QString const& text)
+void TorrentView::setHeaderText(QString const &text)
 {
     bool const headerVisible = !text.isEmpty();
 
     myHeaderWidget->setText(text);
     myHeaderWidget->setVisible(headerVisible);
 
-    if (headerVisible)
-    {
+    if (headerVisible) {
         adjustHeaderPosition();
     }
 
     setViewportMargins(0, headerVisible ? myHeaderWidget->height() : 0, 0, 0);
 }
 
-void TorrentView::resizeEvent(QResizeEvent* event)
+void TorrentView::resizeEvent(QResizeEvent *event)
 {
     QListView::resizeEvent(event);
 
-    if (myHeaderWidget->isVisible())
-    {
+    if (myHeaderWidget->isVisible()) {
         adjustHeaderPosition();
     }
 }

@@ -24,36 +24,35 @@
 /* Most Diffie-Hellman backends handle secret key in the very same way: by
    manually allocating memory for it and storing the value in plain form. */
 
-struct tr_dh_secret
-{
+struct tr_dh_secret {
     size_t key_length;
     uint8_t key[];
 };
 
-static struct tr_dh_secret* tr_dh_secret_new(size_t key_length)
+static struct tr_dh_secret *tr_dh_secret_new(size_t key_length)
 {
-    struct tr_dh_secret* handle = tr_malloc(sizeof(struct tr_dh_secret) + key_length);
+    struct tr_dh_secret *handle = tr_malloc(sizeof(struct tr_dh_secret) + key_length);
     handle->key_length = key_length;
     return handle;
 }
 
-static void tr_dh_secret_align(struct tr_dh_secret* handle, size_t current_key_length)
+static void tr_dh_secret_align(struct tr_dh_secret *handle, size_t current_key_length)
 {
     tr_dh_align_key(handle->key, current_key_length, handle->key_length);
 }
 
 bool tr_dh_secret_derive(
     tr_dh_secret_t raw_handle,
-    void const* prepend_data,
+    void const *prepend_data,
     size_t prepend_data_size,
-    void const* append_data,
+    void const *append_data,
     size_t append_data_size,
-    uint8_t* hash)
+    uint8_t *hash)
 {
     TR_ASSERT(raw_handle != NULL);
     TR_ASSERT(hash != NULL);
 
-    struct tr_dh_secret* handle = raw_handle;
+    struct tr_dh_secret *handle = raw_handle;
 
     return tr_sha1(
         hash,
@@ -90,7 +89,7 @@ bool tr_x509_store_add(tr_x509_store_t handle, tr_x509_cert_t cert)
     return false;
 }
 
-tr_x509_cert_t tr_x509_cert_new(void const* der, size_t der_length)
+tr_x509_cert_t tr_x509_cert_new(void const *der, size_t der_length)
 {
     (void)der;
     (void)der_length;

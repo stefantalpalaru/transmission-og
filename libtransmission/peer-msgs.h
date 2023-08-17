@@ -30,49 +30,49 @@ typedef struct tr_peerMsgs tr_peerMsgs;
 
 #define PEER_MSGS(o) (tr_peerMsgsCast(o))
 
-bool tr_isPeerMsgs(void const* msgs);
+bool tr_isPeerMsgs(void const *msgs);
 
-tr_peerMsgs* tr_peerMsgsCast(void* msgs);
+tr_peerMsgs *tr_peerMsgsCast(void *msgs);
 
-tr_peerMsgs* tr_peerMsgsNew(struct tr_torrent* torrent, struct tr_peerIo* io, tr_peer_callback callback, void* callback_data);
+tr_peerMsgs *tr_peerMsgsNew(struct tr_torrent *torrent, struct tr_peerIo *io, tr_peer_callback callback, void *callback_data);
 
-bool tr_peerMsgsIsPeerChoked(tr_peerMsgs const* msgs);
+bool tr_peerMsgsIsPeerChoked(tr_peerMsgs const *msgs);
 
-bool tr_peerMsgsIsPeerInterested(tr_peerMsgs const* msgs);
+bool tr_peerMsgsIsPeerInterested(tr_peerMsgs const *msgs);
 
-bool tr_peerMsgsIsClientChoked(tr_peerMsgs const* msgs);
+bool tr_peerMsgsIsClientChoked(tr_peerMsgs const *msgs);
 
-bool tr_peerMsgsIsClientInterested(tr_peerMsgs const* msgs);
+bool tr_peerMsgsIsClientInterested(tr_peerMsgs const *msgs);
 
-bool tr_peerMsgsIsActive(tr_peerMsgs const* msgs, tr_direction direction);
+bool tr_peerMsgsIsActive(tr_peerMsgs const *msgs, tr_direction direction);
 
-void tr_peerMsgsUpdateActive(tr_peerMsgs* msgs, tr_direction direction);
+void tr_peerMsgsUpdateActive(tr_peerMsgs *msgs, tr_direction direction);
 
-time_t tr_peerMsgsGetConnectionAge(tr_peerMsgs const* msgs);
+time_t tr_peerMsgsGetConnectionAge(tr_peerMsgs const *msgs);
 
-bool tr_peerMsgsIsUtpConnection(tr_peerMsgs const* msgs);
+bool tr_peerMsgsIsUtpConnection(tr_peerMsgs const *msgs);
 
-bool tr_peerMsgsIsEncrypted(tr_peerMsgs const* msgs);
+bool tr_peerMsgsIsEncrypted(tr_peerMsgs const *msgs);
 
-bool tr_peerMsgsIsIncomingConnection(tr_peerMsgs const* msgs);
+bool tr_peerMsgsIsIncomingConnection(tr_peerMsgs const *msgs);
 
-void tr_peerMsgsSetChoke(tr_peerMsgs* msgs, bool peerIsChoked);
+void tr_peerMsgsSetChoke(tr_peerMsgs *msgs, bool peerIsChoked);
 
-bool tr_peerMsgsIsReadingBlock(tr_peerMsgs const* msgs, tr_block_index_t block);
+bool tr_peerMsgsIsReadingBlock(tr_peerMsgs const *msgs, tr_block_index_t block);
 
-void tr_peerMsgsSetInterested(tr_peerMsgs* msgs, bool clientIsInterested);
+void tr_peerMsgsSetInterested(tr_peerMsgs *msgs, bool clientIsInterested);
 
-void tr_peerMsgsHave(tr_peerMsgs* msgs, uint32_t pieceIndex);
+void tr_peerMsgsHave(tr_peerMsgs *msgs, uint32_t pieceIndex);
 
-void tr_peerMsgsPulse(tr_peerMsgs* msgs);
+void tr_peerMsgsPulse(tr_peerMsgs *msgs);
 
-void tr_peerMsgsCancel(tr_peerMsgs* msgs, tr_block_index_t block);
+void tr_peerMsgsCancel(tr_peerMsgs *msgs, tr_block_index_t block);
 
 size_t tr_generateAllowedSet(
-    tr_piece_index_t* setmePieces,
+    tr_piece_index_t *setmePieces,
     size_t desiredSetSize,
     size_t pieceCount,
-    uint8_t const* infohash,
-    struct tr_address const* addr);
+    uint8_t const *infohash,
+    struct tr_address const *addr);
 
 /* @} */

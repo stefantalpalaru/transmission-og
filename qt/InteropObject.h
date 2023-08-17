@@ -10,8 +10,7 @@
 
 #include <QObject>
 
-class InteropObject : public QObject
-{
+class InteropObject : public QObject {
     Q_OBJECT
 
 #ifdef ENABLE_DBUS_INTEROP
@@ -27,9 +26,9 @@ class InteropObject : public QObject
 #endif
 
 public:
-    InteropObject(QObject* parent = nullptr);
+    InteropObject(QObject *parent = nullptr);
 
 public slots:
     bool PresentWindow();
-    bool AddMetainfo(QString const& metainfo);
+    bool AddMetainfo(QString const &metainfo);
 };

@@ -28,21 +28,20 @@
 @class TrackerTableView;
 @class TrackerCell;
 
-@interface InfoTrackersViewController : NSViewController<InfoViewController>
-{
-    NSArray* fTorrents;
+@interface InfoTrackersViewController : NSViewController<InfoViewController> {
+    NSArray *fTorrents;
 
     BOOL fSet;
 
-    NSMutableArray* fTrackers;
+    NSMutableArray *fTrackers;
 
-    IBOutlet TrackerTableView* fTrackerTable;
-    TrackerCell* fTrackerCell;
+    IBOutlet TrackerTableView *fTrackerTable;
+    TrackerCell *fTrackerCell;
 
-    IBOutlet NSSegmentedControl* fTrackerAddRemoveControl;
+    IBOutlet NSSegmentedControl *fTrackerAddRemoveControl;
 }
 
-- (void)setInfoForTorrents:(NSArray*)torrents;
+- (void)setInfoForTorrents:(NSArray *)torrents;
 - (void)updateInfo;
 
 - (void)saveViewSize;

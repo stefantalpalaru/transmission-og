@@ -16,57 +16,49 @@
 #include "StyleHelper.h"
 #include "Utils.h"
 
-namespace
-{
+namespace {
 
-int getHSpacing(QWidget const* w)
+int getHSpacing(QWidget const *w)
 {
     return qMax(3, w->style()->pixelMetric(QStyle::PM_LayoutHorizontalSpacing, nullptr, w));
 }
 
 } // namespace
 
-FilterBarComboBoxDelegate::FilterBarComboBoxDelegate(QObject* parent, QComboBox* combo)
+FilterBarComboBoxDelegate::FilterBarComboBoxDelegate(QObject *parent, QComboBox *combo)
     : QItemDelegate(parent)
     , myCombo(combo)
-{
-}
+{}
 
-bool FilterBarComboBoxDelegate::isSeparator(QModelIndex const& index)
+bool FilterBarComboBoxDelegate::isSeparator(QModelIndex const &index)
 {
     return index.data(Qt::AccessibleDescriptionRole).toString() == QLatin1String("separator");
 }
 
-void FilterBarComboBoxDelegate::setSeparator(QAbstractItemModel* model, QModelIndex const& index)
+void FilterBarComboBoxDelegate::setSeparator(QAbstractItemModel *model, QModelIndex const &index)
 {
     model->setData(index, QString::fromLatin1("separator"), Qt::AccessibleDescriptionRole);
 
-    if (QStandardItemModel* m = qobject_cast<QStandardItemModel*>(model))
-    {
-        if (QStandardItem* item = m->itemFromIndex(index))
-        {
+    if (QStandardItemModel *m = qobject_cast<QStandardItemModel *>(model)) {
+        if (QStandardItem *item = m->itemFromIndex(index)) {
             item->setFlags(item->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
         }
     }
 }
 
-void FilterBarComboBoxDelegate::paint(QPainter* painter, QStyleOptionViewItem const& option, QModelIndex const& index) const
+void FilterBarComboBoxDelegate::paint(QPainter *painter, QStyleOptionViewItem const &option, QModelIndex const &index) const
 {
-    if (isSeparator(index))
-    {
+    if (isSeparator(index)) {
         QRect rect = option.rect;
 
-        if (QAbstractItemView const* view = qobject_cast<QAbstractItemView const*>(option.widget))
-        {
+        if (QAbstractItemView const *view = qobject_cast<QAbstractItemView const *>(option.widget)) {
             rect.setWidth(view->viewport()->width());
         }
 
         QStyleOption opt;
         opt.rect = rect;
         myCombo->style()->drawPrimitive(QStyle::PE_IndicatorToolBarSeparator, &opt, painter, myCombo);
-    }
-    else
-    {
+    } else {
         QStyleOptionViewItem disabledOption = option;
         QPalette::ColorRole const disabledColorRole = (disabledOption.state & QStyle::State_Selected) != 0 ?
             QPalette::HighlightedText :
@@ -104,16 +96,13 @@ void FilterBarComboBoxDelegate::paint(QPainter* painter, QStyleOptionViewItem co
     }
 }
 
-QSize FilterBarComboBoxDelegate::sizeHint(QStyleOptionViewItem const& option, QModelIndex const& index) const
+QSize FilterBarComboBoxDelegate::sizeHint(QStyleOptionViewItem const &option, QModelIndex const &index) const
 {
-    if (isSeparator(index))
-    {
+    if (isSeparator(index)) {
         int const pm = myCombo->style()->pixelMetric(QStyle::PM_DefaultFrameWidth, nullptr, myCombo);
         return QSize(pm, pm + 10);
-    }
-    else
-    {
-        QStyle* s = myCombo->style();
+    } else {
+        QStyle *s = myCombo->style();
         int const hmargin = getHSpacing(myCombo);
 
         QSize size = QItemDelegate::sizeHint(option, index);

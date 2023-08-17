@@ -10,18 +10,16 @@
 
 #include "TorrentDelegate.h"
 
-class TorrentDelegateMin : public TorrentDelegate
-{
+class TorrentDelegateMin : public TorrentDelegate {
     Q_OBJECT
 
 public:
-    explicit TorrentDelegateMin(QObject* parent = nullptr)
+    explicit TorrentDelegateMin(QObject *parent = nullptr)
         : TorrentDelegate(parent)
-    {
-    }
+    {}
 
 protected:
     // TorrentDelegate
-    QSize sizeHint(QStyleOptionViewItem const&, Torrent const&) const override;
-    void drawTorrent(QPainter* painter, QStyleOptionViewItem const& option, Torrent const&) const override;
+    QSize sizeHint(QStyleOptionViewItem const &, Torrent const &) const override;
+    void drawTorrent(QPainter *painter, QStyleOptionViewItem const &option, Torrent const &) const override;
 };

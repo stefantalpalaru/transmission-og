@@ -23,14 +23,10 @@
 *** @{
 **/
 
-enum
-{
-    KEY_LEN = 96
-};
+enum { KEY_LEN = 96 };
 
 /** @brief Holds state information for encrypted peer communications */
-typedef struct
-{
+typedef struct {
     tr_rc4_ctx_t dec_key;
     tr_rc4_ctx_t enc_key;
     tr_dh_ctx_t dh;
@@ -42,36 +38,36 @@ typedef struct
 } tr_crypto;
 
 /** @brief construct a new tr_crypto object */
-void tr_cryptoConstruct(tr_crypto* crypto, uint8_t const* torrentHash, bool isIncoming);
+void tr_cryptoConstruct(tr_crypto *crypto, uint8_t const *torrentHash, bool isIncoming);
 
 /** @brief destruct an existing tr_crypto object */
-void tr_cryptoDestruct(tr_crypto* crypto);
+void tr_cryptoDestruct(tr_crypto *crypto);
 
-void tr_cryptoSetTorrentHash(tr_crypto* crypto, uint8_t const* torrentHash);
+void tr_cryptoSetTorrentHash(tr_crypto *crypto, uint8_t const *torrentHash);
 
-uint8_t const* tr_cryptoGetTorrentHash(tr_crypto const* crypto);
+uint8_t const *tr_cryptoGetTorrentHash(tr_crypto const *crypto);
 
-bool tr_cryptoHasTorrentHash(tr_crypto const* crypto);
+bool tr_cryptoHasTorrentHash(tr_crypto const *crypto);
 
-bool tr_cryptoComputeSecret(tr_crypto* crypto, uint8_t const* peerPublicKey);
+bool tr_cryptoComputeSecret(tr_crypto *crypto, uint8_t const *peerPublicKey);
 
-uint8_t const* tr_cryptoGetMyPublicKey(tr_crypto const* crypto, int* setme_len);
+uint8_t const *tr_cryptoGetMyPublicKey(tr_crypto const *crypto, int *setme_len);
 
-void tr_cryptoDecryptInit(tr_crypto* crypto);
+void tr_cryptoDecryptInit(tr_crypto *crypto);
 
-void tr_cryptoDecrypt(tr_crypto* crypto, size_t buflen, void const* buf_in, void* buf_out);
+void tr_cryptoDecrypt(tr_crypto *crypto, size_t buflen, void const *buf_in, void *buf_out);
 
-void tr_cryptoEncryptInit(tr_crypto* crypto);
+void tr_cryptoEncryptInit(tr_crypto *crypto);
 
-void tr_cryptoEncrypt(tr_crypto* crypto, size_t buflen, void const* buf_in, void* buf_out);
+void tr_cryptoEncrypt(tr_crypto *crypto, size_t buflen, void const *buf_in, void *buf_out);
 
 bool tr_cryptoSecretKeySha1(
-    tr_crypto const* crypto,
-    void const* prepend_data,
+    tr_crypto const *crypto,
+    void const *prepend_data,
     size_t prepend_data_size,
-    void const* append_data,
+    void const *append_data,
     size_t append_data_size,
-    uint8_t* hash);
+    uint8_t *hash);
 
 /* @} */
 

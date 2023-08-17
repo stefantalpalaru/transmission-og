@@ -15,36 +15,23 @@
 
 class Speed;
 
-class Formatter
-{
+class Formatter {
     Q_DECLARE_TR_FUNCTIONS(Formatter)
 
 public:
-    enum Size
-    {
-        B,
-        KB,
-        MB,
-        GB,
-        TB
-    };
+    enum Size { B, KB, MB, GB, TB };
 
-    enum Type
-    {
-        SPEED,
-        SIZE,
-        MEM
-    };
+    enum Type { SPEED, SIZE, MEM };
 
 public:
     static QString memToString(int64_t bytes);
     static QString sizeToString(int64_t bytes);
-    static QString speedToString(Speed const& speed);
+    static QString speedToString(Speed const &speed);
     static QString percentToString(double x);
     static QString ratioToString(double ratio);
     static QString timeToString(int seconds);
-    static QString uploadSpeedToString(Speed const& up);
-    static QString downloadSpeedToString(Speed const& down);
+    static QString uploadSpeedToString(Speed const &up);
+    static QString downloadSpeedToString(Speed const &down);
 
     static QString unitStr(Type t, Size s)
     {

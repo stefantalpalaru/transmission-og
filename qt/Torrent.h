@@ -32,13 +32,11 @@ class QPixmap;
 
 class Prefs;
 
-extern "C"
-{
-    struct tr_variant;
+extern "C" {
+struct tr_variant;
 }
 
-struct Peer
-{
+struct Peer {
     bool clientIsChoked;
     bool clientIsInterested;
     bool isDownloadingFrom;
@@ -61,8 +59,7 @@ Q_DECLARE_METATYPE(Peer)
 typedef QList<Peer> PeerList;
 Q_DECLARE_METATYPE(PeerList)
 
-struct TrackerStat
-{
+struct TrackerStat {
     QPixmap getFavicon() const;
 
     bool hasAnnounced;
@@ -97,16 +94,14 @@ Q_DECLARE_METATYPE(TrackerStat)
 typedef QList<TrackerStat> TrackerStatsList;
 Q_DECLARE_METATYPE(TrackerStatsList)
 
-struct TorrentFile
-{
+struct TorrentFile {
     TorrentFile()
         : wanted(true)
         , index(-1)
         , priority(0)
         , size(0)
         , have(0)
-    {
-    }
+    {}
 
     bool wanted;
     int index;
@@ -121,13 +116,11 @@ Q_DECLARE_METATYPE(TorrentFile)
 typedef QList<TorrentFile> FileList;
 Q_DECLARE_METATYPE(FileList)
 
-class Torrent : public QObject
-{
+class Torrent : public QObject {
     Q_OBJECT
 
 public:
-    enum
-    {
+    enum {
         UPLOAD_SPEED,
         DOWNLOAD_SPEED,
         DOWNLOAD_DIR,
@@ -186,7 +179,7 @@ public:
     };
 
 public:
-    Torrent(Prefs const&, int id);
+    Torrent(Prefs const &, int id);
 
     int getBandwidthPriority() const
     {
@@ -250,7 +243,7 @@ public:
         return getBool(IS_PRIVATE);
     }
 
-    bool getSeedRatio(double& setme) const;
+    bool getSeedRatio(double &setme) const;
 
     uint64_t haveVerified() const
     {
@@ -342,9 +335,9 @@ public:
         return getSize(FAILED_EVER);
     }
 
-    int compareSeedRatio(Torrent const&) const;
-    int compareRatio(Torrent const&) const;
-    int compareETA(Torrent const&) const;
+    int compareSeedRatio(Torrent const &) const;
+    int compareRatio(Torrent const &) const;
+    int compareETA(Torrent const &) const;
 
     bool hasETA() const
     {
@@ -431,7 +424,7 @@ public:
         return getDouble(PERCENT_VERIFIED);
     }
 
-    bool hasTrackerSubstring(QString const& substr) const;
+    bool hasTrackerSubstring(QString const &substr) const;
 
     Speed uploadLimit() const
     {
@@ -488,12 +481,12 @@ public:
         return myValues[TRACKERSTATS].value<TrackerStatsList>();
     }
 
-    QStringList const& trackers() const
+    QStringList const &trackers() const
     {
         return trackers_;
     }
 
-    QStringList const& trackerDisplayNames() const
+    QStringList const &trackerDisplayNames() const
     {
         return trackerDisplayNames_;
     }
@@ -503,7 +496,7 @@ public:
         return myValues[PEERS].value<PeerList>();
     }
 
-    FileList const& files() const
+    FileList const &files() const
     {
         return myFiles;
     }
@@ -575,7 +568,7 @@ public:
         return isWaitingToDownload() || isWaitingToSeed();
     }
 
-    bool update(tr_quark const* keys, tr_variant** values, size_t n);
+    bool update(tr_quark const *keys, tr_variant **values, size_t n);
 
     QIcon getMimeTypeIcon() const
     {
@@ -600,23 +593,23 @@ private:
 
     bool setInt(int key, int value);
     bool setBool(int key, bool value);
-    bool setIcon(int key, QIcon const&);
+    bool setIcon(int key, QIcon const &);
     bool setDouble(int key, double);
-    bool setString(int key, char const*, size_t len);
+    bool setString(int key, char const *, size_t len);
     bool setSize(int key, qulonglong);
     bool setTime(int key, time_t);
 
     QStringList trackers_;
     QStringList trackerDisplayNames_;
 
-    char const* getMimeTypeString() const;
+    char const *getMimeTypeString() const;
     void updateMimeIcon();
 
 private:
     int const myId;
-    Prefs const& myPrefs;
+    Prefs const &myPrefs;
     QVariant myValues[PROPERTY_COUNT];
     FileList myFiles;
 };
 
-Q_DECLARE_METATYPE(Torrent const*)
+Q_DECLARE_METATYPE(Torrent const *)

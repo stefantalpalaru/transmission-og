@@ -61,47 +61,40 @@ static void set_socket_buffers(tr_socket_t fd, bool large)
     char err_buf[512];
 
     size = large ? RECV_BUFFER_SIZE : SMALL_BUFFER_SIZE;
-    rc = setsockopt(fd, SOL_SOCKET, SO_RCVBUF, (void const*)&size, sizeof(size));
+    rc = setsockopt(fd, SOL_SOCKET, SO_RCVBUF, (void const *)&size, sizeof(size));
 
-    if (rc < 0)
-    {
+    if (rc < 0) {
         tr_logAddNamedError("UDP", "Failed to set receive buffer: %s", tr_net_strerror(err_buf, sizeof(err_buf), sockerrno));
     }
 
     size = large ? SEND_BUFFER_SIZE : SMALL_BUFFER_SIZE;
-    rc = setsockopt(fd, SOL_SOCKET, SO_SNDBUF, (void const*)&size, sizeof(size));
+    rc = setsockopt(fd, SOL_SOCKET, SO_SNDBUF, (void const *)&size, sizeof(size));
 
-    if (rc < 0)
-    {
+    if (rc < 0) {
         tr_logAddNamedError("UDP", "Failed to set send buffer: %s", tr_net_strerror(err_buf, sizeof(err_buf), sockerrno));
     }
 
-    if (large)
-    {
-        rc = getsockopt(fd, SOL_SOCKET, SO_RCVBUF, (void*)&rbuf, &rbuf_len);
+    if (large) {
+        rc = getsockopt(fd, SOL_SOCKET, SO_RCVBUF, (void *)&rbuf, &rbuf_len);
 
-        if (rc < 0)
-        {
+        if (rc < 0) {
             rbuf = 0;
         }
 
-        rc = getsockopt(fd, SOL_SOCKET, SO_SNDBUF, (void*)&sbuf, &sbuf_len);
+        rc = getsockopt(fd, SOL_SOCKET, SO_SNDBUF, (void *)&sbuf, &sbuf_len);
 
-        if (rc < 0)
-        {
+        if (rc < 0) {
             sbuf = 0;
         }
 
-        if (rbuf < RECV_BUFFER_SIZE)
-        {
+        if (rbuf < RECV_BUFFER_SIZE) {
             tr_logAddNamedError("UDP", "Failed to set receive buffer: requested %d, got %d", RECV_BUFFER_SIZE, rbuf);
 #ifdef __linux__
             tr_logAddNamedInfo("UDP", "Please add the line \"net.core.rmem_max = %d\" to /etc/sysctl.conf", RECV_BUFFER_SIZE);
 #endif
         }
 
-        if (sbuf < SEND_BUFFER_SIZE)
-        {
+        if (sbuf < SEND_BUFFER_SIZE) {
             tr_logAddNamedError("UDP", "Failed to set send buffer: requested %d, got %d", SEND_BUFFER_SIZE, sbuf);
 #ifdef __linux__
             tr_logAddNamedInfo("UDP", "Please add the line \"net.core.wmem_max = %d\" to /etc/sysctl.conf", SEND_BUFFER_SIZE);
@@ -110,17 +103,15 @@ static void set_socket_buffers(tr_socket_t fd, bool large)
     }
 }
 
-void tr_udpSetSocketBuffers(tr_session* session)
+void tr_udpSetSocketBuffers(tr_session *session)
 {
     bool utp = tr_sessionIsUTPEnabled(session);
 
-    if (session->udp_socket != TR_BAD_SOCKET)
-    {
+    if (session->udp_socket != TR_BAD_SOCKET) {
         set_socket_buffers(session->udp_socket, utp);
     }
 
-    if (session->udp6_socket != TR_BAD_SOCKET)
-    {
+    if (session->udp6_socket != TR_BAD_SOCKET) {
         set_socket_buffers(session->udp6_socket, utp);
     }
 }
@@ -128,22 +119,20 @@ void tr_udpSetSocketBuffers(tr_session* session)
 /* BEP-32 has a rather nice explanation of why we need to bind to one
    IPv6 address, if I may say so myself. */
 
-static void rebind_ipv6(tr_session* ss, bool force)
+static void rebind_ipv6(tr_session *ss, bool force)
 {
     bool is_default;
-    struct tr_address const* public_addr;
+    struct tr_address const *public_addr;
     struct sockaddr_in6 sin6;
-    unsigned char const* ipv6 = tr_globalIPv6();
+    unsigned char const *ipv6 = tr_globalIPv6();
     tr_socket_t s = TR_BAD_SOCKET;
     int rc;
     int one = 1;
 
     /* We currently have no way to enable or disable IPv6 after initialisation.
        No way to fix that without some surgery to the DHT code itself. */
-    if (ipv6 == NULL || (!force && ss->udp6_socket == TR_BAD_SOCKET))
-    {
-        if (ss->udp6_bound != NULL)
-        {
+    if (ipv6 == NULL || (!force && ss->udp6_socket == TR_BAD_SOCKET)) {
+        if (ss->udp6_bound != NULL) {
             free(ss->udp6_bound);
             ss->udp6_bound = NULL;
         }
@@ -151,71 +140,60 @@ static void rebind_ipv6(tr_session* ss, bool force)
         return;
     }
 
-    if (ss->udp6_bound != NULL && memcmp(ipv6, ss->udp6_bound, 16) == 0)
-    {
+    if (ss->udp6_bound != NULL && memcmp(ipv6, ss->udp6_bound, 16) == 0) {
         return;
     }
 
     s = socket(PF_INET6, SOCK_DGRAM, 0);
 
-    if (s == TR_BAD_SOCKET)
-    {
+    if (s == TR_BAD_SOCKET) {
         goto fail;
     }
 
 #ifdef IPV6_V6ONLY
     /* Since we always open an IPv4 socket on the same port, this
        shouldn't matter.  But I'm superstitious. */
-    setsockopt(s, IPPROTO_IPV6, IPV6_V6ONLY, (void const*)&one, sizeof(one));
+    setsockopt(s, IPPROTO_IPV6, IPV6_V6ONLY, (void const *)&one, sizeof(one));
 #endif
 
     memset(&sin6, 0, sizeof(sin6));
     sin6.sin6_family = AF_INET6;
 
-    if (ipv6 != NULL)
-    {
+    if (ipv6 != NULL) {
         memcpy(&sin6.sin6_addr, ipv6, 16);
     }
 
     sin6.sin6_port = htons(ss->udp_port);
     public_addr = tr_sessionGetPublicAddress(ss, TR_AF_INET6, &is_default);
 
-    if (public_addr != NULL && !is_default)
-    {
+    if (public_addr != NULL && !is_default) {
         sin6.sin6_addr = public_addr->addr.addr6;
     }
 
-    rc = bind(s, (struct sockaddr*)&sin6, sizeof(sin6));
+    rc = bind(s, (struct sockaddr *)&sin6, sizeof(sin6));
 
-    if (rc == -1)
-    {
+    if (rc == -1) {
         goto fail;
     }
 
-    if (ss->udp6_socket == TR_BAD_SOCKET)
-    {
+    if (ss->udp6_socket == TR_BAD_SOCKET) {
         ss->udp6_socket = s;
-    }
-    else
-    {
+    } else {
         /* FIXME: dup2 doesn't work for sockets on Windows */
         rc = dup2(s, ss->udp6_socket);
 
-        if (rc == -1)
-        {
+        if (rc == -1) {
             goto fail;
         }
 
         tr_netCloseSocket(s);
     }
 
-    if (ss->udp6_bound == NULL)
-    {
+    if (ss->udp6_bound == NULL) {
         ss->udp6_bound = malloc(16);
     }
 
-    if (ss->udp6_bound != NULL)
-    {
+    if (ss->udp6_bound != NULL) {
         memcpy(ss->udp6_bound, ipv6, 16);
     }
 
@@ -226,19 +204,17 @@ fail:
        set things up so that we try again next time. */
     tr_logAddNamedError("UDP", "Couldn't rebind IPv6 socket");
 
-    if (s != TR_BAD_SOCKET)
-    {
+    if (s != TR_BAD_SOCKET) {
         tr_netCloseSocket(s);
     }
 
-    if (ss->udp6_bound != NULL)
-    {
+    if (ss->udp6_bound != NULL) {
         free(ss->udp6_bound);
         ss->udp6_bound = NULL;
     }
 }
 
-static void event_callback(evutil_socket_t s, short type UNUSED, void* sv)
+static void event_callback(evutil_socket_t s, short type UNUSED, void *sv)
 {
     TR_ASSERT(tr_isSession(sv));
     TR_ASSERT(type == EV_READ);
@@ -247,10 +223,10 @@ static void event_callback(evutil_socket_t s, short type UNUSED, void* sv)
     socklen_t fromlen;
     unsigned char buf[4096];
     struct sockaddr_storage from;
-    tr_session* ss = sv;
+    tr_session *ss = sv;
 
     fromlen = sizeof(from);
-    rc = recvfrom(s, (void*)buf, 4096 - 1, 0, (struct sockaddr*)&from, &fromlen);
+    rc = recvfrom(s, (void *)buf, 4096 - 1, 0, (struct sockaddr *)&from, &fromlen);
 
     /* Since most packets we receive here are ÂµTP, make quick inline
        checks for the other protocols.  The logic is as follows:
@@ -259,33 +235,23 @@ static void event_callback(evutil_socket_t s, short type UNUSED, void* sv)
          is between 0 and 3;
        - the above cannot be ÂµTP packets, since these start with a 4-bit
          version number (1). */
-    if (rc > 0)
-    {
-        if (buf[0] == 'd')
-        {
-            if (tr_sessionAllowsDHT(ss))
-            {
+    if (rc > 0) {
+        if (buf[0] == 'd') {
+            if (tr_sessionAllowsDHT(ss)) {
                 buf[rc] = '\0'; /* required by the DHT code */
-                tr_dhtCallback(buf, rc, (struct sockaddr*)&from, fromlen, sv);
+                tr_dhtCallback(buf, rc, (struct sockaddr *)&from, fromlen, sv);
             }
-        }
-        else if (rc >= 8 && buf[0] == 0 && buf[1] == 0 && buf[2] == 0 && buf[3] <= 3)
-        {
+        } else if (rc >= 8 && buf[0] == 0 && buf[1] == 0 && buf[2] == 0 && buf[3] <= 3) {
             rc = tau_handle_message(ss, buf, rc);
 
-            if (rc == 0)
-            {
+            if (rc == 0) {
                 tr_logAddNamedDbg("UDP", "Couldn't parse UDP tracker packet.");
             }
-        }
-        else
-        {
-            if (tr_sessionIsUTPEnabled(ss))
-            {
-                rc = tr_utpPacket(buf, rc, (struct sockaddr*)&from, fromlen, ss);
+        } else {
+            if (tr_sessionIsUTPEnabled(ss)) {
+                rc = tr_utpPacket(buf, rc, (struct sockaddr *)&from, fromlen, ss);
 
-                if (rc == 0)
-                {
+                if (rc == 0) {
                     tr_logAddNamedDbg("UDP", "Unexpected UDP packet");
                 }
             }
@@ -293,27 +259,25 @@ static void event_callback(evutil_socket_t s, short type UNUSED, void* sv)
     }
 }
 
-void tr_udpInit(tr_session* ss)
+void tr_udpInit(tr_session *ss)
 {
     TR_ASSERT(ss->udp_socket == TR_BAD_SOCKET);
     TR_ASSERT(ss->udp6_socket == TR_BAD_SOCKET);
 
     bool is_default;
-    struct tr_address const* public_addr;
+    struct tr_address const *public_addr;
     struct sockaddr_in sin;
     int rc;
 
     ss->udp_port = tr_sessionGetPeerPort(ss);
 
-    if (ss->udp_port <= 0)
-    {
+    if (ss->udp_port <= 0) {
         return;
     }
 
     ss->udp_socket = socket(PF_INET, SOCK_DGRAM, 0);
 
-    if (ss->udp_socket == TR_BAD_SOCKET)
-    {
+    if (ss->udp_socket == TR_BAD_SOCKET) {
         tr_logAddNamedError("UDP", "Couldn't create IPv4 socket");
         goto ipv6;
     }
@@ -322,16 +286,14 @@ void tr_udpInit(tr_session* ss)
     sin.sin_family = AF_INET;
     public_addr = tr_sessionGetPublicAddress(ss, TR_AF_INET, &is_default);
 
-    if (public_addr != NULL && !is_default)
-    {
+    if (public_addr != NULL && !is_default) {
         memcpy(&sin.sin_addr, &public_addr->addr.addr4, sizeof(struct in_addr));
     }
 
     sin.sin_port = htons(ss->udp_port);
-    rc = bind(ss->udp_socket, (struct sockaddr*)&sin, sizeof(sin));
+    rc = bind(ss->udp_socket, (struct sockaddr *)&sin, sizeof(sin));
 
-    if (rc == -1)
-    {
+    if (rc == -1) {
         tr_logAddNamedError("UDP", "Couldn't bind IPv4 socket");
         tr_netCloseSocket(ss->udp_socket);
         ss->udp_socket = TR_BAD_SOCKET;
@@ -340,75 +302,63 @@ void tr_udpInit(tr_session* ss)
 
     ss->udp_event = event_new(ss->event_base, ss->udp_socket, EV_READ | EV_PERSIST, event_callback, ss);
 
-    if (ss->udp_event == NULL)
-    {
+    if (ss->udp_event == NULL) {
         tr_logAddNamedError("UDP", "Couldn't allocate IPv4 event");
     }
 
 ipv6:
-    if (tr_globalIPv6() != NULL)
-    {
+    if (tr_globalIPv6() != NULL) {
         rebind_ipv6(ss, true);
     }
 
-    if (ss->udp6_socket != TR_BAD_SOCKET)
-    {
+    if (ss->udp6_socket != TR_BAD_SOCKET) {
         ss->udp6_event = event_new(ss->event_base, ss->udp6_socket, EV_READ | EV_PERSIST, event_callback, ss);
 
-        if (ss->udp6_event == NULL)
-        {
+        if (ss->udp6_event == NULL) {
             tr_logAddNamedError("UDP", "Couldn't allocate IPv6 event");
         }
     }
 
     tr_udpSetSocketBuffers(ss);
 
-    if (ss->isDHTEnabled)
-    {
+    if (ss->isDHTEnabled) {
         tr_dhtInit(ss);
     }
 
-    if (ss->udp_event != NULL)
-    {
+    if (ss->udp_event != NULL) {
         event_add(ss->udp_event, NULL);
     }
 
-    if (ss->udp6_event != NULL)
-    {
+    if (ss->udp6_event != NULL) {
         event_add(ss->udp6_event, NULL);
     }
 }
 
-void tr_udpUninit(tr_session* ss)
+void tr_udpUninit(tr_session *ss)
 {
     tr_dhtUninit(ss);
 
-    if (ss->udp_socket != TR_BAD_SOCKET)
-    {
+    if (ss->udp_socket != TR_BAD_SOCKET) {
         tr_netCloseSocket(ss->udp_socket);
         ss->udp_socket = TR_BAD_SOCKET;
     }
 
-    if (ss->udp_event != NULL)
-    {
+    if (ss->udp_event != NULL) {
         event_free(ss->udp_event);
         ss->udp_event = NULL;
     }
 
-    if (ss->udp6_socket != TR_BAD_SOCKET)
-    {
+    if (ss->udp6_socket != TR_BAD_SOCKET) {
         tr_netCloseSocket(ss->udp6_socket);
         ss->udp6_socket = TR_BAD_SOCKET;
     }
 
-    if (ss->udp6_event != NULL)
-    {
+    if (ss->udp6_event != NULL) {
         event_free(ss->udp6_event);
         ss->udp6_event = NULL;
     }
 
-    if (ss->udp6_bound != NULL)
-    {
+    if (ss->udp6_bound != NULL) {
         free(ss->udp6_bound);
         ss->udp6_bound = NULL;
     }

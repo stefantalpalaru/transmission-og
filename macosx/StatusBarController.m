@@ -30,8 +30,7 @@
 #define STATUS_TRANSFER_TOTAL @"TransferTotal"
 #define STATUS_TRANSFER_SESSION @"TransferSession"
 
-typedef enum
-{
+typedef enum {
     STATUS_RATIO_TOTAL_TAG = 0,
     STATUS_RATIO_SESSION_TAG = 1,
     STATUS_TRANSFER_TOTAL_TAG = 2,
@@ -46,10 +45,9 @@ typedef enum
 
 @implementation StatusBarController
 
-- (id)initWithLib:(tr_session*)lib
+- (id)initWithLib:(tr_session *)lib
 {
-    if ((self = [super initWithNibName:@"StatusBar" bundle:nil]))
-    {
+    if ((self = [super initWithNibName:@"StatusBar" bundle:nil])) {
         fLib = lib;
 
         fPreviousDownloadRate = -1.0;
@@ -61,7 +59,7 @@ typedef enum
 
 - (void)awakeFromNib
 {
-    //localize menu items
+    // localize menu items
     [[[fStatusButton menu] itemWithTag:STATUS_RATIO_TOTAL_TAG] setTitle:NSLocalizedString(@"Total Ratio", "Status Bar -> status menu")];
     [[[fStatusButton menu] itemWithTag:STATUS_RATIO_SESSION_TAG] setTitle:NSLocalizedString(@"Session Ratio", "Status Bar -> status menu")];
     [[[fStatusButton menu] itemWithTag:STATUS_TRANSFER_TOTAL_TAG] setTitle:NSLocalizedString(@"Total Transfer", "Status Bar -> status menu")];
@@ -76,7 +74,7 @@ typedef enum
 
     [self updateSpeedFieldsToolTips];
 
-    //update when speed limits are changed
+    // update when speed limits are changed
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateSpeedFieldsToolTips)
                                                  name:@"SpeedLimitUpdate"
                                                object:nil];
@@ -92,24 +90,21 @@ typedef enum
 
 - (void)updateWithDownload:(CGFloat)dlRate upload:(CGFloat)ulRate
 {
-    //set rates
-    if (dlRate != fPreviousDownloadRate)
-    {
+    // set rates
+    if (dlRate != fPreviousDownloadRate) {
         [fTotalDLField setStringValue:[NSString stringForSpeed:dlRate]];
         fPreviousDownloadRate = dlRate;
     }
 
-    if (ulRate != fPreviousUploadRate)
-    {
+    if (ulRate != fPreviousUploadRate) {
         [fTotalULField setStringValue:[NSString stringForSpeed:ulRate]];
         fPreviousUploadRate = ulRate;
     }
 
-    //set status button text
+    // set status button text
     NSString *statusLabel = [[NSUserDefaults standardUserDefaults] stringForKey:@"StatusLabel"], *statusString;
     BOOL total;
-    if ((total = [statusLabel isEqualToString:STATUS_RATIO_TOTAL]) || [statusLabel isEqualToString:STATUS_RATIO_SESSION])
-    {
+    if ((total = [statusLabel isEqualToString:STATUS_RATIO_TOTAL]) || [statusLabel isEqualToString:STATUS_RATIO_SESSION]) {
         tr_session_stats stats;
         if (total)
             tr_sessionGetCumulativeStats(fLib, &stats);
@@ -118,8 +113,7 @@ typedef enum
 
         statusString = [NSLocalizedString(@"Ratio", "status bar -> status label")
             stringByAppendingFormat:@": %@", [NSString stringForRatio:stats.ratio]];
-    }
-    else //STATUS_TRANSFER_TOTAL or STATUS_TRANSFER_SESSION
+    } else // STATUS_TRANSFER_TOTAL or STATUS_TRANSFER_SESSION
     {
         total = [statusLabel isEqualToString:STATUS_TRANSFER_TOTAL];
 
@@ -136,8 +130,7 @@ typedef enum
                                                   [NSString stringForFileSize:stats.uploadedBytes]];
     }
 
-    if (![[fStatusButton title] isEqualToString:statusString])
-    {
+    if (![[fStatusButton title] isEqualToString:statusString]) {
         [fStatusButton setTitle:statusString];
         [self resizeStatusButton];
     }
@@ -145,9 +138,8 @@ typedef enum
 
 - (void)setStatusLabel:(id)sender
 {
-    NSString* statusLabel;
-    switch ([sender tag])
-    {
+    NSString *statusLabel;
+    switch ([sender tag]) {
     case STATUS_RATIO_TOTAL_TAG:
         statusLabel = STATUS_RATIO_TOTAL;
         break;
@@ -174,18 +166,15 @@ typedef enum
 {
     NSString *uploadText, *downloadText;
 
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SpeedLimit"])
-    {
-        NSString* speedString = [NSString stringWithFormat:@"%@ (%@)",
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SpeedLimit"]) {
+        NSString *speedString = [NSString stringWithFormat:@"%@ (%@)",
                                                            NSLocalizedString(@"%d KB/s", "Status Bar -> speed tooltip"),
                                                            NSLocalizedString(@"Speed Limit", "Status Bar -> speed tooltip")];
 
         uploadText = [NSString stringWithFormat:speedString, [[NSUserDefaults standardUserDefaults] integerForKey:@"SpeedLimitUploadLimit"]];
         downloadText = [NSString
             stringWithFormat:speedString, [[NSUserDefaults standardUserDefaults] integerForKey:@"SpeedLimitDownloadLimit"]];
-    }
-    else
-    {
+    } else {
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"CheckUpload"])
             uploadText = [NSString stringWithFormat:NSLocalizedString(@"%d KB/s", "Status Bar -> speed tooltip"),
                                                     [[NSUserDefaults standardUserDefaults] integerForKey:@"UploadLimit"]];
@@ -206,16 +195,14 @@ typedef enum
     [fTotalDLField setToolTip:downloadText];
 }
 
-- (BOOL)validateMenuItem:(NSMenuItem*)menuItem
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem
 {
     SEL const action = [menuItem action];
 
-    //enable sort options
-    if (action == @selector(setStatusLabel:))
-    {
-        NSString* statusLabel;
-        switch ([menuItem tag])
-        {
+    // enable sort options
+    if (action == @selector(setStatusLabel:)) {
+        NSString *statusLabel;
+        switch ([menuItem tag]) {
         case STATUS_RATIO_TOTAL_TAG:
             statusLabel = STATUS_RATIO_TOTAL;
             break;
@@ -248,7 +235,7 @@ typedef enum
 {
     [fStatusButton sizeToFit];
 
-    //width ends up being too long
+    // width ends up being too long
     NSRect statusFrame = [fStatusButton frame];
     statusFrame.size.width -= 25.0;
 

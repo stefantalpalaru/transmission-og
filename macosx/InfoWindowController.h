@@ -31,28 +31,27 @@
 @class InfoFileViewController;
 @class InfoOptionsViewController;
 
-@interface InfoWindowController : NSWindowController
-{
-    NSArray* fTorrents;
+@interface InfoWindowController : NSWindowController {
+    NSArray *fTorrents;
 
     CGFloat fMinWindowWidth;
 
-    NSViewController<InfoViewController>* fViewController;
+    NSViewController<InfoViewController> *fViewController;
     NSInteger fCurrentTabTag;
-    IBOutlet NSMatrix* fTabMatrix;
+    IBOutlet NSMatrix *fTabMatrix;
 
-    InfoGeneralViewController* fGeneralViewController;
-    InfoActivityViewController* fActivityViewController;
-    InfoTrackersViewController* fTrackersViewController;
-    InfoPeersViewController* fPeersViewController;
-    InfoFileViewController* fFileViewController;
-    InfoOptionsViewController* fOptionsViewController;
+    InfoGeneralViewController *fGeneralViewController;
+    InfoActivityViewController *fActivityViewController;
+    InfoTrackersViewController *fTrackersViewController;
+    InfoPeersViewController *fPeersViewController;
+    InfoFileViewController *fFileViewController;
+    InfoOptionsViewController *fOptionsViewController;
 
-    IBOutlet NSImageView* fImageView;
+    IBOutlet NSImageView *fImageView;
     IBOutlet NSTextField *fNameField, *fBasicInfoField, *fNoneSelectedField;
 }
 
-- (void)setInfoForTorrents:(NSArray*)torrents;
+- (void)setInfoForTorrents:(NSArray *)torrents;
 - (void)updateInfoStats;
 - (void)updateOptions;
 
@@ -61,7 +60,7 @@
 - (void)setNextTab;
 - (void)setPreviousTab;
 
-- (NSArray*)quickLookURLs;
+- (NSArray *)quickLookURLs;
 - (BOOL)canQuickLook;
 - (NSRect)quickLookSourceFrameForPreviewItem:(id<QLPreviewItem>)item;
 

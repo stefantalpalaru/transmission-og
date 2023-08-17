@@ -26,24 +26,23 @@
 
 @class WebSeedTableView;
 
-@interface InfoPeersViewController : NSViewController<InfoViewController, NSAnimationDelegate>
-{
-    NSArray* fTorrents;
+@interface InfoPeersViewController : NSViewController<InfoViewController, NSAnimationDelegate> {
+    NSArray *fTorrents;
 
     BOOL fSet;
 
     NSMutableArray *fPeers, *fWebSeeds;
 
-    IBOutlet NSTableView* fPeerTable;
-    IBOutlet WebSeedTableView* fWebSeedTable;
+    IBOutlet NSTableView *fPeerTable;
+    IBOutlet WebSeedTableView *fWebSeedTable;
 
-    IBOutlet NSTextField* fConnectedPeersField;
+    IBOutlet NSTextField *fConnectedPeersField;
 
     CGFloat fViewTopMargin;
-    IBOutlet NSLayoutConstraint* fWebSeedTableTopConstraint;
+    IBOutlet NSLayoutConstraint *fWebSeedTableTopConstraint;
 }
 
-- (void)setInfoForTorrents:(NSArray*)torrents;
+- (void)setInfoForTorrents:(NSArray *)torrents;
 - (void)updateInfo;
 
 - (void)saveViewSize;

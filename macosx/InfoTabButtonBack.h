@@ -22,8 +22,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface InfoTabButtonBack : NSView
-{
+@interface InfoTabButtonBack : NSView {
 }
 
 @end

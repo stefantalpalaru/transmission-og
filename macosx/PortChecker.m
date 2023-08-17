@@ -27,7 +27,7 @@
 
 @interface PortChecker (Private)
 
-- (void)startProbe:(NSTimer*)timer;
+- (void)startProbe:(NSTimer *)timer;
 
 - (void)callBackWithStatus:(port_status_t)status;
 
@@ -37,8 +37,7 @@
 
 - (id)initForPort:(NSInteger)portNumber delay:(BOOL)delay withDelegate:(id)delegate
 {
-    if ((self = [super init]))
-    {
+    if ((self = [super init])) {
         fDelegate = delegate;
 
         fStatus = PORT_STATUS_CHECKING;
@@ -71,41 +70,37 @@
     [fConnection cancel];
 }
 
-- (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
     [fPortProbeData setLength:0];
 }
 
-- (void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
     [fPortProbeData appendData:data];
 }
 
-- (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     NSLog(@"Unable to get port status: connection failed (%@)", [error localizedDescription]);
     [self callBackWithStatus:PORT_STATUS_ERROR];
 }
 
-- (void)connectionDidFinishLoading:(NSURLConnection*)connection
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    NSString* probeString = [[NSString alloc] initWithData:fPortProbeData encoding:NSUTF8StringEncoding];
+    NSString *probeString = [[NSString alloc] initWithData:fPortProbeData encoding:NSUTF8StringEncoding];
     fPortProbeData = nil;
 
-    if (probeString)
-    {
+    if (probeString) {
         if ([probeString isEqualToString:@"1"])
             [self callBackWithStatus:PORT_STATUS_OPEN];
         else if ([probeString isEqualToString:@"0"])
             [self callBackWithStatus:PORT_STATUS_CLOSED];
-        else
-        {
+        else {
             NSLog(@"Unable to get port status: invalid response (%@)", probeString);
             [self callBackWithStatus:PORT_STATUS_ERROR];
         }
-    }
-    else
-    {
+    } else {
         NSLog(@"Unable to get port status: invalid data received");
         [self callBackWithStatus:PORT_STATUS_ERROR];
     }
@@ -115,18 +110,17 @@
 
 @implementation PortChecker (Private)
 
-- (void)startProbe:(NSTimer*)timer
+- (void)startProbe:(NSTimer *)timer
 {
     fTimer = nil;
 
-    NSURLRequest* portProbeRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:CHECKER_URL([[timer userInfo] integerValue])]
+    NSURLRequest *portProbeRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:CHECKER_URL([[timer userInfo] integerValue])]
                                                       cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
                                                   timeoutInterval:15.0];
 
     if ((fConnection = [[NSURLConnection alloc] initWithRequest:portProbeRequest delegate:self]))
         fPortProbeData = [[NSMutableData alloc] init];
-    else
-    {
+    else {
         NSLog(@"Unable to get port status: failed to initiate connection");
         [self callBackWithStatus:PORT_STATUS_ERROR];
     }

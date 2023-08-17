@@ -16,12 +16,11 @@
 
 class LicenseDialog;
 
-class AboutDialog : public BaseDialog
-{
+class AboutDialog : public BaseDialog {
     Q_OBJECT
 
 public:
-    AboutDialog(QWidget* parent = nullptr);
+    AboutDialog(QWidget *parent = nullptr);
 
 private slots:
     void showCredits();

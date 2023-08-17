@@ -26,21 +26,21 @@ THE SOFTWARE.
 #error only libtransmission should #include this header.
 #endif
 
-int tr_lpdInit(tr_session*, tr_address*);
-void tr_lpdUninit(tr_session*);
-bool tr_lpdEnabled(tr_session const*);
-bool tr_lpdSendAnnounce(tr_torrent const*);
+int tr_lpdInit(tr_session *, tr_address *);
+void tr_lpdUninit(tr_session *);
+bool tr_lpdEnabled(tr_session const *);
+bool tr_lpdSendAnnounce(tr_torrent const *);
 
 /**
-* @defgroup Preproc Helper macros
-* @{
-*
-* @def lengthof
-* @brief returns the static length of a C array type
-* @note A lower case macro name is tolerable here since this definition of lengthof()
-* is intimately related to sizeof semantics.
-* Meaningful return values are only guaranteed for true array types. */
+ * @defgroup Preproc Helper macros
+ * @{
+ *
+ * @def lengthof
+ * @brief returns the static length of a C array type
+ * @note A lower case macro name is tolerable here since this definition of lengthof()
+ * is intimately related to sizeof semantics.
+ * Meaningful return values are only guaranteed for true array types. */
 #define lengthof(arr) (sizeof(*(arr)) > 0 ? sizeof(arr) / sizeof(*(arr)) : 0)
 
 /**
-* @} */
+ * @} */

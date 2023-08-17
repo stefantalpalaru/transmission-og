@@ -24,18 +24,17 @@
 
 #include <libtransmission/transmission.h>
 
-@interface DragOverlayWindow : NSWindow
-{
-    tr_session* fLib;
+@interface DragOverlayWindow : NSWindow {
+    tr_session *fLib;
 
     NSViewAnimation *fFadeInAnimation, *fFadeOutAnimation;
 }
 
-- (id)initWithLib:(tr_session*)lib forWindow:(NSWindow*)window;
+- (id)initWithLib:(tr_session *)lib forWindow:(NSWindow *)window;
 
-- (void)setTorrents:(NSArray*)files;
-- (void)setFile:(NSString*)file;
-- (void)setURL:(NSString*)url;
+- (void)setTorrents:(NSArray *)files;
+- (void)setFile:(NSString *)file;
+- (void)setURL:(NSString *)url;
 
 - (void)fadeIn;
 - (void)fadeOut;

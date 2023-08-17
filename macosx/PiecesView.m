@@ -32,24 +32,17 @@
 
 #define HIGH_PEERS 30
 
-enum
-{
-    PIECE_NONE,
-    PIECE_SOME,
-    PIECE_HIGH_PEERS,
-    PIECE_FINISHED,
-    PIECE_FLASHING
-};
+enum { PIECE_NONE, PIECE_SOME, PIECE_HIGH_PEERS, PIECE_FINISHED, PIECE_FLASHING };
 
 @implementation PiecesView
 
 - (void)awakeFromNib
 {
-    //store box colors
+    // store box colors
     fGreenAvailabilityColor = [NSColor colorWithCalibratedRed:0.0 green:1.0 blue:0.4 alpha:1.0];
     fBluePieceColor = [NSColor colorWithCalibratedRed:0.0 green:0.4 blue:0.8 alpha:1.0];
 
-    //actually draw the box
+    // actually draw the box
     [self setTorrent:nil];
 }
 
@@ -58,14 +51,13 @@ enum
     tr_free(fPieces);
 }
 
-- (void)setTorrent:(Torrent*)torrent
+- (void)setTorrent:(Torrent *)torrent
 {
     [self clearView];
 
     fTorrent = (torrent && ![torrent isMagnet]) ? torrent : nil;
-    if (fTorrent)
-    {
-        //determine relevant values
+    if (fTorrent) {
+        // determine relevant values
         fNumPieces = MIN([fTorrent pieceCount], MAX_ACROSS * MAX_ACROSS);
         fAcross = ceil(sqrt(fNumPieces));
 
@@ -74,10 +66,10 @@ enum
         fExtraBorder = (width - ((fWidth + BETWEEN) * fAcross + BETWEEN)) / 2;
     }
 
-    NSImage* back = [[NSImage alloc] initWithSize:[self bounds].size];
+    NSImage *back = [[NSImage alloc] initWithSize:[self bounds].size];
     [back lockFocus];
 
-    NSGradient* gradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.4]
+    NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.4]
                                                          endingColor:[NSColor colorWithCalibratedWhite:0.2 alpha:0.4]];
     [gradient drawInRect:[self bounds] angle:90.0];
     [back unlockFocus];
@@ -98,80 +90,62 @@ enum
     if (!fTorrent)
         return;
 
-    //determine if first time
+    // determine if first time
     BOOL const first = fPieces == NULL;
     if (first)
-        fPieces = (int8_t*)tr_malloc(fNumPieces * sizeof(int8_t));
+        fPieces = (int8_t *)tr_malloc(fNumPieces * sizeof(int8_t));
 
-    int8_t* pieces = NULL;
-    float* piecesPercent = NULL;
+    int8_t *pieces = NULL;
+    float *piecesPercent = NULL;
 
     BOOL const showAvailablity = [[NSUserDefaults standardUserDefaults] boolForKey:@"PiecesViewShowAvailability"];
-    if (showAvailablity)
-    {
-        pieces = (int8_t*)tr_malloc(fNumPieces * sizeof(int8_t));
+    if (showAvailablity) {
+        pieces = (int8_t *)tr_malloc(fNumPieces * sizeof(int8_t));
         [fTorrent getAvailability:pieces size:fNumPieces];
-    }
-    else
-    {
-        piecesPercent = (float*)tr_malloc(fNumPieces * sizeof(float));
+    } else {
+        piecesPercent = (float *)tr_malloc(fNumPieces * sizeof(float));
         [fTorrent getAmountFinished:piecesPercent size:fNumPieces];
     }
 
-    NSImage* image = [self image];
+    NSImage *image = [self image];
 
     NSRect fillRects[fNumPieces];
-    NSColor* fillColors[fNumPieces];
+    NSColor *fillColors[fNumPieces];
 
     NSInteger usedCount = 0;
 
-    for (NSInteger index = 0; index < fNumPieces; index++)
-    {
-        NSColor* pieceColor = nil;
+    for (NSInteger index = 0; index < fNumPieces; index++) {
+        NSColor *pieceColor = nil;
 
-        if (showAvailablity ? pieces[index] == -1 : piecesPercent[index] == 1.0)
-        {
-            if (first || fPieces[index] != PIECE_FINISHED)
-            {
-                if (!first && fPieces[index] != PIECE_FLASHING)
-                {
+        if (showAvailablity ? pieces[index] == -1 : piecesPercent[index] == 1.0) {
+            if (first || fPieces[index] != PIECE_FINISHED) {
+                if (!first && fPieces[index] != PIECE_FLASHING) {
                     pieceColor = [NSColor orangeColor];
                     fPieces[index] = PIECE_FLASHING;
-                }
-                else
-                {
+                } else {
                     pieceColor = fBluePieceColor;
                     fPieces[index] = PIECE_FINISHED;
                 }
             }
-        }
-        else if (showAvailablity ? pieces[index] == 0 : piecesPercent[index] == 0.0)
-        {
-            if (first || fPieces[index] != PIECE_NONE)
-            {
+        } else if (showAvailablity ? pieces[index] == 0 : piecesPercent[index] == 0.0) {
+            if (first || fPieces[index] != PIECE_NONE) {
                 pieceColor = [NSColor whiteColor];
                 fPieces[index] = PIECE_NONE;
             }
-        }
-        else if (showAvailablity && pieces[index] >= HIGH_PEERS)
-        {
-            if (first || fPieces[index] != PIECE_HIGH_PEERS)
-            {
+        } else if (showAvailablity && pieces[index] >= HIGH_PEERS) {
+            if (first || fPieces[index] != PIECE_HIGH_PEERS) {
                 pieceColor = fGreenAvailabilityColor;
                 fPieces[index] = PIECE_HIGH_PEERS;
             }
-        }
-        else
-        {
-            //always redraw "mixed"
+        } else {
+            // always redraw "mixed"
             CGFloat percent = showAvailablity ? (CGFloat)pieces[index] / HIGH_PEERS : piecesPercent[index];
-            NSColor* fullColor = showAvailablity ? fGreenAvailabilityColor : fBluePieceColor;
+            NSColor *fullColor = showAvailablity ? fGreenAvailabilityColor : fBluePieceColor;
             pieceColor = [[NSColor whiteColor] blendedColorWithFraction:percent ofColor:fullColor];
             fPieces[index] = PIECE_SOME;
         }
 
-        if (pieceColor)
-        {
+        if (pieceColor) {
             NSInteger const across = index % fAcross, down = index / fAcross;
             fillRects[usedCount] = NSMakeRect(
                 across * (fWidth + BETWEEN) + BETWEEN + fExtraBorder,
@@ -184,8 +158,7 @@ enum
         }
     }
 
-    if (usedCount > 0)
-    {
+    if (usedCount > 0) {
         [image lockFocus];
         NSRectFillListWithColors(fillRects, fillColors, usedCount);
         [image unlockFocus];
@@ -196,15 +169,14 @@ enum
     tr_free(piecesPercent);
 }
 
-- (BOOL)acceptsFirstMouse:(NSEvent*)event
+- (BOOL)acceptsFirstMouse:(NSEvent *)event
 {
     return YES;
 }
 
-- (void)mouseDown:(NSEvent*)event
+- (void)mouseDown:(NSEvent *)event
 {
-    if (fTorrent)
-    {
+    if (fTorrent) {
         BOOL const availability = ![[NSUserDefaults standardUserDefaults] boolForKey:@"PiecesViewShowAvailability"];
         [[NSUserDefaults standardUserDefaults] setBool:availability forKey:@"PiecesViewShowAvailability"];
 

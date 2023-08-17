@@ -26,18 +26,17 @@
 
 @class Torrent;
 
-@interface Badger : NSObject
-{
-    tr_session* fLib;
+@interface Badger : NSObject {
+    tr_session *fLib;
 
-    NSMutableSet* fHashes;
+    NSMutableSet *fHashes;
 }
 
-- (id)initWithLib:(tr_session*)lib;
+- (id)initWithLib:(tr_session *)lib;
 
 - (void)updateBadgeWithDownload:(CGFloat)downloadRate upload:(CGFloat)uploadRate;
-- (void)addCompletedTorrent:(Torrent*)torrent;
-- (void)removeTorrent:(Torrent*)torrent;
+- (void)addCompletedTorrent:(Torrent *)torrent;
+- (void)removeTorrent:(Torrent *)torrent;
 - (void)clearCompleted;
 - (void)setQuitting;
 

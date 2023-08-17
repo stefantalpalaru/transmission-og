@@ -15,21 +15,14 @@
 #include "net.h"
 #include "tr-assert.h"
 
-enum tr_peer_socket_type
-{
-    TR_PEER_SOCKET_TYPE_NONE,
-    TR_PEER_SOCKET_TYPE_TCP,
-    TR_PEER_SOCKET_TYPE_UTP
-};
+enum tr_peer_socket_type { TR_PEER_SOCKET_TYPE_NONE, TR_PEER_SOCKET_TYPE_TCP, TR_PEER_SOCKET_TYPE_UTP };
 
-union tr_peer_socket_handle
-{
+union tr_peer_socket_handle {
     tr_socket_t tcp;
-    struct UTPSocket* utp;
+    struct UTPSocket *utp;
 };
 
-struct tr_peer_socket
-{
+struct tr_peer_socket {
     enum tr_peer_socket_type type;
     union tr_peer_socket_handle handle;
 };
@@ -42,7 +35,7 @@ static inline struct tr_peer_socket tr_peer_socket_tcp_create(tr_socket_t const 
     return (struct tr_peer_socket){ .type = TR_PEER_SOCKET_TYPE_TCP, .handle.tcp = handle };
 }
 
-static inline struct tr_peer_socket tr_peer_socket_utp_create(struct UTPSocket* const handle)
+static inline struct tr_peer_socket tr_peer_socket_utp_create(struct UTPSocket *const handle)
 {
     TR_ASSERT(handle != NULL);
     return (struct tr_peer_socket){ .type = TR_PEER_SOCKET_TYPE_UTP, .handle.utp = handle };

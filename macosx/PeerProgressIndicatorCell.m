@@ -25,9 +25,9 @@
 
 @implementation PeerProgressIndicatorCell
 
-- (id)copyWithZone:(NSZone*)zone
+- (id)copyWithZone:(NSZone *)zone
 {
-    PeerProgressIndicatorCell* copy = [super copyWithZone:zone];
+    PeerProgressIndicatorCell *copy = [super copyWithZone:zone];
     copy->fAttributes = fAttributes;
 
     return copy;
@@ -38,13 +38,11 @@
     fSeed = seed;
 }
 
-- (void)drawWithFrame:(NSRect)cellFrame inView:(NSView*)controlView
+- (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"DisplayPeerProgressBarNumber"])
-    {
-        if (!fAttributes)
-        {
-            NSMutableParagraphStyle* paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"DisplayPeerProgressBarNumber"]) {
+        if (!fAttributes) {
+            NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
             [paragraphStyle setAlignment:NSRightTextAlignment];
 
             fAttributes = @{
@@ -55,19 +53,15 @@
         }
 
         [[NSString percentString:[self floatValue] longDecimals:NO] drawInRect:cellFrame withAttributes:fAttributes];
-    }
-    else
-    {
-        //attributes not needed anymore
-        if (fAttributes)
-        {
+    } else {
+        // attributes not needed anymore
+        if (fAttributes) {
             fAttributes = nil;
         }
 
         [super drawWithFrame:cellFrame inView:controlView];
-        if (fSeed)
-        {
-            NSImage* checkImage = [NSImage imageNamed:@"CompleteCheck"];
+        if (fSeed) {
+            NSImage *checkImage = [NSImage imageNamed:@"CompleteCheck"];
 
             NSSize const imageSize = [checkImage size];
             NSRect const rect = NSMakeRect(

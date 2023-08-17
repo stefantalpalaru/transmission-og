@@ -44,33 +44,29 @@
 ****
 ***/
 
-namespace
-{
+namespace {
 
 #ifdef _WIN32
 
-void addAssociatedFileIcon(QFileInfo const& fileInfo, UINT iconSize, QIcon& icon)
+void addAssociatedFileIcon(QFileInfo const &fileInfo, UINT iconSize, QIcon &icon)
 {
     QString const pixmapCacheKey = QLatin1String("tr_file_ext_") + QString::number(iconSize) + QLatin1Char('_') +
         fileInfo.suffix();
 
     QPixmap pixmap;
 
-    if (!QPixmapCache::find(pixmapCacheKey, &pixmap))
-    {
+    if (!QPixmapCache::find(pixmapCacheKey, &pixmap)) {
         QString const filename = fileInfo.fileName();
 
         SHFILEINFO shellFileInfo;
 
         if (::SHGetFileInfoW(
-                reinterpret_cast<wchar_t const*>(filename.utf16()),
+                reinterpret_cast<wchar_t const *>(filename.utf16()),
                 FILE_ATTRIBUTE_NORMAL,
                 &shellFileInfo,
                 sizeof(shellFileInfo),
-                SHGFI_ICON | iconSize | SHGFI_USEFILEATTRIBUTES) != 0)
-        {
-            if (shellFileInfo.hIcon != nullptr)
-            {
+                SHGFI_ICON | iconSize | SHGFI_USEFILEATTRIBUTES) != 0) {
+            if (shellFileInfo.hIcon != nullptr) {
                 pixmap = QtWin::fromHICON(shellFileInfo.hIcon);
                 ::DestroyIcon(shellFileInfo.hIcon);
             }
@@ -79,15 +75,14 @@ void addAssociatedFileIcon(QFileInfo const& fileInfo, UINT iconSize, QIcon& icon
         QPixmapCache::insert(pixmapCacheKey, pixmap);
     }
 
-    if (!pixmap.isNull())
-    {
+    if (!pixmap.isNull()) {
         icon.addPixmap(pixmap);
     }
 }
 
 #endif
 
-bool isSlashChar(QChar const& c)
+bool isSlashChar(QChar const &c)
 {
     return c == QLatin1Char('/') || c == QLatin1Char('\\');
 }
@@ -95,8 +90,7 @@ bool isSlashChar(QChar const& c)
 QIcon folderIcon()
 {
     static QIcon icon;
-    if (icon.isNull())
-    {
+    if (icon.isNull()) {
         icon = QFileIconProvider().icon(QFileIconProvider::Folder);
     }
 
@@ -106,8 +100,7 @@ QIcon folderIcon()
 QIcon fileIcon()
 {
     static QIcon icon;
-    if (icon.isNull())
-    {
+    if (icon.isNull()) {
         icon = QFileIconProvider().icon(QFileIconProvider::File);
     }
 
@@ -116,43 +109,37 @@ QIcon fileIcon()
 
 std::unordered_map<QString, QIcon> iconCache;
 
-QIcon const getMimeIcon(QString const& filename)
+QIcon const getMimeIcon(QString const &filename)
 {
     // If the suffix doesn't match a mime type, treat it as a folder.
     // This heuristic is fast and yields good results for torrent names.
     static std::unordered_set<QString> suffixes;
-    if (suffixes.empty())
-    {
-        for (auto const& type : QMimeDatabase().allMimeTypes())
-        {
+    if (suffixes.empty()) {
+        for (auto const &type : QMimeDatabase().allMimeTypes()) {
             auto const tmp = type.suffixes();
             suffixes.insert(tmp.begin(), tmp.end());
         }
     }
 
     QString const ext = QFileInfo(filename).suffix();
-    if (suffixes.count(ext) == 0)
-    {
+    if (suffixes.count(ext) == 0) {
         return folderIcon();
     }
 
-    QIcon& icon = iconCache[ext];
+    QIcon &icon = iconCache[ext];
     if (icon.isNull()) // cache miss
     {
         QMimeDatabase mimeDb;
         QMimeType type = mimeDb.mimeTypeForFile(filename, QMimeDatabase::MatchExtension);
-        if (icon.isNull())
-        {
+        if (icon.isNull()) {
             icon = QIcon::fromTheme(type.iconName());
         }
 
-        if (icon.isNull())
-        {
+        if (icon.isNull()) {
             icon = QIcon::fromTheme(type.genericIconName());
         }
 
-        if (icon.isNull())
-        {
+        if (icon.isNull()) {
             icon = fileIcon();
         }
     }
@@ -172,14 +159,13 @@ QIcon Utils::getFileIcon()
     return fileIcon();
 }
 
-QIcon Utils::guessMimeIcon(QString const& filename)
+QIcon Utils::guessMimeIcon(QString const &filename)
 {
 #ifdef _WIN32
 
     QIcon icon;
 
-    if (!filename.isEmpty())
-    {
+    if (!filename.isEmpty()) {
         QFileInfo const fileInfo(filename);
 
         addAssociatedFileIcon(fileInfo, SHGFI_SMALLICON, icon);
@@ -187,8 +173,7 @@ QIcon Utils::guessMimeIcon(QString const& filename)
         addAssociatedFileIcon(fileInfo, SHGFI_LARGEICON, icon);
     }
 
-    if (!icon.isNull())
-    {
+    if (!icon.isNull()) {
         return icon;
     }
 
@@ -199,12 +184,11 @@ QIcon Utils::guessMimeIcon(QString const& filename)
 #endif
 }
 
-QIcon Utils::getIconFromIndex(QModelIndex const& index)
+QIcon Utils::getIconFromIndex(QModelIndex const &index)
 {
     QVariant const variant = index.data(Qt::DecorationRole);
 
-    switch (variant.type())
-    {
+    switch (variant.type()) {
     case QVariant::Icon:
         return qvariant_cast<QIcon>(variant);
 
@@ -216,49 +200,31 @@ QIcon Utils::getIconFromIndex(QModelIndex const& index)
     }
 }
 
-bool Utils::isValidUtf8(char const* s)
+bool Utils::isValidUtf8(char const *s)
 {
     int n; // number of bytes in a UTF-8 sequence
 
-    for (char const* c = s; *c != '\0'; c += n)
-    {
-        if ((*c & 0x80) == 0x00)
-        {
+    for (char const *c = s; *c != '\0'; c += n) {
+        if ((*c & 0x80) == 0x00) {
             n = 1; // ASCII
-        }
-        else if ((*c & 0xc0) == 0x80)
-        {
+        } else if ((*c & 0xc0) == 0x80) {
             return false; // not valid
-        }
-        else if ((*c & 0xe0) == 0xc0)
-        {
+        } else if ((*c & 0xe0) == 0xc0) {
             n = 2;
-        }
-        else if ((*c & 0xf0) == 0xe0)
-        {
+        } else if ((*c & 0xf0) == 0xe0) {
             n = 3;
-        }
-        else if ((*c & 0xf8) == 0xf0)
-        {
+        } else if ((*c & 0xf8) == 0xf0) {
             n = 4;
-        }
-        else if ((*c & 0xfc) == 0xf8)
-        {
+        } else if ((*c & 0xfc) == 0xf8) {
             n = 5;
-        }
-        else if ((*c & 0xfe) == 0xfc)
-        {
+        } else if ((*c & 0xfe) == 0xfc) {
             n = 6;
-        }
-        else
-        {
+        } else {
             return false;
         }
 
-        for (int m = 1; m < n; m++)
-        {
-            if ((c[m] & 0xc0) != 0x80)
-            {
+        for (int m = 1; m < n; m++) {
+            if ((c[m] & 0xc0) != 0x80) {
                 return false;
             }
         }
@@ -267,19 +233,18 @@ bool Utils::isValidUtf8(char const* s)
     return true;
 }
 
-QString Utils::removeTrailingDirSeparator(QString const& path)
+QString Utils::removeTrailingDirSeparator(QString const &path)
 {
     int i = path.size();
 
-    while (i > 1 && isSlashChar(path[i - 1]))
-    {
+    while (i > 1 && isSlashChar(path[i - 1])) {
         --i;
     }
 
     return path.left(i);
 }
 
-int Utils::measureViewItem(QAbstractItemView* view, QString const& text)
+int Utils::measureViewItem(QAbstractItemView *view, QString const &text)
 {
     QStyleOptionViewItem option;
     option.initFrom(view);
@@ -293,7 +258,7 @@ int Utils::measureViewItem(QAbstractItemView* view, QString const& text)
         .width();
 }
 
-int Utils::measureHeaderItem(QHeaderView* view, QString const& text)
+int Utils::measureHeaderItem(QHeaderView *view, QString const &text)
 {
     QStyleOptionHeader option;
     option.initFrom(view);
@@ -303,7 +268,7 @@ int Utils::measureHeaderItem(QHeaderView* view, QString const& text)
     return view->style()->sizeFromContents(QStyle::CT_HeaderSection, &option, QSize(), view).width();
 }
 
-QColor Utils::getFadedColor(QColor const& color)
+QColor Utils::getFadedColor(QColor const &color)
 {
     QColor fadedColor(color);
     fadedColor.setAlpha(128);

@@ -35,27 +35,24 @@
 
 - (id)initWithFrame:(NSRect)rect
 {
-    if ((self = [super initWithFrame:rect]))
-    {
-        NSColor* lightColor = [NSColor colorWithCalibratedRed:160.0 / 255.0 green:160.0 / 255.0 blue:160.0 / 255.0 alpha:1.0];
-        NSColor* darkColor = [NSColor colorWithCalibratedRed:155.0 / 255.0 green:155.0 / 255.0 blue:155.0 / 255.0 alpha:1.0];
+    if ((self = [super initWithFrame:rect])) {
+        NSColor *lightColor = [NSColor colorWithCalibratedRed:160.0 / 255.0 green:160.0 / 255.0 blue:160.0 / 255.0 alpha:1.0];
+        NSColor *darkColor = [NSColor colorWithCalibratedRed:155.0 / 255.0 green:155.0 / 255.0 blue:155.0 / 255.0 alpha:1.0];
         fGradient = [[NSGradient alloc] initWithStartingColor:lightColor endingColor:darkColor];
 
-        if (![NSApp isOnYosemiteOrBetter])
-        {
-            CIFilter* randomFilter = [CIFilter filterWithName:@"CIRandomGenerator"];
+        if (![NSApp isOnYosemiteOrBetter]) {
+            CIFilter *randomFilter = [CIFilter filterWithName:@"CIRandomGenerator"];
             [randomFilter setDefaults];
 
             fNoiseImage = [randomFilter valueForKey:@"outputImage"];
 
-            CIFilter* monochromeFilter = [CIFilter filterWithName:@"CIColorMonochrome"];
+            CIFilter *monochromeFilter = [CIFilter filterWithName:@"CIColorMonochrome"];
             [monochromeFilter setDefaults];
             [monochromeFilter setValue:fNoiseImage forKey:@"inputImage"];
-            CIColor* monoFilterColor = [CIColor colorWithRed:1.0 green:1.0 blue:1.0];
+            CIColor *monoFilterColor = [CIColor colorWithRed:1.0 green:1.0 blue:1.0];
             [monochromeFilter setValue:monoFilterColor forKey:@"inputColor"];
             fNoiseImage = [monochromeFilter valueForKey:@"outputImage"];
-        }
-        else
+        } else
             fNoiseImage = nil;
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reload) name:NSWindowDidBecomeMainNotification
@@ -83,31 +80,26 @@
 
 - (void)drawRect:(NSRect)rect
 {
-    if ([NSApp isOnYosemiteOrBetter])
-    {
+    if ([NSApp isOnYosemiteOrBetter]) {
         [[NSColor windowBackgroundColor] setFill];
         NSRectFill(rect);
 
         NSRect const lineBorderRect = NSMakeRect(NSMinX(rect), 0.0, NSWidth(rect), 1.0);
-        if (NSIntersectsRect(lineBorderRect, rect))
-        {
+        if (NSIntersectsRect(lineBorderRect, rect)) {
             [[NSColor gridColor] setFill];
             NSRectFill(lineBorderRect);
         }
-    }
-    else
-    {
+    } else {
         BOOL const active = [[self window] isMainWindow];
 
         NSInteger count = 0;
         NSRect gridRects[active ? 2 : 3];
-        NSColor* colorRects[active ? 2 : 3];
+        NSColor *colorRects[active ? 2 : 3];
 
-        //bottom line
+        // bottom line
         NSRect lineBorderRect = NSMakeRect(NSMinX(rect), 0.0, NSWidth(rect), 1.0);
         NSRect intersectLineBorderRect = NSIntersectionRect(lineBorderRect, rect);
-        if (!NSIsEmptyRect(intersectLineBorderRect))
-        {
+        if (!NSIsEmptyRect(intersectLineBorderRect)) {
             gridRects[count] = intersectLineBorderRect;
             colorRects[count] = active ? [NSColor colorWithCalibratedWhite:0.25 alpha:1.0] :
                                          [NSColor colorWithCalibratedWhite:0.5 alpha:1.0];
@@ -117,13 +109,11 @@
             rect.size.height -= intersectLineBorderRect.size.height;
         }
 
-        //top line
-        if (active)
-        {
+        // top line
+        if (active) {
             lineBorderRect.origin.y = NSHeight([self bounds]) - 1.0;
             intersectLineBorderRect = NSIntersectionRect(lineBorderRect, rect);
-            if (!NSIsEmptyRect(intersectLineBorderRect))
-            {
+            if (!NSIsEmptyRect(intersectLineBorderRect)) {
                 gridRects[count] = intersectLineBorderRect;
                 colorRects[count] = [NSColor colorWithCalibratedWhite:0.75 alpha:1.0];
                 ++count;
@@ -132,15 +122,11 @@
             }
         }
 
-        if (!NSIsEmptyRect(rect))
-        {
-            if (active)
-            {
-                NSRect const gradientRect = NSMakeRect(NSMinX(rect), 1.0, NSWidth(rect), NSHeight([self bounds]) - 1.0 - 1.0); //proper gradient requires the full height of the bar
+        if (!NSIsEmptyRect(rect)) {
+            if (active) {
+                NSRect const gradientRect = NSMakeRect(NSMinX(rect), 1.0, NSWidth(rect), NSHeight([self bounds]) - 1.0 - 1.0); // proper gradient requires the full height of the bar
                 [fGradient drawInRect:gradientRect angle:270.0];
-            }
-            else
-            {
+            } else {
                 gridRects[count] = rect;
                 colorRects[count] = [NSColor colorWithCalibratedWhite:0.85 alpha:1.0];
                 ++count;
@@ -149,8 +135,7 @@
 
         NSRectFillListWithColors(gridRects, colorRects, count);
 
-        if (fNoiseImage)
-        {
+        if (fNoiseImage) {
             [fNoiseImage drawInRect:rect fromRect:[self convertRectToBacking:rect] operation:NSCompositeSourceOver fraction:0.12];
         }
     }

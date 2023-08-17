@@ -13,21 +13,20 @@
 class QAbstractItemModel;
 class QComboBox;
 
-class FilterBarComboBoxDelegate : public QItemDelegate
-{
+class FilterBarComboBoxDelegate : public QItemDelegate {
     Q_OBJECT
 
 public:
-    FilterBarComboBoxDelegate(QObject* parent, QComboBox* combo);
+    FilterBarComboBoxDelegate(QObject *parent, QComboBox *combo);
 
-    static bool isSeparator(QModelIndex const& index);
-    static void setSeparator(QAbstractItemModel* model, QModelIndex const& index);
+    static bool isSeparator(QModelIndex const &index);
+    static void setSeparator(QAbstractItemModel *model, QModelIndex const &index);
 
 protected:
     // QAbstractItemDelegate
-    void paint(QPainter*, QStyleOptionViewItem const&, QModelIndex const&) const override;
-    QSize sizeHint(QStyleOptionViewItem const&, QModelIndex const&) const override;
+    void paint(QPainter *, QStyleOptionViewItem const &, QModelIndex const &) const override;
+    QSize sizeHint(QStyleOptionViewItem const &, QModelIndex const &) const override;
 
 private:
-    QComboBox* const myCombo;
+    QComboBox *const myCombo;
 };

@@ -26,7 +26,7 @@ void RelocateDialog::onMoveToggled(bool b)
     myMoveFlag = b;
 }
 
-RelocateDialog::RelocateDialog(Session& session, TorrentModel const& model, torrent_ids_t const& ids, QWidget* parent)
+RelocateDialog::RelocateDialog(Session &session, TorrentModel const &model, torrent_ids_t const &ids, QWidget *parent)
     : BaseDialog(parent)
     , mySession(session)
     , myIds(ids)
@@ -35,22 +35,15 @@ RelocateDialog::RelocateDialog(Session& session, TorrentModel const& model, torr
 
     QString path;
 
-    for (int const id : myIds)
-    {
-        Torrent const* tor = model.getTorrentFromId(id);
+    for (int const id : myIds) {
+        Torrent const *tor = model.getTorrentFromId(id);
 
-        if (path.isEmpty())
-        {
+        if (path.isEmpty()) {
             path = tor->getPath();
-        }
-        else if (path != tor->getPath())
-        {
-            if (mySession.isServer())
-            {
+        } else if (path != tor->getPath()) {
+            if (mySession.isServer()) {
                 path = QDir::homePath();
-            }
-            else
-            {
+            } else {
                 path = QDir::rootPath();
             }
 
@@ -58,15 +51,12 @@ RelocateDialog::RelocateDialog(Session& session, TorrentModel const& model, torr
         }
     }
 
-    if (mySession.isServer())
-    {
+    if (mySession.isServer()) {
         ui.newLocationStack->setCurrentWidget(ui.newLocationButton);
         ui.newLocationButton->setMode(PathButton::DirectoryMode);
         ui.newLocationButton->setTitle(tr("Select Location"));
         ui.newLocationButton->setPath(path);
-    }
-    else
-    {
+    } else {
         ui.newLocationStack->setCurrentWidget(ui.newLocationEdit);
         ui.newLocationEdit->setText(path);
         ui.newLocationEdit->selectAll();
@@ -75,12 +65,9 @@ RelocateDialog::RelocateDialog(Session& session, TorrentModel const& model, torr
     ui.newLocationStack->setFixedHeight(ui.newLocationStack->currentWidget()->sizeHint().height());
     ui.newLocationLabel->setBuddy(ui.newLocationStack->currentWidget());
 
-    if (myMoveFlag)
-    {
+    if (myMoveFlag) {
         ui.moveDataRadio->setChecked(true);
-    }
-    else
-    {
+    } else {
         ui.findDataRadio->setChecked(true);
     }
 

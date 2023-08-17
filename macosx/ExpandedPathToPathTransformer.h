@@ -22,8 +22,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ExpandedPathToPathTransformer : NSValueTransformer
-{
+@interface ExpandedPathToPathTransformer : NSValueTransformer {
 }
 
 @end

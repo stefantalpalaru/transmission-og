@@ -25,21 +25,20 @@
 @class Torrent;
 @class FileOutlineView;
 
-@interface FileOutlineController : NSObject
-{
-    Torrent* fTorrent;
-    NSMutableArray* fFileList;
+@interface FileOutlineController : NSObject {
+    Torrent *fTorrent;
+    NSMutableArray *fFileList;
 
-    IBOutlet FileOutlineView* fOutline;
+    IBOutlet FileOutlineView *fOutline;
 
-    NSString* fFilterText;
+    NSString *fFilterText;
 }
 
-- (FileOutlineView*)outlineView;
+- (FileOutlineView *)outlineView;
 
-- (void)setTorrent:(Torrent*)torrent;
+- (void)setTorrent:(Torrent *)torrent;
 
-- (void)setFilterText:(NSString*)text;
+- (void)setFilterText:(NSString *)text;
 
 - (void)refresh;
 

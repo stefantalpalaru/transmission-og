@@ -16,14 +16,13 @@
 #include "RpcQueue.h"
 #include "Session.h"
 
-namespace
-{
+namespace {
 
 static int const INTERVAL_MSEC = 15000;
 
 } // namespace
 
-FreeSpaceLabel::FreeSpaceLabel(QWidget* parent)
+FreeSpaceLabel::FreeSpaceLabel(QWidget *parent)
     : QLabel(parent)
     , mySession(nullptr)
     , myTimer(this)
@@ -34,10 +33,9 @@ FreeSpaceLabel::FreeSpaceLabel(QWidget* parent)
     connect(&myTimer, SIGNAL(timeout()), this, SLOT(onTimer()));
 }
 
-void FreeSpaceLabel::setSession(Session& session)
+void FreeSpaceLabel::setSession(Session &session)
 {
-    if (mySession == &session)
-    {
+    if (mySession == &session) {
         return;
     }
 
@@ -45,10 +43,9 @@ void FreeSpaceLabel::setSession(Session& session)
     onTimer();
 }
 
-void FreeSpaceLabel::setPath(QString const& path)
+void FreeSpaceLabel::setPath(QString const &path)
 {
-    if (myPath != path)
-    {
+    if (myPath != path) {
         setText(tr("<i>Calculating Free Space...</i>"));
         myPath = path;
         onTimer();
@@ -59,8 +56,7 @@ void FreeSpaceLabel::onTimer()
 {
     myTimer.stop();
 
-    if (mySession == nullptr || myPath.isEmpty())
-    {
+    if (mySession == nullptr || myPath.isEmpty()) {
         return;
     }
 
@@ -68,36 +64,31 @@ void FreeSpaceLabel::onTimer()
     tr_variantInitDict(&args, 1);
     tr_variantDictAddStr(&args, TR_KEY_path, myPath.toUtf8().constData());
 
-    RpcQueue* q = new RpcQueue();
+    RpcQueue *q = new RpcQueue();
 
     q->add([this, &args]() { return mySession->exec("free-space", &args); });
 
-    q->add(
-        [this](RpcResponse const& r)
-        {
-            QString str;
+    q->add([this](RpcResponse const &r) {
+        QString str;
 
-            // update the label
-            int64_t bytes = -1;
+        // update the label
+        int64_t bytes = -1;
 
-            if (tr_variantDictFindInt(r.args.get(), TR_KEY_size_bytes, &bytes) && bytes >= 0)
-            {
-                setText(tr("%1 free").arg(Formatter::sizeToString(bytes)));
-            }
-            else
-            {
-                setText(QString());
-            }
+        if (tr_variantDictFindInt(r.args.get(), TR_KEY_size_bytes, &bytes) && bytes >= 0) {
+            setText(tr("%1 free").arg(Formatter::sizeToString(bytes)));
+        } else {
+            setText(QString());
+        }
 
-            // update the tooltip
-            size_t len = 0;
-            char const* path = nullptr;
-            tr_variantDictFindStr(r.args.get(), TR_KEY_path, &path, &len);
-            str = QString::fromUtf8(path, len);
-            setToolTip(QDir::toNativeSeparators(str));
+        // update the tooltip
+        size_t len = 0;
+        char const *path = nullptr;
+        tr_variantDictFindStr(r.args.get(), TR_KEY_path, &path, &len);
+        str = QString::fromUtf8(path, len);
+        setToolTip(QDir::toNativeSeparators(str));
 
-            myTimer.start();
-        });
+        myTimer.start();
+    });
 
     q->run();
 }

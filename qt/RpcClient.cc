@@ -29,10 +29,9 @@
 #define REQUEST_DATA_PROPERTY_KEY "requestData"
 #define REQUEST_FUTUREINTERFACE_PROPERTY_KEY "requestReplyFutureInterface"
 
-namespace
-{
+namespace {
 
-void destroyVariant(tr_variant* json)
+void destroyVariant(tr_variant *json)
 {
     tr_variantFree(json);
     tr_free(json);
@@ -45,7 +44,7 @@ TrVariantPtr createVariant()
 
 } // namespace
 
-RpcClient::RpcClient(QObject* parent)
+RpcClient::RpcClient(QObject *parent)
     : QObject(parent)
     , mySession(nullptr)
     , myNAM(nullptr)
@@ -60,56 +59,52 @@ void RpcClient::stop()
     mySessionId.clear();
     myUrl.clear();
 
-    if (myNAM != nullptr)
-    {
+    if (myNAM != nullptr) {
         myNAM->deleteLater();
         myNAM = nullptr;
     }
 }
 
-void RpcClient::start(tr_session* session)
+void RpcClient::start(tr_session *session)
 {
     mySession = session;
 }
 
-void RpcClient::start(QUrl const& url)
+void RpcClient::start(QUrl const &url)
 {
     myUrl = url;
 }
 
 bool RpcClient::isLocal() const
 {
-    if (mySession != nullptr)
-    {
+    if (mySession != nullptr) {
         return true;
     }
 
-    if (QHostAddress(myUrl.host()).isLoopback())
-    {
+    if (QHostAddress(myUrl.host()).isLoopback()) {
         return true;
     }
 
     return false;
 }
 
-QUrl const& RpcClient::url() const
+QUrl const &RpcClient::url() const
 {
     return myUrl;
 }
 
-RpcResponseFuture RpcClient::exec(tr_quark method, tr_variant* args)
+RpcResponseFuture RpcClient::exec(tr_quark method, tr_variant *args)
 {
     return exec(tr_quark_get_string(method, nullptr), args);
 }
 
-RpcResponseFuture RpcClient::exec(char const* method, tr_variant* args)
+RpcResponseFuture RpcClient::exec(char const *method, tr_variant *args)
 {
     TrVariantPtr json = createVariant();
     tr_variantInitDict(json.get(), 3);
     tr_variantDictAddStr(json.get(), TR_KEY_method, method);
 
-    if (args != nullptr)
-    {
+    if (args != nullptr) {
         tr_variantDictSteal(json.get(), TR_KEY_arguments, args);
     }
 
@@ -121,7 +116,7 @@ int64_t RpcClient::getNextTag()
     return myNextTag++;
 }
 
-void RpcClient::sendNetworkRequest(TrVariantPtr json, QFutureInterface<RpcResponse> const& promise)
+void RpcClient::sendNetworkRequest(TrVariantPtr json, QFutureInterface<RpcResponse> const &promise)
 {
     QNetworkRequest request;
     request.setUrl(myUrl);
@@ -130,17 +125,16 @@ void RpcClient::sendNetworkRequest(TrVariantPtr json, QFutureInterface<RpcRespon
         (qApp->applicationName() + QLatin1Char('/') + QString::fromUtf8(LONG_VERSION_STRING)).toUtf8());
     request.setRawHeader("Content-Type", "application/json; charset=UTF-8");
 
-    if (!mySessionId.isEmpty())
-    {
+    if (!mySessionId.isEmpty()) {
         request.setRawHeader(TR_RPC_SESSION_ID_HEADER, mySessionId.toUtf8());
     }
 
     size_t rawJsonDataLength;
-    char* rawJsonData = tr_variantToStr(json.get(), TR_VARIANT_FMT_JSON_LEAN, &rawJsonDataLength);
+    char *rawJsonData = tr_variantToStr(json.get(), TR_VARIANT_FMT_JSON_LEAN, &rawJsonDataLength);
     QByteArray jsonData(rawJsonData, rawJsonDataLength);
     tr_free(rawJsonData);
 
-    QNetworkReply* reply = networkAccessManager()->post(request, jsonData);
+    QNetworkReply *reply = networkAccessManager()->post(request, jsonData);
     reply->setProperty(REQUEST_DATA_PROPERTY_KEY, QVariant::fromValue(json));
     reply->setProperty(REQUEST_FUTUREINTERFACE_PROPERTY_KEY, QVariant::fromValue(promise));
 
@@ -151,8 +145,7 @@ void RpcClient::sendNetworkRequest(TrVariantPtr json, QFutureInterface<RpcRespon
     std::cerr << "sending "
               << "POST " << qPrintable(myUrl.path()) << std::endl;
 
-    for (QByteArray const& b : request.rawHeaderList())
-    {
+    for (QByteArray const &b : request.rawHeaderList()) {
         std::cerr << b.constData() << ": " << request.rawHeader(b).constData() << std::endl;
     }
 
@@ -160,7 +153,7 @@ void RpcClient::sendNetworkRequest(TrVariantPtr json, QFutureInterface<RpcRespon
 #endif
 }
 
-void RpcClient::sendLocalRequest(TrVariantPtr json, QFutureInterface<RpcResponse> const& promise, int64_t tag)
+void RpcClient::sendLocalRequest(TrVariantPtr json, QFutureInterface<RpcResponse> const &promise, int64_t tag)
 {
     myLocalRequests.insert(tag, promise);
     tr_rpc_request_exec_json(mySession, json.get(), localSessionCallback, this);
@@ -177,29 +170,25 @@ RpcResponseFuture RpcClient::sendRequest(TrVariantPtr json)
     promise.setProgressValue(0);
     promise.reportStarted();
 
-    if (mySession != nullptr)
-    {
+    if (mySession != nullptr) {
         sendLocalRequest(json, promise, tag);
-    }
-    else if (!myUrl.isEmpty())
-    {
+    } else if (!myUrl.isEmpty()) {
         sendNetworkRequest(json, promise);
     }
 
     return promise.future();
 }
 
-QNetworkAccessManager* RpcClient::networkAccessManager()
+QNetworkAccessManager *RpcClient::networkAccessManager()
 {
-    if (myNAM == nullptr)
-    {
+    if (myNAM == nullptr) {
         myNAM = new QNetworkAccessManager();
 
-        connect(myNAM, SIGNAL(finished(QNetworkReply*)), this, SLOT(networkRequestFinished(QNetworkReply*)));
+        connect(myNAM, SIGNAL(finished(QNetworkReply *)), this, SLOT(networkRequestFinished(QNetworkReply *)));
 
         connect(
             myNAM,
-            SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
+            SIGNAL(authenticationRequired(QNetworkReply *, QAuthenticator *)),
             this,
             SIGNAL(httpAuthenticationRequired()));
     }
@@ -207,11 +196,11 @@ QNetworkAccessManager* RpcClient::networkAccessManager()
     return myNAM;
 }
 
-void RpcClient::localSessionCallback(tr_session* s, tr_variant* response, void* vself)
+void RpcClient::localSessionCallback(tr_session *s, tr_variant *response, void *vself)
 {
     Q_UNUSED(s)
 
-    RpcClient* self = static_cast<RpcClient*>(vself);
+    RpcClient *self = static_cast<RpcClient *>(vself);
 
     TrVariantPtr json = createVariant();
     *json = *response;
@@ -222,7 +211,7 @@ void RpcClient::localSessionCallback(tr_session* s, tr_variant* response, void* 
     QMetaObject::invokeMethod(self, "localRequestFinished", Qt::QueuedConnection, Q_ARG(TrVariantPtr, json));
 }
 
-void RpcClient::networkRequestFinished(QNetworkReply* reply)
+void RpcClient::networkRequestFinished(QNetworkReply *reply)
 {
     reply->deleteLater();
 
@@ -232,8 +221,7 @@ void RpcClient::networkRequestFinished(QNetworkReply* reply)
 #ifdef DEBUG_HTTP
     std::cerr << "http response header: " << std::endl;
 
-    for (QByteArray const& b : reply->rawHeaderList())
-    {
+    for (QByteArray const &b : reply->rawHeaderList()) {
         std::cerr << b.constData() << ": " << reply->rawHeader(b).constData() << std::endl;
     }
 
@@ -241,8 +229,7 @@ void RpcClient::networkRequestFinished(QNetworkReply* reply)
 #endif
 
     if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 409 &&
-        reply->hasRawHeader(TR_RPC_SESSION_ID_HEADER))
-    {
+        reply->hasRawHeader(TR_RPC_SESSION_ID_HEADER)) {
         // we got a 409 telling us our session id has expired.
         // update it and resubmit the request.
         mySessionId = QString::fromUtf8(reply->rawHeader(TR_RPC_SESSION_ID_HEADER));
@@ -253,23 +240,19 @@ void RpcClient::networkRequestFinished(QNetworkReply* reply)
 
     emit networkResponse(reply->error(), reply->errorString());
 
-    if (reply->error() != QNetworkReply::NoError)
-    {
+    if (reply->error() != QNetworkReply::NoError) {
         RpcResponse result;
         result.networkError = reply->error();
 
         promise.setProgressValueAndText(1, reply->errorString());
         promise.reportFinished(&result);
-    }
-    else
-    {
+    } else {
         RpcResponse result;
 
         QByteArray const jsonData = reply->readAll().trimmed();
         TrVariantPtr json = createVariant();
 
-        if (tr_variantFromJson(json.get(), jsonData.constData(), jsonData.size()) == 0)
-        {
+        if (tr_variantFromJson(json.get(), jsonData.constData(), jsonData.size()) == 0) {
             result = parseResponseData(*json);
         }
 
@@ -289,34 +272,31 @@ void RpcClient::localRequestFinished(TrVariantPtr response)
     promise.reportFinished(&result);
 }
 
-int64_t RpcClient::parseResponseTag(tr_variant& json)
+int64_t RpcClient::parseResponseTag(tr_variant &json)
 {
     int64_t tag;
 
-    if (!tr_variantDictFindInt(&json, TR_KEY_tag, &tag))
-    {
+    if (!tr_variantDictFindInt(&json, TR_KEY_tag, &tag)) {
         tag = -1;
     }
 
     return tag;
 }
 
-RpcResponse RpcClient::parseResponseData(tr_variant& json)
+RpcResponse RpcClient::parseResponseData(tr_variant &json)
 {
     RpcResponse ret;
 
-    char const* result;
+    char const *result;
 
-    if (tr_variantDictFindStr(&json, TR_KEY_result, &result, nullptr))
-    {
+    if (tr_variantDictFindStr(&json, TR_KEY_result, &result, nullptr)) {
         ret.result = QString::fromUtf8(result);
         ret.success = std::strcmp(result, "success") == 0;
     }
 
-    tr_variant* args;
+    tr_variant *args;
 
-    if (tr_variantDictFindDict(&json, TR_KEY_arguments, &args))
-    {
+    if (tr_variantDictFindDict(&json, TR_KEY_arguments, &args)) {
         ret.args = createVariant();
         *ret.args = *args;
         tr_variantInitBool(args, false);

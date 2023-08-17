@@ -10,7 +10,7 @@
 
 #include <gtk/gtk.h>
 
-GtkWidget* gtr_prefs_dialog_new(GtkWindow* parent, GObject* core);
+GtkWidget *gtr_prefs_dialog_new(GtkWindow *parent, GObject *core);
 
 /* if you add a key here,  you /must/ add its
  * default in tr_prefs_init_defaults(void) */
@@ -44,8 +44,4 @@ GtkWidget* gtr_prefs_dialog_new(GtkWindow* parent, GObject* core);
 #define PREF_KEY_TRASH_CAN_ENABLED "trash-can-enabled"
 #define PREF_KEY_USER_HAS_GIVEN_INFORMED_CONSENT "user-has-given-informed-consent"
 
-enum
-{
-    MAIN_WINDOW_REFRESH_INTERVAL_SECONDS = 2,
-    SECONDARY_WINDOW_REFRESH_INTERVAL_SECONDS = 2
-};
+enum { MAIN_WINDOW_REFRESH_INTERVAL_SECONDS = 2, SECONDARY_WINDOW_REFRESH_INTERVAL_SECONDS = 2 };

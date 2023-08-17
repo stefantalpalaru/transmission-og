@@ -24,30 +24,24 @@
 
 @class BlocklistDownloaderViewController;
 
-typedef enum
-{
-    BLOCKLIST_DL_START,
-    BLOCKLIST_DL_DOWNLOADING,
-    BLOCKLIST_DL_PROCESSING
-} blocklistDownloadState;
+typedef enum { BLOCKLIST_DL_START, BLOCKLIST_DL_DOWNLOADING, BLOCKLIST_DL_PROCESSING } blocklistDownloadState;
 
-@interface BlocklistDownloader : NSObject<NSURLDownloadDelegate>
-{
-    NSURLDownload* fDownload;
+@interface BlocklistDownloader : NSObject<NSURLDownloadDelegate> {
+    NSURLDownload *fDownload;
 
-    BlocklistDownloaderViewController* fViewController;
+    BlocklistDownloaderViewController *fViewController;
 
-    NSString* fDestination;
+    NSString *fDestination;
     NSUInteger fCurrentSize;
     long long fExpectedSize;
 
     blocklistDownloadState fState;
 }
 
-+ (BlocklistDownloader*)downloader; //starts download if not already occuring
++ (BlocklistDownloader *)downloader; // starts download if not already occuring
 + (BOOL)isRunning;
 
-- (void)setViewController:(BlocklistDownloaderViewController*)viewController;
+- (void)setViewController:(BlocklistDownloaderViewController *)viewController;
 
 - (void)cancelDownload;
 

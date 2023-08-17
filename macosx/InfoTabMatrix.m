@@ -13,8 +13,7 @@
 
 - (void)viewDidChangeEffectiveAppearance;
 {
-    for (InfoTabButtonCell* cell in self.cells)
-    {
+    for (InfoTabButtonCell *cell in self.cells) {
         [cell reloadAppearance];
     }
 }

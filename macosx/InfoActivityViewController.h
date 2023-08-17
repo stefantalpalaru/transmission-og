@@ -27,27 +27,26 @@
 @class PiecesView;
 @class Torrent;
 
-@interface InfoActivityViewController : NSViewController<InfoViewController>
-{
-    NSArray* fTorrents;
+@interface InfoActivityViewController : NSViewController<InfoViewController> {
+    NSArray *fTorrents;
 
     BOOL fSet;
 
     IBOutlet NSTextField *fDateAddedField, *fDateCompletedField, *fDateActivityField, *fStateField, *fProgressField, *fHaveField,
         *fDownloadedTotalField, *fUploadedTotalField, *fFailedHashField, *fRatioField, *fDownloadTimeField, *fSeedTimeField;
-    IBOutlet NSTextView* fErrorMessageView;
+    IBOutlet NSTextView *fErrorMessageView;
 
-    IBOutlet PiecesView* fPiecesView;
-    IBOutlet NSSegmentedControl* fPiecesControl;
+    IBOutlet PiecesView *fPiecesView;
+    IBOutlet NSSegmentedControl *fPiecesControl;
 
-    //remove when we switch to auto layout on 10.7
+    // remove when we switch to auto layout on 10.7
     IBOutlet NSTextField *fTransferSectionLabel, *fDatesSectionLabel, *fTimeSectionLabel;
     IBOutlet NSTextField *fStateLabel, *fProgressLabel, *fHaveLabel, *fDownloadedLabel, *fUploadedLabel, *fFailedDLLabel,
         *fRatioLabel, *fErrorLabel, *fDateAddedLabel, *fDateCompletedLabel, *fDateActivityLabel, *fDownloadTimeLabel, *fSeedTimeLabel;
-    IBOutlet NSScrollView* fErrorScrollView;
+    IBOutlet NSScrollView *fErrorScrollView;
 }
 
-- (void)setInfoForTorrents:(NSArray*)torrents;
+- (void)setInfoForTorrents:(NSArray *)torrents;
 - (void)updateInfo;
 
 - (IBAction)setPiecesView:(id)sender;

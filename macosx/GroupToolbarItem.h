@@ -22,13 +22,12 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface GroupToolbarItem : NSToolbarItem
-{
-    NSArray* fIdentifiers;
+@interface GroupToolbarItem : NSToolbarItem {
+    NSArray *fIdentifiers;
 }
 
-- (void)setIdentifiers:(NSArray*)identifiers;
+- (void)setIdentifiers:(NSArray *)identifiers;
 
-- (void)createMenu:(NSArray*)labels;
+- (void)createMenu:(NSArray *)labels;
 
 @end

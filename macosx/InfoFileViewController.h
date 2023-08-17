@@ -27,19 +27,18 @@
 
 @class FileOutlineController;
 
-@interface InfoFileViewController : NSViewController<InfoViewController>
-{
-    NSArray* fTorrents;
+@interface InfoFileViewController : NSViewController<InfoViewController> {
+    NSArray *fTorrents;
 
     BOOL fSet;
 
-    IBOutlet FileOutlineController* fFileController;
+    IBOutlet FileOutlineController *fFileController;
 
-    IBOutlet NSSearchField* fFileFilterField;
+    IBOutlet NSSearchField *fFileFilterField;
     IBOutlet NSButton *fCheckAllButton, *fUncheckAllButton;
 }
 
-- (void)setInfoForTorrents:(NSArray*)torrents;
+- (void)setInfoForTorrents:(NSArray *)torrents;
 - (void)updateInfo;
 
 - (void)saveViewSize;
@@ -48,7 +47,7 @@
 - (IBAction)checkAll:(id)sender;
 - (IBAction)uncheckAll:(id)sender;
 
-- (NSArray*)quickLookURLs;
+- (NSArray *)quickLookURLs;
 - (BOOL)canQuickLook;
 - (NSRect)quickLookSourceFrameForPreviewItem:(id<QLPreviewItem>)item;
 

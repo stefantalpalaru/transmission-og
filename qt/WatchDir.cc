@@ -22,42 +22,35 @@
 ****
 ***/
 
-WatchDir::WatchDir(TorrentModel const& model)
+WatchDir::WatchDir(TorrentModel const &model)
     : myModel(model)
     , myWatcher(nullptr)
-{
-}
+{}
 
 /***
 ****
 ***/
 
-int WatchDir::metainfoTest(QString const& filename) const
+int WatchDir::metainfoTest(QString const &filename) const
 {
     int ret;
     tr_info inf;
-    tr_ctor* ctor = tr_ctorNew(nullptr);
+    tr_ctor *ctor = tr_ctorNew(nullptr);
 
     // parse
     tr_ctorSetMetainfoFromFile(ctor, filename.toUtf8().constData());
     int const err = tr_torrentParse(ctor, &inf);
 
-    if (err != 0)
-    {
+    if (err != 0) {
         ret = ERROR;
-    }
-    else if (myModel.hasTorrent(QString::fromUtf8(inf.hashString)))
-    {
+    } else if (myModel.hasTorrent(QString::fromUtf8(inf.hashString))) {
         ret = DUPLICATE;
-    }
-    else
-    {
+    } else {
         ret = OK;
     }
 
     // cleanup
-    if (err == 0)
-    {
+    if (err == 0) {
         tr_metainfoFree(&inf);
     }
 
@@ -67,31 +60,28 @@ int WatchDir::metainfoTest(QString const& filename) const
 
 void WatchDir::onTimeout()
 {
-    QTimer* t = qobject_cast<QTimer*>(sender());
+    QTimer *t = qobject_cast<QTimer *>(sender());
     QString const filename = t->objectName();
 
-    if (metainfoTest(filename) == OK)
-    {
+    if (metainfoTest(filename) == OK) {
         emit torrentFileAdded(filename);
     }
 
     t->deleteLater();
 }
 
-void WatchDir::setPath(QString const& path, bool isEnabled)
+void WatchDir::setPath(QString const &path, bool isEnabled)
 {
     // clear out any remnants of the previous watcher, if any
     myWatchDirFiles.clear();
 
-    if (myWatcher != nullptr)
-    {
+    if (myWatcher != nullptr) {
         delete myWatcher;
         myWatcher = nullptr;
     }
 
     // maybe create a new watcher
-    if (isEnabled)
-    {
+    if (isEnabled) {
         myWatcher = new QFileSystemWatcher();
         myWatcher->addPath(path);
         connect(myWatcher, SIGNAL(directoryChanged(QString)), this, SLOT(watcherActivated(QString)));
@@ -103,15 +93,14 @@ void WatchDir::setPath(QString const& path, bool isEnabled)
     }
 }
 
-void WatchDir::watcherActivated(QString const& path)
+void WatchDir::watcherActivated(QString const &path)
 {
     QDir const dir(path);
 
     // get the list of files currently in the watch directory
     QSet<QString> files;
 
-    for (QString const& str : dir.entryList(QDir::Readable | QDir::Files))
-    {
+    for (QString const &str : dir.entryList(QDir::Readable | QDir::Files)) {
         files.insert(str);
     }
 
@@ -119,14 +108,11 @@ void WatchDir::watcherActivated(QString const& path)
     QSet<QString> const newFiles(files - myWatchDirFiles);
     QString const torrentSuffix = QString::fromUtf8(".torrent");
 
-    for (QString const& name : newFiles)
-    {
-        if (name.endsWith(torrentSuffix, Qt::CaseInsensitive))
-        {
+    for (QString const &name : newFiles) {
+        if (name.endsWith(torrentSuffix, Qt::CaseInsensitive)) {
             QString const filename = dir.absoluteFilePath(name);
 
-            switch (metainfoTest(filename))
-            {
+            switch (metainfoTest(filename)) {
             case OK:
                 emit torrentFileAdded(filename);
                 break;
@@ -137,7 +123,7 @@ void WatchDir::watcherActivated(QString const& path)
             case ERROR:
                 {
                     // give the .torrent a few seconds to finish downloading
-                    QTimer* t = new QTimer(this);
+                    QTimer *t = new QTimer(this);
                     t->setObjectName(dir.absoluteFilePath(name));
                     t->setSingleShot(true);
                     connect(t, SIGNAL(timeout()), this, SLOT(onTimeout()));
@@ -154,13 +140,11 @@ void WatchDir::watcherActivated(QString const& path)
 
 void WatchDir::rescanAllWatchedDirectories()
 {
-    if (myWatcher == nullptr)
-    {
+    if (myWatcher == nullptr) {
         return;
     }
 
-    for (QString const& path : myWatcher->directories())
-    {
+    for (QString const &path : myWatcher->directories()) {
         watcherActivated(path);
     }
 }

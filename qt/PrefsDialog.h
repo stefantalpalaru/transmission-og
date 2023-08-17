@@ -22,24 +22,23 @@ class QString;
 class Prefs;
 class Session;
 
-class PrefsDialog : public BaseDialog
-{
+class PrefsDialog : public BaseDialog {
     Q_OBJECT
 
 public:
-    PrefsDialog(Session&, Prefs&, QWidget* parent = nullptr);
+    PrefsDialog(Session &, Prefs &, QWidget *parent = nullptr);
     virtual ~PrefsDialog();
 
 private:
-    typedef QMap<int, QWidget*> key2widget_t;
+    typedef QMap<int, QWidget *> key2widget_t;
 
 private:
-    bool updateWidgetValue(QWidget* widget, int prefKey);
-    void linkWidgetToPref(QWidget* widget, int prefKey);
+    bool updateWidgetValue(QWidget *widget, int prefKey);
+    void linkWidgetToPref(QWidget *widget, int prefKey);
     void updateBlocklistLabel();
     void updateDownloadingWidgetsLocality();
 
-    void setPref(int key, QVariant const& v);
+    void setPref(int key, QVariant const &v);
 
     void initDownloadingTab();
     void initSeedingTab();
@@ -54,7 +53,7 @@ private slots:
     void spinBoxEditingFinished();
     void timeEditingFinished();
     void lineEditingFinished();
-    void pathChanged(QString const& path);
+    void pathChanged(QString const &path);
     void plainTextChanged();
     void refreshPref(int key);
     void encryptionEdited(int);
@@ -67,12 +66,12 @@ private slots:
 
     void onUpdateBlocklistClicked();
     void onUpdateBlocklistCancelled();
-    void onBlocklistDialogDestroyed(QObject*);
+    void onBlocklistDialogDestroyed(QObject *);
     void onBlocklistUpdated(int n);
 
 private:
-    Session& mySession;
-    Prefs& myPrefs;
+    Session &mySession;
+    Prefs &myPrefs;
 
     Ui::PrefsDialog ui;
 
@@ -90,6 +89,6 @@ private:
     QWidgetList myUnsupportedWhenRemote;
 
     int myBlocklistHttpTag;
-    QHttp* myBlocklistHttp;
-    QMessageBox* myBlocklistDialog;
+    QHttp *myBlocklistHttp;
+    QMessageBox *myBlocklistDialog;
 };

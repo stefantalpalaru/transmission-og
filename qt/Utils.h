@@ -20,45 +20,40 @@ class QHeaderView;
 class QIcon;
 class QModelIndex;
 
-class Utils
-{
+class Utils {
 public:
     static QIcon getFileIcon();
     static QIcon getFolderIcon();
-    static QIcon guessMimeIcon(QString const& filename);
-    static QIcon getIconFromIndex(QModelIndex const& index);
+    static QIcon guessMimeIcon(QString const &filename);
+    static QIcon getIconFromIndex(QModelIndex const &index);
 
     // Test if string is UTF-8 or not
-    static bool isValidUtf8(char const* s);
+    static bool isValidUtf8(char const *s);
 
-    static QString removeTrailingDirSeparator(QString const& path);
+    static QString removeTrailingDirSeparator(QString const &path);
 
-    static void narrowRect(QRect& rect, int dx1, int dx2, Qt::LayoutDirection direction)
+    static void narrowRect(QRect &rect, int dx1, int dx2, Qt::LayoutDirection direction)
     {
-        if (direction == Qt::RightToLeft)
-        {
+        if (direction == Qt::RightToLeft) {
             qSwap(dx1, dx2);
         }
 
         rect.adjust(dx1, 0, -dx2, 0);
     }
 
-    static int measureViewItem(QAbstractItemView* view, QString const& text);
-    static int measureHeaderItem(QHeaderView* view, QString const& text);
+    static int measureViewItem(QAbstractItemView *view, QString const &text);
+    static int measureHeaderItem(QHeaderView *view, QString const &text);
 
-    static QColor getFadedColor(QColor const& color);
+    static QColor getFadedColor(QColor const &color);
 
     template<typename DialogT, typename... ArgsT>
-    static void openDialog(QPointer<DialogT>& dialog, ArgsT&&... args)
+    static void openDialog(QPointer<DialogT> &dialog, ArgsT &&...args)
     {
-        if (dialog.isNull())
-        {
+        if (dialog.isNull()) {
             dialog = new DialogT(std::forward<ArgsT>(args)...);
             dialog->setAttribute(Qt::WA_DeleteOnClose);
             dialog->show();
-        }
-        else
-        {
+        } else {
             dialog->raise();
             dialog->activateWindow();
         }
@@ -68,22 +63,19 @@ public:
     /// URLs
     ///
 
-    static bool isMagnetLink(QString const& s)
+    static bool isMagnetLink(QString const &s)
     {
         return s.startsWith(QString::fromUtf8("magnet:?"));
     }
 
-    static bool isHexHashcode(QString const& s)
+    static bool isHexHashcode(QString const &s)
     {
-        if (s.length() != 40)
-        {
+        if (s.length() != 40) {
             return false;
         }
 
-        for (auto const& ch : s)
-        {
-            if (!isxdigit(ch.unicode()))
-            {
+        for (auto const &ch : s) {
+            if (!isxdigit(ch.unicode())) {
                 return false;
             }
         }
@@ -91,7 +83,7 @@ public:
         return true;
     }
 
-    static bool isUriWithSupportedScheme(QString const& s)
+    static bool isUriWithSupportedScheme(QString const &s)
     {
         return s.startsWith(QStringLiteral("ftp://")) || s.startsWith(QStringLiteral("http://")) ||
             s.startsWith(QStringLiteral("https://"));
@@ -100,13 +92,11 @@ public:
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
 
-namespace std
-{
+namespace std {
 
 template<>
-struct hash<QString>
-{
-    std::size_t operator()(QString const& s) const
+struct hash<QString> {
+    std::size_t operator()(QString const &s) const
     {
         return qHash(s);
     }

@@ -39,7 +39,7 @@ static int const base32Lookup[] = {
 
 static int const base32LookupLen = TR_N_ELEMENTS(base32Lookup);
 
-static void base32_to_sha1(uint8_t* out, char const* in, size_t const inlen)
+static void base32_to_sha1(uint8_t *out, char const *in, size_t const inlen)
 {
     TR_ASSERT(inlen == 32);
 
@@ -47,52 +47,41 @@ static void base32_to_sha1(uint8_t* out, char const* in, size_t const inlen)
 
     memset(out, 0, 20);
 
-    for (size_t i = 0, index = 0, offset = 0; i < inlen; ++i)
-    {
+    for (size_t i = 0, index = 0, offset = 0; i < inlen; ++i) {
         int digit;
         int lookup = in[i] - '0';
 
         /* Skip chars outside the lookup table */
-        if (lookup < 0 || lookup >= base32LookupLen)
-        {
+        if (lookup < 0 || lookup >= base32LookupLen) {
             continue;
         }
 
         /* If this digit is not in the table, ignore it */
         digit = base32Lookup[lookup];
 
-        if (digit == 0xFF)
-        {
+        if (digit == 0xFF) {
             continue;
         }
 
-        if (index <= 3)
-        {
+        if (index <= 3) {
             index = (index + 5) % 8;
 
-            if (index == 0)
-            {
+            if (index == 0) {
                 out[offset] |= digit;
                 offset++;
 
-                if (offset >= outlen)
-                {
+                if (offset >= outlen) {
                     break;
                 }
-            }
-            else
-            {
+            } else {
                 out[offset] |= digit << (8 - index);
             }
-        }
-        else
-        {
+        } else {
             index = (index + 5) % 8;
             out[offset] |= digit >> index;
             offset++;
 
-            if (offset >= outlen)
-            {
+            if (offset >= outlen) {
                 break;
             }
 
@@ -108,92 +97,71 @@ static void base32_to_sha1(uint8_t* out, char const* in, size_t const inlen)
 #define MAX_TRACKERS 64
 #define MAX_WEBSEEDS 64
 
-tr_magnet_info* tr_magnetParse(char const* uri)
+tr_magnet_info *tr_magnetParse(char const *uri)
 {
     bool got_checksum = false;
     int trCount = 0;
     int wsCount = 0;
-    char* tr[MAX_TRACKERS];
-    char* ws[MAX_WEBSEEDS];
-    char* displayName = NULL;
+    char *tr[MAX_TRACKERS];
+    char *ws[MAX_WEBSEEDS];
+    char *displayName = NULL;
     uint8_t sha1[SHA_DIGEST_LENGTH];
-    tr_magnet_info* info = NULL;
+    tr_magnet_info *info = NULL;
 
-    if (uri != NULL && strncmp(uri, "magnet:?", 8) == 0)
-    {
-        for (char const* walk = uri + 8; !tr_str_is_empty(walk);)
-        {
-            char const* key = walk;
-            char const* delim = strchr(key, '=');
-            char const* val = delim == NULL ? NULL : delim + 1;
-            char const* next = strchr(delim == NULL ? key : val, '&');
+    if (uri != NULL && strncmp(uri, "magnet:?", 8) == 0) {
+        for (char const *walk = uri + 8; !tr_str_is_empty(walk);) {
+            char const *key = walk;
+            char const *delim = strchr(key, '=');
+            char const *val = delim == NULL ? NULL : delim + 1;
+            char const *next = strchr(delim == NULL ? key : val, '&');
             size_t keylen;
             size_t vallen;
 
-            if (delim != NULL)
-            {
+            if (delim != NULL) {
                 keylen = (size_t)(delim - key);
-            }
-            else if (next != NULL)
-            {
+            } else if (next != NULL) {
                 keylen = (size_t)(next - key);
-            }
-            else
-            {
+            } else {
                 keylen = strlen(key);
             }
 
-            if (val == NULL)
-            {
+            if (val == NULL) {
                 vallen = 0;
-            }
-            else if (next != NULL)
-            {
+            } else if (next != NULL) {
                 vallen = (size_t)(next - val);
-            }
-            else
-            {
+            } else {
                 vallen = strlen(val);
             }
 
-            if (keylen == 2 && memcmp(key, "xt", 2) == 0 && val != NULL && strncmp(val, "urn:btih:", 9) == 0)
-            {
-                char const* hash = val + 9;
+            if (keylen == 2 && memcmp(key, "xt", 2) == 0 && val != NULL && strncmp(val, "urn:btih:", 9) == 0) {
+                char const *hash = val + 9;
                 size_t const hashlen = vallen - 9;
 
-                if (hashlen == 40)
-                {
+                if (hashlen == 40) {
                     tr_hex_to_sha1(sha1, hash);
                     got_checksum = true;
-                }
-                else if (hashlen == 32)
-                {
+                } else if (hashlen == 32) {
                     base32_to_sha1(sha1, hash, hashlen);
                     got_checksum = true;
                 }
             }
 
-            if (displayName == NULL && vallen > 0 && keylen == 2 && memcmp(key, "dn", 2) == 0)
-            {
+            if (displayName == NULL && vallen > 0 && keylen == 2 && memcmp(key, "dn", 2) == 0) {
                 displayName = tr_http_unescape(val, vallen);
             }
 
-            if (vallen > 0 && trCount < MAX_TRACKERS)
-            {
+            if (vallen > 0 && trCount < MAX_TRACKERS) {
                 int i;
 
-                if (keylen == 2 && memcmp(key, "tr", 2) == 0)
-                {
+                if (keylen == 2 && memcmp(key, "tr", 2) == 0) {
                     tr[trCount++] = tr_http_unescape(val, vallen);
-                }
-                else if (sscanf(key, "tr.%d=", &i) == 1 && i >= 0) /* ticket #3341 and #5134 */
+                } else if (sscanf(key, "tr.%d=", &i) == 1 && i >= 0) /* ticket #3341 and #5134 */
                 {
                     tr[trCount++] = tr_http_unescape(val, vallen);
                 }
             }
 
-            if (vallen > 0 && keylen == 2 && memcmp(key, "ws", 2) == 0 && wsCount < MAX_WEBSEEDS)
-            {
+            if (vallen > 0 && keylen == 2 && memcmp(key, "ws", 2) == 0 && wsCount < MAX_WEBSEEDS) {
                 ws[wsCount++] = tr_http_unescape(val, vallen);
             }
 
@@ -201,25 +169,20 @@ tr_magnet_info* tr_magnetParse(char const* uri)
         }
     }
 
-    if (got_checksum)
-    {
+    if (got_checksum) {
         info = tr_new0(tr_magnet_info, 1);
         info->displayName = displayName;
         info->trackerCount = trCount;
-        info->trackers = tr_memdup(tr, sizeof(char*) * trCount);
+        info->trackers = tr_memdup(tr, sizeof(char *) * trCount);
         info->webseedCount = wsCount;
-        info->webseeds = tr_memdup(ws, sizeof(char*) * wsCount);
+        info->webseeds = tr_memdup(ws, sizeof(char *) * wsCount);
         memcpy(info->hash, sha1, sizeof(uint8_t) * SHA_DIGEST_LENGTH);
-    }
-    else
-    {
-        for (int i = 0; i < trCount; i++)
-        {
+    } else {
+        for (int i = 0; i < trCount; i++) {
             tr_free(tr[i]);
         }
 
-        for (int i = 0; i < wsCount; i++)
-        {
+        for (int i = 0; i < wsCount; i++) {
             tr_free(ws[i]);
         }
 
@@ -229,19 +192,16 @@ tr_magnet_info* tr_magnetParse(char const* uri)
     return info;
 }
 
-void tr_magnetFree(tr_magnet_info* info)
+void tr_magnetFree(tr_magnet_info *info)
 {
-    if (info != NULL)
-    {
-        for (int i = 0; i < info->trackerCount; ++i)
-        {
+    if (info != NULL) {
+        for (int i = 0; i < info->trackerCount; ++i) {
             tr_free(info->trackers[i]);
         }
 
         tr_free(info->trackers);
 
-        for (int i = 0; i < info->webseedCount; ++i)
-        {
+        for (int i = 0; i < info->webseedCount; ++i) {
             tr_free(info->webseeds[i]);
         }
 
@@ -252,33 +212,27 @@ void tr_magnetFree(tr_magnet_info* info)
     }
 }
 
-void tr_magnetCreateMetainfo(tr_magnet_info const* info, tr_variant* top)
+void tr_magnetCreateMetainfo(tr_magnet_info const *info, tr_variant *top)
 {
-    tr_variant* d;
+    tr_variant *d;
     tr_variantInitDict(top, 4);
 
     /* announce list */
-    if (info->trackerCount == 1)
-    {
+    if (info->trackerCount == 1) {
         tr_variantDictAddStr(top, TR_KEY_announce, info->trackers[0]);
-    }
-    else
-    {
-        tr_variant* trackers = tr_variantDictAddList(top, TR_KEY_announce_list, info->trackerCount);
+    } else {
+        tr_variant *trackers = tr_variantDictAddList(top, TR_KEY_announce_list, info->trackerCount);
 
-        for (int i = 0; i < info->trackerCount; ++i)
-        {
+        for (int i = 0; i < info->trackerCount; ++i) {
             tr_variantListAddStr(tr_variantListAddList(trackers, 1), info->trackers[i]);
         }
     }
 
     /* webseeds */
-    if (info->webseedCount > 0)
-    {
-        tr_variant* urls = tr_variantDictAddList(top, TR_KEY_url_list, info->webseedCount);
+    if (info->webseedCount > 0) {
+        tr_variant *urls = tr_variantDictAddList(top, TR_KEY_url_list, info->webseedCount);
 
-        for (int i = 0; i < info->webseedCount; ++i)
-        {
+        for (int i = 0; i < info->webseedCount; ++i) {
             tr_variantListAddStr(urls, info->webseeds[i]);
         }
     }
@@ -287,8 +241,7 @@ void tr_magnetCreateMetainfo(tr_magnet_info const* info, tr_variant* top)
     d = tr_variantDictAddDict(top, TR_KEY_magnet_info, 2);
     tr_variantDictAddRaw(d, TR_KEY_info_hash, info->hash, 20);
 
-    if (info->displayName != NULL)
-    {
+    if (info->displayName != NULL) {
         tr_variantDictAddStr(d, TR_KEY_display_name, info->displayName);
     }
 }

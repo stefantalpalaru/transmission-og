@@ -22,20 +22,19 @@ class Prefs;
 class TorrentFilter;
 class TorrentModel;
 
-class FilterBar : public QWidget
-{
+class FilterBar : public QWidget {
     Q_OBJECT
 
 public:
-    FilterBar(Prefs& prefs, TorrentModel const& torrents, TorrentFilter const& filter, QWidget* parent = nullptr);
+    FilterBar(Prefs &prefs, TorrentModel const &torrents, TorrentFilter const &filter, QWidget *parent = nullptr);
     virtual ~FilterBar();
 
 public slots:
     void clear();
 
 private:
-    FilterBarComboBox* createTrackerCombo(QStandardItemModel*);
-    FilterBarComboBox* createActivityCombo();
+    FilterBarComboBox *createTrackerCombo(QStandardItemModel *);
+    FilterBarComboBox *createActivityCombo();
     void refreshTrackers();
 
 private slots:
@@ -44,19 +43,19 @@ private slots:
     void refreshPref(int key);
     void onActivityIndexChanged(int index);
     void onTrackerIndexChanged(int index);
-    void onTextChanged(QString const&);
+    void onTextChanged(QString const &);
 
 private:
-    Prefs& myPrefs;
-    TorrentModel const& myTorrents;
-    TorrentFilter const& myFilter;
+    Prefs &myPrefs;
+    TorrentModel const &myTorrents;
+    TorrentFilter const &myFilter;
 
-    FilterBarComboBox* myActivityCombo;
-    FilterBarComboBox* myTrackerCombo;
-    QLabel* myCountLabel;
-    QStandardItemModel* myTrackerModel;
-    QTimer* myRecountTimer;
+    FilterBarComboBox *myActivityCombo;
+    FilterBarComboBox *myTrackerCombo;
+    QLabel *myCountLabel;
+    QStandardItemModel *myTrackerModel;
+    QTimer *myRecountTimer;
     bool myIsBootstrapping;
-    QLineEdit* myLineEdit;
+    QLineEdit *myLineEdit;
     std::map<QString, int> myTrackerCounts;
 };

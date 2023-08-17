@@ -22,13 +22,12 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface DragOverlayView : NSView
-{
-    NSImage* fBadge;
+@interface DragOverlayView : NSView {
+    NSImage *fBadge;
 
     NSDictionary *fMainLineAttributes, *fSubLineAttributes;
 }
 
-- (void)setOverlay:(NSImage*)icon mainLine:(NSString*)mainLine subLine:(NSString*)subLine;
+- (void)setOverlay:(NSImage *)icon mainLine:(NSString *)mainLine subLine:(NSString *)subLine;
 
 @end

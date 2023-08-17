@@ -35,7 +35,7 @@
 
 - (void)resizeBar;
 - (void)updateGroupsButton;
-- (void)updateGroups:(NSNotification*)notification;
+- (void)updateGroups:(NSNotification *)notification;
 
 @end
 
@@ -48,7 +48,7 @@
 
 - (void)awakeFromNib
 {
-    //localizations
+    // localizations
     [fNoFilterButton setTitle:NSLocalizedString(@"All", "Filter Bar -> filter button")];
     [fActiveFilterButton setTitle:NSLocalizedString(@"Active", "Filter Bar -> filter button")];
     [fDownloadFilterButton setTitle:NSLocalizedString(@"Downloading", "Filter Bar -> filter button")];
@@ -70,10 +70,10 @@
 
     [self resizeBar];
 
-    //set current filter
-    NSString* filterType = [[NSUserDefaults standardUserDefaults] stringForKey:@"Filter"];
+    // set current filter
+    NSString *filterType = [[NSUserDefaults standardUserDefaults] stringForKey:@"Filter"];
 
-    NSButton* currentFilterButton;
+    NSButton *currentFilterButton;
     if ([filterType isEqualToString:FILTER_ACTIVE])
         currentFilterButton = fActiveFilterButton;
     else if ([filterType isEqualToString:FILTER_PAUSE])
@@ -82,32 +82,30 @@
         currentFilterButton = fSeedFilterButton;
     else if ([filterType isEqualToString:FILTER_DOWNLOAD])
         currentFilterButton = fDownloadFilterButton;
-    else
-    {
-        //safety
+    else {
+        // safety
         if (![filterType isEqualToString:FILTER_NONE])
             [[NSUserDefaults standardUserDefaults] setObject:FILTER_NONE forKey:@"Filter"];
         currentFilterButton = fNoFilterButton;
     }
     [currentFilterButton setState:NSOnState];
 
-    //set filter search type
-    NSString* filterSearchType = [[NSUserDefaults standardUserDefaults] stringForKey:@"FilterSearchType"];
+    // set filter search type
+    NSString *filterSearchType = [[NSUserDefaults standardUserDefaults] stringForKey:@"FilterSearchType"];
 
-    NSMenu* filterSearchMenu = [[fSearchField cell] searchMenuTemplate];
-    NSString* filterSearchTypeTitle;
+    NSMenu *filterSearchMenu = [[fSearchField cell] searchMenuTemplate];
+    NSString *filterSearchTypeTitle;
     if ([filterSearchType isEqualToString:FILTER_TYPE_TRACKER])
         filterSearchTypeTitle = [[filterSearchMenu itemWithTag:FILTER_TYPE_TAG_TRACKER] title];
-    else
-    {
-        //safety
+    else {
+        // safety
         if (![filterType isEqualToString:FILTER_TYPE_NAME])
             [[NSUserDefaults standardUserDefaults] setObject:FILTER_TYPE_NAME forKey:@"FilterSearchType"];
         filterSearchTypeTitle = [[filterSearchMenu itemWithTag:FILTER_TYPE_TAG_NAME] title];
     }
     [[fSearchField cell] setPlaceholderString:filterSearchTypeTitle];
 
-    NSString* searchString;
+    NSString *searchString;
     if ((searchString = [[NSUserDefaults standardUserDefaults] stringForKey:@"FilterSearchString"]))
         [fSearchField setStringValue:searchString];
 
@@ -116,7 +114,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resizeBar) name:NSWindowDidResizeNotification
                                                object:[[self view] window]];
 
-    //update when groups change
+    // update when groups change
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateGroups:) name:@"UpdateGroups" object:nil];
 }
 
@@ -127,9 +125,9 @@
 
 - (void)setFilter:(id)sender
 {
-    NSString* oldFilterType = [[NSUserDefaults standardUserDefaults] stringForKey:@"Filter"];
+    NSString *oldFilterType = [[NSUserDefaults standardUserDefaults] stringForKey:@"Filter"];
 
-    NSButton* prevFilterButton;
+    NSButton *prevFilterButton;
     if ([oldFilterType isEqualToString:FILTER_PAUSE])
         prevFilterButton = fPauseFilterButton;
     else if ([oldFilterType isEqualToString:FILTER_ACTIVE])
@@ -141,12 +139,11 @@
     else
         prevFilterButton = fNoFilterButton;
 
-    if (sender != prevFilterButton)
-    {
+    if (sender != prevFilterButton) {
         [prevFilterButton setState:NSOffState];
         [sender setState:NSOnState];
 
-        NSString* filterType;
+        NSString *filterType;
         if (sender == fActiveFilterButton)
             filterType = FILTER_ACTIVE;
         else if (sender == fDownloadFilterButton)
@@ -159,8 +156,7 @@
             filterType = FILTER_NONE;
 
         [[NSUserDefaults standardUserDefaults] setObject:filterType forKey:@"Filter"];
-    }
-    else
+    } else
         [sender setState:NSOnState];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:@"ApplyFilter" object:nil];
@@ -168,9 +164,9 @@
 
 - (void)switchFilter:(BOOL)right
 {
-    NSString* filterType = [[NSUserDefaults standardUserDefaults] stringForKey:@"Filter"];
+    NSString *filterType = [[NSUserDefaults standardUserDefaults] stringForKey:@"Filter"];
 
-    NSButton* button;
+    NSButton *button;
     if ([filterType isEqualToString:FILTER_NONE])
         button = right ? fActiveFilterButton : fPauseFilterButton;
     else if ([filterType isEqualToString:FILTER_ACTIVE])
@@ -200,7 +196,7 @@
 
 - (void)setSearchType:(id)sender
 {
-    NSString* oldFilterType = [[NSUserDefaults standardUserDefaults] stringForKey:@"FilterSearchType"];
+    NSString *oldFilterType = [[NSUserDefaults standardUserDefaults] stringForKey:@"FilterSearchType"];
 
     NSInteger prevTag, currentTag = [sender tag];
     if ([oldFilterType isEqualToString:FILTER_TYPE_TRACKER])
@@ -208,9 +204,8 @@
     else
         prevTag = FILTER_TYPE_TAG_NAME;
 
-    if (currentTag != prevTag)
-    {
-        NSString* filterType;
+    if (currentTag != prevTag) {
+        NSString *filterType;
         if (currentTag == FILTER_TYPE_TAG_TRACKER)
             filterType = FILTER_TYPE_TRACKER;
         else
@@ -236,23 +231,20 @@
 {
     [[NSUserDefaults standardUserDefaults] setInteger:GROUP_FILTER_ALL_TAG forKey:@"FilterGroup"];
 
-    if (updateUI)
-    {
+    if (updateUI) {
         [self updateGroupsButton];
 
         [self setFilter:fNoFilterButton];
 
         [fSearchField setStringValue:@""];
         [self setSearchText:fSearchField];
-    }
-    else
-    {
+    } else {
         [[NSUserDefaults standardUserDefaults] setObject:FILTER_NONE forKey:@"Filter"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"FilterSearchString"];
     }
 }
 
-- (NSArray*)searchStrings
+- (NSArray *)searchStrings
 {
     return [[fSearchField stringValue] betterComponentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
@@ -270,33 +262,30 @@
     [fPauseFilterButton setCount:paused];
 }
 
-- (void)menuNeedsUpdate:(NSMenu*)menu
+- (void)menuNeedsUpdate:(NSMenu *)menu
 {
-    if (menu == [fGroupsButton menu])
-    {
+    if (menu == [fGroupsButton menu]) {
         for (NSInteger i = [menu numberOfItems] - 1; i >= 3; i--)
             [menu removeItemAtIndex:i];
 
-        NSMenu* groupMenu = [[GroupsController groups] groupMenuWithTarget:self action:@selector(setGroupFilter:) isSmall:YES];
+        NSMenu *groupMenu = [[GroupsController groups] groupMenuWithTarget:self action:@selector(setGroupFilter:) isSmall:YES];
 
         NSInteger const groupMenuCount = [groupMenu numberOfItems];
-        for (NSInteger i = 0; i < groupMenuCount; i++)
-        {
-            NSMenuItem* item = [groupMenu itemAtIndex:0];
+        for (NSInteger i = 0; i < groupMenuCount; i++) {
+            NSMenuItem *item = [groupMenu itemAtIndex:0];
             [groupMenu removeItemAtIndex:0];
             [menu addItem:item];
         }
     }
 }
 
-- (BOOL)validateMenuItem:(NSMenuItem*)menuItem
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem
 {
     SEL const action = [menuItem action];
 
-    //check proper filter search item
-    if (action == @selector(setSearchType:))
-    {
-        NSString* filterType = [[NSUserDefaults standardUserDefaults] stringForKey:@"FilterSearchType"];
+    // check proper filter search item
+    if (action == @selector(setSearchType:)) {
+        NSString *filterType = [[NSUserDefaults standardUserDefaults] stringForKey:@"FilterSearchType"];
 
         BOOL state;
         if ([menuItem tag] == FILTER_TYPE_TAG_TRACKER)
@@ -308,8 +297,7 @@
         return YES;
     }
 
-    if (action == @selector(setGroupFilter:))
-    {
+    if (action == @selector(setGroupFilter:)) {
         [menuItem setState:[menuItem tag] == [[NSUserDefaults standardUserDefaults] integerForKey:@"FilterGroup"] ? NSOnState : NSOffState];
         return YES;
     }
@@ -323,7 +311,7 @@
 
 - (void)resizeBar
 {
-    //replace all buttons
+    // replace all buttons
     [fNoFilterButton sizeToFit];
     [fActiveFilterButton sizeToFit];
     [fDownloadFilterButton sizeToFit];
@@ -336,36 +324,32 @@
     NSRect seedRect = [fSeedFilterButton frame];
     NSRect pauseRect = [fPauseFilterButton frame];
 
-    //size search filter to not overlap buttons
+    // size search filter to not overlap buttons
     NSRect searchFrame = [fSearchField frame];
     searchFrame.origin.x = NSMaxX(pauseRect) + 5.0;
     searchFrame.size.width = NSWidth([[self view] frame]) - searchFrame.origin.x - 5.0;
 
-    //make sure it is not too long
-    if (NSWidth(searchFrame) > SEARCH_MAX_WIDTH)
-    {
+    // make sure it is not too long
+    if (NSWidth(searchFrame) > SEARCH_MAX_WIDTH) {
         searchFrame.origin.x += NSWidth(searchFrame) - SEARCH_MAX_WIDTH;
         searchFrame.size.width = SEARCH_MAX_WIDTH;
-    }
-    else if (NSWidth(searchFrame) < SEARCH_MIN_WIDTH)
-    {
+    } else if (NSWidth(searchFrame) < SEARCH_MIN_WIDTH) {
         searchFrame.origin.x += NSWidth(searchFrame) - SEARCH_MIN_WIDTH;
         searchFrame.size.width = SEARCH_MIN_WIDTH;
 
-        //calculate width the buttons can take up
+        // calculate width the buttons can take up
         CGFloat const allowedWidth = (searchFrame.origin.x - 5.0) - allRect.origin.x;
         CGFloat const currentWidth = NSWidth(allRect) + NSWidth(activeRect) + NSWidth(downloadRect) + NSWidth(seedRect) +
-            NSWidth(pauseRect) + 4.0; //add 4 for space between buttons
+            NSWidth(pauseRect) + 4.0; // add 4 for space between buttons
         CGFloat const ratio = allowedWidth / currentWidth;
 
-        //decrease button widths proportionally
+        // decrease button widths proportionally
         allRect.size.width = NSWidth(allRect) * ratio;
         activeRect.size.width = NSWidth(activeRect) * ratio;
         downloadRect.size.width = NSWidth(downloadRect) * ratio;
         seedRect.size.width = NSWidth(seedRect) * ratio;
         pauseRect.size.width = NSWidth(pauseRect) * ratio;
-    }
-    else
+    } else
         ;
 
     activeRect.origin.x = NSMaxX(allRect) + 1.0;
@@ -386,17 +370,14 @@
 {
     NSInteger const groupIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"FilterGroup"];
 
-    NSImage* icon;
-    NSString* toolTip;
-    if (groupIndex == GROUP_FILTER_ALL_TAG)
-    {
+    NSImage *icon;
+    NSString *toolTip;
+    if (groupIndex == GROUP_FILTER_ALL_TAG) {
         icon = [NSImage imageNamed:@"PinTemplate"];
         toolTip = NSLocalizedString(@"All Groups", "Groups -> Button");
-    }
-    else
-    {
+    } else {
         icon = [[GroupsController groups] imageForIndex:groupIndex];
-        NSString* groupName = groupIndex != -1 ? [[GroupsController groups] nameForIndex:groupIndex] :
+        NSString *groupName = groupIndex != -1 ? [[GroupsController groups] nameForIndex:groupIndex] :
                                                  NSLocalizedString(@"None", "Groups -> Button");
         toolTip = [NSLocalizedString(@"Group", "Groups -> Button") stringByAppendingFormat:@": %@", groupName];
     }
@@ -405,7 +386,7 @@
     [fGroupsButton setToolTip:toolTip];
 }
 
-- (void)updateGroups:(NSNotification*)notification
+- (void)updateGroups:(NSNotification *)notification
 {
     [self updateGroupsButton];
 }

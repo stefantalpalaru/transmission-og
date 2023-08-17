@@ -18,23 +18,21 @@ class QAbstractButton;
 
 class Session;
 
-extern "C"
-{
-    struct tr_metainfo_builder;
+extern "C" {
+struct tr_metainfo_builder;
 }
 
-class MakeDialog : public BaseDialog
-{
+class MakeDialog : public BaseDialog {
     Q_OBJECT
 
 public:
-    MakeDialog(Session&, QWidget* parent = nullptr);
+    MakeDialog(Session &, QWidget *parent = nullptr);
     virtual ~MakeDialog();
 
 protected:
     // QWidget
-    void dragEnterEvent(QDragEnterEvent*) override;
-    void dropEvent(QDropEvent*) override;
+    void dragEnterEvent(QDragEnterEvent *) override;
+    void dropEvent(QDropEvent *) override;
 
 private:
     QString getSource() const;
@@ -44,9 +42,9 @@ private slots:
     void makeTorrent();
 
 private:
-    Session& mySession;
+    Session &mySession;
 
     Ui::MakeDialog ui;
 
-    std::unique_ptr<tr_metainfo_builder, void (*)(tr_metainfo_builder*)> myBuilder;
+    std::unique_ptr<tr_metainfo_builder, void (*)(tr_metainfo_builder *)> myBuilder;
 };

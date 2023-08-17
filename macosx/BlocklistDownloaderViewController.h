@@ -26,17 +26,16 @@
 
 @class PrefsController;
 
-@interface BlocklistDownloaderViewController : NSObject
-{
-    PrefsController* fPrefsController;
+@interface BlocklistDownloaderViewController : NSObject {
+    PrefsController *fPrefsController;
 
-    IBOutlet NSWindow* fStatusWindow;
-    IBOutlet NSProgressIndicator* fProgressBar;
-    IBOutlet NSTextField* fTextField;
-    IBOutlet NSButton* fButton;
+    IBOutlet NSWindow *fStatusWindow;
+    IBOutlet NSProgressIndicator *fProgressBar;
+    IBOutlet NSTextField *fTextField;
+    IBOutlet NSButton *fButton;
 }
 
-+ (void)downloadWithPrefsController:(PrefsController*)prefsController;
++ (void)downloadWithPrefsController:(PrefsController *)prefsController;
 
 - (void)cancelDownload:(id)sender;
 
@@ -45,6 +44,6 @@
 - (void)setStatusProcessing;
 
 - (void)setFinished;
-- (void)setFailed:(NSString*)error;
+- (void)setFailed:(NSString *)error;
 
 @end

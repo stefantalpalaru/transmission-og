@@ -12,12 +12,11 @@
 #include "FileTreeDelegate.h"
 #include "FileTreeModel.h"
 
-QSize FileTreeDelegate::sizeHint(QStyleOptionViewItem const& item, QModelIndex const& index) const
+QSize FileTreeDelegate::sizeHint(QStyleOptionViewItem const &item, QModelIndex const &index) const
 {
     QSize size;
 
-    switch (index.column())
-    {
+    switch (index.column()) {
     case FileTreeModel::COL_PROGRESS:
     case FileTreeModel::COL_WANTED:
         size = QSize(20, 1);
@@ -31,23 +30,21 @@ QSize FileTreeDelegate::sizeHint(QStyleOptionViewItem const& item, QModelIndex c
     return size;
 }
 
-void FileTreeDelegate::paint(QPainter* painter, QStyleOptionViewItem const& option, QModelIndex const& index) const
+void FileTreeDelegate::paint(QPainter *painter, QStyleOptionViewItem const &option, QModelIndex const &index) const
 {
     int const column(index.column());
 
-    if (column != FileTreeModel::COL_PROGRESS && column != FileTreeModel::COL_WANTED)
-    {
+    if (column != FileTreeModel::COL_PROGRESS && column != FileTreeModel::COL_WANTED) {
         QItemDelegate::paint(painter, option, index);
         return;
     }
 
-    QStyle* style(qApp->style());
+    QStyle *style(qApp->style());
 
     painter->save();
     QItemDelegate::drawBackground(painter, option, index);
 
-    if (column == FileTreeModel::COL_PROGRESS)
-    {
+    if (column == FileTreeModel::COL_PROGRESS) {
         QStyleOptionProgressBar p;
         p.state = option.state | QStyle::State_Horizontal | QStyle::State_Small;
         p.direction = qApp->layoutDirection();
@@ -62,9 +59,7 @@ void FileTreeDelegate::paint(QPainter* painter, QStyleOptionViewItem const& opti
         p.progress = int(100.0 * index.data().toDouble());
         p.text = QString::fromLatin1("%1%").arg(p.progress);
         style->drawControl(QStyle::CE_ProgressBar, &p, painter);
-    }
-    else if (column == FileTreeModel::COL_WANTED)
-    {
+    } else if (column == FileTreeModel::COL_WANTED) {
         QStyleOptionViewItem vi(option);
         vi.features |= QStyleOptionViewItem::HasCheckIndicator;
         QRect checkRect = style->subElementRect(QStyle::SE_ItemViewItemCheckIndicator, &vi, nullptr);

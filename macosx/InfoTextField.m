@@ -24,7 +24,7 @@
 
 @implementation InfoTextField
 
-- (void)setStringValue:(NSString*)string
+- (void)setStringValue:(NSString *)string
 {
     [super setStringValue:string];
 

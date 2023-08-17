@@ -22,18 +22,17 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface GroupsPrefsController : NSObject
-{
-    IBOutlet NSTableView* fTableView;
-    IBOutlet NSSegmentedControl* fAddRemoveControl;
+@interface GroupsPrefsController : NSObject {
+    IBOutlet NSTableView *fTableView;
+    IBOutlet NSSegmentedControl *fAddRemoveControl;
 
-    IBOutlet NSColorWell* fSelectedColorView;
-    IBOutlet NSTextField* fSelectedColorNameField;
-    IBOutlet NSButton* fCustomLocationEnableCheck;
-    IBOutlet NSPopUpButton* fCustomLocationPopUp;
+    IBOutlet NSColorWell *fSelectedColorView;
+    IBOutlet NSTextField *fSelectedColorNameField;
+    IBOutlet NSButton *fCustomLocationEnableCheck;
+    IBOutlet NSPopUpButton *fCustomLocationPopUp;
 
-    IBOutlet NSButton* fAutoAssignRulesEnableCheck;
-    IBOutlet NSButton* fAutoAssignRulesEditButton;
+    IBOutlet NSButton *fAutoAssignRulesEnableCheck;
+    IBOutlet NSButton *fAutoAssignRulesEditButton;
 }
 
 - (void)addRemoveGroup:(id)sender;

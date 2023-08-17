@@ -14,9 +14,9 @@
 
 extern struct tr_session_stats const TR_SESSION_STATS_INIT;
 
-void tr_statsInit(tr_session* session);
-void tr_statsClose(tr_session* session);
-void tr_statsSaveDirty(tr_session* session);
-void tr_statsAddUploaded(tr_session* session, uint32_t bytes);
-void tr_statsAddDownloaded(tr_session* session, uint32_t bytes);
-void tr_statsFileCreated(tr_session* session);
+void tr_statsInit(tr_session *session);
+void tr_statsClose(tr_session *session);
+void tr_statsSaveDirty(tr_session *session);
+void tr_statsAddUploaded(tr_session *session, uint32_t bytes);
+void tr_statsAddDownloaded(tr_session *session, uint32_t bytes);
+void tr_statsFileCreated(tr_session *session);

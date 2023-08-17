@@ -31,15 +31,14 @@
 
 - (id)initWithGroup:(NSInteger)group
 {
-    if ((self = [super init]))
-    {
+    if ((self = [super init])) {
         fGroup = group;
         fTorrents = [[NSMutableArray alloc] init];
     }
     return self;
 }
 
-- (NSString*)description
+- (NSString *)description
 {
     return [NSString stringWithFormat:@"Torrent Group %ld: %@", fGroup, fTorrents];
 }
@@ -54,7 +53,7 @@
     return [[GroupsController groups] rowValueForIndex:fGroup];
 }
 
-- (NSMutableArray*)torrents
+- (NSMutableArray *)torrents
 {
     return fTorrents;
 }
@@ -62,8 +61,7 @@
 - (CGFloat)ratio
 {
     uint64_t uploaded = 0, downloaded = 0;
-    for (Torrent* torrent in fTorrents)
-    {
+    for (Torrent *torrent in fTorrents) {
         uploaded += [torrent uploadedTotal];
         downloaded += [torrent downloadedTotal];
     }
@@ -74,7 +72,7 @@
 - (CGFloat)uploadRate
 {
     CGFloat rate = 0.0;
-    for (Torrent* torrent in fTorrents)
+    for (Torrent *torrent in fTorrents)
         rate += [torrent uploadRate];
 
     return rate;
@@ -83,7 +81,7 @@
 - (CGFloat)downloadRate
 {
     CGFloat rate = 0.0;
-    for (Torrent* torrent in fTorrents)
+    for (Torrent *torrent in fTorrents)
         rate += [torrent downloadRate];
 
     return rate;

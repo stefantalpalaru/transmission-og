@@ -22,8 +22,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface ButtonToolbarItem : NSToolbarItem
-{
+@interface ButtonToolbarItem : NSToolbarItem {
 }
 
 @end

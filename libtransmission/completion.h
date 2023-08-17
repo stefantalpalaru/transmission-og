@@ -16,9 +16,8 @@
 #include "bitfield.h"
 #include "utils.h" /* tr_getRatio() */
 
-typedef struct tr_completion
-{
-    tr_torrent* tor;
+typedef struct tr_completion {
+    tr_torrent *tor;
 
     tr_bitfield blockBitfield;
 
@@ -46,11 +45,11 @@ typedef struct tr_completion
 *** Life Cycle
 **/
 
-void tr_cpConstruct(tr_completion*, tr_torrent*);
+void tr_cpConstruct(tr_completion *, tr_torrent *);
 
-void tr_cpBlockInit(tr_completion* cp, tr_bitfield const* blocks);
+void tr_cpBlockInit(tr_completion *cp, tr_bitfield const *blocks);
 
-static inline void tr_cpDestruct(tr_completion* cp)
+static inline void tr_cpDestruct(tr_completion *cp)
 {
     tr_bitfieldDestruct(&cp->blockBitfield);
 }
@@ -59,31 +58,31 @@ static inline void tr_cpDestruct(tr_completion* cp)
 *** General
 **/
 
-double tr_cpPercentComplete(tr_completion const* cp);
+double tr_cpPercentComplete(tr_completion const *cp);
 
-double tr_cpPercentDone(tr_completion const* cp);
+double tr_cpPercentDone(tr_completion const *cp);
 
-tr_completeness tr_cpGetStatus(tr_completion const*);
+tr_completeness tr_cpGetStatus(tr_completion const *);
 
-uint64_t tr_cpHaveValid(tr_completion const*);
+uint64_t tr_cpHaveValid(tr_completion const *);
 
-uint64_t tr_cpSizeWhenDone(tr_completion const*);
+uint64_t tr_cpSizeWhenDone(tr_completion const *);
 
-uint64_t tr_cpLeftUntilDone(tr_completion const*);
+uint64_t tr_cpLeftUntilDone(tr_completion const *);
 
-void tr_cpGetAmountDone(tr_completion const* completion, float* tab, int tabCount);
+void tr_cpGetAmountDone(tr_completion const *completion, float *tab, int tabCount);
 
-static inline uint64_t tr_cpHaveTotal(tr_completion const* cp)
+static inline uint64_t tr_cpHaveTotal(tr_completion const *cp)
 {
     return cp->sizeNow;
 }
 
-static inline bool tr_cpHasAll(tr_completion const* cp)
+static inline bool tr_cpHasAll(tr_completion const *cp)
 {
     return tr_torrentHasMetadata(cp->tor) && tr_bitfieldHasAll(&cp->blockBitfield);
 }
 
-static inline bool tr_cpHasNone(tr_completion const* cp)
+static inline bool tr_cpHasNone(tr_completion const *cp)
 {
     return !tr_torrentHasMetadata(cp->tor) || tr_bitfieldHasNone(&cp->blockBitfield);
 }
@@ -92,15 +91,15 @@ static inline bool tr_cpHasNone(tr_completion const* cp)
 ***  Pieces
 **/
 
-void tr_cpPieceAdd(tr_completion* cp, tr_piece_index_t i);
+void tr_cpPieceAdd(tr_completion *cp, tr_piece_index_t i);
 
-void tr_cpPieceRem(tr_completion* cp, tr_piece_index_t i);
+void tr_cpPieceRem(tr_completion *cp, tr_piece_index_t i);
 
-size_t tr_cpMissingBlocksInPiece(tr_completion const*, tr_piece_index_t);
+size_t tr_cpMissingBlocksInPiece(tr_completion const *, tr_piece_index_t);
 
-size_t tr_cpMissingBytesInPiece(tr_completion const*, tr_piece_index_t);
+size_t tr_cpMissingBytesInPiece(tr_completion const *, tr_piece_index_t);
 
-static inline bool tr_cpPieceIsComplete(tr_completion const* cp, tr_piece_index_t i)
+static inline bool tr_cpPieceIsComplete(tr_completion const *cp, tr_piece_index_t i)
 {
     return tr_cpMissingBlocksInPiece(cp, i) == 0;
 }
@@ -109,9 +108,9 @@ static inline bool tr_cpPieceIsComplete(tr_completion const* cp, tr_piece_index_
 ***  Blocks
 **/
 
-void tr_cpBlockAdd(tr_completion* cp, tr_block_index_t i);
+void tr_cpBlockAdd(tr_completion *cp, tr_block_index_t i);
 
-static inline bool tr_cpBlockIsComplete(tr_completion const* cp, tr_block_index_t i)
+static inline bool tr_cpBlockIsComplete(tr_completion const *cp, tr_block_index_t i)
 {
     return tr_bitfieldHas(&cp->blockBitfield, i);
 }
@@ -120,11 +119,11 @@ static inline bool tr_cpBlockIsComplete(tr_completion const* cp, tr_block_index_
 ****  Misc
 ***/
 
-bool tr_cpFileIsComplete(tr_completion const* cp, tr_file_index_t);
+bool tr_cpFileIsComplete(tr_completion const *cp, tr_file_index_t);
 
-void* tr_cpCreatePieceBitfield(tr_completion const* cp, size_t* byte_count);
+void *tr_cpCreatePieceBitfield(tr_completion const *cp, size_t *byte_count);
 
-static inline void tr_cpInvalidateDND(tr_completion* cp)
+static inline void tr_cpInvalidateDND(tr_completion *cp)
 {
     cp->sizeWhenDoneIsDirty = true;
 }

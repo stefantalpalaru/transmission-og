@@ -13,19 +13,16 @@
 #include "Session.h"
 #include "StatsDialog.h"
 
-enum
-{
-    REFRESH_INTERVAL_MSEC = (15 * 1000)
-};
+enum { REFRESH_INTERVAL_MSEC = (15 * 1000) };
 
-StatsDialog::StatsDialog(Session& session, QWidget* parent)
+StatsDialog::StatsDialog(Session &session, QWidget *parent)
     : BaseDialog(parent)
     , mySession(session)
     , myTimer(new QTimer(this))
 {
     ui.setupUi(this);
 
-    ColumnResizer* cr(new ColumnResizer(this));
+    ColumnResizer *cr(new ColumnResizer(this));
     cr->addLayout(ui.currentSessionSectionLayout);
     cr->addLayout(ui.totalSectionLayout);
     cr->update();
@@ -39,15 +36,13 @@ StatsDialog::StatsDialog(Session& session, QWidget* parent)
 }
 
 StatsDialog::~StatsDialog()
-{
-}
+{}
 
 void StatsDialog::setVisible(bool visible)
 {
     myTimer->stop();
 
-    if (visible)
-    {
+    if (visible) {
         myTimer->start(REFRESH_INTERVAL_MSEC);
     }
 
@@ -56,8 +51,8 @@ void StatsDialog::setVisible(bool visible)
 
 void StatsDialog::updateStats()
 {
-    tr_session_stats const& current(mySession.getStats());
-    tr_session_stats const& total(mySession.getCumulativeStats());
+    tr_session_stats const &current(mySession.getStats());
+    tr_session_stats const &total(mySession.getCumulativeStats());
 
     ui.currentUploadedValueLabel->setText(Formatter::sizeToString(current.uploadedBytes));
     ui.currentDownloadedValueLabel->setText(Formatter::sizeToString(current.downloadedBytes));

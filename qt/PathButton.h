@@ -10,36 +10,31 @@
 
 #include <QToolButton>
 
-class PathButton : public QToolButton
-{
+class PathButton : public QToolButton {
     Q_OBJECT
 
 public:
-    enum Mode
-    {
-        DirectoryMode,
-        FileMode
-    };
+    enum Mode { DirectoryMode, FileMode };
 
 public:
-    PathButton(QWidget* parent = nullptr);
+    PathButton(QWidget *parent = nullptr);
 
     void setMode(Mode mode);
-    void setTitle(QString const& title);
-    void setNameFilter(QString const& nameFilter);
+    void setTitle(QString const &title);
+    void setNameFilter(QString const &nameFilter);
 
-    void setPath(QString const& path);
-    QString const& path() const;
+    void setPath(QString const &path);
+    QString const &path() const;
 
     // QWidget
     QSize sizeHint() const override;
 
 signals:
-    void pathChanged(QString const& path);
+    void pathChanged(QString const &path);
 
 protected:
     // QWidget
-    void paintEvent(QPaintEvent* event) override;
+    void paintEvent(QPaintEvent *event) override;
 
 private:
     void updateAppearance();
@@ -49,7 +44,7 @@ private:
 
 private slots:
     void onClicked();
-    void onFileSelected(QString const& path);
+    void onFileSelected(QString const &path);
 
 private:
     Mode myMode;

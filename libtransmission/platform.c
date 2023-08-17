@@ -71,10 +71,9 @@ static bool tr_areThreadsEqual(tr_thread_id a, tr_thread_id b)
 }
 
 /** @brief portability wrapper around OS-dependent threads */
-struct tr_thread
-{
-    void (*func)(void*);
-    void* arg;
+struct tr_thread {
+    void (*func)(void *);
+    void *arg;
     tr_thread_id thread;
 
 #ifdef _WIN32
@@ -82,7 +81,7 @@ struct tr_thread
 #endif
 };
 
-bool tr_amInThread(tr_thread const* t)
+bool tr_amInThread(tr_thread const *t)
 {
     return tr_areThreadsEqual(tr_getCurrentThread(), t->thread);
 }
@@ -90,16 +89,16 @@ bool tr_amInThread(tr_thread const* t)
 #ifdef _WIN32
 #define ThreadFuncReturnType unsigned WINAPI
 #else
-#define ThreadFuncReturnType void*
+#define ThreadFuncReturnType void *
 #endif
 
-static ThreadFuncReturnType ThreadFunc(void* _t)
+static ThreadFuncReturnType ThreadFunc(void *_t)
 {
 #ifndef _WIN32
     pthread_detach(pthread_self());
 #endif
 
-    tr_thread* t = _t;
+    tr_thread *t = _t;
 
     t->func(t->arg);
 
@@ -113,9 +112,9 @@ static ThreadFuncReturnType ThreadFunc(void* _t)
 #endif
 }
 
-tr_thread* tr_threadNew(void (*func)(void*), void* arg)
+tr_thread *tr_threadNew(void (*func)(void *), void *arg)
 {
-    tr_thread* t = tr_new0(tr_thread, 1);
+    tr_thread *t = tr_new0(tr_thread, 1);
 
     t->func = func;
     t->arg = arg;
@@ -130,7 +129,7 @@ tr_thread* tr_threadNew(void (*func)(void*), void* arg)
 
 #else
 
-    pthread_create(&t->thread, NULL, (void* (*)(void*))ThreadFunc, t);
+    pthread_create(&t->thread, NULL, (void *(*)(void *))ThreadFunc, t);
 
 #endif
 
@@ -142,8 +141,7 @@ tr_thread* tr_threadNew(void (*func)(void*), void* arg)
 ***/
 
 /** @brief portability wrapper around OS-dependent thread mutexes */
-struct tr_lock
-{
+struct tr_lock {
     int depth;
 #ifdef _WIN32
     CRITICAL_SECTION lock;
@@ -154,9 +152,9 @@ struct tr_lock
 #endif
 };
 
-tr_lock* tr_lockNew(void)
+tr_lock *tr_lockNew(void)
 {
-    tr_lock* l = tr_new0(tr_lock, 1);
+    tr_lock *l = tr_new0(tr_lock, 1);
 
 #ifdef _WIN32
 
@@ -174,7 +172,7 @@ tr_lock* tr_lockNew(void)
     return l;
 }
 
-void tr_lockFree(tr_lock* l)
+void tr_lockFree(tr_lock *l)
 {
 #ifdef _WIN32
     DeleteCriticalSection(&l->lock);
@@ -185,7 +183,7 @@ void tr_lockFree(tr_lock* l)
     tr_free(l);
 }
 
-void tr_lockLock(tr_lock* l)
+void tr_lockLock(tr_lock *l)
 {
 #ifdef _WIN32
     EnterCriticalSection(&l->lock);
@@ -200,12 +198,12 @@ void tr_lockLock(tr_lock* l)
     ++l->depth;
 }
 
-bool tr_lockHave(tr_lock const* l)
+bool tr_lockHave(tr_lock const *l)
 {
     return l->depth > 0 && tr_areThreadsEqual(l->lockThread, tr_getCurrentThread());
 }
 
-void tr_lockUnlock(tr_lock* l)
+void tr_lockUnlock(tr_lock *l)
 {
     TR_ASSERT(l->depth > 0);
     TR_ASSERT(tr_areThreadsEqual(l->lockThread, tr_getCurrentThread()));
@@ -230,13 +228,12 @@ void tr_lockUnlock(tr_lock* l)
 
 #ifdef _WIN32
 
-static char* win32_get_known_folder_ex(REFKNOWNFOLDERID folder_id, DWORD flags)
+static char *win32_get_known_folder_ex(REFKNOWNFOLDERID folder_id, DWORD flags)
 {
-    char* ret = NULL;
+    char *ret = NULL;
     PWSTR path;
 
-    if (SHGetKnownFolderPath(folder_id, flags | KF_FLAG_DONT_UNEXPAND, NULL, &path) == S_OK)
-    {
+    if (SHGetKnownFolderPath(folder_id, flags | KF_FLAG_DONT_UNEXPAND, NULL, &path) == S_OK) {
         ret = tr_win32_native_to_utf8(path, -1);
         CoTaskMemFree(path);
     }
@@ -244,33 +241,30 @@ static char* win32_get_known_folder_ex(REFKNOWNFOLDERID folder_id, DWORD flags)
     return ret;
 }
 
-static char* win32_get_known_folder(REFKNOWNFOLDERID folder_id)
+static char *win32_get_known_folder(REFKNOWNFOLDERID folder_id)
 {
     return win32_get_known_folder_ex(folder_id, KF_FLAG_DONT_VERIFY);
 }
 
 #endif
 
-static char const* getHomeDir(void)
+static char const *getHomeDir(void)
 {
-    static char* home = NULL;
+    static char *home = NULL;
 
-    if (home == NULL)
-    {
+    if (home == NULL) {
         home = tr_env_get_string("HOME", NULL);
 
-        if (home == NULL)
-        {
+        if (home == NULL) {
 #ifdef _WIN32
 
             home = win32_get_known_folder(&FOLDERID_Profile);
 
 #else
 
-            struct passwd* pw = getpwuid(getuid());
+            struct passwd *pw = getpwuid(getuid());
 
-            if (pw != NULL)
-            {
+            if (pw != NULL) {
                 home = tr_strdup(pw->pw_dir);
             }
 
@@ -279,8 +273,7 @@ static char const* getHomeDir(void)
 #endif
         }
 
-        if (home == NULL)
-        {
+        if (home == NULL) {
             home = tr_strdup("");
         }
     }
@@ -296,9 +289,9 @@ static char const* getHomeDir(void)
 #define TORRENT_SUBDIR "torrents"
 #endif
 
-void tr_setConfigDir(tr_session* session, char const* configDir)
+void tr_setConfigDir(tr_session *session, char const *configDir)
 {
-    char* path;
+    char *path;
 
     session->configDir = tr_strdup(configDir);
 
@@ -311,43 +304,40 @@ void tr_setConfigDir(tr_session* session, char const* configDir)
     session->torrentDir = path;
 }
 
-char const* tr_sessionGetConfigDir(tr_session const* session)
+char const *tr_sessionGetConfigDir(tr_session const *session)
 {
     return session->configDir;
 }
 
-char const* tr_getTorrentDir(tr_session const* session)
+char const *tr_getTorrentDir(tr_session const *session)
 {
     return session->torrentDir;
 }
 
-char const* tr_getResumeDir(tr_session const* session)
+char const *tr_getResumeDir(tr_session const *session)
 {
     return session->resumeDir;
 }
 
-char const* tr_getDefaultConfigDir(char const* appname)
+char const *tr_getDefaultConfigDir(char const *appname)
 {
-    static char* s = NULL;
+    static char *s = NULL;
 
-    if (tr_str_is_empty(appname))
-    {
+    if (tr_str_is_empty(appname)) {
         appname = "Transmission";
     }
 
-    if (s == NULL)
-    {
+    if (s == NULL) {
         s = tr_env_get_string("TRANSMISSION_HOME", NULL);
 
-        if (s == NULL)
-        {
+        if (s == NULL) {
 #ifdef __APPLE__
 
             s = tr_buildPath(getHomeDir(), "Library", "Application Support", appname, NULL);
 
 #elif defined(_WIN32)
 
-            char* appdata = win32_get_known_folder(&FOLDERID_LocalAppData);
+            char *appdata = win32_get_known_folder(&FOLDERID_LocalAppData);
             s = tr_buildPath(appdata, appname, NULL);
             tr_free(appdata);
 
@@ -359,15 +349,12 @@ char const* tr_getDefaultConfigDir(char const* appname)
 
 #else
 
-            char* const xdg_config_home = tr_env_get_string("XDG_CONFIG_HOME", NULL);
+            char *const xdg_config_home = tr_env_get_string("XDG_CONFIG_HOME", NULL);
 
-            if (xdg_config_home != NULL)
-            {
+            if (xdg_config_home != NULL) {
                 s = tr_buildPath(xdg_config_home, appname, NULL);
                 tr_free(xdg_config_home);
-            }
-            else
-            {
+            } else {
                 s = tr_buildPath(getHomeDir(), ".config", appname, NULL);
             }
 
@@ -378,58 +365,46 @@ char const* tr_getDefaultConfigDir(char const* appname)
     return s;
 }
 
-char const* tr_getDefaultDownloadDir(void)
+char const *tr_getDefaultDownloadDir(void)
 {
-    static char* user_dir = NULL;
+    static char *user_dir = NULL;
 
-    if (user_dir == NULL)
-    {
-        char* config_home;
-        char* config_file;
-        char* content;
+    if (user_dir == NULL) {
+        char *config_home;
+        char *config_file;
+        char *content;
         size_t content_len;
 
         /* figure out where to look for user-dirs.dirs */
         config_home = tr_env_get_string("XDG_CONFIG_HOME", NULL);
 
-        if (!tr_str_is_empty(config_home))
-        {
+        if (!tr_str_is_empty(config_home)) {
             config_file = tr_buildPath(config_home, "user-dirs.dirs", NULL);
-        }
-        else
-        {
+        } else {
             config_file = tr_buildPath(getHomeDir(), ".config", "user-dirs.dirs", NULL);
         }
 
         tr_free(config_home);
 
         /* read in user-dirs.dirs and look for the download dir entry */
-        content = (char*)tr_loadFile(config_file, &content_len, NULL);
+        content = (char *)tr_loadFile(config_file, &content_len, NULL);
 
-        if (content != NULL && content_len > 0)
-        {
-            char const* key = "XDG_DOWNLOAD_DIR=\"";
-            char* line = strstr(content, key);
+        if (content != NULL && content_len > 0) {
+            char const *key = "XDG_DOWNLOAD_DIR=\"";
+            char *line = strstr(content, key);
 
-            if (line != NULL)
-            {
-                char* value = line + strlen(key);
-                char* end = strchr(value, '"');
+            if (line != NULL) {
+                char *value = line + strlen(key);
+                char *end = strchr(value, '"');
 
-                if (end != NULL)
-                {
+                if (end != NULL) {
                     *end = '\0';
 
-                    if (strncmp(value, "$HOME/", 6) == 0)
-                    {
+                    if (strncmp(value, "$HOME/", 6) == 0) {
                         user_dir = tr_buildPath(getHomeDir(), value + 6, NULL);
-                    }
-                    else if (strcmp(value, "$HOME") == 0)
-                    {
+                    } else if (strcmp(value, "$HOME") == 0) {
                         user_dir = tr_strdup(getHomeDir());
-                    }
-                    else
-                    {
+                    } else {
                         user_dir = tr_strdup(value);
                     }
                 }
@@ -438,15 +413,13 @@ char const* tr_getDefaultDownloadDir(void)
 
 #ifdef _WIN32
 
-        if (user_dir == NULL)
-        {
+        if (user_dir == NULL) {
             user_dir = win32_get_known_folder(&FOLDERID_Downloads);
         }
 
 #endif
 
-        if (user_dir == NULL)
-        {
+        if (user_dir == NULL) {
 #ifdef __HAIKU__
             user_dir = tr_buildPath(getHomeDir(), "Desktop", NULL);
 #else
@@ -465,9 +438,9 @@ char const* tr_getDefaultDownloadDir(void)
 ****
 ***/
 
-static bool isWebClientDir(char const* path)
+static bool isWebClientDir(char const *path)
 {
-    char* tmp = tr_buildPath(path, "index.html", NULL);
+    char *tmp = tr_buildPath(path, "index.html", NULL);
     bool const ret = tr_sys_path_exists(tmp, NULL);
     tr_logAddInfo(_("Searching for web interface file \"%s\""), tmp);
     tr_free(tmp);
@@ -475,35 +448,31 @@ static bool isWebClientDir(char const* path)
     return ret;
 }
 
-char const* tr_getWebClientDir(tr_session const* session UNUSED)
+char const *tr_getWebClientDir(tr_session const *session UNUSED)
 {
-    static char* s = NULL;
+    static char *s = NULL;
 
-    if (s == NULL)
-    {
+    if (s == NULL) {
         s = tr_env_get_string("CLUTCH_HOME", NULL);
 
-        if (s == NULL)
-        {
+        if (s == NULL) {
             s = tr_env_get_string("TRANSMISSION_WEB_HOME", NULL);
         }
 
-        if (s == NULL)
-        {
+        if (s == NULL) {
 #ifdef BUILD_MAC_CLIENT /* on Mac, look in the Application Support folder first, then in the app bundle. */
 
             /* Look in the Application Support folder */
             s = tr_buildPath(tr_sessionGetConfigDir(session), "web", NULL);
 
-            if (!isWebClientDir(s))
-            {
+            if (!isWebClientDir(s)) {
                 tr_free(s);
 
                 CFURLRef appURL = CFBundleCopyBundleURL(CFBundleGetMainBundle());
                 CFStringRef appRef = CFURLCopyFileSystemPath(appURL, kCFURLPOSIXPathStyle);
                 CFIndex const appStringLength = CFStringGetMaximumSizeOfFileSystemRepresentation(appRef);
 
-                char* appString = tr_malloc(appStringLength);
+                char *appString = tr_malloc(appStringLength);
                 bool const success = CFStringGetFileSystemRepresentation(appRef, appString, appStringLength);
                 TR_ASSERT(success);
 
@@ -513,8 +482,7 @@ char const* tr_getWebClientDir(tr_session const* session UNUSED)
                 /* Fallback to the app bundle */
                 s = tr_buildPath(appString, "Contents", "Resources", "web", NULL);
 
-                if (!isWebClientDir(s))
-                {
+                if (!isWebClientDir(s)) {
                     tr_free(s);
                     s = NULL;
                 }
@@ -533,14 +501,12 @@ char const* tr_getWebClientDir(tr_session const* session UNUSED)
                 &FOLDERID_ProgramData,
             };
 
-            for (size_t i = 0; s == NULL && i < TR_N_ELEMENTS(known_folder_ids); ++i)
-            {
-                char* dir = win32_get_known_folder(known_folder_ids[i]);
+            for (size_t i = 0; s == NULL && i < TR_N_ELEMENTS(known_folder_ids); ++i) {
+                char *dir = win32_get_known_folder(known_folder_ids[i]);
                 s = tr_buildPath(dir, "TransmissionOG", "Web", NULL);
                 tr_free(dir);
 
-                if (!isWebClientDir(s))
-                {
+                if (!isWebClientDir(s)) {
                     tr_free(s);
                     s = NULL;
                 }
@@ -549,20 +515,18 @@ char const* tr_getWebClientDir(tr_session const* session UNUSED)
             if (s == NULL) /* check calling module place */
             {
                 wchar_t wide_module_path[MAX_PATH];
-                char* module_path;
-                char* dir;
+                char *module_path;
+                char *dir;
                 GetModuleFileNameW(NULL, wide_module_path, TR_N_ELEMENTS(wide_module_path));
                 module_path = tr_win32_native_to_utf8(wide_module_path, -1);
                 dir = tr_sys_path_dirname(module_path, NULL);
                 tr_free(module_path);
 
-                if (dir != NULL)
-                {
+                if (dir != NULL) {
                     s = tr_buildPath(dir, "Web", NULL);
                     tr_free(dir);
 
-                    if (!isWebClientDir(s))
-                    {
+                    if (!isWebClientDir(s)) {
                         tr_free(s);
                         s = NULL;
                     }
@@ -571,47 +535,39 @@ char const* tr_getWebClientDir(tr_session const* session UNUSED)
 
 #else /* everyone else, follow the XDG spec */
 
-            tr_list* candidates = NULL;
-            char* tmp;
+            tr_list *candidates = NULL;
+            char *tmp;
 
             /* XDG_DATA_HOME should be the first in the list of candidates */
             tmp = tr_env_get_string("XDG_DATA_HOME", NULL);
 
-            if (!tr_str_is_empty(tmp))
-            {
+            if (!tr_str_is_empty(tmp)) {
                 tr_list_append(&candidates, tmp);
-            }
-            else
-            {
-                char* dhome = tr_buildPath(getHomeDir(), ".local", "share", NULL);
+            } else {
+                char *dhome = tr_buildPath(getHomeDir(), ".local", "share", NULL);
                 tr_list_append(&candidates, dhome);
                 tr_free(tmp);
             }
 
             /* XDG_DATA_DIRS are the backup directories */
             {
-                char const* pkg = PACKAGE_DATA_DIR;
-                char* xdg = tr_env_get_string("XDG_DATA_DIRS", NULL);
-                char const* fallback = "/usr/local/share:/usr/share";
-                char* buf = tr_strdup_printf("%s:%s:%s", pkg != NULL ? pkg : "", xdg != NULL ? xdg : "", fallback);
+                char const *pkg = PACKAGE_DATA_DIR;
+                char *xdg = tr_env_get_string("XDG_DATA_DIRS", NULL);
+                char const *fallback = "/usr/local/share:/usr/share";
+                char *buf = tr_strdup_printf("%s:%s:%s", pkg != NULL ? pkg : "", xdg != NULL ? xdg : "", fallback);
                 tr_free(xdg);
                 tmp = buf;
 
-                while (!tr_str_is_empty(tmp))
-                {
-                    char const* end = strchr(tmp, ':');
+                while (!tr_str_is_empty(tmp)) {
+                    char const *end = strchr(tmp, ':');
 
-                    if (end != NULL)
-                    {
-                        if (end - tmp > 1)
-                        {
+                    if (end != NULL) {
+                        if (end - tmp > 1) {
                             tr_list_append(&candidates, tr_strndup(tmp, (size_t)(end - tmp)));
                         }
 
-                        tmp = (char*)end + 1;
-                    }
-                    else if (!tr_str_is_empty(tmp))
-                    {
+                        tmp = (char *)end + 1;
+                    } else if (!tr_str_is_empty(tmp)) {
                         tr_list_append(&candidates, tr_strdup(tmp));
                         break;
                     }
@@ -621,13 +577,11 @@ char const* tr_getWebClientDir(tr_session const* session UNUSED)
             }
 
             /* walk through the candidates & look for a match */
-            for (tr_list* l = candidates; l != NULL; l = l->next)
-            {
-                char* path = tr_buildPath(l->data, PACKAGE_NAME, "web", NULL);
+            for (tr_list *l = candidates; l != NULL; l = l->next) {
+                char *path = tr_buildPath(l->data, PACKAGE_NAME, "web", NULL);
                 bool const found = isWebClientDir(path);
 
-                if (found)
-                {
+                if (found) {
                     s = path;
                     break;
                 }
@@ -644,7 +598,7 @@ char const* tr_getWebClientDir(tr_session const* session UNUSED)
     return s;
 }
 
-char* tr_getSessionIdDir(void)
+char *tr_getSessionIdDir(void)
 {
 #ifndef _WIN32
 
@@ -652,8 +606,8 @@ char* tr_getSessionIdDir(void)
 
 #else
 
-    char* program_data_dir = win32_get_known_folder_ex(&FOLDERID_ProgramData, KF_FLAG_CREATE);
-    char* result = tr_buildPath(program_data_dir, "TransmissionOG", NULL);
+    char *program_data_dir = win32_get_known_folder_ex(&FOLDERID_ProgramData, KF_FLAG_CREATE);
+    char *result = tr_buildPath(program_data_dir, "TransmissionOG", NULL);
     tr_free(program_data_dir);
     tr_sys_dir_create(result, 0, 0, NULL);
     return result;

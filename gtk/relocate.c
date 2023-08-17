@@ -19,22 +19,21 @@
 
 #define DATA_KEY "gtr-relocate-data"
 
-static char* previousLocation = NULL;
+static char *previousLocation = NULL;
 
-struct relocate_dialog_data
-{
+struct relocate_dialog_data {
     int done;
     bool do_move;
     guint timer;
-    TrCore* core;
-    GSList* torrent_ids;
-    GtkWidget* message_dialog;
-    GtkWidget* chooser_dialog;
+    TrCore *core;
+    GSList *torrent_ids;
+    GtkWidget *message_dialog;
+    GtkWidget *chooser_dialog;
 };
 
 static void data_free(gpointer gdata)
 {
-    struct relocate_dialog_data* data = gdata;
+    struct relocate_dialog_data *data = gdata;
     g_source_remove(data->timer);
     g_slist_free(data->torrent_ids);
     g_free(data);
@@ -44,15 +43,14 @@ static void data_free(gpointer gdata)
 ****
 ***/
 
-static void startMovingNextTorrent(struct relocate_dialog_data* data)
+static void startMovingNextTorrent(struct relocate_dialog_data *data)
 {
-    char* str;
+    char *str;
     int const id = GPOINTER_TO_INT(data->torrent_ids->data);
 
-    tr_torrent* tor = gtr_core_find_torrent(data->core, id);
+    tr_torrent *tor = gtr_core_find_torrent(data->core, id);
 
-    if (tor != NULL)
-    {
+    if (tor != NULL) {
         tr_torrentSetLocation(tor, previousLocation, data->do_move, NULL, &data->done);
     }
 
@@ -67,13 +65,12 @@ static void startMovingNextTorrent(struct relocate_dialog_data* data)
  * if so, delete the dialog */
 static gboolean onTimer(gpointer gdata)
 {
-    struct relocate_dialog_data* data = gdata;
+    struct relocate_dialog_data *data = gdata;
     int const done = data->done;
 
-    if (done == TR_LOC_ERROR)
-    {
+    if (done == TR_LOC_ERROR) {
         int const flags = GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT;
-        GtkWidget* w = gtk_message_dialog_new(
+        GtkWidget *w = gtk_message_dialog_new(
             GTK_WINDOW(data->message_dialog),
             flags,
             GTK_MESSAGE_ERROR,
@@ -82,15 +79,10 @@ static gboolean onTimer(gpointer gdata)
             _("Couldn't move torrent"));
         gtk_dialog_run(GTK_DIALOG(w));
         gtk_widget_destroy(GTK_WIDGET(data->message_dialog));
-    }
-    else if (done == TR_LOC_DONE)
-    {
-        if (data->torrent_ids != NULL)
-        {
+    } else if (done == TR_LOC_DONE) {
+        if (data->torrent_ids != NULL) {
             startMovingNextTorrent(data);
-        }
-        else
-        {
+        } else {
             gtk_widget_destroy(GTK_WIDGET(data->chooser_dialog));
         }
     }
@@ -98,16 +90,15 @@ static gboolean onTimer(gpointer gdata)
     return G_SOURCE_CONTINUE;
 }
 
-static void onResponse(GtkDialog* dialog, int response, gpointer unused UNUSED)
+static void onResponse(GtkDialog *dialog, int response, gpointer unused UNUSED)
 {
-    if (response == GTK_RESPONSE_APPLY)
-    {
-        GtkWidget* w;
-        GObject* d = G_OBJECT(dialog);
-        struct relocate_dialog_data* data = g_object_get_data(d, DATA_KEY);
-        GtkFileChooser* chooser = g_object_get_data(d, "chooser");
-        GtkToggleButton* move_tb = g_object_get_data(d, "move_rb");
-        char* location = gtk_file_chooser_get_filename(chooser);
+    if (response == GTK_RESPONSE_APPLY) {
+        GtkWidget *w;
+        GObject *d = G_OBJECT(dialog);
+        struct relocate_dialog_data *data = g_object_get_data(d, DATA_KEY);
+        GtkFileChooser *chooser = g_object_get_data(d, "chooser");
+        GtkToggleButton *move_tb = g_object_get_data(d, "move_rb");
+        char *location = gtk_file_chooser_get_filename(chooser);
 
         data->do_move = gtk_toggle_button_get_active(move_tb);
 
@@ -131,20 +122,18 @@ static void onResponse(GtkDialog* dialog, int response, gpointer unused UNUSED)
         data->done = TR_LOC_DONE;
         data->timer = gdk_threads_add_timeout_seconds(1, onTimer, data);
         onTimer(data);
-    }
-    else
-    {
+    } else {
         gtk_widget_destroy(GTK_WIDGET(dialog));
     }
 }
 
-GtkWidget* gtr_relocate_dialog_new(GtkWindow* parent, TrCore* core, GSList* torrent_ids)
+GtkWidget *gtr_relocate_dialog_new(GtkWindow *parent, TrCore *core, GSList *torrent_ids)
 {
     guint row;
-    GtkWidget* w;
-    GtkWidget* d;
-    GtkWidget* t;
-    struct relocate_dialog_data* data;
+    GtkWidget *w;
+    GtkWidget *d;
+    GtkWidget *t;
+    struct relocate_dialog_data *data;
 
     d = gtk_dialog_new_with_buttons(
         _("Set Torrent Location"),
@@ -162,8 +151,7 @@ GtkWidget* gtr_relocate_dialog_new(GtkWindow* parent, TrCore* core, GSList* torr
     t = hig_workarea_create();
     hig_workarea_add_section_title(t, &row, _("Location"));
 
-    if (previousLocation == NULL)
-    {
+    if (previousLocation == NULL) {
         previousLocation = g_strdup(gtr_pref_string_get(TR_KEY_download_dir));
     }
 

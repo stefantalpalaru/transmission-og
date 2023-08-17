@@ -24,8 +24,7 @@
 
 @class Torrent;
 
-@interface FileOutlineView : NSOutlineView
-{
+@interface FileOutlineView : NSOutlineView {
     NSInteger fMouseRow;
 }
 

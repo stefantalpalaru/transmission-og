@@ -8,13 +8,11 @@
 
 #pragma once
 
-class Speed
-{
+class Speed {
 public:
     Speed()
         : _Bps(0)
-    {
-    }
+    {}
 
     double KBps() const;
 
@@ -40,18 +38,18 @@ public:
         _Bps = Bps;
     }
 
-    Speed& operator+=(Speed const& that)
+    Speed &operator+=(Speed const &that)
     {
         _Bps += that._Bps;
         return *this;
     }
 
-    Speed operator+(Speed const& that) const
+    Speed operator+(Speed const &that) const
     {
         return Speed(_Bps + that._Bps);
     }
 
-    bool operator<(Speed const& that) const
+    bool operator<(Speed const &that) const
     {
         return _Bps < that._Bps;
     }
@@ -59,8 +57,7 @@ public:
 private:
     Speed(int Bps)
         : _Bps(Bps)
-    {
-    }
+    {}
 
 private:
     int _Bps;

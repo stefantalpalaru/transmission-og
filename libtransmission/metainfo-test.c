@@ -17,8 +17,8 @@
 static int test_magnet_link(void)
 {
     tr_info inf;
-    tr_ctor* ctor;
-    char const* magnet_link;
+    tr_ctor *ctor;
+    char const *magnet_link;
     tr_parse_result parse_result;
 
     /* background info @ http://wiki.theory.org/BitTorrent_Magnet-URI_Webseeding */
@@ -53,11 +53,10 @@ static int test_magnet_link(void)
 
 static int test_metainfo(void)
 {
-    struct
-    {
+    struct {
         int expected_benc_err;
         int expected_parse_result;
-        void const* benc;
+        void const *benc;
     } const metainfo[] = {
         { 0, TR_PARSE_OK, BEFORE_PATH "5:a.txt" AFTER_PATH },
 
@@ -82,14 +81,12 @@ static int test_metainfo(void)
 
     tr_logSetLevel(0); /* yes, we already know these will generate errors, thank you... */
 
-    for (size_t i = 0; i < TR_N_ELEMENTS(metainfo); i++)
-    {
-        tr_ctor* ctor = tr_ctorNew(NULL);
+    for (size_t i = 0; i < TR_N_ELEMENTS(metainfo); i++) {
+        tr_ctor *ctor = tr_ctorNew(NULL);
         int const err = tr_ctorSetMetainfo(ctor, metainfo[i].benc, strlen(metainfo[i].benc));
         check_int(err, ==, metainfo[i].expected_benc_err);
 
-        if (err == 0)
-        {
+        if (err == 0) {
             tr_parse_result const parse_result = tr_torrentParse(ctor, NULL);
             check_int(parse_result, ==, metainfo[i].expected_parse_result);
         }
@@ -102,11 +99,10 @@ static int test_metainfo(void)
 
 static int test_sanitize(void)
 {
-    struct
-    {
-        char const* str;
+    struct {
+        char const *str;
         size_t len;
-        char const* expected_result;
+        char const *expected_result;
         bool expected_is_adjusted;
     } const test_data[] = {
         /* skipped */
@@ -145,15 +141,13 @@ static int test_sanitize(void)
         { "compass", 7, "compass", false },
     };
 
-    for (size_t i = 0; i < TR_N_ELEMENTS(test_data); ++i)
-    {
+    for (size_t i = 0; i < TR_N_ELEMENTS(test_data); ++i) {
         bool is_adjusted;
-        char* const result = tr_metainfo_sanitize_path_component(test_data[i].str, test_data[i].len, &is_adjusted);
+        char *const result = tr_metainfo_sanitize_path_component(test_data[i].str, test_data[i].len, &is_adjusted);
 
         check_str(result, ==, test_data[i].expected_result);
 
-        if (test_data[i].expected_result != NULL)
-        {
+        if (test_data[i].expected_result != NULL) {
             check_bool(is_adjusted, ==, test_data[i].expected_is_adjusted);
         }
 

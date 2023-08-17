@@ -22,9 +22,8 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface FilterBarView : NSView
-{
-    NSGradient* fGradient;
+@interface FilterBarView : NSView {
+    NSGradient *fGradient;
 }
 
 @end

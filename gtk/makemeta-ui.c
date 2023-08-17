@@ -22,31 +22,30 @@
 
 #define FILE_CHOSEN_KEY "file-is-chosen"
 
-typedef struct
-{
-    char* target;
+typedef struct {
+    char *target;
     guint progress_tag;
-    GtkWidget* file_radio;
-    GtkWidget* file_chooser;
-    GtkWidget* folder_radio;
-    GtkWidget* folder_chooser;
-    GtkWidget* pieces_lb;
-    GtkWidget* destination_chooser;
-    GtkWidget* comment_check;
-    GtkWidget* comment_entry;
-    GtkWidget* private_check;
-    GtkWidget* progress_label;
-    GtkWidget* progress_bar;
-    GtkWidget* progress_dialog;
-    GtkWidget* dialog;
-    GtkTextBuffer* announce_text_buffer;
-    TrCore* core;
-    tr_metainfo_builder* builder;
+    GtkWidget *file_radio;
+    GtkWidget *file_chooser;
+    GtkWidget *folder_radio;
+    GtkWidget *folder_chooser;
+    GtkWidget *pieces_lb;
+    GtkWidget *destination_chooser;
+    GtkWidget *comment_check;
+    GtkWidget *comment_entry;
+    GtkWidget *private_check;
+    GtkWidget *progress_label;
+    GtkWidget *progress_bar;
+    GtkWidget *progress_dialog;
+    GtkWidget *dialog;
+    GtkTextBuffer *announce_text_buffer;
+    TrCore *core;
+    tr_metainfo_builder *builder;
 } MakeMetaUI;
 
 static void freeMetaUI(gpointer p)
 {
-    MakeMetaUI* ui = p;
+    MakeMetaUI *ui = p;
 
     tr_metaInfoBuilderFree(ui->builder);
     g_free(ui->target);
@@ -56,57 +55,40 @@ static void freeMetaUI(gpointer p)
 
 static gboolean onProgressDialogRefresh(gpointer data)
 {
-    char* str = NULL;
-    MakeMetaUI* ui = data;
-    tr_metainfo_builder const* b = ui->builder;
-    GtkDialog* d = GTK_DIALOG(ui->progress_dialog);
-    GtkProgressBar* p = GTK_PROGRESS_BAR(ui->progress_bar);
+    char *str = NULL;
+    MakeMetaUI *ui = data;
+    tr_metainfo_builder const *b = ui->builder;
+    GtkDialog *d = GTK_DIALOG(ui->progress_dialog);
+    GtkProgressBar *p = GTK_PROGRESS_BAR(ui->progress_bar);
     double const fraction = b->pieceCount != 0 ? (double)b->pieceIndex / b->pieceCount : 0;
-    char* base = g_path_get_basename(b->top);
+    char *base = g_path_get_basename(b->top);
 
     /* progress label */
-    if (!b->isDone)
-    {
+    if (!b->isDone) {
         str = g_strdup_printf(_("Creating \"%s\""), base);
-    }
-    else if (b->result == TR_MAKEMETA_OK)
-    {
+    } else if (b->result == TR_MAKEMETA_OK) {
         str = g_strdup_printf(_("Created \"%s\"!"), base);
-    }
-    else if (b->result == TR_MAKEMETA_URL)
-    {
+    } else if (b->result == TR_MAKEMETA_URL) {
         str = g_strdup_printf(_("Error: invalid announce URL \"%s\""), b->errfile);
-    }
-    else if (b->result == TR_MAKEMETA_CANCELLED)
-    {
+    } else if (b->result == TR_MAKEMETA_CANCELLED) {
         str = g_strdup_printf(_("Cancelled"));
-    }
-    else if (b->result == TR_MAKEMETA_IO_READ)
-    {
+    } else if (b->result == TR_MAKEMETA_IO_READ) {
         str = g_strdup_printf(_("Error reading \"%s\": %s"), b->errfile, g_strerror(b->my_errno));
-    }
-    else if (b->result == TR_MAKEMETA_IO_WRITE)
-    {
+    } else if (b->result == TR_MAKEMETA_IO_WRITE) {
         str = g_strdup_printf(_("Error writing \"%s\": %s"), b->errfile, g_strerror(b->my_errno));
-    }
-    else
-    {
+    } else {
         g_assert_not_reached();
     }
 
-    if (str != NULL)
-    {
+    if (str != NULL) {
         gtr_label_set_text(GTK_LABEL(ui->progress_label), str);
         g_free(str);
     }
 
     /* progress bar */
-    if (b->pieceIndex == 0)
-    {
+    if (b->pieceIndex == 0) {
         str = g_strdup("");
-    }
-    else
-    {
+    } else {
         char sizebuf[128];
         tr_strlsize(sizebuf, (uint64_t)b->pieceIndex * (uint64_t)b->pieceSize, sizeof(sizebuf));
         /* how much data we've scanned through to generate checksums */
@@ -126,17 +108,17 @@ static gboolean onProgressDialogRefresh(gpointer data)
     return G_SOURCE_CONTINUE;
 }
 
-static void onProgressDialogDestroyed(gpointer data, GObject* dead UNUSED)
+static void onProgressDialogDestroyed(gpointer data, GObject *dead UNUSED)
 {
-    MakeMetaUI* ui = data;
+    MakeMetaUI *ui = data;
     g_source_remove(ui->progress_tag);
 }
 
-static void addTorrent(MakeMetaUI* ui)
+static void addTorrent(MakeMetaUI *ui)
 {
-    char* path;
-    tr_metainfo_builder const* b = ui->builder;
-    tr_ctor* ctor = tr_ctorNew(gtr_core_session(ui->core));
+    char *path;
+    tr_metainfo_builder const *b = ui->builder;
+    tr_ctor *ctor = tr_ctorNew(gtr_core_session(ui->core));
 
     tr_ctorSetMetainfoFromFile(ctor, ui->target);
 
@@ -147,12 +129,11 @@ static void addTorrent(MakeMetaUI* ui)
     gtr_core_add_ctor(ui->core, ctor);
 }
 
-static void onProgressDialogResponse(GtkDialog* d, int response, gpointer data)
+static void onProgressDialogResponse(GtkDialog *d, int response, gpointer data)
 {
-    MakeMetaUI* ui = data;
+    MakeMetaUI *ui = data;
 
-    switch (response)
-    {
+    switch (response) {
     case GTK_RESPONSE_CANCEL:
         ui->builder->abortFlag = TRUE;
         gtk_widget_destroy(GTK_WIDGET(d));
@@ -172,13 +153,13 @@ static void onProgressDialogResponse(GtkDialog* d, int response, gpointer data)
     }
 }
 
-static void makeProgressDialog(GtkWidget* parent, MakeMetaUI* ui)
+static void makeProgressDialog(GtkWidget *parent, MakeMetaUI *ui)
 {
-    GtkWidget* d;
-    GtkWidget* l;
-    GtkWidget* w;
-    GtkWidget* v;
-    GtkWidget* fr;
+    GtkWidget *d;
+    GtkWidget *l;
+    GtkWidget *w;
+    GtkWidget *v;
+    GtkWidget *fr;
 
     d = gtk_dialog_new_with_buttons(
         _("New Torrent"),
@@ -218,29 +199,27 @@ static void makeProgressDialog(GtkWidget* parent, MakeMetaUI* ui)
     gtk_widget_show(d);
 }
 
-static void onResponse(GtkDialog* d, int response, gpointer user_data)
+static void onResponse(GtkDialog *d, int response, gpointer user_data)
 {
-    MakeMetaUI* ui = user_data;
+    MakeMetaUI *ui = user_data;
 
-    if (response == GTK_RESPONSE_ACCEPT)
-    {
-        if (ui->builder != NULL)
-        {
+    if (response == GTK_RESPONSE_ACCEPT) {
+        if (ui->builder != NULL) {
             int n;
             int tier;
             GtkTextIter start;
             GtkTextIter end;
-            char* dir;
-            char* base;
-            char* tracker_text;
-            char** tracker_strings;
-            GtkEntry* c_entry = GTK_ENTRY(ui->comment_entry);
-            GtkToggleButton* p_check = GTK_TOGGLE_BUTTON(ui->private_check);
-            GtkToggleButton* c_check = GTK_TOGGLE_BUTTON(ui->comment_check);
-            char const* comment = gtk_entry_get_text(c_entry);
+            char *dir;
+            char *base;
+            char *tracker_text;
+            char **tracker_strings;
+            GtkEntry *c_entry = GTK_ENTRY(ui->comment_entry);
+            GtkToggleButton *p_check = GTK_TOGGLE_BUTTON(ui->private_check);
+            GtkToggleButton *c_check = GTK_TOGGLE_BUTTON(ui->comment_check);
+            char const *comment = gtk_entry_get_text(c_entry);
             gboolean const isPrivate = gtk_toggle_button_get_active(p_check);
             gboolean const useComment = gtk_toggle_button_get_active(c_check);
-            tr_tracker_info* trackers;
+            tr_tracker_info *trackers;
 
             /* destination file */
             dir = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(ui->destination_chooser));
@@ -257,16 +236,12 @@ static void onResponse(GtkDialog* d, int response, gpointer user_data)
             n = 0;
             tier = 0;
 
-            for (int i = 0; tracker_strings[i] != NULL; ++i)
-            {
-                char* const str = tracker_strings[i];
+            for (int i = 0; tracker_strings[i] != NULL; ++i) {
+                char *const str = tracker_strings[i];
 
-                if (tr_str_is_empty(str))
-                {
+                if (tr_str_is_empty(str)) {
                     ++tier;
-                }
-                else
-                {
+                } else {
                     trackers[n].tier = tier;
                     trackers[n].announce = str;
                     ++n;
@@ -284,9 +259,7 @@ static void onResponse(GtkDialog* d, int response, gpointer user_data)
             g_free(base);
             g_free(dir);
         }
-    }
-    else if (response == GTK_RESPONSE_CLOSE)
-    {
+    } else if (response == GTK_RESPONSE_CLOSE) {
         gtk_widget_destroy(GTK_WIDGET(d));
     }
 }
@@ -295,25 +268,22 @@ static void onResponse(GtkDialog* d, int response, gpointer user_data)
 ****
 ***/
 
-static void onSourceToggled(GtkToggleButton* tb, gpointer user_data)
+static void onSourceToggled(GtkToggleButton *tb, gpointer user_data)
 {
     gtk_widget_set_sensitive(GTK_WIDGET(user_data), gtk_toggle_button_get_active(tb));
 }
 
-static void updatePiecesLabel(MakeMetaUI* ui)
+static void updatePiecesLabel(MakeMetaUI *ui)
 {
-    tr_metainfo_builder const* builder = ui->builder;
-    char const* filename = builder != NULL ? builder->top : NULL;
-    GString* gstr = g_string_new(NULL);
+    tr_metainfo_builder const *builder = ui->builder;
+    char const *filename = builder != NULL ? builder->top : NULL;
+    GString *gstr = g_string_new(NULL);
 
     g_string_append(gstr, "<i>");
 
-    if (filename == NULL)
-    {
+    if (filename == NULL) {
         g_string_append(gstr, _("No source selected"));
-    }
-    else
-    {
+    } else {
         char buf[128];
         tr_strlsize(buf, builder->totalSize, sizeof(buf));
         g_string_append_printf(
@@ -336,26 +306,24 @@ static void updatePiecesLabel(MakeMetaUI* ui)
     g_string_free(gstr, TRUE);
 }
 
-static void setFilename(MakeMetaUI* ui, char const* filename)
+static void setFilename(MakeMetaUI *ui, char const *filename)
 {
-    if (ui->builder != NULL)
-    {
+    if (ui->builder != NULL) {
         tr_metaInfoBuilderFree(ui->builder);
         ui->builder = NULL;
     }
 
-    if (filename)
-    {
+    if (filename) {
         ui->builder = tr_metaInfoBuilderCreate(filename);
     }
 
     updatePiecesLabel(ui);
 }
 
-static void onChooserChosen(GtkFileChooser* chooser, gpointer user_data)
+static void onChooserChosen(GtkFileChooser *chooser, gpointer user_data)
 {
-    char* filename;
-    MakeMetaUI* ui = user_data;
+    char *filename;
+    MakeMetaUI *ui = user_data;
 
     g_object_set_data(G_OBJECT(chooser), FILE_CHOSEN_KEY, GINT_TO_POINTER(TRUE));
 
@@ -364,66 +332,58 @@ static void onChooserChosen(GtkFileChooser* chooser, gpointer user_data)
     g_free(filename);
 }
 
-static void onSourceToggled2(GtkToggleButton* tb, GtkWidget* chooser, MakeMetaUI* ui)
+static void onSourceToggled2(GtkToggleButton *tb, GtkWidget *chooser, MakeMetaUI *ui)
 {
-    if (gtk_toggle_button_get_active(tb))
-    {
-        if (g_object_get_data(G_OBJECT(chooser), FILE_CHOSEN_KEY) != NULL)
-        {
+    if (gtk_toggle_button_get_active(tb)) {
+        if (g_object_get_data(G_OBJECT(chooser), FILE_CHOSEN_KEY) != NULL) {
             onChooserChosen(GTK_FILE_CHOOSER(chooser), ui);
-        }
-        else
-        {
+        } else {
             setFilename(ui, NULL);
         }
     }
 }
 
-static void onFolderToggled(GtkToggleButton* tb, gpointer data)
+static void onFolderToggled(GtkToggleButton *tb, gpointer data)
 {
-    MakeMetaUI* ui = data;
+    MakeMetaUI *ui = data;
     onSourceToggled2(tb, ui->folder_chooser, ui);
 }
 
-static void onFileToggled(GtkToggleButton* tb, gpointer data)
+static void onFileToggled(GtkToggleButton *tb, gpointer data)
 {
-    MakeMetaUI* ui = data;
+    MakeMetaUI *ui = data;
     onSourceToggled2(tb, ui->file_chooser, ui);
 }
 
-static char const* getDefaultSavePath(void)
+static char const *getDefaultSavePath(void)
 {
     return g_get_user_special_dir(G_USER_DIRECTORY_DESKTOP);
 }
 
 static void on_drag_data_received(
-    GtkWidget* widget UNUSED,
-    GdkDragContext* drag_context,
+    GtkWidget *widget UNUSED,
+    GdkDragContext *drag_context,
     gint x UNUSED,
     gint y UNUSED,
-    GtkSelectionData* selection_data,
+    GtkSelectionData *selection_data,
     guint info UNUSED,
     guint time_,
     gpointer user_data)
 {
     gboolean success = FALSE;
-    MakeMetaUI* ui = user_data;
-    char** uris = gtk_selection_data_get_uris(selection_data);
+    MakeMetaUI *ui = user_data;
+    char **uris = gtk_selection_data_get_uris(selection_data);
 
-    if (uris != NULL && uris[0] != NULL)
-    {
-        char const* uri = uris[0];
-        gchar* filename = g_filename_from_uri(uri, NULL, NULL);
+    if (uris != NULL && uris[0] != NULL) {
+        char const *uri = uris[0];
+        gchar *filename = g_filename_from_uri(uri, NULL, NULL);
 
-        if (g_file_test(filename, G_FILE_TEST_IS_DIR))
-        {
+        if (g_file_test(filename, G_FILE_TEST_IS_DIR)) {
             /* a directory was dragged onto the dialog... */
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ui->folder_radio), TRUE);
             gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(ui->folder_chooser), filename);
             success = TRUE;
-        }
-        else if (g_file_test(filename, G_FILE_TEST_IS_REGULAR))
-        {
+        } else if (g_file_test(filename, G_FILE_TEST_IS_REGULAR)) {
             /* a file was dragged on to the dialog... */
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ui->file_radio), TRUE);
             gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(ui->file_chooser), filename);
@@ -437,19 +397,19 @@ static void on_drag_data_received(
     gtk_drag_finish(drag_context, success, FALSE, time_);
 }
 
-GtkWidget* gtr_torrent_creation_dialog_new(GtkWindow* parent, TrCore* core)
+GtkWidget *gtr_torrent_creation_dialog_new(GtkWindow *parent, TrCore *core)
 {
-    char const* str;
-    GtkWidget* d;
-    GtkWidget* t;
-    GtkWidget* w;
-    GtkWidget* l;
-    GtkWidget* fr;
-    GtkWidget* sw;
-    GtkWidget* v;
-    GSList* slist;
+    char const *str;
+    GtkWidget *d;
+    GtkWidget *t;
+    GtkWidget *w;
+    GtkWidget *l;
+    GtkWidget *fr;
+    GtkWidget *sw;
+    GtkWidget *v;
+    GSList *slist;
     guint row = 0;
-    MakeMetaUI* ui = g_new0(MakeMetaUI, 1);
+    MakeMetaUI *ui = g_new0(MakeMetaUI, 1);
 
     ui->core = core;
 

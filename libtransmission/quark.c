@@ -15,9 +15,8 @@
 #include "tr-assert.h"
 #include "utils.h" /* tr_memdup(), tr_strndup() */
 
-struct tr_key_struct
-{
-    char const* str;
+struct tr_key_struct {
+    char const *str;
     size_t len;
 };
 
@@ -416,16 +415,15 @@ static struct tr_key_struct const my_static[] = {
 
 #undef Q
 
-static int compareKeys(void const* va, void const* vb)
+static int compareKeys(void const *va, void const *vb)
 {
     int ret;
-    struct tr_key_struct const* a = va;
-    struct tr_key_struct const* b = vb;
+    struct tr_key_struct const *a = va;
+    struct tr_key_struct const *b = vb;
 
     ret = memcmp(a->str, b->str, MIN(a->len, b->len));
 
-    if (ret == 0 && a->len != b->len)
-    {
+    if (ret == 0 && a->len != b->len) {
         ret = a->len < b->len ? -1 : 1;
     }
 
@@ -434,14 +432,14 @@ static int compareKeys(void const* va, void const* vb)
 
 static tr_ptrArray my_runtime = TR_PTR_ARRAY_INIT_STATIC;
 
-bool tr_quark_lookup(void const* str, size_t len, tr_quark* setme)
+bool tr_quark_lookup(void const *str, size_t len, tr_quark *setme)
 {
     static size_t const n_static = TR_N_ELEMENTS(my_static);
 
     TR_ASSERT(n_static == TR_N_KEYS);
 
     struct tr_key_struct tmp;
-    struct tr_key_struct* match;
+    struct tr_key_struct *match;
     bool success = false;
 
     tmp.str = str;
@@ -450,22 +448,18 @@ bool tr_quark_lookup(void const* str, size_t len, tr_quark* setme)
     /* is it in our static array? */
     match = bsearch(&tmp, my_static, n_static, sizeof(struct tr_key_struct), compareKeys);
 
-    if (match != NULL)
-    {
+    if (match != NULL) {
         *setme = match - my_static;
         success = true;
     }
 
     /* was it added during runtime? */
-    if (!success && !tr_ptrArrayEmpty(&my_runtime))
-    {
-        struct tr_key_struct** runtime = (struct tr_key_struct**)tr_ptrArrayBase(&my_runtime);
+    if (!success && !tr_ptrArrayEmpty(&my_runtime)) {
+        struct tr_key_struct **runtime = (struct tr_key_struct **)tr_ptrArrayBase(&my_runtime);
         size_t const n_runtime = tr_ptrArraySize(&my_runtime);
 
-        for (size_t i = 0; i < n_runtime; ++i)
-        {
-            if (compareKeys(&tmp, runtime[i]) == 0)
-            {
+        for (size_t i = 0; i < n_runtime; ++i) {
+            if (compareKeys(&tmp, runtime[i]) == 0) {
                 *setme = TR_N_KEYS + i;
                 success = true;
                 break;
@@ -476,10 +470,10 @@ bool tr_quark_lookup(void const* str, size_t len, tr_quark* setme)
     return success;
 }
 
-static tr_quark append_new_quark(void const* str, size_t len)
+static tr_quark append_new_quark(void const *str, size_t len)
 {
     tr_quark ret;
-    struct tr_key_struct* tmp;
+    struct tr_key_struct *tmp;
     tmp = tr_new(struct tr_key_struct, 1);
     tmp->str = tr_strndup(str, len);
     tmp->len = len;
@@ -488,22 +482,19 @@ static tr_quark append_new_quark(void const* str, size_t len)
     return ret;
 }
 
-tr_quark tr_quark_new(void const* str, size_t len)
+tr_quark tr_quark_new(void const *str, size_t len)
 {
     tr_quark ret = TR_KEY_NONE;
 
-    if (str == NULL)
-    {
+    if (str == NULL) {
         goto finish;
     }
 
-    if (len == TR_BAD_SIZE)
-    {
+    if (len == TR_BAD_SIZE) {
         len = strlen(str);
     }
 
-    if (!tr_quark_lookup(str, len, &ret))
-    {
+    if (!tr_quark_lookup(str, len, &ret)) {
         ret = append_new_quark(str, len);
     }
 
@@ -511,21 +502,17 @@ finish:
     return ret;
 }
 
-char const* tr_quark_get_string(tr_quark q, size_t* len)
+char const *tr_quark_get_string(tr_quark q, size_t *len)
 {
-    struct tr_key_struct const* tmp;
+    struct tr_key_struct const *tmp;
 
-    if (q < TR_N_KEYS)
-    {
+    if (q < TR_N_KEYS) {
         tmp = &my_static[q];
-    }
-    else
-    {
+    } else {
         tmp = tr_ptrArrayNth(&my_runtime, q - TR_N_KEYS);
     }
 
-    if (len != NULL)
-    {
+    if (len != NULL) {
         *len = tmp->len;
     }
 

@@ -27,7 +27,7 @@
 #include <libtransmission/transmission.h> /* tr_variant, tr_session */
 #include <libtransmission/quark.h>
 
-void gtr_pref_init(char const* config_dir);
+void gtr_pref_init(char const *config_dir);
 
 int64_t gtr_pref_int_get(tr_quark const key);
 void gtr_pref_int_set(tr_quark const key, int64_t value);
@@ -38,8 +38,8 @@ void gtr_pref_double_set(tr_quark const key, double value);
 gboolean gtr_pref_flag_get(tr_quark const key);
 void gtr_pref_flag_set(tr_quark const key, gboolean value);
 
-char const* gtr_pref_string_get(tr_quark const key);
-void gtr_pref_string_set(tr_quark const key, char const* value);
+char const *gtr_pref_string_get(tr_quark const key);
+void gtr_pref_string_set(tr_quark const key, char const *value);
 
-void gtr_pref_save(tr_session*);
-struct tr_variant* gtr_pref_get_all(void);
+void gtr_pref_save(tr_session *);
+struct tr_variant *gtr_pref_get_all(void);

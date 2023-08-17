@@ -22,8 +22,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface PrefsWindow : NSWindow
-{
+@interface PrefsWindow : NSWindow {
 }
 
 @end

@@ -22,9 +22,8 @@
 
 #import <AppKit/AppKit.h>
 
-@interface TorrentCell : NSActionCell
-{
-    NSUserDefaults* fDefaults;
+@interface TorrentCell : NSActionCell {
+    NSUserDefaults *fDefaults;
 
     NSMutableDictionary *fTitleAttributes, *fStatusAttributes;
 
@@ -35,9 +34,9 @@
 
 - (NSRect)iconRectForBounds:(NSRect)bounds;
 
-- (void)addTrackingAreasForView:(NSView*)controlView
+- (void)addTrackingAreasForView:(NSView *)controlView
                          inRect:(NSRect)cellFrame
-                   withUserInfo:(NSDictionary*)userInfo
+                   withUserInfo:(NSDictionary *)userInfo
                   mouseLocation:(NSPoint)mouseLocation;
 - (void)setHover:(BOOL)hover;
 - (void)setControlHover:(BOOL)hover;

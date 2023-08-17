@@ -27,13 +27,7 @@
 #include "TorrentModel.h"
 #include "Utils.h"
 
-enum
-{
-    GUI_PAD = 6,
-    BAR_WIDTH = 50,
-    BAR_HEIGHT = 16,
-    LINE_SPACING = 4
-};
+enum { GUI_PAD = 6, BAR_WIDTH = 50, BAR_HEIGHT = 16, LINE_SPACING = 4 };
 
 /***
 ****
@@ -43,11 +37,9 @@ enum
 ****
 ***/
 
-namespace
-{
+namespace {
 
-class ItemLayout
-{
+class ItemLayout {
 private:
     QString myNameText;
     QString myStatusText;
@@ -64,12 +56,12 @@ public:
 
 public:
     ItemLayout(
-        QString const& nameText,
-        QString const& statusText,
-        QIcon const& emblemIcon,
-        QFont const& baseFont,
+        QString const &nameText,
+        QString const &statusText,
+        QIcon const &emblemIcon,
+        QFont const &baseFont,
         Qt::LayoutDirection direction,
-        QPoint const& topLeft,
+        QPoint const &topLeft,
         int width);
 
     QSize size() const
@@ -88,26 +80,26 @@ public:
     }
 
 private:
-    QString elidedText(QFont const& font, QString const& text, int width) const
+    QString elidedText(QFont const &font, QString const &text, int width) const
     {
         return QFontMetrics(font).elidedText(text, Qt::ElideRight, width);
     }
 };
 
 ItemLayout::ItemLayout(
-    QString const& nameText,
-    QString const& statusText,
-    QIcon const& emblemIcon,
-    QFont const& baseFont,
+    QString const &nameText,
+    QString const &statusText,
+    QIcon const &emblemIcon,
+    QFont const &baseFont,
     Qt::LayoutDirection direction,
-    QPoint const& topLeft,
+    QPoint const &topLeft,
     int width)
     : myNameText(nameText)
     , myStatusText(statusText)
     , nameFont(baseFont)
     , statusFont(baseFont)
 {
-    QStyle const* style(qApp->style());
+    QStyle const *style(qApp->style());
     int const iconSize(style->pixelMetric(QStyle::PM_SmallIconSize));
 
     QFontMetrics const nameFM(nameFont);
@@ -147,7 +139,7 @@ ItemLayout::ItemLayout(
 
 } // namespace
 
-QSize TorrentDelegateMin::sizeHint(QStyleOptionViewItem const& option, Torrent const& tor) const
+QSize TorrentDelegateMin::sizeHint(QStyleOptionViewItem const &option, Torrent const &tor) const
 {
     bool const isMagnet(!tor.hasMetadata());
     QSize const m(margin(*qApp->style()));
@@ -162,9 +154,9 @@ QSize TorrentDelegateMin::sizeHint(QStyleOptionViewItem const& option, Torrent c
     return layout.size() + m * 2;
 }
 
-void TorrentDelegateMin::drawTorrent(QPainter* painter, QStyleOptionViewItem const& option, Torrent const& tor) const
+void TorrentDelegateMin::drawTorrent(QPainter *painter, QStyleOptionViewItem const &option, Torrent const &tor) const
 {
-    QStyle const* style(qApp->style());
+    QStyle const *style(qApp->style());
 
     bool const isPaused(tor.isPaused());
     bool const isMagnet(!tor.hasMetadata());
@@ -175,12 +167,10 @@ void TorrentDelegateMin::drawTorrent(QPainter* painter, QStyleOptionViewItem con
 
     painter->save();
 
-    if (isItemSelected)
-    {
+    if (isItemSelected) {
         QPalette::ColorGroup cg = isItemEnabled ? QPalette::Normal : QPalette::Disabled;
 
-        if (cg == QPalette::Normal && !isItemActive)
-        {
+        if (cg == QPalette::Normal && !isItemActive) {
             cg = QPalette::Inactive;
         }
 
@@ -189,57 +179,43 @@ void TorrentDelegateMin::drawTorrent(QPainter* painter, QStyleOptionViewItem con
 
     QIcon::Mode im;
 
-    if (isPaused || !isItemEnabled)
-    {
+    if (isPaused || !isItemEnabled) {
         im = QIcon::Disabled;
-    }
-    else if (isItemSelected)
-    {
+    } else if (isItemSelected) {
         im = QIcon::Selected;
-    }
-    else
-    {
+    } else {
         im = QIcon::Normal;
     }
 
     QIcon::State qs;
 
-    if (isPaused)
-    {
+    if (isPaused) {
         qs = QIcon::Off;
-    }
-    else
-    {
+    } else {
         qs = QIcon::On;
     }
 
     QPalette::ColorGroup cg = QPalette::Normal;
 
-    if (isPaused || !isItemEnabled)
-    {
+    if (isPaused || !isItemEnabled) {
         cg = QPalette::Disabled;
     }
 
-    if (cg == QPalette::Normal && !isItemActive)
-    {
+    if (cg == QPalette::Normal && !isItemActive) {
         cg = QPalette::Inactive;
     }
 
     QPalette::ColorRole cr;
 
-    if (isItemSelected)
-    {
+    if (isItemSelected) {
         cr = QPalette::HighlightedText;
-    }
-    else
-    {
+    } else {
         cr = QPalette::Text;
     }
 
     QStyle::State progressBarState(option.state);
 
-    if (isPaused)
-    {
+    if (isPaused) {
         progressBarState = QStyle::State_None;
     }
 
@@ -261,19 +237,15 @@ void TorrentDelegateMin::drawTorrent(QPainter* painter, QStyleOptionViewItem con
         contentRect.width());
 
     // render
-    if (tor.hasError() && !isItemSelected)
-    {
+    if (tor.hasError() && !isItemSelected) {
         painter->setPen(QColor("red"));
-    }
-    else
-    {
+    } else {
         painter->setPen(option.palette.color(cg, cr));
     }
 
     tor.getMimeTypeIcon().paint(painter, layout.iconRect, Qt::AlignCenter, im, qs);
 
-    if (!emblemIcon.isNull())
-    {
+    if (!emblemIcon.isNull()) {
         emblemIcon.paint(painter, layout.emblemRect, Qt::AlignCenter, emblemIm, qs);
     }
 
@@ -283,20 +255,15 @@ void TorrentDelegateMin::drawTorrent(QPainter* painter, QStyleOptionViewItem con
     painter->drawText(layout.statusRect, Qt::AlignLeft | Qt::AlignVCenter, layout.statusText());
     myProgressBarStyle->rect = layout.barRect;
 
-    if (tor.isDownloading())
-    {
+    if (tor.isDownloading()) {
         myProgressBarStyle->palette.setBrush(QPalette::Highlight, blueBrush);
         myProgressBarStyle->palette.setColor(QPalette::Base, blueBack);
         myProgressBarStyle->palette.setColor(QPalette::Window, blueBack);
-    }
-    else if (tor.isSeeding())
-    {
+    } else if (tor.isSeeding()) {
         myProgressBarStyle->palette.setBrush(QPalette::Highlight, greenBrush);
         myProgressBarStyle->palette.setColor(QPalette::Base, greenBack);
         myProgressBarStyle->palette.setColor(QPalette::Window, greenBack);
-    }
-    else
-    {
+    } else {
         myProgressBarStyle->palette.setBrush(QPalette::Highlight, silverBrush);
         myProgressBarStyle->palette.setColor(QPalette::Base, silverBack);
         myProgressBarStyle->palette.setColor(QPalette::Window, silverBack);

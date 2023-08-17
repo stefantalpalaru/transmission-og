@@ -52,18 +52,16 @@
 /*
 **  Match text and p, return true, false, or ABORT.
 */
-static int DoMatch(char const* text, char const* p)
+static int DoMatch(char const *text, char const *p)
 {
     register int last;
     register int matched;
     register int reverse;
 
-    for (; *p; text++, p++)
-    {
+    for (; *p; text++, p++) {
         if (*text == '\0' && *p != '*')
             return ABORT;
-        switch (*p)
-        {
+        switch (*p) {
         case '\\':
             /* Literal match with following character. */
             p++;
@@ -109,7 +107,7 @@ static int DoMatch(char const* text, char const* p)
 }
 
 /* User-level routine. returns whether or not 'text' and 'p' matched */
-bool tr_wildmat(char const* text, char const* p)
+bool tr_wildmat(char const *text, char const *p)
 {
     if (p[0] == '*' && p[1] == '\0')
         return true;

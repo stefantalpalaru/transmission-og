@@ -12,8 +12,7 @@
 #error only libtransmission should #include this header.
 #endif
 
-enum
-{
+enum {
     TR_FR_DOWNLOADED = (1 << 0),
     TR_FR_UPLOADED = (1 << 1),
     TR_FR_CORRUPT = (1 << 2),
@@ -42,10 +41,10 @@ enum
 /**
  * Returns a bitwise-or'ed set of the loaded resume data
  */
-uint64_t tr_torrentLoadResume(tr_torrent* tor, uint64_t fieldsToLoad, tr_ctor const* ctor, bool* didRenameToHashOnlyName);
+uint64_t tr_torrentLoadResume(tr_torrent *tor, uint64_t fieldsToLoad, tr_ctor const *ctor, bool *didRenameToHashOnlyName);
 
-void tr_torrentSaveResume(tr_torrent* tor);
+void tr_torrentSaveResume(tr_torrent *tor);
 
-void tr_torrentRemoveResume(tr_torrent const* tor);
+void tr_torrentRemoveResume(tr_torrent const *tor);
 
-int tr_torrentRenameResume(tr_torrent const* tor, char const* newname);
+int tr_torrentRenameResume(tr_torrent const *tor, char const *newname);

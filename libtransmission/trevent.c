@@ -43,8 +43,7 @@ static int pgpipe(tr_pipe_end_t handles[2])
 
     handles[0] = handles[1] = INVALID_SOCKET;
 
-    if ((s = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET)
-    {
+    if ((s = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET) {
         tr_logAddDebug("pgpipe failed to create socket: %ui", WSAGetLastError());
         return -1;
     }
@@ -54,43 +53,37 @@ static int pgpipe(tr_pipe_end_t handles[2])
     serv_addr.sin_port = htons(0);
     serv_addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
 
-    if (bind(s, (SOCKADDR*)&serv_addr, len) == SOCKET_ERROR)
-    {
+    if (bind(s, (SOCKADDR *)&serv_addr, len) == SOCKET_ERROR) {
         tr_logAddDebug("pgpipe failed to bind: %ui", WSAGetLastError());
         closesocket(s);
         return -1;
     }
 
-    if (listen(s, 1) == SOCKET_ERROR)
-    {
+    if (listen(s, 1) == SOCKET_ERROR) {
         tr_logAddNamedDbg("event", "pgpipe failed to listen: %ui", WSAGetLastError());
         closesocket(s);
         return -1;
     }
 
-    if (getsockname(s, (SOCKADDR*)&serv_addr, &len) == SOCKET_ERROR)
-    {
+    if (getsockname(s, (SOCKADDR *)&serv_addr, &len) == SOCKET_ERROR) {
         tr_logAddDebug("pgpipe failed to getsockname: %ui", WSAGetLastError());
         closesocket(s);
         return -1;
     }
 
-    if ((handles[1] = socket(PF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET)
-    {
+    if ((handles[1] = socket(PF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET) {
         tr_logAddDebug("pgpipe failed to create socket 2: %ui", WSAGetLastError());
         closesocket(s);
         return -1;
     }
 
-    if (connect(handles[1], (SOCKADDR*)&serv_addr, len) == SOCKET_ERROR)
-    {
+    if (connect(handles[1], (SOCKADDR *)&serv_addr, len) == SOCKET_ERROR) {
         tr_logAddDebug("pgpipe failed to connect socket: %ui", WSAGetLastError());
         closesocket(s);
         return -1;
     }
 
-    if ((handles[0] = accept(s, (SOCKADDR*)&serv_addr, &len)) == INVALID_SOCKET)
-    {
+    if ((handles[0] = accept(s, (SOCKADDR *)&serv_addr, &len)) == INVALID_SOCKET) {
         tr_logAddDebug("pgpipe failed to accept socket: %ui", WSAGetLastError());
         closesocket(handles[1]);
         handles[1] = INVALID_SOCKET;
@@ -102,16 +95,14 @@ static int pgpipe(tr_pipe_end_t handles[2])
     return 0;
 }
 
-static int piperead(tr_pipe_end_t s, void* buf, int len)
+static int piperead(tr_pipe_end_t s, void *buf, int len)
 {
     int ret = recv(s, buf, len, 0);
 
-    if (ret == -1)
-    {
+    if (ret == -1) {
         int const werror = WSAGetLastError();
 
-        switch (werror)
-        {
+        switch (werror) {
         /* simplified error mapping (not valid for connect) */
         case WSAEWOULDBLOCK:
             errno = EAGAIN;
@@ -126,9 +117,7 @@ static int piperead(tr_pipe_end_t s, void* buf, int len)
             errno = werror;
             break;
         }
-    }
-    else
-    {
+    } else {
         errno = 0;
     }
 
@@ -136,7 +125,7 @@ static int piperead(tr_pipe_end_t s, void* buf, int len)
 }
 
 #define pipe(a) pgpipe(a)
-#define pipewrite(a, b, c) send(a, (char*)b, c, 0)
+#define pipewrite(a, b, c) send(a, (char *)b, c, 0)
 
 #else
 typedef int tr_pipe_end_t;
@@ -148,53 +137,48 @@ typedef int tr_pipe_end_t;
 ****
 ***/
 
-typedef struct tr_event_handle
-{
+typedef struct tr_event_handle {
     bool die;
     tr_pipe_end_t fds[2];
-    tr_lock* lock;
-    tr_session* session;
-    tr_thread* thread;
-    struct event_base* base;
-    struct event* pipeEvent;
+    tr_lock *lock;
+    tr_session *session;
+    tr_thread *thread;
+    struct event_base *base;
+    struct event *pipeEvent;
 } tr_event_handle;
 
-struct tr_run_data
-{
-    void (*func)(void*);
-    void* user_data;
+struct tr_run_data {
+    void (*func)(void *);
+    void *user_data;
 };
 
 #define dbgmsg(...) tr_logAddDeepNamed("event", __VA_ARGS__)
 
-static void readFromPipe(evutil_socket_t fd, short eventType, void* veh)
+static void readFromPipe(evutil_socket_t fd, short eventType, void *veh)
 {
     char ch;
     int ret;
-    tr_event_handle* eh = veh;
+    tr_event_handle *eh = veh;
 
     dbgmsg("readFromPipe: eventType is %hd", eventType);
 
     /* read the command type */
     ch = '\0';
 
-    do
-    {
+    do {
         ret = piperead(fd, &ch, 1);
     } while (!eh->die && ret == -1 && errno == EAGAIN);
 
     dbgmsg("command is [%c], ret is %d, errno is %d", ch, ret, (int)errno);
 
-    switch (ch)
-    {
+    switch (ch) {
     case 'r': /* run in libevent thread */
         {
             struct tr_run_data data;
             size_t const nwant = sizeof(data);
             ev_ssize_t const ngot = piperead(fd, &data, nwant);
 
-            if (!eh->die && ngot == (ev_ssize_t)nwant)
-            {
+            if (!eh->die && ngot == (ev_ssize_t)nwant) {
                 dbgmsg("invoking function in libevent thread");
                 (*data.func)(data.user_data);
             }
@@ -219,22 +203,19 @@ static void readFromPipe(evutil_socket_t fd, short eventType, void* veh)
     }
 }
 
-static void logFunc(int severity, char const* message)
+static void logFunc(int severity, char const *message)
 {
-    if (severity >= _EVENT_LOG_ERR)
-    {
+    if (severity >= _EVENT_LOG_ERR) {
         tr_logAddError("%s", message);
-    }
-    else
-    {
+    } else {
         tr_logAddDebug("%s", message);
     }
 }
 
-static void libeventThreadFunc(void* veh)
+static void libeventThreadFunc(void *veh)
 {
-    struct event_base* base;
-    tr_event_handle* eh = veh;
+    struct event_base *base;
+    tr_event_handle *eh = veh;
 
 #ifndef _WIN32
     /* Don't exit when writing on a broken socket */
@@ -256,8 +237,7 @@ static void libeventThreadFunc(void* veh)
     event_set_log_callback(logFunc);
 
     /* loop until all the events are done */
-    while (!eh->die)
-    {
+    while (!eh->die) {
         event_base_dispatch(base);
     }
 
@@ -269,17 +249,16 @@ static void libeventThreadFunc(void* veh)
     tr_logAddDebug("Closing libevent thread");
 }
 
-void tr_eventInit(tr_session* session)
+void tr_eventInit(tr_session *session)
 {
-    tr_event_handle* eh;
+    tr_event_handle *eh;
 
     session->events = NULL;
 
     eh = tr_new0(tr_event_handle, 1);
     eh->lock = tr_lockNew();
 
-    if (pipe(eh->fds) == -1)
-    {
+    if (pipe(eh->fds) == -1) {
         tr_logAddError("Unable to write to pipe() in libtransmission: %s", tr_strerror(errno));
     }
 
@@ -287,18 +266,16 @@ void tr_eventInit(tr_session* session)
     eh->thread = tr_threadNew(libeventThreadFunc, eh);
 
     /* wait until the libevent thread is running */
-    while (session->events == NULL)
-    {
+    while (session->events == NULL) {
         tr_wait_msec(100);
     }
 }
 
-void tr_eventClose(tr_session* session)
+void tr_eventClose(tr_session *session)
 {
     TR_ASSERT(tr_isSession(session));
 
-    if (session->events == NULL)
-    {
+    if (session->events == NULL) {
         return;
     }
 
@@ -311,7 +288,7 @@ void tr_eventClose(tr_session* session)
 ***
 **/
 
-bool tr_amInEventThread(tr_session const* session)
+bool tr_amInEventThread(tr_session const *session)
 {
     TR_ASSERT(tr_isSession(session));
     TR_ASSERT(session->events != NULL);
@@ -323,22 +300,19 @@ bool tr_amInEventThread(tr_session const* session)
 ***
 **/
 
-void tr_runInEventThread(tr_session* session, void (*func)(void*), void* user_data)
+void tr_runInEventThread(tr_session *session, void (*func)(void *), void *user_data)
 {
     TR_ASSERT(tr_isSession(session));
     TR_ASSERT(session->events != NULL);
 
-    if (tr_amInThread(session->events->thread))
-    {
+    if (tr_amInThread(session->events->thread)) {
         (*func)(user_data);
-    }
-    else
-    {
+    } else {
         tr_pipe_end_t fd;
         char ch;
         ev_ssize_t res_1;
         ev_ssize_t res_2;
-        tr_event_handle* e = session->events;
+        tr_event_handle *e = session->events;
         struct tr_run_data data;
 
         tr_lockLock(e->lock);
@@ -353,8 +327,7 @@ void tr_runInEventThread(tr_session* session, void (*func)(void*), void* user_da
 
         tr_lockUnlock(e->lock);
 
-        if (res_1 == -1 || res_2 == -1)
-        {
+        if (res_1 == -1 || res_2 == -1) {
             tr_logAddError("Unable to write to libtransmisison event queue: %s", tr_strerror(errno));
         }
     }
