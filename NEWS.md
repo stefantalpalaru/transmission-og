@@ -3,6 +3,7 @@
 ### All Platforms
 - Set up a Transifex project to manage translations ([#20](https://github.com/stefantalpalaru/transmission-og/pull/20))
 - use clang-format to automate code formatting ([#22](https://github.com/stefantalpalaru/transmission-og/pull/22))
+- Windows: remove MSI installer
 
 
 ## [Transmission OG 3.01](https://github.com/stefantalpalaru/transmission-og/releases/tag/3.01) (2023-08-02)
