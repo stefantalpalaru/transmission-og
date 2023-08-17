@@ -13,8 +13,7 @@ NSString *generateIconData(NSString *fileExtension, NSUInteger width, NSMutableD
     NSString *iconFileName = [NSString stringWithFormat:@"%ldx%@.tiff", width, rawFilename]; // we need to do this once per file
                                                                                              // extension, per size
 
-    if (![allImgProps objectForKey:iconFileName])
-    {
+    if (![allImgProps objectForKey:iconFileName]) {
         NSImage *icon = [[NSWorkspace sharedWorkspace] iconForFileType:fileExtension];
 
         NSRect const iconFrame = NSMakeRect(0.0, 0.0, width, width);
@@ -74,8 +73,7 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
                              name];
 
     NSString *fileSizeString = [NSString stringForFileSize:inf.totalSize];
-    if (inf.isFolder)
-    {
+    if (inf.isFolder) {
         NSString *fileCountString;
         if (inf.fileCount == 1)
             fileCountString = NSLocalizedStringFromTableInBundle(@"1 file", nil, bundle, "quicklook file count");
@@ -108,8 +106,7 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
     if (creationString)
         [htmlString appendFormat:@"<p>%@</p>", creationString];
 
-    if (inf.comment)
-    {
+    if (inf.comment) {
         NSString *comment = [NSString stringWithUTF8String:inf.comment];
         if (![comment isEqualToString:@""])
             [htmlString appendFormat:@"<p>%@</p>", comment];
@@ -117,8 +114,7 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
 
     NSMutableArray *lists = [NSMutableArray array];
 
-    if (inf.webseedCount > 0)
-    {
+    if (inf.webseedCount > 0) {
         NSMutableString *listSection = [NSMutableString string];
         [listSection appendString:@"<table>"];
 
@@ -136,8 +132,7 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
         [lists addObject:listSection];
     }
 
-    if (inf.trackerCount > 0)
-    {
+    if (inf.trackerCount > 0) {
         NSMutableString *listSection = [NSMutableString string];
         [listSection appendString:@"<table>"];
 
@@ -156,8 +151,7 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
         [lists addObject:listSection];
     }
 
-    if (inf.isFolder)
-    {
+    if (inf.isFolder) {
         NSMutableString *listSection = [NSMutableString string];
         [listSection appendString:@"<table>"];
 
@@ -169,8 +163,7 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
 
 #warning display size?
 #warning display folders?
-        for (int i = 0; i < inf.fileCount; ++i)
-        {
+        for (int i = 0; i < inf.fileCount; ++i) {
             NSString *fullFilePath = [NSString stringWithUTF8String:inf.files[i].name];
             NSCAssert([fullFilePath hasPrefix:[name stringByAppendingString:@"/"]], @"Expected file path %@ to begin with %@/", fullFilePath, name);
 

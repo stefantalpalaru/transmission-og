@@ -37,15 +37,9 @@ struct tr_peerIo;
  * @{
  */
 
-typedef enum
-{
-    READ_NOW,
-    READ_LATER,
-    READ_ERR
-} ReadState;
+typedef enum { READ_NOW, READ_LATER, READ_ERR } ReadState;
 
-typedef enum
-{
+typedef enum {
     /* these match the values in MSE's crypto_select */
     PEER_ENCRYPTION_NONE = (1 << 0),
     PEER_ENCRYPTION_RC4 = (1 << 1)
@@ -57,8 +51,7 @@ typedef void (*tr_did_write_cb)(struct tr_peerIo *io, size_t bytesWritten, bool 
 
 typedef void (*tr_net_error_cb)(struct tr_peerIo *io, short what, void *userData);
 
-typedef struct tr_peerIo
-{
+typedef struct tr_peerIo {
     bool isEncrypted;
     bool isIncoming;
     bool peerIdIsSet;

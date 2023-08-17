@@ -15,8 +15,7 @@
 #include <inttypes.h>
 #include <time.h>
 
-enum
-{
+enum {
     /* defined by BEP #9 */
     METADATA_PIECE_SIZE = (1024 * 16)
 };

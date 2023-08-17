@@ -23,8 +23,7 @@ static GDBusProxy *proxy = NULL;
 static GHashTable *active_notifications = NULL;
 static gboolean server_supports_actions = FALSE;
 
-typedef struct TrNotification
-{
+typedef struct TrNotification {
     guint id;
     TrCore *core;
     int torrent_id;
@@ -34,8 +33,7 @@ static void tr_notification_free(gpointer data)
 {
     TrNotification *n = data;
 
-    if (n->core != NULL)
-    {
+    if (n->core != NULL) {
         g_object_unref(G_OBJECT(n->core));
     }
 
@@ -49,10 +47,8 @@ static void get_capabilities_callback(GObject *source, GAsyncResult *res, gpoint
 
     result = g_dbus_proxy_call_finish(G_DBUS_PROXY(source), res, NULL);
 
-    if (result == NULL || !g_variant_is_of_type(result, G_VARIANT_TYPE("(as)")))
-    {
-        if (result != NULL)
-        {
+    if (result == NULL || !g_variant_is_of_type(result, G_VARIANT_TYPE("(as)"))) {
+        if (result != NULL) {
             g_variant_unref(result);
         }
 
@@ -61,10 +57,8 @@ static void get_capabilities_callback(GObject *source, GAsyncResult *res, gpoint
 
     g_variant_get(result, "(^a&s)", &caps);
 
-    for (int i = 0; caps[i] != NULL; i++)
-    {
-        if (g_strcmp0(caps[i], "actions") == 0)
-        {
+    for (int i = 0; caps[i] != NULL; i++) {
+        if (g_strcmp0(caps[i], "actions") == 0) {
             server_supports_actions = TRUE;
             break;
         }
@@ -89,35 +83,27 @@ static void g_signal_callback(
     g_variant_get(params, "(u*)", &id, NULL);
     n = g_hash_table_lookup(active_notifications, GINT_TO_POINTER((int *)&id));
 
-    if (n == NULL)
-    {
+    if (n == NULL) {
         return;
     }
 
-    if (g_strcmp0(signal_name, "NotificationClosed") == 0)
-    {
+    if (g_strcmp0(signal_name, "NotificationClosed") == 0) {
         g_hash_table_remove(active_notifications, GINT_TO_POINTER((int *)&n->id));
-    }
-    else if (g_strcmp0(signal_name, "ActionInvoked") == 0 && g_variant_is_of_type(params, G_VARIANT_TYPE("(us)")))
-    {
+    } else if (g_strcmp0(signal_name, "ActionInvoked") == 0 && g_variant_is_of_type(params, G_VARIANT_TYPE("(us)"))) {
         char *action;
         tr_torrent *tor;
 
         tor = gtr_core_find_torrent(n->core, n->torrent_id);
 
-        if (tor == NULL)
-        {
+        if (tor == NULL) {
             return;
         }
 
         g_variant_get(params, "(u&s)", NULL, &action);
 
-        if (g_strcmp0(action, "folder") == 0)
-        {
+        if (g_strcmp0(action, "folder") == 0) {
             gtr_core_open_folder(n->core, n->torrent_id);
-        }
-        else if (g_strcmp0(action, "file") == 0)
-        {
+        } else if (g_strcmp0(action, "file") == 0) {
             tr_info const *inf = tr_torrentInfo(tor);
             char const *dir = tr_torrentGetDownloadDir(tor);
             char *path = g_build_filename(dir, inf->files[0].name, NULL);
@@ -131,8 +117,7 @@ static void dbus_proxy_ready_callback(GObject *source UNUSED, GAsyncResult *res,
 {
     proxy = g_dbus_proxy_new_for_bus_finish(res, NULL);
 
-    if (proxy == NULL)
-    {
+    if (proxy == NULL) {
         g_warning("Failed to create proxy for %s", NOTIFICATIONS_DBUS_NAME);
         return;
     }
@@ -171,10 +156,8 @@ static void notify_callback(GObject *source, GAsyncResult *res, gpointer user_da
 
     result = g_dbus_proxy_call_finish(G_DBUS_PROXY(source), res, NULL);
 
-    if (result == NULL || !g_variant_is_of_type(result, G_VARIANT_TYPE("(u)")))
-    {
-        if (result != NULL)
-        {
+    if (result == NULL || !g_variant_is_of_type(result, G_VARIANT_TYPE("(u)"))) {
+        if (result != NULL) {
             g_variant_unref(result);
         }
 
@@ -195,13 +178,11 @@ void gtr_notify_torrent_completed(TrCore *core, int torrent_id)
     tr_torrent *tor;
     char const *cmd = gtr_pref_string_get(TR_KEY_torrent_complete_sound_command);
 
-    if (gtr_pref_flag_get(TR_KEY_torrent_complete_sound_enabled))
-    {
+    if (gtr_pref_flag_get(TR_KEY_torrent_complete_sound_enabled)) {
         g_spawn_command_line_async(cmd, NULL);
     }
 
-    if (!gtr_pref_flag_get(TR_KEY_torrent_complete_notification_enabled))
-    {
+    if (!gtr_pref_flag_get(TR_KEY_torrent_complete_notification_enabled)) {
         return;
     }
 
@@ -216,17 +197,13 @@ void gtr_notify_torrent_completed(TrCore *core, int torrent_id)
 
     g_variant_builder_init(&actions_builder, G_VARIANT_TYPE("as"));
 
-    if (server_supports_actions)
-    {
+    if (server_supports_actions) {
         tr_info const *inf = tr_torrentInfo(tor);
 
-        if (inf->fileCount == 1)
-        {
+        if (inf->fileCount == 1) {
             g_variant_builder_add(&actions_builder, "s", "file");
             g_variant_builder_add(&actions_builder, "s", _("Open File"));
-        }
-        else
-        {
+        } else {
             g_variant_builder_add(&actions_builder, "s", "folder");
             g_variant_builder_add(&actions_builder, "s", _("Open Folder"));
         }
@@ -258,8 +235,7 @@ void gtr_notify_torrent_added(char const *name)
 
     g_return_if_fail(G_IS_DBUS_PROXY(proxy));
 
-    if (!gtr_pref_flag_get(TR_KEY_torrent_added_notification_enabled))
-    {
+    if (!gtr_pref_flag_get(TR_KEY_torrent_added_notification_enabled)) {
         return;
     }
 

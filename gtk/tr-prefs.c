@@ -27,8 +27,7 @@
 ***
 **/
 
-struct prefs_dialog_data
-{
+struct prefs_dialog_data {
     TrCore *core;
     gulong core_prefs_tag;
 
@@ -47,15 +46,13 @@ struct prefs_dialog_data
 
 static void response_cb(GtkDialog *dialog, int response, gpointer unused UNUSED)
 {
-    if (response == GTK_RESPONSE_HELP)
-    {
+    if (response == GTK_RESPONSE_HELP) {
         char *uri = g_strconcat(gtr_get_help_uri(), "/html/preferences.html", NULL);
         gtr_open_uri(uri);
         g_free(uri);
     }
 
-    if (response == GTK_RESPONSE_CLOSE)
-    {
+    if (response == GTK_RESPONSE_CLOSE) {
         gtk_widget_destroy(GTK_WIDGET(dialog));
     }
 }
@@ -79,8 +76,7 @@ static GtkWidget *new_check_button(char const *mnemonic, tr_quark const key, gpo
 
 #define IDLE_DATA "idle-data"
 
-struct spin_idle_data
-{
+struct spin_idle_data {
     gpointer core;
     GTimer *last_change;
     gboolean isDouble;
@@ -101,18 +97,14 @@ static gboolean spun_cb_idle(gpointer spin)
     struct spin_idle_data *data = g_object_get_data(o, IDLE_DATA);
 
     /* has the user stopped making changes? */
-    if (g_timer_elapsed(data->last_change, NULL) > 0.33F)
-    {
+    if (g_timer_elapsed(data->last_change, NULL) > 0.33F) {
         /* update the core */
         tr_quark const key = GPOINTER_TO_INT(g_object_get_data(o, PREF_KEY));
 
-        if (data->isDouble)
-        {
+        if (data->isDouble) {
             double const value = gtk_spin_button_get_value(GTK_SPIN_BUTTON(spin));
             gtr_core_set_pref_double(TR_CORE(data->core), key, value);
-        }
-        else
-        {
+        } else {
             int const value = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spin));
             gtr_core_set_pref_int(TR_CORE(data->core), key, value);
         }
@@ -133,8 +125,7 @@ static void spun_cb(GtkSpinButton *w, gpointer core, gboolean isDouble)
     GObject *o = G_OBJECT(w);
     struct spin_idle_data *data = g_object_get_data(o, IDLE_DATA);
 
-    if (data == NULL)
-    {
+    if (data == NULL) {
         data = g_new(struct spin_idle_data, 1);
         data->core = core;
         data->last_change = g_timer_new();
@@ -190,8 +181,7 @@ static GtkWidget *new_entry(tr_quark const key, gpointer core)
     GtkWidget *w = gtk_entry_new();
     char const *value = gtr_pref_string_get(key);
 
-    if (value != NULL)
-    {
+    if (value != NULL) {
         gtk_entry_set_text(GTK_ENTRY(w), value);
     }
 
@@ -217,8 +207,7 @@ static GtkWidget *new_text_view(tr_quark const key, gpointer core)
     GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(w));
     char const *value = gtr_pref_string_get(key);
 
-    if (value)
-    {
+    if (value) {
         gtk_text_buffer_set_text(buffer, value, -1);
     }
 
@@ -249,8 +238,7 @@ static GtkWidget *new_path_chooser_button(tr_quark const key, gpointer core)
     char const *path = gtr_pref_string_get(key);
     g_object_set_data(G_OBJECT(w), PREF_KEY, GINT_TO_POINTER(key));
 
-    if (path != NULL)
-    {
+    if (path != NULL) {
         gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(w), path);
     }
 
@@ -264,8 +252,7 @@ static GtkWidget *new_file_chooser_button(tr_quark const key, gpointer core)
     char const *path = gtr_pref_string_get(key);
     g_object_set_data(G_OBJECT(w), PREF_KEY, GINT_TO_POINTER(key));
 
-    if (path != NULL)
-    {
+    if (path != NULL) {
         gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(w), path);
     }
 
@@ -432,8 +419,7 @@ static GtkWidget *desktopPage(GObject *core)
 *****  Peer Tab
 ****/
 
-struct blocklist_data
-{
+struct blocklist_data {
     gulong updateBlocklistTag;
     GtkWidget *updateBlocklistButton;
     GtkWidget *updateBlocklistDialog;
@@ -457,8 +443,7 @@ static void privacyPageDestroyed(gpointer gdata, GObject *dead UNUSED)
 {
     struct blocklist_data *data = gdata;
 
-    if (data->updateBlocklistTag > 0)
-    {
+    if (data->updateBlocklistTag > 0) {
         g_signal_handler_disconnect(data->core, data->updateBlocklistTag);
     }
 
@@ -606,11 +591,7 @@ static GtkWidget *privacyPage(GObject *core)
 *****  Remote Tab
 ****/
 
-enum
-{
-    COL_ADDRESS,
-    N_COLS
-};
+enum { COL_ADDRESS, N_COLS };
 
 static GtkTreeModel *whitelist_tree_model_new(char const *whitelist)
 {
@@ -619,13 +600,11 @@ static GtkTreeModel *whitelist_tree_model_new(char const *whitelist)
 
     rules = g_strsplit(whitelist, ",", 0);
 
-    for (int i = 0; rules != NULL && rules[i] != NULL; ++i)
-    {
+    for (int i = 0; rules != NULL && rules[i] != NULL; ++i) {
         GtkTreeIter iter;
         char const *s = rules[i];
 
-        while (isspace(*s))
-        {
+        while (isspace(*s)) {
             ++s;
         }
 
@@ -637,8 +616,7 @@ static GtkTreeModel *whitelist_tree_model_new(char const *whitelist)
     return GTK_TREE_MODEL(store);
 }
 
-struct remote_page
-{
+struct remote_page {
     TrCore *core;
     GtkTreeView *view;
     GtkListStore *store;
@@ -657,10 +635,8 @@ static void refreshWhitelist(struct remote_page *page)
     GString *gstr = g_string_new(NULL);
     GtkTreeModel *model = GTK_TREE_MODEL(page->store);
 
-    if (gtk_tree_model_iter_nth_child(model, &iter, NULL, 0))
-    {
-        do
-        {
+    if (gtk_tree_model_iter_nth_child(model, &iter, NULL, 0)) {
+        do {
             char *address;
             gtk_tree_model_get(model, &iter, COL_ADDRESS, &address, -1);
             g_string_append(gstr, address);
@@ -683,8 +659,7 @@ static void onAddressEdited(GtkCellRendererText *r UNUSED, gchar *path_string, g
     GtkTreeModel *model = GTK_TREE_MODEL(page->store);
     GtkTreePath *path = gtk_tree_path_new_from_string(path_string);
 
-    if (gtk_tree_model_get_iter(model, &iter, path))
-    {
+    if (gtk_tree_model_get_iter(model, &iter, path)) {
         gtk_list_store_set(page->store, &iter, COL_ADDRESS, address, -1);
     }
 
@@ -712,8 +687,7 @@ static void onRemoveWhitelistClicked(GtkButton *b UNUSED, gpointer gpage)
     GtkTreeSelection *sel = gtk_tree_view_get_selection(page->view);
     GtkTreeIter iter;
 
-    if (gtk_tree_selection_get_selected(sel, NULL, &iter))
-    {
+    if (gtk_tree_selection_get_selected(sel, NULL, &iter)) {
         gtk_list_store_remove(page->store, &iter);
         refreshWhitelist(page);
     }
@@ -728,18 +702,15 @@ static void refreshRPCSensitivity(struct remote_page *page)
     int const have_addr = gtk_tree_selection_get_selected(sel, NULL, NULL);
     int const n_rules = gtk_tree_model_iter_n_children(GTK_TREE_MODEL(page->store), NULL);
 
-    for (GSList *l = page->widgets; l != NULL; l = l->next)
-    {
+    for (GSList *l = page->widgets; l != NULL; l = l->next) {
         gtk_widget_set_sensitive(GTK_WIDGET(l->data), rpc_active);
     }
 
-    for (GSList *l = page->auth_widgets; l != NULL; l = l->next)
-    {
+    for (GSList *l = page->auth_widgets; l != NULL; l = l->next) {
         gtk_widget_set_sensitive(GTK_WIDGET(l->data), rpc_active && auth_active);
     }
 
-    for (GSList *l = page->whitelist_widgets; l != NULL; l = l->next)
-    {
+    for (GSList *l = page->whitelist_widgets; l != NULL; l = l->next) {
         gtk_widget_set_sensitive(GTK_WIDGET(l->data), rpc_active && whitelist_active);
     }
 
@@ -914,8 +885,7 @@ static GtkWidget *remotePage(GObject *core)
 *****  Bandwidth Tab
 ****/
 
-struct BandwidthPage
-{
+struct BandwidthPage {
     TrCore *core;
     GSList *sched_widgets;
 };
@@ -924,8 +894,7 @@ static void refreshSchedSensitivity(struct BandwidthPage *p)
 {
     gboolean const sched_enabled = gtr_pref_flag_get(TR_KEY_alt_speed_time_enabled);
 
-    for (GSList *l = p->sched_widgets; l != NULL; l = l->next)
-    {
+    for (GSList *l = p->sched_widgets; l != NULL; l = l->next) {
         gtk_widget_set_sensitive(GTK_WIDGET(l->data), sched_enabled);
     }
 }
@@ -939,8 +908,7 @@ static void onTimeComboChanged(GtkComboBox *w, gpointer core)
 {
     GtkTreeIter iter;
 
-    if (gtk_combo_box_get_active_iter(w, &iter))
-    {
+    if (gtk_combo_box_get_active_iter(w, &iter)) {
         int val = 0;
         tr_quark const key = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(w), PREF_KEY));
         gtk_tree_model_get(gtk_combo_box_get_model(w), &iter, 0, &val, -1);
@@ -958,8 +926,7 @@ static GtkWidget *new_time_combo(GObject *core, tr_quark const key)
     /* build a store at 15 minute intervals */
     store = gtk_list_store_new(2, G_TYPE_INT, G_TYPE_STRING);
 
-    for (int i = 0; i < 60 * 24; i += 15)
-    {
+    for (int i = 0; i < 60 * 24; i += 15) {
         char buf[128];
         GtkTreeIter iter;
         g_snprintf(buf, sizeof(buf), "%02d:%02d", i / 60, i % 60);
@@ -1102,8 +1069,7 @@ static GtkWidget *speedPage(GObject *core)
 *****  Network Tab
 ****/
 
-struct network_page_data
-{
+struct network_page_data {
     TrCore *core;
     GtkWidget *portLabel;
     GtkWidget *portButton;
@@ -1114,8 +1080,7 @@ struct network_page_data
 
 static void onCorePrefsChanged(TrCore *core UNUSED, tr_quark const key, gpointer gdata)
 {
-    if (key == TR_KEY_peer_port)
-    {
+    if (key == TR_KEY_peer_port) {
         struct network_page_data *data = gdata;
         gtr_label_set_text(GTK_LABEL(data->portLabel), _("Status unknown"));
         gtk_widget_set_sensitive(data->portButton, TRUE);
@@ -1127,13 +1092,11 @@ static void networkPageDestroyed(gpointer gdata, GObject *dead UNUSED)
 {
     struct network_page_data *data = gdata;
 
-    if (data->prefsTag > 0)
-    {
+    if (data->prefsTag > 0) {
         g_signal_handler_disconnect(data->core, data->prefsTag);
     }
 
-    if (data->portTag > 0)
-    {
+    if (data->portTag > 0) {
         g_signal_handler_disconnect(data->core, data->portTag);
     }
 
@@ -1159,8 +1122,7 @@ static void onPortTest(GtkButton *button UNUSED, gpointer vdata)
     gtk_widget_set_sensitive(data->portSpin, FALSE);
     gtk_label_set_markup(GTK_LABEL(data->portLabel), _("<i>Testing TCP port…</i>"));
 
-    if (data->portTag == 0)
-    {
+    if (data->portTag == 0) {
         data->portTag = g_signal_connect(data->core, "port-tested", G_CALLBACK(onPortTested), data);
     }
 
@@ -1262,8 +1224,7 @@ static void on_prefs_dialog_destroyed(gpointer gdata, GObject *dead_dialog G_GNU
 {
     struct prefs_dialog_data *data = gdata;
 
-    if (data->core_prefs_tag > 0)
-    {
+    if (data->core_prefs_tag > 0) {
         g_signal_handler_disconnect(data->core, data->core_prefs_tag);
     }
 
@@ -1285,8 +1246,7 @@ static void on_core_prefs_changed(TrCore *core, tr_quark const key, gpointer gda
 
 #endif
 
-    if (key == TR_KEY_download_dir)
-    {
+    if (key == TR_KEY_download_dir) {
         char const *downloadDir = tr_sessionGetDownloadDir(gtr_core_session(core));
         gtr_freespace_label_set_dir(data->freespace_label, downloadDir);
     }
@@ -1328,8 +1288,7 @@ GtkWidget *gtr_prefs_dialog_new(GtkWindow *parent, GObject *core)
     gtk_notebook_append_page(GTK_NOTEBOOK(n), remotePage(core), gtk_label_new(_("Remote")));
 
     /* init from prefs keys */
-    for (size_t i = 0; i < G_N_ELEMENTS(prefs_quarks); ++i)
-    {
+    for (size_t i = 0; i < G_N_ELEMENTS(prefs_quarks); ++i) {
         on_core_prefs_changed(TR_CORE(core), prefs_quarks[i], data);
     }
 

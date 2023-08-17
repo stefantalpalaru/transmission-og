@@ -12,16 +12,14 @@
 
 #include "ui_LicenseDialog.h"
 
-class LicenseDialog : public BaseDialog
-{
+class LicenseDialog : public BaseDialog {
     Q_OBJECT
 
 public:
     LicenseDialog(QWidget *parent = nullptr);
 
     virtual ~LicenseDialog()
-    {
-    }
+    {}
 
 private:
     Ui::LicenseDialog ui;

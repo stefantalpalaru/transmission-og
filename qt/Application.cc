@@ -38,8 +38,7 @@
 #include "TorrentModel.h"
 #include "WatchDir.h"
 
-namespace
-{
+namespace {
 
 QLatin1String const MY_CONFIG_NAME("transmission");
 QLatin1String const MY_READABLE_NAME("transmission-og-qt");
@@ -61,19 +60,12 @@ char const *getUsage()
            "  transmission [OPTIONS...] [torrent files]";
 }
 
-enum
-{
-    STATS_REFRESH_INTERVAL_MSEC = 3000,
-    SESSION_REFRESH_INTERVAL_MSEC = 3000,
-    MODEL_REFRESH_INTERVAL_MSEC = 3000
-};
+enum { STATS_REFRESH_INTERVAL_MSEC = 3000, SESSION_REFRESH_INTERVAL_MSEC = 3000, MODEL_REFRESH_INTERVAL_MSEC = 3000 };
 
 bool loadTranslation(QTranslator &translator, QString const &name, QLocale const &locale, QStringList const &searchDirectories)
 {
-    for (QString const &directory : searchDirectories)
-    {
-        if (translator.load(locale, name, QLatin1String("_"), directory))
-        {
+    for (QString const &directory : searchDirectories) {
+        if (translator.load(locale, name, QLatin1String("_"), directory)) {
             return true;
         }
     }
@@ -99,8 +91,7 @@ Application::Application(int &argc, char **argv)
 
 #if defined(_WIN32) || defined(__APPLE__)
 
-    if (QIcon::themeName().isEmpty())
-    {
+    if (QIcon::themeName().isEmpty()) {
         QIcon::setThemeName(QLatin1String("Faenza"));
     }
 
@@ -109,13 +100,11 @@ Application::Application(int &argc, char **argv)
     // set the default icon
     QIcon icon = QIcon::fromTheme(QLatin1String("transmission"));
 
-    if (icon.isNull())
-    {
+    if (icon.isNull()) {
         QList<int> sizes;
         sizes << 16 << 22 << 24 << 32 << 48 << 64 << 72 << 96 << 128 << 192 << 256;
 
-        for (int const size : sizes)
-        {
+        for (int const size : sizes) {
             icon.addPixmap(QPixmap(QString::fromLatin1(":/icons/transmission-%1.png").arg(size)));
         }
     }
@@ -137,10 +126,8 @@ Application::Application(int &argc, char **argv)
     QString configDir;
     QStringList filenames;
 
-    while ((c = tr_getopt(getUsage(), argc, const_cast<char const **>(argv), opts, &optarg)) != TR_OPT_DONE)
-    {
-        switch (c)
-        {
+    while ((c = tr_getopt(getUsage(), argc, const_cast<char const **>(argv), opts, &optarg)) != TR_OPT_DONE) {
+        switch (c) {
         case 'g':
             configDir = QString::fromUtf8(optarg);
             break;
@@ -186,18 +173,15 @@ Application::Application(int &argc, char **argv)
     // before starting ourselves...
     InteropHelper interopClient;
 
-    if (interopClient.isConnected())
-    {
+    if (interopClient.isConnected()) {
         bool delegated = false;
 
-        for (QString const &filename : filenames)
-        {
+        for (QString const &filename : filenames) {
             QString metainfo;
 
             AddData a(filename);
 
-            switch (a.type)
-            {
+            switch (a.type) {
             case AddData::URL:
                 metainfo = a.url.toString();
                 break;
@@ -218,30 +202,26 @@ Application::Application(int &argc, char **argv)
                 break;
             }
 
-            if (!metainfo.isEmpty() && interopClient.addMetainfo(metainfo))
-            {
+            if (!metainfo.isEmpty() && interopClient.addMetainfo(metainfo)) {
                 delegated = true;
             }
         }
 
-        if (delegated)
-        {
+        if (delegated) {
             quitLater();
             return;
         }
     }
 
     // set the fallback config dir
-    if (configDir.isNull())
-    {
+    if (configDir.isNull()) {
         configDir = QString::fromUtf8(tr_getDefaultConfigDir("transmission"));
     }
 
     // ensure our config directory exists
     QDir dir(configDir);
 
-    if (!dir.exists())
-    {
+    if (!dir.exists()) {
         dir.mkpath(configDir);
     }
 
@@ -251,39 +231,32 @@ Application::Application(int &argc, char **argv)
     // initialize the prefs
     myPrefs = new Prefs(configDir);
 
-    if (!host.isNull())
-    {
+    if (!host.isNull()) {
         myPrefs->set(Prefs::SESSION_REMOTE_HOST, host);
     }
 
-    if (!port.isNull())
-    {
+    if (!port.isNull()) {
         myPrefs->set(Prefs::SESSION_REMOTE_PORT, port.toUInt());
     }
 
-    if (!username.isNull())
-    {
+    if (!username.isNull()) {
         myPrefs->set(Prefs::SESSION_REMOTE_USERNAME, username);
     }
 
-    if (!password.isNull())
-    {
+    if (!password.isNull()) {
         myPrefs->set(Prefs::SESSION_REMOTE_PASSWORD, password);
     }
 
-    if (!host.isNull() || !port.isNull() || !username.isNull() || !password.isNull())
-    {
+    if (!host.isNull() || !port.isNull() || !username.isNull() || !password.isNull()) {
         myPrefs->set(Prefs::SESSION_IS_REMOTE, true);
     }
 
-    if (myPrefs->getBool(Prefs::START_MINIMIZED))
-    {
+    if (myPrefs->getBool(Prefs::START_MINIMIZED)) {
         minimized = true;
     }
 
     // start as minimized only if the system tray present
-    if (!myPrefs->getBool(Prefs::SHOW_TRAY_ICON))
-    {
+    if (!myPrefs->getBool(Prefs::SHOW_TRAY_ICON)) {
         minimized = false;
     }
 
@@ -302,8 +275,7 @@ Application::Application(int &argc, char **argv)
     connect(myWatchDir, &WatchDir::torrentFileAdded, this, &Application::addTorrent);
 
     // init from preferences
-    for (auto const key : { Prefs::DIR_WATCH })
-    {
+    for (auto const key : { Prefs::DIR_WATCH }) {
         refreshPref(key);
     }
 
@@ -327,17 +299,13 @@ Application::Application(int &argc, char **argv)
 
     maybeUpdateBlocklist();
 
-    if (!firstTime)
-    {
+    if (!firstTime) {
         mySession->restart();
-    }
-    else
-    {
+    } else {
         myWindow->openSession();
     }
 
-    if (!myPrefs->getBool(Prefs::USER_HAS_GIVEN_INFORMED_CONSENT))
-    {
+    if (!myPrefs->getBool(Prefs::USER_HAS_GIVEN_INFORMED_CONSENT)) {
         QMessageBox *dialog = new QMessageBox(
             QMessageBox::Information,
             QString(),
@@ -357,8 +325,7 @@ Application::Application(int &argc, char **argv)
         dialog->show();
     }
 
-    for (QString const &filename : filenames)
-    {
+    for (QString const &filename : filenames) {
         addTorrent(filename);
     }
 
@@ -385,14 +352,12 @@ void Application::loadTranslations()
     QLocale const englishLocale(QLocale::English, QLocale::UnitedStates);
 
     if (loadTranslation(myQtTranslator, qtFileName, locale, qtQmDirs) ||
-        loadTranslation(myQtTranslator, qtFileName, englishLocale, qtQmDirs))
-    {
+        loadTranslation(myQtTranslator, qtFileName, englishLocale, qtQmDirs)) {
         installTranslator(&myQtTranslator);
     }
 
     if (loadTranslation(myAppTranslator, MY_CONFIG_NAME, locale, appQmDirs) ||
-        loadTranslation(myAppTranslator, MY_CONFIG_NAME, englishLocale, appQmDirs))
-    {
+        loadTranslation(myAppTranslator, MY_CONFIG_NAME, englishLocale, appQmDirs)) {
         installTranslator(&myAppTranslator);
     }
 }
@@ -411,8 +376,7 @@ void Application::onTorrentsEdited(torrent_ids_t const &ids)
 QStringList Application::getNames(torrent_ids_t const &ids) const
 {
     QStringList names;
-    for (auto const &id : ids)
-    {
+    for (auto const &id : ids) {
         names.push_back(myModel->getTorrentFromId(id)->name());
     }
 
@@ -422,8 +386,7 @@ QStringList Application::getNames(torrent_ids_t const &ids) const
 
 void Application::onTorrentsAdded(torrent_ids_t const &ids)
 {
-    if (myPrefs->getBool(Prefs::SHOW_NOTIFICATION_ON_ADD))
-    {
+    if (myPrefs->getBool(Prefs::SHOW_NOTIFICATION_ON_ADD)) {
         auto const title = tr("Torrent(s) Added", nullptr, ids.size());
         auto const body = getNames(ids).join(QStringLiteral("\n"));
         notifyApp(title, body);
@@ -432,15 +395,13 @@ void Application::onTorrentsAdded(torrent_ids_t const &ids)
 
 void Application::onTorrentsCompleted(torrent_ids_t const &ids)
 {
-    if (myPrefs->getBool(Prefs::SHOW_NOTIFICATION_ON_COMPLETE))
-    {
+    if (myPrefs->getBool(Prefs::SHOW_NOTIFICATION_ON_COMPLETE)) {
         auto const title = tr("Torrent Completed", nullptr, ids.size());
         auto const body = getNames(ids).join(QStringLiteral("\n"));
         notifyApp(title, body);
     }
 
-    if (myPrefs->getBool(Prefs::COMPLETE_SOUND_ENABLED))
-    {
+    if (myPrefs->getBool(Prefs::COMPLETE_SOUND_ENABLED)) {
 #if defined(Q_OS_WIN) || defined(Q_OS_MAC)
         beep();
 #else
@@ -451,8 +412,7 @@ void Application::onTorrentsCompleted(torrent_ids_t const &ids)
 
 void Application::onTorrentsNeedInfo(torrent_ids_t const &ids)
 {
-    if (!ids.empty())
-    {
+    if (!ids.empty()) {
         mySession->initTorrents(ids);
     }
 }
@@ -463,20 +423,16 @@ void Application::onTorrentsNeedInfo(torrent_ids_t const &ids)
 
 void Application::consentGiven(int result)
 {
-    if (result == QMessageBox::Ok)
-    {
+    if (result == QMessageBox::Ok) {
         myPrefs->set<bool>(Prefs::USER_HAS_GIVEN_INFORMED_CONSENT, true);
-    }
-    else
-    {
+    } else {
         quit();
     }
 }
 
 Application::~Application()
 {
-    if (myPrefs != nullptr && myWindow != nullptr)
-    {
+    if (myPrefs != nullptr && myWindow != nullptr) {
         QRect const mainwinRect(myWindow->geometry());
         myPrefs->set(Prefs::MAIN_WINDOW_HEIGHT, std::max(100, mainwinRect.height()));
         myPrefs->set(Prefs::MAIN_WINDOW_WIDTH, std::max(100, mainwinRect.width()));
@@ -497,8 +453,7 @@ Application::~Application()
 
 void Application::refreshPref(int key)
 {
-    switch (key)
-    {
+    switch (key) {
     case Prefs::BLOCKLIST_UPDATES_ENABLED:
         maybeUpdateBlocklist();
         break;
@@ -519,8 +474,7 @@ void Application::refreshPref(int key)
 
 void Application::maybeUpdateBlocklist()
 {
-    if (!myPrefs->getBool(Prefs::BLOCKLIST_UPDATES_ENABLED))
-    {
+    if (!myPrefs->getBool(Prefs::BLOCKLIST_UPDATES_ENABLED)) {
         return;
     }
 
@@ -528,8 +482,7 @@ void Application::maybeUpdateBlocklist()
     QDateTime const nextUpdateAt = lastUpdatedAt.addDays(7);
     QDateTime const now = QDateTime::currentDateTime();
 
-    if (now < nextUpdateAt)
-    {
+    if (now < nextUpdateAt) {
         mySession->updateBlocklist();
         myPrefs->set(Prefs::BLOCKLIST_DATE, now);
     }
@@ -549,12 +502,9 @@ void Application::refreshTorrents()
     // nothing's falling through the cracks.
     time_t const now = time(nullptr);
 
-    if (myLastFullUpdateTime + 60 >= now)
-    {
+    if (myLastFullUpdateTime + 60 >= now) {
         mySession->refreshActiveTorrents();
-    }
-    else
-    {
+    } else {
         myLastFullUpdateTime = now;
         mySession->refreshAllTorrents();
     }
@@ -566,17 +516,13 @@ void Application::refreshTorrents()
 
 void Application::addTorrent(AddData const &addme)
 {
-    if (addme.type == addme.NONE)
-    {
+    if (addme.type == addme.NONE) {
         return;
     }
 
-    if (!myPrefs->getBool(Prefs::OPTIONS_PROMPT))
-    {
+    if (!myPrefs->getBool(Prefs::OPTIONS_PROMPT)) {
         mySession->addTorrent(addme);
-    }
-    else
-    {
+    } else {
         auto o = new OptionsDialog(*mySession, *myPrefs, addme, myWindow);
         o->show();
     }
@@ -603,8 +549,7 @@ bool Application::notifyApp(QString const &title, QString const &body) const
 
     QDBusConnection bus = QDBusConnection::sessionBus();
 
-    if (bus.isConnected())
-    {
+    if (bus.isConnected()) {
         QDBusMessage m = QDBusMessage::createMethodCall(dbusServiceName, dbusPath, dbusInterfaceName, QLatin1String("Notify"));
         QVariantList args;
         args.append(QLatin1String("Transmission OG")); // app_name
@@ -618,8 +563,7 @@ bool Application::notifyApp(QString const &title, QString const &body) const
         m.setArguments(args);
         QDBusReply<quint32> const replyMsg = bus.call(m);
 
-        if (replyMsg.isValid() && replyMsg.value() > 0)
-        {
+        if (replyMsg.isValid() && replyMsg.value() > 0) {
             return true;
         }
     }

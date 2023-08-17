@@ -31,8 +31,7 @@ static int run_test(int argc, char const **argv, int expected_n, int *expected_c
     n = 0;
     tr_optind = 1;
 
-    while ((c = tr_getopt("summary", argc, argv, options, &optarg)) != TR_OPT_DONE)
-    {
+    while ((c = tr_getopt("summary", argc, argv, options, &optarg)) != TR_OPT_DONE) {
         check_int(n, <, expected_n);
         check_int(c, ==, expected_c[n]);
         check_str(optarg, ==, expected_optarg[n]);

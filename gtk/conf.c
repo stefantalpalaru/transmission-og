@@ -63,13 +63,11 @@ static void tr_prefs_init_defaults(tr_variant *d)
 
     dir = g_get_user_special_dir(G_USER_DIRECTORY_DOWNLOAD);
 
-    if (dir == NULL)
-    {
+    if (dir == NULL) {
         dir = g_get_user_special_dir(G_USER_DIRECTORY_DESKTOP);
     }
 
-    if (dir == NULL)
-    {
+    if (dir == NULL) {
         dir = tr_getDefaultDownloadDir();
     }
 
@@ -115,8 +113,7 @@ static tr_variant *getPrefs(void)
     static tr_variant settings;
     static gboolean loaded = FALSE;
 
-    if (!loaded)
-    {
+    if (!loaded) {
         tr_variantInitDict(&settings, 0);
         tr_prefs_init_defaults(&settings);
         tr_sessionLoadSettings(&settings, gl_confdir, MY_CONFIG_NAME);

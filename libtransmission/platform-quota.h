@@ -17,8 +17,7 @@
  * @{
  */
 
-struct tr_device_info
-{
+struct tr_device_info {
     char *path;
     char *device;
     char *fstype;

@@ -21,8 +21,7 @@
 
 static char *previousLocation = NULL;
 
-struct relocate_dialog_data
-{
+struct relocate_dialog_data {
     int done;
     bool do_move;
     guint timer;
@@ -51,8 +50,7 @@ static void startMovingNextTorrent(struct relocate_dialog_data *data)
 
     tr_torrent *tor = gtr_core_find_torrent(data->core, id);
 
-    if (tor != NULL)
-    {
+    if (tor != NULL) {
         tr_torrentSetLocation(tor, previousLocation, data->do_move, NULL, &data->done);
     }
 
@@ -70,8 +68,7 @@ static gboolean onTimer(gpointer gdata)
     struct relocate_dialog_data *data = gdata;
     int const done = data->done;
 
-    if (done == TR_LOC_ERROR)
-    {
+    if (done == TR_LOC_ERROR) {
         int const flags = GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT;
         GtkWidget *w = gtk_message_dialog_new(
             GTK_WINDOW(data->message_dialog),
@@ -82,15 +79,10 @@ static gboolean onTimer(gpointer gdata)
             _("Couldn't move torrent"));
         gtk_dialog_run(GTK_DIALOG(w));
         gtk_widget_destroy(GTK_WIDGET(data->message_dialog));
-    }
-    else if (done == TR_LOC_DONE)
-    {
-        if (data->torrent_ids != NULL)
-        {
+    } else if (done == TR_LOC_DONE) {
+        if (data->torrent_ids != NULL) {
             startMovingNextTorrent(data);
-        }
-        else
-        {
+        } else {
             gtk_widget_destroy(GTK_WIDGET(data->chooser_dialog));
         }
     }
@@ -100,8 +92,7 @@ static gboolean onTimer(gpointer gdata)
 
 static void onResponse(GtkDialog *dialog, int response, gpointer unused UNUSED)
 {
-    if (response == GTK_RESPONSE_APPLY)
-    {
+    if (response == GTK_RESPONSE_APPLY) {
         GtkWidget *w;
         GObject *d = G_OBJECT(dialog);
         struct relocate_dialog_data *data = g_object_get_data(d, DATA_KEY);
@@ -131,9 +122,7 @@ static void onResponse(GtkDialog *dialog, int response, gpointer unused UNUSED)
         data->done = TR_LOC_DONE;
         data->timer = gdk_threads_add_timeout_seconds(1, onTimer, data);
         onTimer(data);
-    }
-    else
-    {
+    } else {
         gtk_widget_destroy(GTK_WIDGET(dialog));
     }
 }
@@ -162,8 +151,7 @@ GtkWidget *gtr_relocate_dialog_new(GtkWindow *parent, TrCore *core, GSList *torr
     t = hig_workarea_create();
     hig_workarea_add_section_title(t, &row, _("Location"));
 
-    if (previousLocation == NULL)
-    {
+    if (previousLocation == NULL) {
         previousLocation = g_strdup(gtr_pref_string_get(TR_KEY_download_dir));
     }
 

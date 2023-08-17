@@ -85,13 +85,11 @@ void hig_workarea_add_label_w(GtkWidget *t, guint row, GtkWidget *w)
     gtk_widget_set_margin_left(w, 18);
 #endif
 
-    if (GTK_IS_MISC(w))
-    {
+    if (GTK_IS_MISC(w)) {
         g_object_set(w, "halign", GTK_ALIGN_START, "valign", GTK_ALIGN_CENTER, NULL);
     }
 
-    if (GTK_IS_LABEL(w))
-    {
+    if (GTK_IS_LABEL(w)) {
         gtk_label_set_use_markup(GTK_LABEL(w), TRUE);
     }
 
@@ -100,8 +98,7 @@ void hig_workarea_add_label_w(GtkWidget *t, guint row, GtkWidget *w)
 
 static void hig_workarea_add_tall_control(GtkWidget *t, guint row, GtkWidget *control)
 {
-    if (GTK_IS_MISC(control))
-    {
+    if (GTK_IS_MISC(control)) {
         g_object_set(control, "halign", GTK_ALIGN_START, "valign", GTK_ALIGN_CENTER, NULL);
     }
 
@@ -111,8 +108,7 @@ static void hig_workarea_add_tall_control(GtkWidget *t, guint row, GtkWidget *co
 
 static void hig_workarea_add_control(GtkWidget *t, guint row, GtkWidget *control)
 {
-    if (GTK_IS_MISC(control))
-    {
+    if (GTK_IS_MISC(control)) {
         g_object_set(control, "halign", GTK_ALIGN_START, "valign", GTK_ALIGN_CENTER, NULL);
     }
 
@@ -125,8 +121,7 @@ void hig_workarea_add_row_w(GtkWidget *t, guint *row, GtkWidget *label, GtkWidge
     hig_workarea_add_label_w(t, *row, label);
     hig_workarea_add_control(t, *row, control);
 
-    if (GTK_IS_LABEL(label))
-    {
+    if (GTK_IS_LABEL(label)) {
         gtk_label_set_mnemonic_widget(GTK_LABEL(label), mnemonic ? mnemonic : control);
     }
 
@@ -157,8 +152,7 @@ GtkWidget *hig_workarea_add_tall_row(
     hig_workarea_add_label_w(table, *row, v);
     hig_workarea_add_tall_control(table, *row, control);
 
-    if (GTK_IS_LABEL(l))
-    {
+    if (GTK_IS_LABEL(l)) {
         gtk_label_set_mnemonic_widget(GTK_LABEL(l), mnemonic ? mnemonic : control);
     }
 

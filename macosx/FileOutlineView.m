@@ -53,12 +53,10 @@
 {
     NSInteger const row = [self rowAtPoint:[self convertPoint:[event locationInWindow] fromView:nil]];
 
-    if (row >= 0)
-    {
+    if (row >= 0) {
         if (![self isRowSelected:row])
             [self selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
-    }
-    else
+    } else
         [self deselectAll:self];
 
     return [self menu];
@@ -77,8 +75,7 @@
 {
     [super updateTrackingAreas];
 
-    for (NSTrackingArea *area in [self trackingAreas])
-    {
+    for (NSTrackingArea *area in [self trackingAreas]) {
         if ([area owner] == self && [area userInfo][@"Row"])
             [self removeTrackingArea:area];
     }
@@ -89,8 +86,8 @@
 
     NSPoint mouseLocation = [self convertPoint:[[self window] mouseLocationOutsideOfEventStream] fromView:nil];
 
-    for (NSInteger row = visibleRows.location, col = [self columnWithIdentifier:@"Priority"]; (NSUInteger)row < NSMaxRange(visibleRows); row++)
-    {
+    for (NSInteger row = visibleRows.location, col = [self columnWithIdentifier:@"Priority"]; (NSUInteger)row < NSMaxRange(visibleRows);
+         row++) {
         FilePriorityCell *cell = (FilePriorityCell *)[self preparedCellAtColumn:col row:row];
 
         NSDictionary *userInfo = @{ @"Row" : @(row) };
@@ -107,8 +104,7 @@
 - (void)mouseEntered:(NSEvent *)event
 {
     NSNumber *row;
-    if ((row = ((NSDictionary *)[event userData])[@"Row"]))
-    {
+    if ((row = ((NSDictionary *)[event userData])[@"Row"])) {
         fMouseRow = [row intValue];
         [self setNeedsDisplayInRect:[self frameOfCellAtColumn:[self columnWithIdentifier:@"Priority"] row:fMouseRow]];
     }
@@ -117,8 +113,7 @@
 - (void)mouseExited:(NSEvent *)event
 {
     NSNumber *row;
-    if ((row = ((NSDictionary *)[event userData])[@"Row"]))
-    {
+    if ((row = ((NSDictionary *)[event userData])[@"Row"])) {
         [self setNeedsDisplayInRect:[self frameOfCellAtColumn:[self columnWithIdentifier:@"Priority"] row:[row intValue]]];
         fMouseRow = -1;
     }

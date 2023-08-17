@@ -28,14 +28,7 @@
 #error only libtransmission should #include this header.
 #endif
 
-enum
-{
-    TR_DHT_STOPPED = 0,
-    TR_DHT_BROKEN = 1,
-    TR_DHT_POOR = 2,
-    TR_DHT_FIREWALLED = 3,
-    TR_DHT_GOOD = 4
-};
+enum { TR_DHT_STOPPED = 0, TR_DHT_BROKEN = 1, TR_DHT_POOR = 2, TR_DHT_FIREWALLED = 3, TR_DHT_GOOD = 4 };
 
 int tr_dhtInit(tr_session *);
 void tr_dhtUninit(tr_session *);

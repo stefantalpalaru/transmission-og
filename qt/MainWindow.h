@@ -41,13 +41,11 @@ class TorrentDelegate;
 class TorrentDelegateMin;
 class TorrentModel;
 
-extern "C"
-{
-    struct tr_variant;
+extern "C" {
+struct tr_variant;
 }
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
@@ -175,8 +173,7 @@ private:
     QAction *myAltSpeedAction;
     QString myErrorMessage;
 
-    struct TransferStats
-    {
+    struct TransferStats {
         Speed speedUp;
         Speed speedDown;
         size_t peersSending = 0;
@@ -184,8 +181,7 @@ private:
     };
     TransferStats getTransferStats() const;
 
-    enum
-    {
+    enum {
         REFRESH_TITLE = (1 << 0),
         REFRESH_STATUS_BAR = (1 << 1),
         REFRESH_TRAY_ICON = (1 << 2),

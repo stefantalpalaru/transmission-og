@@ -19,8 +19,7 @@ class QAxObject;
 class QString;
 class QVariant;
 
-class InteropHelper
-{
+class InteropHelper {
 public:
     bool isConnected() const;
 

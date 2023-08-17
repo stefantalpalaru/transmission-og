@@ -16,13 +16,9 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
-enum
-{
-    TR_RESPONSE_RESET = 1
-};
+enum { TR_RESPONSE_RESET = 1 };
 
-struct stat_ui
-{
+struct stat_ui {
     GtkLabel *one_up_lb;
     GtkLabel *one_down_lb;
     GtkLabel *one_ratio_lb;
@@ -88,8 +84,7 @@ static void dialogResponse(GtkDialog *dialog, gint response, gpointer gdata)
 {
     struct stat_ui *ui = gdata;
 
-    if (response == TR_RESPONSE_RESET)
-    {
+    if (response == TR_RESPONSE_RESET) {
         char const *primary = _("Reset your statistics?");
         char const *secondary = _(
             "These statistics are for your information only. "
@@ -99,8 +94,7 @@ static void dialogResponse(GtkDialog *dialog, gint response, gpointer gdata)
         gtk_dialog_add_buttons(GTK_DIALOG(w), GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, _("_Reset"), TR_RESPONSE_RESET, NULL);
         gtk_message_dialog_format_secondary_text(GTK_MESSAGE_DIALOG(w), "%s", secondary);
 
-        if (gtk_dialog_run(GTK_DIALOG(w)) == TR_RESPONSE_RESET)
-        {
+        if (gtk_dialog_run(GTK_DIALOG(w)) == TR_RESPONSE_RESET) {
             tr_sessionClearStats(gtr_core_session(ui->core));
             updateStats(ui);
         }
@@ -108,8 +102,7 @@ static void dialogResponse(GtkDialog *dialog, gint response, gpointer gdata)
         gtk_widget_destroy(w);
     }
 
-    if (response == GTK_RESPONSE_CLOSE)
-    {
+    if (response == GTK_RESPONSE_CLOSE) {
         gtk_widget_destroy(GTK_WIDGET(dialog));
     }
 }

@@ -159,12 +159,9 @@ static int testString(char const *str, bool isGood)
 
     err = tr_variantFromBencFull(&val, str, len, NULL, &end);
 
-    if (!isGood)
-    {
+    if (!isGood) {
         check_int(err, !=, 0);
-    }
-    else
-    {
+    } else {
         check_int(err, ==, 0);
 #if 0
         fprintf(stderr, "in: [%s]\n", str);
@@ -233,33 +230,27 @@ static int testParse(void)
     tr_free(saved);
     tr_variantFree(&val);
 
-    if ((err = testString("llleee", true)) != 0)
-    {
+    if ((err = testString("llleee", true)) != 0) {
         return err;
     }
 
-    if ((err = testString("d3:cow3:moo4:spam4:eggse", true)) != 0)
-    {
+    if ((err = testString("d3:cow3:moo4:spam4:eggse", true)) != 0) {
         return err;
     }
 
-    if ((err = testString("d4:spaml1:a1:bee", true)) != 0)
-    {
+    if ((err = testString("d4:spaml1:a1:bee", true)) != 0) {
         return err;
     }
 
-    if ((err = testString("d5:greenli1ei2ei3ee4:spamd1:ai123e3:keyi214eee", true)) != 0)
-    {
+    if ((err = testString("d5:greenli1ei2ei3ee4:spamd1:ai123e3:keyi214eee", true)) != 0) {
         return err;
     }
 
-    if ((err = testString("d9:publisher3:bob17:publisher-webpage15:www.example.com18:publisher.location4:homee", true)) != 0)
-    {
+    if ((err = testString("d9:publisher3:bob17:publisher-webpage15:www.example.com18:publisher.location4:homee", true)) != 0) {
         return err;
     }
 
-    if ((err = testString("d8:completei1e8:intervali1800e12:min intervali1800e5:peers0:e", true)) != 0)
-    {
+    if ((err = testString("d8:completei1e8:intervali1800e12:min intervali1800e5:peers0:e", true)) != 0) {
         return err;
     }
 
@@ -268,13 +259,11 @@ static int testParse(void)
         return err;
     }
 
-    if ((err = testString("", false)) != 0)
-    {
+    if ((err = testString("", false)) != 0) {
         return err;
     }
 
-    if ((err = testString(" ", false)) != 0)
-    {
+    if ((err = testString(" ", false)) != 0) {
         return err;
     }
 
@@ -323,10 +312,8 @@ static void stripWhitespace(char *in)
 {
     char *out = in;
 
-    for (; !tr_str_is_empty(in); ++in)
-    {
-        if (!isspace(*in))
-        {
+    for (; !tr_str_is_empty(in); ++in) {
+        if (!isspace(*in)) {
             *out++ = *in;
         }
     }
@@ -364,40 +351,35 @@ static int testJSON(void)
     benc_str = "i6e";
     expected = "6";
 
-    if ((val = testJSONSnippet(benc_str, expected)) != 0)
-    {
+    if ((val = testJSONSnippet(benc_str, expected)) != 0) {
         return val;
     }
 
     benc_str = "d5:helloi1e5:worldi2ee";
     expected = "{\"hello\":1,\"world\":2}";
 
-    if ((val = testJSONSnippet(benc_str, expected)) != 0)
-    {
+    if ((val = testJSONSnippet(benc_str, expected)) != 0) {
         return val;
     }
 
     benc_str = "d5:helloi1e5:worldi2e3:fooli1ei2ei3eee";
     expected = "{\"foo\":[1,2,3],\"hello\":1,\"world\":2}";
 
-    if ((val = testJSONSnippet(benc_str, expected)) != 0)
-    {
+    if ((val = testJSONSnippet(benc_str, expected)) != 0) {
         return val;
     }
 
     benc_str = "d5:helloi1e5:worldi2e3:fooli1ei2ei3ed1:ai0eeee";
     expected = "{\"foo\":[1,2,3,{\"a\":0}],\"hello\":1,\"world\":2}";
 
-    if ((val = testJSONSnippet(benc_str, expected)) != 0)
-    {
+    if ((val = testJSONSnippet(benc_str, expected)) != 0) {
         return val;
     }
 
     benc_str = "d4:argsd6:statusle7:status2lee6:result7:successe";
     expected = "{\"args\":{\"status\":[],\"status2\":[]},\"result\":\"success\"}";
 
-    if ((val = testJSONSnippet(benc_str, expected)) != 0)
-    {
+    if ((val = testJSONSnippet(benc_str, expected)) != 0) {
         return val;
     }
 
@@ -478,8 +460,7 @@ static int testStackSmash(void)
 
     in = tr_new(char, depth * 2 + 1);
 
-    for (int i = 0; i < depth; ++i)
-    {
+    for (int i = 0; i < depth; ++i) {
         in[i] = 'l';
         in[depth + i] = 'e';
     }

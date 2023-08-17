@@ -12,8 +12,7 @@
 #error only libtransmission should #include this header.
 #endif
 
-enum
-{
+enum {
     TR_FR_DOWNLOADED = (1 << 0),
     TR_FR_UPLOADED = (1 << 1),
     TR_FR_CORRUPT = (1 << 2),

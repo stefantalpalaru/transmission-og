@@ -22,8 +22,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface TorrentGroup : NSObject
-{
+@interface TorrentGroup : NSObject {
     NSInteger fGroup;
     NSMutableArray *fTorrents;
 }

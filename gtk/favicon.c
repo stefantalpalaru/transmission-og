@@ -19,8 +19,7 @@
 #define IMAGE_TYPES 4
 static char const *image_types[IMAGE_TYPES] = { "ico", "png", "gif", "jpg" };
 
-struct favicon_data
-{
+struct favicon_data {
     tr_session *session;
     GFunc func;
     gpointer data;
@@ -39,8 +38,7 @@ static char *favicon_get_cache_dir(void)
 {
     static char *dir = NULL;
 
-    if (dir == NULL)
-    {
+    if (dir == NULL) {
         dir = g_build_filename(g_get_user_cache_dir(), "transmission", "favicons", NULL);
         g_mkdir_with_parents(dir, 0777);
     }
@@ -94,8 +92,7 @@ static gboolean favicon_web_done_idle_cb(gpointer vfav)
         if (++fav->type == IMAGE_TYPES) /* failure */
         {
             finished = TRUE;
-        }
-        else /* keep trying */
+        } else /* keep trying */
         {
             char *url = get_url(fav->host, fav->type);
 
@@ -108,8 +105,7 @@ static gboolean favicon_web_done_idle_cb(gpointer vfav)
         }
     }
 
-    if (finished)
-    {
+    if (finished) {
         fav->func(pixbuf, fav->data);
         g_free(fav->host);
         g_free(fav->contents);
@@ -139,12 +135,9 @@ void gtr_get_favicon(tr_session *session, char const *host, GFunc pixbuf_ready_f
 {
     GdkPixbuf *pixbuf = favicon_load_from_cache(host);
 
-    if (pixbuf != NULL)
-    {
+    if (pixbuf != NULL) {
         pixbuf_ready_func(pixbuf, pixbuf_ready_func_data);
-    }
-    else
-    {
+    } else {
         struct favicon_data *data;
         char *url = get_url(host, 0);
 

@@ -11,8 +11,7 @@
 #include <QIcon>
 #include <QStyle>
 
-class StyleHelper
-{
+class StyleHelper {
 public:
     static QIcon::Mode getIconMode(QStyle::State state);
 };

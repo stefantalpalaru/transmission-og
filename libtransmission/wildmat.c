@@ -58,12 +58,10 @@ static int DoMatch(char const *text, char const *p)
     register int matched;
     register int reverse;
 
-    for (; *p; text++, p++)
-    {
+    for (; *p; text++, p++) {
         if (*text == '\0' && *p != '*')
             return ABORT;
-        switch (*p)
-        {
+        switch (*p) {
         case '\\':
             /* Literal match with following character. */
             p++;

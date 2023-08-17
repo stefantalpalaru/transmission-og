@@ -70,8 +70,7 @@
     [[fLevelButton itemAtIndex:LEVEL_ERROR] setTitle:NSLocalizedString(@"Error", "Message window -> level string")];
     [[fLevelButton itemAtIndex:LEVEL_INFO] setTitle:NSLocalizedString(@"Info", "Message window -> level string")];
     [[fLevelButton itemAtIndex:LEVEL_DEBUG] setTitle:NSLocalizedString(@"Debug", "Message window -> level string")];
-    if (![NSApp isOnYosemiteOrBetter])
-    {
+    if (![NSApp isOnYosemiteOrBetter]) {
         [[fLevelButton itemAtIndex:LEVEL_ERROR] setImage:[NSImage imageNamed:@"RedDotGlossy"]];
         [[fLevelButton itemAtIndex:LEVEL_INFO] setImage:[NSImage imageNamed:@"YellowDotGlossy"]];
         [[fLevelButton itemAtIndex:LEVEL_DEBUG] setImage:[NSImage imageNamed:@"PurpleDotGlossy"]];
@@ -114,8 +113,7 @@
                                                                                                               effectiveRange:NULL];
 
     // select proper level in popup button
-    switch ([[NSUserDefaults standardUserDefaults] integerForKey:@"MessageLevel"])
-    {
+    switch ([[NSUserDefaults standardUserDefaults] integerForKey:@"MessageLevel"]) {
     case TR_LOG_ERROR:
         [fLevelButton selectItemAtIndex:LEVEL_ERROR];
         break;
@@ -144,8 +142,7 @@
 
 - (void)windowDidBecomeKey:(NSNotification *)notification
 {
-    if (!fTimer)
-    {
+    if (!fTimer) {
         fTimer = [NSTimer scheduledTimerWithTimeInterval:UPDATE_SECONDS target:self selector:@selector(updateLog:) userInfo:nil
                                                  repeats:YES];
         [self updateLog:nil];
@@ -194,8 +191,7 @@
 
     BOOL changed = NO;
 
-    for (tr_log_message *currentMessage = messages; currentMessage != NULL; currentMessage = currentMessage->next)
-    {
+    for (tr_log_message *currentMessage = messages; currentMessage != NULL; currentMessage = currentMessage->next) {
         NSString *name = currentMessage->name != NULL ? @(currentMessage->name) : [[NSProcessInfo processInfo] processName];
 
         NSString *file = [[@(currentMessage->file) lastPathComponent] stringByAppendingFormat:@":%d", currentMessage->line];
@@ -210,15 +206,13 @@
         };
         [fMessages addObject:message];
 
-        if (currentMessage->level <= maxLevel && [self shouldIncludeMessageForFilter:filterString message:message])
-        {
+        if (currentMessage->level <= maxLevel && [self shouldIncludeMessageForFilter:filterString message:message]) {
             [fDisplayedMessages addObject:message];
             changed = YES;
         }
     }
 
-    if ([fMessages count] > TR_LOG_MAX_QUEUE_LENGTH)
-    {
+    if ([fMessages count] > TR_LOG_MAX_QUEUE_LENGTH) {
         NSUInteger const oldCount = [fDisplayedMessages count];
 
         NSIndexSet *removeIndexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [fMessages count] - TR_LOG_MAX_QUEUE_LENGTH)];
@@ -230,8 +224,7 @@
         changed |= oldCount > [fDisplayedMessages count];
     }
 
-    if (changed)
-    {
+    if (changed) {
         [fDisplayedMessages sortUsingDescriptors:[fMessageTable sortDescriptors]];
 
         [fMessageTable reloadData];
@@ -256,11 +249,9 @@
 
     if ([ident isEqualToString:@"Date"])
         return message[@"Date"];
-    else if ([ident isEqualToString:@"Level"])
-    {
+    else if ([ident isEqualToString:@"Level"]) {
         NSInteger const level = [message[@"Level"] integerValue];
-        switch (level)
-        {
+        switch (level) {
         case TR_LOG_ERROR:
             return [NSImage imageNamed:([NSApp isOnYosemiteOrBetter] ? @"RedDotFlat" : @"RedDotGlossy")];
         case TR_LOG_INFO:
@@ -271,8 +262,7 @@
             NSAssert1(NO, @"Unknown message log level: %ld", level);
             return nil;
         }
-    }
-    else if ([ident isEqualToString:@"Name"])
+    } else if ([ident isEqualToString:@"Name"])
         return message[@"Name"];
     else
         return message[@"Message"];
@@ -334,8 +324,7 @@
 - (void)changeLevel:(id)sender
 {
     NSInteger level;
-    switch ([fLevelButton indexOfSelectedItem])
-    {
+    switch ([fLevelButton indexOfSelectedItem]) {
     case LEVEL_ERROR:
         level = TR_LOG_ERROR;
         break;
@@ -397,8 +386,7 @@
     [panel setNameFieldStringValue:NSLocalizedString(@"untitled", "Save log panel -> default file name")];
 
     [panel beginSheetModalForWindow:[self window] completionHandler:^(NSInteger result) {
-        if (result == NSFileHandlingPanelOKButton)
-        {
+        if (result == NSFileHandlingPanelOKButton) {
             // make the array sorted by date
             NSSortDescriptor *descriptor = [NSSortDescriptor sortDescriptorWithKey:@"Index" ascending:YES];
             NSArray *descriptors = [[NSArray alloc] initWithObjects:descriptor, nil];
@@ -411,8 +399,7 @@
 
             NSString *fileString = [messageStrings componentsJoinedByString:@"\n"];
 
-            if (![fileString writeToFile:[[panel URL] path] atomically:YES encoding:NSUTF8StringEncoding error:nil])
-            {
+            if (![fileString writeToFile:[[panel URL] path] atomically:YES encoding:NSUTF8StringEncoding error:nil]) {
                 NSAlert *alert = [[NSAlert alloc] init];
                 [alert addButtonWithTitle:NSLocalizedString(@"OK", "Save log alert panel -> button")];
                 [alert setMessageText:NSLocalizedString(@"Log Could Not Be Saved", "Save log alert panel -> title")];
@@ -466,20 +453,15 @@
     NSMutableArray *itemsToAdd = [NSMutableArray array];
     NSMutableIndexSet *itemsToAddIndexes = [NSMutableIndexSet indexSet];
 
-    for (NSDictionary *message in tempMessages)
-    {
+    for (NSDictionary *message in tempMessages) {
         NSUInteger const previousIndex = [fDisplayedMessages
             indexOfObject:message
                   inRange:NSMakeRange(currentIndex, [fDisplayedMessages count] - currentIndex)];
-        if (previousIndex == NSNotFound)
-        {
+        if (previousIndex == NSNotFound) {
             [itemsToAdd addObject:message];
             [itemsToAddIndexes addIndex:totalCount];
-        }
-        else
-        {
-            if (previousIndex != currentIndex)
-            {
+        } else {
+            if (previousIndex != currentIndex) {
                 [fDisplayedMessages moveObjectAtIndex:previousIndex toIndex:currentIndex];
                 [fMessageTable moveRowAtIndex:previousIndex toIndex:currentIndex];
             }
@@ -490,8 +472,7 @@
     }
 
     // remove trailing items - those are the unused
-    if (currentIndex < [fDisplayedMessages count])
-    {
+    if (currentIndex < [fDisplayedMessages count]) {
         NSRange const removeRange = NSMakeRange(currentIndex, [fDisplayedMessages count] - currentIndex);
         [fDisplayedMessages removeObjectsInRange:removeRange];
         [fMessageTable removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:removeRange]
@@ -511,8 +492,7 @@
 {
     NSString *levelString;
     NSInteger const level = [message[@"Level"] integerValue];
-    switch (level)
-    {
+    switch (level) {
     case TR_LOG_ERROR:
         levelString = NSLocalizedString(@"Error", "Message window -> level");
         break;

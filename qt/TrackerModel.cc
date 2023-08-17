@@ -27,12 +27,10 @@ QVariant TrackerModel::data(QModelIndex const &index, int role) const
 
     int const row = index.row();
 
-    if (0 <= row && row < myRows.size())
-    {
+    if (0 <= row && row < myRows.size()) {
         TrackerInfo const &trackerInfo = myRows.at(row);
 
-        switch (role)
-        {
+        switch (role) {
         case Qt::DisplayRole:
             var = trackerInfo.st.announce;
             break;
@@ -57,22 +55,18 @@ QVariant TrackerModel::data(QModelIndex const &index, int role) const
 ****
 ***/
 
-struct CompareTrackers
-{
+struct CompareTrackers {
     bool operator()(TrackerInfo const &a, TrackerInfo const &b) const
     {
-        if (a.torrentId != b.torrentId)
-        {
+        if (a.torrentId != b.torrentId) {
             return a.torrentId < b.torrentId;
         }
 
-        if (a.st.tier != b.st.tier)
-        {
+        if (a.st.tier != b.st.tier) {
             return a.st.tier < b.st.tier;
         }
 
-        if (a.st.isBackup != b.st.isBackup)
-        {
+        if (a.st.isBackup != b.st.isBackup) {
             return !a.st.isBackup;
         }
 
@@ -85,16 +79,13 @@ void TrackerModel::refresh(TorrentModel const &torrentModel, torrent_ids_t const
     // build a list of the TrackerInfos
     QVector<TrackerInfo> trackers;
 
-    for (int const id : ids)
-    {
+    for (int const id : ids) {
         Torrent const *tor = torrentModel.getTorrentFromId(id);
 
-        if (tor != nullptr)
-        {
+        if (tor != nullptr) {
             TrackerStatsList const trackerList = tor->trackerStats();
 
-            for (TrackerStat const &st : trackerList)
-            {
+            for (TrackerStat const &st : trackerList) {
                 TrackerInfo trackerInfo;
                 trackerInfo.st = st;
                 trackerInfo.torrentId = id;
@@ -111,28 +102,23 @@ void TrackerModel::refresh(TorrentModel const &torrentModel, torrent_ids_t const
     int oldIndex = 0;
     int newIndex = 0;
 
-    while (oldIndex < myRows.size() || newIndex < trackers.size())
-    {
+    while (oldIndex < myRows.size() || newIndex < trackers.size()) {
         bool const isEndOfOld = oldIndex == myRows.size();
         bool const isEndOfNew = newIndex == trackers.size();
 
-        if (isEndOfOld || (!isEndOfNew && comp(trackers.at(newIndex), myRows.at(oldIndex))))
-        {
+        if (isEndOfOld || (!isEndOfNew && comp(trackers.at(newIndex), myRows.at(oldIndex)))) {
             // add this new row
             beginInsertRows(QModelIndex(), oldIndex, oldIndex);
             myRows.insert(oldIndex, trackers.at(newIndex));
             endInsertRows();
             ++oldIndex;
             ++newIndex;
-        }
-        else if (isEndOfNew || (!isEndOfOld && comp(myRows.at(oldIndex), trackers.at(newIndex))))
-        {
+        } else if (isEndOfNew || (!isEndOfOld && comp(myRows.at(oldIndex), trackers.at(newIndex)))) {
             // remove this old row
             beginRemoveRows(QModelIndex(), oldIndex, oldIndex);
             myRows.remove(oldIndex);
             endRemoveRows();
-        }
-        else // update existing row
+        } else // update existing row
         {
             myRows[oldIndex].st = trackers.at(newIndex).st;
             emit dataChanged(index(oldIndex, 0), index(oldIndex, 0));
@@ -144,12 +130,10 @@ void TrackerModel::refresh(TorrentModel const &torrentModel, torrent_ids_t const
 
 int TrackerModel::find(int torrentId, QString const &url) const
 {
-    for (int i = 0, n = myRows.size(); i < n; ++i)
-    {
+    for (int i = 0, n = myRows.size(); i < n; ++i) {
         TrackerInfo const &inf = myRows.at(i);
 
-        if (inf.torrentId == torrentId && url == inf.st.announce)
-        {
+        if (inf.torrentId == torrentId && url == inf.st.announce) {
             return i;
         }
     }

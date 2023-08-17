@@ -8,13 +8,11 @@
 
 #pragma once
 
-class Speed
-{
+class Speed {
 public:
     Speed()
         : _Bps(0)
-    {
-    }
+    {}
 
     double KBps() const;
 
@@ -59,8 +57,7 @@ public:
 private:
     Speed(int Bps)
         : _Bps(Bps)
-    {
-    }
+    {}
 
 private:
     int _Bps;

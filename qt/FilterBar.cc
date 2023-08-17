@@ -26,11 +26,7 @@
 #include "TorrentModel.h"
 #include "Utils.h"
 
-enum
-{
-    ActivityRole = FilterBarComboBox::UserRole,
-    TrackerRole
-};
+enum { ActivityRole = FilterBarComboBox::UserRole, TrackerRole };
 
 /***
 ****
@@ -87,8 +83,7 @@ FilterBarComboBox *FilterBar::createActivityCombo()
 ****
 ***/
 
-namespace
-{
+namespace {
 
 QString getCountString(int n)
 {
@@ -99,18 +94,11 @@ QString getCountString(int n)
 
 void FilterBar::refreshTrackers()
 {
-    enum
-    {
-        ROW_TOTALS = 0,
-        ROW_SEPARATOR,
-        ROW_FIRST_TRACKER
-    };
+    enum { ROW_TOTALS = 0, ROW_SEPARATOR, ROW_FIRST_TRACKER };
 
     auto torrentsPerHost = std::unordered_map<QString, int>{};
-    for (auto const &tor : myTorrents.torrents())
-    {
-        for (auto const &displayName : tor->trackerDisplayNames())
-        {
+    for (auto const &tor : myTorrents.torrents()) {
+        for (auto const &displayName : tor->trackerDisplayNames()) {
             ++torrentsPerHost[displayName];
         }
     }
@@ -121,8 +109,7 @@ void FilterBar::refreshTrackers()
     item->setData(int(num_trackers), FilterBarComboBox::CountRole);
     item->setData(getCountString(num_trackers), FilterBarComboBox::CountStringRole);
 
-    auto updateTrackerItem = [](QStandardItem *i, auto const &it)
-    {
+    auto updateTrackerItem = [](QStandardItem *i, auto const &it) {
         auto const &displayName = it->first;
         auto const &count = it->second;
         auto const icon = qApp->faviconCache().find(FaviconCache::getKey(displayName));
@@ -142,21 +129,16 @@ void FilterBar::refreshTrackers()
     bool anyAdded = false;
     int row = ROW_FIRST_TRACKER;
 
-    while ((old_it != old_end) || (new_it != new_end))
-    {
-        if ((old_it == old_end) || ((new_it != new_end) && (old_it->first > new_it->first)))
-        {
+    while ((old_it != old_end) || (new_it != new_end)) {
+        if ((old_it == old_end) || ((new_it != new_end) && (old_it->first > new_it->first))) {
             myTrackerModel->insertRow(row, updateTrackerItem(new QStandardItem(1), new_it));
             anyAdded = true;
             ++new_it;
             ++row;
-        }
-        else if ((new_it == new_end) || ((old_it != old_end) && (old_it->first < new_it->first)))
-        {
+        } else if ((new_it == new_end) || ((old_it != old_end) && (old_it->first < new_it->first))) {
             myTrackerModel->removeRow(row);
             ++old_it;
-        }
-        else // update
+        } else // update
         {
             updateTrackerItem(myTrackerModel->item(row), new_it);
             ++old_it;
@@ -242,8 +224,7 @@ FilterBar::FilterBar(Prefs &prefs, TorrentModel const &torrents, TorrentFilter c
     myIsBootstrapping = false;
 
     // initialize our state
-    for (int const key : { Prefs::FILTER_MODE, Prefs::FILTER_TRACKERS })
-    {
+    for (int const key : { Prefs::FILTER_MODE, Prefs::FILTER_TRACKERS }) {
         refreshPref(key);
     }
 }
@@ -270,8 +251,7 @@ void FilterBar::clear()
 
 void FilterBar::refreshPref(int key)
 {
-    switch (key)
-    {
+    switch (key) {
     case Prefs::FILTER_MODE:
         {
             FilterMode const m = myPrefs.get<FilterMode>(key);
@@ -285,16 +265,13 @@ void FilterBar::refreshPref(int key)
         {
             auto const displayName = myPrefs.getString(key);
             auto rows = myTrackerModel->findItems(displayName);
-            if (!rows.isEmpty())
-            {
+            if (!rows.isEmpty()) {
                 myTrackerCombo->setCurrentIndex(rows.front()->row());
-            }
-            else // hm, we don't seem to have this tracker anymore...
+            } else // hm, we don't seem to have this tracker anymore...
             {
                 bool const isBootstrapping = myTrackerModel->rowCount() <= 2;
 
-                if (!isBootstrapping)
-                {
+                if (!isBootstrapping) {
                     myPrefs.set(key, QString());
                 }
             }
@@ -306,30 +283,24 @@ void FilterBar::refreshPref(int key)
 
 void FilterBar::onTextChanged(QString const &str)
 {
-    if (!myIsBootstrapping)
-    {
+    if (!myIsBootstrapping) {
         myPrefs.set(Prefs::FILTER_TEXT, str.trimmed());
     }
 }
 
 void FilterBar::onTrackerIndexChanged(int i)
 {
-    if (!myIsBootstrapping)
-    {
+    if (!myIsBootstrapping) {
         QString str;
         bool const isTracker = !myTrackerCombo->itemData(i, TrackerRole).toString().isEmpty();
 
-        if (!isTracker)
-        {
+        if (!isTracker) {
             // show all
-        }
-        else
-        {
+        } else {
             str = myTrackerCombo->itemData(i, TrackerRole).toString();
             int const pos = str.lastIndexOf(QLatin1Char('.'));
 
-            if (pos >= 0)
-            {
+            if (pos >= 0) {
                 str.truncate(pos + 1);
             }
         }
@@ -340,8 +311,7 @@ void FilterBar::onTrackerIndexChanged(int i)
 
 void FilterBar::onActivityIndexChanged(int i)
 {
-    if (!myIsBootstrapping)
-    {
+    if (!myIsBootstrapping) {
         FilterMode const mode = myActivityCombo->itemData(i, ActivityRole).toInt();
         myPrefs.set(Prefs::FILTER_MODE, mode);
     }
@@ -353,8 +323,7 @@ void FilterBar::onActivityIndexChanged(int i)
 
 void FilterBar::recountSoon()
 {
-    if (!myRecountTimer->isActive())
-    {
+    if (!myRecountTimer->isActive()) {
         myRecountTimer->setSingleShot(true);
         myRecountTimer->start(800);
     }
@@ -367,8 +336,7 @@ void FilterBar::recount()
     int torrentsPerMode[FilterMode::NUM_MODES] = {};
     myFilter.countTorrentsPerMode(torrentsPerMode);
 
-    for (int row = 0, n = model->rowCount(); row < n; ++row)
-    {
+    for (int row = 0, n = model->rowCount(); row < n; ++row) {
         QModelIndex index = model->index(row, 0);
         int const mode = index.data(ActivityRole).toInt();
         int const count = torrentsPerMode[mode];

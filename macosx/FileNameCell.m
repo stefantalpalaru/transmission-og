@@ -52,8 +52,7 @@
 
 - (id)init
 {
-    if ((self = [super init]))
-    {
+    if ((self = [super init])) {
         NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
         [paragraphStyle setLineBreakMode:NSLineBreakByTruncatingMiddle];
 
@@ -111,8 +110,7 @@
         titleColor = statusColor = [NSColor whiteColor];
     else if ([[(FileListNode *)[self objectValue] torrent] checkForFiles:[(FileListNode *)[self objectValue] indexes]] == NSOffState)
         titleColor = statusColor = [NSColor disabledControlTextColor];
-    else
-    {
+    else {
         titleColor = [NSColor controlTextColor];
         statusColor = [NSColor secondaryLabelColor];
     }
@@ -137,8 +135,7 @@
     NSRect realRect = [self rectForTitleWithString:titleString inBounds:cellFrame];
 
     if ([titleString size].width > NSWidth(realRect) &&
-        NSMouseInRect([view convertPoint:[[view window] mouseLocationOutsideOfEventStream] fromView:nil], realRect, [view isFlipped]))
-    {
+        NSMouseInRect([view convertPoint:[[view window] mouseLocationOutsideOfEventStream] fromView:nil], realRect, [view isFlipped])) {
         realRect.size.width = [titleString size].width;
         return NSInsetRect(realRect, -PADDING_EXPANSION_FRAME, -PADDING_EXPANSION_FRAME);
     }
@@ -166,14 +163,11 @@
 
     // no right padding, so that there's not too much space between this and the priority image
     NSRect result;
-    if (![(FileListNode *)[self objectValue] isFolder])
-    {
+    if (![(FileListNode *)[self objectValue] isFolder]) {
         result.origin.x = NSMinX(bounds) + PADDING_HORIZONAL + IMAGE_ICON_SIZE + PADDING_BETWEEN_IMAGE_AND_TITLE;
         result.origin.y = NSMinY(bounds) + PADDING_ABOVE_TITLE_FILE;
         result.size.width = NSMaxX(bounds) - NSMinX(result);
-    }
-    else
-    {
+    } else {
         result.origin.x = NSMinX(bounds) + PADDING_HORIZONAL + IMAGE_FOLDER_SIZE + PADDING_BETWEEN_IMAGE_AND_TITLE;
         result.origin.y = NSMidY(bounds) - titleSize.height * 0.5;
         result.size.width = MIN(titleSize.width, NSMaxX(bounds) - NSMinX(result));
@@ -188,14 +182,11 @@
     NSSize const statusSize = [string size];
 
     NSRect result;
-    if (![(FileListNode *)[self objectValue] isFolder])
-    {
+    if (![(FileListNode *)[self objectValue] isFolder]) {
         result.origin.x = NSMinX(titleRect);
         result.origin.y = NSMaxY(bounds) - PADDING_BELOW_STATUS_FILE - statusSize.height;
         result.size.width = NSWidth(titleRect);
-    }
-    else
-    {
+    } else {
         result.origin.x = NSMaxX(titleRect) + PADDING_BETWEEN_NAME_AND_FOLDER_STATUS;
         result.origin.y = NSMaxY(titleRect) - statusSize.height - 1.0;
         result.size.width = NSMaxX(bounds) - NSMaxX(titleRect);

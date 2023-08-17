@@ -17,8 +17,7 @@
 #include "utils.h" /* tr_new0 */
 #include "variant.h"
 
-struct optional_args
-{
+struct optional_args {
     bool isSet_paused;
     bool isSet_connected;
     bool isSet_downloadDir;
@@ -30,8 +29,7 @@ struct optional_args
 
 /** Opaque class used when instantiating torrents.
  * @ingroup tr_ctor */
-struct tr_ctor
-{
+struct tr_ctor {
     tr_session const *session;
     bool saveInOurTorrentsDir;
     bool doDelete;
@@ -71,8 +69,7 @@ static void setSourceFile(tr_ctor *ctor, char const *sourceFile)
 
 static void clearMetainfo(tr_ctor *ctor)
 {
-    if (ctor->isSet_metainfo)
-    {
+    if (ctor->isSet_metainfo) {
         ctor->isSet_metainfo = false;
         tr_variantFree(&ctor->metainfo);
     }
@@ -100,12 +97,9 @@ int tr_ctorSetMetainfoFromMagnetLink(tr_ctor *ctor, char const *magnet_link)
     int err;
     tr_magnet_info *magnet_info = tr_magnetParse(magnet_link);
 
-    if (magnet_info == NULL)
-    {
+    if (magnet_info == NULL) {
         err = -1;
-    }
-    else
-    {
+    } else {
         size_t len;
         tr_variant tmp;
         char *str;
@@ -130,12 +124,9 @@ int tr_ctorSetMetainfoFromFile(tr_ctor *ctor, char const *filename)
 
     metainfo = tr_loadFile(filename, &len, NULL);
 
-    if (metainfo != NULL && len != 0)
-    {
+    if (metainfo != NULL && len != 0) {
         err = tr_ctorSetMetainfo(ctor, metainfo, len);
-    }
-    else
-    {
+    } else {
         clearMetainfo(ctor);
         err = 1;
     }
@@ -143,28 +134,22 @@ int tr_ctorSetMetainfoFromFile(tr_ctor *ctor, char const *filename)
     setSourceFile(ctor, filename);
 
     /* if no `name' field was set, then set it from the filename */
-    if (ctor->isSet_metainfo)
-    {
+    if (ctor->isSet_metainfo) {
         tr_variant *info;
 
-        if (tr_variantDictFindDict(&ctor->metainfo, TR_KEY_info, &info))
-        {
+        if (tr_variantDictFindDict(&ctor->metainfo, TR_KEY_info, &info)) {
             char const *name;
 
-            if (!tr_variantDictFindStr(info, TR_KEY_name_utf_8, &name, NULL))
-            {
-                if (!tr_variantDictFindStr(info, TR_KEY_name, &name, NULL))
-                {
+            if (!tr_variantDictFindStr(info, TR_KEY_name_utf_8, &name, NULL)) {
+                if (!tr_variantDictFindStr(info, TR_KEY_name, &name, NULL)) {
                     name = NULL;
                 }
             }
 
-            if (tr_str_is_empty(name))
-            {
+            if (tr_str_is_empty(name)) {
                 char *base = tr_sys_path_basename(filename, NULL);
 
-                if (base != NULL)
-                {
+                if (base != NULL) {
                     tr_variantDictAddStr(info, TR_KEY_name, base);
                     tr_free(base);
                 }
@@ -183,12 +168,9 @@ int tr_ctorSetMetainfoFromHash(tr_ctor *ctor, char const *hashString)
 
     filename = tr_sessionFindTorrentFile(ctor->session, hashString);
 
-    if (filename == NULL)
-    {
+    if (filename == NULL) {
         err = EINVAL;
-    }
-    else
-    {
+    } else {
         err = tr_ctorSetMetainfoFromFile(ctor, filename);
     }
 
@@ -204,8 +186,7 @@ void tr_ctorSetFilePriorities(tr_ctor *ctor, tr_file_index_t const *files, tr_fi
     tr_file_index_t **myfiles;
     tr_file_index_t *mycount;
 
-    switch (priority)
-    {
+    switch (priority) {
     case TR_PRI_LOW:
         myfiles = &ctor->low;
         mycount = &ctor->lowSize;
@@ -229,18 +210,15 @@ void tr_ctorSetFilePriorities(tr_ctor *ctor, tr_file_index_t const *files, tr_fi
 
 void tr_ctorInitTorrentPriorities(tr_ctor const *ctor, tr_torrent *tor)
 {
-    for (tr_file_index_t i = 0; i < ctor->lowSize; ++i)
-    {
+    for (tr_file_index_t i = 0; i < ctor->lowSize; ++i) {
         tr_torrentInitFilePriority(tor, ctor->low[i], TR_PRI_LOW);
     }
 
-    for (tr_file_index_t i = 0; i < ctor->normalSize; ++i)
-    {
+    for (tr_file_index_t i = 0; i < ctor->normalSize; ++i) {
         tr_torrentInitFilePriority(tor, ctor->normal[i], TR_PRI_NORMAL);
     }
 
-    for (tr_file_index_t i = 0; i < ctor->highSize; ++i)
-    {
+    for (tr_file_index_t i = 0; i < ctor->highSize; ++i) {
         tr_torrentInitFilePriority(tor, ctor->high[i], TR_PRI_HIGH);
     }
 }
@@ -257,13 +235,11 @@ void tr_ctorSetFilesWanted(tr_ctor *ctor, tr_file_index_t const *files, tr_file_
 
 void tr_ctorInitTorrentWanted(tr_ctor const *ctor, tr_torrent *tor)
 {
-    if (ctor->notWantSize != 0)
-    {
+    if (ctor->notWantSize != 0) {
         tr_torrentInitFileDLs(tor, ctor->notWant, ctor->notWantSize, false);
     }
 
-    if (ctor->wantSize != 0)
-    {
+    if (ctor->wantSize != 0) {
         tr_torrentInitFileDLs(tor, ctor->want, ctor->wantSize, true);
     }
 }
@@ -282,12 +258,9 @@ bool tr_ctorGetDeleteSource(tr_ctor const *ctor, bool *setme)
 {
     bool ret = true;
 
-    if (!ctor->isSet_delete)
-    {
+    if (!ctor->isSet_delete) {
         ret = false;
-    }
-    else if (setme != NULL)
-    {
+    } else if (setme != NULL) {
         *setme = ctor->doDelete;
     }
 
@@ -338,8 +311,7 @@ void tr_ctorSetDownloadDir(tr_ctor *ctor, tr_ctorMode mode, char const *director
     args->downloadDir = NULL;
     args->isSet_downloadDir = false;
 
-    if (!tr_str_is_empty(directory))
-    {
+    if (!tr_str_is_empty(directory)) {
         args->isSet_downloadDir = true;
         args->downloadDir = tr_strdup(directory);
     }
@@ -356,12 +328,9 @@ bool tr_ctorGetPeerLimit(tr_ctor const *ctor, tr_ctorMode mode, uint16_t *setmeC
     bool ret = true;
     struct optional_args const *args = &ctor->optionalArgs[mode];
 
-    if (!args->isSet_connected)
-    {
+    if (!args->isSet_connected) {
         ret = false;
-    }
-    else if (setmeCount != NULL)
-    {
+    } else if (setmeCount != NULL) {
         *setmeCount = args->peerLimit;
     }
 
@@ -373,12 +342,9 @@ bool tr_ctorGetPaused(tr_ctor const *ctor, tr_ctorMode mode, bool *setmeIsPaused
     bool ret = true;
     struct optional_args const *args = &ctor->optionalArgs[mode];
 
-    if (!args->isSet_paused)
-    {
+    if (!args->isSet_paused) {
         ret = false;
-    }
-    else if (setmeIsPaused != NULL)
-    {
+    } else if (setmeIsPaused != NULL) {
         *setmeIsPaused = args->isPaused;
     }
 
@@ -390,12 +356,9 @@ bool tr_ctorGetDownloadDir(tr_ctor const *ctor, tr_ctorMode mode, char const **s
     bool ret = true;
     struct optional_args const *args = &ctor->optionalArgs[mode];
 
-    if (!args->isSet_downloadDir)
-    {
+    if (!args->isSet_downloadDir) {
         ret = false;
-    }
-    else if (setmeDownloadDir != NULL)
-    {
+    } else if (setmeDownloadDir != NULL) {
         *setmeDownloadDir = args->downloadDir;
     }
 
@@ -406,12 +369,9 @@ bool tr_ctorGetIncompleteDir(tr_ctor const *ctor, char const **setmeIncompleteDi
 {
     bool ret = true;
 
-    if (ctor->incompleteDir == NULL)
-    {
+    if (ctor->incompleteDir == NULL) {
         ret = false;
-    }
-    else
-    {
+    } else {
         *setmeIncompleteDir = ctor->incompleteDir;
     }
 
@@ -422,12 +382,9 @@ bool tr_ctorGetMetainfo(tr_ctor const *ctor, tr_variant const **setme)
 {
     bool ret = true;
 
-    if (!ctor->isSet_metainfo)
-    {
+    if (!ctor->isSet_metainfo) {
         ret = false;
-    }
-    else if (setme != NULL)
-    {
+    } else if (setme != NULL) {
         *setme = &ctor->metainfo;
     }
 
@@ -450,8 +407,7 @@ static bool isPriority(int i)
 
 void tr_ctorSetBandwidthPriority(tr_ctor *ctor, tr_priority_t priority)
 {
-    if (isPriority(priority))
-    {
+    if (isPriority(priority)) {
         ctor->bandwidthPriority = priority;
     }
 }
@@ -472,8 +428,7 @@ tr_ctor *tr_ctorNew(tr_session const *session)
     ctor->session = session;
     ctor->bandwidthPriority = TR_PRI_NORMAL;
 
-    if (session != NULL)
-    {
+    if (session != NULL) {
         tr_ctorSetDeleteSource(ctor, tr_sessionGetDeleteSource(session));
         tr_ctorSetPaused(ctor, TR_FALLBACK, tr_sessionGetPaused(session));
         tr_ctorSetPeerLimit(ctor, TR_FALLBACK, session->peerLimitPerTorrent);

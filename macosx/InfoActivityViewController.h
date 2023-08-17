@@ -27,8 +27,7 @@
 @class PiecesView;
 @class Torrent;
 
-@interface InfoActivityViewController : NSViewController<InfoViewController>
-{
+@interface InfoActivityViewController : NSViewController<InfoViewController> {
     NSArray *fTorrents;
 
     BOOL fSet;

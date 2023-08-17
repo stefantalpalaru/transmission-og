@@ -40,18 +40,10 @@
 @class TorrentTableView;
 @class URLSheetWindowController;
 
-typedef enum
-{
-    ADD_MANUAL,
-    ADD_AUTO,
-    ADD_SHOW_OPTIONS,
-    ADD_URL,
-    ADD_CREATED
-} addType;
+typedef enum { ADD_MANUAL, ADD_AUTO, ADD_SHOW_OPTIONS, ADD_URL, ADD_CREATED } addType;
 
 @interface Controller
-    : NSObject<NSURLDownloadDelegate, NSUserNotificationCenterDelegate, NSPopoverDelegate, NSSharingServiceDelegate, NSSharingServicePickerDelegate, NSSoundDelegate, NSToolbarDelegate, NSWindowDelegate, QLPreviewPanelDataSource, QLPreviewPanelDelegate, VDKQueueDelegate>
-{
+    : NSObject<NSURLDownloadDelegate, NSUserNotificationCenterDelegate, NSPopoverDelegate, NSSharingServiceDelegate, NSSharingServicePickerDelegate, NSSoundDelegate, NSToolbarDelegate, NSWindowDelegate, QLPreviewPanelDataSource, QLPreviewPanelDelegate, VDKQueueDelegate> {
     tr_session *fLib;
 
     NSMutableArray *fTorrents, *fDisplayedTorrents;

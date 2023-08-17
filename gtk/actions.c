@@ -114,8 +114,7 @@ static GtkActionEntry entries[] = {
 };
 // clang-format on
 
-typedef struct
-{
+typedef struct {
     char const *filename;
     char const *name;
 } BuiltinIconInfo;
@@ -140,12 +139,10 @@ static void register_my_icons(void)
 
     gtk_icon_factory_add_default(factory);
 
-    for (size_t i = 0; i < G_N_ELEMENTS(my_fallback_icons); ++i)
-    {
+    for (size_t i = 0; i < G_N_ELEMENTS(my_fallback_icons); ++i) {
         char const *name = my_fallback_icons[i].name;
 
-        if (!gtk_icon_theme_has_icon(theme, name))
-        {
+        if (!gtk_icon_theme_has_icon(theme, name)) {
             GdkPixbuf *p;
             gchar *resource_path = g_strdup_printf(TR_RESOURCE_PATH "icons/%s.png", my_fallback_icons[i].filename);
 
@@ -153,8 +150,7 @@ static void register_my_icons(void)
 
             g_free(resource_path);
 
-            if (p != NULL)
-            {
+            if (p != NULL) {
                 int width;
                 GtkIconSet *icon_set;
 
@@ -196,10 +192,8 @@ void gtr_actions_init(GtkUIManager *ui_manager, gpointer callback_user_data)
 
     match = gtr_pref_string_get(TR_KEY_sort_mode);
 
-    for (size_t i = 0; active == -1 && i < G_N_ELEMENTS(sort_radio_entries); ++i)
-    {
-        if (g_strcmp0(sort_radio_entries[i].name, match) == 0)
-        {
+    for (size_t i = 0; active == -1 && i < G_N_ELEMENTS(sort_radio_entries); ++i) {
+        if (g_strcmp0(sort_radio_entries[i].name, match) == 0) {
             active = i;
         }
     }
@@ -218,8 +212,7 @@ void gtr_actions_init(GtkUIManager *ui_manager, gpointer callback_user_data)
         G_N_ELEMENTS(show_toggle_entries),
         callback_user_data);
 
-    for (size_t i = 0; i < G_N_ELEMENTS(pref_toggle_entries); ++i)
-    {
+    for (size_t i = 0; i < G_N_ELEMENTS(pref_toggle_entries); ++i) {
         pref_toggle_entries[i].is_active = gtr_pref_flag_get(tr_quark_new(pref_toggle_entries[i].name, TR_BAD_SIZE));
     }
 
@@ -243,20 +236,17 @@ static GHashTable *key_to_action = NULL;
 
 static void ensure_action_map_loaded(GtkUIManager *uim)
 {
-    if (key_to_action != NULL)
-    {
+    if (key_to_action != NULL) {
         return;
     }
 
     key_to_action = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 
-    for (GList *l = gtk_ui_manager_get_action_groups(uim); l != NULL; l = l->next)
-    {
+    for (GList *l = gtk_ui_manager_get_action_groups(uim); l != NULL; l = l->next) {
         GtkActionGroup *action_group = GTK_ACTION_GROUP(l->data);
         GList *actions = gtk_action_group_list_actions(action_group);
 
-        for (GList *ait = actions; ait != NULL; ait = ait->next)
-        {
+        for (GList *ait = actions; ait != NULL; ait = ait->next) {
             GtkAction *action = GTK_ACTION(ait->data);
             char const *name = gtk_action_get_name(action);
             g_hash_table_insert(key_to_action, g_strdup(name), action);

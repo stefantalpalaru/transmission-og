@@ -34,8 +34,7 @@
 
 - (id)init
 {
-    if ((self = [super initWithNibName:@"InfoGeneralView" bundle:nil]))
-    {
+    if ((self = [super initWithNibName:@"InfoGeneralView" bundle:nil])) {
         [self setTitle:NSLocalizedString(@"General Info", "Inspector view -> title")];
     }
 
@@ -59,11 +58,9 @@
     ];
 
     CGFloat oldMaxWidth = 0.0, originX, newMaxWidth = 0.0;
-    for (NSTextField *label in labels)
-    {
+    for (NSTextField *label in labels) {
         NSRect const oldFrame = [label frame];
-        if (oldFrame.size.width > oldMaxWidth)
-        {
+        if (oldFrame.size.width > oldMaxWidth) {
             oldMaxWidth = oldFrame.size.width;
             originX = oldFrame.origin.x;
         }
@@ -74,8 +71,7 @@
             newMaxWidth = newWidth;
     }
 
-    for (NSTextField *label in labels)
-    {
+    for (NSTextField *label in labels) {
         NSRect frame = [label frame];
         frame.origin.x = originX + (newMaxWidth - frame.size.width);
         [label setFrame:frame];
@@ -92,8 +88,7 @@
     ];
 
     CGFloat const widthIncrease = newMaxWidth - oldMaxWidth;
-    for (NSView *field in fields)
-    {
+    for (NSView *field in fields) {
         NSRect frame = [field frame];
         frame.origin.x += widthIncrease;
         frame.size.width -= widthIncrease;
@@ -143,8 +138,7 @@
 
 - (void)setupInfo
 {
-    if ([fTorrents count] == 1)
-    {
+    if ([fTorrents count] == 1) {
         Torrent *torrent = fTorrents[0];
 
 #warning candidate for localizedStringWithFormat (although then we'll get two commas)
@@ -166,9 +160,7 @@
         NSString *creatorString = [torrent creator];
         [fCreatorField setStringValue:creatorString];
         [fDateCreatedField setObjectValue:[torrent dateCreated]];
-    }
-    else
-    {
+    } else {
         [fPiecesField setStringValue:@""];
         [fHashField setStringValue:@""];
         [fHashField setToolTip:nil];

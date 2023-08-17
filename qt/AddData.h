@@ -12,23 +12,14 @@
 #include <QString>
 #include <QUrl>
 
-class AddData
-{
+class AddData {
 public:
-    enum
-    {
-        NONE,
-        MAGNET,
-        URL,
-        FILENAME,
-        METAINFO
-    };
+    enum { NONE, MAGNET, URL, FILENAME, METAINFO };
 
 public:
     AddData()
         : type(NONE)
-    {
-    }
+    {}
 
     AddData(QString const &str)
     {

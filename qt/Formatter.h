@@ -15,26 +15,13 @@
 
 class Speed;
 
-class Formatter
-{
+class Formatter {
     Q_DECLARE_TR_FUNCTIONS(Formatter)
 
 public:
-    enum Size
-    {
-        B,
-        KB,
-        MB,
-        GB,
-        TB
-    };
+    enum Size { B, KB, MB, GB, TB };
 
-    enum Type
-    {
-        SPEED,
-        SIZE,
-        MEM
-    };
+    enum Type { SPEED, SIZE, MEM };
 
 public:
     static QString memToString(int64_t bytes);

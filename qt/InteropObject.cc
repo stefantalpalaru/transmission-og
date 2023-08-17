@@ -12,8 +12,7 @@
 
 InteropObject::InteropObject(QObject *parent)
     : QObject(parent)
-{
-}
+{}
 
 bool InteropObject::PresentWindow()
 {
@@ -25,8 +24,7 @@ bool InteropObject::AddMetainfo(QString const &metainfo)
 {
     AddData addme(metainfo);
 
-    if (addme.type != addme.NONE)
-    {
+    if (addme.type != addme.NONE) {
         qApp->addTorrent(addme);
     }
 

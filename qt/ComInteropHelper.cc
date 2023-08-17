@@ -29,12 +29,10 @@ extern QString qAxInit();
 
 ComInteropHelper::ComInteropHelper()
     : m_client(new QAxObject(QLatin1String("Transmission.QtClient")))
-{
-}
+{}
 
 ComInteropHelper::~ComInteropHelper()
-{
-}
+{}
 
 bool ComInteropHelper::isConnected() const
 {

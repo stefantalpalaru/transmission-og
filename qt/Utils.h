@@ -20,8 +20,7 @@ class QHeaderView;
 class QIcon;
 class QModelIndex;
 
-class Utils
-{
+class Utils {
 public:
     static QIcon getFileIcon();
     static QIcon getFolderIcon();
@@ -35,8 +34,7 @@ public:
 
     static void narrowRect(QRect &rect, int dx1, int dx2, Qt::LayoutDirection direction)
     {
-        if (direction == Qt::RightToLeft)
-        {
+        if (direction == Qt::RightToLeft) {
             qSwap(dx1, dx2);
         }
 
@@ -51,14 +49,11 @@ public:
     template<typename DialogT, typename... ArgsT>
     static void openDialog(QPointer<DialogT> &dialog, ArgsT &&...args)
     {
-        if (dialog.isNull())
-        {
+        if (dialog.isNull()) {
             dialog = new DialogT(std::forward<ArgsT>(args)...);
             dialog->setAttribute(Qt::WA_DeleteOnClose);
             dialog->show();
-        }
-        else
-        {
+        } else {
             dialog->raise();
             dialog->activateWindow();
         }
@@ -75,15 +70,12 @@ public:
 
     static bool isHexHashcode(QString const &s)
     {
-        if (s.length() != 40)
-        {
+        if (s.length() != 40) {
             return false;
         }
 
-        for (auto const &ch : s)
-        {
-            if (!isxdigit(ch.unicode()))
-            {
+        for (auto const &ch : s) {
+            if (!isxdigit(ch.unicode())) {
                 return false;
             }
         }
@@ -100,12 +92,10 @@ public:
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
 
-namespace std
-{
+namespace std {
 
 template<>
-struct hash<QString>
-{
+struct hash<QString> {
     std::size_t operator()(QString const &s) const
     {
         return qHash(s);

@@ -39,12 +39,10 @@
 #else
 
 static void sd_notify(int status UNUSED, char const *str UNUSED)
-{
-}
+{}
 
 static void sd_notifyf(int status UNUSED, char const *fmt UNUSED, ...)
-{
-}
+{}
 
 #endif
 
@@ -161,8 +159,7 @@ static bool reopen_log_file(char const *filename)
         0666,
         &error);
 
-    if (new_log_file == TR_BAD_SYS_FILE)
-    {
+    if (new_log_file == TR_BAD_SYS_FILE) {
         fprintf(stderr, "Couldn't (re)open log file \"%s\": %s\n", filename, error->message);
         tr_error_free(error);
         return false;
@@ -170,8 +167,7 @@ static bool reopen_log_file(char const *filename)
 
     logfile = new_log_file;
 
-    if (old_log_file != TR_BAD_SYS_FILE)
-    {
+    if (old_log_file != TR_BAD_SYS_FILE) {
         tr_sys_file_close(old_log_file, NULL);
     }
 
@@ -185,10 +181,8 @@ static char const *getConfigDir(int argc, char const *const *argv)
     char const *optarg;
     int const ind = tr_optind;
 
-    while ((c = tr_getopt(getUsage(), argc, argv, options, &optarg)) != TR_OPT_DONE)
-    {
-        if (c == 'g')
-        {
+    while ((c = tr_getopt(getUsage(), argc, argv, options, &optarg)) != TR_OPT_DONE) {
+        if (c == 'g') {
             configDir = optarg;
             break;
         }
@@ -196,8 +190,7 @@ static char const *getConfigDir(int argc, char const *const *argv)
 
     tr_optind = ind;
 
-    if (configDir == NULL)
-    {
+    if (configDir == NULL) {
         configDir = tr_getDefaultConfigDir(MY_NAME);
     }
 
@@ -208,8 +201,7 @@ static tr_watchdir_status onFileAdded(tr_watchdir_t dir, char const *name, void 
 {
     tr_session *session = context;
 
-    if (!tr_str_has_suffix(name, ".torrent"))
-    {
+    if (!tr_str_has_suffix(name, ".torrent")) {
         return TR_WATCHDIR_IGNORE;
     }
 
@@ -217,43 +209,33 @@ static tr_watchdir_status onFileAdded(tr_watchdir_t dir, char const *name, void 
     tr_ctor *ctor = tr_ctorNew(session);
     int err = tr_ctorSetMetainfoFromFile(ctor, filename);
 
-    if (err == 0)
-    {
+    if (err == 0) {
         tr_torrentNew(ctor, &err, NULL);
 
-        if (err == TR_PARSE_ERR)
-        {
+        if (err == TR_PARSE_ERR) {
             tr_logAddError("Error parsing .torrent file \"%s\"", name);
-        }
-        else
-        {
+        } else {
             bool trash = false;
             bool const test = tr_ctorGetDeleteSource(ctor, &trash);
 
             tr_logAddInfo("Parsing .torrent file successful \"%s\"", name);
 
-            if (test && trash)
-            {
+            if (test && trash) {
                 tr_error *error = NULL;
 
                 tr_logAddInfo("Deleting input .torrent file \"%s\"", name);
 
-                if (!tr_sys_path_remove(filename, &error))
-                {
+                if (!tr_sys_path_remove(filename, &error)) {
                     tr_logAddError("Error deleting .torrent file: %s", error->message);
                     tr_error_free(error);
                 }
-            }
-            else
-            {
+            } else {
                 char *new_filename = tr_strdup_printf("%s.added", filename);
                 tr_sys_path_rename(filename, new_filename, NULL);
                 tr_free(new_filename);
             }
         }
-    }
-    else
-    {
+    } else {
         err = TR_PARSE_ERR;
     }
 
@@ -265,17 +247,13 @@ static tr_watchdir_status onFileAdded(tr_watchdir_t dir, char const *name, void 
 
 static void printMessage(tr_sys_file_t logfile, int level, char const *name, char const *message, char const *file, int line)
 {
-    if (logfile != TR_BAD_SYS_FILE)
-    {
+    if (logfile != TR_BAD_SYS_FILE) {
         char timestr[64];
         tr_logGetTimeStr(timestr, sizeof(timestr));
 
-        if (name != NULL)
-        {
+        if (name != NULL) {
             tr_sys_file_write_fmt(logfile, "[%s] %s %s (%s:%d)" TR_NATIVE_EOL_STR, NULL, timestr, name, message, file, line);
-        }
-        else
-        {
+        } else {
             tr_sys_file_write_fmt(logfile, "[%s] %s (%s:%d)" TR_NATIVE_EOL_STR, NULL, timestr, message, file, line);
         }
     }
@@ -287,8 +265,7 @@ static void printMessage(tr_sys_file_t logfile, int level, char const *name, cha
         int priority;
 
         /* figure out the syslog priority */
-        switch (level)
-        {
+        switch (level) {
         case TR_LOG_ERROR:
             priority = LOG_ERR;
             break;
@@ -302,12 +279,9 @@ static void printMessage(tr_sys_file_t logfile, int level, char const *name, cha
             break;
         }
 
-        if (name != NULL)
-        {
+        if (name != NULL) {
             syslog(priority, "%s %s (%s:%d)", name, message, file, line);
-        }
-        else
-        {
+        } else {
             syslog(priority, "%s (%s:%d)", message, file, line);
         }
     }
@@ -323,13 +297,11 @@ static void pumpLogMessages(tr_sys_file_t logfile)
 {
     tr_log_message *list = tr_logGetQueue();
 
-    for (tr_log_message const *l = list; l != NULL; l = l->next)
-    {
+    for (tr_log_message const *l = list; l != NULL; l = l->next) {
         printMessage(logfile, l->level, l->name, l->message, l->file, l->line);
     }
 
-    if (logfile != TR_BAD_SYS_FILE)
-    {
+    if (logfile != TR_BAD_SYS_FILE) {
         tr_sys_file_flush(logfile, NULL);
     }
 
@@ -341,12 +313,9 @@ static void reportStatus(void)
     double const up = tr_sessionGetRawSpeed_KBps(mySession, TR_UP);
     double const dn = tr_sessionGetRawSpeed_KBps(mySession, TR_DOWN);
 
-    if (up > 0 || dn > 0)
-    {
+    if (up > 0 || dn > 0) {
         sd_notifyf(0, "STATUS=Uploading %.2f KBps, Downloading %.2f KBps.\n", up, dn);
-    }
-    else
-    {
+    } else {
         sd_notify(0, "STATUS=Idle.\n");
     }
 }
@@ -363,8 +332,7 @@ static tr_rpc_callback_status on_rpc_callback(
     struct tr_torrent *tor UNUSED,
     void *user_data UNUSED)
 {
-    if (type == TR_RPC_SESSION_CLOSE)
-    {
+    if (type == TR_RPC_SESSION_CLOSE) {
         event_base_loopexit(ev_base, NULL);
     }
 
@@ -389,10 +357,8 @@ static bool parse_args(
 
     tr_optind = 1;
 
-    while ((c = tr_getopt(getUsage(), argc, argv, options, &optarg)) != TR_OPT_DONE)
-    {
-        switch (c)
-        {
+    while ((c = tr_getopt(getUsage(), argc, argv, options, &optarg)) != TR_OPT_DONE) {
+        switch (c) {
         case 'a':
             tr_variantDictAddStr(settings, TR_KEY_rpc_whitelist, optarg);
             tr_variantDictAddBool(settings, TR_KEY_rpc_whitelist_enabled, true);
@@ -433,8 +399,7 @@ static bool parse_args(
             break;
 
         case 'e':
-            if (reopen_log_file(optarg))
-            {
+            if (reopen_log_file(optarg)) {
                 logfileName = optarg;
             }
 
@@ -583,8 +548,7 @@ static bool parse_args(
     return true;
 }
 
-struct daemon_data
-{
+struct daemon_data {
     tr_variant settings;
     char const *configDir;
     bool paused;
@@ -592,19 +556,15 @@ struct daemon_data
 
 static void daemon_reconfigure(void *arg UNUSED)
 {
-    if (mySession == NULL)
-    {
+    if (mySession == NULL) {
         tr_logAddInfo("Deferring reload until session is fully started.");
         seenHUP = true;
-    }
-    else
-    {
+    } else {
         tr_variant settings;
         char const *configDir;
 
         /* reopen the logfile to allow for log rotation */
-        if (logfileName != NULL)
-        {
+        if (logfileName != NULL) {
             reopen_log_file(logfileName);
         }
 
@@ -649,8 +609,7 @@ static int daemon_start(void *raw_arg, bool foreground)
     /* setup event state */
     ev_base = event_base_new();
 
-    if (ev_base == NULL)
-    {
+    if (ev_base == NULL) {
         char buf[256];
         tr_snprintf(buf, sizeof(buf), "Failed to init daemon event state: %s", tr_strerror(errno));
         printMessage(logfile, TR_LOG_ERROR, MY_NAME, buf, __FILE__, __LINE__);
@@ -669,8 +628,7 @@ static int daemon_start(void *raw_arg, bool foreground)
     pid_filename = NULL;
     tr_variantDictFindStr(settings, key_pidfile, &pid_filename, NULL);
 
-    if (!tr_str_is_empty(pid_filename))
-    {
+    if (!tr_str_is_empty(pid_filename)) {
         tr_error *error = NULL;
         tr_sys_file_t fp = tr_sys_file_open(
             pid_filename,
@@ -678,50 +636,41 @@ static int daemon_start(void *raw_arg, bool foreground)
             0666,
             &error);
 
-        if (fp != TR_BAD_SYS_FILE)
-        {
+        if (fp != TR_BAD_SYS_FILE) {
             tr_sys_file_write_fmt(fp, "%d", NULL, (int)getpid());
             tr_sys_file_close(fp, NULL);
             tr_logAddInfo("Saved pidfile \"%s\"", pid_filename);
             pidfile_created = true;
-        }
-        else
-        {
+        } else {
             tr_logAddError("Unable to save pidfile \"%s\": %s", pid_filename, error->message);
             tr_error_free(error);
         }
     }
 
-    if (tr_variantDictFindBool(settings, TR_KEY_rpc_authentication_required, &boolVal) && boolVal)
-    {
+    if (tr_variantDictFindBool(settings, TR_KEY_rpc_authentication_required, &boolVal) && boolVal) {
         tr_logAddNamedInfo(MY_NAME, "requiring authentication");
     }
 
     mySession = session;
 
     /* If we got a SIGHUP during startup, process that now. */
-    if (seenHUP)
-    {
+    if (seenHUP) {
         daemon_reconfigure(arg);
     }
 
     /* maybe add a watchdir */
-    if (tr_variantDictFindBool(settings, TR_KEY_watch_dir_enabled, &boolVal) && boolVal)
-    {
+    if (tr_variantDictFindBool(settings, TR_KEY_watch_dir_enabled, &boolVal) && boolVal) {
         char const *dir;
         bool force_generic;
 
-        if (!tr_variantDictFindBool(settings, key_watch_dir_force_generic, &force_generic))
-        {
+        if (!tr_variantDictFindBool(settings, key_watch_dir_force_generic, &force_generic)) {
             force_generic = false;
         }
 
-        if (tr_variantDictFindStr(settings, TR_KEY_watch_dir, &dir, NULL) && !tr_str_is_empty(dir))
-        {
+        if (tr_variantDictFindStr(settings, TR_KEY_watch_dir, &dir, NULL) && !tr_str_is_empty(dir)) {
             tr_logAddInfo("Watching \"%s\" for new .torrent files", dir);
 
-            if ((watchdir = tr_watchdir_new(dir, &onFileAdded, mySession, ev_base, force_generic)) == NULL)
-            {
+            if ((watchdir = tr_watchdir_new(dir, &onFileAdded, mySession, ev_base, force_generic)) == NULL) {
                 goto cleanup;
             }
         }
@@ -732,8 +681,7 @@ static int daemon_start(void *raw_arg, bool foreground)
         tr_torrent **torrents;
         tr_ctor *ctor = tr_ctorNew(mySession);
 
-        if (arg->paused)
-        {
+        if (arg->paused) {
             tr_ctorSetPaused(ctor, TR_FORCE, true);
         }
 
@@ -744,8 +692,7 @@ static int daemon_start(void *raw_arg, bool foreground)
 
 #ifdef HAVE_SYSLOG
 
-    if (!foreground)
-    {
+    if (!foreground) {
         openlog(MY_NAME, LOG_CONS | LOG_PID, LOG_DAEMON);
     }
 
@@ -756,14 +703,12 @@ static int daemon_start(void *raw_arg, bool foreground)
         struct timeval one_sec = { .tv_sec = 1, .tv_usec = 0 };
         status_ev = event_new(ev_base, -1, EV_PERSIST, &periodicUpdate, NULL);
 
-        if (status_ev == NULL)
-        {
+        if (status_ev == NULL) {
             tr_logAddError("Failed to create status event %s", tr_strerror(errno));
             goto cleanup;
         }
 
-        if (event_add(status_ev, &one_sec) == -1)
-        {
+        if (event_add(status_ev, &one_sec) == -1) {
             tr_logAddError("Failed to add status event %s", tr_strerror(errno));
             goto cleanup;
         }
@@ -772,8 +717,7 @@ static int daemon_start(void *raw_arg, bool foreground)
     sd_notify(0, "READY=1\n");
 
     /* Run daemon event loop */
-    if (event_base_dispatch(ev_base) == -1)
-    {
+    if (event_base_dispatch(ev_base) == -1) {
         tr_logAddError("Failed to launch daemon event loop: %s", tr_strerror(errno));
         goto cleanup;
     }
@@ -784,8 +728,7 @@ cleanup:
 
     tr_watchdir_free(watchdir);
 
-    if (status_ev != NULL)
-    {
+    if (status_ev != NULL) {
         event_del(status_ev);
         event_free(status_ev);
     }
@@ -800,8 +743,7 @@ cleanup:
     /* shutdown */
 #ifdef HAVE_SYSLOG
 
-    if (!foreground)
-    {
+    if (!foreground) {
         syslog(LOG_INFO, "%s", "Closing session");
         closelog();
     }
@@ -809,8 +751,7 @@ cleanup:
 #endif
 
     /* cleanup */
-    if (pidfile_created)
-    {
+    if (pidfile_created) {
         tr_sys_path_remove(pid_filename, NULL);
     }
 
@@ -833,25 +774,21 @@ static bool init_daemon_data(int argc, char *argv[], struct daemon_data *data, b
     *ret = 0;
 
     /* overwrite settings from the command line */
-    if (!parse_args(argc, (char const **)argv, &data->settings, &data->paused, &dumpSettings, foreground, ret))
-    {
+    if (!parse_args(argc, (char const **)argv, &data->settings, &data->paused, &dumpSettings, foreground, ret)) {
         goto exit_early;
     }
 
-    if (*foreground && logfile == TR_BAD_SYS_FILE)
-    {
+    if (*foreground && logfile == TR_BAD_SYS_FILE) {
         logfile = tr_sys_file_get_std(TR_STD_SYS_FILE_ERR, NULL);
     }
 
-    if (!loaded)
-    {
+    if (!loaded) {
         printMessage(logfile, TR_LOG_ERROR, MY_NAME, "Error loading config file -- exiting.", __FILE__, __LINE__);
         *ret = 1;
         goto exit_early;
     }
 
-    if (dumpSettings)
-    {
+    if (dumpSettings) {
         char *str = tr_variantToStr(&data->settings, TR_VARIANT_FMT_JSON, NULL);
         fprintf(stderr, "%s", str);
         tr_free(str);
@@ -874,8 +811,7 @@ int tr_main(int argc, char *argv[])
     bool foreground;
     int ret;
 
-    if (!init_daemon_data(argc, argv, &data, &foreground, &ret))
-    {
+    if (!init_daemon_data(argc, argv, &data, &foreground, &ret)) {
         return ret;
     }
 
@@ -887,8 +823,7 @@ int tr_main(int argc, char *argv[])
 
     tr_error *error = NULL;
 
-    if (!dtr_daemon(&cb, &data, foreground, &ret, &error))
-    {
+    if (!dtr_daemon(&cb, &data, foreground, &ret, &error)) {
         char buf[256];
         tr_snprintf(buf, sizeof(buf), "Failed to daemonize: %s", error->message);
         printMessage(logfile, TR_LOG_ERROR, MY_NAME, buf, __FILE__, __LINE__);

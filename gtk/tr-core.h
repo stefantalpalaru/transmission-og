@@ -34,23 +34,20 @@ G_BEGIN_DECLS
 
 #define TR_RESOURCE_PATH "/com/transmissionbt/transmission-og/"
 
-typedef struct _TrCore
-{
+typedef struct _TrCore {
     GObject parent;
 
     /*< private >*/
     struct TrCorePrivate *priv;
 } TrCore;
 
-enum tr_core_err
-{
+enum tr_core_err {
     TR_CORE_ERR_ADD_TORRENT_ERR = TR_PARSE_ERR,
     TR_CORE_ERR_ADD_TORRENT_DUP = TR_PARSE_DUPLICATE,
     TR_CORE_ERR_NO_MORE_TORRENTS = 1000 /* finished adding a batch */
 };
 
-typedef struct _TrCoreClass
-{
+typedef struct _TrCoreClass {
     GObjectClass parent_class;
 
     void (*add_error)(TrCore *, enum tr_core_err, char const *name);
@@ -160,8 +157,7 @@ void gtr_core_open_folder(TrCore *core, int torrent_id);
 
 /* column names for the model used to store torrent information */
 /* keep this in sync with the type array in tr_core_init() in tr_core.c */
-enum
-{
+enum {
     MC_NAME_COLLATED,
     MC_TORRENT,
     MC_TORRENT_ID,

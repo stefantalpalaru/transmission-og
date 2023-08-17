@@ -10,15 +10,7 @@
 
 #include <QVariant>
 
-class CustomVariantType
-{
+class CustomVariantType {
 public:
-    enum
-    {
-        TrackerStatsList = QVariant::UserType,
-        PeerList = QVariant::UserType,
-        FileList,
-        FilterModeType,
-        SortModeType
-    };
+    enum { TrackerStatsList = QVariant::UserType, PeerList = QVariant::UserType, FileList, FilterModeType, SortModeType };
 };

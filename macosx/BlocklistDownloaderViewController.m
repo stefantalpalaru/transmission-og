@@ -38,8 +38,7 @@
 BlocklistDownloaderViewController *fBLViewController = nil;
 + (void)downloadWithPrefsController:(PrefsController *)prefsController
 {
-    if (!fBLViewController)
-    {
+    if (!fBLViewController) {
         fBLViewController = [[BlocklistDownloaderViewController alloc] initWithPrefsController:prefsController];
         [fBLViewController startDownload];
     }
@@ -74,15 +73,13 @@ BlocklistDownloaderViewController *fBLViewController = nil;
 - (void)setStatusProgressForCurrentSize:(NSUInteger)currentSize expectedSize:(long long)expectedSize
 {
     NSString *string = NSLocalizedString(@"Downloading blocklist", "Blocklist -> message");
-    if (expectedSize != NSURLResponseUnknownLength)
-    {
+    if (expectedSize != NSURLResponseUnknownLength) {
         [fProgressBar setIndeterminate:NO];
 
         NSString *substring = [NSString stringForFilePartialSize:currentSize fullSize:expectedSize];
         string = [string stringByAppendingFormat:@" (%@)", substring];
         [fProgressBar setDoubleValue:(double)currentSize / expectedSize];
-    }
-    else
+    } else
         string = [string stringByAppendingFormat:@" (%@)", [NSString stringForFileSize:currentSize]];
 
     [fTextField setStringValue:string];
@@ -129,8 +126,7 @@ BlocklistDownloaderViewController *fBLViewController = nil;
 
 - (id)initWithPrefsController:(PrefsController *)prefsController
 {
-    if ((self = [super init]))
-    {
+    if ((self = [super init])) {
         fPrefsController = prefsController;
     }
 

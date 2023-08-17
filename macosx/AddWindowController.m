@@ -59,8 +59,7 @@
     deleteTorrentCheckEnableInitially:(BOOL)deleteTorrent
                       canToggleDelete:(BOOL)canToggleDelete
 {
-    if ((self = [super initWithWindowNibName:@"AddWindow"]))
-    {
+    if ((self = [super initWithWindowNibName:@"AddWindow"])) {
         fTorrent = torrent;
         fDestination = [path stringByExpandingTildeInPath];
         fLockDestination = lockDestination;
@@ -97,8 +96,7 @@
 
     [fIconView setImage:[fTorrent icon]];
 
-    if (![fTorrent isFolder])
-    {
+    if (![fTorrent isFolder]) {
         [fFileFilterField setHidden:YES];
         [fCheckAllButton setHidden:YES];
         [fUncheckAllButton setHidden:YES];
@@ -108,16 +106,14 @@
         scrollFrame.origin.y -= diff;
         scrollFrame.size.height += diff;
         [fFileScrollView setFrame:scrollFrame];
-    }
-    else
+    } else
         [self updateCheckButtons:nil];
 
     [self setGroupsMenu];
     [fGroupPopUp selectItemWithTag:fGroupValue];
 
     NSInteger priorityIndex;
-    switch ([fTorrent priority])
-    {
+    switch ([fTorrent priority]) {
     case TR_PRI_HIGH:
         priorityIndex = POPUP_PRIORITY_HIGH;
         break;
@@ -141,8 +137,7 @@
     if (fDestination)
         [self setDestinationPath:fDestination
                determinationType:(fLockDestination ? TorrentDeterminationUserSpecified : TorrentDeterminationAutomatic)];
-    else
-    {
+    else {
         [fLocationField setStringValue:@""];
         [fLocationImageView setImage:nil];
     }
@@ -185,13 +180,10 @@
                                                  [fTorrent name]]];
 
     [panel beginSheetModalForWindow:[self window] completionHandler:^(NSInteger result) {
-        if (result == NSFileHandlingPanelOKButton)
-        {
+        if (result == NSFileHandlingPanelOKButton) {
             fLockDestination = YES;
             [self setDestinationPath:[[panel URLs][0] path] determinationType:TorrentDeterminationUserSpecified];
-        }
-        else
-        {
+        } else {
             if (!fDestination)
                 [self performSelectorOnMainThread:@selector(cancelAdd:) withObject:nil waitUntilDone:NO];
         }
@@ -201,8 +193,7 @@
 - (void)add:(id)sender
 {
     if ([[fDestination lastPathComponent] isEqualToString:[fTorrent name]] &&
-        [[NSUserDefaults standardUserDefaults] boolForKey:@"WarningFolderDataSameName"])
-    {
+        [[NSUserDefaults standardUserDefaults] boolForKey:@"WarningFolderDataSameName"]) {
         NSAlert *alert = [[NSAlert alloc] init];
         [alert setMessageText:NSLocalizedString(@"The destination directory and root data directory have the same name.", "Add torrent -> same name -> title")];
         [alert setInformativeText:NSLocalizedString(
@@ -217,8 +208,7 @@
         [alert beginSheetModalForWindow:[self window] modalDelegate:self
                          didEndSelector:@selector(sameNameAlertDidEnd:returnCode:contextInfo:)
                             contextInfo:nil];
-    }
-    else
+    } else
         [self confirmAdd];
 }
 
@@ -263,8 +253,7 @@
 - (void)changePriority:(id)sender
 {
     tr_priority_t priority;
-    switch ([sender indexOfSelectedItem])
-    {
+    switch ([sender indexOfSelectedItem]) {
     case POPUP_PRIORITY_HIGH:
         priority = TR_PRI_HIGH;
         break;
@@ -284,8 +273,7 @@
 - (void)updateCheckButtons:(NSNotification *)notification
 {
     NSString *statusString = [NSString stringForFileSize:[fTorrent size]];
-    if ([fTorrent isFolder])
-    {
+    if ([fTorrent isFolder]) {
         // check buttons
         // keep synced with identical code in InfoFileViewController.m
         NSInteger const filesCheckState = [fTorrent
@@ -314,8 +302,7 @@
 - (void)updateGroupMenu:(NSNotification *)notification
 {
     [self setGroupsMenu];
-    if (![fGroupPopUp selectItemWithTag:fGroupValue])
-    {
+    if (![fGroupPopUp selectItemWithTag:fGroupValue]) {
         fGroupValue = -1;
         fGroupValueDetermination = TorrentDeterminationAutomatic;
         [fGroupPopUp selectItemWithTag:fGroupValue];
@@ -334,17 +321,14 @@
 
     [self updateCheckButtons:nil]; // call in case button state changed by checking
 
-    if ([fTorrent isChecking])
-    {
+    if ([fTorrent isChecking]) {
         BOOL const waiting = [fTorrent isCheckingWaiting];
         [fVerifyIndicator setIndeterminate:waiting];
         if (waiting)
             [fVerifyIndicator startAnimation:self];
         else
             [fVerifyIndicator setDoubleValue:[fTorrent checkingProgress]];
-    }
-    else
-    {
+    } else {
         [fVerifyIndicator setIndeterminate:YES]; // we want to hide when stopped, which only applies when indeterminate
         [fVerifyIndicator stopAnimation:self];
     }
@@ -371,8 +355,7 @@
 - (void)setDestinationPath:(NSString *)destination determinationType:(TorrentDeterminationType)determinationType
 {
     destination = [destination stringByExpandingTildeInPath];
-    if (!fDestination || ![fDestination isEqualToString:destination])
-    {
+    if (!fDestination || ![fDestination isEqualToString:destination]) {
         fDestination = destination;
 
         [fTorrent changeDownloadFolderBeforeUsing:fDestination determinationType:determinationType];
@@ -397,8 +380,7 @@
     fGroupValue = [sender tag];
     fGroupValueDetermination = TorrentDeterminationUserSpecified;
 
-    if (!fLockDestination)
-    {
+    if (!fLockDestination) {
         if ([[GroupsController groups] usesCustomDownloadLocationForIndex:fGroupValue])
             [self setDestinationPath:[[GroupsController groups] customDownloadLocationForIndex:fGroupValue]
                    determinationType:TorrentDeterminationAutomatic];

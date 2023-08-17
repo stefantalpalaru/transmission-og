@@ -24,14 +24,12 @@ bool tr_sys_file_read_line(tr_sys_file_t handle, char *buffer, size_t buffer_siz
     size_t offset = 0;
     uint64_t bytes_read;
 
-    while (buffer_size > 0)
-    {
+    while (buffer_size > 0) {
         size_t const bytes_needed = MIN(buffer_size, 1024u);
 
         ret = tr_sys_file_read(handle, buffer + offset, bytes_needed, &bytes_read, error);
 
-        if (!ret || (offset == 0 && bytes_read == 0))
-        {
+        if (!ret || (offset == 0 && bytes_read == 0)) {
             ret = false;
             break;
         }
@@ -41,33 +39,25 @@ bool tr_sys_file_read_line(tr_sys_file_t handle, char *buffer, size_t buffer_siz
 
         int64_t delta = 0;
 
-        for (size_t i = 0; i < bytes_read; ++i, ++offset, --buffer_size)
-        {
-            if (buffer[offset] == '\n')
-            {
+        for (size_t i = 0; i < bytes_read; ++i, ++offset, --buffer_size) {
+            if (buffer[offset] == '\n') {
                 delta = i - (int64_t)bytes_read + 1;
                 break;
             }
         }
 
-        if (delta != 0 || buffer_size == 0 || bytes_read == 0)
-        {
-            if (delta != 0)
-            {
+        if (delta != 0 || buffer_size == 0 || bytes_read == 0) {
+            if (delta != 0) {
                 ret = tr_sys_file_seek(handle, delta, TR_SEEK_CUR, NULL, error);
 
-                if (!ret)
-                {
+                if (!ret) {
                     break;
                 }
             }
 
-            if (offset > 0 && buffer[offset - 1] == '\r')
-            {
+            if (offset > 0 && buffer[offset - 1] == '\r') {
                 buffer[offset - 1] = '\0';
-            }
-            else
-            {
+            } else {
                 buffer[offset] = '\0';
             }
 
@@ -85,8 +75,7 @@ bool tr_sys_file_write_line(tr_sys_file_t handle, char const *buffer, tr_error *
 
     bool ret = tr_sys_file_write(handle, buffer, strlen(buffer), NULL, error);
 
-    if (ret)
-    {
+    if (ret) {
         ret = tr_sys_file_write(handle, TR_NATIVE_EOL_STR, TR_NATIVE_EOL_STR_SIZE, NULL, error);
     }
 
@@ -106,13 +95,10 @@ bool tr_sys_file_write_fmt(tr_sys_file_t handle, char const *format, tr_error **
     buffer = tr_strdup_vprintf(format, args);
     va_end(args);
 
-    if (buffer != NULL)
-    {
+    if (buffer != NULL) {
         ret = tr_sys_file_write(handle, buffer, strlen(buffer), NULL, error);
         tr_free(buffer);
-    }
-    else
-    {
+    } else {
         tr_error_set_literal(error, 0, "Unable to format message.");
     }
 

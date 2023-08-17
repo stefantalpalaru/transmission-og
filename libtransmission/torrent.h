@@ -103,12 +103,7 @@ void tr_torrentSetDateActive(tr_torrent *torrent, time_t activityDate);
 
 void tr_torrentSetDateDone(tr_torrent *torrent, time_t doneDate);
 
-typedef enum
-{
-    TR_VERIFY_NONE,
-    TR_VERIFY_WAIT,
-    TR_VERIFY_NOW
-} tr_verify_state;
+typedef enum { TR_VERIFY_NONE, TR_VERIFY_WAIT, TR_VERIFY_NOW } tr_verify_state;
 
 void tr_torrentSetVerifyState(tr_torrent *tor, tr_verify_state state);
 
@@ -117,8 +112,7 @@ tr_torrent_activity tr_torrentGetActivity(tr_torrent const *tor);
 struct tr_incomplete_metadata;
 
 /** @brief Torrent object */
-struct tr_torrent
-{
+struct tr_torrent {
     tr_session *session;
     tr_info info;
 
@@ -340,10 +334,7 @@ static inline bool tr_torrentAllowsLPD(tr_torrent const *tor)
 ****
 ***/
 
-enum
-{
-    TORRENT_MAGIC_NUMBER = 95549
-};
+enum { TORRENT_MAGIC_NUMBER = 95549 };
 
 static inline bool tr_isTorrent(tr_torrent const *tor)
 {

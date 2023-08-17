@@ -22,8 +22,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface GroupToolbarItem : NSToolbarItem
-{
+@interface GroupToolbarItem : NSToolbarItem {
     NSArray *fIdentifiers;
 }
 

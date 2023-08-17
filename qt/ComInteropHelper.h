@@ -15,8 +15,7 @@ class QObject;
 class QString;
 class QVariant;
 
-class ComInteropHelper
-{
+class ComInteropHelper {
 public:
     ComInteropHelper();
     ~ComInteropHelper();

@@ -19,18 +19,15 @@
 
 class QDateTime;
 
-extern "C"
-{
-    struct tr_variant;
+extern "C" {
+struct tr_variant;
 }
 
-class Prefs : public QObject
-{
+class Prefs : public QObject {
     Q_OBJECT
 
 public:
-    enum
-    {
+    enum {
         /* client prefs */
         OPTIONS_PROMPT,
         OPEN_DIALOG_FOLDER,
@@ -181,8 +178,7 @@ public:
         QVariant &v(myValues[key]);
         QVariant const tmp = QVariant::fromValue(value);
 
-        if (v.isNull() || v != tmp)
-        {
+        if (v.isNull() || v != tmp) {
             v = tmp;
             emit changed(key);
         }
@@ -194,8 +190,7 @@ signals:
     void changed(int key);
 
 private:
-    struct PrefItem
-    {
+    struct PrefItem {
         int id;
         tr_quark key;
         int type;

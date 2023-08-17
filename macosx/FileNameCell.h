@@ -22,8 +22,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface FileNameCell : NSActionCell
-{
+@interface FileNameCell : NSActionCell {
     NSMutableDictionary *fTitleAttributes, *fStatusAttributes;
 }
 

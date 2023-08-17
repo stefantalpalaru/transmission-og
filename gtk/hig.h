@@ -52,10 +52,4 @@ void hig_workarea_add_row_w(
     GtkWidget *control,
     GtkWidget *mnemonic_or_null_for_control);
 
-enum
-{
-    GUI_PAD_SMALL = 3,
-    GUI_PAD = 6,
-    GUI_PAD_BIG = 12,
-    GUI_PAD_LARGE = 12
-};
+enum { GUI_PAD_SMALL = 3, GUI_PAD = 6, GUI_PAD_BIG = 12, GUI_PAD_LARGE = 12 };

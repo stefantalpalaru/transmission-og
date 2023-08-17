@@ -56,8 +56,7 @@ char const *speed_T_str = N_("TB/s");
 
 char const *gtr_get_unicode_string(int i)
 {
-    switch (i)
-    {
+    switch (i) {
     case GTR_UNICODE_UP:
         return "\xE2\x96\xB4";
 
@@ -87,12 +86,9 @@ char *tr_strlpercent(char *buf, double x, size_t buflen)
 
 char *tr_strlsize(char *buf, guint64 bytes, size_t buflen)
 {
-    if (bytes == 0)
-    {
+    if (bytes == 0) {
         g_strlcpy(buf, Q_("None"), buflen);
-    }
-    else
-    {
+    } else {
         tr_formatter_size_B(buf, bytes, buflen);
     }
 
@@ -109,8 +105,7 @@ char *tr_strltime(char *buf, int seconds, size_t buflen)
     char m[128];
     char s[128];
 
-    if (seconds < 0)
-    {
+    if (seconds < 0) {
         seconds = 0;
     }
 
@@ -124,41 +119,25 @@ char *tr_strltime(char *buf, int seconds, size_t buflen)
     g_snprintf(m, sizeof(m), ngettext("%'d minute", "%'d minutes", minutes), minutes);
     g_snprintf(s, sizeof(s), ngettext("%'d second", "%'d seconds", seconds), seconds);
 
-    if (days != 0)
-    {
-        if (days >= 4 || hours == 0)
-        {
+    if (days != 0) {
+        if (days >= 4 || hours == 0) {
             g_strlcpy(buf, d, buflen);
-        }
-        else
-        {
+        } else {
             g_snprintf(buf, buflen, "%s, %s", d, h);
         }
-    }
-    else if (hours != 0)
-    {
-        if (hours >= 4 || minutes == 0)
-        {
+    } else if (hours != 0) {
+        if (hours >= 4 || minutes == 0) {
             g_strlcpy(buf, h, buflen);
-        }
-        else
-        {
+        } else {
             g_snprintf(buf, buflen, "%s, %s", h, m);
         }
-    }
-    else if (minutes != 0)
-    {
-        if (minutes >= 4 || seconds == 0)
-        {
+    } else if (minutes != 0) {
+        if (minutes >= 4 || seconds == 0) {
             g_strlcpy(buf, m, buflen);
-        }
-        else
-        {
+        } else {
             g_snprintf(buf, buflen, "%s, %s", m, s);
         }
-    }
-    else
-    {
+    } else {
         g_strlcpy(buf, s, buflen);
     }
 
@@ -171,33 +150,24 @@ void gtr_get_host_from_url(char *buf, size_t buflen, char const *url)
     char host[1024];
     char const *pch;
 
-    if ((pch = strstr(url, "://")) != NULL)
-    {
+    if ((pch = strstr(url, "://")) != NULL) {
         size_t const hostlen = strcspn(pch + 3, ":/");
         size_t const copylen = MIN(hostlen, sizeof(host) - 1);
         memcpy(host, pch + 3, copylen);
         host[copylen] = '\0';
-    }
-    else
-    {
+    } else {
         *host = '\0';
     }
 
-    if (tr_addressIsIP(host))
-    {
+    if (tr_addressIsIP(host)) {
         g_strlcpy(buf, url, buflen);
-    }
-    else
-    {
+    } else {
         char const *first_dot = strchr(host, '.');
         char const *last_dot = strrchr(host, '.');
 
-        if (first_dot != NULL && last_dot != NULL && first_dot != last_dot)
-        {
+        if (first_dot != NULL && last_dot != NULL && first_dot != last_dot) {
             g_strlcpy(buf, first_dot + 1, buflen);
-        }
-        else
-        {
+        } else {
             g_strlcpy(buf, host, buflen);
         }
     }
@@ -216,15 +186,12 @@ gboolean gtr_is_magnet_link(char const *str)
 
 gboolean gtr_is_hex_hashcode(char const *str)
 {
-    if (str == NULL || strlen(str) != 40)
-    {
+    if (str == NULL || strlen(str) != 40) {
         return FALSE;
     }
 
-    for (int i = 0; i < 40; ++i)
-    {
-        if (!isxdigit(str[i]))
-        {
+    for (int i = 0; i < 40; ++i) {
+        if (!isxdigit(str[i])) {
             return FALSE;
         }
     }
@@ -234,13 +201,11 @@ gboolean gtr_is_hex_hashcode(char const *str)
 
 static GtkWindow *getWindow(GtkWidget *w)
 {
-    if (w == NULL)
-    {
+    if (w == NULL) {
         return NULL;
     }
 
-    if (GTK_IS_WINDOW(w))
-    {
+    if (GTK_IS_WINDOW(w)) {
         return GTK_WINDOW(w);
     }
 
@@ -253,19 +218,14 @@ void gtr_add_torrent_error_dialog(GtkWidget *child, int err, tr_torrent *duplica
     GtkWidget *w;
     GtkWindow *win = getWindow(child);
 
-    if (err == TR_PARSE_ERR)
-    {
+    if (err == TR_PARSE_ERR) {
         secondary = g_strdup_printf(_("The torrent file \"%s\" contains invalid data."), filename);
-    }
-    else if (err == TR_PARSE_DUPLICATE)
-    {
+    } else if (err == TR_PARSE_DUPLICATE) {
         secondary = g_strdup_printf(
             _("The torrent file \"%s\" is already in use by \"%s.\""),
             filename,
             tr_torrentName(duplicate_torrent));
-    }
-    else
-    {
+    } else {
         secondary = g_strdup_printf(_("The torrent file \"%s\" encountered an unknown error."), filename);
     }
 
@@ -291,15 +251,12 @@ gboolean on_tree_view_button_pressed(GtkWidget *view, GdkEventButton *event, gpo
 {
     GtkTreeView *tv = GTK_TREE_VIEW(view);
 
-    if (event->type == GDK_BUTTON_PRESS && event->button == 3)
-    {
+    if (event->type == GDK_BUTTON_PRESS && event->button == 3) {
         GtkTreePath *path;
         GtkTreeSelection *selection = gtk_tree_view_get_selection(tv);
 
-        if (gtk_tree_view_get_path_at_pos(tv, (gint)event->x, (gint)event->y, &path, NULL, NULL, NULL))
-        {
-            if (!gtk_tree_selection_path_is_selected(selection, path))
-            {
+        if (gtk_tree_view_get_path_at_pos(tv, (gint)event->x, (gint)event->y, &path, NULL, NULL, NULL)) {
+            if (!gtk_tree_selection_path_is_selected(selection, path)) {
                 gtk_tree_selection_unselect_all(selection);
                 gtk_tree_selection_select_path(selection, path);
             }
@@ -307,8 +264,7 @@ gboolean on_tree_view_button_pressed(GtkWidget *view, GdkEventButton *event, gpo
             gtk_tree_path_free(path);
         }
 
-        if (func != NULL)
-        {
+        if (func != NULL) {
             (*(PopupFunc)func)(view, event);
         }
 
@@ -324,8 +280,7 @@ gboolean on_tree_view_button_released(GtkWidget *view, GdkEventButton *event, gp
 {
     GtkTreeView *tv = GTK_TREE_VIEW(view);
 
-    if (!gtk_tree_view_get_path_at_pos(tv, (gint)event->x, (gint)event->y, NULL, NULL, NULL, NULL))
-    {
+    if (!gtk_tree_view_get_path_at_pos(tv, (gint)event->x, (gint)event->y, NULL, NULL, NULL, NULL)) {
         GtkTreeSelection *selection = gtk_tree_view_get_selection(tv);
         gtk_tree_selection_unselect_all(selection);
     }
@@ -343,15 +298,12 @@ bool gtr_file_trash_or_remove(char const *filename, tr_error **error)
 
     file = g_file_new_for_path(filename);
 
-    if (gtr_pref_flag_get(TR_KEY_trash_can_enabled))
-    {
+    if (gtr_pref_flag_get(TR_KEY_trash_can_enabled)) {
         GError *err = NULL;
         trashed = g_file_trash(file, NULL, &err);
 
-        if (err != NULL)
-        {
-            if (error != NULL)
-            {
+        if (err != NULL) {
+            if (error != NULL) {
                 g_message("Unable to trash file \"%s\": %s", filename, err->message);
                 tr_error_clear(error);
                 tr_error_set_literal(error, err->code, err->message);
@@ -360,15 +312,12 @@ bool gtr_file_trash_or_remove(char const *filename, tr_error **error)
         }
     }
 
-    if (!trashed)
-    {
+    if (!trashed) {
         GError *err = NULL;
         g_file_delete(file, NULL, &err);
 
-        if (err != NULL)
-        {
-            if (error != NULL)
-            {
+        if (err != NULL) {
+            if (error != NULL) {
                 g_message("Unable to delete file \"%s\": %s", filename, err->message);
                 tr_error_clear(error);
                 tr_error_set_literal(error, err->code, err->message);
@@ -386,8 +335,7 @@ char const *gtr_get_help_uri(void)
 {
     static char *uri = NULL;
 
-    if (uri == NULL)
-    {
+    if (uri == NULL) {
         char const *fmt = "https://transmissionbt.com/help/gtk/%d.%dx";
         uri = g_strdup_printf(fmt, MAJOR_VERSION, MINOR_VERSION / 10);
     }
@@ -406,12 +354,10 @@ void gtr_open_file(char const *path)
 
 void gtr_open_uri(char const *uri)
 {
-    if (uri != NULL)
-    {
+    if (uri != NULL) {
         gboolean opened = FALSE;
 
-        if (!opened)
-        {
+        if (!opened) {
 #if GTK_CHECK_VERSION(3, 22, 0)
             opened = gtk_show_uri_on_window(NULL, uri, GDK_CURRENT_TIME, NULL);
 #else
@@ -419,19 +365,16 @@ void gtr_open_uri(char const *uri)
 #endif
         }
 
-        if (!opened)
-        {
+        if (!opened) {
             opened = g_app_info_launch_default_for_uri(uri, NULL, NULL);
         }
 
-        if (!opened)
-        {
+        if (!opened) {
             char *argv[] = { (char *)"xdg-open", (char *)uri, NULL };
             opened = g_spawn_async(NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, NULL);
         }
 
-        if (!opened)
-        {
+        if (!opened) {
             g_message("Unable to open \"%s\"", uri);
         }
     }
@@ -450,12 +393,10 @@ void gtr_combo_box_set_active_enum(GtkComboBox *combo_box, int value)
     GtkTreeModel *model = gtk_combo_box_get_model(combo_box);
 
     /* do the value and current value match? */
-    if (gtk_combo_box_get_active_iter(combo_box, &iter))
-    {
+    if (gtk_combo_box_get_active_iter(combo_box, &iter)) {
         gtk_tree_model_get(model, &iter, column, &currentValue, -1);
 
-        if (currentValue == value)
-        {
+        if (currentValue == value) {
             return;
         }
     }
@@ -463,12 +404,10 @@ void gtr_combo_box_set_active_enum(GtkComboBox *combo_box, int value)
     /* find the one to select */
     i = 0;
 
-    while (gtk_tree_model_iter_nth_child(model, &iter, NULL, i))
-    {
+    while (gtk_tree_model_iter_nth_child(model, &iter, NULL, i)) {
         gtk_tree_model_get(model, &iter, column, &currentValue, -1);
 
-        if (currentValue == value)
-        {
+        if (currentValue == value) {
             gtk_combo_box_set_active_iter(combo_box, &iter);
             return;
         }
@@ -488,14 +427,12 @@ GtkWidget *gtr_combo_box_new_enum(char const *text_1, ...)
 
     text = text_1;
 
-    if (text != NULL)
-    {
+    if (text != NULL) {
         va_list vl;
 
         va_start(vl, text_1);
 
-        do
-        {
+        do {
             int const val = va_arg(vl, int);
             gtk_list_store_insert_with_values(store, NULL, INT_MAX, 0, val, 1, text, -1);
             text = va_arg(vl, char const *);
@@ -519,8 +456,7 @@ int gtr_combo_box_get_active_enum(GtkComboBox *combo_box)
     int value = 0;
     GtkTreeIter iter;
 
-    if (gtk_combo_box_get_active_iter(combo_box, &iter))
-    {
+    if (gtk_combo_box_get_active_iter(combo_box, &iter)) {
         gtk_tree_model_get(gtk_combo_box_get_model(combo_box), &iter, 0, &value, -1);
     }
 
@@ -547,35 +483,27 @@ GtkWidget *gtr_priority_combo_new(void)
 void gtr_widget_set_visible(GtkWidget *w, gboolean b)
 {
     /* toggle the transient children, too */
-    if (GTK_IS_WINDOW(w))
-    {
+    if (GTK_IS_WINDOW(w)) {
         GList *windows = gtk_window_list_toplevels();
         GtkWindow *window = GTK_WINDOW(w);
 
-        for (GList *l = windows; l != NULL; l = l->next)
-        {
-            if (!GTK_IS_WINDOW(l->data))
-            {
+        for (GList *l = windows; l != NULL; l = l->next) {
+            if (!GTK_IS_WINDOW(l->data)) {
                 continue;
             }
 
-            if (gtk_window_get_transient_for(GTK_WINDOW(l->data)) != window)
-            {
+            if (gtk_window_get_transient_for(GTK_WINDOW(l->data)) != window) {
                 continue;
             }
 
-            if (gtk_widget_get_visible(GTK_WIDGET(l->data)) == b)
-            {
+            if (gtk_widget_get_visible(GTK_WIDGET(l->data)) == b) {
                 continue;
             }
 
-            if (b && g_object_get_data(G_OBJECT(l->data), GTR_CHILD_HIDDEN) != NULL)
-            {
+            if (b && g_object_get_data(G_OBJECT(l->data), GTR_CHILD_HIDDEN) != NULL) {
                 g_object_steal_data(G_OBJECT(l->data), GTR_CHILD_HIDDEN);
                 gtr_widget_set_visible(GTK_WIDGET(l->data), TRUE);
-            }
-            else if (!b)
-            {
+            } else if (!b) {
                 g_object_set_data(G_OBJECT(l->data), GTR_CHILD_HIDDEN, GINT_TO_POINTER(1));
                 gtr_widget_set_visible(GTK_WIDGET(l->data), FALSE);
             }
@@ -610,8 +538,7 @@ void gtr_unrecognized_url_dialog(GtkWidget *parent, char const *url)
 
     g_string_append_printf(gstr, _("Transmission OG doesn't know how to use \"%s\""), url);
 
-    if (gtr_is_magnet_link(url) && strstr(url, xt) == NULL)
-    {
+    if (gtr_is_magnet_link(url) && strstr(url, xt) == NULL) {
         g_string_append_printf(gstr, "\n \n");
         g_string_append_printf(
             gstr,
@@ -637,19 +564,16 @@ void gtr_paste_clipboard_url_into_entry(GtkWidget *e)
         g_strstrip(gtk_clipboard_wait_for_text(gtk_clipboard_get(GDK_SELECTION_CLIPBOARD))),
     };
 
-    for (size_t i = 0; i < G_N_ELEMENTS(text); ++i)
-    {
+    for (size_t i = 0; i < G_N_ELEMENTS(text); ++i) {
         char *s = text[i];
 
-        if (s != NULL && (gtr_is_supported_url(s) || gtr_is_magnet_link(s) || gtr_is_hex_hashcode(s)))
-        {
+        if (s != NULL && (gtr_is_supported_url(s) || gtr_is_magnet_link(s) || gtr_is_hex_hashcode(s))) {
             gtk_entry_set_text(GTK_ENTRY(e), s);
             break;
         }
     }
 
-    for (size_t i = 0; i < G_N_ELEMENTS(text); ++i)
-    {
+    for (size_t i = 0; i < G_N_ELEMENTS(text); ++i) {
         g_free(text[i]);
     }
 }
@@ -662,8 +586,7 @@ void gtr_label_set_text(GtkLabel *lb, char const *newstr)
 {
     char const *oldstr = gtk_label_get_text(lb);
 
-    if (g_strcmp0(oldstr, newstr) != 0)
-    {
+    if (g_strcmp0(oldstr, newstr) != 0) {
         gtk_label_set_text(lb, newstr);
     }
 }
@@ -672,8 +595,7 @@ void gtr_label_set_text(GtkLabel *lb, char const *newstr)
 ****
 ***/
 
-struct freespace_label_data
-{
+struct freespace_label_data {
     guint timer_id;
     TrCore *core;
     GtkLabel *label;
@@ -687,13 +609,11 @@ static void freespace_label_data_free(gpointer gdata)
 {
     struct freespace_label_data *data = gdata;
 
-    if (data->core != NULL)
-    {
+    if (data->core != NULL) {
         g_object_weak_unref(G_OBJECT(data->core), on_freespace_label_core_destroyed, data);
     }
 
-    if (data->label != NULL)
-    {
+    if (data->label != NULL) {
         g_object_weak_ref(G_OBJECT(data->label), on_freespace_label_destroyed, data);
     }
 
@@ -729,12 +649,9 @@ static gboolean on_freespace_timer(gpointer gdata)
     session = gtr_core_session(data->core);
     bytes = tr_sessionGetDirFreeSpace(session, data->dir);
 
-    if (bytes < 0)
-    {
+    if (bytes < 0) {
         g_snprintf(text, sizeof(text), _("Error"));
-    }
-    else
-    {
+    } else {
         char size[128];
         tr_strlsize(size, bytes, sizeof(size));
         g_snprintf(text, sizeof(text), _("%s free"), size);

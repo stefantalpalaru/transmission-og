@@ -42,8 +42,7 @@
 
 - (id)init
 {
-    if ((self = [super initWithNibName:@"InfoActivityView" bundle:nil]))
-    {
+    if ((self = [super initWithNibName:@"InfoActivityView" bundle:nil])) {
         [self setTitle:NSLocalizedString(@"Activity", "Inspector view -> title")];
     }
 
@@ -73,11 +72,9 @@
     ];
 
     CGFloat oldMaxWidth = 0.0, originX, newMaxWidth = 0.0;
-    for (NSTextField *label in labels)
-    {
+    for (NSTextField *label in labels) {
         NSRect const oldFrame = [label frame];
-        if (oldFrame.size.width > oldMaxWidth)
-        {
+        if (oldFrame.size.width > oldMaxWidth) {
             oldMaxWidth = oldFrame.size.width;
             originX = oldFrame.origin.x;
         }
@@ -88,8 +85,7 @@
             newMaxWidth = newWidth;
     }
 
-    for (NSTextField *label in labels)
-    {
+    for (NSTextField *label in labels) {
         NSRect frame = [label frame];
         frame.origin.x = originX + (newMaxWidth - frame.size.width);
         [label setFrame:frame];
@@ -112,8 +108,7 @@
     ];
 
     CGFloat const widthIncrease = newMaxWidth - oldMaxWidth;
-    for (NSView *field in fields)
-    {
+    for (NSView *field in fields) {
         NSRect frame = [field frame];
         frame.origin.x += widthIncrease;
         frame.size.width -= widthIncrease;
@@ -150,8 +145,7 @@
 
     uint64_t have = 0, haveVerified = 0, downloadedTotal = 0, uploadedTotal = 0, failedHash = 0;
     NSDate *lastActivity = nil;
-    for (Torrent *torrent in fTorrents)
-    {
+    for (Torrent *torrent in fTorrents) {
         have += [torrent haveTotal];
         haveVerified += [torrent haveVerified];
         downloadedTotal += [torrent downloadedTotal];
@@ -165,8 +159,7 @@
 
     if (have == 0)
         [fHaveField setStringValue:[NSString stringForFileSize:0]];
-    else
-    {
+    else {
         NSString *verifiedString = [NSString stringWithFormat:NSLocalizedString(@"%@ verified", "Inspector -> Activity tab -> have"),
                                                               [NSString stringForFileSize:haveVerified]];
         if (have == haveVerified)
@@ -181,15 +174,13 @@
 
     [fDateActivityField setObjectValue:lastActivity];
 
-    if (numberSelected == 1)
-    {
+    if (numberSelected == 1) {
         Torrent *torrent = fTorrents[0];
 
         [fStateField setStringValue:[torrent stateString]];
 
         NSString *progressString = [NSString percentString:[torrent progress] longDecimals:YES];
-        if ([torrent isFolder])
-        {
+        if ([torrent isFolder]) {
             NSString *progressSelectedString = [NSString
                 stringWithFormat:NSLocalizedString(@"%@ selected", "Inspector -> Activity tab -> progress"),
                                  [NSString percentString:[torrent progressDone] longDecimals:YES]];
@@ -208,8 +199,7 @@
         // uses a relative date, so can't be set once
         [fDateAddedField setObjectValue:[torrent dateAdded]];
 
-        if ([NSApp isOnYosemiteOrBetter])
-        {
+        if ([NSApp isOnYosemiteOrBetter]) {
             static NSDateComponentsFormatter *timeFormatter;
             static dispatch_once_t onceToken;
             dispatch_once(&onceToken, ^{
@@ -221,9 +211,7 @@
 
             [fDownloadTimeField setStringValue:[timeFormatter stringFromTimeInterval:[torrent secondsDownloading]]];
             [fSeedTimeField setStringValue:[timeFormatter stringFromTimeInterval:[torrent secondsSeeding]]];
-        }
-        else
-        {
+        } else {
             [fDownloadTimeField setStringValue:[NSString timeString:[torrent secondsDownloading] includesTimeRemainingPhrase:NO
                                                                    showSeconds:YES]];
             [fSeedTimeField setStringValue:[NSString timeString:[torrent secondsSeeding] includesTimeRemainingPhrase:NO
@@ -231,12 +219,9 @@
         }
 
         [fPiecesView updateView];
-    }
-    else if (numberSelected > 1)
-    {
+    } else if (numberSelected > 1) {
         [fRatioField setStringValue:[NSString stringForRatio:tr_getRatio(uploadedTotal, downloadedTotal)]];
-    }
-    else
+    } else
         ;
 }
 
@@ -269,10 +254,8 @@
 - (void)setupInfo
 {
     NSUInteger const count = [fTorrents count];
-    if (count != 1)
-    {
-        if (count == 0)
-        {
+    if (count != 1) {
+        if (count == 0) {
             [fHaveField setStringValue:@""];
             [fDownloadedTotalField setStringValue:@""];
             [fUploadedTotalField setStringValue:@""];
@@ -298,9 +281,7 @@
         [fPiecesControl setSelected:NO forSegment:PIECES_CONTROL_PROGRESS];
         [fPiecesControl setEnabled:NO];
         [fPiecesView setTorrent:nil];
-    }
-    else
-    {
+    } else {
         Torrent *torrent = fTorrents[0];
 
         BOOL const piecesAvailableSegment = [[NSUserDefaults standardUserDefaults] boolForKey:@"PiecesViewShowAvailability"];

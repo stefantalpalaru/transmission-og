@@ -71,8 +71,7 @@ static bool tr_areThreadsEqual(tr_thread_id a, tr_thread_id b)
 }
 
 /** @brief portability wrapper around OS-dependent threads */
-struct tr_thread
-{
+struct tr_thread {
     void (*func)(void *);
     void *arg;
     tr_thread_id thread;
@@ -142,8 +141,7 @@ tr_thread *tr_threadNew(void (*func)(void *), void *arg)
 ***/
 
 /** @brief portability wrapper around OS-dependent thread mutexes */
-struct tr_lock
-{
+struct tr_lock {
     int depth;
 #ifdef _WIN32
     CRITICAL_SECTION lock;
@@ -235,8 +233,7 @@ static char *win32_get_known_folder_ex(REFKNOWNFOLDERID folder_id, DWORD flags)
     char *ret = NULL;
     PWSTR path;
 
-    if (SHGetKnownFolderPath(folder_id, flags | KF_FLAG_DONT_UNEXPAND, NULL, &path) == S_OK)
-    {
+    if (SHGetKnownFolderPath(folder_id, flags | KF_FLAG_DONT_UNEXPAND, NULL, &path) == S_OK) {
         ret = tr_win32_native_to_utf8(path, -1);
         CoTaskMemFree(path);
     }
@@ -255,12 +252,10 @@ static char const *getHomeDir(void)
 {
     static char *home = NULL;
 
-    if (home == NULL)
-    {
+    if (home == NULL) {
         home = tr_env_get_string("HOME", NULL);
 
-        if (home == NULL)
-        {
+        if (home == NULL) {
 #ifdef _WIN32
 
             home = win32_get_known_folder(&FOLDERID_Profile);
@@ -269,8 +264,7 @@ static char const *getHomeDir(void)
 
             struct passwd *pw = getpwuid(getuid());
 
-            if (pw != NULL)
-            {
+            if (pw != NULL) {
                 home = tr_strdup(pw->pw_dir);
             }
 
@@ -279,8 +273,7 @@ static char const *getHomeDir(void)
 #endif
         }
 
-        if (home == NULL)
-        {
+        if (home == NULL) {
             home = tr_strdup("");
         }
     }
@@ -330,17 +323,14 @@ char const *tr_getDefaultConfigDir(char const *appname)
 {
     static char *s = NULL;
 
-    if (tr_str_is_empty(appname))
-    {
+    if (tr_str_is_empty(appname)) {
         appname = "Transmission";
     }
 
-    if (s == NULL)
-    {
+    if (s == NULL) {
         s = tr_env_get_string("TRANSMISSION_HOME", NULL);
 
-        if (s == NULL)
-        {
+        if (s == NULL) {
 #ifdef __APPLE__
 
             s = tr_buildPath(getHomeDir(), "Library", "Application Support", appname, NULL);
@@ -361,13 +351,10 @@ char const *tr_getDefaultConfigDir(char const *appname)
 
             char *const xdg_config_home = tr_env_get_string("XDG_CONFIG_HOME", NULL);
 
-            if (xdg_config_home != NULL)
-            {
+            if (xdg_config_home != NULL) {
                 s = tr_buildPath(xdg_config_home, appname, NULL);
                 tr_free(xdg_config_home);
-            }
-            else
-            {
+            } else {
                 s = tr_buildPath(getHomeDir(), ".config", appname, NULL);
             }
 
@@ -382,8 +369,7 @@ char const *tr_getDefaultDownloadDir(void)
 {
     static char *user_dir = NULL;
 
-    if (user_dir == NULL)
-    {
+    if (user_dir == NULL) {
         char *config_home;
         char *config_file;
         char *content;
@@ -392,12 +378,9 @@ char const *tr_getDefaultDownloadDir(void)
         /* figure out where to look for user-dirs.dirs */
         config_home = tr_env_get_string("XDG_CONFIG_HOME", NULL);
 
-        if (!tr_str_is_empty(config_home))
-        {
+        if (!tr_str_is_empty(config_home)) {
             config_file = tr_buildPath(config_home, "user-dirs.dirs", NULL);
-        }
-        else
-        {
+        } else {
             config_file = tr_buildPath(getHomeDir(), ".config", "user-dirs.dirs", NULL);
         }
 
@@ -406,30 +389,22 @@ char const *tr_getDefaultDownloadDir(void)
         /* read in user-dirs.dirs and look for the download dir entry */
         content = (char *)tr_loadFile(config_file, &content_len, NULL);
 
-        if (content != NULL && content_len > 0)
-        {
+        if (content != NULL && content_len > 0) {
             char const *key = "XDG_DOWNLOAD_DIR=\"";
             char *line = strstr(content, key);
 
-            if (line != NULL)
-            {
+            if (line != NULL) {
                 char *value = line + strlen(key);
                 char *end = strchr(value, '"');
 
-                if (end != NULL)
-                {
+                if (end != NULL) {
                     *end = '\0';
 
-                    if (strncmp(value, "$HOME/", 6) == 0)
-                    {
+                    if (strncmp(value, "$HOME/", 6) == 0) {
                         user_dir = tr_buildPath(getHomeDir(), value + 6, NULL);
-                    }
-                    else if (strcmp(value, "$HOME") == 0)
-                    {
+                    } else if (strcmp(value, "$HOME") == 0) {
                         user_dir = tr_strdup(getHomeDir());
-                    }
-                    else
-                    {
+                    } else {
                         user_dir = tr_strdup(value);
                     }
                 }
@@ -438,15 +413,13 @@ char const *tr_getDefaultDownloadDir(void)
 
 #ifdef _WIN32
 
-        if (user_dir == NULL)
-        {
+        if (user_dir == NULL) {
             user_dir = win32_get_known_folder(&FOLDERID_Downloads);
         }
 
 #endif
 
-        if (user_dir == NULL)
-        {
+        if (user_dir == NULL) {
 #ifdef __HAIKU__
             user_dir = tr_buildPath(getHomeDir(), "Desktop", NULL);
 #else
@@ -479,24 +452,20 @@ char const *tr_getWebClientDir(tr_session const *session UNUSED)
 {
     static char *s = NULL;
 
-    if (s == NULL)
-    {
+    if (s == NULL) {
         s = tr_env_get_string("CLUTCH_HOME", NULL);
 
-        if (s == NULL)
-        {
+        if (s == NULL) {
             s = tr_env_get_string("TRANSMISSION_WEB_HOME", NULL);
         }
 
-        if (s == NULL)
-        {
+        if (s == NULL) {
 #ifdef BUILD_MAC_CLIENT /* on Mac, look in the Application Support folder first, then in the app bundle. */
 
             /* Look in the Application Support folder */
             s = tr_buildPath(tr_sessionGetConfigDir(session), "web", NULL);
 
-            if (!isWebClientDir(s))
-            {
+            if (!isWebClientDir(s)) {
                 tr_free(s);
 
                 CFURLRef appURL = CFBundleCopyBundleURL(CFBundleGetMainBundle());
@@ -513,8 +482,7 @@ char const *tr_getWebClientDir(tr_session const *session UNUSED)
                 /* Fallback to the app bundle */
                 s = tr_buildPath(appString, "Contents", "Resources", "web", NULL);
 
-                if (!isWebClientDir(s))
-                {
+                if (!isWebClientDir(s)) {
                     tr_free(s);
                     s = NULL;
                 }
@@ -533,14 +501,12 @@ char const *tr_getWebClientDir(tr_session const *session UNUSED)
                 &FOLDERID_ProgramData,
             };
 
-            for (size_t i = 0; s == NULL && i < TR_N_ELEMENTS(known_folder_ids); ++i)
-            {
+            for (size_t i = 0; s == NULL && i < TR_N_ELEMENTS(known_folder_ids); ++i) {
                 char *dir = win32_get_known_folder(known_folder_ids[i]);
                 s = tr_buildPath(dir, "TransmissionOG", "Web", NULL);
                 tr_free(dir);
 
-                if (!isWebClientDir(s))
-                {
+                if (!isWebClientDir(s)) {
                     tr_free(s);
                     s = NULL;
                 }
@@ -556,13 +522,11 @@ char const *tr_getWebClientDir(tr_session const *session UNUSED)
                 dir = tr_sys_path_dirname(module_path, NULL);
                 tr_free(module_path);
 
-                if (dir != NULL)
-                {
+                if (dir != NULL) {
                     s = tr_buildPath(dir, "Web", NULL);
                     tr_free(dir);
 
-                    if (!isWebClientDir(s))
-                    {
+                    if (!isWebClientDir(s)) {
                         tr_free(s);
                         s = NULL;
                     }
@@ -577,12 +541,9 @@ char const *tr_getWebClientDir(tr_session const *session UNUSED)
             /* XDG_DATA_HOME should be the first in the list of candidates */
             tmp = tr_env_get_string("XDG_DATA_HOME", NULL);
 
-            if (!tr_str_is_empty(tmp))
-            {
+            if (!tr_str_is_empty(tmp)) {
                 tr_list_append(&candidates, tmp);
-            }
-            else
-            {
+            } else {
                 char *dhome = tr_buildPath(getHomeDir(), ".local", "share", NULL);
                 tr_list_append(&candidates, dhome);
                 tr_free(tmp);
@@ -597,21 +558,16 @@ char const *tr_getWebClientDir(tr_session const *session UNUSED)
                 tr_free(xdg);
                 tmp = buf;
 
-                while (!tr_str_is_empty(tmp))
-                {
+                while (!tr_str_is_empty(tmp)) {
                     char const *end = strchr(tmp, ':');
 
-                    if (end != NULL)
-                    {
-                        if (end - tmp > 1)
-                        {
+                    if (end != NULL) {
+                        if (end - tmp > 1) {
                             tr_list_append(&candidates, tr_strndup(tmp, (size_t)(end - tmp)));
                         }
 
                         tmp = (char *)end + 1;
-                    }
-                    else if (!tr_str_is_empty(tmp))
-                    {
+                    } else if (!tr_str_is_empty(tmp)) {
                         tr_list_append(&candidates, tr_strdup(tmp));
                         break;
                     }
@@ -621,13 +577,11 @@ char const *tr_getWebClientDir(tr_session const *session UNUSED)
             }
 
             /* walk through the candidates & look for a match */
-            for (tr_list *l = candidates; l != NULL; l = l->next)
-            {
+            for (tr_list *l = candidates; l != NULL; l = l->next) {
                 char *path = tr_buildPath(l->data, PACKAGE_NAME, "web", NULL);
                 bool const found = isWebClientDir(path);
 
-                if (found)
-                {
+                if (found) {
                     s = path;
                     break;
                 }

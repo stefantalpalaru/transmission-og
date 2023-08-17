@@ -19,8 +19,7 @@
 ****  SCRAPE
 ***/
 
-enum
-{
+enum {
     /* pick a number small enough for common tracker software:
      *  - ocelot has no upper bound
      *  - opentracker has an upper bound of 64
@@ -33,8 +32,7 @@ enum
     TR_MULTISCRAPE_MAX = 100
 };
 
-typedef struct
-{
+typedef struct {
     /* the scrape URL */
     char *url;
 
@@ -48,8 +46,7 @@ typedef struct
     int info_hash_count;
 } tr_scrape_request;
 
-struct tr_scrape_response_row
-{
+struct tr_scrape_response_row {
     /* the torrent's info_hash */
     uint8_t info_hash[SHA_DIGEST_LENGTH];
 
@@ -68,8 +65,7 @@ struct tr_scrape_response_row
     int downloaders;
 };
 
-typedef struct
-{
+typedef struct {
     /* whether or not we managed to connect to the tracker */
     bool did_connect;
 
@@ -111,8 +107,7 @@ void tr_tracker_udp_scrape(
 ****  ANNOUNCE
 ***/
 
-typedef enum
-{
+typedef enum {
     TR_ANNOUNCE_EVENT_NONE,
     TR_ANNOUNCE_EVENT_COMPLETED,
     TR_ANNOUNCE_EVENT_STARTED,
@@ -121,8 +116,7 @@ typedef enum
 
 char const *tr_announce_event_get_string(tr_announce_event);
 
-typedef struct
-{
+typedef struct {
     tr_announce_event event;
     bool partial_seed;
 
@@ -167,8 +161,7 @@ typedef struct
 
 struct tr_pex;
 
-typedef struct
-{
+typedef struct {
     /* the torrent's info hash */
     uint8_t info_hash[SHA_DIGEST_LENGTH];
 

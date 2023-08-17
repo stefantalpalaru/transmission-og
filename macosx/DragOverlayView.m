@@ -29,8 +29,7 @@
 
 - (id)initWithFrame:(NSRect)frame
 {
-    if ((self = [super initWithFrame:frame]))
-    {
+    if ((self = [super initWithFrame:frame])) {
         // create attributes
         NSShadow *stringShadow = [[NSShadow alloc] init];
         [stringShadow setShadowOffset:NSMakeSize(2.0, -2.0)];
@@ -102,8 +101,7 @@
 
 - (void)drawRect:(NSRect)rect
 {
-    if (fBadge)
-    {
+    if (fBadge) {
         NSRect const frame = [self frame];
         NSSize const imageSize = [fBadge size];
         [fBadge drawAtPoint:NSMakePoint((NSWidth(frame) - imageSize.width) * 0.5, (NSHeight(frame) - imageSize.height) * 0.5)

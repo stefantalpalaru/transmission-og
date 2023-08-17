@@ -17,13 +17,11 @@
 
 class FileTreeItem;
 
-class FileTreeModel : public QAbstractItemModel
-{
+class FileTreeModel : public QAbstractItemModel {
     Q_OBJECT
 
 public:
-    enum
-    {
+    enum {
         COL_NAME,
         COL_SIZE,
         COL_PROGRESS,
@@ -33,13 +31,7 @@ public:
         NUM_COLUMNS
     };
 
-    enum Role
-    {
-        SortRole = Qt::UserRole,
-        FileIndexRole,
-        WantedRole,
-        CompleteRole
-    };
+    enum Role { SortRole = Qt::UserRole, FileIndexRole, WantedRole, CompleteRole };
 
 public:
     FileTreeModel(QObject *parent = nullptr, bool isEditable = true);

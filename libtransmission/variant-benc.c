@@ -46,21 +46,18 @@ int tr_bencParseInt(uint8_t const *buf, uint8_t const *bufend, uint8_t const **s
     void const *end;
     int64_t val;
 
-    if (buf >= bufend)
-    {
+    if (buf >= bufend) {
         return EILSEQ;
     }
 
-    if (*buf != 'i')
-    {
+    if (*buf != 'i') {
         return EILSEQ;
     }
 
     begin = buf + 1;
     end = memchr(begin, 'e', (bufend - buf) - 1);
 
-    if (end == NULL)
-    {
+    if (end == NULL) {
         return EILSEQ;
     }
 
@@ -101,36 +98,31 @@ int tr_bencParseStr(
     uint8_t const *strbegin;
     uint8_t const *strend;
 
-    if (buf >= bufend)
-    {
+    if (buf >= bufend) {
         goto err;
     }
 
-    if (!isdigit(*buf))
-    {
+    if (!isdigit(*buf)) {
         goto err;
     }
 
     end = memchr(buf, ':', bufend - buf);
 
-    if (end == NULL)
-    {
+    if (end == NULL) {
         goto err;
     }
 
     errno = 0;
     len = strtoul((char const *)buf, &ulend, 10);
 
-    if (errno != 0 || ulend != end || len > MAX_BENC_STR_LENGTH)
-    {
+    if (errno != 0 || ulend != end || len > MAX_BENC_STR_LENGTH) {
         goto err;
     }
 
     strbegin = (uint8_t const *)end + 1;
     strend = strbegin + len;
 
-    if (strend < strbegin || strend > bufend)
-    {
+    if (strend < strbegin || strend > bufend) {
         goto err;
     }
 
@@ -150,25 +142,17 @@ static tr_variant *get_node(tr_ptrArray *stack, tr_quark *key, tr_variant *top, 
 {
     tr_variant *node = NULL;
 
-    if (tr_ptrArrayEmpty(stack))
-    {
+    if (tr_ptrArrayEmpty(stack)) {
         node = top;
-    }
-    else
-    {
+    } else {
         tr_variant *parent = tr_ptrArrayBack(stack);
 
-        if (tr_variantIsList(parent))
-        {
+        if (tr_variantIsList(parent)) {
             node = tr_variantListAdd(parent);
-        }
-        else if (*key != 0 && tr_variantIsDict(parent))
-        {
+        } else if (*key != 0 && tr_variantIsDict(parent)) {
             node = tr_variantDictAdd(parent, *key);
             *key = 0;
-        }
-        else
-        {
+        } else {
             *err = EILSEQ;
         }
     }
@@ -191,15 +175,13 @@ int tr_variantParseBenc(void const *buf_in, void const *bufend_in, tr_variant *t
 
     tr_variantInit(top, 0);
 
-    while (buf != bufend)
-    {
+    while (buf != bufend) {
         if (buf > bufend) /* no more text to parse... */
         {
             err = EILSEQ;
         }
 
-        if (err != 0)
-        {
+        if (err != 0) {
             break;
         }
 
@@ -209,109 +191,86 @@ int tr_variantParseBenc(void const *buf_in, void const *bufend_in, tr_variant *t
             uint8_t const *end;
             tr_variant *v;
 
-            if ((err = tr_bencParseInt(buf, bufend, &end, &val)) != 0)
-            {
+            if ((err = tr_bencParseInt(buf, bufend, &end, &val)) != 0) {
                 break;
             }
 
             buf = end;
 
-            if ((v = get_node(&stack, &key, top, &err)) != NULL)
-            {
+            if ((v = get_node(&stack, &key, top, &err)) != NULL) {
                 tr_variantInitInt(v, val);
             }
-        }
-        else if (*buf == 'l') /* list */
+        } else if (*buf == 'l') /* list */
         {
             tr_variant *v;
 
             ++buf;
 
-            if ((v = get_node(&stack, &key, top, &err)) != NULL)
-            {
+            if ((v = get_node(&stack, &key, top, &err)) != NULL) {
                 tr_variantInitList(v, 0);
                 tr_ptrArrayAppend(&stack, v);
             }
-        }
-        else if (*buf == 'd') /* dict */
+        } else if (*buf == 'd') /* dict */
         {
             tr_variant *v;
 
             ++buf;
 
-            if ((v = get_node(&stack, &key, top, &err)) != NULL)
-            {
+            if ((v = get_node(&stack, &key, top, &err)) != NULL) {
                 tr_variantInitDict(v, 0);
                 tr_ptrArrayAppend(&stack, v);
             }
-        }
-        else if (*buf == 'e') /* end of list or dict */
+        } else if (*buf == 'e') /* end of list or dict */
         {
             ++buf;
 
-            if (tr_ptrArrayEmpty(&stack) || key != 0)
-            {
+            if (tr_ptrArrayEmpty(&stack) || key != 0) {
                 err = EILSEQ;
                 break;
-            }
-            else
-            {
+            } else {
                 tr_ptrArrayPop(&stack);
 
-                if (tr_ptrArrayEmpty(&stack))
-                {
+                if (tr_ptrArrayEmpty(&stack)) {
                     break;
                 }
             }
-        }
-        else if (isdigit(*buf)) /* string? */
+        } else if (isdigit(*buf)) /* string? */
         {
             tr_variant *v;
             uint8_t const *end;
             uint8_t const *str;
             size_t str_len;
 
-            if ((err = tr_bencParseStr(buf, bufend, &end, &str, &str_len)) != 0)
-            {
+            if ((err = tr_bencParseStr(buf, bufend, &end, &str, &str_len)) != 0) {
                 break;
             }
 
             buf = end;
 
-            if (key == 0 && !tr_ptrArrayEmpty(&stack) && tr_variantIsDict(tr_ptrArrayBack(&stack)))
-            {
+            if (key == 0 && !tr_ptrArrayEmpty(&stack) && tr_variantIsDict(tr_ptrArrayBack(&stack))) {
                 key = tr_quark_new(str, str_len);
-            }
-            else if ((v = get_node(&stack, &key, top, &err)) != NULL)
-            {
+            } else if ((v = get_node(&stack, &key, top, &err)) != NULL) {
                 tr_variantInitStr(v, str, str_len);
             }
-        }
-        else /* invalid bencoded text... march past it */
+        } else /* invalid bencoded text... march past it */
         {
             ++buf;
         }
 
-        if (tr_ptrArrayEmpty(&stack))
-        {
+        if (tr_ptrArrayEmpty(&stack)) {
             break;
         }
     }
 
-    if (err == 0 && (top->type == 0 || !tr_ptrArrayEmpty(&stack)))
-    {
+    if (err == 0 && (top->type == 0 || !tr_ptrArrayEmpty(&stack))) {
         err = EILSEQ;
     }
 
-    if (err == 0)
-    {
-        if (setme_end != NULL)
-        {
+    if (err == 0) {
+        if (setme_end != NULL) {
             *setme_end = (char const *)buf;
         }
-    }
-    else if (top->type != 0)
-    {
+    } else if (top->type != 0) {
         tr_variantFree(top);
         tr_variantInit(top, 0);
     }
@@ -331,12 +290,9 @@ static void saveIntFunc(tr_variant const *val, void *evbuf)
 
 static void saveBoolFunc(tr_variant const *val, void *evbuf)
 {
-    if (val->val.b)
-    {
+    if (val->val.b) {
         evbuffer_add(evbuf, "i1e", 3);
-    }
-    else
-    {
+    } else {
         evbuffer_add(evbuf, "i0e", 3);
     }
 }
@@ -355,8 +311,7 @@ static void saveStringFunc(tr_variant const *v, void *evbuf)
 {
     size_t len;
     char const *str;
-    if (!tr_variantGetStr(v, &str, &len))
-    {
+    if (!tr_variantGetStr(v, &str, &len)) {
         len = 0;
         str = NULL;
     }

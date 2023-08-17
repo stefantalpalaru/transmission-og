@@ -18,16 +18,14 @@ typedef struct TorrentCellRenderer TorrentCellRenderer;
 
 typedef struct TorrentCellRendererClass TorrentCellRendererClass;
 
-struct TorrentCellRenderer
-{
+struct TorrentCellRenderer {
     GtkCellRenderer parent;
 
     /*< private >*/
     struct TorrentCellRendererPrivate *priv;
 };
 
-struct TorrentCellRendererClass
-{
+struct TorrentCellRendererClass {
     GtkCellRendererClass parent;
 };
 

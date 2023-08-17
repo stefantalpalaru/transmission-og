@@ -37,8 +37,7 @@
 BlocklistDownloader *fBLDownloader = nil;
 + (BlocklistDownloader *)downloader
 {
-    if (!fBLDownloader)
-    {
+    if (!fBLDownloader) {
         fBLDownloader = [[BlocklistDownloader alloc] init];
         [fBLDownloader startDownload];
     }
@@ -54,10 +53,8 @@ BlocklistDownloader *fBLDownloader = nil;
 - (void)setViewController:(BlocklistDownloaderViewController *)viewController
 {
     fViewController = viewController;
-    if (fViewController)
-    {
-        switch (fState)
-        {
+    if (fViewController) {
+        switch (fState) {
         case BLOCKLIST_DL_START:
             [fViewController setStatusStarting];
             break;
@@ -183,8 +180,7 @@ BlocklistDownloader *fBLDownloader = nil;
 //.gz, .tar.gz, .tgz, and .bgz will be decompressed by NSURLDownload for us. However, we have to do .zip files manually.
 - (void)decompressBlocklist
 {
-    if ([[[fDestination pathExtension] lowercaseString] isEqualToString:@"zip"])
-    {
+    if ([[[fDestination pathExtension] lowercaseString] isEqualToString:@"zip"]) {
         BOOL success = NO;
 
         NSString *workingDirectory = [fDestination stringByDeletingLastPathComponent];
@@ -201,21 +197,17 @@ BlocklistDownloader *fBLDownloader = nil;
             workingDirectory /*destination*/
         ]];
 
-        @try
-        {
+        @try {
             [unzip launch];
             [unzip waitUntilExit];
 
             if ([unzip terminationStatus] == 0)
                 success = YES;
-        }
-        @catch (id exc)
-        {
+        } @catch (id exc) {
             success = NO;
         }
 
-        if (success)
-        {
+        if (success) {
             // Now find out what file we actually extracted; don't just assume it matches the zipfile's name
             NSTask *zipinfo;
 
@@ -227,8 +219,7 @@ BlocklistDownloader *fBLDownloader = nil;
             ]];
             [zipinfo setStandardOutput:[NSPipe pipe]];
 
-            @try
-            {
+            @try {
                 NSFileHandle *zipinfoOutput = [[zipinfo standardOutput] fileHandleForReading];
 
                 [zipinfo launch];
@@ -243,9 +234,7 @@ BlocklistDownloader *fBLDownloader = nil;
                 [[NSFileManager defaultManager] removeItemAtPath:fDestination error:NULL];
 
                 fDestination = newBlocklistPath;
-            }
-            @catch (id exc)
-            {
+            } @catch (id exc) {
             }
         }
     }

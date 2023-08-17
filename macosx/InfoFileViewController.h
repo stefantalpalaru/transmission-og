@@ -27,8 +27,7 @@
 
 @class FileOutlineController;
 
-@interface InfoFileViewController : NSViewController<InfoViewController>
-{
+@interface InfoFileViewController : NSViewController<InfoViewController> {
     NSArray *fTorrents;
 
     BOOL fSet;

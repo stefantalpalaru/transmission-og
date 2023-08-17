@@ -24,8 +24,7 @@
 
 @class Controller;
 
-@interface URLSheetWindowController : NSWindowController
-{
+@interface URLSheetWindowController : NSWindowController {
     IBOutlet NSTextField *fLabelField;
     IBOutlet NSTextField *fTextField;
     IBOutlet NSButton *fOpenButton, *fCancelButton;

@@ -32,8 +32,7 @@
 ****
 ***/
 
-typedef struct tr_watchdir_generic
-{
+typedef struct tr_watchdir_generic {
     tr_watchdir_backend base;
 
     struct event *event;
@@ -61,15 +60,13 @@ static void tr_watchdir_generic_free(tr_watchdir_backend *backend_base)
 {
     tr_watchdir_generic *const backend = BACKEND_UPCAST(backend_base);
 
-    if (backend == NULL)
-    {
+    if (backend == NULL) {
         return;
     }
 
     TR_ASSERT(backend->base.free_func == &tr_watchdir_generic_free);
 
-    if (backend->event != NULL)
-    {
+    if (backend->event != NULL) {
         event_del(backend->event);
         event_free(backend->event);
     }
@@ -88,14 +85,12 @@ tr_watchdir_backend *tr_watchdir_generic_new(tr_watchdir_t handle)
 
     if ((backend
              ->event = event_new(tr_watchdir_get_event_base(handle), -1, EV_PERSIST, &tr_watchdir_generic_on_event, handle)) ==
-        NULL)
-    {
+        NULL) {
         log_error("Failed to create event: %s", tr_strerror(errno));
         goto fail;
     }
 
-    if (event_add(backend->event, &tr_watchdir_generic_interval) == -1)
-    {
+    if (event_add(backend->event, &tr_watchdir_generic_interval) == -1) {
         log_error("Failed to add event: %s", tr_strerror(errno));
         goto fail;
     }

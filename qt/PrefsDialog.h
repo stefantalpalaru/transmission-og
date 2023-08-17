@@ -22,8 +22,7 @@ class QString;
 class Prefs;
 class Session;
 
-class PrefsDialog : public BaseDialog
-{
+class PrefsDialog : public BaseDialog {
     Q_OBJECT
 
 public:

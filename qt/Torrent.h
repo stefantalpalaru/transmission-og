@@ -32,13 +32,11 @@ class QPixmap;
 
 class Prefs;
 
-extern "C"
-{
-    struct tr_variant;
+extern "C" {
+struct tr_variant;
 }
 
-struct Peer
-{
+struct Peer {
     bool clientIsChoked;
     bool clientIsInterested;
     bool isDownloadingFrom;
@@ -61,8 +59,7 @@ Q_DECLARE_METATYPE(Peer)
 typedef QList<Peer> PeerList;
 Q_DECLARE_METATYPE(PeerList)
 
-struct TrackerStat
-{
+struct TrackerStat {
     QPixmap getFavicon() const;
 
     bool hasAnnounced;
@@ -97,16 +94,14 @@ Q_DECLARE_METATYPE(TrackerStat)
 typedef QList<TrackerStat> TrackerStatsList;
 Q_DECLARE_METATYPE(TrackerStatsList)
 
-struct TorrentFile
-{
+struct TorrentFile {
     TorrentFile()
         : wanted(true)
         , index(-1)
         , priority(0)
         , size(0)
         , have(0)
-    {
-    }
+    {}
 
     bool wanted;
     int index;
@@ -121,13 +116,11 @@ Q_DECLARE_METATYPE(TorrentFile)
 typedef QList<TorrentFile> FileList;
 Q_DECLARE_METATYPE(FileList)
 
-class Torrent : public QObject
-{
+class Torrent : public QObject {
     Q_OBJECT
 
 public:
-    enum
-    {
+    enum {
         UPLOAD_SPEED,
         DOWNLOAD_SPEED,
         DOWNLOAD_DIR,

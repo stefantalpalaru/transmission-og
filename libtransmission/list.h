@@ -20,8 +20,7 @@
 #include "transmission.h" /* inline */
 
 /** @brief simple list structure similar to glib's GList */
-typedef struct tr_list
-{
+typedef struct tr_list {
     void *data;
     struct tr_list *next;
     struct tr_list *prev;

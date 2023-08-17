@@ -15,16 +15,14 @@ class QStyle;
 class Session;
 struct TrackerInfo;
 
-class TrackerDelegate : public QItemDelegate
-{
+class TrackerDelegate : public QItemDelegate {
     Q_OBJECT
 
 public:
     TrackerDelegate(QObject *parent = nullptr)
         : QItemDelegate(parent)
         , myShowMore(false)
-    {
-    }
+    {}
 
     void setShowMore(bool b);
 

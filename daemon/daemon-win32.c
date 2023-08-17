@@ -57,12 +57,10 @@ static void do_log_system_error(char const *file, int line, tr_log_level level, 
 }
 
 #define log_system_error(level, code, message) \
-    do \
-    { \
+    do { \
         DWORD const local_code = (code); \
 \
-        if (tr_logLevelIsActive((level))) \
-        { \
+        if (tr_logLevelIsActive((level))) { \
             do_log_system_error(__FILE__, __LINE__, (level), local_code, (message)); \
         } \
     } while (0)
@@ -97,12 +95,9 @@ static void update_service_status(
     status.dwCheckPoint = check_point;
     status.dwWaitHint = wait_hint;
 
-    if (SetServiceStatus(status_handle, &status))
-    {
+    if (SetServiceStatus(status_handle, &status)) {
         current_state = new_state;
-    }
-    else
-    {
+    } else {
         log_system_error(TR_LOG_DEBUG, GetLastError(), "SetServiceStatus() failed");
     }
 }
@@ -114,8 +109,7 @@ static unsigned int __stdcall service_stop_thread_main(void *param)
     DWORD const sleep_time = 500;
     DWORD wait_time = (DWORD)(UINT_PTR)param;
 
-    for (DWORD checkpoint = 2; WaitForSingleObject(service_thread, sleep_time) == WAIT_TIMEOUT; ++checkpoint)
-    {
+    for (DWORD checkpoint = 2; WaitForSingleObject(service_thread, sleep_time) == WAIT_TIMEOUT; ++checkpoint) {
         wait_time = wait_time >= sleep_time ? wait_time - sleep_time : 0;
         update_service_status(SERVICE_STOP_PENDING, NO_ERROR, 0, checkpoint, MAX(wait_time, sleep_time * 2));
     }
@@ -125,8 +119,7 @@ static unsigned int __stdcall service_stop_thread_main(void *param)
 
 static void stop_service(void)
 {
-    if (service_stop_thread != NULL)
-    {
+    if (service_stop_thread != NULL) {
         return;
     }
 
@@ -136,8 +129,7 @@ static void stop_service(void)
 
     service_stop_thread = (HANDLE)_beginthreadex(NULL, 0, &service_stop_thread_main, (LPVOID)(UINT_PTR)wait_time, 0, NULL);
 
-    if (service_stop_thread == NULL)
-    {
+    if (service_stop_thread == NULL) {
         log_system_error(TR_LOG_DEBUG, GetLastError(), "_beginthreadex() failed, trying to stop synchronously");
         service_stop_thread_main((LPVOID)(UINT_PTR)wait_time);
     }
@@ -149,8 +141,7 @@ static DWORD WINAPI handle_service_ctrl(DWORD control_code, DWORD event_type, LP
     (void)event_data;
     (void)context;
 
-    switch (control_code)
-    {
+    switch (control_code) {
     case SERVICE_CONTROL_PRESHUTDOWN:
     case SERVICE_CONTROL_SHUTDOWN:
     case SERVICE_CONTROL_STOP:
@@ -183,8 +174,7 @@ static VOID WINAPI service_main(DWORD argc, LPWSTR *argv)
 
     status_handle = RegisterServiceCtrlHandlerExW(service_name, &handle_service_ctrl, NULL);
 
-    if (status_handle == NULL)
-    {
+    if (status_handle == NULL) {
         log_system_error(TR_LOG_ERROR, GetLastError(), "RegisterServiceCtrlHandlerEx() failed");
         return;
     }
@@ -193,29 +183,25 @@ static VOID WINAPI service_main(DWORD argc, LPWSTR *argv)
 
     service_thread = (HANDLE)_beginthreadex(NULL, 0, &service_thread_main, NULL, 0, NULL);
 
-    if (service_thread == NULL)
-    {
+    if (service_thread == NULL) {
         log_system_error(TR_LOG_ERROR, GetLastError(), "_beginthreadex() failed");
         return;
     }
 
     update_service_status(SERVICE_RUNNING, NO_ERROR, 0, 0, 0);
 
-    if (WaitForSingleObject(service_thread, INFINITE) != WAIT_OBJECT_0)
-    {
+    if (WaitForSingleObject(service_thread, INFINITE) != WAIT_OBJECT_0) {
         log_system_error(TR_LOG_ERROR, GetLastError(), "WaitForSingleObject() failed");
     }
 
-    if (service_stop_thread != NULL)
-    {
+    if (service_stop_thread != NULL) {
         WaitForSingleObject(service_stop_thread, INFINITE);
         CloseHandle(service_stop_thread);
     }
 
     DWORD exit_code;
 
-    if (!GetExitCodeThread(service_thread, &exit_code))
-    {
+    if (!GetExitCodeThread(service_thread, &exit_code)) {
         exit_code = 1;
     }
 
@@ -235,22 +221,17 @@ bool dtr_daemon(dtr_callbacks const *cb, void *cb_arg, bool foreground, int *exi
 
     *exit_code = 1;
 
-    if (foreground)
-    {
-        if (!SetConsoleCtrlHandler(&handle_console_ctrl, TRUE))
-        {
+    if (foreground) {
+        if (!SetConsoleCtrlHandler(&handle_console_ctrl, TRUE)) {
             set_system_error(error, GetLastError(), "SetConsoleCtrlHandler() failed");
             return false;
         }
 
         *exit_code = cb->on_start(cb_arg, true);
-    }
-    else
-    {
+    } else {
         SERVICE_TABLE_ENTRY const service_table[] = { { (LPWSTR)service_name, &service_main }, { NULL, NULL } };
 
-        if (!StartServiceCtrlDispatcherW(service_table))
-        {
+        if (!StartServiceCtrlDispatcherW(service_table)) {
             set_system_error(error, GetLastError(), "StartServiceCtrlDispatcher() failed");
             return false;
         }

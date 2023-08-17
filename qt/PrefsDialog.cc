@@ -48,18 +48,15 @@
 ****
 ***/
 
-namespace
-{
+namespace {
 
-class PreferenceWidget
-{
+class PreferenceWidget {
     static char const *const PREF_KEY;
 
 public:
     explicit PreferenceWidget(QObject *object)
         : m_object(object)
-    {
-    }
+    {}
 
     template<typename T>
     bool is() const
@@ -99,8 +96,7 @@ char const *const PreferenceWidget::PREF_KEY = "pref-key";
 
 int qtDayToTrDay(int day)
 {
-    switch (day)
-    {
+    switch (day) {
     case Qt::Monday:
         return TR_SCHED_MON;
 
@@ -130,8 +126,7 @@ int qtDayToTrDay(int day)
 
 QString qtDayName(int day)
 {
-    switch (day)
-    {
+    switch (day) {
     case Qt::Monday:
         return PrefsDialog::tr("Monday");
 
@@ -165,40 +160,23 @@ bool PrefsDialog::updateWidgetValue(QWidget *widget, int prefKey)
 {
     PreferenceWidget prefWidget(widget);
 
-    if (prefWidget.is<QCheckBox>())
-    {
+    if (prefWidget.is<QCheckBox>()) {
         prefWidget.as<QCheckBox>()->setChecked(myPrefs.getBool(prefKey));
-    }
-    else if (prefWidget.is<QSpinBox>())
-    {
+    } else if (prefWidget.is<QSpinBox>()) {
         prefWidget.as<QSpinBox>()->setValue(myPrefs.getInt(prefKey));
-    }
-    else if (prefWidget.is<QDoubleSpinBox>())
-    {
+    } else if (prefWidget.is<QDoubleSpinBox>()) {
         prefWidget.as<QDoubleSpinBox>()->setValue(myPrefs.getDouble(prefKey));
-    }
-    else if (prefWidget.is<QTimeEdit>())
-    {
+    } else if (prefWidget.is<QTimeEdit>()) {
         prefWidget.as<QTimeEdit>()->setTime(QTime(0, 0).addSecs(myPrefs.getInt(prefKey) * 60));
-    }
-    else if (prefWidget.is<QLineEdit>())
-    {
+    } else if (prefWidget.is<QLineEdit>()) {
         prefWidget.as<QLineEdit>()->setText(myPrefs.getString(prefKey));
-    }
-    else if (prefWidget.is<PathButton>())
-    {
+    } else if (prefWidget.is<PathButton>()) {
         prefWidget.as<PathButton>()->setPath(myPrefs.getString(prefKey));
-    }
-    else if (prefWidget.is<FreeSpaceLabel>())
-    {
+    } else if (prefWidget.is<FreeSpaceLabel>()) {
         prefWidget.as<FreeSpaceLabel>()->setPath(myPrefs.getString(prefKey));
-    }
-    else if (prefWidget.is<QPlainTextEdit>())
-    {
+    } else if (prefWidget.is<QPlainTextEdit>()) {
         prefWidget.as<QPlainTextEdit>()->setPlainText(myPrefs.getString(prefKey));
-    }
-    else
-    {
+    } else {
         return false;
     }
 
@@ -213,28 +191,17 @@ void PrefsDialog::linkWidgetToPref(QWidget *widget, int prefKey)
     updateWidgetValue(widget, prefKey);
     myWidgets.insert(prefKey, widget);
 
-    if (prefWidget.is<QCheckBox>())
-    {
+    if (prefWidget.is<QCheckBox>()) {
         connect(widget, SIGNAL(toggled(bool)), SLOT(checkBoxToggled(bool)));
-    }
-    else if (prefWidget.is<QTimeEdit>())
-    {
+    } else if (prefWidget.is<QTimeEdit>()) {
         connect(widget, SIGNAL(editingFinished()), SLOT(timeEditingFinished()));
-    }
-    else if (prefWidget.is<QLineEdit>())
-    {
+    } else if (prefWidget.is<QLineEdit>()) {
         connect(widget, SIGNAL(editingFinished()), SLOT(lineEditingFinished()));
-    }
-    else if (prefWidget.is<PathButton>())
-    {
+    } else if (prefWidget.is<PathButton>()) {
         connect(widget, SIGNAL(pathChanged(QString)), SLOT(pathChanged(QString)));
-    }
-    else if (prefWidget.is<QAbstractSpinBox>())
-    {
+    } else if (prefWidget.is<QAbstractSpinBox>()) {
         connect(widget, SIGNAL(editingFinished()), SLOT(spinBoxEditingFinished()));
-    }
-    else if (prefWidget.is<QPlainTextEdit>())
-    {
+    } else if (prefWidget.is<QPlainTextEdit>()) {
         connect(widget, SIGNAL(textChanged()), SLOT(plainTextChanged()));
     }
 }
@@ -243,8 +210,7 @@ void PrefsDialog::checkBoxToggled(bool checked)
 {
     PreferenceWidget const prefWidget(sender());
 
-    if (prefWidget.is<QCheckBox>())
-    {
+    if (prefWidget.is<QCheckBox>()) {
         setPref(prefWidget.getPrefKey(), checked);
     }
 }
@@ -253,12 +219,9 @@ void PrefsDialog::spinBoxEditingFinished()
 {
     PreferenceWidget const prefWidget(sender());
 
-    if (prefWidget.is<QDoubleSpinBox>())
-    {
+    if (prefWidget.is<QDoubleSpinBox>()) {
         setPref(prefWidget.getPrefKey(), prefWidget.as<QDoubleSpinBox>()->value());
-    }
-    else if (prefWidget.is<QSpinBox>())
-    {
+    } else if (prefWidget.is<QSpinBox>()) {
         setPref(prefWidget.getPrefKey(), prefWidget.as<QSpinBox>()->value());
     }
 }
@@ -267,8 +230,7 @@ void PrefsDialog::timeEditingFinished()
 {
     PreferenceWidget const prefWidget(sender());
 
-    if (prefWidget.is<QTimeEdit>())
-    {
+    if (prefWidget.is<QTimeEdit>()) {
         setPref(prefWidget.getPrefKey(), QTime(0, 0).secsTo(prefWidget.as<QTimeEdit>()->time()) / 60);
     }
 }
@@ -277,12 +239,10 @@ void PrefsDialog::lineEditingFinished()
 {
     PreferenceWidget const prefWidget(sender());
 
-    if (prefWidget.is<QLineEdit>())
-    {
+    if (prefWidget.is<QLineEdit>()) {
         QLineEdit const *const lineEdit = prefWidget.as<QLineEdit>();
 
-        if (lineEdit->isModified())
-        {
+        if (lineEdit->isModified()) {
             setPref(prefWidget.getPrefKey(), lineEdit->text());
         }
     }
@@ -292,8 +252,7 @@ void PrefsDialog::pathChanged(QString const &path)
 {
     PreferenceWidget const prefWidget(sender());
 
-    if (prefWidget.is<PathButton>())
-    {
+    if (prefWidget.is<PathButton>()) {
         setPref(prefWidget.getPrefKey(), path);
     }
 }
@@ -302,12 +261,10 @@ void PrefsDialog::plainTextChanged()
 {
     PreferenceWidget const prefWidget(sender());
 
-    if (prefWidget.is<QPlainTextEdit>())
-    {
+    if (prefWidget.is<QPlainTextEdit>()) {
         QPlainTextEdit const *const plainTextEdit = prefWidget.as<QPlainTextEdit>();
 
-        if (plainTextEdit->document()->isModified())
-        {
+        if (plainTextEdit->document()->isModified()) {
             myPrefs.set(prefWidget.getPrefKey(), plainTextEdit->toPlainText());
             // we avoid using setPref() because the included refreshPref() call would reset the cursor while we're editing
         }
@@ -361,13 +318,11 @@ void PrefsDialog::initSpeedTab()
     ui.altSpeedLimitDaysCombo->addItem(tr("Weekends"), QVariant(TR_SCHED_WEEKEND));
     ui.altSpeedLimitDaysCombo->insertSeparator(ui.altSpeedLimitDaysCombo->count());
 
-    for (int i = locale.firstDayOfWeek(); i <= Qt::Sunday; ++i)
-    {
+    for (int i = locale.firstDayOfWeek(); i <= Qt::Sunday; ++i) {
         ui.altSpeedLimitDaysCombo->addItem(qtDayName(i), qtDayToTrDay(i));
     }
 
-    for (int i = Qt::Monday; i < locale.firstDayOfWeek(); ++i)
-    {
+    for (int i = Qt::Monday; i < locale.firstDayOfWeek(); ++i) {
         ui.altSpeedLimitDaysCombo->addItem(qtDayName(i), qtDayToTrDay(i));
     }
 
@@ -528,8 +483,7 @@ void PrefsDialog::onIdleLimitChanged()
     //: Spin box suffix, "Stop seeding if idle for: [ 5 minutes ]" (includes leading space after the number, if needed)
     QString const unitsSuffix = tr(" minute(s)", nullptr, ui.idleLimitSpin->value());
 
-    if (ui.idleLimitSpin->suffix() != unitsSuffix)
-    {
+    if (ui.idleLimitSpin->suffix() != unitsSuffix) {
         ui.idleLimitSpin->setSuffix(unitsSuffix);
     }
 }
@@ -552,8 +506,7 @@ void PrefsDialog::onQueueStalledMinutesChanged()
     //: number, if needed)
     QString const unitsSuffix = tr(" minute(s) ago", nullptr, ui.queueStalledMinutesSpin->value());
 
-    if (ui.queueStalledMinutesSpin->suffix() != unitsSuffix)
-    {
+    if (ui.queueStalledMinutesSpin->suffix() != unitsSuffix) {
         ui.queueStalledMinutesSpin->setSuffix(unitsSuffix);
     }
 }
@@ -650,17 +603,14 @@ PrefsDialog::PrefsDialog(Session &session, Prefs &prefs, QWidget *parent)
          << Prefs::BLOCKLIST_ENABLED << Prefs::DIR_WATCH << Prefs::DOWNLOAD_DIR << Prefs::INCOMPLETE_DIR
          << Prefs::INCOMPLETE_DIR_ENABLED << Prefs::SCRIPT_TORRENT_DONE_FILENAME;
 
-    for (int const key : keys)
-    {
+    for (int const key : keys) {
         refreshPref(key);
     }
 
     // if it's a remote session, disable the preferences
     // that don't work in remote sessions
-    if (!myIsServer)
-    {
-        for (QWidget *const w : myUnsupportedWhenRemote)
-        {
+    if (!myIsServer) {
+        for (QWidget *const w : myUnsupportedWhenRemote) {
             w->setToolTip(tr("Not supported by remote sessions"));
             w->setEnabled(false);
         }
@@ -670,8 +620,7 @@ PrefsDialog::PrefsDialog(Session &session, Prefs &prefs, QWidget *parent)
 }
 
 PrefsDialog::~PrefsDialog()
-{
-}
+{}
 
 void PrefsDialog::setPref(int key, QVariant const &v)
 {
@@ -687,8 +636,7 @@ void PrefsDialog::sessionUpdated()
 {
     bool const isLocal = mySession.isLocal();
 
-    if (myIsLocal != isLocal)
-    {
+    if (myIsLocal != isLocal) {
         myIsLocal = isLocal;
         updateDownloadingWidgetsLocality();
     }
@@ -704,8 +652,7 @@ void PrefsDialog::updateBlocklistLabel()
 
 void PrefsDialog::refreshPref(int key)
 {
-    switch (key)
-    {
+    switch (key) {
     case Prefs::RPC_ENABLED:
     case Prefs::RPC_WHITELIST_ENABLED:
     case Prefs::RPC_AUTH_REQUIRED:
@@ -714,18 +661,15 @@ void PrefsDialog::refreshPref(int key)
             bool const whitelist(myPrefs.getBool(Prefs::RPC_WHITELIST_ENABLED));
             bool const auth(myPrefs.getBool(Prefs::RPC_AUTH_REQUIRED));
 
-            for (QWidget *const w : myWebWhitelistWidgets)
-            {
+            for (QWidget *const w : myWebWhitelistWidgets) {
                 w->setEnabled(enabled && whitelist);
             }
 
-            for (QWidget *const w : myWebAuthWidgets)
-            {
+            for (QWidget *const w : myWebAuthWidgets) {
                 w->setEnabled(enabled && auth);
             }
 
-            for (QWidget *const w : myWebWidgets)
-            {
+            for (QWidget *const w : myWebWidgets) {
                 w->setEnabled(enabled);
             }
 
@@ -736,8 +680,7 @@ void PrefsDialog::refreshPref(int key)
         {
             bool const enabled = myPrefs.getBool(key);
 
-            for (QWidget *const w : mySchedWidgets)
-            {
+            for (QWidget *const w : mySchedWidgets) {
                 w->setEnabled(enabled);
             }
 
@@ -748,8 +691,7 @@ void PrefsDialog::refreshPref(int key)
         {
             bool const enabled = myPrefs.getBool(key);
 
-            for (QWidget *const w : myBlockWidgets)
-            {
+            for (QWidget *const w : myBlockWidgets) {
                 w->setEnabled(enabled);
             }
 
@@ -767,16 +709,13 @@ void PrefsDialog::refreshPref(int key)
 
     key2widget_t::iterator it(myWidgets.find(key));
 
-    if (it != myWidgets.end())
-    {
+    if (it != myWidgets.end()) {
         QWidget *w(it.value());
 
         w->blockSignals(true);
 
-        if (!updateWidgetValue(w, key))
-        {
-            if (key == Prefs::ENCRYPTION)
-            {
+        if (!updateWidgetValue(w, key)) {
+            if (key == Prefs::ENCRYPTION) {
                 QComboBox *comboBox(qobject_cast<QComboBox *>(w));
                 int const index = comboBox->findData(myPrefs.getInt(key));
                 comboBox->setCurrentIndex(index);

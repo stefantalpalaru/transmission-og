@@ -24,8 +24,7 @@
 /* Most Diffie-Hellman backends handle secret key in the very same way: by
    manually allocating memory for it and storing the value in plain form. */
 
-struct tr_dh_secret
-{
+struct tr_dh_secret {
     size_t key_length;
     uint8_t key[];
 };

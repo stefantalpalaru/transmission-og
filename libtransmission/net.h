@@ -74,18 +74,11 @@ typedef int tr_socket_t;
 *****
 ****/
 
-typedef enum tr_address_type
-{
-    TR_AF_INET,
-    TR_AF_INET6,
-    NUM_TR_AF_INET_TYPES
-} tr_address_type;
+typedef enum tr_address_type { TR_AF_INET, TR_AF_INET6, NUM_TR_AF_INET_TYPES } tr_address_type;
 
-typedef struct tr_address
-{
+typedef struct tr_address {
     tr_address_type type;
-    union
-    {
+    union {
         struct in6_addr addr6;
         struct in_addr addr4;
     } addr;
@@ -116,8 +109,7 @@ static inline bool tr_address_is_valid(tr_address const *a)
  **********************************************************************/
 
 /* https://en.wikipedia.org/wiki/Differentiated_services#Class_Selector */
-enum
-{
+enum {
     TR_IPTOS_LOWCOST = 0x38, /* AF13: low prio, high drop */
     TR_IPTOS_LOWDELAY = 0x70, /* AF32: high prio, mid drop */
     TR_IPTOS_THRUPUT = 0x20, /* CS1: low prio, undef drop */

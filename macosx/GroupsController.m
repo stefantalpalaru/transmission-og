@@ -48,8 +48,7 @@ GroupsController *fGroupsInstance = nil;
 
 - (id)init
 {
-    if ((self = [super init]))
-    {
+    if ((self = [super init])) {
         NSData *data;
         if ((data = [[NSUserDefaults standardUserDefaults] dataForKey:@"GroupDicts"]))
             fGroups = [NSKeyedUnarchiver unarchiveObjectWithData:data];
@@ -58,9 +57,7 @@ GroupsController *fGroupsInstance = nil;
             fGroups = [NSUnarchiver unarchiveObjectWithData:data];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"Groups"];
             [self saveGroups];
-        }
-        else
-        {
+        } else {
             // default groups
             NSMutableDictionary *red = [NSMutableDictionary
                 dictionaryWithObjectsAndKeys:[NSColor redColor], @"Color", NSLocalizedString(@"Red", "Groups -> Name"), @"Name", @0, @"Index", nil];
@@ -98,8 +95,7 @@ GroupsController *fGroupsInstance = nil;
 
 - (NSInteger)rowValueForIndex:(NSInteger)index
 {
-    if (index != -1)
-    {
+    if (index != -1) {
         for (NSUInteger i = 0; i < [fGroups count]; i++)
             if (index == [fGroups[i][@"Index"] integerValue])
                 return i;
@@ -214,13 +210,10 @@ GroupsController *fGroupsInstance = nil;
 {
     NSMutableDictionary *dict = fGroups[[self rowValueForIndex:index]];
 
-    if (predicate)
-    {
+    if (predicate) {
         dict[@"AutoGroupRules"] = predicate;
         [[GroupsController groups] saveGroups];
-    }
-    else
-    {
+    } else {
         [dict removeObjectForKey:@"AutoGroupRules"];
         [self setUsesAutoAssignRules:NO forIndex:index];
     }
@@ -281,34 +274,29 @@ GroupsController *fGroupsInstance = nil;
     [item setTag:-1];
 
     NSImage *icon = [NSImage imageNamed:@"GroupsNoneTemplate"];
-    if (small)
-    {
+    if (small) {
         icon = [icon copy];
         [icon setSize:NSMakeSize(ICON_WIDTH_SMALL, ICON_WIDTH_SMALL)];
 
         [item setImage:icon];
-    }
-    else
+    } else
         [item setImage:icon];
 
     [menu addItem:item];
 
-    for (NSMutableDictionary *dict in fGroups)
-    {
+    for (NSMutableDictionary *dict in fGroups) {
         item = [[NSMenuItem alloc] initWithTitle:dict[@"Name"] action:action keyEquivalent:@""];
         [item setTarget:target];
 
         [item setTag:[dict[@"Index"] integerValue]];
 
         NSImage *icon = [self imageForGroup:dict];
-        if (small)
-        {
+        if (small) {
             icon = [icon copy];
             [icon setSize:NSMakeSize(ICON_WIDTH_SMALL, ICON_WIDTH_SMALL)];
 
             [item setImage:icon];
-        }
-        else
+        } else
             [item setImage:icon];
 
         [menu addItem:item];
@@ -319,8 +307,7 @@ GroupsController *fGroupsInstance = nil;
 
 - (NSInteger)groupIndexForTorrent:(Torrent *)torrent
 {
-    for (NSDictionary *group in fGroups)
-    {
+    for (NSDictionary *group in fGroups) {
         NSInteger row = [group[@"Index"] integerValue];
         if ([self torrent:torrent doesMatchRulesForGroupAtIndex:row])
             return row;
@@ -336,8 +323,7 @@ GroupsController *fGroupsInstance = nil;
 {
     // don't archive the icon
     NSMutableArray *groups = [NSMutableArray arrayWithCapacity:[fGroups count]];
-    for (NSDictionary *dict in fGroups)
-    {
+    for (NSDictionary *dict in fGroups) {
         NSMutableDictionary *tempDict = [dict mutableCopy];
         [tempDict removeObjectForKey:@"Icon"];
         [groups addObject:tempDict];
@@ -386,16 +372,11 @@ GroupsController *fGroupsInstance = nil;
 
     NSPredicate *predicate = [self autoAssignRulesForIndex:index];
     BOOL eval = NO;
-    @try
-    {
+    @try {
         eval = [predicate evaluateWithObject:torrent];
-    }
-    @catch (NSException *exception)
-    {
+    } @catch (NSException *exception) {
         NSLog(@"Error when evaluating predicate (%@) - %@", predicate, exception);
-    }
-    @finally
-    {
+    } @finally {
         return eval;
     }
 }

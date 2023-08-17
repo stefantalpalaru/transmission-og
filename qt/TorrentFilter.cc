@@ -28,8 +28,7 @@ TorrentFilter::TorrentFilter(Prefs const &prefs)
 }
 
 TorrentFilter::~TorrentFilter()
-{
-}
+{}
 
 /***
 ****
@@ -44,8 +43,7 @@ void TorrentFilter::onPrefChanged(int key)
     static int const slow_msec = 500;
 
     std::optional<int> msec;
-    switch (key)
-    {
+    switch (key) {
     case Prefs::FILTER_TEXT:
         // special case for isEmpty: user probably hit the 'clear' button
         msec = myPrefs.getString(key).isEmpty() ? fast_msec : slow_msec;
@@ -60,8 +58,7 @@ void TorrentFilter::onPrefChanged(int key)
     }
 
     // if this pref change affects filtering, ensure that a refilter is queued
-    if (msec && !myRefilterTimer.isActive())
-    {
+    if (msec && !myRefilterTimer.isActive()) {
         myRefilterTimer.setSingleShot(true);
         myRefilterTimer.start(*msec);
     }
@@ -77,19 +74,16 @@ void TorrentFilter::refilter()
 ****
 ***/
 
-namespace
-{
+namespace {
 
 template<typename T>
 int compare(T const a, T const b)
 {
-    if (a < b)
-    {
+    if (a < b) {
         return -1;
     }
 
-    if (b < a)
-    {
+    if (b < a) {
         return 1;
     }
 
@@ -104,48 +98,41 @@ bool TorrentFilter::lessThan(QModelIndex const &left, QModelIndex const &right) 
     Torrent const *a = sourceModel()->data(left, TorrentModel::TorrentRole).value<Torrent const *>();
     Torrent const *b = sourceModel()->data(right, TorrentModel::TorrentRole).value<Torrent const *>();
 
-    switch (myPrefs.get<SortMode>(Prefs::SORT_MODE).mode())
-    {
+    switch (myPrefs.get<SortMode>(Prefs::SORT_MODE).mode()) {
     case SortMode::SORT_BY_QUEUE:
-        if (val == 0)
-        {
+        if (val == 0) {
             val = -compare(a->queuePosition(), b->queuePosition());
         }
 
         break;
 
     case SortMode::SORT_BY_SIZE:
-        if (val == 0)
-        {
+        if (val == 0) {
             val = compare(a->sizeWhenDone(), b->sizeWhenDone());
         }
 
         break;
 
     case SortMode::SORT_BY_AGE:
-        if (val == 0)
-        {
+        if (val == 0) {
             val = compare(a->dateAdded(), b->dateAdded());
         }
 
         break;
 
     case SortMode::SORT_BY_ID:
-        if (val == 0)
-        {
+        if (val == 0) {
             val = compare(a->id(), b->id());
         }
 
         break;
 
     case SortMode::SORT_BY_ACTIVITY:
-        if (val == 0)
-        {
+        if (val == 0) {
             val = compare(a->downloadSpeed() + a->uploadSpeed(), b->downloadSpeed() + b->uploadSpeed());
         }
 
-        if (val == 0)
-        {
+        if (val == 0) {
             val = compare(
                 a->peersWeAreUploadingTo() + a->webseedsWeAreDownloadingFrom(),
                 b->peersWeAreUploadingTo() + b->webseedsWeAreDownloadingFrom());
@@ -154,62 +141,52 @@ bool TorrentFilter::lessThan(QModelIndex const &left, QModelIndex const &right) 
         // fall through
 
     case SortMode::SORT_BY_STATE:
-        if (val == 0)
-        {
+        if (val == 0) {
             val = -compare(a->isPaused(), b->isPaused());
         }
 
-        if (val == 0)
-        {
+        if (val == 0) {
             val = compare(a->getActivity(), b->getActivity());
         }
 
-        if (val == 0)
-        {
+        if (val == 0) {
             val = -compare(a->queuePosition(), b->queuePosition());
         }
 
-        if (val == 0)
-        {
+        if (val == 0) {
             val = compare(a->hasError(), b->hasError());
         }
 
         // fall through
 
     case SortMode::SORT_BY_PROGRESS:
-        if (val == 0)
-        {
+        if (val == 0) {
             val = compare(a->metadataPercentDone(), b->metadataPercentDone());
         }
 
-        if (val == 0)
-        {
+        if (val == 0) {
             val = compare(a->percentComplete(), b->percentComplete());
         }
 
-        if (val == 0)
-        {
+        if (val == 0) {
             val = a->compareSeedRatio(*b);
         }
 
-        if (val == 0)
-        {
+        if (val == 0) {
             val = -compare(a->queuePosition(), b->queuePosition());
         }
 
         // fall through
 
     case SortMode::SORT_BY_RATIO:
-        if (val == 0)
-        {
+        if (val == 0) {
             val = a->compareRatio(*b);
         }
 
         break;
 
     case SortMode::SORT_BY_ETA:
-        if (val == 0)
-        {
+        if (val == 0) {
             val = a->compareETA(*b);
         }
 
@@ -219,13 +196,11 @@ bool TorrentFilter::lessThan(QModelIndex const &left, QModelIndex const &right) 
         break;
     }
 
-    if (val == 0)
-    {
+    if (val == 0) {
         val = -a->name().compare(b->name(), Qt::CaseInsensitive);
     }
 
-    if (val == 0)
-    {
+    if (val == 0) {
         val = compare(a->hashString(), b->hashString());
     }
 
@@ -245,8 +220,7 @@ bool TorrentFilter::activityFilterAcceptsTorrent(Torrent const *tor, FilterMode 
 {
     bool accepts;
 
-    switch (m.mode())
-    {
+    switch (m.mode()) {
     case FilterMode::SHOW_ACTIVE:
         accepts = tor->peersWeAreUploadingTo() > 0 || tor->peersWeAreDownloadingFrom() > 0 || tor->isVerifying();
         break;
@@ -289,24 +263,20 @@ bool TorrentFilter::filterAcceptsRow(int sourceRow, QModelIndex const &sourcePar
     Torrent const *tor = childIndex.model()->data(childIndex, TorrentModel::TorrentRole).value<Torrent const *>();
     bool accepts = true;
 
-    if (accepts)
-    {
+    if (accepts) {
         FilterMode const m = myPrefs.get<FilterMode>(Prefs::FILTER_MODE);
         accepts = activityFilterAcceptsTorrent(tor, m);
     }
 
-    if (accepts)
-    {
+    if (accepts) {
         QString const trackers = myPrefs.getString(Prefs::FILTER_TRACKERS);
         accepts = trackerFilterAcceptsTorrent(tor, trackers);
     }
 
-    if (accepts)
-    {
+    if (accepts) {
         QString const text = myPrefs.getString(Prefs::FILTER_TEXT);
 
-        if (!text.isEmpty())
-        {
+        if (!text.isEmpty()) {
             accepts = tor->name().contains(text, Qt::CaseInsensitive);
         }
     }
@@ -318,12 +288,9 @@ void TorrentFilter::countTorrentsPerMode(int *setmeCounts) const
 {
     std::fill_n(setmeCounts, static_cast<std::size_t>(FilterMode::NUM_MODES), 0);
 
-    for (auto const &tor : dynamic_cast<TorrentModel *>(sourceModel())->torrents())
-    {
-        for (int mode = 0; mode < FilterMode::NUM_MODES; ++mode)
-        {
-            if (activityFilterAcceptsTorrent(tor, mode))
-            {
+    for (auto const &tor : dynamic_cast<TorrentModel *>(sourceModel())->torrents()) {
+        for (int mode = 0; mode < FilterMode::NUM_MODES; ++mode) {
+            if (activityFilterAcceptsTorrent(tor, mode)) {
                 ++setmeCounts[mode];
             }
         }

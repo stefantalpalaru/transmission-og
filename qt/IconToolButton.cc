@@ -15,8 +15,7 @@
 
 IconToolButton::IconToolButton(QWidget *parent)
     : QToolButton(parent)
-{
-}
+{}
 
 QSize IconToolButton::sizeHint() const
 {

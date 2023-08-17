@@ -24,8 +24,7 @@
 
 @class Torrent;
 
-@interface TrackerTableView : NSTableView
-{
+@interface TrackerTableView : NSTableView {
     // weak references
     Torrent *fTorrent;
     NSArray *fTrackers;

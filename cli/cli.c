@@ -108,24 +108,15 @@ static void sigHandler(int signal);
 
 static char *tr_strlratio(char *buf, double ratio, size_t buflen)
 {
-    if ((int)ratio == TR_RATIO_NA)
-    {
+    if ((int)ratio == TR_RATIO_NA) {
         tr_strlcpy(buf, _("None"), buflen);
-    }
-    else if ((int)ratio == TR_RATIO_INF)
-    {
+    } else if ((int)ratio == TR_RATIO_INF) {
         tr_strlcpy(buf, "Inf", buflen);
-    }
-    else if (ratio < 10.0)
-    {
+    } else if (ratio < 10.0) {
         tr_snprintf(buf, buflen, "%.2f", ratio);
-    }
-    else if (ratio < 100.0)
-    {
+    } else if (ratio < 100.0) {
         tr_snprintf(buf, buflen, "%.1f", ratio);
-    }
-    else
-    {
+    } else {
         tr_snprintf(buf, buflen, "%.0f", ratio);
     }
 
@@ -149,21 +140,16 @@ static void onTorrentFileDownloaded(
 
 static void getStatusStr(tr_stat const *st, char *buf, size_t buflen)
 {
-    if (st->activity == TR_STATUS_CHECK_WAIT)
-    {
+    if (st->activity == TR_STATUS_CHECK_WAIT) {
         tr_snprintf(buf, buflen, "Waiting to verify local files");
-    }
-    else if (st->activity == TR_STATUS_CHECK)
-    {
+    } else if (st->activity == TR_STATUS_CHECK) {
         tr_snprintf(
             buf,
             buflen,
             "Verifying local files (%.2f%%, %.2f%% valid)",
             tr_truncd(100 * st->recheckProgress, 2),
             tr_truncd(100 * st->percentDone, 2));
-    }
-    else if (st->activity == TR_STATUS_DOWNLOAD)
-    {
+    } else if (st->activity == TR_STATUS_DOWNLOAD) {
         char upStr[80];
         char dnStr[80];
         char ratioStr[80];
@@ -183,9 +169,7 @@ static void getStatusStr(tr_stat const *st, char *buf, size_t buflen)
             st->peersGettingFromUs,
             upStr,
             ratioStr);
-    }
-    else if (st->activity == TR_STATUS_SEED)
-    {
+    } else if (st->activity == TR_STATUS_SEED) {
         char upStr[80];
         char ratioStr[80];
 
@@ -200,9 +184,7 @@ static void getStatusStr(tr_stat const *st, char *buf, size_t buflen)
             st->peersConnected,
             upStr,
             ratioStr);
-    }
-    else
-    {
+    } else {
         *buf = '\0';
     }
 }
@@ -214,10 +196,8 @@ static char const *getConfigDir(int argc, char const **argv)
     char const *optarg;
     int const ind = tr_optind;
 
-    while ((c = tr_getopt(getUsage(), argc, argv, options, &optarg)) != TR_OPT_DONE)
-    {
-        if (c == 'g')
-        {
+    while ((c = tr_getopt(getUsage(), argc, argv, options, &optarg)) != TR_OPT_DONE) {
+        if (c == 'g') {
             configDir = optarg;
             break;
         }
@@ -225,8 +205,7 @@ static char const *getConfigDir(int argc, char const **argv)
 
     tr_optind = ind;
 
-    if (configDir == NULL)
-    {
+    if (configDir == NULL) {
         configDir = tr_getDefaultConfigDir(MY_CONFIG_NAME);
     }
 
@@ -251,8 +230,7 @@ int tr_main(int argc, char *argv[])
     printf("%s %s\n", MY_READABLE_NAME, LONG_VERSION_STRING);
 
     /* user needs to pass in at least one argument */
-    if (argc < 2)
-    {
+    if (argc < 2) {
         tr_getopt_usage(MY_READABLE_NAME, getUsage(), options);
         return EXIT_FAILURE;
     }
@@ -263,31 +241,25 @@ int tr_main(int argc, char *argv[])
     tr_sessionLoadSettings(&settings, configDir, MY_CONFIG_NAME);
 
     /* the command line overrides defaults */
-    if (parseCommandLine(&settings, argc, (char const **)argv) != 0)
-    {
+    if (parseCommandLine(&settings, argc, (char const **)argv) != 0) {
         return EXIT_FAILURE;
     }
 
-    if (showVersion)
-    {
+    if (showVersion) {
         return EXIT_SUCCESS;
     }
 
     /* Check the options for validity */
-    if (torrentPath == NULL)
-    {
+    if (torrentPath == NULL) {
         fprintf(stderr, "No torrent specified!\n");
         return EXIT_FAILURE;
     }
 
-    if (tr_variantDictFindStr(&settings, TR_KEY_download_dir, &str, NULL))
-    {
-        if (!tr_sys_path_exists(str, NULL))
-        {
+    if (tr_variantDictFindStr(&settings, TR_KEY_download_dir, &str, NULL)) {
+        if (!tr_sys_path_exists(str, NULL)) {
             tr_error *error = NULL;
 
-            if (!tr_sys_dir_create(str, TR_SYS_DIR_CREATE_PARENTS, 0700, &error))
-            {
+            if (!tr_sys_dir_create(str, TR_SYS_DIR_CREATE_PARENTS, 0700, &error)) {
                 fprintf(stderr, "Unable to create download directory \"%s\": %s\n", str, error->message);
                 tr_error_free(error);
                 return EXIT_FAILURE;
@@ -302,26 +274,18 @@ int tr_main(int argc, char *argv[])
     fileContents = tr_loadFile(torrentPath, &fileLength, NULL);
     tr_ctorSetPaused(ctor, TR_FORCE, false);
 
-    if (fileContents != NULL)
-    {
+    if (fileContents != NULL) {
         tr_ctorSetMetainfo(ctor, fileContents, fileLength);
-    }
-    else if (memcmp(torrentPath, "magnet:?", 8) == 0)
-    {
+    } else if (memcmp(torrentPath, "magnet:?", 8) == 0) {
         tr_ctorSetMetainfoFromMagnetLink(ctor, torrentPath);
-    }
-    else if (memcmp(torrentPath, "http", 4) == 0)
-    {
+    } else if (memcmp(torrentPath, "http", 4) == 0) {
         tr_webRun(h, torrentPath, onTorrentFileDownloaded, ctor);
         waitingOnWeb = true;
 
-        while (waitingOnWeb)
-        {
+        while (waitingOnWeb) {
             tr_wait_msec(1000);
         }
-    }
-    else
-    {
+    } else {
         fprintf(stderr, "ERROR: Unrecognized torrent \"%s\".\n", torrentPath);
         fprintf(stderr, " * If you're trying to create a torrent, use transmission-create.\n");
         fprintf(stderr, " * If you're trying to see a torrent's info, use transmission-show.\n");
@@ -334,8 +298,7 @@ int tr_main(int argc, char *argv[])
     tor = tr_torrentNew(ctor, NULL, NULL);
     tr_ctorFree(ctor);
 
-    if (tor == NULL)
-    {
+    if (tor == NULL) {
         fprintf(stderr, "Failed opening torrent file `%s'\n", torrentPath);
         tr_sessionClose(h);
         return EXIT_FAILURE;
@@ -347,37 +310,30 @@ int tr_main(int argc, char *argv[])
 #endif
     tr_torrentStart(tor);
 
-    if (verify)
-    {
+    if (verify) {
         verify = false;
         tr_torrentVerify(tor, NULL, NULL);
     }
 
-    for (;;)
-    {
+    for (;;) {
         char line[LINEWIDTH];
         tr_stat const *st;
         char const *messageName[] = { NULL, "Tracker gave a warning:", "Tracker gave an error:", "Error:" };
 
         tr_wait_msec(200);
 
-        if (gotsig)
-        {
+        if (gotsig) {
             gotsig = false;
             printf("\nStopping torrent...\n");
             tr_torrentStop(tor);
         }
 
-        if (manualUpdate)
-        {
+        if (manualUpdate) {
             manualUpdate = false;
 
-            if (!tr_torrentCanManualUpdate(tor))
-            {
+            if (!tr_torrentCanManualUpdate(tor)) {
                 fprintf(stderr, "\nReceived SIGHUP, but can't send a manual update now\n");
-            }
-            else
-            {
+            } else {
                 fprintf(stderr, "\nReceived SIGHUP: manual update scheduled\n");
                 tr_torrentManualUpdate(tor);
             }
@@ -385,16 +341,14 @@ int tr_main(int argc, char *argv[])
 
         st = tr_torrentStat(tor);
 
-        if (st->activity == TR_STATUS_STOPPED)
-        {
+        if (st->activity == TR_STATUS_STOPPED) {
             break;
         }
 
         getStatusStr(st, line, sizeof(line));
         printf("\r%-*s", LINEWIDTH, line);
 
-        if (messageName[st->error])
-        {
+        if (messageName[st->error]) {
             fprintf(stderr, "\n%s: %s\n", messageName[st->error], st->errorString);
         }
     }
@@ -417,10 +371,8 @@ static int parseCommandLine(tr_variant *d, int argc, char const **argv)
     int c;
     char const *optarg;
 
-    while ((c = tr_getopt(getUsage(), argc, argv, options, &optarg)) != TR_OPT_DONE)
-    {
-        switch (c)
-        {
+    while ((c = tr_getopt(getUsage(), argc, argv, options, &optarg)) != TR_OPT_DONE) {
+        switch (c) {
         case 'b':
             tr_variantDictAddBool(d, TR_KEY_blocklist_enabled, true);
             break;
@@ -496,8 +448,7 @@ static int parseCommandLine(tr_variant *d, int argc, char const **argv)
             break;
 
         case TR_OPT_UNK:
-            if (torrentPath == NULL)
-            {
+            if (torrentPath == NULL) {
                 torrentPath = optarg;
             }
 
@@ -513,8 +464,7 @@ static int parseCommandLine(tr_variant *d, int argc, char const **argv)
 
 static void sigHandler(int signal)
 {
-    switch (signal)
-    {
+    switch (signal) {
     case SIGINT:
         gotsig = true;
         break;

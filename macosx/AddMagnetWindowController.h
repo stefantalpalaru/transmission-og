@@ -27,8 +27,7 @@
 @class Controller;
 @class Torrent;
 
-@interface AddMagnetWindowController : NSWindowController
-{
+@interface AddMagnetWindowController : NSWindowController {
     IBOutlet NSImageView *fLocationImageView;
     IBOutlet NSTextField *fNameField, *fLocationField;
     IBOutlet NSButton *fStartCheck;

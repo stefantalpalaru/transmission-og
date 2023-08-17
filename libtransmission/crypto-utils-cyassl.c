@@ -38,8 +38,7 @@
 #define TR_CRYPTO_X509_FALLBACK
 #include "crypto-utils-fallback.c"
 
-struct tr_dh_ctx
-{
+struct tr_dh_ctx {
     DhKey dh;
     word32 key_length;
     uint8_t *private_key;
@@ -54,8 +53,7 @@ struct tr_dh_ctx
 
 static void log_cyassl_error(int error_code, char const *file, int line)
 {
-    if (tr_logLevelIsActive(TR_LOG_ERROR))
-    {
+    if (tr_logLevelIsActive(TR_LOG_ERROR)) {
 #if API_VERSION_HEX >= 0x03004000
         char const *error_message = API(GetErrorString)(error_code);
 #elif API_VERSION_HEX >= 0x03000002
@@ -73,8 +71,7 @@ static bool check_cyassl_result(int result, char const *file, int line)
 {
     bool const ret = result == 0;
 
-    if (!ret)
-    {
+    if (!ret) {
         log_cyassl_error(result, file, line);
     }
 
@@ -92,10 +89,8 @@ static RNG *get_rng(void)
     static RNG rng;
     static bool rng_initialized = false;
 
-    if (!rng_initialized)
-    {
-        if (!check_result(API(InitRng)(&rng)))
-        {
+    if (!rng_initialized) {
+        if (!check_result(API(InitRng)(&rng))) {
             return NULL;
         }
 
@@ -109,8 +104,7 @@ static tr_lock *get_rng_lock(void)
 {
     static tr_lock *lock = NULL;
 
-    if (lock == NULL)
-    {
+    if (lock == NULL) {
         lock = tr_lockNew();
     }
 
@@ -125,8 +119,7 @@ tr_sha1_ctx_t tr_sha1_init(void)
 {
     Sha *handle = tr_new(Sha, 1);
 
-    if (check_result(API(InitSha)(handle)))
-    {
+    if (check_result(API(InitSha)(handle))) {
         return handle;
     }
 
@@ -138,8 +131,7 @@ bool tr_sha1_update(tr_sha1_ctx_t handle, void const *data, size_t data_length)
 {
     TR_ASSERT(handle != NULL);
 
-    if (data_length == 0)
-    {
+    if (data_length == 0) {
         return true;
     }
 
@@ -152,8 +144,7 @@ bool tr_sha1_final(tr_sha1_ctx_t handle, uint8_t *hash)
 {
     bool ret = true;
 
-    if (hash != NULL)
-    {
+    if (hash != NULL) {
         TR_ASSERT(handle != NULL);
 
         ret = check_result(API(ShaFinal)(handle, hash));
@@ -189,8 +180,7 @@ void tr_rc4_process(tr_rc4_ctx_t handle, void const *input, void *output, size_t
 {
     TR_ASSERT(handle != NULL);
 
-    if (length == 0)
-    {
+    if (length == 0) {
         return;
     }
 
@@ -217,8 +207,7 @@ tr_dh_ctx_t tr_dh_new(
 
     API(InitDhKey)(&handle->dh);
 
-    if (!check_result(API(DhSetKey)(&handle->dh, prime_num, prime_num_length, generator_num, generator_num_length)))
-    {
+    if (!check_result(API(DhSetKey)(&handle->dh, prime_num, prime_num_length, generator_num, generator_num_length))) {
         tr_free(handle);
         return NULL;
     }
@@ -232,8 +221,7 @@ void tr_dh_free(tr_dh_ctx_t raw_handle)
 {
     struct tr_dh_ctx *handle = raw_handle;
 
-    if (handle == NULL)
-    {
+    if (handle == NULL) {
         return;
     }
 
@@ -252,8 +240,7 @@ bool tr_dh_make_key(tr_dh_ctx_t raw_handle, size_t private_key_length UNUSED, ui
     word32 my_public_key_length;
     tr_lock *rng_lock = get_rng_lock();
 
-    if (handle->private_key == NULL)
-    {
+    if (handle->private_key == NULL) {
         handle->private_key = tr_malloc(handle->key_length);
     }
 
@@ -265,8 +252,7 @@ bool tr_dh_make_key(tr_dh_ctx_t raw_handle, size_t private_key_length UNUSED, ui
             handle->private_key,
             &my_private_key_length,
             public_key,
-            &my_public_key_length)))
-    {
+            &my_public_key_length))) {
         tr_lockUnlock(rng_lock);
         return false;
     }
@@ -277,8 +263,7 @@ bool tr_dh_make_key(tr_dh_ctx_t raw_handle, size_t private_key_length UNUSED, ui
 
     handle->private_key_length = my_private_key_length;
 
-    if (public_key_length != NULL)
-    {
+    if (public_key_length != NULL) {
         *public_key_length = handle->key_length;
     }
 
@@ -303,12 +288,9 @@ tr_dh_secret_t tr_dh_agree(tr_dh_ctx_t raw_handle, uint8_t const *other_public_k
             handle->private_key,
             handle->private_key_length,
             other_public_key,
-            other_public_key_length)))
-    {
+            other_public_key_length))) {
         tr_dh_secret_align(ret, my_secret_key_length);
-    }
-    else
-    {
+    } else {
         tr_dh_secret_free(ret);
         ret = NULL;
     }

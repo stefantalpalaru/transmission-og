@@ -52,10 +52,8 @@ static int parseCommandLine(int argc, char const *const *argv)
     int c;
     char const *optarg;
 
-    while ((c = tr_getopt(getUsage(), argc, argv, options, &optarg)) != TR_OPT_DONE)
-    {
-        switch (c)
-        {
+    while ((c = tr_getopt(getUsage(), argc, argv, options, &optarg)) != TR_OPT_DONE) {
+        switch (c) {
         case 'V':
             showVersion = true;
             break;
@@ -73,8 +71,7 @@ static int parseCommandLine(int argc, char const *const *argv)
             break;
 
         case 't':
-            if (trackerCount + 1 < MAX_TRACKERS)
-            {
+            if (trackerCount + 1 < MAX_TRACKERS) {
                 trackers[trackerCount].tier = trackerCount;
                 trackers[trackerCount].announce = (char *)optarg;
                 ++trackerCount;
@@ -83,13 +80,11 @@ static int parseCommandLine(int argc, char const *const *argv)
             break;
 
         case 's':
-            if (optarg != NULL)
-            {
+            if (optarg != NULL) {
                 char *endptr = NULL;
                 piecesize_kib = strtoul(optarg, &endptr, 10);
 
-                if (endptr != NULL && *endptr == 'M')
-                {
+                if (endptr != NULL && *endptr == 'M') {
                     piecesize_kib *= KiB;
                 }
             }
@@ -115,8 +110,7 @@ static char *tr_getcwd(void)
 
     result = tr_sys_dir_get_current(&error);
 
-    if (result == NULL)
-    {
+    if (result == NULL) {
         fprintf(stderr, "getcwd error: \"%s\"", error->message);
         tr_error_free(error);
         result = tr_strdup("");
@@ -135,32 +129,27 @@ int tr_main(int argc, char *argv[])
     tr_formatter_size_init(DISK_K, DISK_K_STR, DISK_M_STR, DISK_G_STR, DISK_T_STR);
     tr_formatter_speed_init(SPEED_K, SPEED_K_STR, SPEED_M_STR, SPEED_G_STR, SPEED_T_STR);
 
-    if (parseCommandLine(argc, (char const *const *)argv) != 0)
-    {
+    if (parseCommandLine(argc, (char const *const *)argv) != 0) {
         return EXIT_FAILURE;
     }
 
-    if (showVersion)
-    {
+    if (showVersion) {
         fprintf(stderr, MY_NAME " " LONG_VERSION_STRING "\n");
         return EXIT_SUCCESS;
     }
 
-    if (infile == NULL)
-    {
+    if (infile == NULL) {
         fprintf(stderr, "ERROR: No input file or directory specified.\n");
         tr_getopt_usage(MY_NAME, getUsage(), options);
         fprintf(stderr, "\n");
         return EXIT_FAILURE;
     }
 
-    if (outfile == NULL)
-    {
+    if (outfile == NULL) {
         tr_error *error = NULL;
         char *base = tr_sys_path_basename(infile, &error);
 
-        if (base == NULL)
-        {
+        if (base == NULL) {
             fprintf(stderr, "ERROR: Cannot deduce output path from input path: %s\n", error->message);
             return EXIT_FAILURE;
         }
@@ -173,15 +162,11 @@ int tr_main(int argc, char *argv[])
         tr_free(base);
     }
 
-    if (trackerCount == 0)
-    {
-        if (isPrivate)
-        {
+    if (trackerCount == 0) {
+        if (isPrivate) {
             fprintf(stderr, "ERROR: no trackers specified for a private torrent\n");
             return EXIT_FAILURE;
-        }
-        else
-        {
+        } else {
             printf("WARNING: no trackers specified\n");
         }
     }
@@ -191,21 +176,18 @@ int tr_main(int argc, char *argv[])
 
     b = tr_metaInfoBuilderCreate(infile);
 
-    if (b == NULL)
-    {
+    if (b == NULL) {
         fprintf(stderr, "ERROR: Cannot find specified input file or directory.\n");
         return EXIT_FAILURE;
     }
 
-    if (piecesize_kib != 0)
-    {
+    if (piecesize_kib != 0) {
         tr_metaInfoBuilderSetPieceSize(b, piecesize_kib * KiB);
     }
 
     tr_makeMetaInfo(b, outfile, trackers, trackerCount, comment, isPrivate);
 
-    while (!b->isDone)
-    {
+    while (!b->isDone) {
         tr_wait_msec(500);
         putc('.', stdout);
         fflush(stdout);
@@ -213,8 +195,7 @@ int tr_main(int argc, char *argv[])
 
     putc(' ', stdout);
 
-    switch (b->result)
-    {
+    switch (b->result) {
     case TR_MAKEMETA_OK:
         printf("done!");
         break;

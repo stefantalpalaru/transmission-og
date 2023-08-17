@@ -60,8 +60,7 @@ static int test_elements(void)
     check(tr_variantDictFindStr(&top, tr_quark_new("null", 4), &str, NULL));
     check_str(str, ==, "");
 
-    if (err == 0)
-    {
+    if (err == 0) {
         tr_variantFree(&top);
     }
 
@@ -83,8 +82,7 @@ static int test_utf8(void)
     check(tr_variantDictFindStr(&top, key, &str, NULL));
     check_str(str, ==, "Letöltések");
 
-    if (err == 0)
-    {
+    if (err == 0) {
         tr_variantFree(&top);
     }
 
@@ -95,8 +93,7 @@ static int test_utf8(void)
     check(tr_variantDictFindStr(&top, key, &str, NULL));
     check_str(str, ==, "\\");
 
-    if (err == 0)
-    {
+    if (err == 0) {
         tr_variantFree(&top);
     }
 
@@ -116,8 +113,7 @@ static int test_utf8(void)
     check_str(str, ==, "Letöltések");
     json = tr_variantToStr(&top, TR_VARIANT_FMT_JSON, NULL);
 
-    if (err == 0)
-    {
+    if (err == 0) {
         tr_variantFree(&top);
     }
 
@@ -130,8 +126,7 @@ static int test_utf8(void)
     check(tr_variantDictFindStr(&top, key, &str, NULL));
     check_str(str, ==, "Letöltések");
 
-    if (err == 0)
-    {
+    if (err == 0) {
         tr_variantFree(&top);
     }
 
@@ -266,21 +261,17 @@ int main(void)
     /* run the tests in a locale with a decimal point of ',' */
     bool is_locale_set = false;
 
-    for (size_t i = 0; !is_locale_set && i < TR_N_ELEMENTS(comma_locales); ++i)
-    {
+    for (size_t i = 0; !is_locale_set && i < TR_N_ELEMENTS(comma_locales); ++i) {
         is_locale_set = setlocale(LC_NUMERIC, comma_locales[i]) != NULL;
     }
 
-    if (!is_locale_set)
-    {
+    if (!is_locale_set) {
         fprintf(
             stderr,
             "WARNING: unable to run locale-specific json tests. add a locale like %s or %s\n",
             comma_locales[0],
             comma_locales[1]);
-    }
-    else
-    {
+    } else {
         ret += runTests(tests, NUM_TESTS(tests));
     }
 

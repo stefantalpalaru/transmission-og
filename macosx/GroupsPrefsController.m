@@ -85,8 +85,7 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if (object == fSelectedColorView && [fTableView numberOfSelectedRows] == 1)
-    {
+    if (object == fSelectedColorView && [fTableView numberOfSelectedRows] == 1) {
         NSInteger index = [[GroupsController groups] indexForRow:[fTableView selectedRow]];
         [[GroupsController groups] setColor:[fSelectedColorView color] forIndex:index];
         [fTableView setNeedsDisplay:YES];
@@ -95,8 +94,7 @@
 
 - (void)controlTextDidEndEditing:(NSNotification *)notification
 {
-    if ([notification object] == fSelectedColorNameField)
-    {
+    if ([notification object] == fSelectedColorNameField) {
         NSInteger index = [[GroupsController groups] indexForRow:[fTableView selectedRow]];
         [[GroupsController groups] setName:[fSelectedColorNameField stringValue] forIndex:index];
         [fTableView setNeedsDisplay:YES];
@@ -116,8 +114,7 @@
        proposedDropOperation:(NSTableViewDropOperation)operation
 {
     NSPasteboard *pasteboard = [info draggingPasteboard];
-    if ([[pasteboard types] containsObject:GROUP_TABLE_VIEW_DATA_TYPE])
-    {
+    if ([[pasteboard types] containsObject:GROUP_TABLE_VIEW_DATA_TYPE]) {
         [fTableView setDropRow:row dropOperation:NSTableViewDropAbove];
         return NSDragOperationGeneric;
     }
@@ -131,8 +128,7 @@
     dropOperation:(NSTableViewDropOperation)operation
 {
     NSPasteboard *pasteboard = [info draggingPasteboard];
-    if ([[pasteboard types] containsObject:GROUP_TABLE_VIEW_DATA_TYPE])
-    {
+    if ([[pasteboard types] containsObject:GROUP_TABLE_VIEW_DATA_TYPE]) {
         NSIndexSet *indexes = [NSKeyedUnarchiver unarchiveObjectWithData:[pasteboard dataForType:GROUP_TABLE_VIEW_DATA_TYPE]];
         NSInteger oldRow = [indexes firstIndex];
 
@@ -157,8 +153,7 @@
 
     NSInteger row;
 
-    switch ([[sender cell] tagForSegment:[sender selectedSegment]])
-    {
+    switch ([[sender cell] tagForSegment:[sender selectedSegment]]) {
     case ADD_TAG:
         [fTableView beginUpdates];
 
@@ -186,8 +181,7 @@
         [fTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndex:row] withAnimation:NSTableViewAnimationSlideUp];
         [fTableView endUpdates];
 
-        if ([fTableView numberOfRows] > 0)
-        {
+        if ([fTableView numberOfRows] > 0) {
             if (row == [fTableView numberOfRows])
                 --row;
             [fTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
@@ -212,14 +206,11 @@
 
     [panel beginSheetModalForWindow:[fCustomLocationPopUp window] completionHandler:^(NSInteger result) {
         NSInteger const index = [[GroupsController groups] indexForRow:[fTableView selectedRow]];
-        if (result == NSFileHandlingPanelOKButton)
-        {
+        if (result == NSFileHandlingPanelOKButton) {
             NSString *path = [[panel URLs][0] path];
             [[GroupsController groups] setCustomDownloadLocation:path forIndex:index];
             [[GroupsController groups] setUsesCustomDownloadLocation:YES forIndex:index];
-        }
-        else
-        {
+        } else {
             if (![[GroupsController groups] customDownloadLocationForIndex:index])
                 [[GroupsController groups] setUsesCustomDownloadLocation:NO forIndex:index];
         }
@@ -233,14 +224,12 @@
 - (IBAction)toggleUseCustomDownloadLocation:(id)sender
 {
     NSInteger index = [[GroupsController groups] indexForRow:[fTableView selectedRow]];
-    if ([fCustomLocationEnableCheck state] == NSOnState)
-    {
+    if ([fCustomLocationEnableCheck state] == NSOnState) {
         if ([[GroupsController groups] customDownloadLocationForIndex:index])
             [[GroupsController groups] setUsesCustomDownloadLocation:YES forIndex:index];
         else
             [self customDownloadLocationSheetShow:nil];
-    }
-    else
+    } else
         [[GroupsController groups] setUsesCustomDownloadLocation:NO forIndex:index];
 
     [fCustomLocationPopUp setEnabled:([fCustomLocationEnableCheck state] == NSOnState)];
@@ -252,14 +241,12 @@
 - (IBAction)toggleUseAutoAssignRules:(id)sender
 {
     NSInteger index = [[GroupsController groups] indexForRow:[fTableView selectedRow]];
-    if ([fAutoAssignRulesEnableCheck state] == NSOnState)
-    {
+    if ([fAutoAssignRulesEnableCheck state] == NSOnState) {
         if ([[GroupsController groups] autoAssignRulesForIndex:index])
             [[GroupsController groups] setUsesAutoAssignRules:YES forIndex:index];
         else
             [self orderFrontRulesSheet:nil];
-    }
-    else
+    } else
         [[GroupsController groups] setUsesAutoAssignRules:NO forIndex:index];
 
     [fAutoAssignRulesEditButton setEnabled:[fAutoAssignRulesEnableCheck state] == NSOnState];
@@ -286,8 +273,7 @@
     [NSApp endSheet:self.groupRulesSheetWindow];
 
     NSInteger index = [[GroupsController groups] indexForRow:[fTableView selectedRow]];
-    if (![[GroupsController groups] autoAssignRulesForIndex:index])
-    {
+    if (![[GroupsController groups] autoAssignRulesForIndex:index]) {
         [[GroupsController groups] setUsesAutoAssignRules:NO forIndex:index];
         [fAutoAssignRulesEnableCheck setState:NO];
         [fAutoAssignRulesEditButton setEnabled:NO];
@@ -330,8 +316,7 @@
 - (void)updateSelectedGroup
 {
     [fAddRemoveControl setEnabled:[fTableView numberOfSelectedRows] > 0 forSegment:REMOVE_TAG];
-    if ([fTableView numberOfSelectedRows] == 1)
-    {
+    if ([fTableView numberOfSelectedRows] == 1) {
         NSInteger const index = [[GroupsController groups] indexForRow:[fTableView selectedRow]];
         [fSelectedColorView setColor:[[GroupsController groups] colorForIndex:index]];
         [fSelectedColorView setEnabled:YES];
@@ -343,9 +328,7 @@
         [fAutoAssignRulesEnableCheck setState:[[GroupsController groups] usesAutoAssignRulesForIndex:index]];
         [fAutoAssignRulesEnableCheck setEnabled:YES];
         [fAutoAssignRulesEditButton setEnabled:([fAutoAssignRulesEnableCheck state] == NSOnState)];
-    }
-    else
-    {
+    } else {
         [fSelectedColorView setColor:[NSColor whiteColor]];
         [fSelectedColorView setEnabled:NO];
         [fSelectedColorNameField setStringValue:@""];
@@ -367,15 +350,12 @@
     [fCustomLocationPopUp setEnabled:hasCustomLocation];
 
     NSString *location = [[GroupsController groups] customDownloadLocationForIndex:index];
-    if (location)
-    {
+    if (location) {
         ExpandedPathToPathTransformer *pathTransformer = [[ExpandedPathToPathTransformer alloc] init];
         [[fCustomLocationPopUp itemAtIndex:0] setTitle:[pathTransformer transformedValue:location]];
         ExpandedPathToIconTransformer *iconTransformer = [[ExpandedPathToIconTransformer alloc] init];
         [[fCustomLocationPopUp itemAtIndex:0] setImage:[iconTransformer transformedValue:location]];
-    }
-    else
-    {
+    } else {
         [[fCustomLocationPopUp itemAtIndex:0] setTitle:@""];
         [[fCustomLocationPopUp itemAtIndex:0] setImage:nil];
     }

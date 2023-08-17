@@ -10,8 +10,7 @@
 
 #include <QSortFilterProxyModel>
 
-class TrackerModelFilter : public QSortFilterProxyModel
-{
+class TrackerModelFilter : public QSortFilterProxyModel {
     Q_OBJECT
 
 public:

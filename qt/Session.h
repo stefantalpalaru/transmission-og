@@ -22,13 +22,11 @@
 class AddData;
 class Prefs;
 
-extern "C"
-{
-    struct tr_variant;
+extern "C" {
+struct tr_variant;
 }
 
-class Session : public QObject
-{
+class Session : public QObject {
     Q_OBJECT
 
 public:

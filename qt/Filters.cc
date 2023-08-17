@@ -16,10 +16,8 @@ QString const FilterMode::names[NUM_MODES] = {
 
 int FilterMode::modeFromName(QString const &name)
 {
-    for (int i = 0; i < NUM_MODES; ++i)
-    {
-        if (names[i] == name)
-        {
+    for (int i = 0; i < NUM_MODES; ++i) {
+        if (names[i] == name) {
             return i;
         }
     }
@@ -36,10 +34,8 @@ QString const SortMode::names[NUM_MODES] = {
 
 int SortMode::modeFromName(QString const &name)
 {
-    for (int i = 0; i < NUM_MODES; ++i)
-    {
-        if (names[i] == name)
-        {
+    for (int i = 0; i < NUM_MODES; ++i) {
+        if (names[i] == name) {
             return i;
         }
     }

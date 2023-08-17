@@ -22,8 +22,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface GroupsPrefsController : NSObject
-{
+@interface GroupsPrefsController : NSObject {
     IBOutlet NSTableView *fTableView;
     IBOutlet NSSegmentedControl *fAddRemoveControl;
 

@@ -23,8 +23,7 @@
 #include "web.h"
 #include "webseed.h"
 
-struct tr_webseed_task
-{
+struct tr_webseed_task {
     bool dead;
     struct evbuffer *content;
     struct tr_webseed *webseed;
@@ -39,8 +38,7 @@ struct tr_webseed_task
     long response_code;
 };
 
-struct tr_webseed
-{
+struct tr_webseed {
     tr_peer parent;
     tr_bandwidth bandwidth;
     tr_session *session;
@@ -59,8 +57,7 @@ struct tr_webseed
     char **file_urls;
 };
 
-enum
-{
+enum {
     TR_IDLE_TIMER_MSEC = 2000,
     /* */
     FAILURE_RETRY_INTERVAL = 150,
@@ -76,8 +73,7 @@ enum
 
 static void publish(tr_webseed *w, tr_peer_event *e)
 {
-    if (w->callback != NULL)
-    {
+    if (w->callback != NULL) {
         (*w->callback)(&w->parent, e, w->callback_data);
     }
 }
@@ -88,10 +84,8 @@ static void fire_client_got_rejs(tr_torrent *tor, tr_webseed *w, tr_block_index_
     e.eventType = TR_PEER_CLIENT_GOT_REJ;
     tr_torrentGetBlockLocation(tor, block, &e.pieceIndex, &e.offset, &e.length);
 
-    for (tr_block_index_t i = 1; i <= count; i++)
-    {
-        if (i == count)
-        {
+    for (tr_block_index_t i = 1; i <= count; i++) {
+        if (i == count) {
             e.length = tr_torBlockCountBytes(tor, block + count - 1);
         }
 
@@ -106,10 +100,8 @@ static void fire_client_got_blocks(tr_torrent *tor, tr_webseed *w, tr_block_inde
     e.eventType = TR_PEER_CLIENT_GOT_BLOCK;
     tr_torrentGetBlockLocation(tor, block, &e.pieceIndex, &e.offset, &e.length);
 
-    for (tr_block_index_t i = 1; i <= count; i++)
-    {
-        if (i == count)
-        {
+    for (tr_block_index_t i = 1; i <= count; i++) {
+        if (i == count) {
             e.length = tr_torBlockCountBytes(tor, block + count - 1);
         }
 
@@ -130,8 +122,7 @@ static void fire_client_got_piece_data(tr_webseed *w, uint32_t length)
 ****
 ***/
 
-struct write_block_data
-{
+struct write_block_data {
     tr_session *session;
     int torrent_id;
     struct tr_webseed *webseed;
@@ -151,18 +142,15 @@ static void write_block_func(void *vdata)
 
     tor = tr_torrentFindFromId(data->session, data->torrent_id);
 
-    if (tor != NULL)
-    {
+    if (tor != NULL) {
         uint32_t const block_size = tor->blockSize;
         uint32_t len = evbuffer_get_length(buf);
         uint32_t const offset_end = data->block_offset + len;
         tr_cache *cache = data->session->cache;
         tr_piece_index_t const piece = data->piece_index;
 
-        if (!tr_torrentPieceIsComplete(tor, piece))
-        {
-            while (len > 0)
-            {
+        if (!tr_torrentPieceIsComplete(tor, piece)) {
+            while (len > 0) {
                 uint32_t const bytes_this_pass = MIN(len, block_size);
                 tr_cacheWriteBlock(cache, tor, piece, offset_end - len, bytes_this_pass, buf);
                 len -= bytes_this_pass;
@@ -180,8 +168,7 @@ static void write_block_func(void *vdata)
 ****
 ***/
 
-struct connection_succeeded_data
-{
+struct connection_succeeded_data {
     struct tr_webseed *webseed;
     char *real_url;
     tr_piece_index_t piece_index;
@@ -193,18 +180,15 @@ static void connection_succeeded(void *vdata)
     struct connection_succeeded_data *data = vdata;
     struct tr_webseed *w = data->webseed;
 
-    if (++w->active_transfers >= w->retry_challenge && w->retry_challenge != 0)
-    {
+    if (++w->active_transfers >= w->retry_challenge && w->retry_challenge != 0) {
         /* the server seems to be accepting more connections now */
         w->consecutive_failures = w->retry_tickcount = w->retry_challenge = 0;
     }
 
-    if (data->real_url != NULL)
-    {
+    if (data->real_url != NULL) {
         tr_torrent *tor = tr_torrentFindFromId(w->session, w->torrent_id);
 
-        if (tor != NULL)
-        {
+        if (tor != NULL) {
             uint64_t file_offset;
             tr_file_index_t file_index;
 
@@ -231,8 +215,7 @@ static void on_content_changed(struct evbuffer *buf, struct evbuffer_cb_info con
 
     tr_sessionLock(session);
 
-    if (!task->dead && n_added > 0)
-    {
+    if (!task->dead && n_added > 0) {
         uint32_t len;
         struct tr_webseed *w = task->webseed;
 
@@ -240,12 +223,10 @@ static void on_content_changed(struct evbuffer *buf, struct evbuffer_cb_info con
         fire_client_got_piece_data(w, n_added);
         len = evbuffer_get_length(buf);
 
-        if (task->response_code == 0)
-        {
+        if (task->response_code == 0) {
             tr_webGetTaskInfo(task->web_task, TR_WEB_GET_CODE, &task->response_code);
 
-            if (task->response_code == 206)
-            {
+            if (task->response_code == 206) {
                 char const *url;
                 struct connection_succeeded_data *data;
 
@@ -264,8 +245,7 @@ static void on_content_changed(struct evbuffer *buf, struct evbuffer_cb_info con
             }
         }
 
-        if (task->response_code == 206 && len >= task->block_size)
-        {
+        if (task->response_code == 206 && len >= task->block_size) {
             /* once we've got at least one full block, save it */
 
             struct write_block_data *data;
@@ -302,26 +282,21 @@ static void on_idle(tr_webseed *w)
     int running_tasks = tr_list_size(w->tasks);
     tr_torrent *tor = tr_torrentFindFromId(w->session, w->torrent_id);
 
-    if (w->consecutive_failures >= MAX_CONSECUTIVE_FAILURES)
-    {
+    if (w->consecutive_failures >= MAX_CONSECUTIVE_FAILURES) {
         want = w->idle_connections;
 
-        if (w->retry_tickcount >= FAILURE_RETRY_INTERVAL)
-        {
+        if (w->retry_tickcount >= FAILURE_RETRY_INTERVAL) {
             /* some time has passed since our connection attempts failed. try again */
             ++want;
             /* if this challenge is fulfilled we will reset consecutive_failures */
             w->retry_challenge = running_tasks + want;
         }
-    }
-    else
-    {
+    } else {
         want = MAX_WEBSEED_CONNECTIONS - running_tasks;
         w->retry_challenge = running_tasks + w->idle_connections + 1;
     }
 
-    if (tor != NULL && tor->isRunning && !tr_torrentIsSeed(tor) && want > 0)
-    {
+    if (tor != NULL && tor->isRunning && !tr_torrentIsSeed(tor) && want > 0) {
         int got = 0;
         tr_block_index_t *blocks = NULL;
 
@@ -330,13 +305,11 @@ static void on_idle(tr_webseed *w)
 
         w->idle_connections -= MIN(w->idle_connections, got);
 
-        if (w->retry_tickcount >= FAILURE_RETRY_INTERVAL && got == want)
-        {
+        if (w->retry_tickcount >= FAILURE_RETRY_INTERVAL && got == want) {
             w->retry_tickcount = 0;
         }
 
-        for (int i = 0; i < got; ++i)
-        {
+        for (int i = 0; i < got; ++i) {
             tr_block_index_t const b = blocks[i * 2];
             tr_block_index_t const be = blocks[i * 2 + 1];
             struct tr_webseed_task *task;
@@ -375,8 +348,7 @@ static void web_response_func(
     struct tr_webseed_task *t = vtask;
     bool const success = response_code == 206;
 
-    if (t->dead)
-    {
+    if (t->dead) {
         evbuffer_free(t->content);
         tr_free(t);
         return;
@@ -385,29 +357,22 @@ static void web_response_func(
     w = t->webseed;
     tor = tr_torrentFindFromId(session, w->torrent_id);
 
-    if (tor != NULL)
-    {
+    if (tor != NULL) {
         /* active_transfers was only increased if the connection was successful */
-        if (t->response_code == 206)
-        {
+        if (t->response_code == 206) {
             --w->active_transfers;
         }
 
-        if (!success)
-        {
+        if (!success) {
             tr_block_index_t const blocks_remain = (t->length + tor->blockSize - 1) / tor->blockSize - t->blocks_done;
 
-            if (blocks_remain != 0)
-            {
+            if (blocks_remain != 0) {
                 fire_client_got_rejs(tor, w, t->block + t->blocks_done, blocks_remain);
             }
 
-            if (t->blocks_done != 0)
-            {
+            if (t->blocks_done != 0) {
                 ++w->idle_connections;
-            }
-            else if (++w->consecutive_failures >= MAX_CONSECUTIVE_FAILURES && w->retry_tickcount == 0)
-            {
+            } else if (++w->consecutive_failures >= MAX_CONSECUTIVE_FAILURES && w->retry_tickcount == 0) {
                 /* now wait a while until retrying to establish a connection */
                 ++w->retry_tickcount;
             }
@@ -415,23 +380,17 @@ static void web_response_func(
             tr_list_remove_data(&w->tasks, t);
             evbuffer_free(t->content);
             tr_free(t);
-        }
-        else
-        {
+        } else {
             uint32_t const bytes_done = t->blocks_done * tor->blockSize;
             uint32_t const buf_len = evbuffer_get_length(t->content);
 
-            if (bytes_done + buf_len < t->length)
-            {
+            if (bytes_done + buf_len < t->length) {
                 /* request finished successfully but there's still data missing. that
                    means we've reached the end of a file and need to request the next one */
                 t->response_code = 0;
                 task_request_next_chunk(t);
-            }
-            else
-            {
-                if (buf_len != 0 && !tr_torrentPieceIsComplete(tor, t->piece_index))
-                {
+            } else {
+                if (buf_len != 0 && !tr_torrentPieceIsComplete(tor, t->piece_index)) {
                     /* on_content_changed() will not write a block if it is smaller than
                        the torrent's block size, i.e. the torrent's very last block */
                     tr_cacheWriteBlock(session->cache, tor, t->piece_index, t->piece_offset + bytes_done, buf_len, t->content);
@@ -458,8 +417,7 @@ static struct evbuffer *make_url(tr_webseed *w, tr_file const *file)
     evbuffer_add(buf, w->base_url, w->base_url_len);
 
     /* if url ends with a '/', add the torrent name */
-    if (w->base_url[w->base_url_len - 1] == '/' && file->name != NULL)
-    {
+    if (w->base_url[w->base_url_len - 1] == '/' && file->name != NULL) {
         tr_http_escape(buf, file->name, strlen(file->name), false);
     }
 
@@ -471,8 +429,7 @@ static void task_request_next_chunk(struct tr_webseed_task *t)
     tr_webseed *w = t->webseed;
     tr_torrent *tor = tr_torrentFindFromId(w->session, w->torrent_id);
 
-    if (tor != NULL)
-    {
+    if (tor != NULL) {
         char range[64];
         char **urls = t->webseed->file_urls;
 
@@ -492,8 +449,7 @@ static void task_request_next_chunk(struct tr_webseed_task *t)
         file = &inf->files[file_index];
         this_pass = MIN(remain, file->length - file_offset);
 
-        if (urls[file_index] == NULL)
-        {
+        if (urls[file_index] == NULL) {
             urls[file_index] = evbuffer_free_to_str(make_url(t->webseed, file), NULL);
         }
 
@@ -511,8 +467,7 @@ static void webseed_timer_func(evutil_socket_t foo UNUSED, short bar UNUSED, voi
 {
     tr_webseed *w = vw;
 
-    if (w->retry_tickcount != 0)
-    {
+    if (w->retry_tickcount != 0) {
         ++w->retry_tickcount;
     }
 
@@ -530,15 +485,13 @@ static bool webseed_is_transferring_pieces(tr_peer const *peer, uint64_t now, tr
     unsigned int Bps = 0;
     bool is_active = false;
 
-    if (direction == TR_DOWN)
-    {
+    if (direction == TR_DOWN) {
         tr_webseed const *w = (tr_webseed const *)peer;
         is_active = w->tasks != NULL;
         Bps = tr_bandwidthGetPieceSpeed_Bps(&w->bandwidth, now, direction);
     }
 
-    if (setme_Bps != NULL)
-    {
+    if (setme_Bps != NULL) {
         *setme_Bps = Bps;
     }
 
@@ -550,8 +503,7 @@ static void webseed_destruct(tr_peer *peer)
     tr_webseed *w = (tr_webseed *)peer;
 
     /* flag all the pending tasks as dead */
-    for (tr_list *l = w->tasks; l != NULL; l = l->next)
-    {
+    for (tr_list *l = w->tasks; l != NULL; l = l->next) {
         struct tr_webseed_task *task = l->data;
         task->dead = true;
     }
@@ -559,13 +511,11 @@ static void webseed_destruct(tr_peer *peer)
     tr_list_free(&w->tasks, NULL);
 
     /* if we have an array of file URLs, free it */
-    if (w->file_urls != NULL)
-    {
+    if (w->file_urls != NULL) {
         tr_torrent *tor = tr_torrentFindFromId(w->session, w->torrent_id);
         tr_info const *inf = tr_torrentInfo(tor);
 
-        for (tr_file_index_t i = 0; i < inf->fileCount; ++i)
-        {
+        for (tr_file_index_t i = 0; i < inf->fileCount; ++i) {
             tr_free(w->file_urls[i]);
         }
 

@@ -10,17 +10,11 @@
 
 #include <QComboBox>
 
-class FilterBarComboBox : public QComboBox
-{
+class FilterBarComboBox : public QComboBox {
     Q_OBJECT
 
 public:
-    enum
-    {
-        CountRole = Qt::UserRole + 1,
-        CountStringRole,
-        UserRole
-    };
+    enum { CountRole = Qt::UserRole + 1, CountStringRole, UserRole };
 
 public:
     FilterBarComboBox(QWidget *parent = nullptr);

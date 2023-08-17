@@ -44,8 +44,7 @@ static void set_system_error(tr_error **error, int code, char const *message)
 
 static void handle_signal(int sig)
 {
-    switch (sig)
-    {
+    switch (sig) {
     case SIGHUP:
         callbacks->on_reconfigure(callback_arg);
         break;
@@ -64,8 +63,7 @@ static void send_signal_to_pipe(int sig)
 {
     int const old_errno = errno;
 
-    if (write(signal_pipe[1], &sig, sizeof(sig)) == -1)
-    {
+    if (write(signal_pipe[1], &sig, sizeof(sig)) == -1) {
         abort();
     }
 
@@ -76,8 +74,7 @@ static void *signal_handler_thread_main(void *arg UNUSED)
 {
     int sig;
 
-    while (read(signal_pipe[0], &sig, sizeof(sig)) == sizeof(sig) && sig != 0)
-    {
+    while (read(signal_pipe[0], &sig, sizeof(sig)) == sizeof(sig) && sig != 0) {
         handle_signal(sig);
     }
 
@@ -86,8 +83,7 @@ static void *signal_handler_thread_main(void *arg UNUSED)
 
 static bool create_signal_pipe(tr_error **error)
 {
-    if (pipe(signal_pipe) == -1)
-    {
+    if (pipe(signal_pipe) == -1) {
         set_system_error(error, errno, "pipe() failed");
         return false;
     }
@@ -103,13 +99,11 @@ static void destroy_signal_pipe(void)
 
 static bool create_signal_handler_thread(pthread_t *thread, tr_error **error)
 {
-    if (!create_signal_pipe(error))
-    {
+    if (!create_signal_pipe(error)) {
         return false;
     }
 
-    if ((errno = pthread_create(thread, NULL, &signal_handler_thread_main, NULL)) != 0)
-    {
+    if ((errno = pthread_create(thread, NULL, &signal_handler_thread_main, NULL)) != 0) {
         set_system_error(error, errno, "pthread_create() failed");
         destroy_signal_pipe();
         return false;
@@ -130,8 +124,7 @@ static bool setup_signal_handler(int sig, tr_error **error)
 {
     assert(sig != 0);
 
-    if (signal(sig, &send_signal_to_pipe) == SIG_ERR)
-    {
+    if (signal(sig, &send_signal_to_pipe) == SIG_ERR) {
         set_system_error(error, errno, "signal() failed");
         return false;
     }
@@ -150,12 +143,10 @@ bool dtr_daemon(dtr_callbacks const *cb, void *cb_arg, bool foreground, int *exi
 
     *exit_code = 1;
 
-    if (!foreground)
-    {
+    if (!foreground) {
 #if defined(HAVE_DAEMON) && !defined(__APPLE__) && !defined(__UCLIBC__)
 
-        if (daemon(true, false) == -1)
-        {
+        if (daemon(true, false) == -1) {
             set_system_error(error, errno, "daemon() failed");
             return false;
         }
@@ -165,8 +156,7 @@ bool dtr_daemon(dtr_callbacks const *cb, void *cb_arg, bool foreground, int *exi
         /* this is loosely based off of glibc's daemon() implementation
          * http://sourceware.org/git/?p=glibc.git;a=blob_plain;f=misc/daemon.c */
 
-        switch (fork())
-        {
+        switch (fork()) {
         case -1:
             set_system_error(error, errno, "fork() failed");
             return false;
@@ -179,8 +169,7 @@ bool dtr_daemon(dtr_callbacks const *cb, void *cb_arg, bool foreground, int *exi
             return true;
         }
 
-        if (setsid() == -1)
-        {
+        if (setsid() == -1) {
             set_system_error(error, errno, "setsid() failed");
             return false;
         }
@@ -206,13 +195,11 @@ bool dtr_daemon(dtr_callbacks const *cb, void *cb_arg, bool foreground, int *exi
 
     pthread_t signal_thread;
 
-    if (!create_signal_handler_thread(&signal_thread, error))
-    {
+    if (!create_signal_handler_thread(&signal_thread, error)) {
         return false;
     }
 
-    if (!setup_signal_handler(SIGINT, error) || !setup_signal_handler(SIGTERM, error) || !setup_signal_handler(SIGHUP, error))
-    {
+    if (!setup_signal_handler(SIGINT, error) || !setup_signal_handler(SIGTERM, error) || !setup_signal_handler(SIGHUP, error)) {
         destroy_signal_handler_thread(signal_thread);
         return false;
     }

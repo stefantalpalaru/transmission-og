@@ -13,8 +13,7 @@
 class QAbstractItemModel;
 class QComboBox;
 
-class FilterBarComboBoxDelegate : public QItemDelegate
-{
+class FilterBarComboBoxDelegate : public QItemDelegate {
     Q_OBJECT
 
 public:

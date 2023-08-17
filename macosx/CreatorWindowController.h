@@ -25,8 +25,7 @@
 #include <libtransmission/transmission.h>
 #include <libtransmission/makemeta.h>
 
-@interface CreatorWindowController : NSWindowController
-{
+@interface CreatorWindowController : NSWindowController {
     IBOutlet NSImageView *fIconView;
     IBOutlet NSTextField *fNameField, *fStatusField, *fPiecesField, *fLocationField;
     IBOutlet NSTableView *fTrackerTable;

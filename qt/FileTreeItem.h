@@ -17,19 +17,13 @@
 #include <QString>
 #include <QVariant>
 
-class FileTreeItem
-{
+class FileTreeItem {
     Q_DECLARE_TR_FUNCTIONS(FileTreeItem)
     Q_DISABLE_COPY(FileTreeItem)
 
 public:
     /* *INDENT-OFF* */
-    enum
-    {
-        LOW = (1 << 0),
-        NORMAL = (1 << 1),
-        HIGH = (1 << 2)
-    };
+    enum { LOW = (1 << 0), NORMAL = (1 << 1), HIGH = (1 << 2) };
     /* *INDENT-ON* */
 
 public:
@@ -42,8 +36,7 @@ public:
         , myIsWanted(false)
         , myHaveSize(0)
         , myFirstUnhashedRow(0)
-    {
-    }
+    {}
 
     ~FileTreeItem();
 

@@ -35,8 +35,7 @@ tr_error *tr_error_new_valist(int code, char const *message_format, va_list args
 
 void tr_error_free(tr_error *error)
 {
-    if (error == NULL)
-    {
+    if (error == NULL) {
         return;
     }
 
@@ -48,8 +47,7 @@ void tr_error_set(tr_error **error, int code, char const *message_format, ...)
 {
     TR_ASSERT(message_format != NULL);
 
-    if (error == NULL)
-    {
+    if (error == NULL) {
         return;
     }
 
@@ -66,8 +64,7 @@ void tr_error_set_literal(tr_error **error, int code, char const *message)
 {
     TR_ASSERT(message != NULL);
 
-    if (error == NULL)
-    {
+    if (error == NULL) {
         return;
     }
 
@@ -81,23 +78,19 @@ void tr_error_propagate(tr_error **new_error, tr_error **old_error)
     TR_ASSERT(old_error != NULL);
     TR_ASSERT(*old_error != NULL);
 
-    if (new_error != NULL)
-    {
+    if (new_error != NULL) {
         TR_ASSERT(*new_error == NULL);
 
         *new_error = *old_error;
         *old_error = NULL;
-    }
-    else
-    {
+    } else {
         tr_error_clear(old_error);
     }
 }
 
 void tr_error_clear(tr_error **error)
 {
-    if (error == NULL)
-    {
+    if (error == NULL) {
         return;
     }
 
@@ -127,8 +120,7 @@ void tr_error_prefix(tr_error **error, char const *prefix_format, ...)
 {
     TR_ASSERT(prefix_format != NULL);
 
-    if (error == NULL || *error == NULL)
-    {
+    if (error == NULL || *error == NULL) {
         return;
     }
 
@@ -145,8 +137,7 @@ void tr_error_propagate_prefixed(tr_error **new_error, tr_error **old_error, cha
 
     tr_error_propagate(new_error, old_error);
 
-    if (new_error == NULL)
-    {
+    if (new_error == NULL) {
         return;
     }
 

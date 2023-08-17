@@ -26,8 +26,7 @@
 
 @class Torrent;
 
-@interface Badger : NSObject
-{
+@interface Badger : NSObject {
     tr_session *fLib;
 
     NSMutableSet *fHashes;

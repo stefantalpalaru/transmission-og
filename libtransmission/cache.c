@@ -31,8 +31,7 @@
 *****
 ****/
 
-struct cache_block
-{
+struct cache_block {
     tr_torrent *tor;
 
     tr_piece_index_t piece;
@@ -45,8 +44,7 @@ struct cache_block
     struct evbuffer *evbuf;
 };
 
-struct tr_cache
-{
+struct tr_cache {
     tr_ptrArray blocks;
     int max_blocks;
     size_t max_bytes;
@@ -61,8 +59,7 @@ struct tr_cache
 *****
 ****/
 
-struct run_info
-{
+struct run_info {
     int pos;
     int rank;
     time_t last_block_time;
@@ -80,17 +77,14 @@ static int getBlockRun(tr_cache const *cache, int pos, struct run_info *info)
     tr_block_index_t block = ref->block;
     int len = 0;
 
-    for (int i = pos; i < n; ++i, ++block, ++len)
-    {
+    for (int i = pos; i < n; ++i, ++block, ++len) {
         struct cache_block const *b = blocks[i];
 
-        if (b->block != block)
-        {
+        if (b->block != block) {
             break;
         }
 
-        if (b->tor != ref->tor)
-        {
+        if (b->tor != ref->tor) {
             break;
         }
 
@@ -99,8 +93,7 @@ static int getBlockRun(tr_cache const *cache, int pos, struct run_info *info)
 
     // fprintf(stderr, "run is %d long from [%d to %d)\n", len, pos, pos + len);
 
-    if (info != NULL)
-    {
+    if (info != NULL) {
         struct cache_block const *b = blocks[pos + len - 1];
         info->last_block_time = b->time;
         info->is_piece_done = tr_torrentPieceIsComplete(b->tor, b->piece);
@@ -120,12 +113,7 @@ static int compareRuns(void const *va, void const *vb)
     return b->rank - a->rank;
 }
 
-enum
-{
-    MULTIFLAG = 0x1000,
-    DONEFLAG = 0x2000,
-    SESSIONFLAG = 0x4000
-};
+enum { MULTIFLAG = 0x1000, DONEFLAG = 0x2000, SESSIONFLAG = 0x4000 };
 
 /* Calculate runs
  *   - Stale runs, runs sitting in cache for a long time or runs not growing, get priority.
@@ -137,8 +125,7 @@ static int calcRuns(tr_cache *cache, struct run_info *runs)
     int i = 0;
     time_t const now = tr_time();
 
-    for (int pos = 0; pos < n; pos += runs[i++].len)
-    {
+    for (int pos = 0; pos < n; pos += runs[i++].len) {
         int rank = getBlockRun(cache, pos, &runs[i]);
 
         /* This adds ~2 to the relative length of a run for every minute it has
@@ -176,8 +163,7 @@ static int flushContiguous(tr_cache *cache, int pos, int n)
     tr_piece_index_t const piece = b->piece;
     uint32_t const offset = b->offset;
 
-    for (int i = 0; i < n; ++i)
-    {
+    for (int i = 0; i < n; ++i) {
         b = blocks[pos + i];
         evbuffer_copyout(b->evbuf, walk, b->length);
         walk += b->length;
@@ -199,14 +185,11 @@ static int flushRuns(tr_cache *cache, struct run_info *runs, int n)
 {
     int err = 0;
 
-    for (int i = 0; err == 0 && i < n; i++)
-    {
+    for (int i = 0; err == 0 && i < n; i++) {
         err = flushContiguous(cache, runs[i].pos, runs[i].len);
 
-        for (int j = i + 1; j < n; j++)
-        {
-            if (runs[j].pos > runs[i].pos)
-            {
+        for (int j = i + 1; j < n; j++) {
+            if (runs[j].pos > runs[i].pos) {
                 runs[j].pos -= runs[i].len;
             }
         }
@@ -219,8 +202,7 @@ static int cacheTrim(tr_cache *cache)
 {
     int err = 0;
 
-    if (tr_ptrArraySize(&cache->blocks) > cache->max_blocks)
-    {
+    if (tr_ptrArraySize(&cache->blocks) > cache->max_blocks) {
         /* Amount of cache that should be removed by the flush. This influences how large
          * runs can grow as well as how often flushes will happen. */
         int const cacheCutoff = 1 + cache->max_blocks / 4;
@@ -230,8 +212,7 @@ static int cacheTrim(tr_cache *cache)
 
         calcRuns(cache, runs);
 
-        while (j < cacheCutoff)
-        {
+        while (j < cacheCutoff) {
             j += runs[i++].len;
         }
 
@@ -296,14 +277,12 @@ static int cache_block_compare(void const *va, void const *vb)
     struct cache_block const *b = vb;
 
     /* primary key: torrent id */
-    if (a->tor->uniqueId != b->tor->uniqueId)
-    {
+    if (a->tor->uniqueId != b->tor->uniqueId) {
         return a->tor->uniqueId < b->tor->uniqueId ? -1 : 1;
     }
 
     /* secondary key: block # */
-    if (a->block != b->block)
-    {
+    if (a->block != b->block) {
         return a->block < b->block ? -1 : 1;
     }
 
@@ -331,8 +310,7 @@ int tr_cacheWriteBlock(
 
     struct cache_block *cb = findBlock(cache, torrent, piece, offset);
 
-    if (cb == NULL)
-    {
+    if (cb == NULL) {
         cb = tr_new(struct cache_block, 1);
         cb->tor = torrent;
         cb->piece = piece;
@@ -367,12 +345,9 @@ int tr_cacheReadBlock(
     int err = 0;
     struct cache_block *cb = findBlock(cache, torrent, piece, offset);
 
-    if (cb != NULL)
-    {
+    if (cb != NULL) {
         evbuffer_copyout(cb->evbuf, setme, len);
-    }
-    else
-    {
+    } else {
         err = tr_ioRead(torrent, piece, offset, len, setme);
     }
 
@@ -387,8 +362,7 @@ int tr_cacheReadBlock(
 #define TR_MAX_PREFETCHED_PIECES 100
 
 // Fixed-size FIFO queue using a doubly linked list.
-struct tr_prefetched_pieces
-{
+struct tr_prefetched_pieces {
     tr_list *list;
     tr_list *tail;
     size_t size;
@@ -396,8 +370,7 @@ struct tr_prefetched_pieces
 
 static struct tr_prefetched_pieces prefetched_pieces = { 0 };
 
-struct tr_prefetch_piece_data
-{
+struct tr_prefetch_piece_data {
     uint8_t torrent_hash[SHA_DIGEST_LENGTH];
     tr_piece_index_t piece;
 };
@@ -408,11 +381,9 @@ static int tr_prefetched_pieces_compare(void const *lhs, void const *rhs)
     int res = 1;
     struct tr_prefetch_piece_data const *left = lhs, *right = rhs;
 
-    if (lhs != NULL && rhs != NULL)
-    {
+    if (lhs != NULL && rhs != NULL) {
         res = memcmp(left->torrent_hash, right->torrent_hash, SHA_DIGEST_LENGTH);
-        if (res == 0)
-        {
+        if (res == 0) {
             res = (left->piece != right->piece);
         }
     }
@@ -425,8 +396,7 @@ int tr_cachePrefetchBlock(tr_cache *cache, tr_torrent *torrent, tr_piece_index_t
     int err = 0;
     struct cache_block *cb = findBlock(cache, torrent, piece, offset);
 
-    if (cb == NULL)
-    {
+    if (cb == NULL) {
         // Construct the corresponding piece data.
         struct tr_prefetch_piece_data data, *data_copy;
         memcpy(data.torrent_hash, torrent->info.hash, SHA_DIGEST_LENGTH);
@@ -434,21 +404,18 @@ int tr_cachePrefetchBlock(tr_cache *cache, tr_torrent *torrent, tr_piece_index_t
 
         // Did we prefetch it recently?
         tr_list *found = tr_list_find(prefetched_pieces.list, &data, tr_prefetched_pieces_compare);
-        if (found == NULL)
-        {
+        if (found == NULL) {
             // Prefetch the whole piece.
             err = tr_ioPrefetch(torrent, piece, 0, MAX(len, torrent->info.pieceSize));
 
             // Add the related data to our ring buffer (need to copy the stack data to the heap, first).
             data_copy = tr_memdup(&data, sizeof(struct tr_prefetch_piece_data));
             tr_list_prepend(&prefetched_pieces.list, data_copy);
-            if (prefetched_pieces.tail == NULL)
-            {
+            if (prefetched_pieces.tail == NULL) {
                 prefetched_pieces.tail = prefetched_pieces.list;
             }
             prefetched_pieces.size++;
-            if (prefetched_pieces.size > TR_MAX_PREFETCHED_PIECES)
-            {
+            if (prefetched_pieces.size > TR_MAX_PREFETCHED_PIECES) {
                 // Discard the last node.
                 tr_list *new_tail = prefetched_pieces.tail->prev;
                 new_tail->next = NULL;
@@ -478,8 +445,7 @@ int tr_cacheFlushDone(tr_cache *cache)
 {
     int err = 0;
 
-    if (tr_ptrArraySize(&cache->blocks) > 0)
-    {
+    if (tr_ptrArraySize(&cache->blocks) > 0) {
         int i;
         int n;
         struct run_info *runs;
@@ -488,8 +454,7 @@ int tr_cacheFlushDone(tr_cache *cache)
         i = 0;
         n = calcRuns(cache, runs);
 
-        while (i < n && (runs[i].is_piece_done || runs[i].is_multi_piece))
-        {
+        while (i < n && (runs[i].is_piece_done || runs[i].is_multi_piece)) {
             runs[i++].rank |= SESSIONFLAG;
         }
 
@@ -512,17 +477,14 @@ int tr_cacheFlushFile(tr_cache *cache, tr_torrent *torrent, tr_file_index_t i)
     dbgmsg("flushing file %d from cache to disk: blocks [%zu...%zu]", (int)i, (size_t)first, (size_t)last);
 
     /* flush out all the blocks in that file */
-    while (err == 0 && pos < tr_ptrArraySize(&cache->blocks))
-    {
+    while (err == 0 && pos < tr_ptrArraySize(&cache->blocks)) {
         struct cache_block const *b = tr_ptrArrayNth(&cache->blocks, pos);
 
-        if (b->tor != torrent)
-        {
+        if (b->tor != torrent) {
             break;
         }
 
-        if (b->block < first || b->block > last)
-        {
+        if (b->block < first || b->block > last) {
             break;
         }
 
@@ -538,12 +500,10 @@ int tr_cacheFlushTorrent(tr_cache *cache, tr_torrent *torrent)
     int const pos = findBlockPos(cache, torrent, 0);
 
     /* flush out all the blocks in that torrent */
-    while (err == 0 && pos < tr_ptrArraySize(&cache->blocks))
-    {
+    while (err == 0 && pos < tr_ptrArraySize(&cache->blocks)) {
         struct cache_block const *b = tr_ptrArrayNth(&cache->blocks, pos);
 
-        if (b->tor != torrent)
-        {
+        if (b->tor != torrent) {
             break;
         }
 

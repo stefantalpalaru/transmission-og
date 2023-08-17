@@ -27,16 +27,11 @@
 
 @class FileListNode;
 
-typedef enum
-{
-    TorrentDeterminationAutomatic = 0,
-    TorrentDeterminationUserSpecified
-} TorrentDeterminationType;
+typedef enum { TorrentDeterminationAutomatic = 0, TorrentDeterminationUserSpecified } TorrentDeterminationType;
 
 #define kTorrentDidChangeGroupNotification @"TorrentDidChangeGroup"
 
-@interface Torrent : NSObject<NSCopying, QLPreviewItem>
-{
+@interface Torrent : NSObject<NSCopying, QLPreviewItem> {
     tr_torrent *fHandle;
     tr_info const *fInfo;
     tr_stat const *fStat;

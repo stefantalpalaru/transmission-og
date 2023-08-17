@@ -70,8 +70,7 @@
     BOOL partialUnitsSame;
     if (partialSize == 0)
         partialUnitsSame = YES; // we want to just show "0" when we have no partial data, so always set to the same units
-    else
-    {
+    else {
         unsigned int const magnitudePartial = log(partialSize) / log(1000);
         unsigned int const magnitudeFull = fullSize < 1000 ? 0 : log(fullSize) / log(1000); // we have to catch 0 with a special
                                                                                             // case, so might as well avoid the
@@ -104,8 +103,7 @@
         return NSLocalizedString(@"N/A", "No Ratio");
     else if ((int)ratio == TR_RATIO_INF)
         return @"\xE2\x88\x9E";
-    else
-    {
+    else {
         if (ratio < 10.0)
             return [NSString localizedStringWithFormat:@"%.2f", tr_truncd(ratio, 2)];
         else if (ratio < 100.0)
@@ -154,8 +152,7 @@
         remaining %= 31557600;
         --max;
     }
-    if (max > 0 && seconds >= (24 * 60 * 60))
-    {
+    if (max > 0 && seconds >= (24 * 60 * 60)) {
         NSUInteger const days = remaining / (24 * 60 * 60);
         if (days == 1)
             [timeArray addObject:NSLocalizedString(@"1 day", "time string")];
@@ -164,14 +161,12 @@
         remaining %= (24 * 60 * 60);
         --max;
     }
-    if (max > 0 && seconds >= (60 * 60))
-    {
+    if (max > 0 && seconds >= (60 * 60)) {
         [timeArray addObject:[NSString stringWithFormat:NSLocalizedString(@"%u hr", "time string"), remaining / (60 * 60)]];
         remaining %= (60 * 60);
         --max;
     }
-    if (max > 0 && (!showSeconds || seconds >= 60))
-    {
+    if (max > 0 && (!showSeconds || seconds >= 60)) {
         [timeArray addObject:[NSString stringWithFormat:NSLocalizedString(@"%u min", "time string"), remaining / 60]];
         remaining %= 60;
         --max;
@@ -181,8 +176,7 @@
 
     NSString *timeString = [timeArray componentsJoinedByString:@" "];
 
-    if (includesTimeRemainingPhrase)
-    {
+    if (includesTimeRemainingPhrase) {
         timeString = [NSString stringWithFormat:NSLocalizedString(@"%@ remaining", "time remaining string"), timeString];
     }
 
@@ -202,8 +196,7 @@
     NSCharacterSet *includededCharSet = [separators invertedSet];
     NSUInteger index = 0;
     NSUInteger const fullLength = [self length];
-    do
-    {
+    do {
         NSUInteger const start = [self rangeOfCharacterFromSet:includededCharSet options:0
                                                          range:NSMakeRange(index, fullLength - index)]
                                      .location;
@@ -211,8 +204,7 @@
             break;
 
         NSRange const endRange = [self rangeOfCharacterFromSet:separators options:0 range:NSMakeRange(start, fullLength - start)];
-        if (endRange.location == NSNotFound)
-        {
+        if (endRange.location == NSNotFound) {
             [components addObject:[self substringFromIndex:start]];
             break;
         }
@@ -234,26 +226,19 @@
     double convertedSize;
     NSString *unit;
     NSUInteger decimals;
-    if (size < pow(1000, 2))
-    {
+    if (size < pow(1000, 2)) {
         convertedSize = size / 1000.0;
         unit = NSLocalizedString(@"KB", "File size - kilobytes");
         decimals = convertedSize >= 10.0 ? 0 : 1;
-    }
-    else if (size < pow(1000, 3))
-    {
+    } else if (size < pow(1000, 3)) {
         convertedSize = size / powf(1000.0, 2);
         unit = NSLocalizedString(@"MB", "File size - megabytes");
         decimals = 1;
-    }
-    else if (size < pow(1000, 4))
-    {
+    } else if (size < pow(1000, 4)) {
         convertedSize = size / powf(1000.0, 3);
         unit = NSLocalizedString(@"GB", "File size - gigabytes");
         decimals = 2;
-    }
-    else
-    {
+    } else {
         convertedSize = size / powf(1000.0, 4);
         unit = NSLocalizedString(@"TB", "File size - terabytes");
         decimals = 2;

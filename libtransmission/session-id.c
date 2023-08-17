@@ -26,8 +26,7 @@
 #define SESSION_ID_SIZE 48
 #define SESSION_ID_DURATION_SEC (60 * 60) /* expire in an hour */
 
-struct tr_session_id
-{
+struct tr_session_id {
     char *current_value;
     char *previous_value;
     tr_sys_file_t current_lock_file;
@@ -44,8 +43,7 @@ static char *generate_new_session_id_value(void)
 
     tr_rand_buffer(buf, SESSION_ID_SIZE);
 
-    for (size_t i = 0; i < SESSION_ID_SIZE; ++i)
-    {
+    for (size_t i = 0; i < SESSION_ID_SIZE; ++i) {
         buf[i] = pool[(unsigned char)buf[i] % pool_size];
     }
 
@@ -64,8 +62,7 @@ static char *get_session_id_lock_file_path(char const *session_id)
 
 static tr_sys_file_t create_session_id_lock_file(char const *session_id)
 {
-    if (session_id == NULL)
-    {
+    if (session_id == NULL) {
         return TR_BAD_SYS_FILE;
     }
 
@@ -75,24 +72,19 @@ static tr_sys_file_t create_session_id_lock_file(char const *session_id)
 
     lock_file = tr_sys_file_open(lock_file_path, TR_SYS_FILE_READ | TR_SYS_FILE_WRITE | TR_SYS_FILE_CREATE, 0600, &error);
 
-    if (lock_file != TR_BAD_SYS_FILE)
-    {
-        if (tr_sys_file_lock(lock_file, TR_SYS_FILE_LOCK_EX | TR_SYS_FILE_LOCK_NB, &error))
-        {
+    if (lock_file != TR_BAD_SYS_FILE) {
+        if (tr_sys_file_lock(lock_file, TR_SYS_FILE_LOCK_EX | TR_SYS_FILE_LOCK_NB, &error)) {
 #ifndef _WIN32
             /* Allow any user to lock the file regardless of current umask */
             fchmod(lock_file, 0644);
 #endif
-        }
-        else
-        {
+        } else {
             tr_sys_file_close(lock_file, NULL);
             lock_file = TR_BAD_SYS_FILE;
         }
     }
 
-    if (error != NULL)
-    {
+    if (error != NULL) {
         tr_logAddError("Unable to create session lock file (%d): %s", error->code, error->message);
         tr_error_free(error);
     }
@@ -103,13 +95,11 @@ static tr_sys_file_t create_session_id_lock_file(char const *session_id)
 
 static void destroy_session_id_lock_file(tr_sys_file_t lock_file, char const *session_id)
 {
-    if (lock_file != TR_BAD_SYS_FILE)
-    {
+    if (lock_file != TR_BAD_SYS_FILE) {
         tr_sys_file_close(lock_file, NULL);
     }
 
-    if (session_id != NULL)
-    {
+    if (session_id != NULL) {
         char *lock_file_path = get_session_id_lock_file_path(session_id);
         tr_sys_path_remove(lock_file_path, NULL);
         tr_free(lock_file_path);
@@ -128,8 +118,7 @@ tr_session_id_t tr_session_id_new(void)
 
 void tr_session_id_free(tr_session_id_t session_id)
 {
-    if (session_id == NULL)
-    {
+    if (session_id == NULL) {
         return;
     }
 
@@ -146,8 +135,7 @@ char const *tr_session_id_get_current(tr_session_id_t session_id)
 {
     time_t const now = tr_time();
 
-    if (session_id->current_value == NULL || now >= session_id->expires_at)
-    {
+    if (session_id->current_value == NULL || now >= session_id->expires_at) {
         destroy_session_id_lock_file(session_id->previous_lock_file, session_id->previous_value);
         tr_free(session_id->previous_value);
 
@@ -167,25 +155,19 @@ bool tr_session_id_is_local(char const *session_id)
 {
     bool ret = false;
 
-    if (session_id != NULL)
-    {
+    if (session_id != NULL) {
         char *lock_file_path = get_session_id_lock_file_path(session_id);
         tr_sys_file_t lock_file;
         tr_error *error = NULL;
 
         lock_file = tr_sys_file_open(lock_file_path, TR_SYS_FILE_READ, 0, &error);
 
-        if (lock_file == TR_BAD_SYS_FILE)
-        {
-            if (TR_ERROR_IS_ENOENT(error->code))
-            {
+        if (lock_file == TR_BAD_SYS_FILE) {
+            if (TR_ERROR_IS_ENOENT(error->code)) {
                 tr_error_clear(&error);
             }
-        }
-        else
-        {
-            if (!tr_sys_file_lock(lock_file, TR_SYS_FILE_LOCK_SH | TR_SYS_FILE_LOCK_NB, &error))
-            {
+        } else {
+            if (!tr_sys_file_lock(lock_file, TR_SYS_FILE_LOCK_SH | TR_SYS_FILE_LOCK_NB, &error)) {
 #ifndef _WIN32
                 if (error->code == EWOULDBLOCK)
 #else
@@ -200,8 +182,7 @@ bool tr_session_id_is_local(char const *session_id)
             tr_sys_file_close(lock_file, NULL);
         }
 
-        if (error != NULL)
-        {
+        if (error != NULL) {
             tr_logAddError("Unable to open session lock file (%d): %s", error->code, error->message);
             tr_error_free(error);
         }

@@ -24,8 +24,7 @@
 
 int main(int argc, char **argv)
 {
-    if (argc > 1 && strncmp(argv[1], "-v", 2) == 0)
-    {
+    if (argc > 1 && strncmp(argv[1], "-v", 2) == 0) {
         char *env;
         int debug = atoi(&argv[1][2]);
         asprintf(&env, "TR_DEBUG=%d", debug);

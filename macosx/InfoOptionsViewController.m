@@ -46,8 +46,7 @@
 
 - (id)init
 {
-    if ((self = [super initWithNibName:@"InfoOptionsView" bundle:nil]))
-    {
+    if ((self = [super initWithNibName:@"InfoOptionsView" bundle:nil])) {
         [self setTitle:NSLocalizedString(@"Options", "Inspector view -> title")];
     }
 
@@ -101,8 +100,7 @@
 
     while ((torrent = [enumerator nextObject]) &&
            (uploadUseSpeedLimit != NSMixedState || uploadSpeedLimit != INVALID || downloadUseSpeedLimit != NSMixedState ||
-            downloadSpeedLimit != INVALID || globalUseSpeedLimit != NSMixedState))
-    {
+            downloadSpeedLimit != INVALID || globalUseSpeedLimit != NSMixedState)) {
         if (uploadUseSpeedLimit != NSMixedState && uploadUseSpeedLimit != ([torrent usesSpeedLimit:YES] ? NSOnState : NSOffState))
             uploadUseSpeedLimit = NSMixedState;
 
@@ -155,8 +153,7 @@
     NSUInteger idleLimit = [torrent idleLimitMinutes];
 
     while ((torrent = [enumerator nextObject]) &&
-           (checkRatio != INVALID || ratioLimit != INVALID || checkIdle != INVALID || idleLimit != INVALID))
-    {
+           (checkRatio != INVALID || ratioLimit != INVALID || checkIdle != INVALID || idleLimit != INVALID)) {
         if (checkRatio != INVALID && checkRatio != [torrent ratioSetting])
             checkRatio = INVALID;
 
@@ -225,8 +222,7 @@
 
     NSInteger priority = [torrent priority];
 
-    while ((torrent = [enumerator nextObject]) && priority != INVALID)
-    {
+    while ((torrent = [enumerator nextObject]) && priority != INVALID) {
         if (priority != INVALID && priority != [torrent priority])
             priority = INVALID;
     }
@@ -249,10 +245,8 @@
 
     NSInteger maxPeers = [torrent maxPeerConnect];
 
-    while ((torrent = [enumerator nextObject]))
-    {
-        if (maxPeers != [torrent maxPeerConnect])
-        {
+    while ((torrent = [enumerator nextObject])) {
+        if (maxPeers != [torrent maxPeerConnect]) {
             maxPeers = INVALID;
             break;
         }
@@ -280,8 +274,7 @@
 
     NSTextField *field = upload ? fUploadLimitField : fDownloadLimitField;
     [field setEnabled:limit];
-    if (limit)
-    {
+    if (limit) {
         [field selectText:self];
         [[[self view] window] makeKeyAndOrderFront:self];
     }
@@ -319,8 +312,7 @@
 {
     NSInteger setting;
     BOOL single = NO;
-    switch ([sender indexOfSelectedItem])
-    {
+    switch ([sender indexOfSelectedItem]) {
     case OPTION_POPUP_LIMIT:
         setting = TR_RATIOLIMIT_SINGLE;
         single = YES;
@@ -340,8 +332,7 @@
         [torrent setRatioSetting:setting];
 
     [fRatioLimitField setHidden:!single];
-    if (single)
-    {
+    if (single) {
         [fRatioLimitField selectText:self];
         [[[self view] window] makeKeyAndOrderFront:self];
     }
@@ -365,8 +356,7 @@
 {
     NSInteger setting;
     BOOL single = NO;
-    switch ([sender indexOfSelectedItem])
-    {
+    switch ([sender indexOfSelectedItem]) {
     case OPTION_POPUP_LIMIT:
         setting = TR_IDLELIMIT_SINGLE;
         single = YES;
@@ -387,8 +377,7 @@
 
     [fIdleLimitField setHidden:!single];
     [fIdleLimitLabel setHidden:!single];
-    if (single)
-    {
+    if (single) {
         [fIdleLimitField selectText:self];
         [[[self view] window] makeKeyAndOrderFront:self];
     }
@@ -423,8 +412,7 @@
 - (void)setPriority:(id)sender
 {
     tr_priority_t priority;
-    switch ([sender indexOfSelectedItem])
-    {
+    switch ([sender indexOfSelectedItem]) {
     case OPTION_POPUP_PRIORITY_HIGH:
         priority = TR_PRI_HIGH;
         break;
@@ -467,8 +455,7 @@
 - (BOOL)control:(NSControl *)control didFailToFormatString:(NSString *)string errorDescription:(NSString *)error
 {
     NSBeep();
-    if (fInitialString)
-    {
+    if (fInitialString) {
         [control setStringValue:fInitialString];
         fInitialString = nil;
     }
@@ -481,8 +468,7 @@
 
 - (void)setupInfo
 {
-    if ([fTorrents count] == 0)
-    {
+    if ([fTorrents count] == 0) {
         [fUploadLimitCheck setEnabled:NO];
         [fUploadLimitCheck setState:NSOffState];
         [fUploadLimitField setEnabled:NO];
@@ -520,8 +506,7 @@
         [fPeersConnectField setEnabled:NO];
         [fPeersConnectField setStringValue:@""];
         [fPeersConnectLabel setEnabled:NO];
-    }
-    else
+    } else
         [self updateOptions];
 }
 
@@ -534,14 +519,12 @@
 
     // idle field
     NSString *globalIdle;
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"IdleLimitCheck"])
-    {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"IdleLimitCheck"]) {
         NSInteger const globalMin = [[NSUserDefaults standardUserDefaults] integerForKey:@"IdleLimitMinutes"];
         globalIdle = globalMin == 1 ?
             NSLocalizedString(@"1 minute", "Info options -> global setting") :
             [NSString localizedStringWithFormat:NSLocalizedString(@"%d minutes", "Info options -> global setting"), globalMin];
-    }
-    else
+    } else
         globalIdle = NSLocalizedString(@"disabled", "Info options -> global setting");
     [fIdleLimitGlobalLabel setStringValue:globalIdle];
 }

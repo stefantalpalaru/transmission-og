@@ -35,8 +35,7 @@
 
 #define GROUP_FILTER_ALL_TAG -2
 
-@interface FilterBarController : NSViewController
-{
+@interface FilterBarController : NSViewController {
     IBOutlet FilterButton *fNoFilterButton, *fActiveFilterButton, *fDownloadFilterButton, *fSeedFilterButton, *fPauseFilterButton;
 
     IBOutlet NSSearchField *fSearchField;

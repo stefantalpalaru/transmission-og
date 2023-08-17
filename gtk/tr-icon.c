@@ -25,8 +25,7 @@ static TR_DEFINE_QUARK(tr_core, core)
 #ifdef HAVE_LIBAPPINDICATOR
 
 void gtr_icon_refresh(gpointer vindicator UNUSED)
-{
-}
+{}
 
 #else
 
@@ -62,20 +61,16 @@ void gtr_icon_refresh(gpointer vicon)
     /* up */
     KBps = tr_sessionGetRawSpeed_KBps(session, TR_UP);
 
-    if (KBps < 0.001)
-    {
+    if (KBps < 0.001) {
         g_strlcpy(up, idle, sizeof(up));
-    }
-    else
-    {
+    } else {
         tr_formatter_speed_KBps(up, KBps, sizeof(up));
     }
 
     /* up limit */
     *upLimit = '\0';
 
-    if (tr_sessionGetActiveSpeedLimit_KBps(session, TR_UP, &limit))
-    {
+    if (tr_sessionGetActiveSpeedLimit_KBps(session, TR_UP, &limit)) {
         char buf[64];
         tr_formatter_speed_KBps(buf, limit, sizeof(buf));
         g_snprintf(upLimit, sizeof(upLimit), _(" (Limit: %s)"), buf);
@@ -84,20 +79,16 @@ void gtr_icon_refresh(gpointer vicon)
     /* down */
     KBps = tr_sessionGetRawSpeed_KBps(session, TR_DOWN);
 
-    if (KBps < 0.001)
-    {
+    if (KBps < 0.001) {
         g_strlcpy(down, idle, sizeof(down));
-    }
-    else
-    {
+    } else {
         tr_formatter_speed_KBps(down, KBps, sizeof(down));
     }
 
     /* down limit */
     *downLimit = '\0';
 
-    if (tr_sessionGetActiveSpeedLimit_KBps(session, TR_DOWN, &limit))
-    {
+    if (tr_sessionGetActiveSpeedLimit_KBps(session, TR_DOWN, &limit)) {
         char buf[64];
         tr_formatter_speed_KBps(buf, limit, sizeof(buf));
         g_snprintf(downLimit, sizeof(downLimit), _(" (Limit: %s)"), buf);
@@ -122,12 +113,9 @@ static char const *getIconName(void)
 
     /* if the tray's icon is a 48x48 file, use it;
      * otherwise, use the fallback builtin icon */
-    if (!gtk_icon_theme_has_icon(theme, TRAY_ICON))
-    {
+    if (!gtk_icon_theme_has_icon(theme, TRAY_ICON)) {
         icon_name = ICON_NAME;
-    }
-    else
-    {
+    } else {
         GtkIconInfo *icon_info = gtk_icon_theme_lookup_icon(theme, TRAY_ICON, 48, GTK_ICON_LOOKUP_USE_BUILTIN);
         gboolean const icon_is_builtin = gtk_icon_info_get_filename(icon_info) == NULL;
 

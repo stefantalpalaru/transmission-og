@@ -22,8 +22,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface InfoTabButtonCell : NSButtonCell
-{
+@interface InfoTabButtonCell : NSButtonCell {
     NSImage *fIcon;
 
     BOOL fSelected;

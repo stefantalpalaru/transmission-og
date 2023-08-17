@@ -20,20 +20,15 @@
  * to estimate the speed over the last N seconds.
  */
 
-enum
-{
-    TR_RECENT_HISTORY_PERIOD_SEC = 60
-};
+enum { TR_RECENT_HISTORY_PERIOD_SEC = 60 };
 
-typedef struct tr_recentHistory
-{
+typedef struct tr_recentHistory {
     /* these are PRIVATE IMPLEMENTATION details included for composition only.
      * Don't access these directly! */
 
     int newest;
 
-    struct
-    {
+    struct {
         unsigned int n;
         time_t date;
     } slices[TR_RECENT_HISTORY_PERIOD_SEC];

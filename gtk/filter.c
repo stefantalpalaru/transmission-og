@@ -31,15 +31,13 @@ static GQuark TORRENT_MODEL_KEY = 0;
 ****
 ***/
 
-enum
-{
+enum {
     TRACKER_FILTER_TYPE_ALL,
     TRACKER_FILTER_TYPE_HOST,
     TRACKER_FILTER_TYPE_SEPARATOR,
 };
 
-enum
-{
+enum {
     TRACKER_FILTER_COL_NAME, /* human-readable name; ie, Legaltorrents */
     TRACKER_FILTER_COL_COUNT, /* how many matches there are */
     TRACKER_FILTER_COL_TYPE,
@@ -59,16 +57,11 @@ static char *get_name_from_host(char const *host)
     char *name;
     char const *dot = strrchr(host, '.');
 
-    if (tr_addressIsIP(host))
-    {
+    if (tr_addressIsIP(host)) {
         name = g_strdup(host);
-    }
-    else if (dot != NULL)
-    {
+    } else if (dot != NULL) {
         name = g_strndup(host, dot - host);
-    }
-    else
-    {
+    } else {
         name = g_strdup(host);
     }
 
@@ -83,8 +76,7 @@ static void tracker_model_update_count(GtkTreeStore *store, GtkTreeIter *iter, i
     GtkTreeModel *model = GTK_TREE_MODEL(store);
     gtk_tree_model_get(model, iter, TRACKER_FILTER_COL_COUNT, &count, -1);
 
-    if (n != count)
-    {
+    if (n != count) {
         gtk_tree_store_set(store, iter, TRACKER_FILTER_COL_COUNT, n, -1);
     }
 }
@@ -94,13 +86,11 @@ static void favicon_ready_cb(gpointer pixbuf, gpointer vreference)
     GtkTreeIter iter;
     GtkTreeRowReference *reference = vreference;
 
-    if (pixbuf != NULL)
-    {
+    if (pixbuf != NULL) {
         GtkTreePath *path = gtk_tree_row_reference_get_path(reference);
         GtkTreeModel *model = gtk_tree_row_reference_get_model(reference);
 
-        if (gtk_tree_model_get_iter(model, &iter, path))
-        {
+        if (gtk_tree_model_get_iter(model, &iter, path)) {
             gtk_tree_store_set(GTK_TREE_STORE(model), &iter, TRACKER_FILTER_COL_PIXBUF, pixbuf, -1);
         }
 
@@ -131,10 +121,8 @@ static gboolean tracker_filter_model_update(gpointer gstore)
     /* Walk through all the torrents, tallying how many matches there are
      * for the various categories. Also make a sorted list of all tracker
      * hosts s.t. we can merge it with the existing list */
-    if (gtk_tree_model_iter_nth_child(tmodel, &iter, NULL, 0))
-    {
-        do
-        {
+    if (gtk_tree_model_iter_nth_child(tmodel, &iter, NULL, 0)) {
+        do {
             tr_torrent *tor;
             tr_info const *inf;
             int keyCount;
@@ -145,8 +133,7 @@ static gboolean tracker_filter_model_update(gpointer gstore)
             keyCount = 0;
             keys = g_new(char *, inf->trackerCount);
 
-            for (unsigned int i = 0; i < inf->trackerCount; ++i)
-            {
+            for (unsigned int i = 0; i < inf->trackerCount; ++i) {
                 int *count;
                 char buf[1024];
                 char *key;
@@ -156,8 +143,7 @@ static gboolean tracker_filter_model_update(gpointer gstore)
 
                 count = g_hash_table_lookup(hosts_hash, key);
 
-                if (count == NULL)
-                {
+                if (count == NULL) {
                     count = tr_new0(int, 1);
                     g_hash_table_insert(hosts_hash, key, count);
                     g_ptr_array_add(hosts, key);
@@ -165,19 +151,16 @@ static gboolean tracker_filter_model_update(gpointer gstore)
 
                 bool found = false;
 
-                for (int k = 0; !found && k < keyCount; ++k)
-                {
+                for (int k = 0; !found && k < keyCount; ++k) {
                     found = g_strcmp0(keys[k], key) == 0;
                 }
 
-                if (!found)
-                {
+                if (!found) {
                     keys[keyCount++] = key;
                 }
             }
 
-            for (int i = 0; i < keyCount; ++i)
-            {
+            for (int i = 0; i < keyCount; ++i) {
                 int *incrementme = g_hash_table_lookup(hosts_hash, keys[i]);
                 ++*incrementme;
             }
@@ -191,48 +174,37 @@ static gboolean tracker_filter_model_update(gpointer gstore)
     qsort(hosts->pdata, hosts->len, sizeof(char *), pstrcmp);
 
     /* update the "all" count */
-    if (gtk_tree_model_iter_children(model, &iter, NULL))
-    {
+    if (gtk_tree_model_iter_children(model, &iter, NULL)) {
         tracker_model_update_count(store, &iter, all);
     }
 
     store_pos = first_tracker_pos;
 
-    for (int i = 0, n = hosts->len;;)
-    {
+    for (int i = 0, n = hosts->len;;) {
         gboolean const new_hosts_done = i >= n;
         gboolean const old_hosts_done = !gtk_tree_model_iter_nth_child(model, &iter, NULL, store_pos);
         gboolean remove_row = FALSE;
         gboolean insert_row = FALSE;
 
         /* are we done yet? */
-        if (new_hosts_done && old_hosts_done)
-        {
+        if (new_hosts_done && old_hosts_done) {
             break;
         }
 
         /* decide what to do */
-        if (new_hosts_done)
-        {
+        if (new_hosts_done) {
             remove_row = TRUE;
-        }
-        else if (old_hosts_done)
-        {
+        } else if (old_hosts_done) {
             insert_row = TRUE;
-        }
-        else
-        {
+        } else {
             int cmp;
             char *host;
             gtk_tree_model_get(model, &iter, TRACKER_FILTER_COL_HOST, &host, -1);
             cmp = g_strcmp0(host, hosts->pdata[i]);
 
-            if (cmp < 0)
-            {
+            if (cmp < 0) {
                 remove_row = TRUE;
-            }
-            else if (cmp > 0)
-            {
+            } else if (cmp > 0) {
                 insert_row = TRUE;
             }
 
@@ -240,13 +212,10 @@ static gboolean tracker_filter_model_update(gpointer gstore)
         }
 
         /* do something */
-        if (remove_row)
-        {
+        if (remove_row) {
             /* g_message ("removing row and incrementing i"); */
             gtk_tree_store_remove(store, &iter);
-        }
-        else if (insert_row)
-        {
+        } else if (insert_row) {
             GtkTreeIter add;
             GtkTreePath *path;
             GtkTreeRowReference *reference;
@@ -269,8 +238,7 @@ static gboolean tracker_filter_model_update(gpointer gstore)
             g_free(name);
             ++store_pos;
             ++i;
-        }
-        else /* update row */
+        } else /* update row */
         {
             char const *host = hosts->pdata[i];
             int const count = *(int *)g_hash_table_lookup(hosts_hash, host);
@@ -324,8 +292,7 @@ static void tracker_model_update_idle(gpointer tracker_model)
     GObject *o = G_OBJECT(tracker_model);
     gboolean const pending = g_object_get_qdata(o, DIRTY_KEY) != NULL;
 
-    if (!pending)
-    {
+    if (!pending) {
         GSourceFunc func = tracker_filter_model_update;
         g_object_set_qdata(o, DIRTY_KEY, GINT_TO_POINTER(1));
         gdk_threads_add_idle(func, tracker_model);
@@ -373,12 +340,9 @@ static void render_number_func(
 
     gtk_tree_model_get(tree_model, iter, TRACKER_FILTER_COL_COUNT, &count, -1);
 
-    if (count >= 0)
-    {
+    if (count >= 0) {
         g_snprintf(buf, sizeof(buf), "%'d", count);
-    }
-    else
-    {
+    } else {
         *buf = '\0';
     }
 
@@ -451,15 +415,13 @@ static gboolean test_tracker(tr_torrent *tor, int active_tracker_type, char cons
 {
     gboolean matches = TRUE;
 
-    if (active_tracker_type == TRACKER_FILTER_TYPE_HOST)
-    {
+    if (active_tracker_type == TRACKER_FILTER_TYPE_HOST) {
         char tmp[1024];
         tr_info const *const inf = tr_torrentInfo(tor);
 
         matches = FALSE;
 
-        for (unsigned int i = 0; !matches && i < inf->trackerCount; ++i)
-        {
+        for (unsigned int i = 0; !matches && i < inf->trackerCount; ++i) {
             gtr_get_host_from_url(tmp, sizeof(tmp), inf->trackers[i].announce);
             matches = g_strcmp0(tmp, host) == 0;
         }
@@ -474,8 +436,7 @@ static gboolean test_tracker(tr_torrent *tor, int active_tracker_type, char cons
 ****
 ***/
 
-enum
-{
+enum {
     ACTIVITY_FILTER_ALL,
     ACTIVITY_FILTER_DOWNLOADING,
     ACTIVITY_FILTER_SEEDING,
@@ -487,8 +448,7 @@ enum
     ACTIVITY_FILTER_SEPARATOR
 };
 
-enum
-{
+enum {
     ACTIVITY_FILTER_COL_NAME,
     ACTIVITY_FILTER_COL_COUNT,
     ACTIVITY_FILTER_COL_TYPE,
@@ -507,8 +467,7 @@ static gboolean test_torrent_activity(tr_torrent *tor, int type)
 {
     tr_stat const *st = tr_torrentStatCached(tor);
 
-    switch (type)
-    {
+    switch (type) {
     case ACTIVITY_FILTER_DOWNLOADING:
         return st->activity == TR_STATUS_DOWNLOAD || st->activity == TR_STATUS_DOWNLOAD_WAIT;
 
@@ -542,8 +501,7 @@ static void status_model_update_count(GtkListStore *store, GtkTreeIter *iter, in
     GtkTreeModel *model = GTK_TREE_MODEL(store);
     gtk_tree_model_get(model, iter, ACTIVITY_FILTER_COL_COUNT, &count, -1);
 
-    if (n != count)
-    {
+    if (n != count) {
         gtk_list_store_set(store, iter, ACTIVITY_FILTER_COL_COUNT, n, -1);
     }
 }
@@ -558,10 +516,8 @@ static gboolean activity_filter_model_update(gpointer gstore)
 
     g_object_steal_qdata(o, DIRTY_KEY);
 
-    if (gtk_tree_model_iter_nth_child(model, &iter, NULL, 0))
-    {
-        do
-        {
+    if (gtk_tree_model_iter_nth_child(model, &iter, NULL, 0)) {
+        do {
             int hits;
             int type;
             GtkTreeIter torrent_iter;
@@ -570,15 +526,12 @@ static gboolean activity_filter_model_update(gpointer gstore)
 
             hits = 0;
 
-            if (gtk_tree_model_iter_nth_child(tmodel, &torrent_iter, NULL, 0))
-            {
-                do
-                {
+            if (gtk_tree_model_iter_nth_child(tmodel, &torrent_iter, NULL, 0)) {
+                do {
                     tr_torrent *tor;
                     gtk_tree_model_get(tmodel, &torrent_iter, MC_TORRENT, &tor, -1);
 
-                    if (test_torrent_activity(tor, type))
-                    {
+                    if (test_torrent_activity(tor, type)) {
                         ++hits;
                     }
                 } while (gtk_tree_model_iter_next(tmodel, &torrent_iter));
@@ -593,8 +546,7 @@ static gboolean activity_filter_model_update(gpointer gstore)
 
 static GtkTreeModel *activity_filter_model_new(GtkTreeModel *tmodel)
 {
-    struct
-    {
+    struct {
         int type;
         char const *context;
         char const *name;
@@ -621,8 +573,7 @@ static GtkTreeModel *activity_filter_model_new(GtkTreeModel *tmodel)
         G_TYPE_STRING);
     // clang-format on
 
-    for (size_t i = 0; i < G_N_ELEMENTS(types); ++i)
-    {
+    for (size_t i = 0; i < G_N_ELEMENTS(types); ++i) {
         char const *name = types[i].context != NULL ? g_dpgettext2(NULL, types[i].context, types[i].name) : _(types[i].name);
         // clang-format off
         gtk_list_store_insert_with_values(store, NULL, -1,
@@ -661,8 +612,7 @@ static void activity_model_update_idle(gpointer activity_model)
     GObject *o = G_OBJECT(activity_model);
     gboolean const pending = g_object_get_qdata(o, DIRTY_KEY) != NULL;
 
-    if (!pending)
-    {
+    if (!pending) {
         GSourceFunc func = activity_filter_model_update;
         g_object_set_qdata(o, DIRTY_KEY, GINT_TO_POINTER(1));
         gdk_threads_add_idle(func, activity_model);
@@ -738,12 +688,9 @@ static gboolean testText(tr_torrent const *tor, char const *key)
 {
     gboolean ret = FALSE;
 
-    if (tr_str_is_empty(key))
-    {
+    if (tr_str_is_empty(key)) {
         ret = TRUE;
-    }
-    else
-    {
+    } else {
         tr_info const *inf = tr_torrentInfo(tor);
 
         /* test the torrent name... */
@@ -754,8 +701,7 @@ static gboolean testText(tr_torrent const *tor, char const *key)
         }
 
         /* test the files... */
-        for (tr_file_index_t i = 0; i < inf->fileCount && !ret; ++i)
-        {
+        for (tr_file_index_t i = 0; i < inf->fileCount && !ret; ++i) {
             char *pch = g_utf8_casefold(inf->files[i].name, -1);
             ret = key == NULL || strstr(pch, key) != NULL;
             g_free(pch);
@@ -790,8 +736,7 @@ static void filter_entry_changed(GtkEditable *e, gpointer filter_model)
 ******
 *****/
 
-struct filter_data
-{
+struct filter_data {
     GtkWidget *activity;
     GtkWidget *tracker;
     GtkWidget *entry;
@@ -829,12 +774,9 @@ static void selection_changed_cb(GtkComboBox *combo, gpointer vdata)
     combo = GTK_COMBO_BOX(data->activity);
     model = gtk_combo_box_get_model(combo);
 
-    if (gtk_combo_box_get_active_iter(combo, &iter))
-    {
+    if (gtk_combo_box_get_active_iter(combo, &iter)) {
         gtk_tree_model_get(model, &iter, ACTIVITY_FILTER_COL_TYPE, &type, -1);
-    }
-    else
-    {
+    } else {
         type = ACTIVITY_FILTER_ALL;
     }
 
@@ -844,17 +786,14 @@ static void selection_changed_cb(GtkComboBox *combo, gpointer vdata)
     combo = GTK_COMBO_BOX(data->tracker);
     model = gtk_combo_box_get_model(combo);
 
-    if (gtk_combo_box_get_active_iter(combo, &iter))
-    {
+    if (gtk_combo_box_get_active_iter(combo, &iter)) {
         // clang-format off
         gtk_tree_model_get(model, &iter,
                 TRACKER_FILTER_COL_TYPE, &type,
                 TRACKER_FILTER_COL_HOST, &host,
                 -1);
         // clang-format on
-    }
-    else
-    {
+    } else {
         type = TRACKER_FILTER_TYPE_ALL;
         host = NULL;
     }
@@ -889,12 +828,9 @@ static gboolean update_count_label(gpointer gdata)
     combo = GTK_COMBO_BOX(data->tracker);
     model = gtk_combo_box_get_model(combo);
 
-    if (gtk_combo_box_get_active_iter(combo, &iter))
-    {
+    if (gtk_combo_box_get_active_iter(combo, &iter)) {
         gtk_tree_model_get(model, &iter, TRACKER_FILTER_COL_COUNT, &trackerCount, -1);
-    }
-    else
-    {
+    } else {
         trackerCount = 0;
     }
 
@@ -902,22 +838,16 @@ static gboolean update_count_label(gpointer gdata)
     combo = GTK_COMBO_BOX(data->activity);
     model = gtk_combo_box_get_model(combo);
 
-    if (gtk_combo_box_get_active_iter(combo, &iter))
-    {
+    if (gtk_combo_box_get_active_iter(combo, &iter)) {
         gtk_tree_model_get(model, &iter, ACTIVITY_FILTER_COL_COUNT, &activityCount, -1);
-    }
-    else
-    {
+    } else {
         activityCount = 0;
     }
 
     /* set the text */
-    if (visibleCount == MIN(activityCount, trackerCount))
-    {
+    if (visibleCount == MIN(activityCount, trackerCount)) {
         g_snprintf(buf, sizeof(buf), _("_Show:"));
-    }
-    else
-    {
+    } else {
         g_snprintf(buf, sizeof(buf), _("_Show %'d of:"), visibleCount);
     }
 
@@ -932,8 +862,7 @@ static void update_count_label_idle(struct filter_data *data)
     GObject *o = G_OBJECT(data->show_lb);
     gboolean const pending = g_object_get_qdata(o, DIRTY_KEY) != NULL;
 
-    if (!pending)
-    {
+    if (!pending) {
         g_object_set_qdata(o, DIRTY_KEY, GINT_TO_POINTER(1));
         gdk_threads_add_idle(update_count_label, data);
     }

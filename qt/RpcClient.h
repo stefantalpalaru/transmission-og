@@ -28,14 +28,12 @@ class QNetworkAccessManager;
 typedef std::shared_ptr<tr_variant> TrVariantPtr;
 Q_DECLARE_METATYPE(TrVariantPtr)
 
-extern "C"
-{
-    struct evbuffer;
-    struct tr_session;
+extern "C" {
+struct evbuffer;
+struct tr_session;
 }
 
-struct RpcResponse
-{
+struct RpcResponse {
     QString result;
     TrVariantPtr args;
     bool success = false;
@@ -47,16 +45,14 @@ Q_DECLARE_METATYPE(QFutureInterface<RpcResponse>)
 // The response future -- the RPC engine returns one for each request made.
 typedef QFuture<RpcResponse> RpcResponseFuture;
 
-class RpcClient : public QObject
-{
+class RpcClient : public QObject {
     Q_OBJECT
 
 public:
     RpcClient(QObject *parent = nullptr);
 
     virtual ~RpcClient()
-    {
-    }
+    {}
 
     void stop();
     void start(tr_session *session);

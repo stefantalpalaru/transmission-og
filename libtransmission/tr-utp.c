@@ -84,8 +84,7 @@ int utp_connect(UTPSocket * /*socket*/, sockaddr const * /*to*/, socklen_t /*tol
 }
 
 void tr_utpClose(tr_session * /*session*/)
-{
-}
+{}
 
 #else
 
@@ -101,16 +100,14 @@ static void utp_on_accept(tr_session *const session, utp_socket *const s)
     tr_address addr;
     tr_port port;
 
-    if (!tr_sessionIsUTPEnabled(session))
-    {
+    if (!tr_sessionIsUTPEnabled(session)) {
         utp_close(s);
         return;
     }
 
     utp_getpeername(s, from, &fromlen);
 
-    if (!tr_address_from_sockaddr_storage(&addr, &port, &from_storage))
-    {
+    if (!tr_address_from_sockaddr_storage(&addr, &port, &from_storage)) {
         tr_logAddNamedError("UTP", "Unknown socket family");
         utp_close(s);
         return;
@@ -126,12 +123,9 @@ static void utp_send_to(
     struct sockaddr const *const to,
     socklen_t const tolen)
 {
-    if (to->sa_family == AF_INET && ss->udp_socket != TR_BAD_SOCKET)
-    {
+    if (to->sa_family == AF_INET && ss->udp_socket != TR_BAD_SOCKET) {
         sendto(ss->udp_socket, (void const *)buf, buflen, 0, to, tolen);
-    }
-    else if (to->sa_family == AF_INET6 && ss->udp6_socket != TR_BAD_SOCKET)
-    {
+    } else if (to->sa_family == AF_INET6 && ss->udp6_socket != TR_BAD_SOCKET) {
         sendto(ss->udp6_socket, (void const *)buf, buflen, 0, to, tolen);
     }
 }
@@ -151,8 +145,7 @@ static uint64 utp_callback(utp_callback_arguments *args)
     TR_ASSERT(tr_isSession(session));
     TR_ASSERT(session->utp_context == args->context);
 
-    switch (args->callback_type)
-    {
+    switch (args->callback_type) {
 #ifdef TR_UTP_TRACE
 
     case UTP_LOG:
@@ -178,13 +171,10 @@ static void reset_timer(tr_session *ss)
     int sec;
     int usec;
 
-    if (tr_sessionIsUTPEnabled(ss))
-    {
+    if (tr_sessionIsUTPEnabled(ss)) {
         sec = 0;
         usec = UTP_INTERVAL_US / 2 + tr_rand_int_weak(UTP_INTERVAL_US);
-    }
-    else
-    {
+    } else {
         /* If somebody has disabled uTP, then we still want to run
            utp_check_timeouts, in order to let closed sockets finish
            gracefully and so on.  However, since we're not particularly
@@ -210,15 +200,13 @@ static void timer_callback(evutil_socket_t s UNUSED, short type UNUSED, void *cl
 
 void tr_utpInit(tr_session *session)
 {
-    if (session->utp_context != NULL)
-    {
+    if (session->utp_context != NULL) {
         return;
     }
 
     utp_context *const ctx = utp_init(2);
 
-    if (ctx == NULL)
-    {
+    if (ctx == NULL) {
         return;
     }
 
@@ -244,12 +232,10 @@ void tr_utpInit(tr_session *session)
 
 bool tr_utpPacket(unsigned char const *buf, size_t buflen, struct sockaddr const *from, socklen_t fromlen, tr_session *ss)
 {
-    if (!ss->isClosed && ss->utp_timer == NULL)
-    {
+    if (!ss->isClosed && ss->utp_timer == NULL) {
         ss->utp_timer = evtimer_new(ss->event_base, timer_callback, ss);
 
-        if (ss->utp_timer == NULL)
-        {
+        if (ss->utp_timer == NULL) {
             return -1;
         }
 
@@ -266,14 +252,12 @@ bool tr_utpPacket(unsigned char const *buf, size_t buflen, struct sockaddr const
 
 void tr_utpClose(tr_session *session)
 {
-    if (session->utp_timer != NULL)
-    {
+    if (session->utp_timer != NULL) {
         evtimer_del(session->utp_timer);
         session->utp_timer = NULL;
     }
 
-    if (session->utp_context != NULL)
-    {
+    if (session->utp_context != NULL) {
         utp_context_set_userdata(session->utp_context, NULL);
         utp_destroy(session->utp_context);
         session->utp_context = NULL;

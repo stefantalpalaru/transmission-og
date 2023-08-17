@@ -24,8 +24,7 @@
 
 #include <libtransmission/transmission.h>
 
-@interface BadgeView : NSView
-{
+@interface BadgeView : NSView {
     tr_session *fLib;
 
     NSMutableDictionary *fAttributes;

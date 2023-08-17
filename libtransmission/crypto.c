@@ -43,8 +43,7 @@ static uint8_t const dh_G[] = { 2 };
 
 static void ensureKeyExists(tr_crypto *crypto)
 {
-    if (crypto->dh == NULL)
-    {
+    if (crypto->dh == NULL) {
         size_t public_key_length;
 
         crypto->dh = tr_dh_new(dh_P, sizeof(dh_P), dh_G, sizeof(dh_G));
@@ -96,15 +95,13 @@ static void initRC4(tr_crypto *crypto, tr_rc4_ctx_t *setme, char const *key)
 {
     TR_ASSERT(crypto->torrentHashIsSet);
 
-    if (*setme == NULL)
-    {
+    if (*setme == NULL) {
         *setme = tr_rc4_new();
     }
 
     uint8_t buf[SHA_DIGEST_LENGTH];
 
-    if (tr_cryptoSecretKeySha1(crypto, key, 4, crypto->torrentHash, SHA_DIGEST_LENGTH, buf))
-    {
+    if (tr_cryptoSecretKeySha1(crypto, key, 4, crypto->torrentHash, SHA_DIGEST_LENGTH, buf)) {
         tr_rc4_set_key(*setme, buf, SHA_DIGEST_LENGTH);
     }
 }
@@ -121,10 +118,8 @@ void tr_cryptoDecryptInit(tr_crypto *crypto)
 void tr_cryptoDecrypt(tr_crypto *crypto, size_t buf_len, void const *buf_in, void *buf_out)
 {
     /* FIXME: someone calls this function with uninitialized key */
-    if (crypto->dec_key == NULL)
-    {
-        if (buf_in != buf_out)
-        {
+    if (crypto->dec_key == NULL) {
+        if (buf_in != buf_out) {
             memmove(buf_out, buf_in, buf_len);
         }
 
@@ -146,10 +141,8 @@ void tr_cryptoEncryptInit(tr_crypto *crypto)
 void tr_cryptoEncrypt(tr_crypto *crypto, size_t buf_len, void const *buf_in, void *buf_out)
 {
     /* FIXME: someone calls this function with uninitialized key */
-    if (crypto->enc_key == NULL)
-    {
-        if (buf_in != buf_out)
-        {
+    if (crypto->enc_key == NULL) {
+        if (buf_in != buf_out) {
             memmove(buf_out, buf_in, buf_len);
         }
 
@@ -181,12 +174,9 @@ void tr_cryptoSetTorrentHash(tr_crypto *crypto, uint8_t const *hash)
 {
     crypto->torrentHashIsSet = hash != NULL;
 
-    if (hash != NULL)
-    {
+    if (hash != NULL) {
         memcpy(crypto->torrentHash, hash, SHA_DIGEST_LENGTH);
-    }
-    else
-    {
+    } else {
         memset(crypto->torrentHash, 0, SHA_DIGEST_LENGTH);
     }
 }

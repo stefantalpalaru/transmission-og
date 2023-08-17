@@ -17,17 +17,11 @@ class FilterMode;
 class Prefs;
 class Torrent;
 
-class TorrentFilter : public QSortFilterProxyModel
-{
+class TorrentFilter : public QSortFilterProxyModel {
     Q_OBJECT
 
 public:
-    enum TextMode
-    {
-        FILTER_BY_NAME,
-        FILTER_BY_FILES,
-        FILTER_BY_TRACKER
-    };
+    enum TextMode { FILTER_BY_NAME, FILTER_BY_FILES, FILTER_BY_TRACKER };
 
 public:
     TorrentFilter(Prefs const &prefs);

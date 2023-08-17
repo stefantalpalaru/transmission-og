@@ -23,14 +23,10 @@
 *** @{
 **/
 
-enum
-{
-    KEY_LEN = 96
-};
+enum { KEY_LEN = 96 };
 
 /** @brief Holds state information for encrypted peer communications */
-typedef struct
-{
+typedef struct {
     tr_rc4_ctx_t dec_key;
     tr_rc4_ctx_t enc_key;
     tr_dh_ctx_t dh;

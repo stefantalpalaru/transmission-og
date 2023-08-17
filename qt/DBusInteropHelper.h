@@ -12,8 +12,7 @@ class QObject;
 class QString;
 class QVariant;
 
-class DBusInteropHelper
-{
+class DBusInteropHelper {
 public:
     bool isConnected() const;
 

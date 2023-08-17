@@ -37,8 +37,7 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
-typedef struct
-{
+typedef struct {
     GtkWidget *speedlimit_on_item[2];
     GtkWidget *speedlimit_off_item[2];
     GtkWidget *ratio_on_item;
@@ -178,8 +177,7 @@ static void prefsChanged(TrCore *core UNUSED, tr_quark const key, gpointer wind)
     gboolean isEnabled;
     PrivateData *p = get_private_data(GTK_WINDOW(wind));
 
-    switch (key)
-    {
+    switch (key) {
     case TR_KEY_compact_view:
         g_object_set(p->renderer, "compact", gtr_pref_flag_get(key), NULL);
         /* since the cell size has changed, we need gtktreeview to revalidate
@@ -239,8 +237,7 @@ static void onYinYangClicked(GtkWidget *w UNUSED, gpointer vprivate)
 
 #define STATS_MODE "stats-mode"
 
-static struct
-{
+static struct {
     char const *val;
     char const *i18n;
 } stats_modes[] = {
@@ -252,8 +249,7 @@ static struct
 
 static void status_menu_toggled_cb(GtkCheckMenuItem *menu_item, gpointer vprivate)
 {
-    if (gtk_check_menu_item_get_active(menu_item))
-    {
+    if (gtk_check_menu_item_get_active(menu_item)) {
         PrivateData *p = vprivate;
         char const *val = g_object_get_data(G_OBJECT(menu_item), STATS_MODE);
         gtr_core_set_pref(p->core, TR_KEY_statusbar_stats, val);
@@ -321,12 +317,9 @@ static gboolean onAskTrackerQueryTooltip(
 
     gtk_tree_selection_selected_foreach(p->selection, findMaxAnnounceTime, &maxTime);
 
-    if (maxTime <= now)
-    {
+    if (maxTime <= now) {
         handled = FALSE;
-    }
-    else
-    {
+    } else {
         char buf[512];
         char timebuf[64];
         int const seconds = maxTime - now;
@@ -370,8 +363,7 @@ static void onSpeedToggled(GtkCheckMenuItem *check, gpointer vp)
     tr_direction dir = GPOINTER_TO_INT(g_object_get_data(o, DIRECTION_KEY));
     tr_quark const key = dir == TR_UP ? TR_KEY_speed_limit_up_enabled : TR_KEY_speed_limit_down_enabled;
 
-    if (gtk_check_menu_item_get_active(check))
-    {
+    if (gtk_check_menu_item_get_active(check)) {
         gtr_core_set_pref_bool(p->core, key, isEnabled);
     }
 }
@@ -421,8 +413,7 @@ static GtkWidget *createSpeedMenu(PrivateData *p, tr_direction dir)
     w = gtk_separator_menu_item_new();
     gtk_menu_shell_append(menu_shell, w);
 
-    for (size_t i = 0; i < G_N_ELEMENTS(speeds_KBps); ++i)
-    {
+    for (size_t i = 0; i < G_N_ELEMENTS(speeds_KBps); ++i) {
         char buf[128];
         tr_formatter_speed_KBps(buf, speeds_KBps[i], sizeof(buf));
         w = gtk_menu_item_new_with_label(buf);
@@ -448,8 +439,7 @@ static void onRatioToggled(GtkCheckMenuItem *check, gpointer vp)
 {
     PrivateData *p = vp;
 
-    if (gtk_check_menu_item_get_active(check))
-    {
+    if (gtk_check_menu_item_get_active(check)) {
         gboolean f = g_object_get_data(G_OBJECT(check), ENABLED_KEY) != 0;
         gtr_core_set_pref_bool(p->core, TR_KEY_ratio_limit_enabled, f);
     }
@@ -488,8 +478,7 @@ static GtkWidget *createRatioMenu(PrivateData *p)
     w = gtk_separator_menu_item_new();
     gtk_menu_shell_append(menu_shell, w);
 
-    for (size_t i = 0; i < G_N_ELEMENTS(stockRatios); ++i)
-    {
+    for (size_t i = 0; i < G_N_ELEMENTS(stockRatios); ++i) {
         char buf[128];
         tr_strlratio(buf, stockRatios[i], sizeof(buf));
         w = gtk_menu_item_new_with_label(buf);
@@ -622,8 +611,7 @@ GtkWidget *gtr_window_new(GtkApplication *app, GtkUIManager *ui_mgr, TrCore *cor
     gtk_window_set_default_size(win, gtr_pref_int_get(TR_KEY_main_window_width), gtr_pref_int_get(TR_KEY_main_window_height));
     gtk_window_move(win, gtr_pref_int_get(TR_KEY_main_window_x), gtr_pref_int_get(TR_KEY_main_window_y));
 
-    if (gtr_pref_flag_get(TR_KEY_main_window_is_maximized))
-    {
+    if (gtr_pref_flag_get(TR_KEY_main_window_is_maximized)) {
         gtk_window_maximize(win);
     }
 
@@ -662,8 +650,7 @@ GtkWidget *gtr_window_new(GtkApplication *app, GtkUIManager *ui_mgr, TrCore *cor
     l = NULL;
     pch = gtr_pref_string_get(TR_KEY_statusbar_stats);
 
-    for (size_t i = 0; i < G_N_ELEMENTS(stats_modes); ++i)
-    {
+    for (size_t i = 0; i < G_N_ELEMENTS(stats_modes); ++i) {
         char const *val = stats_modes[i].val;
         w = gtk_radio_menu_item_new_with_label(l, _(stats_modes[i].i18n));
         l = gtk_radio_menu_item_get_group(GTK_RADIO_MENU_ITEM(w));
@@ -800,14 +787,11 @@ static void updateStats(PrivateData *p)
     /* update the stats */
     pch = gtr_pref_string_get(TR_KEY_statusbar_stats);
 
-    if (g_strcmp0(pch, "session-ratio") == 0)
-    {
+    if (g_strcmp0(pch, "session-ratio") == 0) {
         tr_sessionGetStats(session, &stats);
         tr_strlratio(ratio, stats.ratio, sizeof(ratio));
         g_snprintf(buf, sizeof(buf), _("Ratio: %s"), ratio);
-    }
-    else if (g_strcmp0(pch, "session-transfer") == 0)
-    {
+    } else if (g_strcmp0(pch, "session-transfer") == 0) {
         tr_sessionGetStats(session, &stats);
         tr_strlsize(up, stats.uploadedBytes, sizeof(up));
         tr_strlsize(down, stats.downloadedBytes, sizeof(down));
@@ -815,9 +799,7 @@ static void updateStats(PrivateData *p)
            %1$s is the size of the data we've downloaded
            %2$s is the size of the data we've uploaded */
         g_snprintf(buf, sizeof(buf), Q_("Down: %1$s, Up: %2$s"), down, up);
-    }
-    else if (g_strcmp0(pch, "total-transfer") == 0)
-    {
+    } else if (g_strcmp0(pch, "total-transfer") == 0) {
         tr_sessionGetCumulativeStats(session, &stats);
         tr_strlsize(up, stats.uploadedBytes, sizeof(up));
         tr_strlsize(down, stats.downloadedBytes, sizeof(down));
@@ -825,8 +807,7 @@ static void updateStats(PrivateData *p)
            %1$s is the size of the data we've downloaded
            %2$s is the size of the data we've uploaded */
         g_snprintf(buf, sizeof(buf), Q_("size|Down: %1$s, Up: %2$s"), down, up);
-    }
-    else /* default is total-ratio */
+    } else /* default is total-ratio */
     {
         tr_sessionGetCumulativeStats(session, &stats);
         tr_strlratio(ratio, stats.ratio, sizeof(ratio));
@@ -840,8 +821,7 @@ static void updateSpeeds(PrivateData *p)
 {
     tr_session *session = gtr_core_session(p->core);
 
-    if (session != NULL)
-    {
+    if (session != NULL) {
         char text_str[256];
         char speed_str[128];
         double upSpeed = 0;
@@ -851,10 +831,8 @@ static void updateSpeeds(PrivateData *p)
         GtkTreeIter iter;
         GtkTreeModel *model = gtr_core_model(p->core);
 
-        if (gtk_tree_model_iter_nth_child(model, &iter, NULL, 0))
-        {
-            do
-            {
+        if (gtk_tree_model_iter_nth_child(model, &iter, NULL, 0)) {
+            do {
                 int uc;
                 int dc;
                 double us;
@@ -890,8 +868,7 @@ void gtr_window_refresh(GtkWindow *self)
 {
     PrivateData *p = get_private_data(self);
 
-    if (p != NULL && p->core != NULL && gtr_core_session(p->core) != NULL)
-    {
+    if (p != NULL && p->core != NULL && gtr_core_session(p->core) != NULL) {
         updateSpeeds(p);
         updateStats(p);
     }
@@ -906,8 +883,7 @@ void gtr_window_set_busy(GtkWindow *win, gboolean isBusy)
 {
     GtkWidget *w = GTK_WIDGET(win);
 
-    if (w != NULL && gtk_widget_get_realized(w))
-    {
+    if (w != NULL && gtk_widget_get_realized(w)) {
         GdkDisplay *display = gtk_widget_get_display(w);
         GdkCursor *cursor = isBusy ? gdk_cursor_new_for_display(display, GDK_WATCH) : NULL;
 

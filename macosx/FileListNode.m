@@ -42,8 +42,7 @@
 
 - (id)initWithFolderName:(NSString *)name path:(NSString *)path torrent:(Torrent *)torrent
 {
-    if ((self = [self initWithFolder:YES name:name path:path torrent:torrent]))
-    {
+    if ((self = [self initWithFolder:YES name:name path:path torrent:torrent])) {
         fChildren = [[NSMutableArray alloc] init];
         fSize = 0;
     }
@@ -57,8 +56,7 @@
                  index:(NSUInteger)index
                torrent:(Torrent *)torrent
 {
-    if ((self = [self initWithFolder:NO name:name path:path torrent:torrent]))
-    {
+    if ((self = [self initWithFolder:NO name:name path:path torrent:torrent])) {
         fSize = size;
         [fIndexes addIndex:index];
     }
@@ -121,14 +119,12 @@
 
     if ([lookupPathComponents isEqualToArray:thesePathComponents]) // this node represents what's being renamed
     {
-        if ([oldName isEqualToString:self.name])
-        {
+        if ([oldName isEqualToString:self.name]) {
             fName = [newName copy];
             fIcon = nil;
             return YES;
         }
-    }
-    else if ([lookupPathComponents count] < [thesePathComponents count]) // what's being renamed is part of this node's path
+    } else if ([lookupPathComponents count] < [thesePathComponents count]) // what's being renamed is part of this node's path
     {
         lookupPathComponents = [lookupPathComponents arrayByAddingObject:oldName];
         BOOL const allSame = NSNotFound ==
@@ -137,8 +133,7 @@
                                                    return ![name isEqualToString:thesePathComponents[idx]];
                                                }];
 
-        if (allSame)
-        {
+        if (allSame) {
             NSString *oldPathPrefix = [path stringByAppendingPathComponent:oldName];
             NSString *newPathPrefix = [path stringByAppendingPathComponent:newName];
 
@@ -156,8 +151,7 @@
 
 - (id)initWithFolder:(BOOL)isFolder name:(NSString *)name path:(NSString *)path torrent:(Torrent *)torrent
 {
-    if ((self = [super init]))
-    {
+    if ((self = [super init])) {
         fIsFolder = isFolder;
         fName = [name copy];
         fPath = [path copy];

@@ -29,8 +29,7 @@
 
 - (id)initWithLib:(tr_session *)lib
 {
-    if ((self = [super init]))
-    {
+    if ((self = [super init])) {
         fLib = lib;
 
         BadgeView *view = [[BadgeView alloc] initWithLib:lib];
@@ -62,8 +61,7 @@
 
 - (void)removeTorrent:(Torrent *)torrent
 {
-    if ([fHashes member:[torrent hashString]])
-    {
+    if ([fHashes member:[torrent hashString]]) {
         [fHashes removeObject:[torrent hashString]];
         if ([fHashes count] > 0)
             [[NSApp dockTile] setBadgeLabel:[NSString formattedUInteger:[fHashes count]]];
@@ -74,8 +72,7 @@
 
 - (void)clearCompleted
 {
-    if ([fHashes count] > 0)
-    {
+    if ([fHashes count] > 0) {
         [fHashes removeAllObjects];
         [[NSApp dockTile] setBadgeLabel:@""];
     }

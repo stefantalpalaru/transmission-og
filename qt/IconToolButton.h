@@ -10,8 +10,7 @@
 
 #include <QToolButton>
 
-class IconToolButton : public QToolButton
-{
+class IconToolButton : public QToolButton {
     Q_OBJECT
 
 public:

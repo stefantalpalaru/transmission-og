@@ -36,8 +36,7 @@ static void zeroes_completeness_func(
 }
 
 #define check_file_location(tor, i, expected_path) \
-    do \
-    { \
+    do { \
         char *path = tr_torrentFindFile(tor, i); \
         char *expected = expected_path; \
         check_str(path, ==, expected); \
@@ -45,8 +44,7 @@ static void zeroes_completeness_func(
         tr_free(path); \
     } while (0)
 
-struct test_incomplete_dir_data
-{
+struct test_incomplete_dir_data {
     tr_session *session;
     tr_torrent *tor;
     tr_block_index_t block;
@@ -112,16 +110,14 @@ static int test_incomplete_dir_impl(char const *incomplete_dir, char const *down
 
         tr_torGetPieceBlockRange(tor, data.pieceIndex, &first, &last);
 
-        for (tr_block_index_t block_index = first; block_index <= last; ++block_index)
-        {
+        for (tr_block_index_t block_index = first; block_index <= last; ++block_index) {
             evbuffer_add(data.buf, zero_block, tor->blockSize);
             data.block = block_index;
             data.done = false;
             data.offset = data.block * tor->blockSize;
             tr_runInEventThread(session, test_incomplete_dir_threadfunc, &data);
 
-            do
-            {
+            do {
                 tr_wait_msec(50);
             } while (!data.done);
         }
@@ -133,15 +129,13 @@ static int test_incomplete_dir_impl(char const *incomplete_dir, char const *down
     libttest_blockingTorrentVerify(tor);
     check_uint(tr_torrentStat(tor)->leftUntilDone, ==, 0);
 
-    while (completeness == completeness_unset && time(NULL) <= deadline)
-    {
+    while (completeness == completeness_unset && time(NULL) <= deadline) {
         tr_wait_msec(50);
     }
 
     check_int(completeness, ==, TR_SEED);
 
-    for (tr_file_index_t file_index = 0; file_index < tor->info.fileCount; ++file_index)
-    {
+    for (tr_file_index_t file_index = 0; file_index < tor->info.fileCount; ++file_index) {
         check_file_location(tor, file_index, tr_buildPath(download_dir, tor->info.files[file_index].name, NULL));
     }
 
@@ -156,20 +150,17 @@ static int test_incomplete_dir(void)
     int rv;
 
     /* test what happens when incompleteDir is a subdir of downloadDir*/
-    if ((rv = test_incomplete_dir_impl("Downloads/Incomplete", "Downloads")) != 0)
-    {
+    if ((rv = test_incomplete_dir_impl("Downloads/Incomplete", "Downloads")) != 0) {
         return rv;
     }
 
     /* test what happens when downloadDir is a subdir of incompleteDir */
-    if ((rv = test_incomplete_dir_impl("Downloads", "Downloads/Complete")) != 0)
-    {
+    if ((rv = test_incomplete_dir_impl("Downloads", "Downloads/Complete")) != 0) {
         return rv;
     }
 
     /* test what happens when downloadDir and incompleteDir are siblings */
-    if ((rv = test_incomplete_dir_impl("Incomplete", "Downloads")) != 0)
-    {
+    if ((rv = test_incomplete_dir_impl("Incomplete", "Downloads")) != 0) {
         return rv;
     }
 
@@ -203,8 +194,7 @@ static int test_set_location(void)
     state = -1;
     tr_torrentSetLocation(tor, target_dir, true, NULL, &state);
 
-    while (state == TR_LOC_MOVING && time(NULL) <= deadline)
-    {
+    while (state == TR_LOC_MOVING && time(NULL) <= deadline) {
         tr_wait_msec(50);
     }
 
@@ -217,8 +207,7 @@ static int test_set_location(void)
     /* confirm the filest really got moved */
     libttest_sync();
 
-    for (tr_file_index_t file_index = 0; file_index < tor->info.fileCount; ++file_index)
-    {
+    for (tr_file_index_t file_index = 0; file_index < tor->info.fileCount; ++file_index) {
         check_file_location(tor, file_index, tr_buildPath(target_dir, tor->info.files[file_index].name, NULL));
     }
 

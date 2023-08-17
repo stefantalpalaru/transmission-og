@@ -33,8 +33,7 @@ struct tr_torrent;
 typedef struct tr_peerMgr tr_peerMgr;
 
 /* added_f's bitwise-or'ed flags */
-enum
-{
+enum {
     /* true if the peer supports encryption */
     ADDED_F_ENCRYPTION_FLAG = 1,
     /* true if the peer is a seed or partial seed */
@@ -48,8 +47,7 @@ enum
     ADDED_F_CONNECTABLE = 16
 };
 
-typedef struct tr_pex
-{
+typedef struct tr_pex {
     tr_address addr;
     tr_port port; /* this field is in network byte order */
     uint8_t flags;
@@ -112,11 +110,7 @@ tr_pex *tr_peerMgrCompact6ToPex(
  */
 void tr_peerMgrAddPex(tr_torrent *tor, uint8_t from, tr_pex const *pex, int8_t seedProbability);
 
-enum
-{
-    TR_PEERS_CONNECTED,
-    TR_PEERS_INTERESTING
-};
+enum { TR_PEERS_CONNECTED, TR_PEERS_INTERESTING };
 
 int tr_peerMgrGetPeers(tr_torrent *tor, tr_pex **setme_pex, uint8_t address_type, uint8_t peer_list_mode, int max_peer_count);
 

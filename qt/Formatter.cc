@@ -16,8 +16,7 @@
 ****  Constants
 ***/
 
-namespace
-{
+namespace {
 
 unsigned int speed_K;
 unsigned int mem_K;
@@ -89,13 +88,11 @@ Speed Speed::fromKBps(double KBps)
 
 QString Formatter::memToString(int64_t bytes)
 {
-    if (bytes < 0)
-    {
+    if (bytes < 0) {
         return tr("Unknown");
     }
 
-    if (bytes == 0)
-    {
+    if (bytes == 0) {
         return tr("None");
     }
 
@@ -106,13 +103,11 @@ QString Formatter::memToString(int64_t bytes)
 
 QString Formatter::sizeToString(int64_t bytes)
 {
-    if (bytes < 0)
-    {
+    if (bytes < 0) {
         return tr("Unknown");
     }
 
-    if (bytes == 0)
-    {
+    if (bytes == 0) {
         return tr("None");
     }
 
@@ -165,8 +160,7 @@ QString Formatter::timeToString(int seconds)
     QString s;
     QString str;
 
-    if (seconds < 0)
-    {
+    if (seconds < 0) {
         seconds = 0;
     }
 
@@ -180,41 +174,25 @@ QString Formatter::timeToString(int seconds)
     m = tr("%Ln minute(s)", nullptr, minutes);
     s = tr("%Ln second(s)", nullptr, seconds);
 
-    if (days != 0)
-    {
-        if (days >= 4 || hours == 0)
-        {
+    if (days != 0) {
+        if (days >= 4 || hours == 0) {
             str = d;
-        }
-        else
-        {
+        } else {
             str = tr("%1, %2").arg(d).arg(h);
         }
-    }
-    else if (hours != 0)
-    {
-        if (hours >= 4 || minutes == 0)
-        {
+    } else if (hours != 0) {
+        if (hours >= 4 || minutes == 0) {
             str = h;
-        }
-        else
-        {
+        } else {
             str = tr("%1, %2").arg(h).arg(m);
         }
-    }
-    else if (minutes != 0)
-    {
-        if (minutes >= 4 || seconds == 0)
-        {
+    } else if (minutes != 0) {
+        if (minutes >= 4 || seconds == 0) {
             str = m;
-        }
-        else
-        {
+        } else {
             str = tr("%1, %2").arg(m).arg(s);
         }
-    }
-    else
-    {
+    } else {
         str = s;
     }
 

@@ -25,13 +25,11 @@
 class Prefs;
 class Session;
 
-extern "C"
-{
-    struct tr_variant;
+extern "C" {
+struct tr_variant;
 }
 
-class OptionsDialog : public BaseDialog
-{
+class OptionsDialog : public BaseDialog {
     Q_OBJECT
 
 public:

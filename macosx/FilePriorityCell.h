@@ -24,8 +24,7 @@
 
 #import "FileOutlineView.h"
 
-@interface FilePriorityCell : NSSegmentedCell
-{
+@interface FilePriorityCell : NSSegmentedCell {
     BOOL fHoverRow;
 }
 

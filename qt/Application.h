@@ -23,8 +23,7 @@ class TorrentModel;
 class MainWindow;
 class WatchDir;
 
-class Application : public QApplication
-{
+class Application : public QApplication {
     Q_OBJECT
 
 public:

@@ -14,8 +14,7 @@ bool InteropHelper::isConnected() const
 {
 #ifdef ENABLE_DBUS_INTEROP
 
-    if (myDbusClient.isConnected())
-    {
+    if (myDbusClient.isConnected()) {
         return true;
     }
 
@@ -23,8 +22,7 @@ bool InteropHelper::isConnected() const
 
 #ifdef ENABLE_COM_INTEROP
 
-    if (myComClient.isConnected())
-    {
+    if (myComClient.isConnected()) {
         return true;
     }
 
@@ -40,8 +38,7 @@ bool InteropHelper::addMetainfo(QString const &metainfo)
     {
         QVariant const response = myDbusClient.addMetainfo(metainfo);
 
-        if (response.isValid() && response.toBool())
-        {
+        if (response.isValid() && response.toBool()) {
             return true;
         }
     }
@@ -53,8 +50,7 @@ bool InteropHelper::addMetainfo(QString const &metainfo)
     {
         QVariant const response = myComClient.addMetainfo(metainfo);
 
-        if (response.isValid() && response.toBool())
-        {
+        if (response.isValid() && response.toBool()) {
             return true;
         }
     }

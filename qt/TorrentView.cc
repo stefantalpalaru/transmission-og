@@ -12,8 +12,7 @@
 
 #include "TorrentView.h"
 
-class TorrentView::HeaderWidget : public QWidget
-{
+class TorrentView::HeaderWidget : public QWidget {
 public:
     HeaderWidget(TorrentView *parent)
         : QWidget(parent)
@@ -67,8 +66,7 @@ private:
 TorrentView::TorrentView(QWidget *parent)
     : QListView(parent)
     , myHeaderWidget(new HeaderWidget(this))
-{
-}
+{}
 
 void TorrentView::setHeaderText(QString const &text)
 {
@@ -77,8 +75,7 @@ void TorrentView::setHeaderText(QString const &text)
     myHeaderWidget->setText(text);
     myHeaderWidget->setVisible(headerVisible);
 
-    if (headerVisible)
-    {
+    if (headerVisible) {
         adjustHeaderPosition();
     }
 
@@ -89,8 +86,7 @@ void TorrentView::resizeEvent(QResizeEvent *event)
 {
     QListView::resizeEvent(event);
 
-    if (myHeaderWidget->isVisible())
-    {
+    if (myHeaderWidget->isVisible()) {
         adjustHeaderPosition();
     }
 }

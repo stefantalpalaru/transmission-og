@@ -18,13 +18,11 @@ class QAbstractButton;
 
 class Session;
 
-extern "C"
-{
-    struct tr_metainfo_builder;
+extern "C" {
+struct tr_metainfo_builder;
 }
 
-class MakeDialog : public BaseDialog
-{
+class MakeDialog : public BaseDialog {
     Q_OBJECT
 
 public:

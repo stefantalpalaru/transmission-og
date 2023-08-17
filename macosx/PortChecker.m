@@ -37,8 +37,7 @@
 
 - (id)initForPort:(NSInteger)portNumber delay:(BOOL)delay withDelegate:(id)delegate
 {
-    if ((self = [super init]))
-    {
+    if ((self = [super init])) {
         fDelegate = delegate;
 
         fStatus = PORT_STATUS_CHECKING;
@@ -92,20 +91,16 @@
     NSString *probeString = [[NSString alloc] initWithData:fPortProbeData encoding:NSUTF8StringEncoding];
     fPortProbeData = nil;
 
-    if (probeString)
-    {
+    if (probeString) {
         if ([probeString isEqualToString:@"1"])
             [self callBackWithStatus:PORT_STATUS_OPEN];
         else if ([probeString isEqualToString:@"0"])
             [self callBackWithStatus:PORT_STATUS_CLOSED];
-        else
-        {
+        else {
             NSLog(@"Unable to get port status: invalid response (%@)", probeString);
             [self callBackWithStatus:PORT_STATUS_ERROR];
         }
-    }
-    else
-    {
+    } else {
         NSLog(@"Unable to get port status: invalid data received");
         [self callBackWithStatus:PORT_STATUS_ERROR];
     }
@@ -125,8 +120,7 @@
 
     if ((fConnection = [[NSURLConnection alloc] initWithRequest:portProbeRequest delegate:self]))
         fPortProbeData = [[NSMutableData alloc] init];
-    else
-    {
+    else {
         NSLog(@"Unable to get port status: failed to initiate connection");
         [self callBackWithStatus:PORT_STATUS_ERROR];
     }

@@ -21,19 +21,12 @@ struct tr_torrent_tiers;
  * ***  Tracker Publish / Subscribe
  * **/
 
-typedef enum
-{
-    TR_TRACKER_WARNING,
-    TR_TRACKER_ERROR,
-    TR_TRACKER_ERROR_CLEAR,
-    TR_TRACKER_PEERS
-} TrackerEventType;
+typedef enum { TR_TRACKER_WARNING, TR_TRACKER_ERROR, TR_TRACKER_ERROR_CLEAR, TR_TRACKER_PEERS } TrackerEventType;
 
 struct tr_pex;
 
 /** @brief Notification object to tell listeners about announce or scrape occurences */
-typedef struct
-{
+typedef struct {
     /* what type of event this is */
     TrackerEventType messageType;
 
@@ -79,12 +72,7 @@ void tr_announcerTorrentStarted(tr_torrent *);
 void tr_announcerTorrentStopped(tr_torrent *);
 void tr_announcerTorrentCompleted(tr_torrent *);
 
-enum
-{
-    TR_ANN_UP,
-    TR_ANN_DOWN,
-    TR_ANN_CORRUPT
-};
+enum { TR_ANN_UP, TR_ANN_DOWN, TR_ANN_CORRUPT };
 
 void tr_announcerAddBytes(tr_torrent *, int up_down_or_corrupt, uint32_t byteCount);
 

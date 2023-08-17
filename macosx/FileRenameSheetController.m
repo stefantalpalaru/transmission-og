@@ -122,8 +122,7 @@ typedef void (^CompletionBlock)(BOOL);
     void (^completionHandler)(BOOL) = ^(BOOL didRename) {
         if (didRename)
             [NSApp endSheet:[self window] returnCode:NSOKButton];
-        else
-        {
+        else {
 #warning more thorough error
             NSBeep();
         }

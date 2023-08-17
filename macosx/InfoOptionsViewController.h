@@ -24,8 +24,7 @@
 
 #import "InfoViewController.h"
 
-@interface InfoOptionsViewController : NSViewController<InfoViewController>
-{
+@interface InfoOptionsViewController : NSViewController<InfoViewController> {
     NSArray *fTorrents;
 
     BOOL fSet;

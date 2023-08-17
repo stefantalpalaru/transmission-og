@@ -14,8 +14,7 @@
 
 typedef void (*VariantWalkFunc)(tr_variant const *val, void *user_data);
 
-struct VariantWalkFuncs
-{
+struct VariantWalkFuncs {
     VariantWalkFunc intFunc;
     VariantWalkFunc boolFunc;
     VariantWalkFunc realFunc;

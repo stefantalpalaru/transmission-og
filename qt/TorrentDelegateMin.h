@@ -10,15 +10,13 @@
 
 #include "TorrentDelegate.h"
 
-class TorrentDelegateMin : public TorrentDelegate
-{
+class TorrentDelegateMin : public TorrentDelegate {
     Q_OBJECT
 
 public:
     explicit TorrentDelegateMin(QObject *parent = nullptr)
         : TorrentDelegate(parent)
-    {
-    }
+    {}
 
 protected:
     // TorrentDelegate

@@ -22,24 +22,15 @@
 #include "utils.h"
 #include "variant.h"
 
-typedef enum
-{
-    TR_NET_OK,
-    TR_NET_ERROR,
-    TR_NET_WAIT
-} tr_tristate_t;
+typedef enum { TR_NET_OK, TR_NET_ERROR, TR_NET_WAIT } tr_tristate_t;
 
-typedef enum
-{
+typedef enum {
     TR_AUTO_SWITCH_UNUSED,
     TR_AUTO_SWITCH_ON,
     TR_AUTO_SWITCH_OFF,
 } tr_auto_switch_state_t;
 
-enum
-{
-    PEER_ID_LEN = 20
-};
+enum { PEER_ID_LEN = 20 };
 
 void tr_peerIdInit(uint8_t *setme);
 
@@ -54,8 +45,7 @@ struct tr_cache;
 struct tr_fdInfo;
 struct tr_device_info;
 
-struct tr_turtle_info
-{
+struct tr_turtle_info {
     /* TR_UP and TR_DOWN speed limits */
     unsigned int speedLimit_Bps[2];
 
@@ -94,8 +84,7 @@ struct tr_turtle_info
 };
 
 /** @brief handle to an active libtransmission session */
-struct tr_session
-{
+struct tr_session {
     bool isPortRandom;
     bool isPexEnabled;
     bool isDHTEnabled;
@@ -257,8 +246,7 @@ int tr_sessionCountTorrents(tr_session const *session);
 
 tr_torrent **tr_sessionGetTorrents(tr_session *session, int *setme_n);
 
-enum
-{
+enum {
     SESSION_MAGIC_NUMBER = 3845,
 };
 

@@ -53,8 +53,7 @@ static int test_magnet_link(void)
 
 static int test_metainfo(void)
 {
-    struct
-    {
+    struct {
         int expected_benc_err;
         int expected_parse_result;
         void const *benc;
@@ -82,14 +81,12 @@ static int test_metainfo(void)
 
     tr_logSetLevel(0); /* yes, we already know these will generate errors, thank you... */
 
-    for (size_t i = 0; i < TR_N_ELEMENTS(metainfo); i++)
-    {
+    for (size_t i = 0; i < TR_N_ELEMENTS(metainfo); i++) {
         tr_ctor *ctor = tr_ctorNew(NULL);
         int const err = tr_ctorSetMetainfo(ctor, metainfo[i].benc, strlen(metainfo[i].benc));
         check_int(err, ==, metainfo[i].expected_benc_err);
 
-        if (err == 0)
-        {
+        if (err == 0) {
             tr_parse_result const parse_result = tr_torrentParse(ctor, NULL);
             check_int(parse_result, ==, metainfo[i].expected_parse_result);
         }
@@ -102,8 +99,7 @@ static int test_metainfo(void)
 
 static int test_sanitize(void)
 {
-    struct
-    {
+    struct {
         char const *str;
         size_t len;
         char const *expected_result;
@@ -145,15 +141,13 @@ static int test_sanitize(void)
         { "compass", 7, "compass", false },
     };
 
-    for (size_t i = 0; i < TR_N_ELEMENTS(test_data); ++i)
-    {
+    for (size_t i = 0; i < TR_N_ELEMENTS(test_data); ++i) {
         bool is_adjusted;
         char *const result = tr_metainfo_sanitize_path_component(test_data[i].str, test_data[i].len, &is_adjusted);
 
         check_str(result, ==, test_data[i].expected_result);
 
-        if (test_data[i].expected_result != NULL)
-        {
+        if (test_data[i].expected_result != NULL) {
             check_bool(is_adjusted, ==, test_data[i].expected_is_adjusted);
         }
 

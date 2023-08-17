@@ -56,8 +56,7 @@ static int test_single_file_impl(
     check_str(builder->comment, ==, comment);
     check_int(builder->trackerCount, ==, trackerCount);
 
-    while (!builder->isDone)
-    {
+    while (!builder->isDone) {
         tr_wait_msec(100);
     }
 
@@ -146,8 +145,7 @@ static int test_single_directory_impl(
     files = tr_new(char *, payloadCount);
     totalSize = 0;
 
-    for (size_t i = 0; i < payloadCount; i++)
-    {
+    for (size_t i = 0; i < payloadCount; i++) {
         char tmpl[16];
         tr_snprintf(tmpl, sizeof(tmpl), "file.%04zu%s", i, "XXXXXX");
         files[i] = tr_buildPath(top, tmpl, NULL);
@@ -165,8 +163,7 @@ static int test_single_directory_impl(
     check_int(builder->totalSize, ==, totalSize);
     check(builder->isFolder);
 
-    for (size_t i = 0; i < builder->fileCount; i++)
-    {
+    for (size_t i = 0; i < builder->fileCount; i++) {
         check_str(builder->files[i].filename, ==, files[i]);
         check_int(builder->files[i].size, ==, payloadSizes[i]);
     }
@@ -179,8 +176,7 @@ static int test_single_directory_impl(
     check_str(builder->comment, ==, comment);
     check_int(builder->trackerCount, ==, trackerCount);
 
-    while (!builder->isDone)
-    {
+    while (!builder->isDone) {
         tr_wait_msec(100);
     }
 
@@ -208,8 +204,7 @@ static int test_single_directory_impl(
     tr_metainfoFree(&inf);
     tr_metaInfoBuilderFree(builder);
 
-    for (size_t i = 0; i < payloadCount; i++)
-    {
+    for (size_t i = 0; i < payloadCount; i++) {
         tr_free(files[i]);
     }
 
@@ -238,8 +233,7 @@ static int test_single_directory_random_payload_impl(
     payloads = tr_new0(void *, payloadCount);
     payloadSizes = tr_new0(size_t, payloadCount);
 
-    for (size_t i = 0; i < payloadCount; i++)
-    {
+    for (size_t i = 0; i < payloadCount; i++) {
         size_t const n = 1 + tr_rand_int_weak(maxFileSize);
         payloads[i] = tr_new(char, n);
         tr_rand_buffer(payloads[i], n);
@@ -250,8 +244,7 @@ static int test_single_directory_random_payload_impl(
     test_single_directory_impl(trackers, trackerCount, (void const **)payloads, payloadSizes, payloadCount, comment, isPrivate);
 
     /* cleanup */
-    for (size_t i = 0; i < payloadCount; i++)
-    {
+    for (size_t i = 0; i < payloadCount; i++) {
         tr_free(payloads[i]);
     }
 
@@ -281,8 +274,7 @@ static int test_single_directory_random_payload(void)
     comment = "This is the comment";
     isPrivate = false;
 
-    for (size_t i = 0; i < 10; i++)
-    {
+    for (size_t i = 0; i < 10; i++) {
         test_single_directory_random_payload_impl(
             trackers,
             trackerCount,

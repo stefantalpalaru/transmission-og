@@ -10,13 +10,11 @@
 
 QIcon::Mode StyleHelper::getIconMode(QStyle::State state)
 {
-    if (!state.testFlag(QStyle::State_Enabled))
-    {
+    if (!state.testFlag(QStyle::State_Enabled)) {
         return QIcon::Disabled;
     }
 
-    if (state.testFlag(QStyle::State_Selected))
-    {
+    if (state.testFlag(QStyle::State_Selected)) {
         return QIcon::Selected;
     }
 

@@ -10,8 +10,7 @@
 
 #include <QDialog>
 
-class BaseDialog : public QDialog
-{
+class BaseDialog : public QDialog {
 public:
     BaseDialog(QWidget *parent = nullptr, Qt::WindowFlags flags = Qt::Widget)
         : QDialog(parent, flags)

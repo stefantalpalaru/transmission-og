@@ -26,11 +26,9 @@
 {
     NSArray *torrents = [(Controller *)[NSApp delegate] selectedTorrents];
     NSMutableArray *fileURLs = [NSMutableArray arrayWithCapacity:[torrents count]];
-    for (Torrent *torrent in torrents)
-    {
+    for (Torrent *torrent in torrents) {
         NSString *location = [torrent torrentLocation];
-        if ([location length] > 0)
-        {
+        if ([location length] > 0) {
             [fileURLs addObject:[NSURL fileURLWithPath:location]];
         }
     }
@@ -41,8 +39,7 @@
 {
     NSArray *services = [NSSharingService sharingServicesForItems:[self shareTorrentURLs]];
     NSMutableArray *items = [NSMutableArray arrayWithCapacity:[services count]];
-    for (NSSharingService *service in services)
-    {
+    for (NSSharingService *service in services) {
         NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:service.title // 10.9: change to menuItemTitle
                                                       action:@selector(performShareAction:)
                                                keyEquivalent:@""];

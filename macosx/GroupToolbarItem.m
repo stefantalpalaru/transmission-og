@@ -47,8 +47,7 @@
     [menu setAutoenablesItems:NO];
 
     NSInteger const count = [(NSSegmentedControl *)[self view] segmentCount];
-    for (NSInteger i = 0; i < count; i++)
-    {
+    for (NSInteger i = 0; i < count; i++) {
         NSMenuItem *addItem = [[NSMenuItem alloc] initWithTitle:labels[i] action:[self action] keyEquivalent:@""];
         [addItem setTarget:[self target]];
         [addItem setTag:i];

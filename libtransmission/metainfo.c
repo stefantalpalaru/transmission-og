@@ -42,10 +42,8 @@ static char *metainfoGetBasenameNameAndPartialHash(tr_info const *inf)
     size_t const name_len = strlen(name);
     char *ret = tr_strdup_printf("%s.%16.16s", name, inf->hashString);
 
-    for (size_t i = 0; i < name_len; ++i)
-    {
-        if (char_is_path_separator(ret[i]))
-        {
+    for (size_t i = 0; i < name_len; ++i) {
+        if (char_is_path_separator(ret[i])) {
             ret[i] = '_';
         }
     }
@@ -60,8 +58,7 @@ static char *metainfoGetBasenameHashOnly(tr_info const *inf)
 
 char *tr_metainfoGetBasename(tr_info const *inf, enum tr_metainfo_basename_format format)
 {
-    switch (format)
-    {
+    switch (format) {
     case TR_METAINFO_BASENAME_NAME_AND_PARTIAL_HASH:
         return metainfoGetBasenameNameAndPartialHash(inf);
 
@@ -88,8 +85,7 @@ static char *getTorrentFilename(tr_session const *session, tr_info const *inf, e
 
 char *tr_metainfo_sanitize_path_component(char const *str, size_t len, bool *is_adjusted)
 {
-    if (len == 0 || (len == 1 && str[0] == '.'))
-    {
+    if (len == 0 || (len == 1 && str[0] == '.')) {
         return NULL;
     }
 
@@ -106,21 +102,17 @@ char *tr_metainfo_sanitize_path_component(char const *str, size_t len, bool *is_
     memcpy(ret, str, len);
     ret[len] = '\0';
 
-    for (size_t i = 0; i < len; ++i)
-    {
-        if (strchr(reserved_chars, ret[i]) != NULL || (unsigned char)ret[i] < 0x20)
-        {
+    for (size_t i = 0; i < len; ++i) {
+        if (strchr(reserved_chars, ret[i]) != NULL || (unsigned char)ret[i] < 0x20) {
             ret[i] = '_';
             *is_adjusted = true;
         }
     }
 
-    for (size_t i = 0; i < TR_N_ELEMENTS(reserved_names); ++i)
-    {
+    for (size_t i = 0; i < TR_N_ELEMENTS(reserved_names); ++i) {
         size_t const reserved_name_len = strlen(reserved_names[i]);
         if (evutil_ascii_strncasecmp(ret, reserved_names[i], reserved_name_len) != 0 ||
-            (ret[reserved_name_len] != '\0' && ret[reserved_name_len] != '.'))
-        {
+            (ret[reserved_name_len] != '\0' && ret[reserved_name_len] != '.')) {
             continue;
         }
 
@@ -134,24 +126,20 @@ char *tr_metainfo_sanitize_path_component(char const *str, size_t len, bool *is_
     size_t start_pos = 0;
     size_t end_pos = len;
 
-    while (start_pos < len && ret[start_pos] == ' ')
-    {
+    while (start_pos < len && ret[start_pos] == ' ') {
         ++start_pos;
     }
 
-    while (end_pos > start_pos && (ret[end_pos - 1] == ' ' || ret[end_pos - 1] == '.'))
-    {
+    while (end_pos > start_pos && (ret[end_pos - 1] == ' ' || ret[end_pos - 1] == '.')) {
         --end_pos;
     }
 
-    if (start_pos == end_pos)
-    {
+    if (start_pos == end_pos) {
         tr_free(ret);
         return NULL;
     }
 
-    if (start_pos != 0 || end_pos != len)
-    {
+    if (start_pos != 0 || end_pos != len) {
         len = end_pos - start_pos;
         memmove(ret, &ret[start_pos], len);
         ret[len] = '\0';
@@ -169,28 +157,24 @@ static bool getfile(char **setme, bool *is_adjusted, char const *root, tr_varian
     *setme = NULL;
     *is_adjusted = false;
 
-    if (tr_variantIsList(path))
-    {
+    if (tr_variantIsList(path)) {
         success = true;
         evbuffer_drain(buf, evbuffer_get_length(buf));
         root_len = strlen(root);
         evbuffer_add(buf, root, root_len);
 
-        for (int i = 0, n = tr_variantListSize(path); i < n; i++)
-        {
+        for (int i = 0, n = tr_variantListSize(path); i < n; i++) {
             size_t len;
             char const *str;
 
-            if (!tr_variantGetStr(tr_variantListChild(path, i), &str, &len))
-            {
+            if (!tr_variantGetStr(tr_variantListChild(path, i), &str, &len)) {
                 success = false;
                 break;
             }
 
             bool is_component_adjusted;
             char *final_str = tr_metainfo_sanitize_path_component(str, len, &is_component_adjusted);
-            if (final_str == NULL)
-            {
+            if (final_str == NULL) {
                 continue;
             }
 
@@ -203,20 +187,17 @@ static bool getfile(char **setme, bool *is_adjusted, char const *root, tr_varian
         }
     }
 
-    if (success && evbuffer_get_length(buf) <= root_len)
-    {
+    if (success && evbuffer_get_length(buf) <= root_len) {
         success = false;
     }
 
-    if (success)
-    {
+    if (success) {
         char const *const buf_data = (char *)evbuffer_pullup(buf, -1);
         size_t const buf_len = evbuffer_get_length(buf);
 
         *setme = tr_utf8clean(buf_data, buf_len);
 
-        if (!*is_adjusted)
-        {
+        if (!*is_adjusted) {
             *is_adjusted = buf_len != strlen(*setme) || strncmp(buf_data, *setme, buf_len) != 0;
         }
     }
@@ -232,8 +213,7 @@ static char const *parseFiles(tr_info *inf, tr_variant *files, tr_variant const 
 
     bool is_root_adjusted;
     char *const root_name = tr_metainfo_sanitize_path_component(inf->name, strlen(inf->name), &is_root_adjusted);
-    if (root_name == NULL)
-    {
+    if (root_name == NULL) {
         return "path";
     }
 
@@ -250,37 +230,31 @@ static char const *parseFiles(tr_info *inf, tr_variant *files, tr_variant const 
         inf->fileCount = tr_variantListSize(files);
         inf->files = tr_new0(tr_file, inf->fileCount);
 
-        for (tr_file_index_t i = 0; i < inf->fileCount; i++)
-        {
+        for (tr_file_index_t i = 0; i < inf->fileCount; i++) {
             tr_variant *file;
             tr_variant *path;
 
             file = tr_variantListChild(files, i);
 
-            if (!tr_variantIsDict(file))
-            {
+            if (!tr_variantIsDict(file)) {
                 result = "files";
                 break;
             }
 
-            if (!tr_variantDictFindList(file, TR_KEY_path_utf_8, &path))
-            {
-                if (!tr_variantDictFindList(file, TR_KEY_path, &path))
-                {
+            if (!tr_variantDictFindList(file, TR_KEY_path_utf_8, &path)) {
+                if (!tr_variantDictFindList(file, TR_KEY_path, &path)) {
                     result = "path";
                     break;
                 }
             }
 
             bool is_file_adjusted;
-            if (!getfile(&inf->files[i].name, &is_file_adjusted, root_name, path, buf))
-            {
+            if (!getfile(&inf->files[i].name, &is_file_adjusted, root_name, path, buf)) {
                 result = "path";
                 break;
             }
 
-            if (!tr_variantDictFindInt(file, TR_KEY_length, &len))
-            {
+            if (!tr_variantDictFindInt(file, TR_KEY_length, &len)) {
                 result = "length";
                 break;
             }
@@ -291,8 +265,7 @@ static char const *parseFiles(tr_info *inf, tr_variant *files, tr_variant const 
         }
 
         evbuffer_free(buf);
-    }
-    else if (tr_variantGetInt(length, &len)) /* single-file mode */
+    } else if (tr_variantGetInt(length, &len)) /* single-file mode */
     {
         inf->isFolder = false;
         inf->fileCount = 1;
@@ -301,9 +274,7 @@ static char const *parseFiles(tr_info *inf, tr_variant *files, tr_variant const 
         inf->files[0].length = len;
         inf->files[0].is_renamed = is_root_adjusted;
         inf->totalSize += len;
-    }
-    else
-    {
+    } else {
         result = "length";
     }
 
@@ -324,8 +295,7 @@ static char *tr_convertAnnounceToScrape(char const *announce)
 
     char const *s = strrchr(announce, '/');
 
-    if (s != NULL && strncmp(s + 1, "announce", 8) == 0)
-    {
+    if (s != NULL && strncmp(s + 1, "announce", 8) == 0) {
         char const *prefix = announce;
         size_t const prefix_len = s + 1 - announce;
         char const *suffix = s + 1 + 8;
@@ -346,8 +316,7 @@ static char *tr_convertAnnounceToScrape(char const *announce)
         TR_ASSERT((size_t)(walk - scrape) == alloc_len);
     }
     /* Some torrents with UDP announce URLs don't have /announce. */
-    else if (strncmp(announce, "udp:", 4) == 0)
-    {
+    else if (strncmp(announce, "udp:", 4) == 0) {
         scrape = tr_strdup(announce);
     }
 
@@ -363,38 +332,30 @@ static char const *getannounce(tr_info *inf, tr_variant *meta)
     tr_variant *tiers;
 
     /* Announce-list */
-    if (tr_variantDictFindList(meta, TR_KEY_announce_list, &tiers))
-    {
+    if (tr_variantDictFindList(meta, TR_KEY_announce_list, &tiers)) {
         int n;
         int const numTiers = tr_variantListSize(tiers);
 
         n = 0;
 
-        for (int i = 0; i < numTiers; i++)
-        {
+        for (int i = 0; i < numTiers; i++) {
             n += tr_variantListSize(tr_variantListChild(tiers, i));
         }
 
         trackers = tr_new0(tr_tracker_info, n);
 
-        for (int i = 0, validTiers = 0; i < numTiers; i++)
-        {
+        for (int i = 0, validTiers = 0; i < numTiers; i++) {
             tr_variant *tier = tr_variantListChild(tiers, i);
             int const tierSize = tr_variantListSize(tier);
             bool anyAdded = false;
 
-            for (int j = 0; j < tierSize; j++)
-            {
-                if (tr_variantGetStr(tr_variantListChild(tier, j), &str, &len))
-                {
+            for (int j = 0; j < tierSize; j++) {
+                if (tr_variantGetStr(tr_variantListChild(tier, j), &str, &len)) {
                     char *url = tr_strstrip(tr_strndup(str, len));
 
-                    if (!tr_urlIsValidTracker(url))
-                    {
+                    if (!tr_urlIsValidTracker(url)) {
                         tr_free(url);
-                    }
-                    else
-                    {
+                    } else {
                         tr_tracker_info *t = trackers + trackerCount;
                         t->tier = validTiers;
                         t->announce = url;
@@ -407,31 +368,25 @@ static char const *getannounce(tr_info *inf, tr_variant *meta)
                 }
             }
 
-            if (anyAdded)
-            {
+            if (anyAdded) {
                 ++validTiers;
             }
         }
 
         /* did we use any of the tiers? */
-        if (trackerCount == 0)
-        {
+        if (trackerCount == 0) {
             tr_free(trackers);
             trackers = NULL;
         }
     }
 
     /* Regular announce value */
-    if (trackerCount == 0 && tr_variantDictFindStr(meta, TR_KEY_announce, &str, &len))
-    {
+    if (trackerCount == 0 && tr_variantDictFindStr(meta, TR_KEY_announce, &str, &len)) {
         char *url = tr_strstrip(tr_strndup(str, len));
 
-        if (!tr_urlIsValidTracker(url))
-        {
+        if (!tr_urlIsValidTracker(url)) {
             tr_free(url);
-        }
-        else
-        {
+        } else {
             trackers = tr_new0(tr_tracker_info, 1);
             trackers[trackerCount].tier = 0;
             trackers[trackerCount].announce = url;
@@ -469,14 +424,10 @@ static char *fix_webseed_url(tr_info const *inf, char const *url_in)
     tr_strstrip(url);
     len = strlen(url);
 
-    if (tr_urlIsValid(url, len))
-    {
-        if (inf->fileCount > 1 && len > 0 && url[len - 1] != '/')
-        {
+    if (tr_urlIsValid(url, len)) {
+        if (inf->fileCount > 1 && len > 0 && url[len - 1] != '/') {
             ret = tr_strdup_printf("%*.*s/", (int)len, (int)len, url);
-        }
-        else
-        {
+        } else {
             ret = tr_strndup(url, len);
         }
     }
@@ -490,32 +441,26 @@ static void geturllist(tr_info *inf, tr_variant *meta)
     tr_variant *urls;
     char const *url;
 
-    if (tr_variantDictFindList(meta, TR_KEY_url_list, &urls))
-    {
+    if (tr_variantDictFindList(meta, TR_KEY_url_list, &urls)) {
         int const n = tr_variantListSize(urls);
 
         inf->webseedCount = 0;
         inf->webseeds = tr_new0(char *, n);
 
-        for (int i = 0; i < n; i++)
-        {
-            if (tr_variantGetStr(tr_variantListChild(urls, i), &url, NULL))
-            {
+        for (int i = 0; i < n; i++) {
+            if (tr_variantGetStr(tr_variantListChild(urls, i), &url, NULL)) {
                 char *fixed_url = fix_webseed_url(inf, url);
 
-                if (fixed_url != NULL)
-                {
+                if (fixed_url != NULL) {
                     inf->webseeds[inf->webseedCount++] = fixed_url;
                 }
             }
         }
-    }
-    else if (tr_variantDictFindStr(meta, TR_KEY_url_list, &url, NULL)) /* handle single items in webseeds */
+    } else if (tr_variantDictFindStr(meta, TR_KEY_url_list, &url, NULL)) /* handle single items in webseeds */
     {
         char *fixed_url = fix_webseed_url(inf, url);
 
-        if (fixed_url != NULL)
-        {
+        if (fixed_url != NULL) {
             inf->webseedCount = 1;
             inf->webseeds = tr_new0(char *, 1);
             inf->webseeds[0] = fixed_url;
@@ -545,26 +490,21 @@ static char const *tr_metainfoParseImpl(
      * dictionary, given the definition of the info key above. */
     b = tr_variantDictFindDict(meta, TR_KEY_info, &infoDict);
 
-    if (hasInfoDict != NULL)
-    {
+    if (hasInfoDict != NULL) {
         *hasInfoDict = b;
     }
 
-    if (!b)
-    {
+    if (!b) {
         /* no info dictionary... is this a magnet link? */
-        if (tr_variantDictFindDict(meta, TR_KEY_magnet_info, &d))
-        {
+        if (tr_variantDictFindDict(meta, TR_KEY_magnet_info, &d)) {
             isMagnet = true;
 
             /* get the info-hash */
-            if (!tr_variantDictFindRaw(d, TR_KEY_info_hash, &raw, &len))
-            {
+            if (!tr_variantDictFindRaw(d, TR_KEY_info_hash, &raw, &len)) {
                 return "info_hash";
             }
 
-            if (len != SHA_DIGEST_LENGTH)
-            {
+            if (len != SHA_DIGEST_LENGTH) {
                 return "info_hash";
             }
 
@@ -572,38 +512,31 @@ static char const *tr_metainfoParseImpl(
             tr_sha1_to_hex(inf->hashString, inf->hash);
 
             /* maybe get the display name */
-            if (tr_variantDictFindStr(d, TR_KEY_display_name, &str, &len))
-            {
+            if (tr_variantDictFindStr(d, TR_KEY_display_name, &str, &len)) {
                 tr_free(inf->name);
                 tr_free(inf->originalName);
                 inf->name = tr_strndup(str, len);
                 inf->originalName = tr_strndup(str, len);
             }
 
-            if (inf->name == NULL)
-            {
+            if (inf->name == NULL) {
                 inf->name = tr_strdup(inf->hashString);
             }
 
-            if (inf->originalName == NULL)
-            {
+            if (inf->originalName == NULL) {
                 inf->originalName = tr_strdup(inf->hashString);
             }
-        }
-        else /* not a magnet link and has no info dict... */
+        } else /* not a magnet link and has no info dict... */
         {
             return "info";
         }
-    }
-    else
-    {
+    } else {
         size_t len;
         char *bstr = tr_variantToStr(infoDict, TR_VARIANT_FMT_BENC, &len);
         tr_sha1(inf->hash, bstr, (int)len, NULL);
         tr_sha1_to_hex(inf->hashString, inf->hash);
 
-        if (infoDictLength != NULL)
-        {
+        if (infoDictLength != NULL) {
             *infoDictLength = len;
         }
 
@@ -611,20 +544,16 @@ static char const *tr_metainfoParseImpl(
     }
 
     /* name */
-    if (!isMagnet)
-    {
+    if (!isMagnet) {
         len = 0;
 
-        if (!tr_variantDictFindStr(infoDict, TR_KEY_name_utf_8, &str, &len))
-        {
-            if (!tr_variantDictFindStr(infoDict, TR_KEY_name, &str, &len))
-            {
+        if (!tr_variantDictFindStr(infoDict, TR_KEY_name_utf_8, &str, &len)) {
+            if (!tr_variantDictFindStr(infoDict, TR_KEY_name, &str, &len)) {
                 str = "";
             }
         }
 
-        if (tr_str_is_empty(str))
-        {
+        if (tr_str_is_empty(str)) {
             return "name";
         }
 
@@ -637,10 +566,8 @@ static char const *tr_metainfoParseImpl(
     /* comment */
     len = 0;
 
-    if (!tr_variantDictFindStr(meta, TR_KEY_comment_utf_8, &str, &len))
-    {
-        if (!tr_variantDictFindStr(meta, TR_KEY_comment, &str, &len))
-        {
+    if (!tr_variantDictFindStr(meta, TR_KEY_comment_utf_8, &str, &len)) {
+        if (!tr_variantDictFindStr(meta, TR_KEY_comment, &str, &len)) {
             str = "";
         }
     }
@@ -651,10 +578,8 @@ static char const *tr_metainfoParseImpl(
     /* created by */
     len = 0;
 
-    if (!tr_variantDictFindStr(meta, TR_KEY_created_by_utf_8, &str, &len))
-    {
-        if (!tr_variantDictFindStr(meta, TR_KEY_created_by, &str, &len))
-        {
+    if (!tr_variantDictFindStr(meta, TR_KEY_created_by_utf_8, &str, &len)) {
+        if (!tr_variantDictFindStr(meta, TR_KEY_created_by, &str, &len)) {
             str = "";
         }
     }
@@ -663,18 +588,15 @@ static char const *tr_metainfoParseImpl(
     inf->creator = tr_utf8clean(str, len);
 
     /* creation date */
-    if (!tr_variantDictFindInt(meta, TR_KEY_creation_date, &i))
-    {
+    if (!tr_variantDictFindInt(meta, TR_KEY_creation_date, &i)) {
         i = 0;
     }
 
     inf->dateCreated = i;
 
     /* private */
-    if (!tr_variantDictFindInt(infoDict, TR_KEY_private, &i))
-    {
-        if (!tr_variantDictFindInt(meta, TR_KEY_private, &i))
-        {
+    if (!tr_variantDictFindInt(infoDict, TR_KEY_private, &i)) {
+        if (!tr_variantDictFindInt(meta, TR_KEY_private, &i)) {
             i = 0;
         }
     }
@@ -682,10 +604,8 @@ static char const *tr_metainfoParseImpl(
     inf->isPrivate = i != 0;
 
     /* piece length */
-    if (!isMagnet)
-    {
-        if (!tr_variantDictFindInt(infoDict, TR_KEY_piece_length, &i) || (i < 1))
-        {
+    if (!isMagnet) {
+        if (!tr_variantDictFindInt(infoDict, TR_KEY_piece_length, &i) || (i < 1)) {
             return "piece length";
         }
 
@@ -693,50 +613,41 @@ static char const *tr_metainfoParseImpl(
     }
 
     /* pieces */
-    if (!isMagnet)
-    {
-        if (!tr_variantDictFindRaw(infoDict, TR_KEY_pieces, &raw, &len))
-        {
+    if (!isMagnet) {
+        if (!tr_variantDictFindRaw(infoDict, TR_KEY_pieces, &raw, &len)) {
             return "pieces";
         }
 
-        if (len % SHA_DIGEST_LENGTH != 0)
-        {
+        if (len % SHA_DIGEST_LENGTH != 0) {
             return "pieces";
         }
 
         inf->pieceCount = len / SHA_DIGEST_LENGTH;
         inf->pieces = tr_new0(tr_piece, inf->pieceCount);
 
-        for (tr_piece_index_t i = 0; i < inf->pieceCount; i++)
-        {
+        for (tr_piece_index_t i = 0; i < inf->pieceCount; i++) {
             memcpy(inf->pieces[i].hash, &raw[i * SHA_DIGEST_LENGTH], SHA_DIGEST_LENGTH);
         }
     }
 
     /* files */
-    if (!isMagnet)
-    {
+    if (!isMagnet) {
         if ((str = parseFiles(inf, tr_variantDictFind(infoDict, TR_KEY_files), tr_variantDictFind(infoDict, TR_KEY_length))) !=
-            NULL)
-        {
+            NULL) {
             return str;
         }
 
-        if (inf->fileCount == 0 || inf->totalSize == 0)
-        {
+        if (inf->fileCount == 0 || inf->totalSize == 0) {
             return "files";
         }
 
-        if ((uint64_t)inf->pieceCount != (inf->totalSize + inf->pieceSize - 1) / inf->pieceSize)
-        {
+        if ((uint64_t)inf->pieceCount != (inf->totalSize + inf->pieceSize - 1) / inf->pieceSize) {
             return "files";
         }
     }
 
     /* get announce or announce-list */
-    if ((str = getannounce(inf, meta)) != NULL)
-    {
+    if ((str = getannounce(inf, meta)) != NULL) {
         return str;
     }
 
@@ -760,8 +671,7 @@ bool tr_metainfoParse(
     char const *badTag = tr_metainfoParseImpl(session, inf, hasInfoDict, infoDictLength, meta_in);
     bool const success = badTag == NULL;
 
-    if (badTag != NULL)
-    {
+    if (badTag != NULL) {
         tr_logAddNamedError(inf->name, _("Invalid metadata entry \"%s\""), badTag);
         tr_metainfoFree(inf);
     }
@@ -771,13 +681,11 @@ bool tr_metainfoParse(
 
 void tr_metainfoFree(tr_info *inf)
 {
-    for (unsigned int i = 0; i < inf->webseedCount; i++)
-    {
+    for (unsigned int i = 0; i < inf->webseedCount; i++) {
         tr_free(inf->webseeds[i]);
     }
 
-    for (tr_file_index_t ff = 0; ff < inf->fileCount; ff++)
-    {
+    for (tr_file_index_t ff = 0; ff < inf->fileCount; ff++) {
         tr_free(inf->files[ff].name);
     }
 
@@ -790,8 +698,7 @@ void tr_metainfoFree(tr_info *inf)
     tr_free(inf->originalName);
     tr_free(inf->name);
 
-    for (unsigned int i = 0; i < inf->trackerCount; i++)
-    {
+    for (unsigned int i = 0; i < inf->trackerCount; i++) {
         tr_free(inf->trackers[i].announce);
         tr_free(inf->trackers[i].scrape);
     }
@@ -823,8 +730,7 @@ void tr_metainfoMigrateFile(
     char *old_filename = getTorrentFilename(session, info, old_format);
     char *new_filename = getTorrentFilename(session, info, new_format);
 
-    if (tr_sys_path_rename(old_filename, new_filename, NULL))
-    {
+    if (tr_sys_path_rename(old_filename, new_filename, NULL)) {
         tr_logAddNamedError(info->name, "Migrated torrent file from \"%s\" to \"%s\"", old_filename, new_filename);
     }
 

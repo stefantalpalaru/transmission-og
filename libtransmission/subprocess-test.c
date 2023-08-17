@@ -72,8 +72,7 @@ static int test_spawn_async_args(void)
     check_bool(ret, ==, true);
     check_ptr(error, ==, NULL);
 
-    while (!tr_sys_path_exists(result_path, NULL))
-    {
+    while (!tr_sys_path_exists(result_path, NULL)) {
         tr_wait_msec(10);
     }
 
@@ -91,8 +90,7 @@ static int test_spawn_async_args(void)
     check(tr_sys_file_read_line(fd, buffer, sizeof(buffer), NULL));
     check_str(buffer, ==, test_arg_3);
 
-    if (allow_batch_metachars)
-    {
+    if (allow_batch_metachars) {
         check(tr_sys_file_read_line(fd, buffer, sizeof(buffer), NULL));
         check_str(buffer, ==, test_arg_4);
     }
@@ -161,8 +159,7 @@ static int test_spawn_async_env(void)
     check_bool(ret, ==, true);
     check_ptr(error, ==, NULL);
 
-    while (!tr_sys_path_exists(result_path, NULL))
-    {
+    while (!tr_sys_path_exists(result_path, NULL)) {
         tr_wait_msec(10);
     }
 
@@ -217,8 +214,7 @@ static int test_spawn_async_cwd_explicit(void)
     check_bool(ret, ==, true);
     check_ptr(error, ==, NULL);
 
-    while (!tr_sys_path_exists(result_path, NULL))
-    {
+    while (!tr_sys_path_exists(result_path, NULL)) {
         tr_wait_msec(10);
     }
 
@@ -259,8 +255,7 @@ static int test_spawn_async_cwd_inherit(void)
     check_bool(ret, ==, true);
     check_ptr(error, ==, NULL);
 
-    while (!tr_sys_path_exists(result_path, NULL))
-    {
+    while (!tr_sys_path_exists(result_path, NULL)) {
         tr_wait_msec(10);
     }
 
@@ -314,8 +309,7 @@ int main(int argc, char **argv)
 {
     self_path = tr_sys_path_resolve(argv[0], NULL);
 
-    if (argc >= 3)
-    {
+    if (argc >= 3) {
         char *const result_path = argv[1];
         char *const test_action = argv[2];
 
@@ -327,36 +321,26 @@ int main(int argc, char **argv)
             0644,
             NULL);
 
-        if (fd == TR_BAD_SYS_FILE)
-        {
+        if (fd == TR_BAD_SYS_FILE) {
             tr_free(tmp_result_path);
             return 1;
         }
 
-        if (strcmp(test_action, arg_dump_args) == 0)
-        {
-            for (int i = 3; i < argc; ++i)
-            {
+        if (strcmp(test_action, arg_dump_args) == 0) {
+            for (int i = 3; i < argc; ++i) {
                 tr_sys_file_write_line(fd, argv[i], NULL);
             }
-        }
-        else if (strcmp(test_action, arg_dump_env) == 0)
-        {
-            for (int i = 3; i < argc; ++i)
-            {
+        } else if (strcmp(test_action, arg_dump_env) == 0) {
+            for (int i = 3; i < argc; ++i) {
                 char *const value = tr_env_get_string(argv[i], "<null>");
                 tr_sys_file_write_line(fd, value, NULL);
                 tr_free(value);
             }
-        }
-        else if (strcmp(test_action, arg_dump_cwd) == 0)
-        {
+        } else if (strcmp(test_action, arg_dump_cwd) == 0) {
             char *const value = tr_sys_dir_get_current(NULL);
             tr_sys_file_write_line(fd, value != NULL ? value : "<null>", NULL);
             tr_free(value);
-        }
-        else
-        {
+        } else {
             tr_sys_file_close(fd, NULL);
             tr_sys_path_remove(tmp_result_path, NULL);
 
@@ -387,8 +371,7 @@ int main(int argc, char **argv)
 #ifdef _WIN32
 
     strcpy(self_path + strlen(self_path) - 4, ".cmd");
-    if (!tr_sys_path_exists(self_path, NULL))
-    {
+    if (!tr_sys_path_exists(self_path, NULL)) {
         // our test binary ended up in a ".libs" subdir
         strcpy(self_path + strlen(self_path) - 25, "subprocess-test.cmd\0");
     }
@@ -396,8 +379,7 @@ int main(int argc, char **argv)
 
     int ret2 = runTests(tests, NUM_TESTS(tests));
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
         ret = ret2;
     }
 

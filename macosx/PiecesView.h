@@ -24,8 +24,7 @@
 
 @class Torrent;
 
-@interface PiecesView : NSImageView
-{
+@interface PiecesView : NSImageView {
     int8_t *fPieces;
 
     NSColor *fGreenAvailabilityColor, *fBluePieceColor;

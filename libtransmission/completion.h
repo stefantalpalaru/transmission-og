@@ -16,8 +16,7 @@
 #include "bitfield.h"
 #include "utils.h" /* tr_getRatio() */
 
-typedef struct tr_completion
-{
+typedef struct tr_completion {
     tr_torrent *tor;
 
     tr_bitfield blockBitfield;

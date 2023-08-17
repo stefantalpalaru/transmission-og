@@ -22,8 +22,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface TrackerCell : NSActionCell
-{
+@interface TrackerCell : NSActionCell {
     NSMutableDictionary *fNameAttributes, *fStatusAttributes;
 }
 

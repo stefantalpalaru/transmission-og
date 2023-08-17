@@ -46,16 +46,13 @@
 {
     NSMutableArray *addresses = [NSMutableArray arrayWithCapacity:[fTrackers count]];
     NSIndexSet *indexes = [self selectedRowIndexes];
-    for (NSUInteger i = [indexes firstIndex]; i != NSNotFound; i = [indexes indexGreaterThanIndex:i])
-    {
+    for (NSUInteger i = [indexes firstIndex]; i != NSNotFound; i = [indexes indexGreaterThanIndex:i]) {
         id item = fTrackers[i];
-        if (![item isKindOfClass:[TrackerNode class]])
-        {
+        if (![item isKindOfClass:[TrackerNode class]]) {
             for (++i; i < [fTrackers count] && [fTrackers[i] isKindOfClass:[TrackerNode class]]; ++i)
                 [addresses addObject:[(TrackerNode *)fTrackers[i] fullAnnounceAddress]];
             --i;
-        }
-        else
+        } else
             [addresses addObject:[(TrackerNode *)item fullAnnounceAddress]];
     }
 
@@ -75,8 +72,7 @@
     NSArray *items = [[NSPasteboard generalPasteboard] readObjectsForClasses:@[ [NSString class] ] options:nil];
     NSAssert(items != nil, @"no string items to paste; should not be able to call this method");
 
-    for (NSString *pbItem in items)
-    {
+    for (NSString *pbItem in items) {
         for (NSString *item in [pbItem componentsSeparatedByString:@"\n"])
             if ([fTorrent addTrackerToNewTier:item])
                 added = YES;

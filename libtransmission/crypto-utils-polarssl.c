@@ -50,8 +50,7 @@ typedef API(dhm_context) api_dhm_context;
 
 static void log_polarssl_error(int error_code, char const *file, int line)
 {
-    if (tr_logLevelIsActive(TR_LOG_ERROR))
-    {
+    if (tr_logLevelIsActive(TR_LOG_ERROR)) {
         char error_message[256];
 
 #if defined(POLARSSL_IS_MBEDTLS)
@@ -72,8 +71,7 @@ static bool check_polarssl_result(int result, int expected_result, char const *f
 {
     bool const ret = result == expected_result;
 
-    if (!ret)
-    {
+    if (!ret) {
         log_polarssl_error(result, file, line);
     }
 
@@ -89,8 +87,7 @@ static bool check_polarssl_result(int result, int expected_result, char const *f
 
 static int my_rand(void *context UNUSED, unsigned char *buffer, size_t buffer_size)
 {
-    for (size_t i = 0; i < buffer_size; ++i)
-    {
+    for (size_t i = 0; i < buffer_size; ++i) {
         buffer[i] = tr_rand_int_weak(256);
     }
 
@@ -102,8 +99,7 @@ static api_ctr_drbg_context *get_rng(void)
     static api_ctr_drbg_context rng;
     static bool rng_initialized = false;
 
-    if (!rng_initialized)
-    {
+    if (!rng_initialized) {
 #if API_VERSION_NUMBER >= 0x02000000
         API(ctr_drbg_init)(&rng);
 
@@ -126,8 +122,7 @@ static tr_lock *get_rng_lock(void)
 {
     static tr_lock *lock = NULL;
 
-    if (lock == NULL)
-    {
+    if (lock == NULL) {
         lock = tr_lockNew();
     }
 
@@ -154,8 +149,7 @@ bool tr_sha1_update(tr_sha1_ctx_t handle, void const *data, size_t data_length)
 {
     TR_ASSERT(handle != NULL);
 
-    if (data_length == 0)
-    {
+    if (data_length == 0) {
         return true;
     }
 
@@ -167,8 +161,7 @@ bool tr_sha1_update(tr_sha1_ctx_t handle, void const *data, size_t data_length)
 
 bool tr_sha1_final(tr_sha1_ctx_t handle, uint8_t *hash)
 {
-    if (hash != NULL)
-    {
+    if (hash != NULL) {
         TR_ASSERT(handle != NULL);
 
         API(sha1_finish)(handle, hash);
@@ -218,8 +211,7 @@ void tr_rc4_process(tr_rc4_ctx_t handle, void const *input, void *output, size_t
 {
     TR_ASSERT(handle != NULL);
 
-    if (length == 0)
-    {
+    if (length == 0) {
         return;
     }
 
@@ -249,8 +241,7 @@ tr_dh_ctx_t tr_dh_new(
 #endif
 
     if (!check_result(API(mpi_read_binary)(&handle->P, prime_num, prime_num_length)) ||
-        !check_result(API(mpi_read_binary)(&handle->G, generator_num, generator_num_length)))
-    {
+        !check_result(API(mpi_read_binary)(&handle->G, generator_num, generator_num_length))) {
         API(dhm_free)(handle);
         return NULL;
     }
@@ -262,8 +253,7 @@ tr_dh_ctx_t tr_dh_new(
 
 void tr_dh_free(tr_dh_ctx_t handle)
 {
-    if (handle == NULL)
-    {
+    if (handle == NULL) {
         return;
     }
 
@@ -277,8 +267,7 @@ bool tr_dh_make_key(tr_dh_ctx_t raw_handle, size_t private_key_length, uint8_t *
 
     api_dhm_context *handle = raw_handle;
 
-    if (public_key_length != NULL)
-    {
+    if (public_key_length != NULL) {
         *public_key_length = handle->len;
     }
 
@@ -294,8 +283,7 @@ tr_dh_secret_t tr_dh_agree(tr_dh_ctx_t raw_handle, uint8_t const *other_public_k
     struct tr_dh_secret *ret;
     size_t secret_key_length;
 
-    if (!check_result(API(dhm_read_public)(handle, other_public_key, other_public_key_length)))
-    {
+    if (!check_result(API(dhm_read_public)(handle, other_public_key, other_public_key_length))) {
         return NULL;
     }
 

@@ -24,8 +24,7 @@
 
 @class Torrent;
 
-@interface GroupsController : NSObject
-{
+@interface GroupsController : NSObject {
     NSMutableArray *fGroups;
 }
 

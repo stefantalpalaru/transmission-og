@@ -28,8 +28,7 @@
 @class FileOutlineController;
 @class Torrent;
 
-@interface AddWindowController : NSWindowController
-{
+@interface AddWindowController : NSWindowController {
     IBOutlet NSImageView *fIconView, *fLocationImageView;
     IBOutlet NSTextField *fNameField, *fStatusField, *fLocationField;
     IBOutlet NSButton *fStartCheck, *fDeleteCheck;

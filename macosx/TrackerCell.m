@@ -70,8 +70,7 @@ NSMutableSet *fTrackerIconLoading;
 
 - (id)init
 {
-    if ((self = [super init]))
-    {
+    if ((self = [super init])) {
         NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
         [paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
 
@@ -106,8 +105,7 @@ NSMutableSet *fTrackerIconLoading;
     NSColor *nameColor, *statusColor;
     if ([self backgroundStyle] == NSBackgroundStyleDark)
         nameColor = statusColor = [NSColor whiteColor];
-    else
-    {
+    else {
         nameColor = [NSColor labelColor];
         statusColor = [NSColor secondaryLabelColor];
     }
@@ -182,8 +180,7 @@ NSMutableSet *fTrackerIconLoading;
     id icon = nil;
     NSURL *address = [NSURL URLWithString:[(TrackerNode *)[self objectValue] fullAnnounceAddress]];
     NSString *host;
-    if ((host = [address host]))
-    {
+    if ((host = [address host])) {
         // don't try to parse ip address
         BOOL const separable = !tr_addressIsIP([host UTF8String]);
 
@@ -207,8 +204,7 @@ NSMutableSet *fTrackerIconLoading;
 #warning better favicon detection
 - (void)loadTrackerIcon:(NSString *)baseAddress
 {
-    if ([fTrackerIconLoading containsObject:baseAddress])
-    {
+    if ([fTrackerIconLoading containsObject:baseAddress]) {
         return;
     }
     [fTrackerIconLoading addObject:baseAddress];
@@ -217,32 +213,27 @@ NSMutableSet *fTrackerIconLoading;
         NSImage *icon = nil;
 
         NSArray<NSString *> *filenamesToTry = @[ @"favicon.png", @"favicon.ico" ];
-        for (NSString *filename in filenamesToTry)
-        {
+        for (NSString *filename in filenamesToTry) {
             NSURL *favIconUrl = [NSURL URLWithString:[baseAddress stringByAppendingPathComponent:filename]];
 
             NSURLRequest *request = [NSURLRequest requestWithURL:favIconUrl cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                  timeoutInterval:30.0];
 
             NSData *iconData = [NSURLConnection sendSynchronousRequest:request returningResponse:NULL error:NULL];
-            if (iconData)
-            {
+            if (iconData) {
                 icon = [[NSImage alloc] initWithData:iconData];
-                if (icon)
-                {
+                if (icon) {
                     break;
                 }
             }
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (icon)
-            {
+            if (icon) {
                 [fTrackerIconCache setObject:icon forKey:baseAddress];
 
                 [[self controlView] setNeedsDisplay:YES];
-            }
-            else
+            } else
                 [fTrackerIconCache setObject:[NSNull null] forKey:baseAddress];
 
             [fTrackerIconLoading removeObject:baseAddress];

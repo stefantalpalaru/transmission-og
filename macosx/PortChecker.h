@@ -22,16 +22,9 @@
 
 #import <Cocoa/Cocoa.h>
 
-typedef enum
-{
-    PORT_STATUS_CHECKING,
-    PORT_STATUS_OPEN,
-    PORT_STATUS_CLOSED,
-    PORT_STATUS_ERROR
-} port_status_t;
+typedef enum { PORT_STATUS_CHECKING, PORT_STATUS_OPEN, PORT_STATUS_CLOSED, PORT_STATUS_ERROR } port_status_t;
 
-@interface PortChecker : NSObject
-{
+@interface PortChecker : NSObject {
     id fDelegate;
     port_status_t fStatus;
 

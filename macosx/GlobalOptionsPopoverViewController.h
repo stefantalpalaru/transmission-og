@@ -24,8 +24,7 @@
 
 #include <libtransmission/transmission.h>
 
-@interface GlobalOptionsPopoverViewController : NSViewController
-{
+@interface GlobalOptionsPopoverViewController : NSViewController {
     tr_session *fHandle;
     NSUserDefaults *fDefaults;
 

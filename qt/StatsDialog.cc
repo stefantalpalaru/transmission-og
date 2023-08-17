@@ -13,10 +13,7 @@
 #include "Session.h"
 #include "StatsDialog.h"
 
-enum
-{
-    REFRESH_INTERVAL_MSEC = (15 * 1000)
-};
+enum { REFRESH_INTERVAL_MSEC = (15 * 1000) };
 
 StatsDialog::StatsDialog(Session &session, QWidget *parent)
     : BaseDialog(parent)
@@ -39,15 +36,13 @@ StatsDialog::StatsDialog(Session &session, QWidget *parent)
 }
 
 StatsDialog::~StatsDialog()
-{
-}
+{}
 
 void StatsDialog::setVisible(bool visible)
 {
     myTimer->stop();
 
-    if (visible)
-    {
+    if (visible) {
         myTimer->start(REFRESH_INTERVAL_MSEC);
     }
 

@@ -26,8 +26,7 @@ struct tr_peerIo;
 
 /* these are PRIVATE IMPLEMENTATION details that should not be touched.
  * it's included in the header for inlining and composition. */
-enum
-{
+enum {
     HISTORY_MSEC = 2000U,
     INTERVAL_MSEC = HISTORY_MSEC,
     GRANULARITY_MSEC = 200,
@@ -37,11 +36,9 @@ enum
 
 /* these are PRIVATE IMPLEMENTATION details that should not be touched.
  * it's included in the header for inlining and composition. */
-struct bratecontrol
-{
+struct bratecontrol {
     int newest;
-    struct
-    {
+    struct {
         uint64_t date;
         uint64_t size;
     } transfers[HISTORY_SIZE];
@@ -51,8 +48,7 @@ struct bratecontrol
 
 /* these are PRIVATE IMPLEMENTATION details that should not be touched.
  * it's included in the header for inlining and composition. */
-struct tr_band
-{
+struct tr_band {
     bool isLimited;
     bool honorParentLimits;
     unsigned int bytesLeft;
@@ -100,8 +96,7 @@ struct tr_band
  *   and call tr_bandwidthClamp() before performing I/O to see how much
  *   bandwidth they can safely use.
  */
-typedef struct tr_bandwidth
-{
+typedef struct tr_bandwidth {
     /* these are PRIVATE IMPLEMENTATION details that should not be touched.
      * it's included in the header for inlining and composition. */
 

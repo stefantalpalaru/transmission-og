@@ -20,8 +20,7 @@ class QNetworkAccessManager;
 class QNetworkReply;
 class QUrl;
 
-class FaviconCache : public QObject
-{
+class FaviconCache : public QObject {
     Q_OBJECT
 
 public:

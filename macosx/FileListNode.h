@@ -24,8 +24,7 @@
 
 @class Torrent;
 
-@interface FileListNode : NSObject<NSCopying>
-{
+@interface FileListNode : NSObject<NSCopying> {
     NSMutableIndexSet *fIndexes;
 
     NSString *fName;

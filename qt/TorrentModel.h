@@ -20,20 +20,15 @@ class Prefs;
 class Speed;
 class Torrent;
 
-extern "C"
-{
-    struct tr_variant;
+extern "C" {
+struct tr_variant;
 }
 
-class TorrentModel : public QAbstractListModel
-{
+class TorrentModel : public QAbstractListModel {
     Q_OBJECT
 
 public:
-    enum Role
-    {
-        TorrentRole = Qt::UserRole
-    };
+    enum Role { TorrentRole = Qt::UserRole };
 
     explicit TorrentModel(Prefs const &prefs);
     virtual ~TorrentModel() override;

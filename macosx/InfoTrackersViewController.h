@@ -28,8 +28,7 @@
 @class TrackerTableView;
 @class TrackerCell;
 
-@interface InfoTrackersViewController : NSViewController<InfoViewController>
-{
+@interface InfoTrackersViewController : NSViewController<InfoViewController> {
     NSArray *fTorrents;
 
     BOOL fSet;

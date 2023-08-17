@@ -24,11 +24,9 @@
 
 #include "ui_MakeProgressDialog.h"
 
-namespace
-{
+namespace {
 
-class MakeProgressDialog : public BaseDialog
-{
+class MakeProgressDialog : public BaseDialog {
     Q_OBJECT
 
 public:
@@ -64,8 +62,7 @@ MakeProgressDialog::MakeProgressDialog(Session &session, tr_metainfo_builder &bu
 
 void MakeProgressDialog::onButtonBoxClicked(QAbstractButton *button)
 {
-    switch (ui.dialogButtons->standardButton(button))
-    {
+    switch (ui.dialogButtons->standardButton(button)) {
     case QDialogButtonBox::Open:
         mySession.addNewlyCreatedTorrent(
             QString::fromUtf8(myBuilder.outputFile),
@@ -95,30 +92,19 @@ void MakeProgressDialog::onProgress()
     QString const base(QFileInfo(top).completeBaseName());
     QString str;
 
-    if (!b.isDone)
-    {
+    if (!b.isDone) {
         str = tr("Creating \"%1\"").arg(base);
-    }
-    else if (b.result == TR_MAKEMETA_OK)
-    {
+    } else if (b.result == TR_MAKEMETA_OK) {
         str = tr("Created \"%1\"!").arg(base);
-    }
-    else if (b.result == TR_MAKEMETA_URL)
-    {
+    } else if (b.result == TR_MAKEMETA_URL) {
         str = tr("Error: invalid announce URL \"%1\"").arg(QString::fromUtf8(b.errfile));
-    }
-    else if (b.result == TR_MAKEMETA_CANCELLED)
-    {
+    } else if (b.result == TR_MAKEMETA_CANCELLED) {
         str = tr("Cancelled");
-    }
-    else if (b.result == TR_MAKEMETA_IO_READ)
-    {
+    } else if (b.result == TR_MAKEMETA_IO_READ) {
         str = tr("Error reading \"%1\": %2")
                   .arg(QString::fromUtf8(b.errfile))
                   .arg(QString::fromLocal8Bit(tr_strerror(b.my_errno)));
-    }
-    else if (b.result == TR_MAKEMETA_IO_WRITE)
-    {
+    } else if (b.result == TR_MAKEMETA_IO_WRITE) {
         str = tr("Error writing \"%1\": %2")
                   .arg(QString::fromUtf8(b.errfile))
                   .arg(QString::fromLocal8Bit(tr_strerror(b.my_errno)));
@@ -140,8 +126,7 @@ void MakeProgressDialog::onProgress()
 
 void MakeDialog::makeTorrent()
 {
-    if (myBuilder == nullptr)
-    {
+    if (myBuilder == nullptr) {
         return;
     }
 
@@ -149,16 +134,12 @@ void MakeDialog::makeTorrent()
     int tier = 0;
     QVector<tr_tracker_info> trackers;
 
-    for (QString const &line : ui.trackersEdit->toPlainText().split(QLatin1Char('\n')))
-    {
+    for (QString const &line : ui.trackersEdit->toPlainText().split(QLatin1Char('\n'))) {
         QString const announceUrl = line.trimmed();
 
-        if (announceUrl.isEmpty())
-        {
+        if (announceUrl.isEmpty()) {
             ++tier;
-        }
-        else
-        {
+        } else {
             tr_tracker_info tmp;
             tmp.announce = tr_strdup(announceUrl.toUtf8().constData());
             tmp.tier = tier;
@@ -174,8 +155,7 @@ void MakeDialog::makeTorrent()
     // comment
     QString comment;
 
-    if (ui.commentCheck->isChecked())
-    {
+    if (ui.commentCheck->isChecked()) {
         comment = ui.commentEdit->text();
     }
 
@@ -213,19 +193,15 @@ void MakeDialog::onSourceChanged()
 
     QString const filename = getSource();
 
-    if (!filename.isEmpty())
-    {
+    if (!filename.isEmpty()) {
         myBuilder.reset(tr_metaInfoBuilderCreate(filename.toUtf8().constData()));
     }
 
     QString text;
 
-    if (myBuilder == nullptr)
-    {
+    if (myBuilder == nullptr) {
         text = tr("<i>No source selected</i>");
-    }
-    else
-    {
+    } else {
         QString files = tr("%Ln File(s)", nullptr, myBuilder->fileCount);
         QString pieces = tr("%Ln Piece(s)", nullptr, myBuilder->pieceCount);
         text = tr("%1 in %2; %3 @ %4")
@@ -270,8 +246,7 @@ MakeDialog::MakeDialog(Session &session, QWidget *parent)
 }
 
 MakeDialog::~MakeDialog()
-{
-}
+{}
 
 /***
 ****
@@ -281,8 +256,7 @@ void MakeDialog::dragEnterEvent(QDragEnterEvent *event)
 {
     QMimeData const *mime = event->mimeData();
 
-    if (!mime->urls().isEmpty() && QFileInfo(mime->urls().front().path()).exists())
-    {
+    if (!mime->urls().isEmpty() && QFileInfo(mime->urls().front().path()).exists()) {
         event->acceptProposedAction();
     }
 }
@@ -292,14 +266,11 @@ void MakeDialog::dropEvent(QDropEvent *event)
     QString const filename = event->mimeData()->urls().front().path();
     QFileInfo const fileInfo(filename);
 
-    if (fileInfo.exists())
-    {
-        if (fileInfo.isDir())
-        {
+    if (fileInfo.exists()) {
+        if (fileInfo.isDir()) {
             ui.sourceFolderRadio->setChecked(true);
             ui.sourceFolderButton->setPath(filename);
-        }
-        else // it's a file
+        } else // it's a file
         {
             ui.sourceFileRadio->setChecked(true);
             ui.sourceFileButton->setPath(filename);

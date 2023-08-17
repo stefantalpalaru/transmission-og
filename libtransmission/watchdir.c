@@ -38,8 +38,7 @@
 ****
 ***/
 
-struct tr_watchdir
-{
+struct tr_watchdir {
     char *path;
     tr_watchdir_cb callback;
     void *callback_user_data;
@@ -59,14 +58,10 @@ static bool is_regular_file(char const *dir, char const *name)
     tr_error *error = NULL;
     bool ret;
 
-    if ((ret = tr_sys_path_get_info(path, 0, &path_info, &error)))
-    {
+    if ((ret = tr_sys_path_get_info(path, 0, &path_info, &error))) {
         ret = path_info.type == TR_SYS_PATH_IS_FILE;
-    }
-    else
-    {
-        if (!TR_ERROR_IS_ENOENT(error->code))
-        {
+    } else {
+        if (!TR_ERROR_IS_ENOENT(error->code)) {
             log_error("Failed to get type of \"%s\" (%d): %s", path, error->code, error->message);
         }
 
@@ -79,8 +74,7 @@ static bool is_regular_file(char const *dir, char const *name)
 
 static char const *watchdir_status_to_string(tr_watchdir_status status)
 {
-    switch (status)
-    {
+    switch (status) {
     case TR_WATCHDIR_ACCEPT:
         return "accept";
 
@@ -98,8 +92,7 @@ static char const *watchdir_status_to_string(tr_watchdir_status status)
 static tr_watchdir_status tr_watchdir_process_impl(tr_watchdir_t handle, char const *name)
 {
     /* File may be gone while we're retrying */
-    if (!is_regular_file(tr_watchdir_get_path(handle), name))
-    {
+    if (!is_regular_file(tr_watchdir_get_path(handle), name)) {
         return TR_WATCHDIR_IGNORE;
     }
 
@@ -116,8 +109,7 @@ static tr_watchdir_status tr_watchdir_process_impl(tr_watchdir_t handle, char co
 ****
 ***/
 
-typedef struct tr_watchdir_retry
-{
+typedef struct tr_watchdir_retry {
     tr_watchdir_t handle;
     char *name;
     unsigned int counter;
@@ -150,14 +142,11 @@ static void tr_watchdir_on_retry_timer(evutil_socket_t fd UNUSED, short type UNU
     tr_watchdir_retry *const retry = context;
     tr_watchdir_t const handle = retry->handle;
 
-    if (tr_watchdir_process_impl(handle, retry->name) == TR_WATCHDIR_RETRY)
-    {
-        if (++retry->counter < tr_watchdir_retry_limit)
-        {
+    if (tr_watchdir_process_impl(handle, retry->name) == TR_WATCHDIR_RETRY) {
+        if (++retry->counter < tr_watchdir_retry_limit) {
             evutil_timeradd(&retry->interval, &retry->interval, &retry->interval);
 
-            if (evutil_timercmp(&retry->interval, &tr_watchdir_retry_max_interval, >))
-            {
+            if (evutil_timercmp(&retry->interval, &tr_watchdir_retry_max_interval, >)) {
                 retry->interval = tr_watchdir_retry_max_interval;
             }
 
@@ -190,13 +179,11 @@ static tr_watchdir_retry *tr_watchdir_retry_new(tr_watchdir_t handle, char const
 
 static void tr_watchdir_retry_free(tr_watchdir_retry *retry)
 {
-    if (retry == NULL)
-    {
+    if (retry == NULL) {
         return;
     }
 
-    if (retry->timer != NULL)
-    {
+    if (retry->timer != NULL) {
         evtimer_del(retry->timer);
         event_free(retry->timer);
     }
@@ -237,12 +224,10 @@ tr_watchdir_t tr_watchdir_new(
     handle->event_base = event_base;
     tr_watchdir_retries_init(&handle->active_retries);
 
-    if (!force_generic)
-    {
+    if (!force_generic) {
 #ifdef WITH_INOTIFY
 
-        if (handle->backend == NULL)
-        {
+        if (handle->backend == NULL) {
             handle->backend = tr_watchdir_inotify_new(handle);
         }
 
@@ -250,8 +235,7 @@ tr_watchdir_t tr_watchdir_new(
 
 #ifdef WITH_KQUEUE
 
-        if (handle->backend == NULL)
-        {
+        if (handle->backend == NULL) {
             handle->backend = tr_watchdir_kqueue_new(handle);
         }
 
@@ -259,26 +243,21 @@ tr_watchdir_t tr_watchdir_new(
 
 #ifdef _WIN32
 
-        if (handle->backend == NULL)
-        {
+        if (handle->backend == NULL) {
             handle->backend = tr_watchdir_win32_new(handle);
         }
 
 #endif
     }
 
-    if (handle->backend == NULL)
-    {
+    if (handle->backend == NULL) {
         handle->backend = tr_watchdir_generic_new(handle);
     }
 
-    if (handle->backend == NULL)
-    {
+    if (handle->backend == NULL) {
         tr_watchdir_free(handle);
         handle = NULL;
-    }
-    else
-    {
+    } else {
         TR_ASSERT(handle->backend->free_func != NULL);
     }
 
@@ -287,15 +266,13 @@ tr_watchdir_t tr_watchdir_new(
 
 void tr_watchdir_free(tr_watchdir_t handle)
 {
-    if (handle == NULL)
-    {
+    if (handle == NULL) {
         return;
     }
 
     tr_watchdir_retries_destroy(&handle->active_retries);
 
-    if (handle->backend != NULL)
-    {
+    if (handle->backend != NULL) {
         handle->backend->free_func(handle->backend);
     }
 
@@ -335,14 +312,12 @@ void tr_watchdir_process(tr_watchdir_t handle, char const *name)
     tr_watchdir_retry const search_key = { .name = (char *)name };
     tr_watchdir_retry *existing_retry;
 
-    if ((existing_retry = tr_watchdir_retries_find(&handle->active_retries, &search_key)) != NULL)
-    {
+    if ((existing_retry = tr_watchdir_retries_find(&handle->active_retries, &search_key)) != NULL) {
         tr_watchdir_retry_restart(existing_retry);
         return;
     }
 
-    if (tr_watchdir_process_impl(handle, name) == TR_WATCHDIR_RETRY)
-    {
+    if (tr_watchdir_process_impl(handle, name) == TR_WATCHDIR_RETRY) {
         tr_watchdir_retry *retry = tr_watchdir_retry_new(handle, name);
         tr_watchdir_retries_insert(&handle->active_retries, retry);
     }
@@ -356,26 +331,21 @@ void tr_watchdir_scan(tr_watchdir_t handle, tr_ptrArray *dir_entries)
     PtrArrayCompareFunc const name_compare_func = (PtrArrayCompareFunc)&strcmp;
     tr_error *error = NULL;
 
-    if ((dir = tr_sys_dir_open(handle->path, &error)) == TR_BAD_SYS_DIR)
-    {
+    if ((dir = tr_sys_dir_open(handle->path, &error)) == TR_BAD_SYS_DIR) {
         log_error("Failed to open directory \"%s\" (%d): %s", handle->path, error->code, error->message);
         tr_error_free(error);
         return;
     }
 
-    while ((name = tr_sys_dir_read_name(dir, &error)) != NULL)
-    {
-        if (strcmp(name, ".") == 0 || strcmp(name, "..") == 0)
-        {
+    while ((name = tr_sys_dir_read_name(dir, &error)) != NULL) {
+        if (strcmp(name, ".") == 0 || strcmp(name, "..") == 0) {
             continue;
         }
 
-        if (dir_entries != NULL)
-        {
+        if (dir_entries != NULL) {
             tr_ptrArrayInsertSorted(&new_dir_entries, tr_strdup(name), name_compare_func);
 
-            if (tr_ptrArrayFindSorted(dir_entries, name, name_compare_func) != NULL)
-            {
+            if (tr_ptrArrayFindSorted(dir_entries, name, name_compare_func) != NULL) {
                 continue;
             }
         }
@@ -383,16 +353,14 @@ void tr_watchdir_scan(tr_watchdir_t handle, tr_ptrArray *dir_entries)
         tr_watchdir_process(handle, name);
     }
 
-    if (error != NULL)
-    {
+    if (error != NULL) {
         log_error("Failed to read directory \"%s\" (%d): %s", handle->path, error->code, error->message);
         tr_error_free(error);
     }
 
     tr_sys_dir_close(dir, NULL);
 
-    if (dir_entries != NULL)
-    {
+    if (dir_entries != NULL) {
         tr_ptrArrayDestruct(dir_entries, &tr_free);
         *dir_entries = new_dir_entries;
     }

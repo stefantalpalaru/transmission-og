@@ -16,8 +16,7 @@
 
 class LicenseDialog;
 
-class AboutDialog : public BaseDialog
-{
+class AboutDialog : public BaseDialog {
     Q_OBJECT
 
 public:

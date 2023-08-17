@@ -26,8 +26,7 @@
 
 @class PrefsController;
 
-@interface BlocklistDownloaderViewController : NSObject
-{
+@interface BlocklistDownloaderViewController : NSObject {
     PrefsController *fPrefsController;
 
     IBOutlet NSWindow *fStatusWindow;

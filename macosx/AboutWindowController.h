@@ -22,8 +22,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface AboutWindowController : NSWindowController
-{
+@interface AboutWindowController : NSWindowController {
     IBOutlet NSTextView *fTextView, *fLicenseView;
     IBOutlet NSTextField *fVersionField, *fCopyrightField;
     IBOutlet NSButton *fLicenseButton, *fLicenseCloseButton;

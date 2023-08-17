@@ -11,8 +11,7 @@
 @class FileListNode;
 @class Torrent;
 
-@interface FileRenameSheetController : NSWindowController
-{
+@interface FileRenameSheetController : NSWindowController {
     Torrent *_torrent;
     FileListNode *_node;
     void (^_completionHandler)(BOOL);

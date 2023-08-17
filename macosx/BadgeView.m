@@ -35,8 +35,7 @@
 
 - (id)initWithLib:(tr_session *)lib
 {
-    if ((self = [super init]))
-    {
+    if ((self = [super init])) {
         fLib = lib;
 
         fDownloadRate = 0.0;
@@ -66,8 +65,7 @@
 {
     [[NSApp applicationIconImage] drawInRect:rect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
 
-    if (fQuitting)
-    {
+    if (fQuitting) {
         NSImage *quitBadge = [NSImage imageNamed:@"QuitBadge"];
         [self badge:quitBadge string:NSLocalizedString(@"Quitting", "Dock Badger -> quit")
                  atHeight:(NSHeight(rect) - [quitBadge size].height) * 0.5
@@ -77,8 +75,7 @@
 
     BOOL const upload = fUploadRate >= 0.1, download = fDownloadRate >= 0.1;
     CGFloat bottom = 0.0;
-    if (upload)
-    {
+    if (upload) {
         NSImage *uploadBadge = [NSImage imageNamed:@"UploadBadge"];
         [self badge:uploadBadge string:[NSString stringForSpeedAbbrev:fUploadRate] atHeight:bottom adjustForQuit:NO];
         if (download)
@@ -95,8 +92,7 @@
 
 - (void)badge:(NSImage *)badge string:(NSString *)string atHeight:(CGFloat)height adjustForQuit:(BOOL)quit
 {
-    if (!fAttributes)
-    {
+    if (!fAttributes) {
         NSShadow *stringShadow = [[NSShadow alloc] init];
         [stringShadow setShadowOffset:NSMakeSize(2.0, -2.0)];
         [stringShadow setShadowBlurRadius:4.0];
@@ -116,8 +112,7 @@
     // make sure text fits on the badge
     CGFloat fontSize = 26.0;
     NSSize stringSize;
-    do
-    {
+    do {
         fAttributes[NSFontAttributeName] = [NSFont boldSystemFontOfSize:fontSize];
         stringSize = [string sizeWithAttributes:fAttributes];
         fontSize -= 1.0;

@@ -46,8 +46,7 @@
 
 - (id)init
 {
-    if ((self = [super initWithNibName:@"InfoPeersView" bundle:nil]))
-    {
+    if ((self = [super initWithNibName:@"InfoPeersView" bundle:nil])) {
         [self setTitle:NSLocalizedString(@"Peers", "Inspector view -> title")];
     }
 
@@ -57,8 +56,7 @@
 - (void)awakeFromNib
 {
     CGFloat const height = [[NSUserDefaults standardUserDefaults] floatForKey:@"InspectorContentHeightPeers"];
-    if (height != 0.0)
-    {
+    if (height != 0.0) {
         NSRect viewRect = [[self view] frame];
         viewRect.size.height = height;
         [[self view] setFrame:viewRect];
@@ -134,19 +132,16 @@
 
     NSUInteger connected = 0, tracker = 0, incoming = 0, cache = 0, lpd = 0, pex = 0, dht = 0, ltep = 0, toUs = 0, fromUs = 0;
     BOOL anyActive = false;
-    for (Torrent *torrent in fTorrents)
-    {
+    for (Torrent *torrent in fTorrents) {
         if ([torrent webSeedCount] > 0)
             [fWebSeeds addObjectsFromArray:[torrent webSeeds]];
 
-        if ([torrent isActive])
-        {
+        if ([torrent isActive]) {
             anyActive = YES;
             [fPeers addObjectsFromArray:[torrent peers]];
 
             NSUInteger const connectedThis = [torrent totalPeersConnected];
-            if (connectedThis > 0)
-            {
+            if (connectedThis > 0) {
                 connected += [torrent totalPeersConnected];
                 tracker += [torrent totalPeersTracker];
                 incoming += [torrent totalPeersIncoming];
@@ -169,12 +164,10 @@
     [fWebSeedTable reloadData];
     [fWebSeedTable setWebSeeds:fWebSeeds];
 
-    if (anyActive)
-    {
+    if (anyActive) {
         NSString *connectedText = [NSString stringWithFormat:NSLocalizedString(@"%d Connected", "Inspector -> Peers tab -> peers"), connected];
 
-        if (connected > 0)
-        {
+        if (connected > 0) {
             NSMutableArray *upDownComponents = [NSMutableArray arrayWithCapacity:2];
             if (toUs > 0)
                 [upDownComponents
@@ -210,9 +203,7 @@
         }
 
         [fConnectedPeersField setStringValue:connectedText];
-    }
-    else
-    {
+    } else {
         NSString *notActiveString;
         if ([fTorrents count] == 1)
             notActiveString = NSLocalizedString(@"Transfer Not Active", "Inspector -> Peers tab -> peers");
@@ -244,21 +235,16 @@
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)column row:(NSInteger)row
 {
-    if (tableView == fWebSeedTable)
-    {
+    if (tableView == fWebSeedTable) {
         NSString *ident = [column identifier];
         NSDictionary *webSeed = fWebSeeds[row];
 
-        if ([ident isEqualToString:@"DL From"])
-        {
+        if ([ident isEqualToString:@"DL From"]) {
             NSNumber *rate;
             return (rate = webSeed[@"DL From Rate"]) ? [NSString stringForSpeedAbbrev:[rate doubleValue]] : @"";
-        }
-        else
+        } else
             return webSeed[@"Address"];
-    }
-    else
-    {
+    } else {
         NSString *ident = [column identifier];
         NSDictionary *peer = fPeers[row];
 
@@ -268,17 +254,13 @@
             return peer[@"Client"];
         else if ([ident isEqualToString:@"Progress"])
             return peer[@"Progress"];
-        else if ([ident isEqualToString:@"UL To"])
-        {
+        else if ([ident isEqualToString:@"UL To"]) {
             NSNumber *rate;
             return (rate = peer[@"UL To Rate"]) ? [NSString stringForSpeedAbbrev:[rate doubleValue]] : @"";
-        }
-        else if ([ident isEqualToString:@"DL From"])
-        {
+        } else if ([ident isEqualToString:@"DL From"]) {
             NSNumber *rate;
             return (rate = peer[@"DL From Rate"]) ? [NSString stringForSpeedAbbrev:[rate doubleValue]] : @"";
-        }
-        else
+        } else
             return peer[@"IP"];
     }
 }
@@ -288,12 +270,10 @@
      forTableColumn:(NSTableColumn *)tableColumn
                 row:(NSInteger)row
 {
-    if (tableView == fPeerTable)
-    {
+    if (tableView == fPeerTable) {
         NSString *ident = [tableColumn identifier];
 
-        if ([ident isEqualToString:@"Progress"])
-        {
+        if ([ident isEqualToString:@"Progress"]) {
             NSDictionary *peer = fPeers[row];
             [(PeerProgressIndicatorCell *)cell setSeed:[peer[@"Seed"] boolValue]];
         }
@@ -302,18 +282,13 @@
 
 - (void)tableView:(NSTableView *)tableView didClickTableColumn:(NSTableColumn *)tableColumn
 {
-    if (tableView == fWebSeedTable)
-    {
-        if (fWebSeeds)
-        {
+    if (tableView == fWebSeedTable) {
+        if (fWebSeeds) {
             [fWebSeeds sortUsingDescriptors:[fWebSeedTable sortDescriptors]];
             [tableView reloadData];
         }
-    }
-    else
-    {
-        if (fPeers)
-        {
+    } else {
+        if (fPeers) {
             [fPeers sortUsingDescriptors:[self peerSortDescriptors]];
             [tableView reloadData];
         }
@@ -332,8 +307,7 @@
                     row:(NSInteger)row
           mouseLocation:(NSPoint)mouseLocation
 {
-    if (tableView == fPeerTable)
-    {
+    if (tableView == fPeerTable) {
         BOOL const multiple = [fTorrents count] > 1;
 
         NSDictionary *peer = fPeers[row];
@@ -368,8 +342,7 @@
                                                          portString]];
 
         NSInteger const peerFrom = [peer[@"From"] integerValue];
-        switch (peerFrom)
-        {
+        switch (peerFrom) {
         case TR_PEER_FROM_TRACKER:
             [components addObject:NSLocalizedString(@"From: tracker", "Inspector -> Peers tab -> table row tooltip")];
             break;
@@ -414,16 +387,13 @@
         if ([flags rangeOfString:@"?"].location != NSNotFound)
             [statusArray addObject:NSLocalizedString(@"You unchoked the peer, but the peer is not interested", "Inspector -> peer -> status")];
 
-        if ([statusArray count] > 0)
-        {
+        if ([statusArray count] > 0) {
             NSString *statusStrings = [statusArray componentsJoinedByString:@"\n\n"];
             [components addObject:[@"\n" stringByAppendingString:statusStrings]];
         }
 
         return [components componentsJoinedByString:@"\n"];
-    }
-    else
-    {
+    } else {
         if ([fTorrents count] > 1)
             return fWebSeeds[row][@"Name"];
     }
@@ -455,30 +425,24 @@
 {
     __block BOOL hasWebSeeds = NO;
 
-    if ([fTorrents count] == 0)
-    {
+    if ([fTorrents count] == 0) {
         fPeers = nil;
         [fPeerTable reloadData];
 
         [fConnectedPeersField setStringValue:@""];
-    }
-    else
-    {
+    } else {
         [fTorrents enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(Torrent *torrent, NSUInteger idx, BOOL *stop) {
-            if ([torrent webSeedCount] > 0)
-            {
+            if ([torrent webSeedCount] > 0) {
                 hasWebSeeds = YES;
                 *stop = YES;
             }
         }];
     }
 
-    if (!hasWebSeeds)
-    {
+    if (!hasWebSeeds) {
         fWebSeeds = nil;
         [fWebSeedTable reloadData];
-    }
-    else
+    } else
         [fWebSeedTable deselectAll:self];
     [self setWebSeedTableHidden:!hasWebSeeds animate:YES];
 
@@ -501,8 +465,7 @@
 
     NSArray *oldDescriptors = [fPeerTable sortDescriptors];
     BOOL useSecond = YES, asc = YES;
-    if ([oldDescriptors count] > 0)
-    {
+    if ([oldDescriptors count] > 0) {
         NSSortDescriptor *descriptor = oldDescriptors[0];
         [descriptors addObject:descriptor];
 
@@ -511,8 +474,7 @@
     }
 
     // sort by IP after primary sort
-    if (useSecond)
-    {
+    if (useSecond) {
         NSSortDescriptor *secondDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"IP" ascending:asc
                                                                             selector:@selector(compareNumeric:)];
         [descriptors addObject:secondDescriptor];

@@ -27,8 +27,7 @@
 
 - (void)awakeFromNib
 {
-    if (![NSApp isOnMojaveOrBetter])
-    {
+    if (![NSApp isOnMojaveOrBetter]) {
         NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
         [nc addObserver:self selector:@selector(updateControlTint:) name:NSControlTintDidChangeNotification object:NSApp];
     }
@@ -50,8 +49,7 @@
 
     [super setControlView:controlView];
 
-    if (!hadControlView)
-    {
+    if (!hadControlView) {
         [(NSMatrix *)[self controlView] setToolTip:[self title] forCell:self];
         [self setSelectedTab:fSelected];
     }
@@ -80,43 +78,31 @@
     [tabImage lockFocus];
 
     NSGradient *gradient;
-    if (fSelected)
-    {
+    if (fSelected) {
         NSColor *lightColor, *darkColor;
-        if (@available(macOS 10.14, *))
-        {
+        if (@available(macOS 10.14, *)) {
             lightColor = [NSColor.controlAccentColor blendedColorWithFraction:0.35 ofColor:[NSColor whiteColor]];
             darkColor = [NSColor.controlAccentColor blendedColorWithFraction:0.15 ofColor:[NSColor whiteColor]];
-        }
-        else
-        {
+        } else {
             lightColor = [NSColor colorForControlTint:[NSColor currentControlTint]];
             darkColor = [lightColor blendedColorWithFraction:0.2 ofColor:[NSColor blackColor]];
         }
         gradient = [[NSGradient alloc] initWithStartingColor:lightColor endingColor:darkColor];
-    }
-    else
-    {
-        if ([NSApp isDarkMode])
-        {
+    } else {
+        if ([NSApp isDarkMode]) {
             NSColor *darkColor = [NSColor colorWithCalibratedRed:60.0 / 255.0 green:60.0 / 255.0 blue:60.0 / 255.0 alpha:1.0];
             NSColor *lightColor = [NSColor colorWithCalibratedRed:90.0 / 255.0 green:90.0 / 255.0 blue:90.0 / 255.0 alpha:1.0];
             gradient = [[NSGradient alloc] initWithStartingColor:lightColor endingColor:darkColor];
-        }
-        else
-        {
+        } else {
             NSColor *lightColor = [NSColor colorWithCalibratedRed:245.0 / 255.0 green:245.0 / 255.0 blue:245.0 / 255.0 alpha:1.0];
             NSColor *darkColor = [NSColor colorWithCalibratedRed:215.0 / 255.0 green:215.0 / 255.0 blue:215.0 / 255.0 alpha:1.0];
             gradient = [[NSGradient alloc] initWithStartingColor:lightColor endingColor:darkColor];
         }
     }
 
-    if (@available(macOS 10.14, *))
-    {
+    if (@available(macOS 10.14, *)) {
         [[NSColor separatorColor] set];
-    }
-    else
-    {
+    } else {
         [[NSColor grayColor] set];
     }
     NSRectFill(NSMakeRect(0.0, 0.0, NSWidth(tabRect), 1.0));
@@ -127,8 +113,7 @@
 
     [gradient drawInRect:tabRect angle:270.0];
 
-    if (fIcon)
-    {
+    if (fIcon) {
         NSSize const iconSize = [fIcon size];
 
         NSRect const iconRect = NSMakeRect(

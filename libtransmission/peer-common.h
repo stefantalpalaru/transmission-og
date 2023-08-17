@@ -25,8 +25,7 @@
 struct tr_peer;
 struct tr_swarm;
 
-enum
-{
+enum {
     /* this is the maximum size of a block request.
        most bittorrent clients will reject requests
        larger than this size. */
@@ -37,8 +36,7 @@ enum
 ***  Peer Publish / Subscribe
 **/
 
-typedef enum
-{
+typedef enum {
     TR_PEER_CLIENT_GOT_BLOCK,
     TR_PEER_CLIENT_GOT_CHOKE,
     TR_PEER_CLIENT_GOT_PIECE_DATA,
@@ -54,8 +52,7 @@ typedef enum
     TR_PEER_ERROR
 } PeerEventType;
 
-typedef struct
-{
+typedef struct {
     PeerEventType eventType;
 
     uint32_t pieceIndex; /* for GOT_BLOCK, GOT_HAVE, CANCEL, ALLOWED, SUGGEST */
@@ -78,8 +75,7 @@ typedef void (*tr_peer_destruct_func)(struct tr_peer *peer);
 typedef bool (
     *tr_peer_is_transferring_pieces_func)(struct tr_peer const *peer, uint64_t now, tr_direction direction, unsigned int *Bps);
 
-struct tr_peer_virtual_funcs
-{
+struct tr_peer_virtual_funcs {
     tr_peer_destruct_func destruct;
     tr_peer_is_transferring_pieces_func is_transferring_pieces;
 };
@@ -90,8 +86,7 @@ struct tr_peer_virtual_funcs
  * @see struct peer_atom
  * @see tr_peerMsgs
  */
-typedef struct tr_peer
-{
+typedef struct tr_peer {
     /* whether or not we should free this peer soon.
        NOTE: private to peer-mgr.c */
     bool doPurge;
@@ -142,8 +137,7 @@ bool tr_peerIsSeed(struct tr_peer const *peer);
 ****
 ***/
 
-typedef struct tr_swarm_stats
-{
+typedef struct tr_swarm_stats {
     int activePeerCount[2];
     int activeWebseedCount;
     int peerCount;

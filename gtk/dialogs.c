@@ -33,8 +33,7 @@
 ****
 ***/
 
-struct delete_data
-{
+struct delete_data {
     gboolean delete_files;
     GSList *torrent_ids;
     TrCore *core;
@@ -44,10 +43,8 @@ static void on_remove_dialog_response(GtkDialog *dialog, gint response, gpointer
 {
     struct delete_data *dd = gdd;
 
-    if (response == GTK_RESPONSE_ACCEPT)
-    {
-        for (GSList *l = dd->torrent_ids; l != NULL; l = l->next)
-        {
+    if (response == GTK_RESPONSE_ACCEPT) {
+        for (GSList *l = dd->torrent_ids; l != NULL; l = l->next) {
             gtr_core_remove_torrent(dd->core, GPOINTER_TO_INT(l->data), dd->delete_files);
         }
     }
@@ -67,8 +64,7 @@ void gtr_confirm_remove(GtkWindow *parent, TrCore *core, GSList *torrent_ids, gb
     int incomplete = 0;
     int const count = g_slist_length(torrent_ids);
 
-    if (count == 0)
-    {
+    if (count == 0) {
         return;
     }
 
@@ -77,31 +73,25 @@ void gtr_confirm_remove(GtkWindow *parent, TrCore *core, GSList *torrent_ids, gb
     dd->torrent_ids = torrent_ids;
     dd->delete_files = delete_files;
 
-    for (GSList *l = torrent_ids; l != NULL; l = l->next)
-    {
+    for (GSList *l = torrent_ids; l != NULL; l = l->next) {
         int const id = GPOINTER_TO_INT(l->data);
         tr_torrent *tor = gtr_core_find_torrent(core, id);
         tr_stat const *stat = tr_torrentStat(tor);
 
-        if (stat->leftUntilDone != 0)
-        {
+        if (stat->leftUntilDone != 0) {
             ++incomplete;
         }
 
-        if (stat->peersConnected != 0)
-        {
+        if (stat->peersConnected != 0) {
             ++connected;
         }
     }
 
     primary_text = g_string_new(NULL);
 
-    if (!delete_files)
-    {
+    if (!delete_files) {
         g_string_printf(primary_text, ngettext("Remove torrent?", "Remove %d torrents?", count), count);
-    }
-    else
-    {
+    } else {
         g_string_printf(
             primary_text,
             ngettext("Delete this torrent's downloaded files?", "Delete these %d torrents' downloaded files?", count),
@@ -110,31 +100,23 @@ void gtr_confirm_remove(GtkWindow *parent, TrCore *core, GSList *torrent_ids, gb
 
     secondary_text = g_string_new(NULL);
 
-    if (incomplete == 0 && connected == 0)
-    {
+    if (incomplete == 0 && connected == 0) {
         g_string_assign(
             secondary_text,
             ngettext(
                 "Once removed, continuing the transfer will require the torrent file or magnet link.",
                 "Once removed, continuing the transfers will require the torrent files or magnet links.",
                 count));
-    }
-    else if (count == incomplete)
-    {
+    } else if (count == incomplete) {
         g_string_assign(
             secondary_text,
             ngettext("This torrent has not finished downloading.", "These torrents have not finished downloading.", count));
-    }
-    else if (count == connected)
-    {
+    } else if (count == connected) {
         g_string_assign(
             secondary_text,
             ngettext("This torrent is connected to peers.", "These torrents are connected to peers.", count));
-    }
-    else
-    {
-        if (connected != 0)
-        {
+    } else {
+        if (connected != 0) {
             g_string_append(
                 secondary_text,
                 ngettext(
@@ -143,13 +125,11 @@ void gtr_confirm_remove(GtkWindow *parent, TrCore *core, GSList *torrent_ids, gb
                     connected));
         }
 
-        if (connected != 0 && incomplete != 0)
-        {
+        if (connected != 0 && incomplete != 0) {
             g_string_append(secondary_text, "\n");
         }
 
-        if (incomplete != 0)
-        {
+        if (incomplete != 0) {
             g_string_assign(
                 secondary_text,
                 ngettext(
@@ -167,8 +147,7 @@ void gtr_confirm_remove(GtkWindow *parent, TrCore *core, GSList *torrent_ids, gb
         "<big><b>%s</b></big>",
         primary_text->str);
 
-    if (secondary_text->len != 0)
-    {
+    if (secondary_text->len != 0) {
         gtk_message_dialog_format_secondary_markup(GTK_MESSAGE_DIALOG(d), "%s", secondary_text->str);
     }
 

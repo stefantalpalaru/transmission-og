@@ -10,8 +10,7 @@
 
 #include <QObject>
 
-class InteropObject : public QObject
-{
+class InteropObject : public QObject {
     Q_OBJECT
 
 #ifdef ENABLE_DBUS_INTEROP

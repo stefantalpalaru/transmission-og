@@ -10,8 +10,7 @@
 
 #include <QListView>
 
-class TorrentView : public QListView
-{
+class TorrentView : public QListView {
     Q_OBJECT
 
 public:

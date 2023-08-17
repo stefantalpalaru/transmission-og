@@ -194,8 +194,7 @@ static int test_numbers(void)
     check_int(count, ==, 7);
     check_ptr(numbers, !=, NULL);
 
-    for (int i = 0; i < count; ++i)
-    {
+    for (int i = 0; i < count; ++i) {
         check_int(numbers[i], ==, i + 1);
     }
 
@@ -230,8 +229,7 @@ static int test_lowerbound(void)
     bool const expected_exact[] = { true, true, true, false, true, false, false, true, false, false };
     int const N = TR_N_ELEMENTS(A);
 
-    for (int i = 1; i <= 10; i++)
-    {
+    for (int i = 1; i <= 10; i++) {
         bool exact;
         int const pos = tr_lowerBound(&i, A, N, sizeof(int), compareInts, &exact);
 
@@ -264,8 +262,7 @@ static int test_quickFindFirst_Iteration(size_t const k, size_t const n, int *bu
     int lowest_high;
 
     /* populate buf with random ints */
-    for (size_t i = 0; i < n; ++i)
-    {
+    for (size_t i = 0; i < n; ++i) {
         buf[i] = tr_rand_int_weak(range);
     }
 
@@ -276,20 +273,16 @@ static int test_quickFindFirst_Iteration(size_t const k, size_t const n, int *bu
 
     highest_low = INT_MIN;
 
-    for (size_t i = 0; i < k; ++i)
-    {
-        if (highest_low < buf[i])
-        {
+    for (size_t i = 0; i < k; ++i) {
+        if (highest_low < buf[i]) {
             highest_low = buf[i];
         }
     }
 
     lowest_high = INT_MAX;
 
-    for (size_t i = k; i < n; ++i)
-    {
-        if (lowest_high > buf[i])
-        {
+    for (size_t i = k; i < n; ++i) {
+        if (lowest_high > buf[i]) {
             lowest_high = buf[i];
         }
     }
@@ -306,8 +299,7 @@ static int test_quickfindFirst(void)
     size_t const n_trials = 1000;
     int *buf = tr_new(int, n);
 
-    for (size_t i = 0; i < n_trials; ++i)
-    {
+    for (size_t i = 0; i < n_trials; ++i) {
         check_int(test_quickFindFirst_Iteration(k, n, buf, 100), ==, 0);
     }
 
@@ -349,24 +341,21 @@ static int test_array(void)
     tr_removeElementFromArray(array, 5U, sizeof(size_t), n);
     --n;
 
-    for (size_t i = 0; i < n; ++i)
-    {
+    for (size_t i = 0; i < n; ++i) {
         check_int(array[i], ==, i < 5 ? i : i + 1);
     }
 
     tr_removeElementFromArray(array, 0U, sizeof(size_t), n);
     --n;
 
-    for (size_t i = 0; i < n; ++i)
-    {
+    for (size_t i = 0; i < n; ++i) {
         check_int(array[i], ==, i < 4 ? i + 1 : i + 2);
     }
 
     tr_removeElementFromArray(array, n - 1, sizeof(size_t), n);
     --n;
 
-    for (size_t i = 0; i < n; ++i)
-    {
+    for (size_t i = 0; i < n; ++i) {
         check_int(array[i], ==, i < 4 ? i + 1 : i + 2);
     }
 

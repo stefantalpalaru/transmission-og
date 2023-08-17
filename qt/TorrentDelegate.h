@@ -17,8 +17,7 @@ class QStyleOptionProgressBar;
 
 class Torrent;
 
-class TorrentDelegate : public QStyledItemDelegate
-{
+class TorrentDelegate : public QStyledItemDelegate {
     Q_OBJECT
 
 public:

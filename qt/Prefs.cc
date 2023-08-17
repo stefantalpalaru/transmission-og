@@ -132,8 +132,7 @@ Prefs::Prefs(QString const &configDir)
 
 #ifndef NDEBUG
 
-    for (int i = 0; i < PREFS_COUNT; ++i)
-    {
+    for (int i = 0; i < PREFS_COUNT; ++i) {
         assert(myItems[i].id == i);
     }
 
@@ -148,8 +147,7 @@ Prefs::Prefs(QString const &configDir)
     initDefaults(&top);
     tr_sessionLoadSettings(&top, myConfigDir.toUtf8().constData(), nullptr);
 
-    for (int i = 0; i < PREFS_COUNT; ++i)
-    {
+    for (int i = 0; i < PREFS_COUNT; ++i) {
         double d;
         bool boolVal;
         int64_t intVal;
@@ -157,59 +155,51 @@ Prefs::Prefs(QString const &configDir)
         size_t strLen;
         tr_variant *b(tr_variantDictFind(&top, myItems[i].key));
 
-        switch (myItems[i].type)
-        {
+        switch (myItems[i].type) {
         case QVariant::Int:
-            if (tr_variantGetInt(b, &intVal))
-            {
+            if (tr_variantGetInt(b, &intVal)) {
                 myValues[i].setValue(static_cast<qlonglong>(intVal));
             }
 
             break;
 
         case CustomVariantType::SortModeType:
-            if (tr_variantGetStr(b, &str, nullptr))
-            {
+            if (tr_variantGetStr(b, &str, nullptr)) {
                 myValues[i] = QVariant::fromValue(SortMode(QString::fromUtf8(str)));
             }
 
             break;
 
         case CustomVariantType::FilterModeType:
-            if (tr_variantGetStr(b, &str, nullptr))
-            {
+            if (tr_variantGetStr(b, &str, nullptr)) {
                 myValues[i] = QVariant::fromValue(FilterMode(QString::fromUtf8(str)));
             }
 
             break;
 
         case QVariant::String:
-            if (tr_variantGetStr(b, &str, &strLen))
-            {
+            if (tr_variantGetStr(b, &str, &strLen)) {
                 myValues[i].setValue(QString::fromUtf8(str, strLen));
             }
 
             break;
 
         case QVariant::Bool:
-            if (tr_variantGetBool(b, &boolVal))
-            {
+            if (tr_variantGetBool(b, &boolVal)) {
                 myValues[i].setValue(static_cast<bool>(boolVal));
             }
 
             break;
 
         case QVariant::Double:
-            if (tr_variantGetReal(b, &d))
-            {
+            if (tr_variantGetReal(b, &d)) {
                 myValues[i].setValue(d);
             }
 
             break;
 
         case QVariant::DateTime:
-            if (tr_variantGetInt(b, &intVal))
-            {
+            if (tr_variantGetInt(b, &intVal)) {
                 myValues[i].setValue(QDateTime::fromTime_t(intVal));
             }
 
@@ -230,18 +220,15 @@ Prefs::~Prefs()
     tr_variant current_settings;
     tr_variantInitDict(&current_settings, PREFS_COUNT);
 
-    for (int i = 0; i < PREFS_COUNT; ++i)
-    {
-        if (myTemporaryPrefs.contains(i))
-        {
+    for (int i = 0; i < PREFS_COUNT; ++i) {
+        if (myTemporaryPrefs.contains(i)) {
             continue;
         }
 
         tr_quark const key = myItems[i].key;
         QVariant const &val = myValues[i];
 
-        switch (myItems[i].type)
-        {
+        switch (myItems[i].type) {
         case QVariant::Int:
             tr_variantDictAddInt(&current_settings, key, val.toInt());
             break;
@@ -259,12 +246,9 @@ Prefs::~Prefs()
                 QByteArray const ba(val.toByteArray());
                 char const *s = ba.constData();
 
-                if (Utils::isValidUtf8(s))
-                {
+                if (Utils::isValidUtf8(s)) {
                     tr_variantDictAddStr(&current_settings, key, s);
-                }
-                else
-                {
+                } else {
                     tr_variantDictAddStr(&current_settings, key, val.toString().toUtf8().constData());
                 }
 
@@ -293,8 +277,7 @@ Prefs::~Prefs()
     tr_variant file_settings;
     QFile const file(QDir(myConfigDir).absoluteFilePath(QLatin1String("settings.json")));
 
-    if (!tr_variantFromFile(&file_settings, TR_VARIANT_FMT_JSON, file.fileName().toUtf8().constData(), nullptr))
-    {
+    if (!tr_variantFromFile(&file_settings, TR_VARIANT_FMT_JSON, file.fileName().toUtf8().constData(), nullptr)) {
         tr_variantInitDict(&file_settings, PREFS_COUNT);
     }
 
@@ -371,8 +354,7 @@ QString Prefs::getString(int key) const
     assert(myItems[key].type == QVariant::String);
     QByteArray const b = myValues[key].toByteArray();
 
-    if (Utils::isValidUtf8(b.constData()))
-    {
+    if (Utils::isValidUtf8(b.constData())) {
         myValues[key].setValue(QString::fromUtf8(b.constData()));
     }
 

@@ -24,8 +24,7 @@
 
 #include <libtransmission/transmission.h>
 
-@interface StatusBarController : NSViewController
-{
+@interface StatusBarController : NSViewController {
     IBOutlet NSButton *fStatusButton;
     IBOutlet NSTextField *fTotalDLField, *fTotalULField;
     IBOutlet NSImageView *fTotalDLImageView, *fTotalULImageView;

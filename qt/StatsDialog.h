@@ -16,8 +16,7 @@ class QTimer;
 
 class Session;
 
-class StatsDialog : public BaseDialog
-{
+class StatsDialog : public BaseDialog {
     Q_OBJECT
 
 public:

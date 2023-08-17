@@ -48,8 +48,7 @@
 
 - (id)initWithTorrent:(Torrent *)torrent destination:(NSString *)path controller:(Controller *)controller
 {
-    if ((self = [super initWithWindowNibName:@"AddMagnetWindow"]))
-    {
+    if ((self = [super initWithWindowNibName:@"AddMagnetWindow"])) {
         fTorrent = torrent;
         fDestination = [path stringByExpandingTildeInPath];
 
@@ -74,8 +73,7 @@
     [fGroupPopUp selectItemWithTag:fGroupValue];
 
     NSInteger priorityIndex;
-    switch ([fTorrent priority])
-    {
+    switch ([fTorrent priority]) {
     case TR_PRI_HIGH:
         priorityIndex = POPUP_PRIORITY_HIGH;
         break;
@@ -95,8 +93,7 @@
 
     if (fDestination)
         [self setDestinationPath:fDestination determinationType:TorrentDeterminationAutomatic];
-    else
-    {
+    else {
         [fLocationField setStringValue:@""];
         [fLocationImageView setImage:nil];
     }
@@ -193,8 +190,7 @@
     [panel beginSheetModalForWindow:[self window] completionHandler:^(NSInteger result) {
         if (result == NSFileHandlingPanelOKButton)
             [self setDestinationPath:[[panel URLs][0] path] determinationType:TorrentDeterminationUserSpecified];
-        else
-        {
+        else {
             if (!fDestination)
                 [self performSelectorOnMainThread:@selector(cancelAdd:) withObject:nil waitUntilDone:NO];
         }
@@ -204,8 +200,7 @@
 - (void)add:(id)sender
 {
     if ([[fDestination lastPathComponent] isEqualToString:[fTorrent name]] &&
-        [[NSUserDefaults standardUserDefaults] boolForKey:@"WarningFolderDataSameName"])
-    {
+        [[NSUserDefaults standardUserDefaults] boolForKey:@"WarningFolderDataSameName"]) {
         NSAlert *alert = [[NSAlert alloc] init];
         [alert setMessageText:NSLocalizedString(@"The destination directory and root data directory have the same name.", "Add torrent -> same name -> title")];
         [alert setInformativeText:NSLocalizedString(
@@ -220,8 +215,7 @@
         [alert beginSheetModalForWindow:[self window] modalDelegate:self
                          didEndSelector:@selector(sameNameAlertDidEnd:returnCode:contextInfo:)
                             contextInfo:nil];
-    }
-    else
+    } else
         [self confirmAdd];
 }
 
@@ -240,8 +234,7 @@
 - (void)changePriority:(id)sender
 {
     tr_priority_t priority;
-    switch ([sender indexOfSelectedItem])
-    {
+    switch ([sender indexOfSelectedItem]) {
     case POPUP_PRIORITY_HIGH:
         priority = TR_PRI_HIGH;
         break;
@@ -261,8 +254,7 @@
 - (void)updateGroupMenu:(NSNotification *)notification
 {
     [self setGroupsMenu];
-    if (![fGroupPopUp selectItemWithTag:fGroupValue])
-    {
+    if (![fGroupPopUp selectItemWithTag:fGroupValue]) {
         fGroupValue = -1;
         fGroupDeterminationType = TorrentDeterminationAutomatic;
         [fGroupPopUp selectItemWithTag:fGroupValue];
@@ -287,8 +279,7 @@
 - (void)setDestinationPath:(NSString *)destination determinationType:(TorrentDeterminationType)determinationType
 {
     destination = [destination stringByExpandingTildeInPath];
-    if (!fDestination || ![fDestination isEqualToString:destination])
-    {
+    if (!fDestination || ![fDestination isEqualToString:destination]) {
         fDestination = destination;
 
         [fTorrent changeDownloadFolderBeforeUsing:fDestination determinationType:determinationType];

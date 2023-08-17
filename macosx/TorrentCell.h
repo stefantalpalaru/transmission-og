@@ -22,8 +22,7 @@
 
 #import <AppKit/AppKit.h>
 
-@interface TorrentCell : NSActionCell
-{
+@interface TorrentCell : NSActionCell {
     NSUserDefaults *fDefaults;
 
     NSMutableDictionary *fTitleAttributes, *fStatusAttributes;

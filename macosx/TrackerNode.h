@@ -26,8 +26,7 @@
 
 @class Torrent;
 
-@interface TrackerNode : NSObject
-{
+@interface TrackerNode : NSObject {
     tr_tracker_stat fStat;
 
     Torrent *__weak fTorrent;

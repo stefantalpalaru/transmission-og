@@ -16,8 +16,7 @@ class QFileSystemWatcher;
 
 class TorrentModel;
 
-class WatchDir : public QObject
-{
+class WatchDir : public QObject {
     Q_OBJECT
 
 public:
@@ -29,12 +28,7 @@ signals:
     void torrentFileAdded(QString const &filename);
 
 private:
-    enum
-    {
-        OK,
-        DUPLICATE,
-        ERROR
-    };
+    enum { OK, DUPLICATE, ERROR };
 
 private:
     int metainfoTest(QString const &filename) const;

@@ -20,8 +20,7 @@ class QSortFilterProxyModel;
 class FileTreeDelegate;
 class FileTreeModel;
 
-class FileTreeView : public QTreeView
-{
+class FileTreeView : public QTreeView {
     Q_OBJECT
 
 public:

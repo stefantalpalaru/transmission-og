@@ -28,8 +28,7 @@ struct tr_session_stats const TR_SESSION_STATS_INIT = {
 };
 
 /** @brief Opaque, per-session data structure for bandwidth use statistics */
-struct tr_stats_handle
-{
+struct tr_stats_handle {
     tr_session_stats single;
     tr_session_stats old;
     time_t startTime;
@@ -56,39 +55,32 @@ static void loadCumulativeStats(tr_session const *session, tr_session_stats *set
     loaded = tr_variantFromFile(&top, TR_VARIANT_FMT_JSON, filename, NULL);
     tr_free(filename);
 
-    if (!loaded)
-    {
+    if (!loaded) {
         filename = getOldFilename(session);
         loaded = tr_variantFromFile(&top, TR_VARIANT_FMT_BENC, filename, NULL);
         tr_free(filename);
     }
 
-    if (loaded)
-    {
+    if (loaded) {
         int64_t i;
 
-        if (tr_variantDictFindInt(&top, TR_KEY_downloaded_bytes, &i))
-        {
+        if (tr_variantDictFindInt(&top, TR_KEY_downloaded_bytes, &i)) {
             setme->downloadedBytes = (uint64_t)i;
         }
 
-        if (tr_variantDictFindInt(&top, TR_KEY_files_added, &i))
-        {
+        if (tr_variantDictFindInt(&top, TR_KEY_files_added, &i)) {
             setme->filesAdded = (uint64_t)i;
         }
 
-        if (tr_variantDictFindInt(&top, TR_KEY_seconds_active, &i))
-        {
+        if (tr_variantDictFindInt(&top, TR_KEY_seconds_active, &i)) {
             setme->secondsActive = (uint64_t)i;
         }
 
-        if (tr_variantDictFindInt(&top, TR_KEY_session_count, &i))
-        {
+        if (tr_variantDictFindInt(&top, TR_KEY_session_count, &i)) {
             setme->sessionCount = (uint64_t)i;
         }
 
-        if (tr_variantDictFindInt(&top, TR_KEY_uploaded_bytes, &i))
-        {
+        if (tr_variantDictFindInt(&top, TR_KEY_uploaded_bytes, &i)) {
             setme->uploadedBytes = (uint64_t)i;
         }
 
@@ -139,8 +131,7 @@ void tr_statsSaveDirty(tr_session *session)
 {
     struct tr_stats_handle *h = getStats(session);
 
-    if (h != NULL && h->isDirty)
-    {
+    if (h != NULL && h->isDirty) {
         tr_session_stats cumulative = TR_SESSION_STATS_INIT;
         tr_sessionGetCumulativeStats(session, &cumulative);
         saveCumulativeStats(session, &cumulative);
@@ -179,8 +170,7 @@ void tr_sessionGetStats(tr_session const *session, tr_session_stats *setme)
 {
     struct tr_stats_handle const *stats = getStats(session);
 
-    if (stats != NULL)
-    {
+    if (stats != NULL) {
         *setme = stats->single;
         setme->secondsActive = tr_time() - stats->startTime;
         updateRatio(setme);
@@ -192,8 +182,7 @@ void tr_sessionGetCumulativeStats(tr_session const *session, tr_session_stats *s
     struct tr_stats_handle const *stats = getStats(session);
     tr_session_stats current = TR_SESSION_STATS_INIT;
 
-    if (stats != NULL)
-    {
+    if (stats != NULL) {
         tr_sessionGetStats(session, &current);
         addStats(setme, &stats->old, &current);
     }
@@ -223,8 +212,7 @@ void tr_statsAddUploaded(tr_session *session, uint32_t bytes)
 {
     struct tr_stats_handle *s;
 
-    if ((s = getStats(session)) != NULL)
-    {
+    if ((s = getStats(session)) != NULL) {
         s->single.uploadedBytes += bytes;
         s->isDirty = true;
     }
@@ -234,8 +222,7 @@ void tr_statsAddDownloaded(tr_session *session, uint32_t bytes)
 {
     struct tr_stats_handle *s;
 
-    if ((s = getStats(session)) != NULL)
-    {
+    if ((s = getStats(session)) != NULL) {
         s->single.downloadedBytes += bytes;
         s->isDirty = true;
     }
@@ -245,8 +232,7 @@ void tr_statsFileCreated(tr_session *session)
 {
     struct tr_stats_handle *s;
 
-    if ((s = getStats(session)) != NULL)
-    {
+    if ((s = getStats(session)) != NULL) {
         s->single.filesAdded++;
     }
 }

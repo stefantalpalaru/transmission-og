@@ -14,8 +14,7 @@
 #include "StyleHelper.h"
 #include "Utils.h"
 
-namespace
-{
+namespace {
 
 int getHSpacing(QWidget const *w)
 {
@@ -44,8 +43,7 @@ QSize FilterBarComboBox::sizeHint() const
     QSize maxTextSize(0, 0);
     QSize maxCountSize(0, 0);
 
-    for (int i = 0, n = count(); i < n; ++i)
-    {
+    for (int i = 0, n = count(); i < n; ++i) {
         QSize const textSize = fm.boundingRect(itemText(i)).size();
         maxTextSize.setHeight(qMax(maxTextSize.height(), textSize.height()));
         maxTextSize.setWidth(qMax(maxTextSize.width(), textSize.width()));
@@ -88,8 +86,7 @@ void FilterBarComboBox::paintEvent(QPaintEvent *e)
     // draw the icon and text
     QModelIndex const modelIndex = model()->index(currentIndex(), 0, rootModelIndex());
 
-    if (modelIndex.isValid())
-    {
+    if (modelIndex.isValid()) {
         QStyle *s = style();
         int const hmargin = getHSpacing(this);
 
@@ -99,8 +96,7 @@ void FilterBarComboBox::paintEvent(QPaintEvent *e)
         // draw the icon
         QIcon const icon = Utils::getIconFromIndex(modelIndex);
 
-        if (!icon.isNull())
-        {
+        if (!icon.isNull()) {
             QRect const iconRect = QStyle::alignedRect(opt.direction, Qt::AlignLeft | Qt::AlignVCenter, opt.iconSize, rect);
             icon.paint(&painter, iconRect, Qt::AlignCenter, StyleHelper::getIconMode(opt.state), QIcon::Off);
             Utils::narrowRect(rect, iconRect.width() + hmargin, 0, opt.direction);
@@ -109,8 +105,7 @@ void FilterBarComboBox::paintEvent(QPaintEvent *e)
         // draw the count
         QString text = modelIndex.data(CountStringRole).toString();
 
-        if (!text.isEmpty())
-        {
+        if (!text.isEmpty()) {
             QPen const pen = painter.pen();
             painter.setPen(Utils::getFadedColor(pen.color()));
             QRect const textRect = QStyle::alignedRect(

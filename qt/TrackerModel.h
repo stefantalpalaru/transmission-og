@@ -16,23 +16,18 @@
 
 class TorrentModel;
 
-struct TrackerInfo
-{
+struct TrackerInfo {
     TrackerStat st;
     int torrentId;
 };
 
 Q_DECLARE_METATYPE(TrackerInfo)
 
-class TrackerModel : public QAbstractListModel
-{
+class TrackerModel : public QAbstractListModel {
     Q_OBJECT
 
 public:
-    enum Role
-    {
-        TrackerRole = Qt::UserRole
-    };
+    enum Role { TrackerRole = Qt::UserRole };
 
 public:
     TrackerModel() = default;

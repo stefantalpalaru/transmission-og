@@ -28,8 +28,7 @@
 static tr_session *session = NULL;
 
 #define check_have_none(tor, totalSize) \
-    do \
-    { \
+    do { \
         tr_stat const *tst = tr_torrentStat(tor); \
         check_int(tst->activity, ==, TR_STATUS_STOPPED); \
         check_int(tst->error, ==, TR_STAT_OK); \
@@ -47,8 +46,7 @@ static bool testFileExistsAndConsistsOfThisString(tr_torrent const *tor, tr_file
 
     path = tr_torrentFindFile(tor, fileIndex);
 
-    if (path != NULL)
-    {
+    if (path != NULL) {
         TR_ASSERT(tr_sys_path_exists(path, NULL));
 
         size_t contents_len;
@@ -78,8 +76,7 @@ static int torrentRenameAndWait(tr_torrent *tor, char const *oldpath, char const
     int error = -1;
     tr_torrentRenamePath(tor, oldpath, newname, onRenameDone, &error);
 
-    do
-    {
+    do {
         tr_wait_msec(10);
     } while (error == -1);
 
@@ -90,8 +87,7 @@ static void torrentRemoveAndWait(tr_torrent *tor, int expected_torrent_count)
 {
     tr_torrentRemove(tor, false, NULL);
 
-    while (tr_sessionCountTorrents(session) != expected_torrent_count)
-    {
+    while (tr_sessionCountTorrents(session) != expected_torrent_count) {
         tr_wait_msec(10);
     }
 }
@@ -311,8 +307,7 @@ static int test_multifile_torrent(void)
     check_uint(tor->info.totalSize, ==, totalSize);
     check_uint(tor->info.fileCount, ==, 4);
 
-    for (tr_file_index_t i = 0; i < 4; ++i)
-    {
+    for (tr_file_index_t i = 0; i < 4; ++i) {
         check_str(files[i].name, ==, expected_files[i]);
     }
 
@@ -426,8 +421,7 @@ static int test_multifile_torrent(void)
         ==,
         0);
 
-    for (tr_file_index_t i = 0; i < 4; ++i)
-    {
+    for (tr_file_index_t i = 0; i < 4; ++i) {
         check_str(files[i].name, ==, expected_files[i]);
         check(testFileExistsAndConsistsOfThisString(tor, i, expected_contents[i]));
     }
@@ -457,8 +451,7 @@ static int test_multifile_torrent(void)
     libttest_blockingTorrentVerify(tor);
     testFileExistsAndConsistsOfThisString(tor, 0, expected_contents[0]);
 
-    for (tr_file_index_t i = 1; i <= 2; ++i)
-    {
+    for (tr_file_index_t i = 1; i <= 2; ++i) {
         str = tr_torrentFindFile(tor, i);
         check_str(str, ==, NULL);
         tr_free(str);
@@ -496,8 +489,7 @@ static int test_multifile_torrent(void)
         ==,
         0);
 
-    for (tr_file_index_t i = 0; i < 4; ++i)
-    {
+    for (tr_file_index_t i = 0; i < 4; ++i) {
         check_str(files[i].name, ==, expected_files[i]);
     }
 
@@ -511,8 +503,7 @@ static int test_multifile_torrent(void)
     strings[3] = "gabba" TR_PATH_DELIMITER_STR "Pantherinae" TR_PATH_DELIMITER_STR "Panthera" TR_PATH_DELIMITER_STR
                  "Tiger" TR_PATH_DELIMITER_STR "Tony";
 
-    for (tr_file_index_t i = 0; i < 4; ++i)
-    {
+    for (tr_file_index_t i = 0; i < 4; ++i) {
         check_str(files[i].name, ==, strings[i]);
         testFileExistsAndConsistsOfThisString(tor, i, expected_contents[i]);
     }
@@ -543,8 +534,7 @@ static int test_multifile_torrent(void)
     strings[3] = "Felidae" TR_PATH_DELIMITER_STR "Pantherinae" TR_PATH_DELIMITER_STR "Panthera" TR_PATH_DELIMITER_STR
                  "Snow Leopard" TR_PATH_DELIMITER_STR "10.6";
 
-    for (tr_file_index_t i = 0; i < 4; ++i)
-    {
+    for (tr_file_index_t i = 0; i < 4; ++i) {
         check_str(files[i].name, ==, strings[i]);
         testFileExistsAndConsistsOfThisString(tor, i, expected_contents[i]);
     }
@@ -643,15 +633,13 @@ static int test_partial_file(void)
     strings[1] = "foo" TR_PATH_DELIMITER_STR "4096";
     strings[2] = "foo" TR_PATH_DELIMITER_STR "512";
 
-    for (tr_file_index_t i = 0; i < 3; ++i)
-    {
+    for (tr_file_index_t i = 0; i < 3; ++i) {
         check_str(tor->info.files[i].name, ==, strings[i]);
     }
 
     strings[0] = "foo" TR_PATH_DELIMITER_STR "bar.part";
 
-    for (tr_file_index_t i = 0; i < 3; ++i)
-    {
+    for (tr_file_index_t i = 0; i < 3; ++i) {
         char *expected = tr_buildPath(tor->currentDir, strings[i], NULL);
         char *path = tr_torrentFindFile(tor, i);
         check_str(path, ==, expected);

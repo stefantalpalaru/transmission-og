@@ -16,8 +16,7 @@
 #include "StyleHelper.h"
 #include "Utils.h"
 
-namespace
-{
+namespace {
 
 int getHSpacing(QWidget const *w)
 {
@@ -29,8 +28,7 @@ int getHSpacing(QWidget const *w)
 FilterBarComboBoxDelegate::FilterBarComboBoxDelegate(QObject *parent, QComboBox *combo)
     : QItemDelegate(parent)
     , myCombo(combo)
-{
-}
+{}
 
 bool FilterBarComboBoxDelegate::isSeparator(QModelIndex const &index)
 {
@@ -41,10 +39,8 @@ void FilterBarComboBoxDelegate::setSeparator(QAbstractItemModel *model, QModelIn
 {
     model->setData(index, QString::fromLatin1("separator"), Qt::AccessibleDescriptionRole);
 
-    if (QStandardItemModel *m = qobject_cast<QStandardItemModel *>(model))
-    {
-        if (QStandardItem *item = m->itemFromIndex(index))
-        {
+    if (QStandardItemModel *m = qobject_cast<QStandardItemModel *>(model)) {
+        if (QStandardItem *item = m->itemFromIndex(index)) {
             item->setFlags(item->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
         }
     }
@@ -52,21 +48,17 @@ void FilterBarComboBoxDelegate::setSeparator(QAbstractItemModel *model, QModelIn
 
 void FilterBarComboBoxDelegate::paint(QPainter *painter, QStyleOptionViewItem const &option, QModelIndex const &index) const
 {
-    if (isSeparator(index))
-    {
+    if (isSeparator(index)) {
         QRect rect = option.rect;
 
-        if (QAbstractItemView const *view = qobject_cast<QAbstractItemView const *>(option.widget))
-        {
+        if (QAbstractItemView const *view = qobject_cast<QAbstractItemView const *>(option.widget)) {
             rect.setWidth(view->viewport()->width());
         }
 
         QStyleOption opt;
         opt.rect = rect;
         myCombo->style()->drawPrimitive(QStyle::PE_IndicatorToolBarSeparator, &opt, painter, myCombo);
-    }
-    else
-    {
+    } else {
         QStyleOptionViewItem disabledOption = option;
         QPalette::ColorRole const disabledColorRole = (disabledOption.state & QStyle::State_Selected) != 0 ?
             QPalette::HighlightedText :
@@ -106,13 +98,10 @@ void FilterBarComboBoxDelegate::paint(QPainter *painter, QStyleOptionViewItem co
 
 QSize FilterBarComboBoxDelegate::sizeHint(QStyleOptionViewItem const &option, QModelIndex const &index) const
 {
-    if (isSeparator(index))
-    {
+    if (isSeparator(index)) {
         int const pm = myCombo->style()->pixelMetric(QStyle::PM_DefaultFrameWidth, nullptr, myCombo);
         return QSize(pm, pm + 10);
-    }
-    else
-    {
+    } else {
         QStyle *s = myCombo->style();
         int const hmargin = getHSpacing(myCombo);
 

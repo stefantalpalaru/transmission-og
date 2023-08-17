@@ -100,8 +100,7 @@ static bool path_contains_no_symlinks(char const *path)
 {
     char const *p = path;
 
-    while (*p != '\0')
-    {
+    while (*p != '\0') {
         tr_sys_path_info info;
         char *pathPart;
         char const *slashPos = strchr(p, '/');
@@ -110,23 +109,20 @@ static bool path_contains_no_symlinks(char const *path)
 
         char const *backslashPos = strchr(p, '\\');
 
-        if (slashPos == NULL || (backslashPos != NULL && backslashPos < slashPos))
-        {
+        if (slashPos == NULL || (backslashPos != NULL && backslashPos < slashPos)) {
             slashPos = backslashPos;
         }
 
 #endif
 
-        if (slashPos == NULL)
-        {
+        if (slashPos == NULL) {
             slashPos = p + strlen(p) - 1;
         }
 
         pathPart = tr_strndup(path, (size_t)(slashPos - path + 1));
 
         if (!tr_sys_path_get_info(pathPart, TR_SYS_PATH_NO_FOLLOW, &info, NULL) ||
-            (info.type != TR_SYS_PATH_IS_FILE && info.type != TR_SYS_PATH_IS_DIRECTORY))
-        {
+            (info.type != TR_SYS_PATH_IS_FILE && info.type != TR_SYS_PATH_IS_DIRECTORY)) {
             tr_free(pathPart);
             return false;
         }
@@ -212,8 +208,7 @@ static int test_get_info(void)
     check_int(info.last_modified_at, <=, time(NULL) + 1);
     tr_sys_path_remove(path1, NULL);
 
-    if (create_symlink(path1, path2, false))
-    {
+    if (create_symlink(path1, path2, false)) {
         /* Can't get info of non-existent file/directory */
         check(!tr_sys_path_get_info(path1, 0, &info, &err));
         check_ptr(err, !=, NULL);
@@ -259,9 +254,7 @@ static int test_get_info(void)
 
         tr_sys_path_remove(path2, NULL);
         tr_sys_path_remove(path1, NULL);
-    }
-    else
-    {
+    } else {
         fprintf(stderr, "WARNING: [%s] unable to run symlink tests\n", __FUNCTION__);
     }
 
@@ -300,8 +293,7 @@ static int test_path_exists(void)
 
     tr_sys_path_remove(path1, NULL);
 
-    if (create_symlink(path1, path2, false))
-    {
+    if (create_symlink(path1, path2, false)) {
         /* Non-existent file does not exist (via symlink) */
         check(!tr_sys_path_exists(path1, &err));
         check_ptr(err, ==, NULL);
@@ -322,9 +314,7 @@ static int test_path_exists(void)
 
         tr_sys_path_remove(path2, NULL);
         tr_sys_path_remove(path1, NULL);
-    }
-    else
-    {
+    } else {
         fprintf(stderr, "WARNING: [%s] unable to run symlink tests\n", __FUNCTION__);
     }
 
@@ -440,8 +430,7 @@ static int test_path_is_same(void)
     tr_sys_path_remove(path1, NULL);
     tr_sys_path_remove(path2, NULL);
 
-    if (create_symlink(path1, ".", true))
-    {
+    if (create_symlink(path1, ".", true)) {
         /* Directory and symlink pointing to it are the same */
         check(tr_sys_path_is_same(path1, test_dir, &err));
         check_ptr(err, ==, NULL);
@@ -528,9 +517,7 @@ static int test_path_is_same(void)
 
         tr_sys_path_remove(path2, NULL);
         tr_sys_path_remove(path1, NULL);
-    }
-    else
-    {
+    } else {
         fprintf(stderr, "WARNING: [%s] unable to run symlink tests\n", __FUNCTION__);
     }
 
@@ -539,8 +526,7 @@ static int test_path_is_same(void)
 
     libtest_create_file_with_string_contents(path1, "test");
 
-    if (create_hardlink(path2, path1))
-    {
+    if (create_hardlink(path2, path1)) {
         /* File and hardlink to it are the same */
         check(tr_sys_path_is_same(path1, path2, &err));
         check_ptr(err, ==, NULL);
@@ -569,19 +555,14 @@ static int test_path_is_same(void)
 
         tr_sys_path_remove(path3, NULL);
         tr_sys_path_remove(path2, NULL);
-    }
-    else
-    {
+    } else {
         fprintf(stderr, "WARNING: [%s] unable to run hardlink tests\n", __FUNCTION__);
     }
 
-    if (create_symlink(path2, path1, false) && create_hardlink(path3, path1))
-    {
+    if (create_symlink(path2, path1, false) && create_hardlink(path3, path1)) {
         check(tr_sys_path_is_same(path2, path3, &err));
         check_ptr(err, ==, NULL);
-    }
-    else
-    {
+    } else {
         fprintf(stderr, "WARNING: [%s] unable to run combined symlink and hardlink tests\n", __FUNCTION__);
     }
 
@@ -609,8 +590,7 @@ static int test_path_resolve(void)
 
     libtest_create_file_with_string_contents(path1, "test");
 
-    if (create_symlink(path2, path1, false))
-    {
+    if (create_symlink(path2, path1, false)) {
         char *tmp;
 
         tmp = tr_sys_path_resolve(path2, &err);
@@ -629,9 +609,7 @@ static int test_path_resolve(void)
         check_ptr(err, ==, NULL);
         check(path_contains_no_symlinks(tmp));
         tr_free(tmp);
-    }
-    else
-    {
+    } else {
         fprintf(stderr, "WARNING: [%s] unable to run symlink tests\n", __FUNCTION__);
     }
 
@@ -668,28 +646,23 @@ static int test_path_resolve(void)
     return 0;
 }
 
-struct xname_test_data
-{
+struct xname_test_data {
     char const *input;
     char const *output;
 };
 
 static int test_path_xname(struct xname_test_data const *data, size_t data_size, char *(*func)(char const *, tr_error **))
 {
-    for (size_t i = 0; i < data_size; ++i)
-    {
+    for (size_t i = 0; i < data_size; ++i) {
         tr_error *err = NULL;
         char *name = func(data[i].input, &err);
 
-        if (data[i].output != NULL)
-        {
+        if (data[i].output != NULL) {
             check_str(name, !=, NULL);
             check_ptr(err, ==, NULL);
             check_str(name, ==, data[i].output);
             tr_free(name);
-        }
-        else
-        {
+        } else {
             check_str(name, ==, NULL);
             check_ptr(err, !=, NULL);
             tr_error_clear(&err);
@@ -736,13 +709,11 @@ static int test_path_basename_dirname(void)
 #endif
     };
 
-    if (test_path_xname(common_xname_tests, TR_N_ELEMENTS(common_xname_tests), tr_sys_path_basename) != 0)
-    {
+    if (test_path_xname(common_xname_tests, TR_N_ELEMENTS(common_xname_tests), tr_sys_path_basename) != 0) {
         return 1;
     }
 
-    if (test_path_xname(common_xname_tests, TR_N_ELEMENTS(common_xname_tests), tr_sys_path_dirname) != 0)
-    {
+    if (test_path_xname(common_xname_tests, TR_N_ELEMENTS(common_xname_tests), tr_sys_path_dirname) != 0) {
         return 1;
     }
 
@@ -769,8 +740,7 @@ static int test_path_basename_dirname(void)
 #endif
     };
 
-    if (test_path_xname(basename_tests, TR_N_ELEMENTS(basename_tests), tr_sys_path_basename) != 0)
-    {
+    if (test_path_xname(basename_tests, TR_N_ELEMENTS(basename_tests), tr_sys_path_basename) != 0) {
         return 1;
     }
 
@@ -802,8 +772,7 @@ static int test_path_basename_dirname(void)
 #endif
     };
 
-    if (test_path_xname(dirname_tests, TR_N_ELEMENTS(dirname_tests), tr_sys_path_dirname) != 0)
-    {
+    if (test_path_xname(dirname_tests, TR_N_ELEMENTS(dirname_tests), tr_sys_path_dirname) != 0) {
         return 1;
     }
 
@@ -878,8 +847,7 @@ static int test_path_rename(void)
     tr_free(path3);
     path3 = tr_buildPath(test_dir, "c", NULL);
 
-    if (create_symlink(path2, path1, false))
-    {
+    if (create_symlink(path2, path1, false)) {
         /* Preconditions */
         check(tr_sys_path_exists(path2, NULL));
         check(!tr_sys_path_exists(path3, NULL));
@@ -893,14 +861,11 @@ static int test_path_rename(void)
         check(tr_sys_path_is_same(path1, path3, NULL));
 
         tr_sys_path_remove(path3, NULL);
-    }
-    else
-    {
+    } else {
         fprintf(stderr, "WARNING: [%s] unable to run symlink tests\n", __FUNCTION__);
     }
 
-    if (create_hardlink(path2, path1))
-    {
+    if (create_hardlink(path2, path1)) {
         /* Preconditions */
         check(tr_sys_path_exists(path2, NULL));
         check(!tr_sys_path_exists(path3, NULL));
@@ -914,9 +879,7 @@ static int test_path_rename(void)
         check(tr_sys_path_is_same(path1, path3, NULL));
 
         tr_sys_path_remove(path3, NULL);
-    }
-    else
-    {
+    } else {
         fprintf(stderr, "WARNING: [%s] unable to run hardlink tests\n", __FUNCTION__);
     }
 
@@ -995,8 +958,7 @@ static int test_path_native_separators(void)
     char path4[] = "/a/b/c";
     char path5[] = "C:\\a/b\\c";
 
-    struct
-    {
+    struct {
         char *input;
         char const *output;
     } test_data[] = {
@@ -1007,8 +969,7 @@ static int test_path_native_separators(void)
         { path5, TR_IF_WIN32("C:\\a\\b\\c", "C:\\a/b\\c") },
     };
 
-    for (size_t i = 0; i < TR_N_ELEMENTS(test_data); ++i)
-    {
+    for (size_t i = 0; i < TR_N_ELEMENTS(test_data); ++i) {
         char *const output = tr_sys_path_native_separators(test_data[i].input);
 
         check_str(output, ==, test_data[i].output);
@@ -1274,14 +1235,11 @@ static int test_file_preallocate(void)
 
     fd = tr_sys_file_open(path1, TR_SYS_FILE_WRITE | TR_SYS_FILE_CREATE, 0600, NULL);
 
-    if (tr_sys_file_preallocate(fd, 50, 0, &err))
-    {
+    if (tr_sys_file_preallocate(fd, 50, 0, &err)) {
         check_ptr(err, ==, NULL);
         tr_sys_file_get_info(fd, &info, NULL);
         check_uint(info.size, ==, 50);
-    }
-    else
-    {
+    } else {
         check_ptr(err, !=, NULL);
         fprintf(stderr, "WARNING: [%s] unable to preallocate file (full): %s (%d)\n", __FUNCTION__, err->message, err->code);
         tr_error_clear(&err);
@@ -1293,14 +1251,11 @@ static int test_file_preallocate(void)
 
     fd = tr_sys_file_open(path1, TR_SYS_FILE_WRITE | TR_SYS_FILE_CREATE, 0600, NULL);
 
-    if (tr_sys_file_preallocate(fd, 500 * 1024 * 1024, TR_SYS_FILE_PREALLOC_SPARSE, &err))
-    {
+    if (tr_sys_file_preallocate(fd, 500 * 1024 * 1024, TR_SYS_FILE_PREALLOC_SPARSE, &err)) {
         check_ptr(err, ==, NULL);
         tr_sys_file_get_info(fd, &info, NULL);
         check_uint(info.size, ==, 500 * 1024 * 1024);
-    }
-    else
-    {
+    } else {
         check_ptr(err, !=, NULL);
         fprintf(stderr, "WARNING: [%s] unable to preallocate file (sparse): %s (%d)\n", __FUNCTION__, err->message, err->code);
         tr_error_clear(&err);
@@ -1526,25 +1481,18 @@ static int test_dir_read_impl(char const *path, bool *have1, bool *have2)
     check_ptr(dd, !=, TR_BAD_SYS_DIR);
     check_ptr(err, ==, NULL);
 
-    while ((name = tr_sys_dir_read_name(dd, &err)) != NULL)
-    {
+    while ((name = tr_sys_dir_read_name(dd, &err)) != NULL) {
         check_ptr(err, ==, NULL);
 
-        if (strcmp(name, ".") == 0 || strcmp(name, "..") == 0)
-        {
+        if (strcmp(name, ".") == 0 || strcmp(name, "..") == 0) {
             continue;
         }
 
-        if (strcmp(name, "a") == 0)
-        {
+        if (strcmp(name, "a") == 0) {
             *have1 = true;
-        }
-        else if (strcmp(name, "b") == 0)
-        {
+        } else if (strcmp(name, "b") == 0) {
             *have2 = true;
-        }
-        else
-        {
+        } else {
             check(false);
         }
     }
@@ -1568,8 +1516,7 @@ static int test_dir_read(void)
     path1 = tr_buildPath(test_dir, "a", NULL);
     path2 = tr_buildPath(test_dir, "b", NULL);
 
-    if (test_dir_read_impl(test_dir, &have1, &have2) != 0)
-    {
+    if (test_dir_read_impl(test_dir, &have1, &have2) != 0) {
         return 1;
     }
 
@@ -1578,8 +1525,7 @@ static int test_dir_read(void)
 
     libtest_create_file_with_string_contents(path1, "test");
 
-    if (test_dir_read_impl(test_dir, &have1, &have2) != 0)
-    {
+    if (test_dir_read_impl(test_dir, &have1, &have2) != 0) {
         return 1;
     }
 
@@ -1588,8 +1534,7 @@ static int test_dir_read(void)
 
     libtest_create_file_with_string_contents(path2, "test");
 
-    if (test_dir_read_impl(test_dir, &have1, &have2) != 0)
-    {
+    if (test_dir_read_impl(test_dir, &have1, &have2) != 0) {
         return 1;
     }
 
@@ -1598,8 +1543,7 @@ static int test_dir_read(void)
 
     tr_sys_path_remove(path1, NULL);
 
-    if (test_dir_read_impl(test_dir, &have1, &have2) != 0)
-    {
+    if (test_dir_read_impl(test_dir, &have1, &have2) != 0) {
         return 1;
     }
 

@@ -15,8 +15,7 @@
 #include "transmission.h"
 
 /** @brief Implementation of the BitTorrent spec's Bitfield array of bits */
-typedef struct tr_bitfield
-{
+typedef struct tr_bitfield {
     uint8_t *bits;
     size_t alloc_count;
 

@@ -35,8 +35,7 @@ NSString *urlString = nil;
 
 - (id)initWithController:(Controller *)controller
 {
-    if ((self = [self initWithWindowNibName:@"URLSheetWindow"]))
-    {
+    if ((self = [self initWithWindowNibName:@"URLSheetWindow"])) {
         fController = controller;
     }
     return self;
@@ -46,8 +45,7 @@ NSString *urlString = nil;
 {
     [fLabelField setStringValue:NSLocalizedString(@"Internet address of torrent file:", "URL sheet label")];
 
-    if (urlString)
-    {
+    if (urlString) {
         [fTextField setStringValue:urlString];
         [fTextField selectText:self];
 
@@ -110,8 +108,7 @@ NSString *urlString = nil;
     BOOL enable = YES;
     if ([string isEqualToString:@""])
         enable = NO;
-    else
-    {
+    else {
         NSRange prefixRange = [string rangeOfString:@"://"];
         if (prefixRange.location != NSNotFound && [string length] == NSMaxRange(prefixRange))
             enable = NO;

@@ -43,8 +43,7 @@
 
 #include <QLabel>
 
-class SqueezeLabel : public QLabel
-{
+class SqueezeLabel : public QLabel {
     Q_OBJECT
 
 public:

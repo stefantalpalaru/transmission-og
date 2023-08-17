@@ -17,8 +17,7 @@
 class Prefs;
 class Session;
 
-class SessionDialog : public BaseDialog
-{
+class SessionDialog : public BaseDialog {
     Q_OBJECT
 
 public:

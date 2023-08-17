@@ -22,8 +22,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface PeerProgressIndicatorCell : NSLevelIndicatorCell
-{
+@interface PeerProgressIndicatorCell : NSLevelIndicatorCell {
     NSDictionary *fAttributes;
     BOOL fSeed;
 }

@@ -17,11 +17,9 @@
     NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:[self label] action:nil keyEquivalent:@""];
     [menuItem setEnabled:[[self target] validateToolbarItem:self]];
 
-    if ([menuItem isEnabled])
-    {
+    if ([menuItem isEnabled]) {
         NSMenu *servicesMenu = [[NSMenu alloc] initWithTitle:@""];
-        for (NSMenuItem *item in [[ShareTorrentFileHelper sharedHelper] menuItems])
-        {
+        for (NSMenuItem *item in [[ShareTorrentFileHelper sharedHelper] menuItems]) {
             [servicesMenu addItem:item];
         }
 

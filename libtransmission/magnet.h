@@ -15,8 +15,7 @@
 #include "transmission.h"
 #include "variant.h"
 
-typedef struct tr_magnet_info
-{
+typedef struct tr_magnet_info {
     uint8_t hash[20];
 
     char *displayName;

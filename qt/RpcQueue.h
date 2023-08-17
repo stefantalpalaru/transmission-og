@@ -19,8 +19,7 @@
 
 #include "RpcClient.h"
 
-class RpcQueue : public QObject
-{
+class RpcQueue : public QObject {
     Q_OBJECT
 
 public:
@@ -70,8 +69,7 @@ private:
             std::is_same<typename std::result_of<Func(RpcResponse const &)>::type, RpcResponseFuture>::value>::type * = nullptr>
     QueuedFunction normalizeFunc(Func const &func)
     {
-        return [func](RpcResponseFuture const &r)
-        {
+        return [func](RpcResponseFuture const &r) {
             return func(r.result());
         };
     }
@@ -83,8 +81,7 @@ private:
             nullptr>
     QueuedFunction normalizeFunc(Func const &func)
     {
-        return [func](RpcResponseFuture const &)
-        {
+        return [func](RpcResponseFuture const &) {
             return func();
         };
     }
@@ -96,8 +93,7 @@ private:
             nullptr>
     QueuedFunction normalizeFunc(Func const &func)
     {
-        return [func](RpcResponseFuture const &r)
-        {
+        return [func](RpcResponseFuture const &r) {
             func(r.result());
             return r;
         };
@@ -109,8 +105,7 @@ private:
         typename std::enable_if<std::is_same<typename std::result_of<Func()>::type, void>::value>::type * = nullptr>
     QueuedFunction normalizeFunc(Func const &func)
     {
-        return [func](RpcResponseFuture const &r)
-        {
+        return [func](RpcResponseFuture const &r) {
             func();
             return r;
         };
@@ -123,8 +118,7 @@ private:
             nullptr>
     ErrorHandlerFunction normalizeErrorHandler(Func const &func)
     {
-        return [func](RpcResponseFuture const &r)
-        {
+        return [func](RpcResponseFuture const &r) {
             func(r.result());
         };
     }
@@ -135,8 +129,7 @@ private:
         typename std::enable_if<std::is_same<typename std::result_of<Func()>::type, void>::value>::type * = nullptr>
     ErrorHandlerFunction normalizeErrorHandler(Func const &func)
     {
-        return [func](RpcResponseFuture const &)
-        {
+        return [func](RpcResponseFuture const &) {
             func();
         };
     }

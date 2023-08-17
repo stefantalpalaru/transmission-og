@@ -34,8 +34,7 @@ static inline bool IsDebuggerPresent(void)
 }
 
 static inline void OutputDebugStringA(void const *unused UNUSED)
-{
-}
+{}
 
 #endif
 
@@ -56,8 +55,7 @@ static tr_lock *getMessageLock(void)
 {
     static tr_lock *l = NULL;
 
-    if (l == NULL)
-    {
+    if (l == NULL) {
         l = tr_lockNew();
     }
 
@@ -69,12 +67,10 @@ tr_sys_file_t tr_logGetFile(void)
     static bool initialized = false;
     static tr_sys_file_t file = TR_BAD_SYS_FILE;
 
-    if (!initialized)
-    {
+    if (!initialized) {
         int const fd = tr_env_get_int("TR_DEBUG_FD", 0);
 
-        switch (fd)
-        {
+        switch (fd) {
         case 1:
             file = tr_sys_file_get_std(TR_STD_SYS_FILE_OUT, NULL);
             break;
@@ -123,8 +119,7 @@ void tr_logFreeQueue(tr_log_message *list)
 {
     tr_log_message *next;
 
-    while (list != NULL)
-    {
+    while (list != NULL) {
         next = list->next;
         tr_free(list->message);
         tr_free(list->name);
@@ -160,8 +155,7 @@ bool tr_logGetDeepEnabled(void)
 {
     static int8_t deepLoggingIsActive = -1;
 
-    if (deepLoggingIsActive < 0)
-    {
+    if (deepLoggingIsActive < 0) {
         deepLoggingIsActive = (int8_t)(IsDebuggerPresent() || tr_logGetFile() != TR_BAD_SYS_FILE);
     }
 
@@ -172,8 +166,7 @@ void tr_logAddDeep(char const *file, int line, char const *name, char const *fmt
 {
     tr_sys_file_t const fp = tr_logGetFile();
 
-    if (fp != TR_BAD_SYS_FILE || IsDebuggerPresent())
-    {
+    if (fp != TR_BAD_SYS_FILE || IsDebuggerPresent()) {
         va_list args;
         char timestr[64];
         char *message;
@@ -183,8 +176,7 @@ void tr_logAddDeep(char const *file, int line, char const *name, char const *fmt
 
         evbuffer_add_printf(buf, "[%s] ", tr_logGetTimeStr(timestr, sizeof(timestr)));
 
-        if (name != NULL)
-        {
+        if (name != NULL) {
             evbuffer_add_printf(buf, "%s ", name);
         }
 
@@ -196,8 +188,7 @@ void tr_logAddDeep(char const *file, int line, char const *name, char const *fmt
         message = evbuffer_free_to_str(buf, &message_len);
         OutputDebugStringA(message);
 
-        if (fp != TR_BAD_SYS_FILE)
-        {
+        if (fp != TR_BAD_SYS_FILE) {
             tr_sys_file_write(fp, message, message_len, NULL, NULL);
         }
 
@@ -224,32 +215,26 @@ void tr_logAddMessage(char const *file, int line, tr_log_level level, char const
     buf_len = evutil_vsnprintf(buf, sizeof(buf), fmt, ap);
     va_end(ap);
 
-    if (buf_len < 0)
-    {
+    if (buf_len < 0) {
         goto finish;
     }
 
 #ifdef _WIN32
 
-    if ((size_t)buf_len < sizeof(buf) - 3)
-    {
+    if ((size_t)buf_len < sizeof(buf) - 3) {
         buf[buf_len + 0] = '\r';
         buf[buf_len + 1] = '\n';
         buf[buf_len + 2] = '\0';
         OutputDebugStringA(buf);
         buf[buf_len + 0] = '\0';
-    }
-    else
-    {
+    } else {
         OutputDebugStringA(buf);
     }
 
 #endif
 
-    if (!tr_str_is_empty(buf))
-    {
-        if (tr_logGetQueueEnabled())
-        {
+    if (!tr_str_is_empty(buf)) {
+        if (tr_logGetQueueEnabled()) {
             tr_log_message *newmsg;
             newmsg = tr_new0(tr_log_message, 1);
             newmsg->level = level;
@@ -263,8 +248,7 @@ void tr_logAddMessage(char const *file, int line, tr_log_level level, char const
             myQueueTail = &newmsg->next;
             ++myQueueLength;
 
-            if (myQueueLength > TR_LOG_MAX_QUEUE_LENGTH)
-            {
+            if (myQueueLength > TR_LOG_MAX_QUEUE_LENGTH) {
                 tr_log_message *old = myQueue;
                 myQueue = old->next;
                 old->next = NULL;
@@ -272,27 +256,21 @@ void tr_logAddMessage(char const *file, int line, tr_log_level level, char const
                 --myQueueLength;
                 TR_ASSERT(myQueueLength == TR_LOG_MAX_QUEUE_LENGTH);
             }
-        }
-        else
-        {
+        } else {
             tr_sys_file_t fp;
             char timestr[64];
 
             fp = tr_logGetFile();
 
-            if (fp == TR_BAD_SYS_FILE)
-            {
+            if (fp == TR_BAD_SYS_FILE) {
                 fp = tr_sys_file_get_std(TR_STD_SYS_FILE_ERR, NULL);
             }
 
             tr_logGetTimeStr(timestr, sizeof(timestr));
 
-            if (name != NULL)
-            {
+            if (name != NULL) {
                 tr_sys_file_write_fmt(fp, "[%s] %s: %s" TR_NATIVE_EOL_STR, NULL, timestr, name, buf);
-            }
-            else
-            {
+            } else {
                 tr_sys_file_write_fmt(fp, "[%s] %s" TR_NATIVE_EOL_STR, NULL, timestr, buf);
             }
 

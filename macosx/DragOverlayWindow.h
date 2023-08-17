@@ -24,8 +24,7 @@
 
 #include <libtransmission/transmission.h>
 
-@interface DragOverlayWindow : NSWindow
-{
+@interface DragOverlayWindow : NSWindow {
     tr_session *fLib;
 
     NSViewAnimation *fFadeInAnimation, *fFadeOutAnimation;

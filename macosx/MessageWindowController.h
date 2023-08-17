@@ -22,8 +22,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface MessageWindowController : NSWindowController
-{
+@interface MessageWindowController : NSWindowController {
     IBOutlet NSTableView *fMessageTable;
 
     IBOutlet NSPopUpButton *fLevelButton;

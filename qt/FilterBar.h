@@ -22,8 +22,7 @@ class Prefs;
 class TorrentFilter;
 class TorrentModel;
 
-class FilterBar : public QWidget
-{
+class FilterBar : public QWidget {
     Q_OBJECT
 
 public:

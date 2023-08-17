@@ -10,16 +10,11 @@
 
 #include <QToolButton>
 
-class PathButton : public QToolButton
-{
+class PathButton : public QToolButton {
     Q_OBJECT
 
 public:
-    enum Mode
-    {
-        DirectoryMode,
-        FileMode
-    };
+    enum Mode { DirectoryMode, FileMode };
 
 public:
     PathButton(QWidget *parent = nullptr);

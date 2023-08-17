@@ -23,17 +23,9 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
-enum
-{
-    COL_SEQUENCE,
-    COL_NAME,
-    COL_MESSAGE,
-    COL_TR_MSG,
-    N_COLUMNS
-};
+enum { COL_SEQUENCE, COL_NAME, COL_MESSAGE, COL_TR_MSG, N_COLUMNS };
 
-struct MsgData
-{
+struct MsgData {
     TrCore *core;
     GtkTreeView *view;
     GtkListStore *store;
@@ -56,21 +48,16 @@ static gboolean is_pinned_to_new(struct MsgData *data)
 {
     gboolean pinned_to_new = FALSE;
 
-    if (data->view == NULL)
-    {
+    if (data->view == NULL) {
         pinned_to_new = TRUE;
-    }
-    else
-    {
+    } else {
         GtkTreePath *last_visible;
 
-        if (gtk_tree_view_get_visible_range(data->view, NULL, &last_visible))
-        {
+        if (gtk_tree_view_get_visible_range(data->view, NULL, &last_visible)) {
             GtkTreeIter iter;
             int const row_count = gtk_tree_model_iter_n_children(data->sort, NULL);
 
-            if (gtk_tree_model_iter_nth_child(data->sort, &iter, NULL, row_count - 1))
-            {
+            if (gtk_tree_model_iter_nth_child(data->sort, &iter, NULL, row_count - 1)) {
                 GtkTreePath *last_row = gtk_tree_model_get_path(data->sort, &iter);
                 pinned_to_new = !gtk_tree_path_compare(last_visible, last_row);
                 gtk_tree_path_free(last_row);
@@ -85,13 +72,11 @@ static gboolean is_pinned_to_new(struct MsgData *data)
 
 static void scroll_to_bottom(struct MsgData *data)
 {
-    if (data->sort != NULL)
-    {
+    if (data->sort != NULL) {
         GtkTreeIter iter;
         int const row_count = gtk_tree_model_iter_n_children(data->sort, NULL);
 
-        if (gtk_tree_model_iter_nth_child(data->sort, &iter, NULL, row_count - 1))
-        {
+        if (gtk_tree_model_iter_nth_child(data->sort, &iter, NULL, row_count - 1)) {
             GtkTreePath *last_row = gtk_tree_model_get_path(data->sort, &iter);
             gtk_tree_view_scroll_to_cell(data->view, last_row, NULL, TRUE, 1, 0);
             gtk_tree_path_free(last_row);
@@ -114,8 +99,7 @@ static void level_combo_changed_cb(GtkComboBox *combo_box, gpointer gdata)
     data->maxLevel = level;
     gtk_tree_model_filter_refilter(GTK_TREE_MODEL_FILTER(data->filter));
 
-    if (pinned_to_new)
-    {
+    if (pinned_to_new) {
         scroll_to_bottom(data);
     }
 }
@@ -129,8 +113,7 @@ static char *gtr_localtime(time_t time)
 
     g_strlcpy(buf, asctime(&tm), sizeof(buf));
 
-    if ((eoln = strchr(buf, '\n')) != NULL)
-    {
+    if ((eoln = strchr(buf, '\n')) != NULL) {
         *eoln = '\0';
     }
 
@@ -141,23 +124,18 @@ static void doSave(GtkWindow *parent, struct MsgData *data, char const *filename
 {
     FILE *fp = fopen(filename, "w+");
 
-    if (fp == NULL)
-    {
+    if (fp == NULL) {
         GtkWidget
             *w = gtk_message_dialog_new(parent, 0, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, _("Couldn't save \"%s\""), filename);
         gtk_message_dialog_format_secondary_text(GTK_MESSAGE_DIALOG(w), "%s", g_strerror(errno));
         g_signal_connect_swapped(w, "response", G_CALLBACK(gtk_widget_destroy), w);
         gtk_widget_show(w);
-    }
-    else
-    {
+    } else {
         GtkTreeIter iter;
         GtkTreeModel *model = GTK_TREE_MODEL(data->sort);
 
-        if (gtk_tree_model_iter_children(model, &iter, NULL))
-        {
-            do
-            {
+        if (gtk_tree_model_iter_children(model, &iter, NULL)) {
+            do {
                 char *date;
                 char const *levelStr;
                 struct tr_log_message const *node;
@@ -165,8 +143,7 @@ static void doSave(GtkWindow *parent, struct MsgData *data, char const *filename
                 gtk_tree_model_get(model, &iter, COL_TR_MSG, &node, -1);
                 date = gtr_localtime(node->when);
 
-                switch (node->level)
-                {
+                switch (node->level) {
                 case TR_LOG_DEBUG:
                     levelStr = "debug";
                     break;
@@ -197,8 +174,7 @@ static void doSave(GtkWindow *parent, struct MsgData *data, char const *filename
 
 static void onSaveDialogResponse(GtkWidget *d, int response, gpointer data)
 {
-    if (response == GTK_RESPONSE_ACCEPT)
-    {
+    if (response == GTK_RESPONSE_ACCEPT) {
         char *file = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(d));
         doSave(GTK_WINDOW(d), data, file);
         g_free(file);
@@ -242,8 +218,7 @@ static void onPauseToggled(GtkToggleToolButton *w, gpointer gdata)
 
 static char const *getForegroundColor(int msgLevel)
 {
-    switch (msgLevel)
-    {
+    switch (msgLevel) {
     case TR_LOG_DEBUG:
         return "forestgreen";
 
@@ -297,8 +272,7 @@ static void appendColumn(GtkTreeView *view, int col)
     GtkTreeViewColumn *c;
     char const *title = NULL;
 
-    switch (col)
-    {
+    switch (col) {
     case COL_SEQUENCE:
         title = _("Time");
         break;
@@ -317,8 +291,7 @@ static void appendColumn(GtkTreeView *view, int col)
         g_assert_not_reached();
     }
 
-    switch (col)
-    {
+    switch (col) {
     case COL_NAME:
         r = gtk_cell_renderer_text_new();
         c = gtk_tree_view_column_new_with_attributes(title, r, NULL);
@@ -377,8 +350,7 @@ static tr_log_message *addMessages(GtkListStore *store, struct tr_log_message *h
     static unsigned int sequence = 0;
     char const *default_name = g_get_application_name();
 
-    for (i = head; i != NULL; i = i->next)
-    {
+    for (i = head; i != NULL; i = i->next) {
         char const *name = i->name != NULL ? i->name : default_name;
 
         // clang-format off
@@ -391,13 +363,11 @@ static tr_log_message *addMessages(GtkListStore *store, struct tr_log_message *h
         // clang-format on
 
         /* if it's an error message, dump it to the terminal too */
-        if (i->level == TR_LOG_ERROR)
-        {
+        if (i->level == TR_LOG_ERROR) {
             GString *gstr = g_string_sized_new(512);
             g_string_append_printf(gstr, "%s:%d %s", i->file, i->line, i->message);
 
-            if (i->name != NULL)
-            {
+            if (i->name != NULL) {
                 g_string_append_printf(gstr, " (%s)", i->name);
             }
 
@@ -414,30 +384,24 @@ static gboolean onRefresh(gpointer gdata)
     struct MsgData *data = gdata;
     gboolean const pinned_to_new = is_pinned_to_new(data);
 
-    if (!data->isPaused)
-    {
+    if (!data->isPaused) {
         tr_log_message *msgs = tr_logGetQueue();
 
-        if (msgs != NULL)
-        {
+        if (msgs != NULL) {
             /* add the new messages and append them to the end of
              * our persistent list */
             tr_log_message *tail = addMessages(data->store, msgs);
 
-            if (myTail != NULL)
-            {
+            if (myTail != NULL) {
                 myTail->next = msgs;
-            }
-            else
-            {
+            } else {
                 myHead = msgs;
             }
 
             myTail = tail;
         }
 
-        if (pinned_to_new)
-        {
+        if (pinned_to_new) {
             scroll_to_bottom(data);
         }
     }

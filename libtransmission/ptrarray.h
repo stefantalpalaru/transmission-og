@@ -23,8 +23,7 @@
 /**
  * @brief simple pointer array that resizes itself dynamically.
  */
-typedef struct tr_ptrArray
-{
+typedef struct tr_ptrArray {
     void **items;
     int n_items;
     int n_alloc;

@@ -23,8 +23,7 @@
 #import <Cocoa/Cocoa.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface StatusBarView : NSView
-{
+@interface StatusBarView : NSView {
     NSGradient *fGradient;
     CIImage *fNoiseImage;
 }

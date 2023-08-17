@@ -14,8 +14,7 @@
 class QGridLayout;
 class QTimer;
 
-class ColumnResizer : public QObject
-{
+class ColumnResizer : public QObject {
     Q_OBJECT
 
 public:

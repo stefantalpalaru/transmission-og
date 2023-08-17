@@ -42,10 +42,8 @@ StatsWindowController *fStatsWindowInstance = nil;
 tr_session *fLib = NULL;
 + (StatsWindowController *)statsWindow
 {
-    if (!fStatsWindowInstance)
-    {
-        if ((fStatsWindowInstance = [[self alloc] init]))
-        {
+    if (!fStatsWindowInstance) {
+        if ((fStatsWindowInstance = [[self alloc] init])) {
             fLib = [(Controller *)[NSApp delegate] sessionHandle];
         }
     }
@@ -83,16 +81,14 @@ tr_session *fLib = NULL;
     NSArray *labels = @[ fUploadedLabelField, fDownloadedLabelField, fRatioLabelField, fTimeLabelField, fNumOpenedLabelField ];
 
     CGFloat maxWidth = CGFLOAT_MIN;
-    for (NSTextField *label in labels)
-    {
+    for (NSTextField *label in labels) {
         [label sizeToFit];
 
         CGFloat const width = [label frame].size.width;
         maxWidth = MAX(maxWidth, width);
     }
 
-    for (NSTextField *label in labels)
-    {
+    for (NSTextField *label in labels) {
         NSRect frame = [label frame];
         frame.size.width = maxWidth;
         [label setFrame:frame];
@@ -133,8 +129,7 @@ tr_session *fLib = NULL;
 
 - (void)resetStats:(id)sender
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"WarningResetStats"])
-    {
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"WarningResetStats"]) {
         [self performResetStats];
         return;
     }
@@ -192,8 +187,7 @@ tr_session *fLib = NULL;
         NSLocalizedString(@"Total N/A", "stats total");
     [fRatioAllField setStringValue:totalRatioString];
 
-    if ([NSApp isOnYosemiteOrBetter])
-    {
+    if ([NSApp isOnYosemiteOrBetter]) {
         static NSDateComponentsFormatter *timeFormatter;
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
@@ -207,9 +201,7 @@ tr_session *fLib = NULL;
         [fTimeField setStringValue:[timeFormatter stringFromTimeInterval:statsSession.secondsActive]];
         [fTimeAllField setStringValue:[NSString stringWithFormat:NSLocalizedString(@"%@ total", "stats total"),
                                                                  [timeFormatter stringFromTimeInterval:statsAll.secondsActive]]];
-    }
-    else
-    {
+    } else {
         [fTimeField setStringValue:[NSString timeString:statsSession.secondsActive includesTimeRemainingPhrase:NO showSeconds:NO]];
         [fTimeAllField setStringValue:[NSString stringWithFormat:NSLocalizedString(@"%@ total", "stats total"),
                                                                  [NSString timeString:statsAll.secondsActive

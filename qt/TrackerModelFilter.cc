@@ -12,8 +12,7 @@
 TrackerModelFilter::TrackerModelFilter(QObject *parent)
     : QSortFilterProxyModel(parent)
     , myShowBackups(false)
-{
-}
+{}
 
 void TrackerModelFilter::setShowBackupTrackers(bool b)
 {

@@ -47,8 +47,7 @@
 #define STATS_MODE_KEY "stats-mode"
 #define SORT_MODE_KEY "sort-mode"
 
-namespace
-{
+namespace {
 
 QLatin1String const TotalRatioStatsModeName("total-ratio");
 QLatin1String const TotalTransferStatsModeName("total-transfer");
@@ -62,8 +61,7 @@ QLatin1String const SessionTransferStatsModeName("session-transfer");
  * We use this to make our torrent list view behave consistently on
  * both GTK and Qt implementations.
  */
-class ListViewProxyStyle : public QProxyStyle
-{
+class ListViewProxyStyle : public QProxyStyle {
 public:
     int styleHint(
         StyleHint hint,
@@ -71,8 +69,7 @@ public:
         QWidget const *widget = nullptr,
         QStyleHintReturn *returnData = nullptr) const
     {
-        if (hint == QStyle::SH_ItemView_ActivateItemOnSingleClick)
-        {
+        if (hint == QStyle::SH_ItemView_ActivateItemOnSingleClick) {
             return 0;
         }
 
@@ -84,8 +81,7 @@ QIcon MainWindow::getStockIcon(QString const &name, int fallback)
 {
     QIcon icon = QIcon::fromTheme(name);
 
-    if (icon.isNull() && fallback >= 0)
-    {
+    if (icon.isNull() && fallback >= 0) {
         icon = style()->standardIcon(QStyle::StandardPixmap(fallback), 0, this);
     }
 
@@ -94,32 +90,27 @@ QIcon MainWindow::getStockIcon(QString const &name, int fallback)
 
 QIcon MainWindow::addEmblem(QIcon baseIcon, QStringList const &emblemNames)
 {
-    if (baseIcon.isNull())
-    {
+    if (baseIcon.isNull()) {
         return baseIcon;
     }
 
     QIcon emblemIcon;
 
-    for (QString const &emblemName : emblemNames)
-    {
+    for (QString const &emblemName : emblemNames) {
         emblemIcon = QIcon::fromTheme(emblemName);
 
-        if (!emblemIcon.isNull())
-        {
+        if (!emblemIcon.isNull()) {
             break;
         }
     }
 
-    if (emblemIcon.isNull())
-    {
+    if (emblemIcon.isNull()) {
         return baseIcon;
     }
 
     QIcon icon;
 
-    for (QSize const &size : baseIcon.availableSizes())
-    {
+    for (QSize const &size : baseIcon.availableSizes()) {
         QSize const emblemSize = size / 2;
         QRect const emblemRect = QStyle::alignedRect(
             layoutDirection(),
@@ -199,8 +190,7 @@ MainWindow::MainWindow(Session &session, Prefs &prefs, TorrentModel &model, bool
     ui.action_QueueMoveDown->setIcon(getStockIcon(QLatin1String("go-down"), QStyle::SP_ArrowDown));
     ui.action_QueueMoveBottom->setIcon(getStockIcon(QLatin1String("go-bottom")));
 
-    auto makeNetworkPixmap = [this](char const *nameIn, QSize size = QSize(16, 16))
-    {
+    auto makeNetworkPixmap = [this](char const *nameIn, QSize size = QSize(16, 16)) {
         QString const name = QLatin1String(nameIn);
         QIcon const icon = getStockIcon(name, QStyle::SP_DriveNetIcon);
         return icon.pixmap(size);
@@ -247,8 +237,7 @@ MainWindow::MainWindow(Session &session, Prefs &prefs, TorrentModel &model, bool
     connect(ui.action_DeselectAll, SIGNAL(triggered()), ui.listView, SLOT(clearSelection()));
     connect(ui.action_Quit, SIGNAL(triggered()), qApp, SLOT(quit()));
 
-    auto refreshActionSensitivitySoon = [this]()
-    {
+    auto refreshActionSensitivitySoon = [this]() {
         refreshSoon(REFRESH_ACTION_SENSITIVITY);
     };
     connect(&myFilterModel, &TorrentFilter::rowsInserted, this, refreshActionSensitivitySoon);
@@ -257,8 +246,7 @@ MainWindow::MainWindow(Session &session, Prefs &prefs, TorrentModel &model, bool
 
     // torrent view
     myFilterModel.setSourceModel(&myModel);
-    auto refreshSoonAdapter = [this]()
-    {
+    auto refreshSoonAdapter = [this]() {
         refreshSoon();
     };
     connect(&myModel, &TorrentModel::modelReset, this, refreshSoonAdapter);
@@ -283,8 +271,7 @@ MainWindow::MainWindow(Session &session, Prefs &prefs, TorrentModel &model, bool
 
     QActionGroup *actionGroup = new QActionGroup(this);
 
-    for (auto const &mode : sortModes)
-    {
+    for (auto const &mode : sortModes) {
         mode.first->setProperty(SORT_MODE_KEY, mode.second);
         actionGroup->addAction(mode.first);
     }
@@ -326,8 +313,7 @@ MainWindow::MainWindow(Session &session, Prefs &prefs, TorrentModel &model, bool
     initStatusBar();
     ui.verticalLayout->insertWidget(0, myFilterBar = new FilterBar(myPrefs, myModel, myFilterModel));
 
-    auto refreshHeaderSoon = [this]()
-    {
+    auto refreshHeaderSoon = [this]() {
         refreshSoon(REFRESH_TORRENT_VIEW_HEADER);
     };
     connect(&myModel, &TorrentModel::rowsInserted, this, refreshHeaderSoon);
@@ -342,13 +328,11 @@ MainWindow::MainWindow(Session &session, Prefs &prefs, TorrentModel &model, bool
              << Prefs::COMPACT_VIEW << Prefs::DSPEED << Prefs::DSPEED_ENABLED << Prefs::USPEED << Prefs::USPEED_ENABLED
              << Prefs::RATIO << Prefs::RATIO_ENABLED;
 
-    for (int const key : initKeys)
-    {
+    for (int const key : initKeys) {
         refreshPref(key);
     }
 
-    auto refreshStatusSoon = [this]()
-    {
+    auto refreshStatusSoon = [this]() {
         refreshSoon(REFRESH_STATUS_BAR);
     };
     connect(&mySession, SIGNAL(sourceChanged()), this, SLOT(onSessionSourceChanged()));
@@ -362,12 +346,9 @@ MainWindow::MainWindow(Session &session, Prefs &prefs, TorrentModel &model, bool
         this,
         SLOT(onNetworkResponse(QNetworkReply::NetworkError, QString)));
 
-    if (mySession.isServer())
-    {
+    if (mySession.isServer()) {
         ui.networkLabel->hide();
-    }
-    else
-    {
+    } else {
         connect(&myNetworkTimer, &QTimer::timeout, this, &MainWindow::onNetworkTimer);
         myNetworkTimer.start(1000);
     }
@@ -377,8 +358,7 @@ MainWindow::MainWindow(Session &session, Prefs &prefs, TorrentModel &model, bool
 }
 
 MainWindow::~MainWindow()
-{
-}
+{}
 
 void MainWindow::onSessionSourceChanged()
 {
@@ -394,16 +374,14 @@ void MainWindow::onSetPrefs()
     QVariantList const p = sender()->property(PREF_VARIANTS_KEY).toList();
     assert(p.size() % 2 == 0);
 
-    for (int i = 0, n = p.size(); i < n; i += 2)
-    {
+    for (int i = 0, n = p.size(); i < n; i += 2) {
         myPrefs.set(p[i].toInt(), p[i + 1]);
     }
 }
 
 void MainWindow::onSetPrefs(bool isChecked)
 {
-    if (isChecked)
-    {
+    if (isChecked) {
         onSetPrefs();
     }
 }
@@ -424,8 +402,7 @@ void MainWindow::initStatusBar()
 
 QMenu *MainWindow::createOptionsMenu()
 {
-    auto const initSpeedSubMenu = [this](QMenu *menu, QAction *&offAction, QAction *&onAction, int pref, int enabledPref)
-    {
+    auto const initSpeedSubMenu = [this](QMenu *menu, QAction *&offAction, QAction *&onAction, int pref, int enabledPref) {
         int const stockSpeeds[] = { 5, 10, 20, 30, 40, 50, 75, 100, 150, 200, 250, 500, 750 };
         int const currentValue = myPrefs.get<int>(pref);
 
@@ -445,16 +422,14 @@ QMenu *MainWindow::createOptionsMenu()
 
         menu->addSeparator();
 
-        for (int const i : stockSpeeds)
-        {
+        for (int const i : stockSpeeds) {
             QAction *action = menu->addAction(Formatter::speedToString(Speed::fromKBps(i)));
             action->setProperty(PREF_VARIANTS_KEY, QVariantList() << pref << i << enabledPref << true);
             connect(action, SIGNAL(triggered(bool)), this, SLOT(onSetPrefs()));
         }
     };
 
-    auto const initSeedRatioSubMenu = [this](QMenu *menu, QAction *&offAction, QAction *&onAction, int pref, int enabledPref)
-    {
+    auto const initSeedRatioSubMenu = [this](QMenu *menu, QAction *&offAction, QAction *&onAction, int pref, int enabledPref) {
         double const stockRatios[] = { 0.25, 0.50, 0.75, 1, 1.5, 2, 3 };
         double const currentValue = myPrefs.get<double>(pref);
 
@@ -474,8 +449,7 @@ QMenu *MainWindow::createOptionsMenu()
 
         menu->addSeparator();
 
-        for (double const i : stockRatios)
-        {
+        for (double const i : stockRatios) {
             QAction *action = menu->addAction(Formatter::ratioToString(i));
             action->setProperty(PREF_VARIANTS_KEY, QVariantList() << pref << i << enabledPref << true);
             connect(action, SIGNAL(triggered(bool)), this, SLOT(onSetPrefs()));
@@ -519,8 +493,7 @@ QMenu *MainWindow::createStatsModeMenu()
     QActionGroup *actionGroup = new QActionGroup(this);
     QMenu *menu = new QMenu(this);
 
-    for (auto const &mode : statsModes)
-    {
+    for (auto const &mode : statsModes) {
         mode.first->setProperty(STATS_MODE_KEY, QString(mode.second));
         actionGroup->addAction(mode.first);
         menu->addAction(mode.first);
@@ -564,8 +537,7 @@ void MainWindow::hideEvent(QHideEvent *event)
 {
     Q_UNUSED(event)
 
-    if (!isVisible())
-    {
+    if (!isVisible()) {
         ui.action_ShowMainWindow->setChecked(false);
     }
 }
@@ -597,8 +569,7 @@ void MainWindow::setLocation()
     d->show();
 }
 
-namespace
-{
+namespace {
 
 // Open Folder & select torrent's file or top folder
 #undef HAVE_OPEN_SELECT
@@ -612,8 +583,7 @@ static void openSelect(QString const &path)
     QString const explorer = QLatin1String("explorer");
     QString param;
 
-    if (!QFileInfo(path).isDir())
-    {
+    if (!QFileInfo(path).isDir()) {
         param = QLatin1String("/select,");
     }
 
@@ -645,39 +615,34 @@ void MainWindow::openFolder()
 {
     auto const selectedTorrents = getSelectedTorrents();
 
-    if (selectedTorrents.size() != 1)
-    {
+    if (selectedTorrents.size() != 1) {
         return;
     }
 
     int const torrentId(*selectedTorrents.begin());
     Torrent const *tor(myModel.getTorrentFromId(torrentId));
 
-    if (tor == nullptr)
-    {
+    if (tor == nullptr) {
         return;
     }
 
     QString path(tor->getPath());
     FileList const &files = tor->files();
 
-    if (files.isEmpty())
-    {
+    if (files.isEmpty()) {
         return;
     }
 
     QString const firstfile = files.at(0).filename;
     int slashIndex = firstfile.indexOf(QLatin1Char('/'));
 
-    if (slashIndex > -1)
-    {
+    if (slashIndex > -1) {
         path = path + QLatin1Char('/') + firstfile.left(slashIndex);
     }
 
 #ifdef HAVE_OPEN_SELECT
 
-    else
-    {
+    else {
         openSelect(path + QLatin1Char('/') + firstfile);
         return;
     }
@@ -717,8 +682,7 @@ void MainWindow::refreshSoon(int fields)
 {
     myRefreshFields |= fields;
 
-    if (!myRefreshTimer.isActive())
-    {
+    if (!myRefreshTimer.isActive()) {
         myRefreshTimer.setSingleShot(true);
         myRefreshTimer.start(200);
     }
@@ -728,8 +692,7 @@ MainWindow::TransferStats MainWindow::getTransferStats() const
 {
     TransferStats stats;
 
-    for (auto const &tor : myModel.torrents())
-    {
+    for (auto const &tor : myModel.torrents()) {
         stats.speedUp += tor->uploadSpeed();
         stats.speedDown += tor->downloadSpeed();
         stats.peersSending += tor->webseedsWeAreDownloadingFrom();
@@ -745,33 +708,27 @@ void MainWindow::onRefreshTimer()
     int fields = 0;
     std::swap(fields, myRefreshFields);
 
-    if (fields & REFRESH_TITLE)
-    {
+    if (fields & REFRESH_TITLE) {
         refreshTitle();
     }
 
-    if (fields & (REFRESH_TRAY_ICON | REFRESH_STATUS_BAR))
-    {
+    if (fields & (REFRESH_TRAY_ICON | REFRESH_STATUS_BAR)) {
         auto const stats = getTransferStats();
 
-        if (fields & REFRESH_TRAY_ICON)
-        {
+        if (fields & REFRESH_TRAY_ICON) {
             refreshTrayIcon(stats);
         }
 
-        if (fields & REFRESH_STATUS_BAR)
-        {
+        if (fields & REFRESH_STATUS_BAR) {
             refreshStatusBar(stats);
         }
     }
 
-    if (fields & REFRESH_TORRENT_VIEW_HEADER)
-    {
+    if (fields & REFRESH_TORRENT_VIEW_HEADER) {
         refreshTorrentViewHeader();
     }
 
-    if (fields & REFRESH_ACTION_SENSITIVITY)
-    {
+    if (fields & REFRESH_ACTION_SENSITIVITY) {
         refreshActionSensitivity();
     }
 }
@@ -781,8 +738,7 @@ void MainWindow::refreshTitle()
     QString title(QLatin1String("Transmission OG"));
     QUrl const url(mySession.getRemoteUrl());
 
-    if (!url.isEmpty())
-    {
+    if (!url.isEmpty()) {
         //: Second (optional) part of main window title "Transmission OG - host:port" (added when connected to remote session);
         //: notice that leading space (before the dash) is included here
         title += tr(" - %1:%2").arg(url.host()).arg(url.port());
@@ -795,21 +751,14 @@ void MainWindow::refreshTrayIcon(TransferStats const &stats)
 {
     QString tip;
 
-    if (myNetworkError)
-    {
+    if (myNetworkError) {
         tip = tr("Network Error");
-    }
-    else if (stats.peersSending == 0 && stats.peersReceiving == 0)
-    {
+    } else if (stats.peersSending == 0 && stats.peersReceiving == 0) {
         tip = tr("Idle");
-    }
-    else if (stats.peersSending != 0)
-    {
+    } else if (stats.peersSending != 0) {
         tip = Formatter::downloadSpeedToString(stats.speedDown) + QLatin1String("   ") +
             Formatter::uploadSpeedToString(stats.speedUp);
-    }
-    else if (stats.peersReceiving != 0)
-    {
+    } else if (stats.peersReceiving != 0) {
         tip = Formatter::uploadSpeedToString(stats.speedUp);
     }
 
@@ -828,25 +777,19 @@ void MainWindow::refreshStatusBar(TransferStats const &stats)
     QString const mode(myPrefs.getString(Prefs::STATUSBAR_STATS));
     QString str;
 
-    if (mode == SessionRatioStatsModeName)
-    {
+    if (mode == SessionRatioStatsModeName) {
         str = tr("Ratio: %1").arg(Formatter::ratioToString(mySession.getStats().ratio));
-    }
-    else if (mode == SessionTransferStatsModeName)
-    {
+    } else if (mode == SessionTransferStatsModeName) {
         tr_session_stats const &stats(mySession.getStats());
         str = tr("Down: %1, Up: %2")
                   .arg(Formatter::sizeToString(stats.downloadedBytes))
                   .arg(Formatter::sizeToString(stats.uploadedBytes));
-    }
-    else if (mode == TotalTransferStatsModeName)
-    {
+    } else if (mode == TotalTransferStatsModeName) {
         tr_session_stats const &stats(mySession.getCumulativeStats());
         str = tr("Down: %1, Up: %2")
                   .arg(Formatter::sizeToString(stats.downloadedBytes))
                   .arg(Formatter::sizeToString(stats.uploadedBytes));
-    }
-    else // default is "total-ratio"
+    } else // default is "total-ratio"
     {
         assert(mode == TotalRatioStatsModeName);
         str = tr("Ratio: %1").arg(Formatter::ratioToString(mySession.getCumulativeStats().ratio));
@@ -860,12 +803,9 @@ void MainWindow::refreshTorrentViewHeader()
     int const totalCount = myModel.rowCount();
     int const visibleCount = myFilterModel.rowCount();
 
-    if (visibleCount == totalCount)
-    {
+    if (visibleCount == totalCount) {
         ui.listView->setHeaderText(QString());
-    }
-    else
-    {
+    } else {
         ui.listView->setHeaderText(tr("Showing %L1 of %Ln torrent(s)", nullptr, totalCount).arg(visibleCount));
     }
 }
@@ -885,42 +825,34 @@ void MainWindow::refreshActionSensitivity()
 
     // count how many torrents are selected, paused, etc
     auto const now = time(nullptr);
-    for (int row = 0; row < rowCount; ++row)
-    {
+    for (int row = 0; row < rowCount; ++row) {
         QModelIndex const modelIndex(model->index(row, 0));
         auto const &tor = model->data(modelIndex, TorrentModel::TorrentRole).value<Torrent const *>();
 
-        if (tor != nullptr)
-        {
+        if (tor != nullptr) {
             bool const isSelected = hasSelection && selectionModel->isSelected(modelIndex);
             bool const isPaused = tor->isPaused();
 
-            if (isPaused)
-            {
+            if (isPaused) {
                 ++paused;
             }
 
-            if (isSelected)
-            {
+            if (isSelected) {
                 ++selected;
 
-                if (isPaused)
-                {
+                if (isPaused) {
                     ++selectedAndPaused;
                 }
 
-                if (tor->isQueued())
-                {
+                if (tor->isQueued()) {
                     ++selectedAndQueued;
                 }
 
-                if (tor->hasMetadata())
-                {
+                if (tor->hasMetadata()) {
                     ++selectedWithMetadata;
                 }
 
-                if (tor->canManualAnnounceAt(now))
-                {
+                if (tor->canManualAnnounceAt(now)) {
                     ++selectedAndCanAnnounce;
                 }
             }
@@ -954,8 +886,7 @@ void MainWindow::refreshActionSensitivity()
     ui.action_QueueMoveDown->setEnabled(haveSelection);
     ui.action_QueueMoveBottom->setEnabled(haveSelection);
 
-    if (!myDetailsDialog.isNull())
-    {
+    if (!myDetailsDialog.isNull()) {
         myDetailsDialog->setIds(getSelectedTorrents());
     }
 }
@@ -973,12 +904,10 @@ torrent_ids_t MainWindow::getSelectedTorrents(bool withMetadataOnly) const
 {
     torrent_ids_t ids;
 
-    for (QModelIndex const &index : ui.listView->selectionModel()->selectedRows())
-    {
+    for (QModelIndex const &index : ui.listView->selectionModel()->selectedRows()) {
         Torrent const *tor(index.data(TorrentModel::TorrentRole).value<Torrent const *>());
 
-        if (tor != nullptr && (!withMetadataOnly || tor->hasMetadata()))
-        {
+        if (tor != nullptr && (!withMetadataOnly || tor->hasMetadata())) {
             ids.insert(tor->id());
         }
     }
@@ -1097,19 +1026,14 @@ void MainWindow::setStatusbarVisible(bool visible)
 
 void MainWindow::toggleWindows(bool doShow)
 {
-    if (!doShow)
-    {
+    if (!doShow) {
         hide();
-    }
-    else
-    {
-        if (!isVisible())
-        {
+    } else {
+        if (!isVisible()) {
             show();
         }
 
-        if (isMinimized())
-        {
+        if (isMinimized()) {
             showNormal();
         }
 
@@ -1121,14 +1045,10 @@ void MainWindow::toggleWindows(bool doShow)
 
 void MainWindow::trayActivated(QSystemTrayIcon::ActivationReason reason)
 {
-    if (reason == QSystemTrayIcon::Trigger || reason == QSystemTrayIcon::DoubleClick)
-    {
-        if (isMinimized())
-        {
+    if (reason == QSystemTrayIcon::Trigger || reason == QSystemTrayIcon::DoubleClick) {
+        if (isMinimized()) {
             toggleWindows(true);
-        }
-        else
-        {
+        } else {
             toggleWindows(!isVisible());
         }
     }
@@ -1141,15 +1061,13 @@ void MainWindow::refreshPref(int key)
     QString str;
     QActionGroup *actionGroup;
 
-    switch (key)
-    {
+    switch (key) {
     case Prefs::STATUSBAR_STATS:
         str = myPrefs.getString(key);
         actionGroup = ui.action_TotalRatio->actionGroup();
         assert(actionGroup != nullptr);
 
-        for (QAction *action : actionGroup->actions())
-        {
+        for (QAction *action : actionGroup->actions()) {
             action->setChecked(str == action->property(STATS_MODE_KEY).toString());
         }
 
@@ -1165,8 +1083,7 @@ void MainWindow::refreshPref(int key)
         actionGroup = ui.action_SortByActivity->actionGroup();
         assert(actionGroup != nullptr);
 
-        for (QAction *action : actionGroup->actions())
-        {
+        for (QAction *action : actionGroup->actions()) {
             action->setChecked(i == action->property(SORT_MODE_KEY).toInt());
         }
 
@@ -1283,8 +1200,7 @@ void MainWindow::refreshPref(int key)
 ****
 ***/
 
-namespace
-{
+namespace {
 
 QLatin1String const SHOW_OPTIONS_CHECKBOX_NAME("show-options-checkbox");
 
@@ -1310,8 +1226,7 @@ void MainWindow::openTorrent()
 
     auto const l = qobject_cast<QGridLayout *>(d->layout());
 
-    if (l != nullptr)
-    {
+    if (l != nullptr) {
         QCheckBox *b = new QCheckBox(tr("Show &options dialog"));
         b->setChecked(myPrefs.getBool(Prefs::OPTIONS_PROMPT));
         b->setObjectName(SHOW_OPTIONS_CHECKBOX_NAME);
@@ -1327,13 +1242,11 @@ void MainWindow::openURL()
 {
     QString str = qApp->clipboard()->text(QClipboard::Selection);
 
-    if (!AddData::isSupported(str))
-    {
+    if (!AddData::isSupported(str)) {
         str = qApp->clipboard()->text(QClipboard::Clipboard);
     }
 
-    if (!AddData::isSupported(str))
-    {
+    if (!AddData::isSupported(str)) {
         str.clear();
     }
 
@@ -1346,32 +1259,26 @@ void MainWindow::addTorrents(QStringList const &filenames)
 
     QFileDialog const *const fileDialog = qobject_cast<QFileDialog const *>(sender());
 
-    if (fileDialog != nullptr)
-    {
+    if (fileDialog != nullptr) {
         QCheckBox const *const b = fileDialog->findChild<QCheckBox const *>(SHOW_OPTIONS_CHECKBOX_NAME);
 
-        if (b != nullptr)
-        {
+        if (b != nullptr) {
             showOptions = b->isChecked();
         }
     }
 
-    for (QString const &filename : filenames)
-    {
+    for (QString const &filename : filenames) {
         addTorrent(filename, showOptions);
     }
 }
 
 void MainWindow::addTorrent(AddData const &addMe, bool showOptions)
 {
-    if (showOptions)
-    {
+    if (showOptions) {
         OptionsDialog *o = new OptionsDialog(mySession, myPrefs, addMe, this);
         o->show();
         qApp->alert(o);
-    }
-    else
-    {
+    } else {
         mySession.addTorrent(addMe);
         qApp->alert(this);
     }
@@ -1387,69 +1294,52 @@ void MainWindow::removeTorrents(bool const deleteFiles)
     int connected = 0;
     int count;
 
-    for (QModelIndex const &index : ui.listView->selectionModel()->selectedRows())
-    {
+    for (QModelIndex const &index : ui.listView->selectionModel()->selectedRows()) {
         Torrent const *tor(index.data(TorrentModel::TorrentRole).value<Torrent const *>());
         ids.insert(tor->id());
 
-        if (tor->connectedPeers())
-        {
+        if (tor->connectedPeers()) {
             ++connected;
         }
 
-        if (!tor->isDone())
-        {
+        if (!tor->isDone()) {
             ++incomplete;
         }
     }
 
-    if (ids.empty())
-    {
+    if (ids.empty()) {
         return;
     }
 
     count = ids.size();
 
-    if (!deleteFiles)
-    {
+    if (!deleteFiles) {
         primary_text = count == 1 ? tr("Remove torrent?") : tr("Remove %Ln torrent(s)?", nullptr, count);
-    }
-    else
-    {
+    } else {
         primary_text = count == 1 ? tr("Delete this torrent's downloaded files?") :
                                     tr("Delete these %Ln torrent(s)' downloaded files?", nullptr, count);
     }
 
-    if (incomplete == 0 && connected == 0)
-    {
+    if (incomplete == 0 && connected == 0) {
         secondary_text = count == 1 ?
             tr("Once removed, continuing the transfer will require the torrent file or magnet link.") :
             tr("Once removed, continuing the transfers will require the torrent files or magnet links.");
-    }
-    else if (count == incomplete)
-    {
+    } else if (count == incomplete) {
         secondary_text = count == 1 ? tr("This torrent has not finished downloading.") :
                                       tr("These torrents have not finished downloading.");
-    }
-    else if (count == connected)
-    {
+    } else if (count == connected) {
         secondary_text = count == 1 ? tr("This torrent is connected to peers.") : tr("These torrents are connected to peers.");
-    }
-    else
-    {
-        if (connected != 0)
-        {
+    } else {
+        if (connected != 0) {
             secondary_text = connected == 1 ? tr("One of these torrents is connected to peers.") :
                                               tr("Some of these torrents are connected to peers.");
         }
 
-        if (connected != 0 && incomplete != 0)
-        {
+        if (connected != 0 && incomplete != 0) {
             secondary_text += QLatin1Char('\n');
         }
 
-        if (incomplete != 0)
-        {
+        if (incomplete != 0) {
             secondary_text += incomplete == 1 ? tr("One of these torrents has not finished downloading.") :
                                                 tr("Some of these torrents have not finished downloading.");
         }
@@ -1464,8 +1354,7 @@ void MainWindow::removeTorrents(bool const deleteFiles)
     // hack needed to keep the dialog from being too narrow
     auto layout = qobject_cast<QGridLayout *>(msgBox.layout());
 
-    if (layout == nullptr)
-    {
+    if (layout == nullptr) {
         layout = new QGridLayout;
         msgBox.setLayout(layout);
     }
@@ -1473,8 +1362,7 @@ void MainWindow::removeTorrents(bool const deleteFiles)
     QSpacerItem *spacer = new QSpacerItem(450, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
     layout->addItem(spacer, layout->rowCount(), 0, 1, layout->columnCount());
 
-    if (msgBox.exec() == QMessageBox::Ok)
-    {
+    if (msgBox.exec() == QMessageBox::Ok) {
         ui.listView->selectionModel()->clear();
         mySession.removeTorrents(ids, deleteFiles);
     }
@@ -1494,48 +1382,30 @@ void MainWindow::updateNetworkIcon()
     bool const isReading = secondsSinceLastRead <= period;
     QPixmap pixmap;
 
-    if (myNetworkError)
-    {
+    if (myNetworkError) {
         pixmap = myPixmapNetworkError;
-    }
-    else if (isSending && isReading)
-    {
+    } else if (isSending && isReading) {
         pixmap = myPixmapNetworkTransmitReceive;
-    }
-    else if (isSending)
-    {
+    } else if (isSending) {
         pixmap = myPixmapNetworkTransmit;
-    }
-    else if (isReading)
-    {
+    } else if (isReading) {
         pixmap = myPixmapNetworkReceive;
-    }
-    else
-    {
+    } else {
         pixmap = myPixmapNetworkIdle;
     }
 
     QString tip;
     QString const url = mySession.getRemoteUrl().host();
 
-    if (myLastReadTime == 0)
-    {
+    if (myLastReadTime == 0) {
         tip = tr("%1 has not responded yet").arg(url);
-    }
-    else if (myNetworkError)
-    {
+    } else if (myNetworkError) {
         tip = tr(myErrorMessage.toLatin1().constData());
-    }
-    else if (secondsSinceLastRead < 30)
-    {
+    } else if (secondsSinceLastRead < 30) {
         tip = tr("%1 is responding").arg(url);
-    }
-    else if (secondsSinceLastRead < 60 * 2)
-    {
+    } else if (secondsSinceLastRead < 60 * 2) {
         tip = tr("%1 last responded %2 ago").arg(url).arg(Formatter::timeToString(secondsSinceLastRead));
-    }
-    else
-    {
+    } else {
         tip = tr("%1 is not responding").arg(url);
     }
 
@@ -1550,8 +1420,7 @@ void MainWindow::onNetworkTimer()
 
 void MainWindow::dataReadProgress()
 {
-    if (!myNetworkError)
-    {
+    if (!myNetworkError) {
         myLastReadTime = time(nullptr);
     }
 }
@@ -1573,8 +1442,7 @@ void MainWindow::onNetworkResponse(QNetworkReply::NetworkError code, QString con
 
     // Refresh our model if we've just gotten a clean connection to the session.
     // That way we can rebuild after a restart of transmission-daemon
-    if (hadError && !haveError)
-    {
+    if (hadError && !haveError) {
         myModel.clear();
     }
 }
@@ -1595,8 +1463,7 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 
     if (mime->hasFormat(QLatin1String("application/x-bittorrent")) || mime->hasUrls() ||
         mime->text().trimmed().endsWith(QLatin1String(".torrent"), Qt::CaseInsensitive) ||
-        mime->text().startsWith(QLatin1String("magnet:"), Qt::CaseInsensitive))
-    {
+        mime->text().startsWith(QLatin1String("magnet:"), Qt::CaseInsensitive)) {
         event->acceptProposedAction();
     }
 }
@@ -1605,28 +1472,21 @@ void MainWindow::dropEvent(QDropEvent *event)
 {
     QStringList list;
 
-    if (event->mimeData()->hasText())
-    {
+    if (event->mimeData()->hasText()) {
         list = event->mimeData()->text().trimmed().split(QLatin1Char('\n'));
-    }
-    else if (event->mimeData()->hasUrls())
-    {
-        for (QUrl const &url : event->mimeData()->urls())
-        {
+    } else if (event->mimeData()->hasUrls()) {
+        for (QUrl const &url : event->mimeData()->urls()) {
             list.append(url.toLocalFile());
         }
     }
 
-    for (QString const &entry : list)
-    {
+    for (QString const &entry : list) {
         QString key = entry.trimmed();
 
-        if (!key.isEmpty())
-        {
+        if (!key.isEmpty()) {
             QUrl const url(key);
 
-            if (url.isLocalFile())
-            {
+            if (url.isLocalFile()) {
                 key = url.toLocalFile();
             }
 

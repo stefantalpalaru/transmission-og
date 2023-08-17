@@ -15,11 +15,7 @@
 #include "transmission.h"
 #include "variant.h"
 
-enum tr_metainfo_basename_format
-{
-    TR_METAINFO_BASENAME_NAME_AND_PARTIAL_HASH,
-    TR_METAINFO_BASENAME_HASH
-};
+enum tr_metainfo_basename_format { TR_METAINFO_BASENAME_NAME_AND_PARTIAL_HASH, TR_METAINFO_BASENAME_HASH };
 
 bool tr_metainfoParse(
     tr_session const *session,

@@ -28,8 +28,7 @@ class TrackerDelegate;
 class TrackerModel;
 class TrackerModelFilter;
 
-class DetailsDialog : public BaseDialog
-{
+class DetailsDialog : public BaseDialog {
     Q_OBJECT
 
 public:

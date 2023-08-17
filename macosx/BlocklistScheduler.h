@@ -22,8 +22,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface BlocklistScheduler : NSObject
-{
+@interface BlocklistScheduler : NSObject {
     NSTimer *fTimer;
 }
 

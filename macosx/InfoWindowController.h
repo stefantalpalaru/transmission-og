@@ -31,8 +31,7 @@
 @class InfoFileViewController;
 @class InfoOptionsViewController;
 
-@interface InfoWindowController : NSWindowController
-{
+@interface InfoWindowController : NSWindowController {
     NSArray *fTorrents;
 
     CGFloat fMinWindowWidth;

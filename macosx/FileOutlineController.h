@@ -25,8 +25,7 @@
 @class Torrent;
 @class FileOutlineView;
 
-@interface FileOutlineController : NSObject
-{
+@interface FileOutlineController : NSObject {
     Torrent *fTorrent;
     NSMutableArray *fFileList;
 

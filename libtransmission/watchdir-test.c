@@ -20,8 +20,7 @@
 ****
 ***/
 
-typedef struct callback_data
-{
+typedef struct callback_data {
     tr_watchdir_t dir;
     char *name;
     tr_watchdir_status result;
@@ -53,12 +52,10 @@ static tr_watchdir_status callback(tr_watchdir_t dir, char const *name, void *co
 {
     callback_data *const data = context;
 
-    if (data->result != TR_WATCHDIR_RETRY)
-    {
+    if (data->result != TR_WATCHDIR_RETRY) {
         data->dir = dir;
 
-        if (data->name != NULL)
-        {
+        if (data->name != NULL) {
             tr_free(data->name);
         }
 

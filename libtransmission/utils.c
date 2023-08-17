@@ -74,8 +74,7 @@ struct tm *tr_localtime_r(time_t const *_clock, struct tm *_result)
 
     struct tm *p = localtime(_clock);
 
-    if (p != NULL)
-    {
+    if (p != NULL) {
         *(_result) = *p;
     }
 
@@ -93,8 +92,7 @@ int tr_gettimeofday(struct timeval *tv)
     FILETIME ft;
     uint64_t tmp = 0;
 
-    if (tv == NULL)
-    {
+    if (tv == NULL) {
         errno = EINVAL;
         return -1;
     }
@@ -128,11 +126,9 @@ void *tr_malloc(size_t size)
 {
     void *res = NULL;
 
-    if (size != 0)
-    {
+    if (size != 0) {
         res = malloc(size);
-        if (res == NULL)
-        {
+        if (res == NULL) {
             fprintf(stderr, "Out of memory. Aborting.\n");
             abort();
         }
@@ -145,11 +141,9 @@ void *tr_malloc0(size_t size)
 {
     void *res = NULL;
 
-    if (size != 0)
-    {
+    if (size != 0) {
         res = calloc(1, size);
-        if (res == NULL)
-        {
+        if (res == NULL) {
             fprintf(stderr, "Out of memory. Aborting.\n");
             abort();
         }
@@ -162,17 +156,13 @@ void *tr_realloc(void *p, size_t size)
 {
     void *res = NULL;
 
-    if (size != 0)
-    {
+    if (size != 0) {
         res = realloc(p, size);
-        if (res == NULL)
-        {
+        if (res == NULL) {
             fprintf(stderr, "Out of memory. Aborting.\n");
             abort();
         }
-    }
-    else
-    {
+    } else {
         tr_free(p);
     }
 
@@ -181,21 +171,18 @@ void *tr_realloc(void *p, size_t size)
 
 void tr_free(void *p)
 {
-    if (p != NULL)
-    {
+    if (p != NULL) {
         free(p);
     }
 }
 
 void tr_free_ptrv(void *const *p)
 {
-    if (p == NULL)
-    {
+    if (p == NULL) {
         return;
     }
 
-    while (*p != NULL)
-    {
+    while (*p != NULL) {
         tr_free(*p);
         ++p;
     }
@@ -218,35 +205,29 @@ char const *tr_strip_positional_args(char const *str)
     char const *in = str;
     size_t const len = str != NULL ? strlen(str) : 0;
 
-    if (buf == NULL || bufsize < len)
-    {
+    if (buf == NULL || bufsize < len) {
         bufsize = len * 2 + 1;
         buf = tr_renew(char, buf, bufsize);
     }
 
     out = buf;
 
-    for (; !tr_str_is_empty(str); ++str)
-    {
+    for (; !tr_str_is_empty(str); ++str) {
         *out++ = *str;
 
-        if (*str == '%' && isdigit(str[1]))
-        {
+        if (*str == '%' && isdigit(str[1])) {
             char const *tmp = str + 1;
 
-            while (isdigit(*tmp))
-            {
+            while (isdigit(*tmp)) {
                 ++tmp;
             }
 
-            if (*tmp == '$')
-            {
+            if (*tmp == '$') {
                 str = tmp[1] == '\'' ? tmp + 1 : tmp;
             }
         }
 
-        if (*str == '%' && str[1] == '\'')
-        {
+        if (*str == '%' && str[1] == '\'') {
             str = str + 1;
         }
     }
@@ -292,31 +273,27 @@ uint8_t *tr_loadFile(char const *path, size_t *size, tr_error **error)
     char const *const err_fmt = _("Couldn't read \"%1$s\": %2$s");
 
     /* try to stat the file */
-    if (!tr_sys_path_get_info(path, 0, &info, &my_error))
-    {
+    if (!tr_sys_path_get_info(path, 0, &info, &my_error)) {
         tr_logAddDebug(err_fmt, path, my_error->message);
         tr_error_propagate(error, &my_error);
         return NULL;
     }
 
-    if (info.type != TR_SYS_PATH_IS_FILE)
-    {
+    if (info.type != TR_SYS_PATH_IS_FILE) {
         tr_logAddError(err_fmt, path, _("Not a regular file"));
         tr_error_set_literal(error, TR_ERROR_EISDIR, _("Not a regular file"));
         return NULL;
     }
 
     /* file size should be able to fit into size_t */
-    if (sizeof(info.size) > sizeof(*size))
-    {
+    if (sizeof(info.size) > sizeof(*size)) {
         TR_ASSERT(info.size <= SIZE_MAX);
     }
 
     /* Load the torrent file into our buffer */
     fd = tr_sys_file_open(path, TR_SYS_FILE_READ | TR_SYS_FILE_SEQUENTIAL, 0, &my_error);
 
-    if (fd == TR_BAD_SYS_FILE)
-    {
+    if (fd == TR_BAD_SYS_FILE) {
         tr_logAddError(err_fmt, path, my_error->message);
         tr_error_propagate(error, &my_error);
         return NULL;
@@ -324,8 +301,7 @@ uint8_t *tr_loadFile(char const *path, size_t *size, tr_error **error)
 
     buf = tr_malloc(info.size + 1);
 
-    if (!tr_sys_file_read(fd, buf, info.size, NULL, &my_error))
-    {
+    if (!tr_sys_file_read(fd, buf, info.size, NULL, &my_error)) {
         tr_logAddError(err_fmt, path, my_error->message);
         tr_sys_file_close(fd, NULL);
         free(buf);
@@ -351,8 +327,7 @@ char *tr_buildPath(char const *first_element, ...)
     va_start(vl, first_element);
     element = first_element;
 
-    while (element != NULL)
-    {
+    while (element != NULL) {
         bufLen += strlen(element) + 1;
         element = va_arg(vl, char const *);
     }
@@ -360,8 +335,7 @@ char *tr_buildPath(char const *first_element, ...)
     pch = buf = tr_new(char, bufLen);
     va_end(vl);
 
-    if (buf == NULL)
-    {
+    if (buf == NULL) {
         return NULL;
     }
 
@@ -369,8 +343,7 @@ char *tr_buildPath(char const *first_element, ...)
     va_start(vl, first_element);
     element = first_element;
 
-    while (element != NULL)
-    {
+    while (element != NULL) {
         size_t const elementLen = strlen(element);
         memcpy(pch, element, elementLen);
         pch += elementLen;
@@ -381,8 +354,7 @@ char *tr_buildPath(char const *first_element, ...)
     va_end(vl);
 
     /* terminate the string. if nonempty, eat the unwanted trailing slash */
-    if (pch != buf)
-    {
+    if (pch != buf) {
         --pch;
     }
 
@@ -399,8 +371,7 @@ char *tr_get_program_dir(void)
     int length, dirname_length;
 
     length = wai_getExecutablePath(NULL, 0, &dirname_length);
-    if (length > 0)
-    {
+    if (length > 0) {
         path = (char *)tr_malloc(length + 1);
         wai_getExecutablePath(path, length, &dirname_length);
         path[dirname_length] = '\0';
@@ -413,13 +384,10 @@ int64_t tr_getDirFreeSpace(char const *dir)
 {
     int64_t free_space;
 
-    if (tr_str_is_empty(dir))
-    {
+    if (tr_str_is_empty(dir)) {
         errno = EINVAL;
         free_space = -1;
-    }
-    else
-    {
+    } else {
         struct tr_device_info *info;
         info = tr_device_info_create(dir);
         free_space = tr_device_info_get_free_space(info);
@@ -441,8 +409,7 @@ char *evbuffer_free_to_str(struct evbuffer *buf, size_t *result_len)
     evbuffer_free(buf);
     ret[n] = '\0';
 
-    if (result_len != NULL)
-    {
+    if (result_len != NULL) {
         *result_len = n;
     }
 
@@ -458,16 +425,12 @@ char *tr_strndup(void const *in, size_t len)
 {
     char *out = NULL;
 
-    if (len == TR_BAD_SIZE)
-    {
+    if (len == TR_BAD_SIZE) {
         out = tr_strdup(in);
-    }
-    else if (in != NULL)
-    {
+    } else if (in != NULL) {
         out = tr_malloc(len + 1);
 
-        if (out != NULL)
-        {
+        if (out != NULL) {
             memcpy(out, in, len);
             out[len] = '\0';
         }
@@ -484,20 +447,16 @@ char const *tr_memmem(char const *haystack, size_t haystacklen, char const *need
 
 #else
 
-    if (needlelen == 0)
-    {
+    if (needlelen == 0) {
         return haystack;
     }
 
-    if (needlelen > haystacklen || haystack == NULL || needle == NULL)
-    {
+    if (needlelen > haystacklen || haystack == NULL || needle == NULL) {
         return NULL;
     }
 
-    for (size_t i = 0; i <= haystacklen - needlelen; ++i)
-    {
-        if (memcmp(haystack + i, needle, needlelen) == 0)
-        {
+    for (size_t i = 0; i <= haystacklen - needlelen; ++i) {
+        if (memcmp(haystack + i, needle, needlelen) == 0) {
             return haystack + i;
         }
     }
@@ -547,8 +506,7 @@ char const *tr_strerror(int i)
 {
     char const *ret = strerror(i);
 
-    if (ret == NULL)
-    {
+    if (ret == NULL) {
         ret = "Unknown Error";
     }
 
@@ -557,18 +515,15 @@ char const *tr_strerror(int i)
 
 int tr_strcmp0(char const *str1, char const *str2)
 {
-    if (str1 != NULL && str2 != NULL)
-    {
+    if (str1 != NULL && str2 != NULL) {
         return strcmp(str1, str2);
     }
 
-    if (str1 != NULL)
-    {
+    if (str1 != NULL) {
         return 1;
     }
 
-    if (str2 != NULL)
-    {
+    if (str2 != NULL) {
         return -1;
     }
 
@@ -577,18 +532,15 @@ int tr_strcmp0(char const *str1, char const *str2)
 
 int tr_memcmp0(void const *lhs, void const *rhs, size_t size)
 {
-    if (lhs != NULL && rhs != NULL)
-    {
+    if (lhs != NULL && rhs != NULL) {
         return memcmp(lhs, rhs, size);
     }
 
-    if (lhs != NULL)
-    {
+    if (lhs != NULL) {
         return 1;
     }
 
-    if (rhs != NULL)
-    {
+    if (rhs != NULL) {
         return -1;
     }
 
@@ -617,10 +569,8 @@ char *tr_strsep(char **str, char const *delims)
 
     token = *str;
 
-    while (**str != '\0')
-    {
-        if (strchr(delims, **str) != NULL)
-        {
+    while (**str != '\0') {
+        if (strchr(delims, **str) != NULL) {
             **str = '\0';
             (*str)++;
             return token;
@@ -641,8 +591,7 @@ char *tr_strjoin(char const *const *arr, size_t len, char const *delim)
 {
     size_t total_len = 1;
     size_t delim_len = strlen(delim);
-    for (size_t i = 0; i < len; ++i)
-    {
+    for (size_t i = 0; i < len; ++i) {
         total_len += strlen(arr[i]);
     }
 
@@ -651,10 +600,8 @@ char *tr_strjoin(char const *const *arr, size_t len, char const *delim)
     char *const ret = tr_new(char, total_len);
     char *p = ret;
 
-    for (size_t i = 0; i < len; ++i)
-    {
-        if (i > 0)
-        {
+    for (size_t i = 0; i < len; ++i) {
+        if (i > 0) {
             memcpy(p, delim, delim_len);
             p += delim_len;
         }
@@ -670,19 +617,16 @@ char *tr_strjoin(char const *const *arr, size_t len, char const *delim)
 
 char *tr_strstrip(char *str)
 {
-    if (str != NULL)
-    {
+    if (str != NULL) {
         size_t len = strlen(str);
 
-        while (len != 0 && isspace(str[len - 1]))
-        {
+        while (len != 0 && isspace(str[len - 1])) {
             --len;
         }
 
         size_t pos = 0;
 
-        while (pos < len && isspace(str[pos]))
-        {
+        while (pos < len && isspace(str[pos])) {
             ++pos;
         }
 
@@ -699,21 +643,18 @@ bool tr_str_has_suffix(char const *str, char const *suffix)
     size_t str_len;
     size_t suffix_len;
 
-    if (str == NULL)
-    {
+    if (str == NULL) {
         return false;
     }
 
-    if (suffix == NULL)
-    {
+    if (suffix == NULL) {
         return true;
     }
 
     str_len = strlen(str);
     suffix_len = strlen(suffix);
 
-    if (str_len < suffix_len)
-    {
+    if (str_len < suffix_len) {
         return false;
     }
 
@@ -784,27 +725,21 @@ size_t tr_strlcpy(char *dst, void const *src, size_t siz)
     size_t n = siz;
 
     /* Copy as many bytes as will fit */
-    if (n != 0)
-    {
-        while (--n != 0)
-        {
-            if ((*d++ = *s++) == '\0')
-            {
+    if (n != 0) {
+        while (--n != 0) {
+            if ((*d++ = *s++) == '\0') {
                 break;
             }
         }
     }
 
     /* Not enough room in dst, add NUL and traverse rest of src */
-    if (n == 0)
-    {
-        if (siz != 0)
-        {
+    if (n == 0) {
+        if (siz != 0) {
             *d = '\0'; /* NUL-terminate dst */
         }
 
-        while (*s++ != '\0')
-        {
+        while (*s++ != '\0') {
         }
     }
 
@@ -821,16 +756,11 @@ double tr_getRatio(uint64_t numerator, uint64_t denominator)
 {
     double ratio;
 
-    if (denominator > 0)
-    {
+    if (denominator > 0) {
         ratio = numerator / (double)denominator;
-    }
-    else if (numerator > 0)
-    {
+    } else if (numerator > 0) {
         ratio = TR_RATIO_INF;
-    }
-    else
-    {
+    } else {
         ratio = TR_RATIO_NA;
     }
 
@@ -848,8 +778,7 @@ void tr_binary_to_hex(void const *input, char *output, size_t byte_length)
 
     *output = '\0';
 
-    while (byte_length-- > 0)
-    {
+    while (byte_length-- > 0) {
         unsigned int const val = *(--input_octets);
         *(--output) = hex[val & 0xf];
         *(--output) = hex[val >> 4];
@@ -861,8 +790,7 @@ void tr_hex_to_binary(char const *input, void *output, size_t byte_length)
     static char const hex[] = "0123456789abcdef";
     uint8_t *output_octets = output;
 
-    for (size_t i = 0; i < byte_length; ++i)
-    {
+    for (size_t i = 0; i < byte_length; ++i) {
         int const hi = strchr(hex, tolower(*input++)) - hex;
         int const lo = strchr(hex, tolower(*input++)) - hex;
         *output_octets++ = (uint8_t)((hi << 4) | lo);
@@ -886,15 +814,12 @@ static bool isValidURLChars(char const *url, size_t url_len)
         "{}|\\^[]`"; /* unwise */
     // clang-format on
 
-    if (url == NULL)
-    {
+    if (url == NULL) {
         return false;
     }
 
-    for (char const *c = url, *end = url + url_len; c < end && *c != '\0'; ++c)
-    {
-        if (memchr(rfc2396_valid_chars, *c, sizeof(rfc2396_valid_chars) - 1) == NULL)
-        {
+    for (char const *c = url, *end = url + url_len; c < end && *c != '\0'; ++c) {
+        if (memchr(rfc2396_valid_chars, *c, sizeof(rfc2396_valid_chars) - 1) == NULL) {
             return false;
         }
     }
@@ -904,8 +829,7 @@ static bool isValidURLChars(char const *url, size_t url_len)
 
 bool tr_urlIsValidTracker(char const *url)
 {
-    if (url == NULL)
-    {
+    if (url == NULL) {
         return false;
     }
 
@@ -917,13 +841,11 @@ bool tr_urlIsValidTracker(char const *url)
 
 bool tr_urlIsValid(char const *url, size_t url_len)
 {
-    if (url == NULL)
-    {
+    if (url == NULL) {
         return false;
     }
 
-    if (url_len == TR_BAD_SIZE)
-    {
+    if (url_len == TR_BAD_SIZE) {
         url_len = strlen(url);
     }
 
@@ -945,8 +867,7 @@ static int parse_port(char const *port, size_t port_len)
 
     long port_num = strtol(tmp, &end, 10);
 
-    if (*end != '\0' || port_num <= 0 || port_num >= 65536)
-    {
+    if (*end != '\0' || port_num <= 0 || port_num >= 65536) {
         port_num = -1;
     }
 
@@ -957,8 +878,7 @@ static int parse_port(char const *port, size_t port_len)
 
 static int get_port_for_scheme(char const *scheme, size_t scheme_len)
 {
-    struct known_scheme
-    {
+    struct known_scheme {
         char const *name;
         int port;
     };
@@ -974,10 +894,8 @@ static int get_port_for_scheme(char const *scheme, size_t scheme_len)
     };
     // clang-format on
 
-    for (struct known_scheme const *s = known_schemes; s->name != NULL; ++s)
-    {
-        if (scheme_len == strlen(s->name) && memcmp(scheme, s->name, scheme_len) == 0)
-        {
+    for (struct known_scheme const *s = known_schemes; s->name != NULL; ++s) {
+        if (scheme_len == strlen(s->name) && memcmp(scheme, s->name, scheme_len) == 0) {
             return s->port;
         }
     }
@@ -987,23 +905,20 @@ static int get_port_for_scheme(char const *scheme, size_t scheme_len)
 
 bool tr_urlParse(char const *url, size_t url_len, char **setme_scheme, char **setme_host, int *setme_port, char **setme_path)
 {
-    if (url_len == TR_BAD_SIZE)
-    {
+    if (url_len == TR_BAD_SIZE) {
         url_len = strlen(url);
     }
 
     char const *scheme = url;
     char const *scheme_end = tr_memmem(scheme, url_len, "://", 3);
 
-    if (scheme_end == NULL)
-    {
+    if (scheme_end == NULL) {
         return false;
     }
 
     size_t const scheme_len = scheme_end - scheme;
 
-    if (scheme_len == 0)
-    {
+    if (scheme_len == 0) {
         return false;
     }
 
@@ -1013,15 +928,13 @@ bool tr_urlParse(char const *url, size_t url_len, char **setme_scheme, char **se
     char const *authority = url;
     char const *authority_end = memchr(authority, '/', url_len);
 
-    if (authority_end == NULL)
-    {
+    if (authority_end == NULL) {
         authority_end = authority + url_len;
     }
 
     size_t const authority_len = authority_end - authority;
 
-    if (authority_len == 0)
-    {
+    if (authority_len == 0) {
         return false;
     }
 
@@ -1032,36 +945,28 @@ bool tr_urlParse(char const *url, size_t url_len, char **setme_scheme, char **se
 
     size_t const host_len = host_end != NULL ? (size_t)(host_end - authority) : authority_len;
 
-    if (host_len == 0)
-    {
+    if (host_len == 0) {
         return false;
     }
 
     size_t const port_len = host_end != NULL ? authority_end - host_end - 1 : 0;
 
-    if (setme_scheme != NULL)
-    {
+    if (setme_scheme != NULL) {
         *setme_scheme = tr_strndup(scheme, scheme_len);
     }
 
-    if (setme_host != NULL)
-    {
+    if (setme_host != NULL) {
         *setme_host = tr_strndup(authority, host_len);
     }
 
-    if (setme_port != NULL)
-    {
+    if (setme_port != NULL) {
         *setme_port = port_len > 0 ? parse_port(host_end + 1, port_len) : get_port_for_scheme(scheme, scheme_len);
     }
 
-    if (setme_path != NULL)
-    {
-        if (url[0] == '\0')
-        {
+    if (setme_path != NULL) {
+        if (url[0] == '\0') {
             *setme_path = tr_strdup("/");
-        }
-        else
-        {
+        } else {
             *setme_path = tr_strndup(url, url_len);
         }
     }
@@ -1095,23 +1000,18 @@ int tr_lowerBound(
     char const *cbase = base;
     bool exact = false;
 
-    while (nmemb != 0)
-    {
+    while (nmemb != 0) {
         size_t const half = nmemb / 2;
         size_t const middle = first + half;
         int const c = (*compar)(key, cbase + size * middle);
 
-        if (c <= 0)
-        {
-            if (c == 0)
-            {
+        if (c <= 0) {
+            if (c == 0) {
                 exact = true;
             }
 
             nmemb = half;
-        }
-        else
-        {
+        } else {
             first = middle + 1;
             nmemb = nmemb - half - 1;
         }
@@ -1129,15 +1029,12 @@ int tr_lowerBound(
 /* Byte-wise swap two items of size SIZE.
    From glibc, written by Douglas C. Schmidt, LGPL 2.1 or higher */
 #define SWAP(a, b, size) \
-    do \
-    { \
+    do { \
         register size_t __size = (size); \
         register char *__a = (a); \
         register char *__b = (b); \
-        if (__a != __b) \
-        { \
-            do \
-            { \
+        if (__a != __b) { \
+            do { \
                 char __tmp = *__a; \
                 *__a++ = *__b; \
                 *__b++ = __tmp; \
@@ -1160,10 +1057,8 @@ static size_t quickfindPartition(
 
     storeIndex = left;
 
-    for (size_t i = left; i < right; ++i)
-    {
-        if ((*compar)(base + (size * i), base + (size * right)) <= 0)
-        {
+    for (size_t i = left; i < right; ++i) {
+        if ((*compar)(base + (size * i), base + (size * right)) <= 0) {
             SWAP(base + (size * storeIndex), base + (size * i), size);
             ++storeIndex;
         }
@@ -1178,13 +1073,11 @@ static size_t quickfindPartition(
     TR_ASSERT(storeIndex >= left);
     TR_ASSERT(storeIndex <= right);
 
-    for (size_t i = left; i < storeIndex; ++i)
-    {
+    for (size_t i = left; i < storeIndex; ++i) {
         TR_ASSERT((*compar)(base + (size * i), base + (size * storeIndex)) <= 0);
     }
 
-    for (size_t i = storeIndex + 1; i <= right; ++i)
-    {
+    for (size_t i = storeIndex + 1; i <= right; ++i) {
         TR_ASSERT((*compar)(base + (size * i), base + (size * storeIndex)) >= 0);
     }
 
@@ -1195,8 +1088,7 @@ static size_t quickfindPartition(
 
 static void quickfindFirstK(char *base, size_t left, size_t right, size_t size, tr_voidptr_compare_func compar, size_t k)
 {
-    if (right > left)
-    {
+    if (right > left) {
         size_t const pivotIndex = left + (right - left) / 2U;
 
         size_t const pivotNewIndex = quickfindPartition(base, left, right, size, compar, pivotIndex);
@@ -1204,9 +1096,7 @@ static void quickfindFirstK(char *base, size_t left, size_t right, size_t size, 
         if (pivotNewIndex > left + k) /* new condition */
         {
             quickfindFirstK(base, left, pivotNewIndex - 1, size, compar, k);
-        }
-        else if (pivotNewIndex < left + k)
-        {
+        } else if (pivotNewIndex < left + k) {
             quickfindFirstK(base, pivotNewIndex + 1, right, size, compar, k + left - pivotNewIndex - 1);
         }
     }
@@ -1218,21 +1108,17 @@ static void checkBestScoresComeFirst(char *base, size_t nmemb, size_t size, tr_v
 {
     size_t worstFirstPos = 0;
 
-    for (size_t i = 1; i < k; ++i)
-    {
-        if ((*compar)(base + (size * worstFirstPos), base + (size * i)) < 0)
-        {
+    for (size_t i = 1; i < k; ++i) {
+        if ((*compar)(base + (size * worstFirstPos), base + (size * i)) < 0) {
             worstFirstPos = i;
         }
     }
 
-    for (size_t i = 0; i < k; ++i)
-    {
+    for (size_t i = 0; i < k; ++i) {
         TR_ASSERT((*compar)(base + (size * i), base + (size * worstFirstPos)) <= 0);
     }
 
-    for (size_t i = k; i < nmemb; ++i)
-    {
+    for (size_t i = k; i < nmemb; ++i) {
         TR_ASSERT((*compar)(base + (size * i), base + (size * worstFirstPos)) >= 0);
     }
 }
@@ -1241,8 +1127,7 @@ static void checkBestScoresComeFirst(char *base, size_t nmemb, size_t size, tr_v
 
 void tr_quickfindFirstK(void *base, size_t nmemb, size_t size, tr_voidptr_compare_func compar, size_t k)
 {
-    if (k < nmemb)
-    {
+    if (k < nmemb) {
         quickfindFirstK(base, 0, nmemb - 1, size, compar, k);
 
 #ifdef TR_ENABLE_ASSERTS
@@ -1260,8 +1145,7 @@ static char *strip_non_utf8(char const *in, size_t inlen)
     char const *end;
     struct evbuffer *buf = evbuffer_new();
 
-    while (!tr_utf8_validate(in, inlen, &end))
-    {
+    while (!tr_utf8_validate(in, inlen, &end)) {
         int const good_len = end - in;
 
         evbuffer_add(buf, in, good_len);
@@ -1284,8 +1168,7 @@ static char *to_utf8(char const *in, size_t inlen)
     size_t const buflen = inlen * 4 + 10;
     char *out = tr_new(char, buflen);
 
-    for (size_t i = 0; ret == NULL && i < TR_N_ELEMENTS(encodings); ++i)
-    {
+    for (size_t i = 0; ret == NULL && i < TR_N_ELEMENTS(encodings); ++i) {
 #ifdef ICONV_SECOND_ARGUMENT_IS_CONST
         char const *inbuf = in;
 #else
@@ -1298,10 +1181,8 @@ static char *to_utf8(char const *in, size_t inlen)
 
         iconv_t cd = iconv_open("UTF-8", test_encoding);
 
-        if (cd != (iconv_t)-1)
-        {
-            if (iconv(cd, &inbuf, &inbytesleft, &outbuf, &outbytesleft) != (size_t)-1)
-            {
+        if (cd != (iconv_t)-1) {
+            if (iconv(cd, &inbuf, &inbytesleft, &outbuf, &outbytesleft) != (size_t)-1) {
                 ret = tr_strndup(out, buflen - outbytesleft);
             }
 
@@ -1313,8 +1194,7 @@ static char *to_utf8(char const *in, size_t inlen)
 
 #endif
 
-    if (ret == NULL)
-    {
+    if (ret == NULL) {
         ret = strip_non_utf8(in, inlen);
     }
 
@@ -1326,17 +1206,13 @@ char *tr_utf8clean(char const *str, size_t max_len)
     char *ret;
     char const *end;
 
-    if (max_len == TR_BAD_SIZE)
-    {
+    if (max_len == TR_BAD_SIZE) {
         max_len = strlen(str);
     }
 
-    if (tr_utf8_validate(str, max_len, &end))
-    {
+    if (tr_utf8_validate(str, max_len, &end)) {
         ret = tr_strndup(str, max_len);
-    }
-    else
-    {
+    } else {
         ret = to_utf8(str, max_len);
     }
 
@@ -1361,30 +1237,26 @@ char *tr_win32_native_to_utf8_ex(
     char *ret = NULL;
     int size;
 
-    if (text_size == -1)
-    {
+    if (text_size == -1) {
         text_size = wcslen(text);
     }
 
     size = WideCharToMultiByte(CP_UTF8, 0, text, text_size, NULL, 0, NULL, NULL);
 
-    if (size == 0)
-    {
+    if (size == 0) {
         goto fail;
     }
 
     ret = tr_new(char, size + extra_chars_before + extra_chars_after + 1);
     size = WideCharToMultiByte(CP_UTF8, 0, text, text_size, ret + extra_chars_before, size, NULL, NULL);
 
-    if (size == 0)
-    {
+    if (size == 0) {
         goto fail;
     }
 
     ret[size + extra_chars_before + extra_chars_after] = '\0';
 
-    if (real_result_size != NULL)
-    {
+    if (real_result_size != NULL) {
         *real_result_size = size;
     }
 
@@ -1411,30 +1283,26 @@ wchar_t *tr_win32_utf8_to_native_ex(
     wchar_t *ret = NULL;
     int size;
 
-    if (text_size == -1)
-    {
+    if (text_size == -1) {
         text_size = strlen(text);
     }
 
     size = MultiByteToWideChar(CP_UTF8, 0, text, text_size, NULL, 0);
 
-    if (size == 0)
-    {
+    if (size == 0) {
         goto fail;
     }
 
     ret = tr_new(wchar_t, size + extra_chars_before + extra_chars_after + 1);
     size = MultiByteToWideChar(CP_UTF8, 0, text, text_size, ret + extra_chars_before, size);
 
-    if (size == 0)
-    {
+    if (size == 0) {
         goto fail;
     }
 
     ret[size + extra_chars_before + extra_chars_after] = L'\0';
 
-    if (real_result_size != NULL)
-    {
+    if (real_result_size != NULL) {
         *real_result_size = size;
     }
 
@@ -1462,25 +1330,21 @@ char *tr_win32_format_message(uint32_t code)
         0,
         NULL);
 
-    if (wide_size == 0)
-    {
+    if (wide_size == 0) {
         return tr_strdup_printf("Unknown error (0x%08x)", code);
     }
 
-    if (wide_size != 0 && wide_text != NULL)
-    {
+    if (wide_size != 0 && wide_text != NULL) {
         text = tr_win32_native_to_utf8(wide_text, wide_size);
     }
 
     LocalFree(wide_text);
 
-    if (text != NULL)
-    {
+    if (text != NULL) {
         /* Most (all?) messages contain "\r\n" in the end, chop it */
         text_size = strlen(text);
 
-        while (text_size > 0 && isspace((uint8_t)text[text_size - 1]))
-        {
+        while (text_size > 0 && isspace((uint8_t)text[text_size - 1])) {
             text[--text_size] = '\0';
         }
     }
@@ -1495,8 +1359,7 @@ void tr_win32_make_args_utf8(int *argc, char ***argv)
 
     my_wide_argv = CommandLineToArgvW(GetCommandLineW(), &my_argc);
 
-    if (my_wide_argv == NULL)
-    {
+    if (my_wide_argv == NULL) {
         return;
     }
 
@@ -1505,27 +1368,21 @@ void tr_win32_make_args_utf8(int *argc, char ***argv)
     char **my_argv = tr_new(char *, my_argc + 1);
     int processed_argc = 0;
 
-    for (int i = 0; i < my_argc; ++i, ++processed_argc)
-    {
+    for (int i = 0; i < my_argc; ++i, ++processed_argc) {
         my_argv[i] = tr_win32_native_to_utf8(my_wide_argv[i], -1);
 
-        if (my_argv[i] == NULL)
-        {
+        if (my_argv[i] == NULL) {
             break;
         }
     }
 
-    if (processed_argc < my_argc)
-    {
-        for (int i = 0; i < processed_argc; ++i)
-        {
+    if (processed_argc < my_argc) {
+        for (int i = 0; i < processed_argc; ++i) {
             tr_free(my_argv[i]);
         }
 
         tr_free(my_argv);
-    }
-    else
-    {
+    } else {
         my_argv[my_argc] = NULL;
 
         *argc = my_argc;
@@ -1551,8 +1408,7 @@ int tr_main_win32(int argc, char **argv, int (*real_main)(int, char **))
 ****
 ***/
 
-struct number_range
-{
+struct number_range {
     int low;
     int high;
 };
@@ -1573,29 +1429,20 @@ static bool parseNumberSection(char const *str, size_t len, struct number_range 
     errno = 0;
     a = b = strtol(tmp, &end, 10);
 
-    if (errno != 0 || end == tmp)
-    {
+    if (errno != 0 || end == tmp) {
         success = false;
-    }
-    else if (*end != '-')
-    {
+    } else if (*end != '-') {
         success = true;
-    }
-    else
-    {
+    } else {
         char const *pch = end + 1;
         b = strtol(pch, &end, 10);
 
-        if (errno != 0 || pch == end)
+        if (errno != 0 || pch == end) {
+            success = false;
+        } else if (*end != '\0') /* trailing data */
         {
             success = false;
-        }
-        else if (*end != '\0') /* trailing data */
-        {
-            success = false;
-        }
-        else
-        {
+        } else {
             success = true;
         }
     }
@@ -1634,62 +1481,48 @@ int *tr_parseNumberRange(char const *str_in, size_t len, int *setmeCount)
 
     walk = str;
 
-    while (!tr_str_is_empty(walk) && success)
-    {
+    while (!tr_str_is_empty(walk) && success) {
         struct number_range range;
         char const *pch = strchr(walk, ',');
 
-        if (pch != NULL)
-        {
+        if (pch != NULL) {
             success = parseNumberSection(walk, (size_t)(pch - walk), &range);
             walk = pch + 1;
-        }
-        else
-        {
+        } else {
             success = parseNumberSection(walk, strlen(walk), &range);
             walk += strlen(walk);
         }
 
-        if (success)
-        {
+        if (success) {
             tr_list_append(&ranges, tr_memdup(&range, sizeof(struct number_range)));
         }
     }
 
-    if (!success)
-    {
+    if (!success) {
         *setmeCount = 0;
         uniq = NULL;
-    }
-    else
-    {
+    } else {
         int n2;
         int *sorted = NULL;
 
         /* build a sorted number array */
         n = n2 = 0;
 
-        for (tr_list *l = ranges; l != NULL; l = l->next)
-        {
+        for (tr_list *l = ranges; l != NULL; l = l->next) {
             struct number_range const *r = l->data;
             n += r->high + 1 - r->low;
         }
 
         sorted = tr_new(int, n);
 
-        if (sorted == NULL)
-        {
+        if (sorted == NULL) {
             n = 0;
             uniq = NULL;
-        }
-        else
-        {
-            for (tr_list *l = ranges; l != NULL; l = l->next)
-            {
+        } else {
+            for (tr_list *l = ranges; l != NULL; l = l->next) {
                 struct number_range const *r = l->data;
 
-                for (int i = r->low; i <= r->high; ++i)
-                {
+                for (int i = r->low; i <= r->high; ++i) {
                     sorted[n2++] = i;
                 }
             }
@@ -1701,12 +1534,9 @@ int *tr_parseNumberRange(char const *str_in, size_t len, int *setmeCount)
             uniq = tr_new(int, n);
             n = 0;
 
-            if (uniq != NULL)
-            {
-                for (int i = 0; i < n2; ++i)
-                {
-                    if (n == 0 || uniq[n - 1] != sorted[i])
-                    {
+            if (uniq != NULL) {
+                for (int i = 0; i < n2; ++i) {
+                    if (n == 0 || uniq[n - 1] != sorted[i]) {
                         uniq[n++] = sorted[i];
                     }
                 }
@@ -1735,8 +1565,7 @@ double tr_truncd(double x, int precision)
     char buf[128];
     tr_snprintf(buf, sizeof(buf), "%.*f", DBL_DIG, x);
 
-    if ((pt = strstr(buf, localeconv()->decimal_point)) != NULL)
-    {
+    if ((pt = strstr(buf, localeconv()->decimal_point)) != NULL) {
         pt[precision != 0 ? precision + 1 : 0] = '\0';
     }
 
@@ -1752,12 +1581,9 @@ static char *tr_strtruncd(char *buf, double x, int precision, size_t buflen)
 
 char *tr_strpercent(char *buf, double x, size_t buflen)
 {
-    if (x < 100.0)
-    {
+    if (x < 100.0) {
         tr_strtruncd(buf, x, 1, buflen);
-    }
-    else
-    {
+    } else {
         tr_strtruncd(buf, x, 0, buflen);
     }
 
@@ -1766,16 +1592,11 @@ char *tr_strpercent(char *buf, double x, size_t buflen)
 
 char *tr_strratio(char *buf, size_t buflen, double ratio, char const *infinity)
 {
-    if ((int)ratio == TR_RATIO_NA)
-    {
+    if ((int)ratio == TR_RATIO_NA) {
         tr_strlcpy(buf, _("None"), buflen);
-    }
-    else if ((int)ratio == TR_RATIO_INF)
-    {
+    } else if ((int)ratio == TR_RATIO_INF) {
         tr_strlcpy(buf, infinity, buflen);
-    }
-    else
-    {
+    } else {
         tr_strpercent(buf, ratio, buflen);
     }
 
@@ -1796,14 +1617,12 @@ bool tr_moveFile(char const *oldpath, char const *newpath, tr_error **error)
     size_t const buflen = 1024 * 1024; /* 1024 KiB buffer */
 
     /* make sure the old file exists */
-    if (!tr_sys_path_get_info(oldpath, 0, &info, error))
-    {
+    if (!tr_sys_path_get_info(oldpath, 0, &info, error)) {
         tr_error_prefix(error, "Unable to get information on old file: ");
         return false;
     }
 
-    if (info.type != TR_SYS_PATH_IS_FILE)
-    {
+    if (info.type != TR_SYS_PATH_IS_FILE) {
         tr_error_set_literal(error, TR_ERROR_EINVAL, "Old path does not point to a file.");
         return false;
     }
@@ -1814,32 +1633,28 @@ bool tr_moveFile(char const *oldpath, char const *newpath, tr_error **error)
         bool const i = newdir != NULL && tr_sys_dir_create(newdir, TR_SYS_DIR_CREATE_PARENTS, 0777, error);
         tr_free(newdir);
 
-        if (!i)
-        {
+        if (!i) {
             tr_error_prefix(error, "Unable to create directory for new file: ");
             return false;
         }
     }
 
     /* they might be on the same filesystem... */
-    if (tr_sys_path_rename(oldpath, newpath, NULL))
-    {
+    if (tr_sys_path_rename(oldpath, newpath, NULL)) {
         return true;
     }
 
     /* copy the file */
     in = tr_sys_file_open(oldpath, TR_SYS_FILE_READ | TR_SYS_FILE_SEQUENTIAL, 0, error);
 
-    if (in == TR_BAD_SYS_FILE)
-    {
+    if (in == TR_BAD_SYS_FILE) {
         tr_error_prefix(error, "Unable to open old file: ");
         return false;
     }
 
     out = tr_sys_file_open(newpath, TR_SYS_FILE_WRITE | TR_SYS_FILE_CREATE | TR_SYS_FILE_TRUNCATE, 0666, error);
 
-    if (out == TR_BAD_SYS_FILE)
-    {
+    if (out == TR_BAD_SYS_FILE) {
         tr_error_prefix(error, "Unable to open new file: ");
         tr_sys_file_close(in, NULL);
         return false;
@@ -1848,19 +1663,16 @@ bool tr_moveFile(char const *oldpath, char const *newpath, tr_error **error)
     buf = tr_valloc(buflen);
     bytesLeft = info.size;
 
-    while (bytesLeft > 0)
-    {
+    while (bytesLeft > 0) {
         uint64_t const bytesThisPass = MIN(bytesLeft, buflen);
         uint64_t numRead;
         uint64_t bytesWritten;
 
-        if (!tr_sys_file_read(in, buf, bytesThisPass, &numRead, error))
-        {
+        if (!tr_sys_file_read(in, buf, bytesThisPass, &numRead, error)) {
             break;
         }
 
-        if (!tr_sys_file_write(out, buf, numRead, &bytesWritten, error))
-        {
+        if (!tr_sys_file_write(out, buf, numRead, &bytesWritten, error)) {
             break;
         }
 
@@ -1874,8 +1686,7 @@ bool tr_moveFile(char const *oldpath, char const *newpath, tr_error **error)
     tr_sys_file_close(out, NULL);
     tr_sys_file_close(in, NULL);
 
-    if (bytesLeft != 0)
-    {
+    if (bytesLeft != 0) {
         tr_error_prefix(error, "Unable to read/write: ");
         return false;
     }
@@ -1883,8 +1694,7 @@ bool tr_moveFile(char const *oldpath, char const *newpath, tr_error **error)
     {
         tr_error *my_error = NULL;
 
-        if (!tr_sys_path_remove(oldpath, &my_error))
-        {
+        if (!tr_sys_path_remove(oldpath, &my_error)) {
             tr_logAddError("Unable to remove file at old path: %s", my_error->message);
             tr_error_free(my_error);
         }
@@ -1903,8 +1713,7 @@ void *tr_valloc(size_t bufLen)
     void *buf = NULL;
     static size_t pageSize = 0;
 
-    if (pageSize == 0)
-    {
+    if (pageSize == 0) {
 #if defined(HAVE_GETPAGESIZE) && !defined(_WIN32)
         pageSize = (size_t)getpagesize();
 #else /* guess */
@@ -1914,17 +1723,14 @@ void *tr_valloc(size_t bufLen)
 
     allocLen = pageSize;
 
-    while (allocLen < bufLen)
-    {
+    while (allocLen < bufLen) {
         allocLen += pageSize;
     }
 
 #ifdef HAVE_POSIX_MEMALIGN
 
-    if (buf == NULL)
-    {
-        if (posix_memalign(&buf, pageSize, allocLen) != 0)
-        {
+    if (buf == NULL) {
+        if (posix_memalign(&buf, pageSize, allocLen) != 0) {
             buf = NULL; /* just retry with valloc/malloc */
         }
     }
@@ -1933,15 +1739,13 @@ void *tr_valloc(size_t bufLen)
 
 #ifdef HAVE_VALLOC
 
-    if (buf == NULL)
-    {
+    if (buf == NULL) {
         buf = valloc(allocLen);
     }
 
 #endif
 
-    if (buf == NULL)
-    {
+    if (buf == NULL) {
         buf = tr_malloc(allocLen);
     }
 
@@ -1961,8 +1765,7 @@ uint64_t tr_htonll(uint64_t x)
 #else
 
     /* fallback code by bdonlan at http://stackoverflow.com/questions/809902/64-bit-ntohl-in-c/875505#875505 */
-    union
-    {
+    union {
         uint32_t lx[2];
         uint64_t llx;
     } u;
@@ -1982,8 +1785,7 @@ uint64_t tr_ntohll(uint64_t x)
 #else
 
     /* fallback code by bdonlan at http://stackoverflow.com/questions/809902/64-bit-ntohl-in-c/875505#875505 */
-    union
-    {
+    union {
         uint32_t lx[2];
         uint64_t llx;
     } u;
@@ -1999,24 +1801,16 @@ uint64_t tr_ntohll(uint64_t x)
 ****
 ***/
 
-struct formatter_unit
-{
+struct formatter_unit {
     char *name;
     int64_t value;
 };
 
-struct formatter_units
-{
+struct formatter_units {
     struct formatter_unit units[4];
 };
 
-enum
-{
-    TR_FMT_KB,
-    TR_FMT_MB,
-    TR_FMT_GB,
-    TR_FMT_TB
-};
+enum { TR_FMT_KB, TR_FMT_MB, TR_FMT_GB, TR_FMT_TB };
 
 static void formatter_init(
     struct formatter_units *units,
@@ -2052,36 +1846,24 @@ static char *formatter_get_size_str(struct formatter_units const *u, char *buf, 
     char const *units;
     struct formatter_unit const *unit;
 
-    if (bytes < u->units[1].value)
-    {
+    if (bytes < u->units[1].value) {
         unit = &u->units[0];
-    }
-    else if (bytes < u->units[2].value)
-    {
+    } else if (bytes < u->units[2].value) {
         unit = &u->units[1];
-    }
-    else if (bytes < u->units[3].value)
-    {
+    } else if (bytes < u->units[3].value) {
         unit = &u->units[2];
-    }
-    else
-    {
+    } else {
         unit = &u->units[3];
     }
 
     value = (double)bytes / unit->value;
     units = unit->name;
 
-    if (unit->value == 1)
-    {
+    if (unit->value == 1) {
         precision = 0;
-    }
-    else if (value < 100)
-    {
+    } else if (value < 100) {
         precision = 2;
-    }
-    else
-    {
+    } else {
         precision = 1;
     }
 
@@ -2119,21 +1901,16 @@ char *tr_formatter_speed_KBps(char *buf, double KBps, size_t buflen)
     if (speed <= 999.95) /* 0.0 KB to 999.9 KB */
     {
         tr_snprintf(buf, buflen, "%d %s", (int)speed, speed_units.units[TR_FMT_KB].name);
-    }
-    else
-    {
+    } else {
         speed /= K;
 
         if (speed <= 99.995) /* 0.98 MB to 99.99 MB */
         {
             tr_snprintf(buf, buflen, "%.2f %s", speed, speed_units.units[TR_FMT_MB].name);
-        }
-        else if (speed <= 999.95) /* 100.0 MB to 999.9 MB */
+        } else if (speed <= 999.95) /* 100.0 MB to 999.9 MB */
         {
             tr_snprintf(buf, buflen, "%.1f %s", speed, speed_units.units[TR_FMT_MB].name);
-        }
-        else
-        {
+        } else {
             tr_snprintf(buf, buflen, "%.1f %s", speed / K, speed_units.units[TR_FMT_GB].name);
         }
     }
@@ -2166,24 +1943,21 @@ void tr_formatter_get_units(void *vdict)
     tr_variantDictAddInt(dict, TR_KEY_memory_bytes, mem_units.units[TR_FMT_KB].value);
     l = tr_variantDictAddList(dict, TR_KEY_memory_units, 4);
 
-    for (int i = 0; i < 4; i++)
-    {
+    for (int i = 0; i < 4; i++) {
         tr_variantListAddStr(l, mem_units.units[i].name);
     }
 
     tr_variantDictAddInt(dict, TR_KEY_size_bytes, size_units.units[TR_FMT_KB].value);
     l = tr_variantDictAddList(dict, TR_KEY_size_units, 4);
 
-    for (int i = 0; i < 4; i++)
-    {
+    for (int i = 0; i < 4; i++) {
         tr_variantListAddStr(l, size_units.units[i].name);
     }
 
     tr_variantDictAddInt(dict, TR_KEY_speed_bytes, speed_units.units[TR_FMT_KB].value);
     l = tr_variantDictAddList(dict, TR_KEY_speed_units, 4);
 
-    for (int i = 0; i < 4; i++)
-    {
+    for (int i = 0; i < 4; i++) {
         tr_variantListAddStr(l, speed_units.units[i].name);
     }
 }
@@ -2211,8 +1985,7 @@ int tr_env_get_int(char const *key, int default_value)
 
     char value[16];
 
-    if (GetEnvironmentVariableA(key, value, TR_N_ELEMENTS(value)) > 1)
-    {
+    if (GetEnvironmentVariableA(key, value, TR_N_ELEMENTS(value)) > 1) {
         return atoi(value);
     }
 
@@ -2220,8 +1993,7 @@ int tr_env_get_int(char const *key, int default_value)
 
     char const *value = getenv(key);
 
-    if (!tr_str_is_empty(value))
-    {
+    if (!tr_str_is_empty(value)) {
         return atoi(value);
     }
 
@@ -2239,16 +2011,13 @@ char *tr_env_get_string(char const *key, char const *default_value)
     wchar_t *wide_key = tr_win32_utf8_to_native(key, -1);
     char *value = NULL;
 
-    if (wide_key != NULL)
-    {
+    if (wide_key != NULL) {
         DWORD const size = GetEnvironmentVariableW(wide_key, NULL, 0);
 
-        if (size != 0)
-        {
+        if (size != 0) {
             wchar_t *const wide_value = tr_new(wchar_t, size);
 
-            if (GetEnvironmentVariableW(wide_key, wide_value, size) == size - 1)
-            {
+            if (GetEnvironmentVariableW(wide_key, wide_value, size) == size - 1) {
                 value = tr_win32_native_to_utf8(wide_value, size);
             }
 
@@ -2258,8 +2027,7 @@ char *tr_env_get_string(char const *key, char const *default_value)
         tr_free(wide_key);
     }
 
-    if (value == NULL && default_value != NULL)
-    {
+    if (value == NULL && default_value != NULL) {
         value = tr_strdup(default_value);
     }
 
@@ -2269,13 +2037,11 @@ char *tr_env_get_string(char const *key, char const *default_value)
 
     char *value = getenv(key);
 
-    if (value == NULL)
-    {
+    if (value == NULL) {
         value = (char *)default_value;
     }
 
-    if (value != NULL)
-    {
+    if (value != NULL) {
         value = tr_strdup(value);
     }
 
@@ -2292,8 +2058,7 @@ void tr_env_set_string(char const *key, char const *value)
     wchar_t *wide_key = tr_win32_utf8_to_native(key, -1);
     wchar_t *wide_value = tr_win32_utf8_to_native(value, -1);
 
-    if (wide_key != NULL && wide_value != NULL)
-    {
+    if (wide_key != NULL && wide_value != NULL) {
         SetEnvironmentVariableW(wide_key, wide_value);
     }
 #else // _WIN32
@@ -2309,8 +2074,7 @@ void tr_net_init(void)
 {
     static bool initialized = false;
 
-    if (!initialized)
-    {
+    if (!initialized) {
 #ifdef _WIN32
         WSADATA wsaData;
         WSAStartup(MAKEWORD(2, 2), &wsaData);

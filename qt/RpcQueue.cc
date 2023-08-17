@@ -21,14 +21,12 @@ void RpcQueue::stepFinished()
 {
     RpcResponse result;
 
-    if (myFutureWatcher.future().isResultReadyAt(0))
-    {
+    if (myFutureWatcher.future().isResultReadyAt(0)) {
         result = myFutureWatcher.result();
         RpcResponseFuture future = myFutureWatcher.future();
 
         // we can't handle network errors, abort queue and pass the error upwards
-        if (result.networkError != QNetworkReply::NoError)
-        {
+        if (result.networkError != QNetworkReply::NoError) {
             assert(!result.success);
 
             myPromise.reportFinished(&result);
@@ -37,20 +35,16 @@ void RpcQueue::stepFinished()
         }
 
         // call user-handler for ordinary errors
-        if (!result.success && myNextErrorHandler)
-        {
+        if (!result.success && myNextErrorHandler) {
             myNextErrorHandler(future);
         }
 
         // run next request, if we have one to run and there was no error (or if we tolerate errors)
-        if ((result.success || myTolerateErrors) && !myQueue.isEmpty())
-        {
+        if ((result.success || myTolerateErrors) && !myQueue.isEmpty()) {
             runNext(future);
             return;
         }
-    }
-    else
-    {
+    } else {
         assert(!myNextErrorHandler);
         assert(myQueue.isEmpty());
 
@@ -69,19 +63,16 @@ void RpcQueue::runNext(RpcResponseFuture const &response)
 
     RpcResponseFuture const oldFuture = myFutureWatcher.future();
 
-    while (true)
-    {
+    while (true) {
         auto next = myQueue.dequeue();
         myNextErrorHandler = next.second;
         myFutureWatcher.setFuture((next.first)(response));
 
-        if (oldFuture != myFutureWatcher.future())
-        {
+        if (oldFuture != myFutureWatcher.future()) {
             break;
         }
 
-        if (myQueue.isEmpty())
-        {
+        if (myQueue.isEmpty()) {
             deleteLater();
             break;
         }

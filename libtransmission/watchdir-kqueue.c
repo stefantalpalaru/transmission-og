@@ -43,8 +43,7 @@
 ****
 ***/
 
-typedef struct tr_watchdir_kqueue
-{
+typedef struct tr_watchdir_kqueue {
     tr_watchdir_backend base;
 
     int kq;
@@ -68,8 +67,7 @@ static void tr_watchdir_kqueue_on_event(evutil_socket_t fd UNUSED, short type UN
     struct kevent ke;
     struct timespec const ts = { .tv_sec = 0, .tv_nsec = 0 };
 
-    if (kevent(backend->kq, NULL, 0, &ke, 1, &ts) == -1)
-    {
+    if (kevent(backend->kq, NULL, 0, &ke, 1, &ts) == -1) {
         log_error("Failed to fetch kevent: %s", tr_strerror(errno));
         return;
     }
@@ -82,26 +80,22 @@ static void tr_watchdir_kqueue_free(tr_watchdir_backend *backend_base)
 {
     tr_watchdir_kqueue *const backend = BACKEND_UPCAST(backend_base);
 
-    if (backend == NULL)
-    {
+    if (backend == NULL) {
         return;
     }
 
     TR_ASSERT(backend->base.free_func == &tr_watchdir_kqueue_free);
 
-    if (backend->event != NULL)
-    {
+    if (backend->event != NULL) {
         event_del(backend->event);
         event_free(backend->event);
     }
 
-    if (backend->kq != -1)
-    {
+    if (backend->kq != -1) {
         close(backend->kq);
     }
 
-    if (backend->dirfd != -1)
-    {
+    if (backend->dirfd != -1) {
         close(backend->dirfd);
     }
 
@@ -121,15 +115,13 @@ tr_watchdir_backend *tr_watchdir_kqueue_new(tr_watchdir_t handle)
     backend->kq = -1;
     backend->dirfd = -1;
 
-    if ((backend->kq = kqueue()) == -1)
-    {
+    if ((backend->kq = kqueue()) == -1) {
         log_error("Failed to start kqueue");
         goto fail;
     }
 
     /* Open fd for watching */
-    if ((backend->dirfd = open(path, O_RDONLY | O_EVTONLY)) == -1)
-    {
+    if ((backend->dirfd = open(path, O_RDONLY | O_EVTONLY)) == -1) {
         log_error("Failed to passively watch directory \"%s\": %s", path, tr_strerror(errno));
         goto fail;
     }
@@ -137,8 +129,7 @@ tr_watchdir_backend *tr_watchdir_kqueue_new(tr_watchdir_t handle)
     /* Register kevent filter with kqueue descriptor */
     EV_SET(&ke, backend->dirfd, EVFILT_VNODE, EV_ADD | EV_ENABLE | EV_CLEAR, KQUEUE_WATCH_MASK, 0, NULL);
 
-    if (kevent(backend->kq, &ke, 1, NULL, 0, NULL) == -1)
-    {
+    if (kevent(backend->kq, &ke, 1, NULL, 0, NULL) == -1) {
         log_error("Failed to set directory event filter with fd %d: %s", backend->kq, tr_strerror(errno));
         goto fail;
     }
@@ -149,14 +140,12 @@ tr_watchdir_backend *tr_watchdir_kqueue_new(tr_watchdir_t handle)
              backend->kq,
              EV_READ | EV_ET | EV_PERSIST,
              &tr_watchdir_kqueue_on_event,
-             handle)) == NULL)
-    {
+             handle)) == NULL) {
         log_error("Failed to create event: %s", tr_strerror(errno));
         goto fail;
     }
 
-    if (event_add(backend->event, NULL) == -1)
-    {
+    if (event_add(backend->event, NULL) == -1) {
         log_error("Failed to add event: %s", tr_strerror(errno));
         goto fail;
     }

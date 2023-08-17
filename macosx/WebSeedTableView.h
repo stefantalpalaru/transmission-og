@@ -22,8 +22,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface WebSeedTableView : NSTableView
-{
+@interface WebSeedTableView : NSTableView {
     // weak references
     NSArray *fWebSeeds;
 }

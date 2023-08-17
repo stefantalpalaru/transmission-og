@@ -44,8 +44,7 @@ extern char const *speed_T_str;
     { \
         static GQuark q; \
 \
-        if G_UNLIKELY (q == 0) \
-        { \
+        if G_UNLIKELY (q == 0) { \
             q = g_quark_from_static_string(#QN); \
         } \
 \
@@ -54,13 +53,7 @@ extern char const *speed_T_str;
 
 #endif
 
-enum
-{
-    GTR_UNICODE_UP,
-    GTR_UNICODE_DOWN,
-    GTR_UNICODE_INF,
-    GTR_UNICODE_BULLET
-};
+enum { GTR_UNICODE_UP, GTR_UNICODE_DOWN, GTR_UNICODE_INF, GTR_UNICODE_BULLET };
 
 char const *gtr_get_unicode_string(int);
 

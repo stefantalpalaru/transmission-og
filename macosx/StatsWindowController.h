@@ -24,8 +24,7 @@
 
 #include <libtransmission/transmission.h>
 
-@interface StatsWindowController : NSWindowController
-{
+@interface StatsWindowController : NSWindowController {
     IBOutlet NSTextField *fUploadedField, *fUploadedAllField, *fDownloadedField, *fDownloadedAllField, *fRatioField,
         *fRatioAllField, *fTimeField, *fTimeAllField, *fNumOpenedField, *fUploadedLabelField, *fDownloadedLabelField,
         *fRatioLabelField, *fTimeLabelField, *fNumOpenedLabelField;

@@ -35,8 +35,7 @@
 - (id)initWithLib:(tr_session *)lib forWindow:(NSWindow *)window
 {
     if ((self = ([super initWithContentRect:[window frame] styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered
-                                      defer:NO])))
-    {
+                                      defer:NO]))) {
         fLib = lib;
 
         [self setBackgroundColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.5]];
@@ -85,23 +84,19 @@
     BOOL folder;
     NSInteger fileCount = 0;
 
-    for (NSString *file in files)
-    {
+    for (NSString *file in files) {
         if ([[[NSWorkspace sharedWorkspace] typeOfFile:file error:NULL] isEqualToString:@"org.bittorrent.torrent"] ||
-            [[file pathExtension] caseInsensitiveCompare:@"torrent"] == NSOrderedSame)
-        {
+            [[file pathExtension] caseInsensitiveCompare:@"torrent"] == NSOrderedSame) {
             tr_ctor *ctor = tr_ctorNew(fLib);
             tr_ctorSetMetainfoFromFile(ctor, [file UTF8String]);
             tr_info info;
-            if (tr_torrentParse(ctor, &info) == TR_PARSE_OK)
-            {
+            if (tr_torrentParse(ctor, &info) == TR_PARSE_OK) {
                 count++;
                 size += info.totalSize;
                 fileCount += info.fileCount;
 
                 // only useful when one torrent
-                if (count == 1)
-                {
+                if (count == 1) {
                     name = @(info.name);
                     folder = info.isFolder;
                 }
@@ -116,8 +111,7 @@
 
     // set strings and icon
     NSString *secondString = [NSString stringForFileSize:size];
-    if (count > 1 || folder)
-    {
+    if (count > 1 || folder) {
         NSString *fileString;
         if (fileCount == 1)
             fileString = NSLocalizedString(@"1 file", "Drag overlay -> torrents");
@@ -130,8 +124,7 @@
     NSImage *icon;
     if (count == 1)
         icon = [[NSWorkspace sharedWorkspace] iconForFileType:folder ? NSFileTypeForHFSTypeCode(kGenericFolderIcon) : [name pathExtension]];
-    else
-    {
+    else {
         name = [NSString stringWithFormat:NSLocalizedString(@"%@ Torrent Files", "Drag overlay -> torrents"),
                                           [NSString formattedUInteger:count]];
         secondString = [secondString stringByAppendingString:@" total"];
@@ -160,8 +153,7 @@
 - (void)fadeIn
 {
     // stop other animation and set to same progress
-    if ([fFadeOutAnimation isAnimating])
-    {
+    if ([fFadeOutAnimation isAnimating]) {
         [fFadeOutAnimation stopAnimation];
         [fFadeInAnimation setCurrentProgress:1.0 - [fFadeOutAnimation currentProgress]];
     }
@@ -171,8 +163,7 @@
 - (void)fadeOut
 {
     // stop other animation and set to same progress
-    if ([fFadeInAnimation isAnimating])
-    {
+    if ([fFadeInAnimation isAnimating]) {
         [fFadeInAnimation stopAnimation];
         [fFadeOutAnimation setCurrentProgress:1.0 - [fFadeInAnimation currentProgress]];
     }

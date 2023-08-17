@@ -31,8 +31,7 @@
 
 - (id)initWithGroup:(NSInteger)group
 {
-    if ((self = [super init]))
-    {
+    if ((self = [super init])) {
         fGroup = group;
         fTorrents = [[NSMutableArray alloc] init];
     }
@@ -62,8 +61,7 @@
 - (CGFloat)ratio
 {
     uint64_t uploaded = 0, downloaded = 0;
-    for (Torrent *torrent in fTorrents)
-    {
+    for (Torrent *torrent in fTorrents) {
         uploaded += [torrent uploadedTotal];
         downloaded += [torrent downloadedTotal];
     }
