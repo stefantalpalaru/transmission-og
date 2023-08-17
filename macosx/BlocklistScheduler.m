@@ -23,10 +23,10 @@
 #import "BlocklistScheduler.h"
 #import "BlocklistDownloader.h"
 
-//thirty second delay before running after option is changed
+// thirty second delay before running after option is changed
 #define SMALL_DELAY 30
 
-//update one week after previous update
+// update one week after previous update
 #define FULL_WAIT (60 * 60 * 24 * 7)
 
 @interface BlocklistScheduler (Private)
@@ -69,7 +69,7 @@ BlocklistScheduler *fScheduler = nil;
     fTimer = [[NSTimer alloc] initWithFireDate:useDate interval:0 target:self selector:@selector(runUpdater) userInfo:nil
                                        repeats:NO];
 
-    //current run loop usually means a second update won't work
+    // current run loop usually means a second update won't work
     NSRunLoop *loop = [NSRunLoop mainRunLoop];
     [loop addTimer:fTimer forMode:NSDefaultRunLoopMode];
     [loop addTimer:fTimer forMode:NSModalPanelRunLoopMode];

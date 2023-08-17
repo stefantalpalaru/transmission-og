@@ -1036,7 +1036,7 @@ static void sessionSetImpl(void *vdata)
     }
 
     /**
-    **/
+     **/
 
     if (tr_variantDictFindInt(settings, TR_KEY_upload_slots_per_torrent, &i))
     {

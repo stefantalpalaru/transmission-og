@@ -53,7 +53,7 @@ GroupsController *fGroupsInstance = nil;
         NSData *data;
         if ((data = [[NSUserDefaults standardUserDefaults] dataForKey:@"GroupDicts"]))
             fGroups = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-        else if ((data = [[NSUserDefaults standardUserDefaults] dataForKey:@"Groups"])) //handle old groups
+        else if ((data = [[NSUserDefaults standardUserDefaults] dataForKey:@"Groups"])) // handle old groups
         {
             fGroups = [NSUnarchiver unarchiveObjectWithData:data];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"Groups"];
@@ -61,7 +61,7 @@ GroupsController *fGroupsInstance = nil;
         }
         else
         {
-            //default groups
+            // default groups
             NSMutableDictionary *red = [NSMutableDictionary
                 dictionaryWithObjectsAndKeys:[NSColor redColor], @"Color", NSLocalizedString(@"Red", "Groups -> Name"), @"Name", @0, @"Index", nil];
 
@@ -84,7 +84,7 @@ GroupsController *fGroupsInstance = nil;
                 dictionaryWithObjectsAndKeys:[NSColor grayColor], @"Color", NSLocalizedString(@"Gray", "Groups -> Name"), @"Name", @6, @"Index", nil];
 
             fGroups = [[NSMutableArray alloc] initWithObjects:red, orange, yellow, green, blue, purple, gray, nil];
-            [self saveGroups]; //make sure this is saved right away
+            [self saveGroups]; // make sure this is saved right away
         }
     }
 
@@ -228,7 +228,7 @@ GroupsController *fGroupsInstance = nil;
 
 - (void)addNewGroup
 {
-    //find the lowest index
+    // find the lowest index
     NSMutableIndexSet *candidates = [NSMutableIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [fGroups count] + 1)];
     for (NSDictionary *dict in fGroups)
         [candidates removeIndex:[dict[@"Index"] integerValue]];
@@ -334,7 +334,7 @@ GroupsController *fGroupsInstance = nil;
 
 - (void)saveGroups
 {
-    //don't archive the icon
+    // don't archive the icon
     NSMutableArray *groups = [NSMutableArray arrayWithCapacity:[fGroups count]];
     for (NSDictionary *dict in fGroups)
     {
@@ -361,12 +361,12 @@ GroupsController *fGroupsInstance = nil;
 
     [icon lockFocus];
 
-    //border
+    // border
     NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:[color blendedColorWithFraction:0.45 ofColor:[NSColor whiteColor]]
                                                          endingColor:color];
     [gradient drawInBezierPath:bp angle:270.0];
 
-    //inside
+    // inside
     bp = [NSBezierPath bezierPathWithRoundedRect:NSInsetRect(rect, 1.0, 1.0) xRadius:3.0 yRadius:3.0];
     gradient = [[NSGradient alloc] initWithStartingColor:[color blendedColorWithFraction:0.75 ofColor:[NSColor whiteColor]]
                                              endingColor:[color blendedColorWithFraction:0.2 ofColor:[NSColor whiteColor]]];

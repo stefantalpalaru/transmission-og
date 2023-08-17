@@ -47,7 +47,7 @@
     CGFloat const displayDlRate = [[NSUserDefaults standardUserDefaults] boolForKey:@"BadgeDownloadRate"] ? downloadRate : 0.0;
     CGFloat const displayUlRate = [[NSUserDefaults standardUserDefaults] boolForKey:@"BadgeUploadRate"] ? uploadRate : 0.0;
 
-    //only update if the badged values change
+    // only update if the badged values change
     if ([(BadgeView *)[[NSApp dockTile] contentView] setRatesWithDownload:displayDlRate upload:displayUlRate])
         [[NSApp dockTile] display];
 }

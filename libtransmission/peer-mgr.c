@@ -808,7 +808,8 @@ static void requestListRemove(tr_swarm *s, tr_block_index_t block, tr_peer const
         tr_removeElementFromArray(s->requests, pos, sizeof(struct block_request), s->requestCount);
         --s->requestCount;
 
-        // fprintf(stderr, "removing request of block %lu from peer %s... there are now %d block requests left\n", (unsigned long)block,
+        // fprintf(stderr, "removing request of block %lu from peer %s... there are now %d block requests left\n", (unsigned
+        // long)block,
         //     tr_atomAddrStr(peer->atom), t->requestCount);
     }
 }
@@ -2132,8 +2133,8 @@ static bool myHandshakeDoneCB(
                     client = TR_KEY_NONE;
                 }
 
-                io = tr_handshakeStealIO(
-                    handshake); /* this steals its refcount too, which is balanced by our unref in peerDelete() */
+                io = tr_handshakeStealIO(handshake); /* this steals its refcount too, which is balanced by our unref in
+                                                        peerDelete() */
                 tr_peerIoSetParent(io, &s->tor->bandwidth);
                 createBitTorrentPeer(s->tor, io, atom, client);
 

@@ -100,7 +100,7 @@
 
 - (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
 {
-    //icon
+    // icon
     [[self image] drawInRect:[self imageRectForBounds:cellFrame] fromRect:NSZeroRect operation:NSCompositeSourceOver
                     fraction:1.0
               respectFlipped:YES
@@ -120,12 +120,12 @@
     fTitleAttributes[NSForegroundColorAttributeName] = titleColor;
     fStatusAttributes[NSForegroundColorAttributeName] = statusColor;
 
-    //title
+    // title
     NSAttributedString *titleString = [self attributedTitle];
     NSRect titleRect = [self rectForTitleWithString:titleString inBounds:cellFrame];
     [titleString drawInRect:titleRect];
 
-    //status
+    // status
     NSAttributedString *statusString = [self attributedStatus];
     NSRect statusRect = [self rectForStatusWithString:statusString withTitleRect:titleRect inBounds:cellFrame];
     [statusString drawInRect:statusRect];
@@ -164,7 +164,7 @@
 {
     NSSize const titleSize = [string size];
 
-    //no right padding, so that there's not too much space between this and the priority image
+    // no right padding, so that there's not too much space between this and the priority image
     NSRect result;
     if (![(FileListNode *)[self objectValue] isFolder])
     {

@@ -146,7 +146,7 @@ typedef enum
 - (uint64_t)sizeLeft;
 
 - (NSMutableArray *)allTrackerStats;
-- (NSArray *)allTrackersFlat; //used by GroupRules
+- (NSArray *)allTrackersFlat; // used by GroupRules
 - (BOOL)addTrackerToNewTier:(NSString *)tracker;
 - (void)removeTrackers:(NSSet *)trackers;
 
@@ -230,7 +230,7 @@ typedef enum
 - (NSInteger)fileCount;
 - (void)updateFileStat;
 
-//methods require fileStats to have been updated recently to be accurate
+// methods require fileStats to have been updated recently to be accurate
 - (CGFloat)fileProgress:(FileListNode *)node;
 - (BOOL)canChangeDownloadCheckForFile:(NSUInteger)index;
 - (BOOL)canChangeDownloadCheckForFiles:(NSIndexSet *)indexSet;

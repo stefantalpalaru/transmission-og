@@ -70,14 +70,14 @@ tr_session *fLib = NULL;
 
     [[self window] setTitle:NSLocalizedString(@"Statistics", "Stats window -> title")];
 
-    //set label text
+    // set label text
     [fUploadedLabelField setStringValue:[NSLocalizedString(@"Uploaded", "Stats window -> label") stringByAppendingString:@":"]];
     [fDownloadedLabelField setStringValue:[NSLocalizedString(@"Downloaded", "Stats window -> label") stringByAppendingString:@":"]];
     [fRatioLabelField setStringValue:[NSLocalizedString(@"Ratio", "Stats window -> label") stringByAppendingString:@":"]];
     [fTimeLabelField setStringValue:[NSLocalizedString(@"Running Time", "Stats window -> label") stringByAppendingString:@":"]];
     [fNumOpenedLabelField setStringValue:[NSLocalizedString(@"Program Started", "Stats window -> label") stringByAppendingString:@":"]];
 
-    //size of all labels
+    // size of all labels
     CGFloat const oldWidth = [fUploadedLabelField frame].size.width;
 
     NSArray *labels = @[ fUploadedLabelField, fDownloadedLabelField, fRatioLabelField, fTimeLabelField, fNumOpenedLabelField ];
@@ -98,12 +98,12 @@ tr_session *fLib = NULL;
         [label setFrame:frame];
     }
 
-    //resize window for new label width - fields are set in nib to adjust correctly
+    // resize window for new label width - fields are set in nib to adjust correctly
     NSRect windowRect = [[self window] frame];
     windowRect.size.width += maxWidth - oldWidth;
     [[self window] setFrame:windowRect display:YES];
 
-    //resize reset button
+    // resize reset button
     CGFloat const oldButtonWidth = [fResetButton frame].size.width;
 
     [fResetButton setTitle:NSLocalizedString(@"Reset", "Stats window -> reset button")];

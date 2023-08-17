@@ -83,7 +83,7 @@
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    //this object is essentially immutable after initial setup
+    // this object is essentially immutable after initial setup
     return self;
 }
 
@@ -119,7 +119,7 @@
     NSArray *lookupPathComponents = [path pathComponents];
     NSArray *thesePathComponents = [self.path pathComponents];
 
-    if ([lookupPathComponents isEqualToArray:thesePathComponents]) //this node represents what's being renamed
+    if ([lookupPathComponents isEqualToArray:thesePathComponents]) // this node represents what's being renamed
     {
         if ([oldName isEqualToString:self.name])
         {
@@ -128,7 +128,7 @@
             return YES;
         }
     }
-    else if ([lookupPathComponents count] < [thesePathComponents count]) //what's being renamed is part of this node's path
+    else if ([lookupPathComponents count] < [thesePathComponents count]) // what's being renamed is part of this node's path
     {
         lookupPathComponents = [lookupPathComponents arrayByAddingObject:oldName];
         BOOL const allSame = NSNotFound ==

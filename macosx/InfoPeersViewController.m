@@ -64,7 +64,7 @@
         [[self view] setFrame:viewRect];
     }
 
-    //set table header text
+    // set table header text
     [[[fPeerTable tableColumnWithIdentifier:@"IP"] headerCell]
         setStringValue:NSLocalizedString(@"IP Address", "inspector -> peer table -> header")];
     [[[fPeerTable tableColumnWithIdentifier:@"Client"] headerCell]
@@ -79,7 +79,7 @@
     [[[fWebSeedTable tableColumnWithIdentifier:@"DL From"] headerCell]
         setStringValue:NSLocalizedString(@"DL", "inspector -> web seed table -> header")];
 
-    //set table header tool tips
+    // set table header tool tips
     [[fPeerTable tableColumnWithIdentifier:@"Encryption"]
         setHeaderToolTip:NSLocalizedString(@"Encrypted Connection", "inspector -> peer table -> header tool tip")];
     [[fPeerTable tableColumnWithIdentifier:@"Progress"]
@@ -92,7 +92,7 @@
     [[fWebSeedTable tableColumnWithIdentifier:@"DL From"]
         setHeaderToolTip:NSLocalizedString(@"Downloading From Web Seed", "inspector -> web seed table -> header tool tip")];
 
-    //prepare for animating peer table and web seed table
+    // prepare for animating peer table and web seed table
     fViewTopMargin = fWebSeedTableTopConstraint.constant;
 
     CABasicAnimation *webSeedTableAnimation = [CABasicAnimation animation];
@@ -108,7 +108,7 @@
 #warning subclass?
 - (void)setInfoForTorrents:(NSArray *)torrents
 {
-    //don't check if it's the same in case the metadata changed
+    // don't check if it's the same in case the metadata changed
     fTorrents = torrents;
 
     fSet = NO;
@@ -395,7 +395,7 @@
             NSAssert1(NO, @"Peer from unknown source: %ld", peerFrom);
         }
 
-        //determing status strings from flags
+        // determing status strings from flags
         NSMutableArray *statusArray = [NSMutableArray arrayWithCapacity:6];
         NSString *flags = peer[@"Flags"];
 
@@ -510,7 +510,7 @@
             asc = [descriptor ascending];
     }
 
-    //sort by IP after primary sort
+    // sort by IP after primary sort
     if (useSecond)
     {
         NSSortDescriptor *secondDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"IP" ascending:asc

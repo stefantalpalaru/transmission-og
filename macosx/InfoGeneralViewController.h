@@ -36,7 +36,7 @@
 
     IBOutlet NSButton *fRevealDataButton;
 
-    //remove when we switch to auto layout on 10.7
+    // remove when we switch to auto layout on 10.7
     IBOutlet NSTextField *fPiecesLabel, *fHashLabel, *fSecureLabel, *fCreatorLabel, *fDateCreatedLabel, *fCommentLabel, *fDataLocationLabel;
     IBOutlet NSTextField *fInfoSectionLabel, *fWhereSectionLabel;
     IBOutlet NSScrollView *fCommentScrollView;

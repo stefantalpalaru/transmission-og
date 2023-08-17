@@ -938,7 +938,8 @@ static gboolean on_session_closed(gpointer gdata)
 
     // triggers this error on exit:
     // (transmission-og-gtk:16327): GLib-GObject-CRITICAL **: 02:06:12.420: instance with invalid (NULL) class pointer
-    // (transmission-og-gtk:16327): GLib-GObject-CRITICAL **: 02:06:12.428: g_signal_handler_disconnect: assertion 'G_TYPE_CHECK_INSTANCE (instance)' failed
+    // (transmission-og-gtk:16327): GLib-GObject-CRITICAL **: 02:06:12.428: g_signal_handler_disconnect: assertion
+    // 'G_TYPE_CHECK_INSTANCE (instance)' failed
     //
     // g_object_unref(cbdata->core);
 

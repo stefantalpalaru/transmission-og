@@ -68,7 +68,7 @@ typedef enum
     [fOutline setDoubleAction:@selector(revealFile:)];
     [fOutline setTarget:self];
 
-    //set table header tool tips
+    // set table header tool tips
     [[fOutline tableColumnWithIdentifier:@"Check"] setHeaderToolTip:NSLocalizedString(@"Download", "file table -> header tool tip")];
     [[fOutline tableColumnWithIdentifier:@"Priority"] setHeaderToolTip:NSLocalizedString(@"Priority", "file table -> header tool tip")];
 
@@ -91,7 +91,7 @@ typedef enum
     fFilterText = nil;
 
     [fOutline reloadData];
-    [fOutline deselectAll:nil]; //do this after reloading the data #4575
+    [fOutline deselectAll:nil]; // do this after reloading the data #4575
 }
 
 - (void)setFilterText:(NSString *)text
@@ -112,7 +112,7 @@ typedef enum
     NSMutableArray *itemsToAdd = [NSMutableArray array];
     NSMutableIndexSet *itemsToAddIndexes = [NSMutableIndexSet indexSet];
 
-    NSMutableDictionary *removedIndexesForParents = nil; //ugly, but we can't modify the actual file nodes
+    NSMutableDictionary *removedIndexesForParents = nil; // ugly, but we can't modify the actual file nodes
 
     NSArray *tempList = !text ? [fTorrent fileList] : [fTorrent flatFileList];
     for (FileListNode *item in tempList)
@@ -158,7 +158,7 @@ typedef enum
                 {
                     [fFileList insertObject:item atIndex:currentIndex];
 
-                    //figure out the index within the semi-edited table - UGLY
+                    // figure out the index within the semi-edited table - UGLY
                     if (!removedIndexesForParents)
                         removedIndexesForParents = [NSMutableDictionary dictionary];
 
@@ -185,7 +185,7 @@ typedef enum
         }
     }
 
-    //remove trailing items - those are the unused
+    // remove trailing items - those are the unused
     if (currentIndex < [fFileList count])
     {
         NSRange const removeRange = NSMakeRange(currentIndex, [fFileList count] - currentIndex);
@@ -194,7 +194,7 @@ typedef enum
                          withAnimation:NSTableViewAnimationSlideDown];
     }
 
-    //add new items
+    // add new items
     [fFileList insertObjects:itemsToAdd atIndexes:itemsToAddIndexes];
     [fOutline insertItemsAtIndexes:itemsToAddIndexes inParent:nil withAnimation:NSTableViewAnimationSlideUp];
 
@@ -516,7 +516,7 @@ typedef enum
             return NO;
         }
 
-        //determine which priorities are checked
+        // determine which priorities are checked
         NSIndexSet *indexSet = [fOutline selectedRowIndexes];
         tr_priority_t priority;
         switch ([menuItem tag])
@@ -567,7 +567,7 @@ typedef enum
 {
     NSMenu *menu = [[NSMenu alloc] initWithTitle:@"File Outline Menu"];
 
-    //check and uncheck
+    // check and uncheck
     NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Check Selected", "File Outline -> Menu")
                                                   action:@selector(setCheck:)
                                            keyEquivalent:@""];
@@ -582,7 +582,7 @@ typedef enum
     [item setTag:FILE_UNCHECK_TAG];
     [menu addItem:item];
 
-    //only check selected
+    // only check selected
     item = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Only Check Selected", "File Outline -> Menu")
                                       action:@selector(setOnlySelectedCheck:)
                                keyEquivalent:@""];
@@ -591,7 +591,7 @@ typedef enum
 
     [menu addItem:[NSMenuItem separatorItem]];
 
-    //priority
+    // priority
     item = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Priority", "File Outline -> Menu") action:NULL keyEquivalent:@""];
     NSMenu *priorityMenu = [[NSMenu alloc] initWithTitle:@"File Priority Menu"];
     [item setSubmenu:priorityMenu];
@@ -623,7 +623,7 @@ typedef enum
 
     [menu addItem:[NSMenuItem separatorItem]];
 
-    //reveal in finder
+    // reveal in finder
     item = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Show in Finder", "File Outline -> Menu")
                                       action:@selector(revealFile:)
                                keyEquivalent:@""];
@@ -632,7 +632,7 @@ typedef enum
 
     [menu addItem:[NSMenuItem separatorItem]];
 
-    //rename
+    // rename
     item = [[NSMenuItem alloc] initWithTitle:[NSLocalizedString(@"Rename File", "File Outline -> Menu") stringByAppendingEllipsis]
                                       action:@selector(renameSelected:)
                                keyEquivalent:@""];

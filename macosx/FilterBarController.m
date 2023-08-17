@@ -48,7 +48,7 @@
 
 - (void)awakeFromNib
 {
-    //localizations
+    // localizations
     [fNoFilterButton setTitle:NSLocalizedString(@"All", "Filter Bar -> filter button")];
     [fActiveFilterButton setTitle:NSLocalizedString(@"Active", "Filter Bar -> filter button")];
     [fDownloadFilterButton setTitle:NSLocalizedString(@"Downloading", "Filter Bar -> filter button")];
@@ -70,7 +70,7 @@
 
     [self resizeBar];
 
-    //set current filter
+    // set current filter
     NSString *filterType = [[NSUserDefaults standardUserDefaults] stringForKey:@"Filter"];
 
     NSButton *currentFilterButton;
@@ -84,14 +84,14 @@
         currentFilterButton = fDownloadFilterButton;
     else
     {
-        //safety
+        // safety
         if (![filterType isEqualToString:FILTER_NONE])
             [[NSUserDefaults standardUserDefaults] setObject:FILTER_NONE forKey:@"Filter"];
         currentFilterButton = fNoFilterButton;
     }
     [currentFilterButton setState:NSOnState];
 
-    //set filter search type
+    // set filter search type
     NSString *filterSearchType = [[NSUserDefaults standardUserDefaults] stringForKey:@"FilterSearchType"];
 
     NSMenu *filterSearchMenu = [[fSearchField cell] searchMenuTemplate];
@@ -100,7 +100,7 @@
         filterSearchTypeTitle = [[filterSearchMenu itemWithTag:FILTER_TYPE_TAG_TRACKER] title];
     else
     {
-        //safety
+        // safety
         if (![filterType isEqualToString:FILTER_TYPE_NAME])
             [[NSUserDefaults standardUserDefaults] setObject:FILTER_TYPE_NAME forKey:@"FilterSearchType"];
         filterSearchTypeTitle = [[filterSearchMenu itemWithTag:FILTER_TYPE_TAG_NAME] title];
@@ -116,7 +116,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resizeBar) name:NSWindowDidResizeNotification
                                                object:[[self view] window]];
 
-    //update when groups change
+    // update when groups change
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateGroups:) name:@"UpdateGroups" object:nil];
 }
 
@@ -293,7 +293,7 @@
 {
     SEL const action = [menuItem action];
 
-    //check proper filter search item
+    // check proper filter search item
     if (action == @selector(setSearchType:))
     {
         NSString *filterType = [[NSUserDefaults standardUserDefaults] stringForKey:@"FilterSearchType"];
@@ -323,7 +323,7 @@
 
 - (void)resizeBar
 {
-    //replace all buttons
+    // replace all buttons
     [fNoFilterButton sizeToFit];
     [fActiveFilterButton sizeToFit];
     [fDownloadFilterButton sizeToFit];
@@ -336,12 +336,12 @@
     NSRect seedRect = [fSeedFilterButton frame];
     NSRect pauseRect = [fPauseFilterButton frame];
 
-    //size search filter to not overlap buttons
+    // size search filter to not overlap buttons
     NSRect searchFrame = [fSearchField frame];
     searchFrame.origin.x = NSMaxX(pauseRect) + 5.0;
     searchFrame.size.width = NSWidth([[self view] frame]) - searchFrame.origin.x - 5.0;
 
-    //make sure it is not too long
+    // make sure it is not too long
     if (NSWidth(searchFrame) > SEARCH_MAX_WIDTH)
     {
         searchFrame.origin.x += NSWidth(searchFrame) - SEARCH_MAX_WIDTH;
@@ -352,13 +352,13 @@
         searchFrame.origin.x += NSWidth(searchFrame) - SEARCH_MIN_WIDTH;
         searchFrame.size.width = SEARCH_MIN_WIDTH;
 
-        //calculate width the buttons can take up
+        // calculate width the buttons can take up
         CGFloat const allowedWidth = (searchFrame.origin.x - 5.0) - allRect.origin.x;
         CGFloat const currentWidth = NSWidth(allRect) + NSWidth(activeRect) + NSWidth(downloadRect) + NSWidth(seedRect) +
-            NSWidth(pauseRect) + 4.0; //add 4 for space between buttons
+            NSWidth(pauseRect) + 4.0; // add 4 for space between buttons
         CGFloat const ratio = allowedWidth / currentWidth;
 
-        //decrease button widths proportionally
+        // decrease button widths proportionally
         allRect.size.width = NSWidth(allRect) * ratio;
         activeRect.size.width = NSWidth(activeRect) * ratio;
         downloadRect.size.width = NSWidth(downloadRect) * ratio;

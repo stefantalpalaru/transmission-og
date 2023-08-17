@@ -51,12 +51,12 @@
     the respective buffers.
 
     Input parameters:
-	sourceStart - pointer to a pointer to the source buffer.
-		The contents of this are modified on return so that
-		it points at the next thing to be converted.
-	targetStart - similarly, pointer to pointer to the target buffer.
-	sourceEnd, targetEnd - respectively pointers to the ends of the
-		two buffers, for overflow checking only.
+    sourceStart - pointer to a pointer to the source buffer.
+        The contents of this are modified on return so that
+        it points at the next thing to be converted.
+    targetStart - similarly, pointer to pointer to the target buffer.
+    sourceEnd, targetEnd - respectively pointers to the ends of the
+        two buffers, for overflow checking only.
 
     These conversion functions take a ConversionFlags argument. When this
     flag is set to strict, both irregular sequences and isolated surrogates
@@ -73,15 +73,15 @@
     they constitute an error.
 
     Output parameters:
-	The value "sourceIllegal" is returned from some routines if the input
-	sequence is malformed. When "sourceIllegal" is returned, the source
-	value will point to the illegal value that caused the problem. E.g.,
-	in UTF-8 when a sequence is malformed, it points to the start of the
-	malformed sequence.
+    The value "sourceIllegal" is returned from some routines if the input
+    sequence is malformed. When "sourceIllegal" is returned, the source
+    value will point to the illegal value that caused the problem. E.g.,
+    in UTF-8 when a sequence is malformed, it points to the start of the
+    malformed sequence.
 
     Author: Mark E. Davis, 1994.
     Rev History: Rick McGowan, fixes & updates May 2001.
-		 Fixes & updates, Sept 2001.
+         Fixes & updates, Sept 2001.
 
 ------------------------------------------------------------------------ */
 

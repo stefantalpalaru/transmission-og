@@ -309,7 +309,7 @@ static inline int toMemMB(uint64_t B)
 }
 
 /**
-**/
+ **/
 
 unsigned int tr_sessionGetSpeedLimit_Bps(tr_session const *, tr_direction);
 unsigned int tr_sessionGetAltSpeed_Bps(tr_session const *, tr_direction);

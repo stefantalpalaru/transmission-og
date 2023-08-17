@@ -44,7 +44,7 @@ typedef enum
     blocklistDownloadState fState;
 }
 
-+ (BlocklistDownloader *)downloader; //starts download if not already occuring
++ (BlocklistDownloader *)downloader; // starts download if not already occuring
 + (BOOL)isRunning;
 
 - (void)setViewController:(BlocklistDownloaderViewController *)viewController;

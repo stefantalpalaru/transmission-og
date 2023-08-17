@@ -35,7 +35,7 @@
     IBOutlet NSTextField *fUploadLimitField, *fDownloadLimitField, *fRatioLimitField, *fIdleLimitField, *fUploadLimitLabel,
         *fDownloadLimitLabel, *fIdleLimitLabel, *fRatioLimitGlobalLabel, *fIdleLimitGlobalLabel, *fPeersConnectLabel, *fPeersConnectField;
 
-    //remove when we switch to auto layout on 10.7
+    // remove when we switch to auto layout on 10.7
     IBOutlet NSTextField *fTransferBandwidthSectionLabel, *fPrioritySectionLabel, *fPriorityLabel;
     IBOutlet NSTextField *fSeedingLimitsSectionLabel, *fRatioLabel, *fInactivityLabel;
     IBOutlet NSTextField *fAdvancedSectionLabel, *fMaxConnectionsLabel;

@@ -24,7 +24,7 @@
 
 @interface WebSeedTableView : NSTableView
 {
-    //weak references
+    // weak references
     NSArray *fWebSeeds;
 }
 

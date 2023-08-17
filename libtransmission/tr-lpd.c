@@ -58,13 +58,13 @@ typedef uint16_t in_port_t; /* all missing */
 #include "version.h"
 
 /**
-* @brief Local Peer Discovery
-* @file tr-lpd.c
-*
-* This module implements the Local Peer Discovery (LPD) protocol as supported by the
-* uTorrent client application. A typical LPD datagram is 119 bytes long.
-*
-*/
+ * @brief Local Peer Discovery
+ * @file tr-lpd.c
+ *
+ * This module implements the Local Peer Discovery (LPD) protocol as supported by the
+ * uTorrent client application. A typical LPD datagram is 119 bytes long.
+ *
+ */
 
 static void event_callback(evutil_socket_t, short, void *);
 
@@ -93,7 +93,7 @@ int const lpd_mcastPort = 6771; /**<LPD source and destination UPD port */
 static struct sockaddr_in lpd_mcastAddr; /**<initialized from the above constants in tr_lpdInit */
 
 /**
-* @brief Protocol-related information carried by a Local Peer Discovery packet */
+ * @brief Protocol-related information carried by a Local Peer Discovery packet */
 struct lpd_protocolVersion
 {
     int major;
@@ -116,59 +116,59 @@ enum
 };
 
 /**
-* @defgroup DoS Message Flood Protection
-* @{
-* We want to have a means to protect the libtransmission backend against message
-* flooding: the strategy is to cap event processing once more than ten messages
-* per second (that is, taking the average over one of our housekeeping intervals)
-* got into our processing handler.
-* If we'd really hit the limit and start discarding events, we either joined an
-* extremely crowded multicast group or a malevolent host is sending bogus data to
-* our socket. In this situation, we rather miss some announcements than blocking
-* the actual task.
-* @}
-*/
+ * @defgroup DoS Message Flood Protection
+ * @{
+ * We want to have a means to protect the libtransmission backend against message
+ * flooding: the strategy is to cap event processing once more than ten messages
+ * per second (that is, taking the average over one of our housekeeping intervals)
+ * got into our processing handler.
+ * If we'd really hit the limit and start discarding events, we either joined an
+ * extremely crowded multicast group or a malevolent host is sending bogus data to
+ * our socket. In this situation, we rather miss some announcements than blocking
+ * the actual task.
+ * @}
+ */
 
 /**
-* @ingroup DoS
-* @brief allow at most ten messages per second (interval average)
-* @note this constraint is only enforced once per housekeeping interval */
+ * @ingroup DoS
+ * @brief allow at most ten messages per second (interval average)
+ * @note this constraint is only enforced once per housekeeping interval */
 enum
 {
     lpd_announceCapFactor = 10
 };
 
 /**
-* @ingroup DoS
-* @brief number of unsolicited messages during the last HK interval
-* @remark counts downwards */
+ * @ingroup DoS
+ * @brief number of unsolicited messages during the last HK interval
+ * @remark counts downwards */
 static int lpd_unsolicitedMsgCounter;
 
 /**
-* @def CRLF
-* @brief a line-feed, as understood by the LPD protocol */
+ * @def CRLF
+ * @brief a line-feed, as understood by the LPD protocol */
 #define CRLF "\r\n"
 
 /**
-* @defgroup HttpReqProc HTTP-style request handling
-* @{
-*/
+ * @defgroup HttpReqProc HTTP-style request handling
+ * @{
+ */
 
 /**
-* @brief Checks for BT-SEARCH method and separates the parameter section
-* @param[in] s The request string
-* @param[out] ver If non-NULL, gets filled with protocol info from the request
-* @return Returns a relative pointer to the beginning of the parameter section;
-*         if result is NULL, s was invalid and no information will be returned
-* @remark Note that the returned pointer is only usable as long as the given
-*         pointer s is valid; that is, return storage is temporary.
-*
-* Determines whether the given string checks out to be a valid BT-SEARCH message.
-* If so, the return value points to the beginning of the parameter section (note:
-* in this case the function returns a character sequence beginning with CRLF).
-* If parameter is not NULL, the declared protocol version is returned as part of
-* the lpd_protocolVersion structure.
-*/
+ * @brief Checks for BT-SEARCH method and separates the parameter section
+ * @param[in] s The request string
+ * @param[out] ver If non-NULL, gets filled with protocol info from the request
+ * @return Returns a relative pointer to the beginning of the parameter section;
+ *         if result is NULL, s was invalid and no information will be returned
+ * @remark Note that the returned pointer is only usable as long as the given
+ *         pointer s is valid; that is, return storage is temporary.
+ *
+ * Determines whether the given string checks out to be a valid BT-SEARCH message.
+ * If so, the return value points to the beginning of the parameter section (note:
+ * in this case the function returns a character sequence beginning with CRLF).
+ * If parameter is not NULL, the declared protocol version is returned as part of
+ * the lpd_protocolVersion structure.
+ */
 static char const *lpd_extractHeader(char const *s, struct lpd_protocolVersion *const ver)
 {
     TR_ASSERT(s != NULL);
@@ -216,19 +216,19 @@ static char const *lpd_extractHeader(char const *s, struct lpd_protocolVersion *
 }
 
 /**
-* @brief Return the value of a named parameter
-*
-* @param[in] str Input string of "\r\nName: Value" pairs without HTTP-style method part
-* @param[in] name Name of parameter to extract
-* @param[in] n Maximum available storage for value to return
-* @param[out] val Output parameter for the actual value
-* @return Returns 1 if value could be copied successfully
-*
-* Extracts the associated value of a named parameter from a HTTP-style header by
-* performing the following steps:
-*   - assemble search string "\r\nName: " and locate position
-*   - copy back value from end to next "\r\n"
-*/
+ * @brief Return the value of a named parameter
+ *
+ * @param[in] str Input string of "\r\nName: Value" pairs without HTTP-style method part
+ * @param[in] name Name of parameter to extract
+ * @param[in] n Maximum available storage for value to return
+ * @param[out] val Output parameter for the actual value
+ * @return Returns 1 if value could be copied successfully
+ *
+ * Extracts the associated value of a named parameter from a HTTP-style header by
+ * performing the following steps:
+ *   - assemble search string "\r\nName: " and locate position
+ *   - copy back value from end to next "\r\n"
+ */
 static bool lpd_extractParam(char const *const str, char const *const name, int n, char *const val)
 {
     TR_ASSERT(str != NULL);
@@ -282,19 +282,19 @@ static bool lpd_extractParam(char const *const str, char const *const name, int 
 }
 
 /**
-* @} */
+ * @} */
 
 static void on_upkeep_timer(evutil_socket_t, short, void *);
 
 /**
-* @brief Initializes Local Peer Discovery for this node
-*
-* For the most part, this means setting up an appropriately configured multicast socket
-* and event-based message handling.
-*
-* @remark Since the LPD service does not use another protocol family yet, this code is
-* IPv4 only for the time being.
-*/
+ * @brief Initializes Local Peer Discovery for this node
+ *
+ * For the most part, this means setting up an appropriately configured multicast socket
+ * and event-based message handling.
+ *
+ * @remark Since the LPD service does not use another protocol family yet, this code is
+ * IPv4 only for the time being.
+ */
 int tr_lpdInit(tr_session *ss, tr_address *tr_addr UNUSED)
 {
     struct ip_mreq mcastReq;
@@ -453,11 +453,11 @@ bool tr_lpdEnabled(tr_session const *ss)
 }
 
 /**
-* @cond
-* @brief Performs some (internal) software consistency checks at compile time.
-* @remark Declared inline for the compiler not to allege us of feeding unused
-* functions. In any other respect, lpd_consistencyCheck is an orphaned function.
-*/
+ * @cond
+ * @brief Performs some (internal) software consistency checks at compile time.
+ * @remark Declared inline for the compiler not to allege us of feeding unused
+ * functions. In any other respect, lpd_consistencyCheck is an orphaned function.
+ */
 UNUSED static inline void lpd_consistencyCheck(void)
 {
     /* if the following check fails, the definition of a hash string has changed
@@ -468,23 +468,23 @@ UNUSED static inline void lpd_consistencyCheck(void)
 }
 
 /**
-* @endcond */
+ * @endcond */
 
 /**
-* @defgroup LdsProto LPD announcement processing
-* @{
-*/
+ * @defgroup LdsProto LPD announcement processing
+ * @{
+ */
 
 /**
-* @brief Announce the given torrent on the local network
-*
-* @param[in] t Torrent to announce
-* @return Returns true on success
-*
-* Send a query for torrent t out to the LPD multicast group (or the LAN, for that
-* matter). A listening client on the same network might react by adding us to his
-* peer pool for torrent t.
-*/
+ * @brief Announce the given torrent on the local network
+ *
+ * @param[in] t Torrent to announce
+ * @return Returns true on success
+ *
+ * Send a query for torrent t out to the LPD multicast group (or the LAN, for that
+ * matter). A listening client on the same network might react by adding us to his
+ * peer pool for torrent t.
+ */
 bool tr_lpdSendAnnounce(tr_torrent const *t)
 {
     // clang-format off
@@ -540,19 +540,19 @@ bool tr_lpdSendAnnounce(tr_torrent const *t)
 }
 
 /**
-* @brief Process incoming unsolicited messages and add the peer to the announced
-* torrent if all checks are passed.
-*
-* @param[in,out] peer Adress information of the peer to add
-* @param[in] msg The announcement message to consider
-* @return Returns 0 if any input parameter or the announce was invalid, 1 if the peer
-* was successfully added, -1 if not; a non-null return value indicates a side-effect to
-* the peer in/out parameter.
-*
-* @note The port information gets added to the peer structure if tr_lpdConsiderAnnounce
-* is able to extract the necessary information from the announce message. That is, if
-* return != 0, the caller may retrieve the value from the passed structure.
-*/
+ * @brief Process incoming unsolicited messages and add the peer to the announced
+ * torrent if all checks are passed.
+ *
+ * @param[in,out] peer Adress information of the peer to add
+ * @param[in] msg The announcement message to consider
+ * @return Returns 0 if any input parameter or the announce was invalid, 1 if the peer
+ * was successfully added, -1 if not; a non-null return value indicates a side-effect to
+ * the peer in/out parameter.
+ *
+ * @note The port information gets added to the peer structure if tr_lpdConsiderAnnounce
+ * is able to extract the necessary information from the announce message. That is, if
+ * return != 0, the caller may retrieve the value from the passed structure.
+ */
 static int tr_lpdConsiderAnnounce(tr_pex *peer, char const *const msg)
 {
     enum
@@ -621,18 +621,18 @@ static int tr_lpdConsiderAnnounce(tr_pex *peer, char const *const msg)
 }
 
 /**
-* @} */
+ * @} */
 
 /**
-* @note Since it possible for tr_lpdAnnounceMore to get called from outside the LPD module,
-* the function needs to be informed of the externally employed housekeeping interval.
-* Further, by setting interval to zero (or negative) the caller may actually disable LPD
-* announces on a per-interval basis.
-*
-* FIXME: since this function's been made private and is called by a periodic timer,
-* most of the previous paragraph isn't true anymore... we weren't using that functionality
-* before. are there cases where we should? if not, should we remove the bells & whistles?
-*/
+ * @note Since it possible for tr_lpdAnnounceMore to get called from outside the LPD module,
+ * the function needs to be informed of the externally employed housekeeping interval.
+ * Further, by setting interval to zero (or negative) the caller may actually disable LPD
+ * announces on a per-interval basis.
+ *
+ * FIXME: since this function's been made private and is called by a periodic timer,
+ * most of the previous paragraph isn't true anymore... we weren't using that functionality
+ * before. are there cases where we should? if not, should we remove the bells & whistles?
+ */
 static int tr_lpdAnnounceMore(time_t const now, int const interval)
 {
     tr_torrent *tor = NULL;
@@ -710,9 +710,9 @@ static void on_upkeep_timer(evutil_socket_t foo UNUSED, short bar UNUSED, void *
 }
 
 /**
-* @brief Processing of timeout notifications and incoming data on the socket
-* @note maximum rate of read events is limited according to @a lpd_maxAnnounceCap
-* @see DoS */
+ * @brief Processing of timeout notifications and incoming data on the socket
+ * @note maximum rate of read events is limited according to @a lpd_maxAnnounceCap
+ * @see DoS */
 static void event_callback(evutil_socket_t s UNUSED, short type, void *ignore UNUSED)
 {
     TR_ASSERT(tr_isSession(session));

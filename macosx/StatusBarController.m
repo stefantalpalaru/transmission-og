@@ -61,7 +61,7 @@ typedef enum
 
 - (void)awakeFromNib
 {
-    //localize menu items
+    // localize menu items
     [[[fStatusButton menu] itemWithTag:STATUS_RATIO_TOTAL_TAG] setTitle:NSLocalizedString(@"Total Ratio", "Status Bar -> status menu")];
     [[[fStatusButton menu] itemWithTag:STATUS_RATIO_SESSION_TAG] setTitle:NSLocalizedString(@"Session Ratio", "Status Bar -> status menu")];
     [[[fStatusButton menu] itemWithTag:STATUS_TRANSFER_TOTAL_TAG] setTitle:NSLocalizedString(@"Total Transfer", "Status Bar -> status menu")];
@@ -76,7 +76,7 @@ typedef enum
 
     [self updateSpeedFieldsToolTips];
 
-    //update when speed limits are changed
+    // update when speed limits are changed
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateSpeedFieldsToolTips)
                                                  name:@"SpeedLimitUpdate"
                                                object:nil];
@@ -92,7 +92,7 @@ typedef enum
 
 - (void)updateWithDownload:(CGFloat)dlRate upload:(CGFloat)ulRate
 {
-    //set rates
+    // set rates
     if (dlRate != fPreviousDownloadRate)
     {
         [fTotalDLField setStringValue:[NSString stringForSpeed:dlRate]];
@@ -105,7 +105,7 @@ typedef enum
         fPreviousUploadRate = ulRate;
     }
 
-    //set status button text
+    // set status button text
     NSString *statusLabel = [[NSUserDefaults standardUserDefaults] stringForKey:@"StatusLabel"], *statusString;
     BOOL total;
     if ((total = [statusLabel isEqualToString:STATUS_RATIO_TOTAL]) || [statusLabel isEqualToString:STATUS_RATIO_SESSION])
@@ -119,7 +119,7 @@ typedef enum
         statusString = [NSLocalizedString(@"Ratio", "status bar -> status label")
             stringByAppendingFormat:@": %@", [NSString stringForRatio:stats.ratio]];
     }
-    else //STATUS_TRANSFER_TOTAL or STATUS_TRANSFER_SESSION
+    else // STATUS_TRANSFER_TOTAL or STATUS_TRANSFER_SESSION
     {
         total = [statusLabel isEqualToString:STATUS_TRANSFER_TOTAL];
 
@@ -210,7 +210,7 @@ typedef enum
 {
     SEL const action = [menuItem action];
 
-    //enable sort options
+    // enable sort options
     if (action == @selector(setStatusLabel:))
     {
         NSString *statusLabel;
@@ -248,7 +248,7 @@ typedef enum
 {
     [fStatusButton sizeToFit];
 
-    //width ends up being too long
+    // width ends up being too long
     NSRect statusFrame = [fStatusButton frame];
     statusFrame.size.width -= 25.0;
 

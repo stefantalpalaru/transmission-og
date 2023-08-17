@@ -644,16 +644,19 @@ extern "C"
     /**
      **/
 
-    /** @brief Set the number of torrents allowed to download (if direction is TR_DOWN) or seed (if direction is TR_UP) at the same time */
+    /** @brief Set the number of torrents allowed to download (if direction is TR_DOWN) or seed (if direction is TR_UP) at the
+     * same time */
     void tr_sessionSetQueueSize(tr_session *, tr_direction, int max_simultaneous_seed_torrents);
 
-    /** @brief Return the number of torrents allowed to download (if direction is TR_DOWN) or seed (if direction is TR_UP) at the same time */
+    /** @brief Return the number of torrents allowed to download (if direction is TR_DOWN) or seed (if direction is TR_UP) at
+     * the same time */
     int tr_sessionGetQueueSize(tr_session const *, tr_direction);
 
     /** @brief Set whether or not to limit how many torrents can download (TR_DOWN) or seed (TR_UP) at the same time  */
     void tr_sessionSetQueueEnabled(tr_session *, tr_direction, bool do_limit_simultaneous_seed_torrents);
 
-    /** @brief Return true if we're limiting how many torrents can concurrently download (TR_DOWN) or seed (TR_UP) at the same time */
+    /** @brief Return true if we're limiting how many torrents can concurrently download (TR_DOWN) or seed (TR_UP) at the same
+     * time */
     bool tr_sessionGetQueueEnabled(tr_session const *, tr_direction);
 
     /**
@@ -1794,7 +1797,7 @@ extern "C"
         uint64_t downloadedEver;
 
         /** Byte count of all the checksum-verified data we have for this torrent.
-        */
+         */
         uint64_t haveValid;
 
         /** Byte count of all the partial piece data we have for this torrent.

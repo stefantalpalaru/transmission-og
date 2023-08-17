@@ -548,7 +548,8 @@ void PrefsDialog::initSeedingTab()
 
 void PrefsDialog::onQueueStalledMinutesChanged()
 {
-    //: Spin box suffix, "Download is inactive if data sharing stopped: [ 5 minutes ago ]" (includes leading space after the number, if needed)
+    //: Spin box suffix, "Download is inactive if data sharing stopped: [ 5 minutes ago ]" (includes leading space after the
+    //: number, if needed)
     QString const unitsSuffix = tr(" minute(s) ago", nullptr, ui.queueStalledMinutesSpin->value());
 
     if (ui.queueStalledMinutesSpin->suffix() != unitsSuffix)

@@ -36,7 +36,7 @@
 
     id object = self[fromIndex];
 
-    //shift objects - more efficient than simply removing the object and re-inserting the object
+    // shift objects - more efficient than simply removing the object and re-inserting the object
     if (fromIndex < toIndex)
     {
         for (NSUInteger i = fromIndex; i < toIndex; ++i)

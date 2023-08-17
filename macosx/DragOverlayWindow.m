@@ -99,7 +99,7 @@
                 size += info.totalSize;
                 fileCount += info.fileCount;
 
-                //only useful when one torrent
+                // only useful when one torrent
                 if (count == 1)
                 {
                     name = @(info.name);
@@ -114,7 +114,7 @@
     if (count <= 0)
         return;
 
-    //set strings and icon
+    // set strings and icon
     NSString *secondString = [NSString stringForFileSize:size];
     if (count > 1 || folder)
     {
@@ -159,7 +159,7 @@
 
 - (void)fadeIn
 {
-    //stop other animation and set to same progress
+    // stop other animation and set to same progress
     if ([fFadeOutAnimation isAnimating])
     {
         [fFadeOutAnimation stopAnimation];
@@ -170,7 +170,7 @@
 
 - (void)fadeOut
 {
-    //stop other animation and set to same progress
+    // stop other animation and set to same progress
     if ([fFadeInAnimation isAnimating])
     {
         [fFadeInAnimation stopAnimation];

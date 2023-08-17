@@ -34,7 +34,7 @@
     if ((self = [super init]))
     {
         fStat = *stat;
-        fTorrent = torrent; //weak reference
+        fTorrent = torrent; // weak reference
     }
 
     return self;
@@ -47,7 +47,7 @@
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    //this object is essentially immutable after initial setup
+    // this object is essentially immutable after initial setup
     return self;
 }
 

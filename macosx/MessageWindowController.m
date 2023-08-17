@@ -66,7 +66,7 @@
 
     [[self window] setTitle:NSLocalizedString(@"Message Log", "Message window -> title")];
 
-    //set images and text for popup button items
+    // set images and text for popup button items
     [[fLevelButton itemAtIndex:LEVEL_ERROR] setTitle:NSLocalizedString(@"Error", "Message window -> level string")];
     [[fLevelButton itemAtIndex:LEVEL_INFO] setTitle:NSLocalizedString(@"Info", "Message window -> level string")];
     [[fLevelButton itemAtIndex:LEVEL_DEBUG] setTitle:NSLocalizedString(@"Debug", "Message window -> level string")];
@@ -80,13 +80,13 @@
     CGFloat const levelButtonOldWidth = NSWidth([fLevelButton frame]);
     [fLevelButton sizeToFit];
 
-    //set table column text
+    // set table column text
     [[[fMessageTable tableColumnWithIdentifier:@"Date"] headerCell] setTitle:NSLocalizedString(@"Date", "Message window -> table column")];
     [[[fMessageTable tableColumnWithIdentifier:@"Name"] headerCell] setTitle:NSLocalizedString(@"Process", "Message window -> table column")];
     [[[fMessageTable tableColumnWithIdentifier:@"Message"] headerCell]
         setTitle:NSLocalizedString(@"Message", "Message window -> table column")];
 
-    //set and size buttons
+    // set and size buttons
     [fSaveButton setTitle:[NSLocalizedString(@"Save", "Message window -> save button") stringByAppendingEllipsis]];
     [fSaveButton sizeToFit];
 
@@ -113,7 +113,7 @@
     fAttributes = [[[[fMessageTable tableColumnWithIdentifier:@"Message"] dataCell] attributedStringValue] attributesAtIndex:0
                                                                                                               effectiveRange:NULL];
 
-    //select proper level in popup button
+    // select proper level in popup button
     switch ([[NSUserDefaults standardUserDefaults] integerForKey:@"MessageLevel"])
     {
     case TR_LOG_ERROR:
@@ -125,7 +125,7 @@
     case TR_LOG_DEBUG:
         [fLevelButton selectItemAtIndex:LEVEL_DEBUG];
         break;
-    default: //safety
+    default: // safety
         [[NSUserDefaults standardUserDefaults] setInteger:TR_LOG_ERROR forKey:@"MessageLevel"];
         [fLevelButton selectItemAtIndex:LEVEL_ERROR];
     }
@@ -203,7 +203,7 @@
         NSDictionary *message = @{
             @"Message" : @(currentMessage->message),
             @"Date" : [NSDate dateWithTimeIntervalSince1970:currentMessage->when],
-            @"Index" : @(currentIndex++), //more accurate when sorting by date
+            @"Index" : @(currentIndex++), // more accurate when sorting by date
             @"Level" : @(currentMessage->level),
             @"Name" : name,
             @"File" : file
@@ -399,12 +399,12 @@
     [panel beginSheetModalForWindow:[self window] completionHandler:^(NSInteger result) {
         if (result == NSFileHandlingPanelOKButton)
         {
-            //make the array sorted by date
+            // make the array sorted by date
             NSSortDescriptor *descriptor = [NSSortDescriptor sortDescriptorWithKey:@"Index" ascending:YES];
             NSArray *descriptors = [[NSArray alloc] initWithObjects:descriptor, nil];
             NSArray *sortedMessages = [fDisplayedMessages sortedArrayUsingDescriptors:descriptors];
 
-            //create the text to output
+            // create the text to output
             NSMutableArray *messageStrings = [NSMutableArray arrayWithCapacity:[sortedMessages count]];
             for (NSDictionary *message in sortedMessages)
                 [messageStrings addObject:[self stringForMessage:message]];
@@ -461,7 +461,7 @@
 
     [fMessageTable beginUpdates];
 
-    //figure out which rows were added/moved
+    // figure out which rows were added/moved
     NSUInteger currentIndex = 0, totalCount = 0;
     NSMutableArray *itemsToAdd = [NSMutableArray array];
     NSMutableIndexSet *itemsToAddIndexes = [NSMutableIndexSet indexSet];
@@ -489,7 +489,7 @@
         ++totalCount;
     }
 
-    //remove trailing items - those are the unused
+    // remove trailing items - those are the unused
     if (currentIndex < [fDisplayedMessages count])
     {
         NSRange const removeRange = NSMakeRange(currentIndex, [fDisplayedMessages count] - currentIndex);
@@ -498,7 +498,7 @@
                              withAnimation:NSTableViewAnimationSlideDown];
     }
 
-    //add new items
+    // add new items
     [fDisplayedMessages insertObjects:itemsToAdd atIndexes:itemsToAddIndexes];
     [fMessageTable insertRowsAtIndexes:itemsToAddIndexes withAnimation:NSTableViewAnimationSlideUp];
 

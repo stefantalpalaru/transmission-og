@@ -65,14 +65,17 @@
 
     NSString *fullString = [fileSizeFormatter stringFromByteCount:fullSize];
 
-    //figure out the magniture of the two, since we can't rely on comparing the units because of localization and pluralization issues (for example, "1 byte of 2 bytes")
+    // figure out the magniture of the two, since we can't rely on comparing the units because of localization and pluralization
+    // issues (for example, "1 byte of 2 bytes")
     BOOL partialUnitsSame;
     if (partialSize == 0)
-        partialUnitsSame = YES; //we want to just show "0" when we have no partial data, so always set to the same units
+        partialUnitsSame = YES; // we want to just show "0" when we have no partial data, so always set to the same units
     else
     {
         unsigned int const magnitudePartial = log(partialSize) / log(1000);
-        unsigned int const magnitudeFull = fullSize < 1000 ? 0 : log(fullSize) / log(1000); //we have to catch 0 with a special case, so might as well avoid the math for all of magnitude 0
+        unsigned int const magnitudeFull = fullSize < 1000 ? 0 : log(fullSize) / log(1000); // we have to catch 0 with a special
+                                                                                            // case, so might as well avoid the
+                                                                                            // math for all of magnitude 0
         partialUnitsSame = magnitudePartial == magnitudeFull;
     }
 
@@ -96,7 +99,7 @@
 
 + (NSString *)stringForRatio:(CGFloat)ratio
 {
-    //N/A is different than libtransmission's
+    // N/A is different than libtransmission's
     if ((int)ratio == TR_RATIO_NA)
         return NSLocalizedString(@"N/A", "No Ratio");
     else if ((int)ratio == TR_RATIO_INF)
@@ -139,9 +142,9 @@
     NSParameterAssert(max > 0);
 
     NSMutableArray *timeArray = [NSMutableArray arrayWithCapacity:MIN(max, 5u)];
-    NSUInteger remaining = seconds; //causes problems for some users when it's a uint64_t
+    NSUInteger remaining = seconds; // causes problems for some users when it's a uint64_t
 
-    if (seconds >= 31557600) //official amount of seconds in one year
+    if (seconds >= 31557600) // official amount of seconds in one year
     {
         NSUInteger const years = remaining / 31557600;
         if (years == 1)
@@ -256,7 +259,7 @@
         decimals = 2;
     }
 
-    //match Finder's behavior
+    // match Finder's behavior
     NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
     [numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
     [numberFormatter setMinimumFractionDigits:0];
@@ -275,16 +278,16 @@
 
 + (NSString *)stringForSpeed:(CGFloat)speed kb:(NSString *)kb mb:(NSString *)mb gb:(NSString *)gb
 {
-    if (speed <= 999.95) //0.0 KB/s to 999.9 KB/s
+    if (speed <= 999.95) // 0.0 KB/s to 999.9 KB/s
         return [NSString localizedStringWithFormat:@"%.1f %@", speed, kb];
 
     speed /= 1000.0;
 
-    if (speed <= 99.995) //1.00 MB/s to 99.99 MB/s
+    if (speed <= 99.995) // 1.00 MB/s to 99.99 MB/s
         return [NSString localizedStringWithFormat:@"%.2f %@", speed, mb];
-    else if (speed <= 999.95) //100.0 MB/s to 999.9 MB/s
+    else if (speed <= 999.95) // 100.0 MB/s to 999.9 MB/s
         return [NSString localizedStringWithFormat:@"%.1f %@", speed, mb];
-    else //insane speeds
+    else // insane speeds
         return [NSString localizedStringWithFormat:@"%.2f %@", (speed / 1000.0), gb];
 }
 

@@ -90,10 +90,10 @@
 {
     tr_sessionSetRatioLimited(fHandle, [fDefaults boolForKey:@"RatioCheck"]);
 
-    //reload main table for seeding progress
+    // reload main table for seeding progress
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateUI" object:nil];
 
-    //reload global settings in inspector
+    // reload global settings in inspector
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGlobalOptions" object:nil];
 }
 
@@ -105,10 +105,10 @@
 
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateRatioStopValueOutsidePrefs" object:nil];
 
-    //reload main table for seeding progress
+    // reload main table for seeding progress
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateUI" object:nil];
 
-    //reload global settings in inspector
+    // reload global settings in inspector
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGlobalOptions" object:nil];
 }
 
@@ -116,10 +116,10 @@
 {
     tr_sessionSetIdleLimited(fHandle, [fDefaults boolForKey:@"IdleLimitCheck"]);
 
-    //reload main table for remaining seeding time
+    // reload main table for remaining seeding time
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateUI" object:nil];
 
-    //reload global settings in inspector
+    // reload global settings in inspector
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGlobalOptions" object:nil];
 }
 
@@ -131,10 +131,10 @@
 
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateIdleStopValueOutsidePrefs" object:nil];
 
-    //reload main table for remaining seeding time
+    // reload main table for remaining seeding time
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateUI" object:nil];
 
-    //reload global settings in inspector
+    // reload global settings in inspector
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGlobalOptions" object:nil];
 }
 

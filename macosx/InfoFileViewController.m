@@ -58,7 +58,7 @@
 
     [[fFileFilterField cell] setPlaceholderString:NSLocalizedString(@"Filter", "inspector -> file filter")];
 
-    //localize and place all and none buttons
+    // localize and place all and none buttons
     [fCheckAllButton setTitle:NSLocalizedString(@"All", "inspector -> check all")];
     [fUncheckAllButton setTitle:NSLocalizedString(@"None", "inspector -> check all")];
 
@@ -84,7 +84,7 @@
 
 - (void)setInfoForTorrents:(NSArray *)torrents
 {
-    //don't check if it's the same in case the metadata changed
+    // don't check if it's the same in case the metadata changed
     fTorrents = torrents;
 
     fSet = NO;
@@ -105,8 +105,8 @@
         {
             NSInteger const filesCheckState = [torrent
                 checkForFiles:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [torrent fileCount])]];
-            [fCheckAllButton setEnabled:filesCheckState != NSOnState]; //if anything is unchecked
-            [fUncheckAllButton setEnabled:![torrent allDownloaded]]; //if there are any checked files that aren't finished
+            [fCheckAllButton setEnabled:filesCheckState != NSOnState]; // if anything is unchecked
+            [fUncheckAllButton setEnabled:![torrent allDownloaded]]; // if there are any checked files that aren't finished
         }
     }
 }

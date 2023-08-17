@@ -41,7 +41,7 @@
         for (NSInteger i = 0; i < [self segmentCount]; i++)
         {
             [self setLabel:@"" forSegment:i];
-            [self setWidth:9.0f forSegment:i]; //9 is minimum size to get proper look
+            [self setWidth:9.0f forSegment:i]; // 9 is minimum size to get proper look
         }
 
         [self setImage:[NSImage imageNamed:@"PriorityControlLow"] forSegment:0];
@@ -64,7 +64,7 @@
 {
     [super setSelected:flag forSegment:segment];
 
-    //only for when clicking manually
+    // only for when clicking manually
     NSInteger priority;
     switch (segment)
     {
@@ -130,7 +130,7 @@
 
         if (count == 0)
         {
-            //if ([self backgroundStyle] != NSBackgroundStyleDark)
+            // if ([self backgroundStyle] != NSBackgroundStyleDark)
             {
                 NSImage *image = [[NSImage imageNamed:@"PriorityNormalTemplate"] imageWithColor:[NSColor lightGrayColor]];
                 [images addObject:image];

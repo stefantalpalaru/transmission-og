@@ -13,7 +13,7 @@
 #endif
 
 /**
-**/
+ **/
 
 void tr_eventInit(tr_session *);
 

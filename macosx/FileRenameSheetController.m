@@ -90,11 +90,11 @@ typedef void (^CompletionBlock)(BOOL);
     [self.inputField setStringValue:self.originalName];
     [self.renameButton setEnabled:NO];
 
-    //resize the buttons so that they're long enough and the same width
+    // resize the buttons so that they're long enough and the same width
     NSRect const oldRenameFrame = [self.renameButton frame];
     NSRect const oldCancelFrame = [self.cancelButton frame];
 
-    //get the extra width of the rename button from the English xib - the width from sizeToFit is too squished
+    // get the extra width of the rename button from the English xib - the width from sizeToFit is too squished
     [self.renameButton sizeToFit];
     CGFloat const extra = NSWidth(oldRenameFrame) - NSWidth([self.renameButton frame]);
 

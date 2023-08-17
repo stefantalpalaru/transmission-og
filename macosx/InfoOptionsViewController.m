@@ -72,7 +72,7 @@
 
 - (void)setInfoForTorrents:(NSArray *)torrents
 {
-    //don't check if it's the same in case the metadata changed
+    // don't check if it's the same in case the metadata changed
     fTorrents = torrents;
 
     fSet = NO;
@@ -91,9 +91,9 @@
     if ([fTorrents count] == 0)
         return;
 
-    //get bandwidth info
+    // get bandwidth info
     NSEnumerator *enumerator = [fTorrents objectEnumerator];
-    Torrent *torrent = [enumerator nextObject]; //first torrent
+    Torrent *torrent = [enumerator nextObject]; // first torrent
 
     NSInteger uploadUseSpeedLimit = [torrent usesSpeedLimit:YES] ? NSOnState : NSOffState,
               uploadSpeedLimit = [torrent speedLimit:YES], downloadUseSpeedLimit = [torrent usesSpeedLimit:NO] ? NSOnState : NSOffState,
@@ -119,7 +119,7 @@
             globalUseSpeedLimit = NSMixedState;
     }
 
-    //set upload view
+    // set upload view
     [fUploadLimitCheck setState:uploadUseSpeedLimit];
     [fUploadLimitCheck setEnabled:YES];
 
@@ -130,7 +130,7 @@
     else
         [fUploadLimitField setStringValue:@""];
 
-    //set download view
+    // set download view
     [fDownloadLimitCheck setState:downloadUseSpeedLimit];
     [fDownloadLimitCheck setEnabled:YES];
 
@@ -141,13 +141,13 @@
     else
         [fDownloadLimitField setStringValue:@""];
 
-    //set global check
+    // set global check
     [fGlobalLimitCheck setState:globalUseSpeedLimit];
     [fGlobalLimitCheck setEnabled:YES];
 
-    //get ratio and idle info
+    // get ratio and idle info
     enumerator = [fTorrents objectEnumerator];
-    torrent = [enumerator nextObject]; //first torrent
+    torrent = [enumerator nextObject]; // first torrent
 
     NSInteger checkRatio = [torrent ratioSetting], checkIdle = [torrent idleSetting],
               removeWhenFinishSeeding = [torrent removeWhenFinishSeeding] ? NSOnState : NSOffState;
@@ -173,7 +173,7 @@
             removeWhenFinishSeeding = NSMixedState;
     }
 
-    //set ratio view
+    // set ratio view
     NSInteger index;
     if (checkRatio == TR_RATIOLIMIT_SINGLE)
         index = OPTION_POPUP_LIMIT;
@@ -194,7 +194,7 @@
 
     [fRatioLimitGlobalLabel setHidden:checkRatio != TR_RATIOLIMIT_GLOBAL];
 
-    //set idle view
+    // set idle view
     if (checkIdle == TR_IDLELIMIT_SINGLE)
         index = OPTION_POPUP_LIMIT;
     else if (checkIdle == TR_IDLELIMIT_UNLIMITED)
@@ -215,13 +215,13 @@
 
     [fIdleLimitGlobalLabel setHidden:checkIdle != TR_IDLELIMIT_GLOBAL];
 
-    //set remove transfer when seeding finishes
+    // set remove transfer when seeding finishes
     [fRemoveSeedingCompleteCheck setState:removeWhenFinishSeeding];
     [fRemoveSeedingCompleteCheck setEnabled:YES];
 
-    //get priority info
+    // get priority info
     enumerator = [fTorrents objectEnumerator];
-    torrent = [enumerator nextObject]; //first torrent
+    torrent = [enumerator nextObject]; // first torrent
 
     NSInteger priority = [torrent priority];
 
@@ -231,7 +231,7 @@
             priority = INVALID;
     }
 
-    //set priority view
+    // set priority view
     if (priority == TR_PRI_HIGH)
         index = OPTION_POPUP_PRIORITY_HIGH;
     else if (priority == TR_PRI_NORMAL)
@@ -243,9 +243,9 @@
     [fPriorityPopUp selectItemAtIndex:index];
     [fPriorityPopUp setEnabled:YES];
 
-    //get peer info
+    // get peer info
     enumerator = [fTorrents objectEnumerator];
-    torrent = [enumerator nextObject]; //first torrent
+    torrent = [enumerator nextObject]; // first torrent
 
     NSInteger maxPeers = [torrent maxPeerConnect];
 
@@ -258,7 +258,7 @@
         }
     }
 
-    //set peer view
+    // set peer view
     [fPeersConnectField setEnabled:YES];
     [fPeersConnectLabel setEnabled:YES];
     if (maxPeers != INVALID)
@@ -532,7 +532,7 @@
         NSLocalizedString(@"disabled", "Info options -> global setting");
     [fRatioLimitGlobalLabel setStringValue:global];
 
-    //idle field
+    // idle field
     NSString *globalIdle;
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"IdleLimitCheck"])
     {

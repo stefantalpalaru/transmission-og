@@ -10,7 +10,8 @@ void CancelPreviewGeneration(void *thisInterface, QLPreviewRequestRef preview);
 NSString *generateIconData(NSString *fileExtension, NSUInteger width, NSMutableDictionary *allImgProps)
 {
     NSString *rawFilename = ![fileExtension isEqualToString:@""] ? fileExtension : @"blank_file_name_transmission";
-    NSString *iconFileName = [NSString stringWithFormat:@"%ldx%@.tiff", width, rawFilename]; //we need to do this once per file extension, per size
+    NSString *iconFileName = [NSString stringWithFormat:@"%ldx%@.tiff", width, rawFilename]; // we need to do this once per file
+                                                                                             // extension, per size
 
     if (![allImgProps objectForKey:iconFileName])
     {
@@ -40,10 +41,10 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
     if (QLPreviewRequestIsCancelled(preview))
         return noErr;
 
-    //we need this call to ensure NSApp is initialized (not done automatically for plugins)
+    // we need this call to ensure NSApp is initialized (not done automatically for plugins)
     [NSApplication sharedApplication];
 
-    //try to parse the torrent file
+    // try to parse the torrent file
     tr_info inf;
     tr_ctor *ctor = tr_ctorNew(NULL);
     tr_ctorSetMetainfoFromFile(ctor, [[(__bridge NSURL *)url path] UTF8String]);

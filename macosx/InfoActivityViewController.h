@@ -40,7 +40,7 @@
     IBOutlet PiecesView *fPiecesView;
     IBOutlet NSSegmentedControl *fPiecesControl;
 
-    //remove when we switch to auto layout on 10.7
+    // remove when we switch to auto layout on 10.7
     IBOutlet NSTextField *fTransferSectionLabel, *fDatesSectionLabel, *fTimeSectionLabel;
     IBOutlet NSTextField *fStateLabel, *fProgressLabel, *fHaveLabel, *fDownloadedLabel, *fUploadedLabel, *fFailedDLLabel,
         *fRatioLabel, *fErrorLabel, *fDateAddedLabel, *fDateCompletedLabel, *fDateActivityLabel, *fDownloadTimeLabel, *fSeedTimeLabel;

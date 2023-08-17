@@ -31,7 +31,7 @@
 {
     if ((self = [super initWithFrame:frame]))
     {
-        //create attributes
+        // create attributes
         NSShadow *stringShadow = [[NSShadow alloc] init];
         [stringShadow setShadowOffset:NSMakeSize(2.0, -2.0)];
         [stringShadow setShadowBlurRadius:4.0];
@@ -64,7 +64,7 @@
 
 - (void)setOverlay:(NSImage *)icon mainLine:(NSString *)mainLine subLine:(NSString *)subLine
 {
-    //create badge
+    // create badge
     NSRect const badgeRect = NSMakeRect(0.0, 0.0, 325.0, 84.0);
 
     fBadge = [[NSImage alloc] initWithSize:badgeRect.size];
@@ -74,12 +74,12 @@
     [[NSColor colorWithCalibratedWhite:0.0 alpha:0.75] set];
     [bp fill];
 
-    //place icon
+    // place icon
     [icon drawInRect:NSMakeRect(PADDING, (NSHeight(badgeRect) - ICON_WIDTH) * 0.5, ICON_WIDTH, ICON_WIDTH) fromRect:NSZeroRect
            operation:NSCompositeSourceOver
             fraction:1.0];
 
-    //place main text
+    // place main text
     NSSize const mainLineSize = [mainLine sizeWithAttributes:fMainLineAttributes];
     NSSize const subLineSize = [subLine sizeWithAttributes:fSubLineAttributes];
 
@@ -90,7 +90,7 @@
         mainLineSize.height);
     [mainLine drawInRect:lineRect withAttributes:fMainLineAttributes];
 
-    //place sub text
+    // place sub text
     lineRect.origin.y -= subLineSize.height + 2.0;
     lineRect.size.height = subLineSize.height;
     [subLine drawInRect:lineRect withAttributes:fSubLineAttributes];

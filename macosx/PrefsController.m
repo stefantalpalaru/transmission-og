@@ -75,7 +75,7 @@
 
         fDefaults = [NSUserDefaults standardUserDefaults];
 
-        //check for old version download location (before 1.1)
+        // check for old version download location (before 1.1)
         NSString *choice;
         if ((choice = [fDefaults stringForKey:@"DownloadChoice"]))
         {
@@ -85,7 +85,7 @@
             [fDefaults removeObjectForKey:@"DownloadChoice"];
         }
 
-        //check for old version blocklist (before 2.12)
+        // check for old version blocklist (before 2.12)
         NSDate *blocklistDate;
         if ((blocklistDate = [fDefaults objectForKey:@"BlocklistLastUpdate"]))
         {
@@ -102,26 +102,26 @@
                         error:nil];
         }
 
-        //save a new random port
+        // save a new random port
         if ([fDefaults boolForKey:@"RandomPort"])
             [fDefaults setInteger:tr_sessionGetPeerPort(fHandle) forKey:@"BindPort"];
 
-        //set auto import
+        // set auto import
         NSString *autoPath;
         if ([fDefaults boolForKey:@"AutoImport"] && (autoPath = [fDefaults stringForKey:@"AutoImportDirectory"]))
             [[(Controller *)[NSApp delegate] fileWatcherQueue] addPath:[autoPath stringByExpandingTildeInPath]
                                                         notifyingAbout:VDKQueueNotifyAboutWrite];
 
-        //set special-handling of magnet link add window checkbox
+        // set special-handling of magnet link add window checkbox
         [self updateShowAddMagnetWindowField];
 
-        //set blocklist scheduler
+        // set blocklist scheduler
         [[BlocklistScheduler scheduler] updateSchedule];
 
-        //set encryption
+        // set encryption
         [self setEncryptionMode:nil];
 
-        //update rpc whitelist
+        // update rpc whitelist
         [self updateRPCPassword];
 
         fRPCWhitelistArray = [[fDefaults arrayForKey:@"RPCWhitelist"] mutableCopy];
@@ -129,7 +129,7 @@
             fRPCWhitelistArray = [NSMutableArray arrayWithObject:@"127.0.0.1"];
         [self updateRPCWhitelist];
 
-        //reset old Sparkle settings from previous versions
+        // reset old Sparkle settings from previous versions
         [fDefaults removeObjectForKey:@"SUScheduledCheckInterval"];
         if ([fDefaults objectForKey:@"CheckForUpdates"])
         {
@@ -170,23 +170,23 @@
 
     [self setPrefView:nil];
 
-    //set download folder
+    // set download folder
     [fFolderPopUp selectItemAtIndex:[fDefaults boolForKey:@"DownloadLocationConstant"] ? DOWNLOAD_FOLDER : DOWNLOAD_TORRENT];
 
-    //set stop ratio
+    // set stop ratio
     [fRatioStopField setFloatValue:[fDefaults floatForKey:@"RatioLimit"]];
 
-    //set idle seeding minutes
+    // set idle seeding minutes
     [fIdleStopField setIntegerValue:[fDefaults integerForKey:@"IdleLimitMinutes"]];
 
-    //set limits
+    // set limits
     [self updateLimitFields];
 
-    //set speed limit
+    // set speed limit
     [fSpeedLimitUploadField setIntValue:[fDefaults integerForKey:@"SpeedLimitUploadLimit"]];
     [fSpeedLimitDownloadField setIntValue:[fDefaults integerForKey:@"SpeedLimitDownloadLimit"]];
 
-    //set port
+    // set port
     [fPortField setIntValue:[fDefaults integerForKey:@"BindPort"]];
     fNatStatus = -1;
 
@@ -194,16 +194,16 @@
     fPortStatusTimer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(updatePortStatus) userInfo:nil
                                                        repeats:YES];
 
-    //set peer connections
+    // set peer connections
     [fPeersGlobalField setIntValue:[fDefaults integerForKey:@"PeersTotal"]];
     [fPeersTorrentField setIntValue:[fDefaults integerForKey:@"PeersTorrent"]];
 
-    //set queue values
+    // set queue values
     [fQueueDownloadField setIntValue:[fDefaults integerForKey:@"QueueDownloadNumber"]];
     [fQueueSeedField setIntValue:[fDefaults integerForKey:@"QueueSeedNumber"]];
     [fStalledField setIntValue:[fDefaults integerForKey:@"StalledMinutes"]];
 
-    //set blocklist
+    // set blocklist
     NSString *blocklistURL = [fDefaults stringForKey:@"BlocklistURL"];
     if (blocklistURL)
         [fBlocklistURLField setStringValue:blocklistURL];
@@ -230,10 +230,10 @@
                                                  name:NSControlTextDidChangeNotification
                                                object:fBlocklistURLField];
 
-    //set rpc port
+    // set rpc port
     [fRPCPortField setIntValue:[fDefaults integerForKey:@"RPCPort"]];
 
-    //set rpc password
+    // set rpc password
     if (fRPCPassword)
         [fRPCPasswordField setStringValue:fRPCPassword];
 }
@@ -337,7 +337,7 @@
     completionHandler(window, nil);
 }
 
-//for a beta release, always use the beta appcast
+// for a beta release, always use the beta appcast
 #if defined(TR_BETA_RELEASE)
 #define SPARKLE_TAG YES
 #else
@@ -458,7 +458,7 @@
 
 - (void)setSound:(id)sender
 {
-    //play sound when selecting
+    // play sound when selecting
     NSSound *sound;
     if ((sound = [NSSound soundNamed:[sender titleOfSelectedItem]]))
         [sound play];
@@ -603,10 +603,10 @@
     tr_sessionSetRatioLimited(fHandle, [fDefaults boolForKey:@"RatioCheck"]);
     tr_sessionSetRatioLimit(fHandle, [fDefaults floatForKey:@"RatioLimit"]);
 
-    //reload main table for seeding progress
+    // reload main table for seeding progress
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateUI" object:nil];
 
-    //reload global settings in inspector
+    // reload global settings in inspector
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGlobalOptions" object:nil];
 }
 
@@ -635,10 +635,10 @@
     tr_sessionSetIdleLimited(fHandle, [fDefaults boolForKey:@"IdleLimitCheck"]);
     tr_sessionSetIdleLimit(fHandle, [fDefaults integerForKey:@"IdleLimitMinutes"]);
 
-    //reload main table for remaining seeding time
+    // reload main table for remaining seeding time
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateUI" object:nil];
 
-    //reload global settings in inspector
+    // reload global settings in inspector
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGlobalOptions" object:nil];
 }
 
@@ -761,11 +761,11 @@
 
 - (void)setQueue:(id)sender
 {
-    //let's just do both - easier that way
+    // let's just do both - easier that way
     tr_sessionSetQueueEnabled(fHandle, TR_DOWN, [fDefaults boolForKey:@"Queue"]);
     tr_sessionSetQueueEnabled(fHandle, TR_UP, [fDefaults boolForKey:@"QueueSeed"]);
 
-    //handle if any transfers switch from queued to paused
+    // handle if any transfers switch from queued to paused
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateQueue" object:self];
 }
 
@@ -783,7 +783,7 @@
 {
     tr_sessionSetQueueStalledEnabled(fHandle, [fDefaults boolForKey:@"CheckStalled"]);
 
-    //reload main table for stalled status
+    // reload main table for stalled status
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateUI" object:nil];
 }
 
@@ -793,7 +793,7 @@
     [fDefaults setInteger:min forKey:@"StalledMinutes"];
     tr_sessionSetQueueStalledMinutes(fHandle, min);
 
-    //reload main table for stalled status
+    // reload main table for stalled status
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateUI" object:self];
 }
 
@@ -828,7 +828,7 @@
         }
         else
         {
-            //reset if cancelled
+            // reset if cancelled
             [fFolderPopUp selectItemAtIndex:[fDefaults boolForKey:@"DownloadLocationConstant"] ? DOWNLOAD_FOLDER : DOWNLOAD_TORRENT];
         }
     }];
@@ -903,7 +903,7 @@
 {
     if (![fDefaults boolForKey:@"DownloadLocationConstant"])
     {
-        //always show the add window for magnet links when the download location is the same as the torrent file
+        // always show the add window for magnet links when the download location is the same as the torrent file
         [fShowMagnetAddWindowCheck setState:NSOnState];
         [fShowMagnetAddWindowCheck setEnabled:NO];
     }
@@ -1081,7 +1081,7 @@
 
 - (void)addRemoveRPCIP:(id)sender
 {
-    //don't allow add/remove when currently adding - it leads to weird results
+    // don't allow add/remove when currently adding - it leads to weird results
     if ([fRPCWhitelistTable editedRow] != -1)
         return;
 
@@ -1123,7 +1123,7 @@
     NSArray *components = [object componentsSeparatedByString:@"."];
     NSMutableArray *newComponents = [NSMutableArray arrayWithCapacity:4];
 
-    //create better-formatted ip string
+    // create better-formatted ip string
     BOOL valid = false;
     if ([components count] == 4)
     {
@@ -1151,7 +1151,7 @@
     {
         newIP = [newComponents componentsJoinedByString:@"."];
 
-        //don't allow the same ip address
+        // don't allow the same ip address
         if ([fRPCWhitelistArray containsObject:newIP] && ![fRPCWhitelistArray[row] isEqualToString:newIP])
             valid = false;
     }
@@ -1206,12 +1206,12 @@
 
 - (void)rpcUpdatePrefs
 {
-    //encryption
+    // encryption
     tr_encryption_mode const encryptionMode = tr_sessionGetEncryption(fHandle);
     [fDefaults setBool:encryptionMode != TR_CLEAR_PREFERRED forKey:@"EncryptionPrefer"];
     [fDefaults setBool:encryptionMode == TR_ENCRYPTION_REQUIRED forKey:@"EncryptionRequire"];
 
-    //download directory
+    // download directory
     NSString *downloadLocation = [@(tr_sessionGetDownloadDir(fHandle)) stringByStandardizingPath];
     [fDefaults setObject:downloadLocation forKey:@"DownloadFolder"];
 
@@ -1224,34 +1224,34 @@
     BOOL const usePartialFileRanaming = tr_sessionIsIncompleteFileNamingEnabled(fHandle);
     [fDefaults setBool:usePartialFileRanaming forKey:@"RenamePartialFiles"];
 
-    //utp
+    // utp
     BOOL const utp = tr_sessionIsUTPEnabled(fHandle);
     [fDefaults setBool:utp forKey:@"UTPGlobal"];
 
-    //peers
+    // peers
     uint16_t const peersTotal = tr_sessionGetPeerLimit(fHandle);
     [fDefaults setInteger:peersTotal forKey:@"PeersTotal"];
 
     uint16_t const peersTorrent = tr_sessionGetPeerLimitPerTorrent(fHandle);
     [fDefaults setInteger:peersTorrent forKey:@"PeersTorrent"];
 
-    //pex
+    // pex
     BOOL const pex = tr_sessionIsPexEnabled(fHandle);
     [fDefaults setBool:pex forKey:@"PEXGlobal"];
 
-    //dht
+    // dht
     BOOL const dht = tr_sessionIsDHTEnabled(fHandle);
     [fDefaults setBool:dht forKey:@"DHTGlobal"];
 
-    //lpd
+    // lpd
     BOOL const lpd = tr_sessionIsLPDEnabled(fHandle);
     [fDefaults setBool:lpd forKey:@"LocalPeerDiscoveryGlobal"];
 
-    //auto start
+    // auto start
     BOOL const autoStart = !tr_sessionGetPaused(fHandle);
     [fDefaults setBool:autoStart forKey:@"AutoStartDownload"];
 
-    //port
+    // port
     tr_port const port = tr_sessionGetPeerPort(fHandle);
     [fDefaults setInteger:port forKey:@"BindPort"];
 
@@ -1265,33 +1265,33 @@
     BOOL const randomPort = tr_sessionGetPeerPortRandomOnStart(fHandle);
     [fDefaults setBool:randomPort forKey:@"RandomPort"];
 
-    //speed limit - down
+    // speed limit - down
     BOOL const downLimitEnabled = tr_sessionIsSpeedLimited(fHandle, TR_DOWN);
     [fDefaults setBool:downLimitEnabled forKey:@"CheckDownload"];
 
     int const downLimit = tr_sessionGetSpeedLimit_KBps(fHandle, TR_DOWN);
     [fDefaults setInteger:downLimit forKey:@"DownloadLimit"];
 
-    //speed limit - up
+    // speed limit - up
     BOOL const upLimitEnabled = tr_sessionIsSpeedLimited(fHandle, TR_UP);
     [fDefaults setBool:upLimitEnabled forKey:@"CheckUpload"];
 
     int const upLimit = tr_sessionGetSpeedLimit_KBps(fHandle, TR_UP);
     [fDefaults setInteger:upLimit forKey:@"UploadLimit"];
 
-    //alt speed limit enabled
+    // alt speed limit enabled
     BOOL const useAltSpeed = tr_sessionUsesAltSpeed(fHandle);
     [fDefaults setBool:useAltSpeed forKey:@"SpeedLimit"];
 
-    //alt speed limit - down
+    // alt speed limit - down
     int const downLimitAlt = tr_sessionGetAltSpeed_KBps(fHandle, TR_DOWN);
     [fDefaults setInteger:downLimitAlt forKey:@"SpeedLimitDownloadLimit"];
 
-    //alt speed limit - up
+    // alt speed limit - up
     int const upLimitAlt = tr_sessionGetAltSpeed_KBps(fHandle, TR_UP);
     [fDefaults setInteger:upLimitAlt forKey:@"SpeedLimitUploadLimit"];
 
-    //alt speed limit schedule
+    // alt speed limit schedule
     BOOL const useAltSpeedSched = tr_sessionUsesAltSpeedTime(fHandle);
     [fDefaults setBool:useAltSpeedSched forKey:@"SpeedLimitAuto"];
 
@@ -1304,28 +1304,28 @@
     int const limitDay = tr_sessionGetAltSpeedDay(fHandle);
     [fDefaults setInteger:limitDay forKey:@"SpeedLimitAutoDay"];
 
-    //blocklist
+    // blocklist
     BOOL const blocklist = tr_blocklistIsEnabled(fHandle);
     [fDefaults setBool:blocklist forKey:@"BlocklistNew"];
 
     NSString *blocklistURL = @(tr_blocklistGetURL(fHandle));
     [fDefaults setObject:blocklistURL forKey:@"BlocklistURL"];
 
-    //seed ratio
+    // seed ratio
     BOOL const ratioLimited = tr_sessionIsRatioLimited(fHandle);
     [fDefaults setBool:ratioLimited forKey:@"RatioCheck"];
 
     float const ratioLimit = tr_sessionGetRatioLimit(fHandle);
     [fDefaults setFloat:ratioLimit forKey:@"RatioLimit"];
 
-    //idle seed limit
+    // idle seed limit
     BOOL const idleLimited = tr_sessionIsIdleLimited(fHandle);
     [fDefaults setBool:idleLimited forKey:@"IdleLimitCheck"];
 
     NSUInteger const idleLimitMin = tr_sessionGetIdleLimit(fHandle);
     [fDefaults setInteger:idleLimitMin forKey:@"IdleLimitMinutes"];
 
-    //queue
+    // queue
     BOOL const downloadQueue = tr_sessionGetQueueEnabled(fHandle, TR_DOWN);
     [fDefaults setBool:downloadQueue forKey:@"Queue"];
 
@@ -1344,70 +1344,70 @@
     int const stalledMinutes = tr_sessionGetQueueStalledMinutes(fHandle);
     [fDefaults setInteger:stalledMinutes forKey:@"StalledMinutes"];
 
-    //done script
+    // done script
     BOOL const doneScriptEnabled = tr_sessionIsTorrentDoneScriptEnabled(fHandle);
     [fDefaults setBool:doneScriptEnabled forKey:@"DoneScriptEnabled"];
 
     NSString *doneScriptPath = @(tr_sessionGetTorrentDoneScript(fHandle));
     [fDefaults setObject:doneScriptPath forKey:@"DoneScriptPath"];
 
-    //update gui if loaded
+    // update gui if loaded
     if (fHasLoaded)
     {
-        //encryption handled by bindings
+        // encryption handled by bindings
 
-        //download directory handled by bindings
+        // download directory handled by bindings
 
-        //utp handled by bindings
+        // utp handled by bindings
 
         [fPeersGlobalField setIntValue:peersTotal];
         [fPeersTorrentField setIntValue:peersTorrent];
 
-        //pex handled by bindings
+        // pex handled by bindings
 
-        //dht handled by bindings
+        // dht handled by bindings
 
-        //lpd handled by bindings
+        // lpd handled by bindings
 
         [fPortField setIntValue:port];
-        //port forwarding (nat) handled by bindings
-        //random port handled by bindings
+        // port forwarding (nat) handled by bindings
+        // random port handled by bindings
 
-        //limit check handled by bindings
+        // limit check handled by bindings
         [fDownloadField setIntValue:downLimit];
 
-        //limit check handled by bindings
+        // limit check handled by bindings
         [fUploadField setIntValue:upLimit];
 
         [fSpeedLimitDownloadField setIntValue:downLimitAlt];
 
         [fSpeedLimitUploadField setIntValue:upLimitAlt];
 
-        //speed limit schedule handled by bindings
+        // speed limit schedule handled by bindings
 
-        //speed limit schedule times and day handled by bindings
+        // speed limit schedule times and day handled by bindings
 
         [fBlocklistURLField setStringValue:blocklistURL];
         [self updateBlocklistButton];
         [self updateBlocklistFields];
 
-        //ratio limit enabled handled by bindings
+        // ratio limit enabled handled by bindings
         [fRatioStopField setFloatValue:ratioLimit];
 
-        //idle limit enabled handled by bindings
+        // idle limit enabled handled by bindings
         [fIdleStopField setIntegerValue:idleLimitMin];
 
-        //queues enabled handled by bindings
+        // queues enabled handled by bindings
         [fQueueDownloadField setIntValue:downloadQueueNum];
         [fQueueSeedField setIntValue:seedQueueNum];
 
-        //check stalled handled by bindings
+        // check stalled handled by bindings
         [fStalledField setIntValue:stalledMinutes];
     }
 
     [[NSNotificationCenter defaultCenter] postNotificationName:@"SpeedLimitUpdate" object:nil];
 
-    //reload global settings in inspector
+    // reload global settings in inspector
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateGlobalOptions" object:nil];
 }
 
@@ -1441,7 +1441,7 @@
         view = fRemoteView;
     else
     {
-        identifier = TOOLBAR_GENERAL; //general view is the default selected
+        identifier = TOOLBAR_GENERAL; // general view is the default selected
         view = fGeneralView;
     }
 
@@ -1461,7 +1461,7 @@
     [window setFrame:windowRect display:YES animate:YES];
     [view setHidden:NO];
 
-    //set title label
+    // set title label
     if (sender)
         [window setTitle:[sender label]];
     else
@@ -1490,13 +1490,13 @@ static NSString *getOSStatusDescription(OSStatus errorCode)
     OSStatus result = SecKeychainFindGenericPassword(NULL, strlen(service), service, strlen(username), username, NULL, NULL, &item);
     if (result == noErr && item)
     {
-        if (passwordLength > 0) //found, so update
+        if (passwordLength > 0) // found, so update
         {
             result = SecKeychainItemModifyAttributesAndData(item, NULL, passwordLength, (void const *)password);
             if (result != noErr)
                 NSLog(@"Problem updating Keychain item: %@", getOSStatusDescription(result));
         }
-        else //remove the item
+        else // remove the item
         {
             result = SecKeychainItemDelete(item);
             if (result != noErr)
@@ -1505,7 +1505,7 @@ static NSString *getOSStatusDescription(OSStatus errorCode)
             }
         }
     }
-    else if (result == errSecItemNotFound) //not found, so add
+    else if (result == errSecItemNotFound) // not found, so add
     {
         if (passwordLength > 0)
         {

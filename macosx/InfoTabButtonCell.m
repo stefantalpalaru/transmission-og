@@ -35,7 +35,7 @@
 
     fSelected = NO;
 
-    //expects the icon to currently be set as the image
+    // expects the icon to currently be set as the image
     fIcon = [self image];
 }
 

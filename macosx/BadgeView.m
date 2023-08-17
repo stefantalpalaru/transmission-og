@@ -48,7 +48,7 @@
 
 - (BOOL)setRatesWithDownload:(CGFloat)downloadRate upload:(CGFloat)uploadRate
 {
-    //only needs update if the badges were displayed or are displayed now
+    // only needs update if the badges were displayed or are displayed now
     if (fDownloadRate == downloadRate && fUploadRate == uploadRate)
         return NO;
 
@@ -82,7 +82,7 @@
         NSImage *uploadBadge = [NSImage imageNamed:@"UploadBadge"];
         [self badge:uploadBadge string:[NSString stringForSpeedAbbrev:fUploadRate] atHeight:bottom adjustForQuit:NO];
         if (download)
-            bottom += [uploadBadge size].height + BETWEEN_PADDING; //download rate above upload rate
+            bottom += [uploadBadge size].height + BETWEEN_PADDING; // download rate above upload rate
     }
     if (download)
         [self badge:[NSImage imageNamed:@"DownloadBadge"] string:[NSString stringForSpeedAbbrev:fDownloadRate] atHeight:bottom
@@ -113,7 +113,7 @@
 
     [badge drawInRect:badgeRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
 
-    //make sure text fits on the badge
+    // make sure text fits on the badge
     CGFloat fontSize = 26.0;
     NSSize stringSize;
     do
@@ -123,10 +123,10 @@
         fontSize -= 1.0;
     } while (NSWidth(badgeRect) < stringSize.width);
 
-    //string is in center of image
+    // string is in center of image
     NSRect stringRect;
     stringRect.origin.x = NSMidX(badgeRect) - stringSize.width * 0.5;
-    stringRect.origin.y = NSMidY(badgeRect) - stringSize.height * 0.5 + (quit ? 2.0 : 1.0); //adjust for shadow, extra for quit
+    stringRect.origin.y = NSMidY(badgeRect) - stringSize.height * 0.5 + (quit ? 2.0 : 1.0); // adjust for shadow, extra for quit
     stringRect.size = stringSize;
 
     [string drawInRect:stringRect withAttributes:fAttributes];

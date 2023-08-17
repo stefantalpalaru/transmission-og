@@ -103,7 +103,7 @@
         NSRect gridRects[active ? 2 : 3];
         NSColor *colorRects[active ? 2 : 3];
 
-        //bottom line
+        // bottom line
         NSRect lineBorderRect = NSMakeRect(NSMinX(rect), 0.0, NSWidth(rect), 1.0);
         NSRect intersectLineBorderRect = NSIntersectionRect(lineBorderRect, rect);
         if (!NSIsEmptyRect(intersectLineBorderRect))
@@ -117,7 +117,7 @@
             rect.size.height -= intersectLineBorderRect.size.height;
         }
 
-        //top line
+        // top line
         if (active)
         {
             lineBorderRect.origin.y = NSHeight([self bounds]) - 1.0;
@@ -136,7 +136,7 @@
         {
             if (active)
             {
-                NSRect const gradientRect = NSMakeRect(NSMinX(rect), 1.0, NSWidth(rect), NSHeight([self bounds]) - 1.0 - 1.0); //proper gradient requires the full height of the bar
+                NSRect const gradientRect = NSMakeRect(NSMinX(rect), 1.0, NSWidth(rect), NSHeight([self bounds]) - 1.0 - 1.0); // proper gradient requires the full height of the bar
                 [fGradient drawInRect:gradientRect angle:270.0];
             }
             else

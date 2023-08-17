@@ -45,11 +45,11 @@ enum
 
 - (void)awakeFromNib
 {
-    //store box colors
+    // store box colors
     fGreenAvailabilityColor = [NSColor colorWithCalibratedRed:0.0 green:1.0 blue:0.4 alpha:1.0];
     fBluePieceColor = [NSColor colorWithCalibratedRed:0.0 green:0.4 blue:0.8 alpha:1.0];
 
-    //actually draw the box
+    // actually draw the box
     [self setTorrent:nil];
 }
 
@@ -65,7 +65,7 @@ enum
     fTorrent = (torrent && ![torrent isMagnet]) ? torrent : nil;
     if (fTorrent)
     {
-        //determine relevant values
+        // determine relevant values
         fNumPieces = MIN([fTorrent pieceCount], MAX_ACROSS * MAX_ACROSS);
         fAcross = ceil(sqrt(fNumPieces));
 
@@ -98,7 +98,7 @@ enum
     if (!fTorrent)
         return;
 
-    //determine if first time
+    // determine if first time
     BOOL const first = fPieces == NULL;
     if (first)
         fPieces = (int8_t *)tr_malloc(fNumPieces * sizeof(int8_t));
@@ -163,7 +163,7 @@ enum
         }
         else
         {
-            //always redraw "mixed"
+            // always redraw "mixed"
             CGFloat percent = showAvailablity ? (CGFloat)pieces[index] / HIGH_PEERS : piecesPercent[index];
             NSColor *fullColor = showAvailablity ? fGreenAvailabilityColor : fBluePieceColor;
             pieceColor = [[NSColor whiteColor] blendedColorWithFraction:percent ofColor:fullColor];

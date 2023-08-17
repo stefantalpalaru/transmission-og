@@ -82,7 +82,7 @@ BlocklistDownloader *fBLDownloader = nil;
     fBLDownloader = nil;
 }
 
-//using the actual filename is the best bet
+// using the actual filename is the best bet
 - (void)download:(NSURLDownload *)download decideDestinationWithSuggestedFilename:(NSString *)filename
 {
     [fDownload setDestination:[NSTemporaryDirectory() stringByAppendingPathComponent:filename] allowOverwrite:NO];
@@ -133,7 +133,7 @@ BlocklistDownloader *fBLDownloader = nil;
         dispatch_async(dispatch_get_main_queue(), ^{
             int const count = tr_blocklistSetContent([(Controller *)[NSApp delegate] sessionHandle], [fDestination UTF8String]);
 
-            //delete downloaded file
+            // delete downloaded file
             [[NSFileManager defaultManager] removeItemAtPath:fDestination error:NULL];
 
             if (count > 0)
@@ -141,7 +141,7 @@ BlocklistDownloader *fBLDownloader = nil;
             else
                 [fViewController setFailed:NSLocalizedString(@"The specified blocklist file did not contain any valid rules.", "blocklist fail message")];
 
-            //update last updated date for schedule
+            // update last updated date for schedule
             NSDate *date = [NSDate date];
             [[NSUserDefaults standardUserDefaults] setObject:date forKey:@"BlocklistNewLastUpdate"];
             [[NSUserDefaults standardUserDefaults] setObject:date forKey:@"BlocklistNewLastUpdateSuccess"];
@@ -189,7 +189,7 @@ BlocklistDownloader *fBLDownloader = nil;
 
         NSString *workingDirectory = [fDestination stringByDeletingLastPathComponent];
 
-        //First, perform the actual unzipping
+        // First, perform the actual unzipping
         NSTask *unzip = [[NSTask alloc] init];
         [unzip setLaunchPath:@"/usr/bin/unzip"];
         [unzip setCurrentDirectoryPath:workingDirectory];
@@ -216,7 +216,7 @@ BlocklistDownloader *fBLDownloader = nil;
 
         if (success)
         {
-            //Now find out what file we actually extracted; don't just assume it matches the zipfile's name
+            // Now find out what file we actually extracted; don't just assume it matches the zipfile's name
             NSTask *zipinfo;
 
             zipinfo = [[NSTask alloc] init];
@@ -239,7 +239,7 @@ BlocklistDownloader *fBLDownloader = nil;
                 actualFilename = [actualFilename stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                 NSString *newBlocklistPath = [workingDirectory stringByAppendingPathComponent:actualFilename];
 
-                //Finally, delete the ZIP file; we're done with it, and we'll return the unzipped blocklist
+                // Finally, delete the ZIP file; we're done with it, and we'll return the unzipped blocklist
                 [[NSFileManager defaultManager] removeItemAtPath:fDestination error:NULL];
 
                 fDestination = newBlocklistPath;

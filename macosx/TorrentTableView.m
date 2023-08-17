@@ -32,7 +32,7 @@
 
 #define MAX_GROUP 999999
 
-//eliminate when Lion-only
+// eliminate when Lion-only
 #define ACTION_MENU_GLOBAL_TAG 101
 #define ACTION_MENU_UNLIMITED_TAG 102
 #define ACTION_MENU_LIMIT_TAG 103
@@ -89,7 +89,7 @@
 
 - (void)awakeFromNib
 {
-    //set group columns to show ratio, needs to be in awakeFromNib to size columns correctly
+    // set group columns to show ratio, needs to be in awakeFromNib to size columns correctly
     [self setGroupStatusColumns];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setNeedsDisplay) name:@"RefreshTorrentTable"
@@ -169,7 +169,7 @@
     {
         NSRect rect = [super frameOfCellAtColumn:column row:row];
 
-        //adjust placement for proper vertical alignment
+        // adjust placement for proper vertical alignment
         if (column == [self columnWithIdentifier:@"Group"])
             rect.size.height -= 1.0f;
 
@@ -332,7 +332,7 @@
 - (void)outlineViewSelectionIsChanging:(NSNotification *)notification
 {
 #warning elliminate when view-based?
-    //if pushing a button, don't change the selected rows
+    // if pushing a button, don't change the selected rows
     if (fSelectedValues)
         [self selectValues:fSelectedValues];
 }
@@ -365,7 +365,7 @@
     NSPoint point = [self convertPoint:[event locationInWindow] fromView:nil];
     NSInteger const row = [self rowAtPoint:point];
 
-    //check to toggle group status before anything else
+    // check to toggle group status before anything else
     if ([self pointInGroupStatusRect:point])
     {
         [fDefaults setBool:![fDefaults boolForKey:@"DisplayGroupRowRatio"] forKey:@"DisplayGroupRowRatio"];
@@ -376,7 +376,7 @@
 
     BOOL const pushed = row != -1 && (fMouseActionRow == row || fMouseRevealRow == row || fMouseControlRow == row);
 
-    //if pushing a button, don't change the selected rows
+    // if pushing a button, don't change the selected rows
     if (pushed)
         fSelectedValues = [self selectedValues];
 
@@ -384,13 +384,13 @@
 
     fSelectedValues = nil;
 
-    //avoid weird behavior when showing menu by doing this after mouse down
+    // avoid weird behavior when showing menu by doing this after mouse down
     if (row != -1 && fMouseActionRow == row)
     {
 #warning maybe make appear on mouse down
         [self displayTorrentActionPopoverForEvent:event];
     }
-    else if (!pushed && [event clickCount] == 2) //double click
+    else if (!pushed && [event clickCount] == 2) // double click
     {
         id item = nil;
         if (row != -1)
@@ -454,7 +454,7 @@
 - (NSArray *)selectedTorrents
 {
     NSIndexSet *selectedIndexes = [self selectedRowIndexes];
-    NSMutableArray *torrents = [NSMutableArray arrayWithCapacity:[selectedIndexes count]]; //take a shot at guessing capacity
+    NSMutableArray *torrents = [NSMutableArray arrayWithCapacity:[selectedIndexes count]]; // take a shot at guessing capacity
 
     for (NSUInteger i = [selectedIndexes firstIndex]; i != NSNotFound; i = [selectedIndexes indexGreaterThanIndex:i])
     {
@@ -489,14 +489,14 @@
     }
 }
 
-//make sure that the pause buttons become orange when holding down the option key
+// make sure that the pause buttons become orange when holding down the option key
 - (void)flagsChanged:(NSEvent *)event
 {
     [self display];
     [super flagsChanged:event];
 }
 
-//option-command-f will focus the filter bar's search field
+// option-command-f will focus the filter bar's search field
 - (void)keyDown:(NSEvent *)event
 {
     unichar const firstChar = [[event charactersIgnoringModifiers] characterAtIndex:0];
@@ -505,7 +505,7 @@
         [fController focusFilterField];
     else if (firstChar == ' ')
         [fController toggleQuickLook:nil];
-    else if ([event keyCode] == 53) //esc key
+    else if ([event keyCode] == 53) // esc key
         [self deselectAll:nil];
     else
         [super keyDown:event];
@@ -611,7 +611,7 @@
     [infoViewController updateInfo];
 }
 
-//don't show multiple popovers when clicking the gear button repeatedly
+// don't show multiple popovers when clicking the gear button repeatedly
 - (void)popoverWillShow:(NSNotification *)notification
 {
     fActionPopoverShown = YES;
@@ -622,10 +622,10 @@
     fActionPopoverShown = NO;
 }
 
-//eliminate when Lion-only, along with all the menu item instance variables
+// eliminate when Lion-only, along with all the menu item instance variables
 - (void)menuNeedsUpdate:(NSMenu *)menu
 {
-    //this method seems to be called when it shouldn't be
+    // this method seems to be called when it shouldn't be
     if (!fMenuTorrent || ![menu supermenu])
         return;
 
@@ -707,7 +707,7 @@
     }
 }
 
-//the following methods might not be needed when Lion-only
+// the following methods might not be needed when Lion-only
 - (void)setQuickLimitMode:(id)sender
 {
     BOOL const limit = [sender tag] == ACTION_MENU_LIMIT_TAG;
@@ -793,7 +793,7 @@
     for (NSAnimationProgress i = 0.0625; i <= 1.0; i += 0.0625)
         [progressMarks addObject:@(i)];
 
-    //this stops a previous animation
+    // this stops a previous animation
     fPiecesBarAnimation = [[NSAnimation alloc] initWithDuration:TOGGLE_PROGRESS_SECONDS animationCurve:NSAnimationEaseIn];
     [fPiecesBarAnimation setAnimationBlockingMode:NSAnimationNonblocking];
     [fPiecesBarAnimation setProgressMarks:progressMarks];

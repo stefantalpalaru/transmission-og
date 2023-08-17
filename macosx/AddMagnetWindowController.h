@@ -34,7 +34,7 @@
     IBOutlet NSButton *fStartCheck;
     IBOutlet NSPopUpButton *fGroupPopUp, *fPriorityPopUp;
 
-    //remove these when switching to auto layout
+    // remove these when switching to auto layout
     IBOutlet NSTextField *fMagnetLinkLabel;
     IBOutlet NSTextField *fDownloadToLabel, *fGroupLabel, *fPriorityLabel;
     IBOutlet NSButton *fChangeDestinationButton;

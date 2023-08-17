@@ -103,7 +103,7 @@
 
 - (void)setInfoForTorrents:(NSArray *)torrents
 {
-    //don't check if it's the same in case the metadata changed
+    // don't check if it's the same in case the metadata changed
     fTorrents = torrents;
 
     fSet = NO;

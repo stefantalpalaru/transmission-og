@@ -1,8 +1,8 @@
 /*
  * Copyright 2001-2004 Unicode, Inc.
- * 
+ *
  * Disclaimer
- * 
+ *
  * This source code is provided as is by Unicode, Inc. No claims are
  * made as to fitness for any particular purpose. No warranties of any
  * kind are expressed or implied. The recipient agrees to determine
@@ -10,9 +10,9 @@
  * purchased on magnetic or optical media from Unicode, Inc., the
  * sole remedy for any claim will be exchange of defective media
  * within 90 days of receipt.
- * 
+ *
  * Limitations on Rights to Redistribute This Code
- * 
+ *
  * Unicode, Inc. hereby grants the right to freely use the information
  * supplied in this file in the creation of products supporting the
  * Unicode Standard, and to make copies of this file in any form
@@ -26,10 +26,10 @@
     Author: Mark E. Davis, 1994.
     Rev History: Rick McGowan, fixes & updates May 2001.
     Sept 2001: fixed const & error conditions per
-	mods suggested by S. Parent & A. Lillich.
+    mods suggested by S. Parent & A. Lillich.
     June 2002: Tim Dodd added detection and handling of incomplete
-	source sequences, enhanced error detection, added casts
-	to eliminate compiler warnings.
+    source sequences, enhanced error detection, added casts
+    to eliminate compiler warnings.
     July 2003: slight mods to back out aggressive FFFE detection.
     Jan 2004: updated switches in from-UTF8 conversions.
     Oct 2004: updated to use UNI_MAX_LEGAL_UTF32 in UTF-32 conversions.
@@ -544,8 +544,8 @@ ConversionResult ConvertUTF8toUTF16(
             break;
         }
         /*
-	 * The cases all fall through. See "Note A" below.
-	 */
+         * The cases all fall through. See "Note A" below.
+         */
         switch (extraBytesToRead)
         {
         case 5:
@@ -662,9 +662,9 @@ ConversionResult ConvertUTF32toUTF8(
             }
         }
         /*
-	 * Figure out how many bytes the result will require. Turn any
-	 * illegally large UTF32 things (> Plane 17) into replacement chars.
-	 */
+         * Figure out how many bytes the result will require. Turn any
+         * illegally large UTF32 things (> Plane 17) into replacement chars.
+         */
         if (ch < (UTF32)0x80)
         {
             bytesToWrite = 1;
@@ -748,8 +748,8 @@ ConversionResult ConvertUTF8toUTF32(
             break;
         }
         /*
-	 * The cases all fall through. See "Note A" below.
-	 */
+         * The cases all fall through. See "Note A" below.
+         */
         switch (extraBytesToRead)
         {
         case 5:
@@ -786,9 +786,9 @@ ConversionResult ConvertUTF8toUTF32(
         if (ch <= UNI_MAX_LEGAL_UTF32)
         {
             /*
-	     * UTF-16 surrogate values are illegal in UTF-32, and anything
-	     * over Plane 17 (> 0x10FFFF) is illegal.
-	     */
+             * UTF-16 surrogate values are illegal in UTF-32, and anything
+             * over Plane 17 (> 0x10FFFF) is illegal.
+             */
             if (ch >= UNI_SUR_HIGH_START && ch <= UNI_SUR_LOW_END)
             {
                 if (flags == strictConversion)
@@ -824,14 +824,14 @@ ConversionResult ConvertUTF8toUTF32(
     The fall-through switches in UTF-8 reading code save a
     temp variable, some decrements & conditionals. The switches
     are equivalent to the following loop:
-	{
-	    int tmpBytesToRead = extraBytesToRead+1;
-	    do {
-		ch += *source++;
-		--tmpBytesToRead;
-		if (tmpBytesToRead) ch <<= 6;
-	    } while (tmpBytesToRead > 0);
-	}
+    {
+        int tmpBytesToRead = extraBytesToRead+1;
+        do {
+        ch += *source++;
+        --tmpBytesToRead;
+        if (tmpBytesToRead) ch <<= 6;
+        } while (tmpBytesToRead > 0);
+    }
     In UTF-8 writing code, the switches on "bytesToWrite" are
     similarly unrolled loops.
 

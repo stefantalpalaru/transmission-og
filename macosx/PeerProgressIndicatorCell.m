@@ -58,7 +58,7 @@
     }
     else
     {
-        //attributes not needed anymore
+        // attributes not needed anymore
         if (fAttributes)
         {
             fAttributes = nil;

@@ -120,7 +120,7 @@
         [field setFrame:frame];
     }
 
-//set the click action of the pieces view
+// set the click action of the pieces view
 #warning after 2.8 just hook this up in the xib
     [fPiecesView setAction:@selector(updatePiecesView:)];
     [fPiecesView setTarget:self];
@@ -133,7 +133,7 @@
 
 - (void)setInfoForTorrents:(NSArray *)torrents
 {
-    //don't check if it's the same in case the metadata changed
+    // don't check if it's the same in case the metadata changed
     fTorrents = torrents;
 
     fSet = NO;
@@ -205,7 +205,7 @@
 
         [fDateCompletedField setObjectValue:[torrent dateCompleted]];
 
-        //uses a relative date, so can't be set once
+        // uses a relative date, so can't be set once
         [fDateAddedField setObjectValue:[torrent dateAdded]];
 
         if ([NSApp isOnYosemiteOrBetter])
@@ -277,7 +277,8 @@
             [fDownloadedTotalField setStringValue:@""];
             [fUploadedTotalField setStringValue:@""];
             [fFailedHashField setStringValue:@""];
-            [fDateActivityField setObjectValue:@""]; //using [field setStringValue: @""] causes "December 31, 1969 7:00 PM" to be displayed, at least on 10.7.3
+            [fDateActivityField setObjectValue:@""]; // using [field setStringValue: @""] causes "December 31, 1969 7:00 PM" to
+                                                     // be displayed, at least on 10.7.3
             [fRatioField setStringValue:@""];
         }
 
@@ -286,7 +287,7 @@
 
         [fErrorMessageView setString:@""];
 
-        //using [field setStringValue: @""] causes "December 31, 1969 7:00 PM" to be displayed, at least on 10.7.3
+        // using [field setStringValue: @""] causes "December 31, 1969 7:00 PM" to be displayed, at least on 10.7.3
         [fDateAddedField setObjectValue:@""];
         [fDateCompletedField setObjectValue:@""];
 

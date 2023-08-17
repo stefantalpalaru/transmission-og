@@ -73,7 +73,7 @@
 
 - (void)setInfoForTorrents:(NSArray *)torrents
 {
-    //don't check if it's the same in case the metadata changed
+    // don't check if it's the same in case the metadata changed
     fTorrents = torrents;
 
     fSet = NO;
@@ -87,7 +87,7 @@
     if ([fTorrents count] == 0)
         return;
 
-    //get updated tracker stats
+    // get updated tracker stats
     if ([fTrackerTable editedRow] == -1)
     {
         NSArray *oldTrackers = fTrackers;
@@ -157,7 +157,7 @@
         return tierString;
     }
     else
-        return item; //TrackerNode or NSString
+        return item; // TrackerNode or NSString
 }
 
 - (NSCell *)tableView:(NSTableView *)tableView dataCellForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
@@ -168,7 +168,7 @@
 
 - (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row
 {
-    //check for NSDictionay instead of TrackerNode because of display issue when adding a row
+    // check for NSDictionay instead of TrackerNode because of display issue when adding a row
     if ([fTrackers[row] isKindOfClass:[NSDictionary class]])
         return TRACKER_GROUP_SEPARATOR_HEIGHT;
     else
@@ -177,7 +177,7 @@
 
 - (BOOL)tableView:(NSTableView *)tableView shouldEditTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    //don't allow tier row to be edited by double-click
+    // don't allow tier row to be edited by double-click
     return NO;
 }
 
@@ -220,19 +220,19 @@
     if (!added)
         NSBeep();
 
-    //reset table with either new or old value
+    // reset table with either new or old value
     fTrackers = [torrent allTrackerStats];
 
     [fTrackerTable setTrackers:fTrackers];
     [fTrackerTable reloadData];
     [fTrackerTable deselectAll:self];
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateUI" object:nil]; //incase sort by tracker
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateUI" object:nil]; // incase sort by tracker
 }
 
 - (void)addRemoveTracker:(id)sender
 {
-    //don't allow add/remove when currently adding - it leads to weird results
+    // don't allow add/remove when currently adding - it leads to weird results
     if ([fTrackerTable editedRow] != -1)
         return;
 
@@ -325,11 +325,11 @@
                 [removeIndexes addIndex:i];
             }
             else
-                groupRowIndex = NSNotFound; //don't remove the group row
+                groupRowIndex = NSNotFound; // don't remove the group row
         }
         else
         {
-            //mark the previous group row for removal, if necessary
+            // mark the previous group row for removal, if necessary
             if (groupRowIndex != NSNotFound)
                 [removeIndexes addIndex:groupRowIndex];
 
@@ -344,7 +344,7 @@
         }
     }
 
-    //mark the last group for removal, too
+    // mark the last group for removal, too
     if (groupRowIndex != NSNotFound)
         [removeIndexes addIndex:groupRowIndex];
 
@@ -354,7 +354,7 @@
         removeTrackerCount,
         [removeIndexes count]);
 
-//we might have no trackers if remove right after a failed add (race condition ftw)
+// we might have no trackers if remove right after a failed add (race condition ftw)
 #warning look into having a failed add apply right away, so that this can become an assert
     if (removeTrackerCount == 0)
         return;
@@ -399,7 +399,7 @@
     for (Torrent *torrent in removeIdentifiers)
         [torrent removeTrackers:removeIdentifiers[torrent]];
 
-    //reset table with either new or old value
+    // reset table with either new or old value
     fTrackers = [[NSMutableArray alloc] init];
     for (Torrent *torrent in fTorrents)
         [fTrackers addObjectsFromArray:[torrent allTrackerStats]];
@@ -410,7 +410,7 @@
 
     [fTrackerTable endUpdates];
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateUI" object:nil]; //incase sort by tracker
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateUI" object:nil]; // incase sort by tracker
 }
 
 @end

@@ -52,7 +52,7 @@ BlocklistDownloaderViewController *fBLViewController = nil;
     CGFloat const oldWidth = NSWidth([fButton frame]);
     [fButton sizeToFit];
     NSRect buttonFrame = [fButton frame];
-    buttonFrame.size.width += 12.0; //sizeToFit sizes a bit too small
+    buttonFrame.size.width += 12.0; // sizeToFit sizes a bit too small
     buttonFrame.origin.x -= NSWidth(buttonFrame) - oldWidth;
     [fButton setFrame:buttonFrame];
 
@@ -90,7 +90,7 @@ BlocklistDownloaderViewController *fBLViewController = nil;
 
 - (void)setStatusProcessing
 {
-    //change to indeterminate while processing
+    // change to indeterminate while processing
     [fProgressBar setIndeterminate:YES];
     [fProgressBar startAnimation:self];
 
@@ -139,11 +139,11 @@ BlocklistDownloaderViewController *fBLViewController = nil;
 
 - (void)startDownload
 {
-    //load window and show as sheet
+    // load window and show as sheet
     [[NSBundle mainBundle] loadNibNamed:@"BlocklistStatusWindow" owner:self topLevelObjects:NULL];
 
     BlocklistDownloader *downloader = [BlocklistDownloader downloader];
-    [downloader setViewController:self]; //do before showing the sheet to ensure it doesn't slide out with placeholder text
+    [downloader setViewController:self]; // do before showing the sheet to ensure it doesn't slide out with placeholder text
 
     [NSApp beginSheet:fStatusWindow modalForWindow:[fPrefsController window] modalDelegate:nil didEndSelector:nil contextInfo:nil];
 }

@@ -22,16 +22,19 @@
 //
 //  BASED ON UKKQUEUE:
 //
-//      This is an updated, modernized and streamlined version of the excellent UKKQueue class, which was authored by Uli Kusterer.
-//      UKKQueue was written back in 2003 and there have been many, many improvements to Objective-C since then. VDKQueue uses the
-//      core of Uli's original class, but makes it faster and more efficient. Method calls are reduced. Grand Central Dispatch is used in place
-//      of Uli's "threadProxy" objects. The memory footprint is roughly halved, as I don't create the overhead that UKKQueue does.
+//      This is an updated, modernized and streamlined version of the excellent UKKQueue class, which was authored by Uli
+//      Kusterer. UKKQueue was written back in 2003 and there have been many, many improvements to Objective-C since then.
+//      VDKQueue uses the core of Uli's original class, but makes it faster and more efficient. Method calls are reduced. Grand
+//      Central Dispatch is used in place of Uli's "threadProxy" objects. The memory footprint is roughly halved, as I don't
+//      create the overhead that UKKQueue does.
 //
-//      VDKQueue is also simplified. The option to use it as a singleton is removed. You simply alloc/init an instance and add paths you want to
-//      watch. Your objects can be alerted to changes either by notifications or by a delegate method (or both). See below.
+//      VDKQueue is also simplified. The option to use it as a singleton is removed. You simply alloc/init an instance and add
+//      paths you want to watch. Your objects can be alerted to changes either by notifications or by a delegate method (or
+//      both). See below.
 //
-//      It also fixes several bugs. For one, it won't crash if it can't create a file descriptor to a file you ask it to watch. (By default, an OS X process can only
-//      have about 3,000 file descriptors open at once. If you hit that limit, UKKQueue will crash. VDKQueue will not.)
+//      It also fixes several bugs. For one, it won't crash if it can't create a file descriptor to a file you ask it to watch.
+//      (By default, an OS X process can only have about 3,000 file descriptors open at once. If you hit that limit, UKKQueue
+//      will crash. VDKQueue will not.)
 //
 
 //
@@ -43,21 +46,24 @@
 //
 //  IMPORTANT NOTE ABOUT ATOMIC OPERATIONS
 //
-//      There are two ways of saving a file on OS X: Atomic and Non-Atomic. In a non-atomic operation, a file is saved by directly overwriting it with new data.
-//      In an Atomic save, a temporary file is first written to a different location on disk. When that completes successfully, the original file is deleted and the
-//      temporary one is renamed and moved into place where the original file existed.
+//      There are two ways of saving a file on OS X: Atomic and Non-Atomic. In a non-atomic operation, a file is saved by
+//      directly overwriting it with new data. In an Atomic save, a temporary file is first written to a different location on
+//      disk. When that completes successfully, the original file is deleted and the temporary one is renamed and moved into
+//      place where the original file existed.
 //
-//      This matters a great deal. If you tell VDKQueue to watch file X, then you save file X ATOMICALLY, you'll receive a notification about that event. HOWEVER, you will
-//      NOT receive any additional notifications for file X from then on. This is because the atomic operation has essentially created a new file that replaced the one you
-//      told VDKQueue to watch. (This is not an issue for non-atomic operations.)
+//      This matters a great deal. If you tell VDKQueue to watch file X, then you save file X ATOMICALLY, you'll receive a
+//      notification about that event. HOWEVER, you will NOT receive any additional notifications for file X from then on. This
+//      is because the atomic operation has essentially created a new file that replaced the one you told VDKQueue to watch.
+//      (This is not an issue for non-atomic operations.)
 //
-//      To handle this, any time you receive a change notification from VDKQueue, you should call -removePath: followed by -addPath: on the file's path, even if the path
-//      has not changed. This will ensure that if the event that triggered the notification was an atomic operation, VDKQueue will start watching the "new" file that took
-//      the place of the old one.
+//      To handle this, any time you receive a change notification from VDKQueue, you should call -removePath: followed by
+//      -addPath: on the file's path, even if the path has not changed. This will ensure that if the event that triggered the
+//      notification was an atomic operation, VDKQueue will start watching the "new" file that took the place of the old one.
 //
-//      Other frameworks out there try to work around this issue by immediately attempting to re-open the file descriptor to the path. This is not bulletproof and may fail;
-//      it all depends on the timing of disk I/O. Bottom line: you could not rely on it and might miss future changes to the file path you're supposedly watching. That's why
-//      VDKQueue does not take this approach, but favors the "manual" method of "stop-watching-then-rewatch".
+//      Other frameworks out there try to work around this issue by immediately attempting to re-open the file descriptor to the
+//      path. This is not bulletproof and may fail; it all depends on the timing of disk I/O. Bottom line: you could not rely on
+//      it and might miss future changes to the file path you're supposedly watching. That's why VDKQueue does not take this
+//      approach, but favors the "manual" method of "stop-watching-then-rewatch".
 //
 
 #import <Foundation/Foundation.h>
@@ -95,8 +101,9 @@ extern NSString *VDKQueueLinkCountChangeNotification;
 extern NSString *VDKQueueAccessRevocationNotification;
 
 //
-//  Or, instead of subscribing to notifications, you can specify a delegate and implement this method to respond to kQueue events.
-//  Note the required statement! For speed, this class does not check to make sure the delegate implements this method. (When I say "required" I mean it!)
+//  Or, instead of subscribing to notifications, you can specify a delegate and implement this method to respond to kQueue
+//  events. Note the required statement! For speed, this class does not check to make sure the delegate implements this method.
+//  (When I say "required" I mean it!)
 //
 @class VDKQueue;
 @protocol VDKQueueDelegate<NSObject>
@@ -109,11 +116,13 @@ extern NSString *VDKQueueAccessRevocationNotification;
 @interface VDKQueue : NSObject
 {
     id<VDKQueueDelegate> __weak _delegate;
-    BOOL _alwaysPostNotifications; // By default, notifications are posted only if there is no delegate set. Set this value to YES to have notes posted even when there is a delegate.
+    BOOL _alwaysPostNotifications; // By default, notifications are posted only if there is no delegate set. Set this value to
+                                   // YES to have notes posted even when there is a delegate.
 
   @private
     int _coreQueueFD; // The actual kqueue ID (Unix file descriptor).
-    NSMutableDictionary *_watchedPathEntries; // List of VDKQueuePathEntries. Keys are NSStrings of the path that each VDKQueuePathEntry is for.
+    NSMutableDictionary *_watchedPathEntries; // List of VDKQueuePathEntries. Keys are NSStrings of the path that each
+                                              // VDKQueuePathEntry is for.
     BOOL _keepWatcherThreadRunning; // Set to NO to cancel the thread that watches _coreQueueFD for kQueue events
 }
 

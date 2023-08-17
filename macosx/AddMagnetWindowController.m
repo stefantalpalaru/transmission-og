@@ -126,10 +126,10 @@
     [fPriorityLabel sizeToFit];
     NSRect groupLabelFrame = [fGroupLabel frame];
     NSRect priorityLabelFrame = [fPriorityLabel frame];
-    //first bring them both to the left edge
+    // first bring them both to the left edge
     groupLabelFrame.origin.x = MIN(groupLabelFrame.origin.x, priorityLabelFrame.origin.x);
     priorityLabelFrame.origin.x = MIN(groupLabelFrame.origin.x, priorityLabelFrame.origin.x);
-    //then align on the right
+    // then align on the right
     CGFloat const labelWidth = MAX(groupLabelFrame.size.width, priorityLabelFrame.size.width);
     groupLabelFrame.origin.x += labelWidth - groupLabelFrame.size.width;
     priorityLabelFrame.origin.x += labelWidth - priorityLabelFrame.size.width;
@@ -162,7 +162,7 @@
 
 - (void)windowDidLoad
 {
-    //if there is no destination, prompt for one right away
+    // if there is no destination, prompt for one right away
     if (!fDestination)
         [self setDestination:nil];
 }
@@ -230,7 +230,7 @@
     [[self window] performClose:sender];
 }
 
-//only called on cancel
+// only called on cancel
 - (BOOL)windowShouldClose:(id)window
 {
     [fController askOpenMagnetConfirmed:self add:NO];

@@ -60,7 +60,7 @@ NSString *urlString = nil;
     [fOpenButton sizeToFit];
     [fCancelButton sizeToFit];
 
-    //size the two buttons the same
+    // size the two buttons the same
     NSRect openFrame = [fOpenButton frame];
     openFrame.size.width += 10.0;
     NSRect cancelFrame = [fCancelButton frame];
@@ -71,7 +71,8 @@ NSString *urlString = nil;
     else
         openFrame.size.width = NSWidth(cancelFrame);
 
-    openFrame.origin.x = NSWidth([[self window] frame]) - NSWidth(openFrame) - 20.0 + 6.0; //I don't know why the extra 6.0 is needed
+    openFrame.origin.x = NSWidth([[self window] frame]) - NSWidth(openFrame) - 20.0 + 6.0; // I don't know why the extra 6.0 is
+                                                                                           // needed
     [fOpenButton setFrame:openFrame];
 
     cancelFrame.origin.x = NSMinX(openFrame) - NSWidth(cancelFrame);

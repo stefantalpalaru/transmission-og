@@ -73,7 +73,7 @@ typedef enum
 {
     [fNoneSelectedField setStringValue:NSLocalizedString(@"No Torrents Selected", "Inspector -> selected torrents")];
 
-    //window location and size
+    // window location and size
     NSPanel *window = (NSPanel *)[self window];
 
     [window setFloatingPanel:NO];
@@ -91,7 +91,7 @@ typedef enum
 
     [window setBecomesKeyOnlyIfNeeded:YES];
 
-    //set tab tooltips
+    // set tab tooltips
     [fTabMatrix setToolTip:NSLocalizedString(@"General Info", "Inspector -> tab") forCell:[fTabMatrix cellWithTag:TAB_GENERAL_TAG]];
     [fTabMatrix setToolTip:NSLocalizedString(@"Activity", "Inspector -> tab") forCell:[fTabMatrix cellWithTag:TAB_ACTIVITY_TAG]];
     [fTabMatrix setToolTip:NSLocalizedString(@"Trackers", "Inspector -> tab") forCell:[fTabMatrix cellWithTag:TAB_TRACKERS_TAG]];
@@ -99,7 +99,7 @@ typedef enum
     [fTabMatrix setToolTip:NSLocalizedString(@"Files", "Inspector -> tab") forCell:[fTabMatrix cellWithTag:TAB_FILE_TAG]];
     [fTabMatrix setToolTip:NSLocalizedString(@"Options", "Inspector -> tab") forCell:[fTabMatrix cellWithTag:TAB_OPTIONS_TAG]];
 
-    //set selected tab
+    // set selected tab
     fCurrentTabTag = INVALID;
     NSString *identifier = [[NSUserDefaults standardUserDefaults] stringForKey:@"InspectorSelected"];
     NSInteger tag;
@@ -115,7 +115,7 @@ typedef enum
         tag = TAB_FILE_TAG;
     else if ([identifier isEqualToString:TAB_OPTIONS_IDENT])
         tag = TAB_OPTIONS_TAG;
-    else //safety
+    else // safety
     {
         [[NSUserDefaults standardUserDefaults] setObject:TAB_INFO_IDENT forKey:@"InspectorSelected"];
         tag = TAB_GENERAL_TAG;
@@ -123,10 +123,10 @@ typedef enum
     [fTabMatrix selectCellWithTag:tag];
     [self setTab:nil];
 
-    //set blank inspector
+    // set blank inspector
     [self setInfoForTorrents:[NSArray array]];
 
-    //allow for update notifications
+    // allow for update notifications
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(resetInfoForTorrent:) name:@"ResetInspector" object:nil];
     [nc addObserver:self selector:@selector(updateInfoStats) name:@"UpdateStats" object:nil];
@@ -171,11 +171,11 @@ typedef enum
     if (fCurrentTabTag == oldTabTag)
         return;
 
-    //take care of old view
+    // take care of old view
     CGFloat oldHeight = 0;
     if (oldTabTag != INVALID)
     {
-        //deselect old tab item
+        // deselect old tab item
         [(InfoTabButtonCell *)[fTabMatrix cellWithTag:oldTabTag] setSelectedTab:NO];
 
         if ([fViewController respondsToSelector:@selector(saveViewSize)])
@@ -187,11 +187,11 @@ typedef enum
         NSView *oldView = [fViewController view];
         oldHeight = NSHeight([oldView frame]);
 
-        //remove old view
+        // remove old view
         [oldView removeFromSuperview];
     }
 
-    //set new tab item
+    // set new tab item
     NSString *identifier;
     switch (fCurrentTabTag)
     {
@@ -266,7 +266,7 @@ typedef enum
 
     [window setTitle:[NSString stringWithFormat:@"%@ - %@", [fViewController title], NSLocalizedString(@"Torrent Inspector", "Inspector -> title")]];
 
-    //selected tab item
+    // selected tab item
     [(InfoTabButtonCell *)[fTabMatrix selectedCell] setSelectedTab:YES];
 
     NSView *view = [fViewController view];
@@ -282,7 +282,8 @@ typedef enum
     CGFloat const minWindowWidth = MAX(fMinWindowWidth, [view fittingSize].width);
     windowRect.size.width = MAX(NSWidth(windowRect), minWindowWidth);
 
-    if ([fViewController respondsToSelector:@selector(saveViewSize)]) //a little bit hacky, but avoids requiring an extra method
+    if ([fViewController respondsToSelector:@selector(saveViewSize)]) // a little bit hacky, but avoids requiring an extra
+                                                                      // method
     {
         if ([window screen])
         {

@@ -58,7 +58,7 @@
 
 @implementation TrackerCell
 
-//make the favicons accessible to all tracker cells
+// make the favicons accessible to all tracker cells
 NSCache *fTrackerIconCache;
 NSMutableSet *fTrackerIconLoading;
 
@@ -96,13 +96,13 @@ NSMutableSet *fTrackerIconLoading;
 
 - (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
 {
-    //icon
+    // icon
     [[self favIcon] drawInRect:[self imageRectForBounds:cellFrame] fromRect:NSZeroRect operation:NSCompositeSourceOver
                       fraction:1.0
                 respectFlipped:YES
                          hints:nil];
 
-    //set table colors
+    // set table colors
     NSColor *nameColor, *statusColor;
     if ([self backgroundStyle] == NSBackgroundStyleDark)
         nameColor = statusColor = [NSColor whiteColor];
@@ -117,12 +117,12 @@ NSMutableSet *fTrackerIconLoading;
 
     TrackerNode *node = (TrackerNode *)[self objectValue];
 
-    //name
+    // name
     NSAttributedString *nameString = [self attributedName];
     NSRect const nameRect = [self rectForNameWithString:nameString inBounds:cellFrame];
     [nameString drawInRect:nameRect];
 
-    //count strings
+    // count strings
     NSAttributedString *seederString = [self attributedCount:[node totalSeeders]];
     NSRect const seederRect = [self rectForCountWithString:seederString withAboveRect:nameRect inBounds:cellFrame];
     [seederString drawInRect:seederRect];
@@ -135,7 +135,7 @@ NSMutableSet *fTrackerIconLoading;
     NSRect const downloadedRect = [self rectForCountWithString:downloadedString withAboveRect:leecherRect inBounds:cellFrame];
     [downloadedString drawInRect:downloadedRect];
 
-    //count label strings
+    // count label strings
     NSString *seederLabelBaseString = [NSLocalizedString(@"Seeders", "tracker peer stat") stringByAppendingFormat:@": "];
     NSAttributedString *seederLabelString = [self attributedStatusWithString:seederLabelBaseString];
     NSRect const seederLabelRect = [self rectForCountLabelWithString:seederLabelString withRightRect:seederRect inBounds:cellFrame];
@@ -153,7 +153,7 @@ NSMutableSet *fTrackerIconLoading;
                                                                 inBounds:cellFrame];
     [downloadedLabelString drawInRect:downloadedLabelRect];
 
-    //status strings
+    // status strings
     NSAttributedString *lastAnnounceString = [self attributedStatusWithString:[node lastAnnounceStatusString]];
     NSRect const lastAnnounceRect = [self rectForStatusWithString:lastAnnounceString withAboveRect:nameRect
                                                     withRightRect:seederLabelRect
@@ -184,12 +184,12 @@ NSMutableSet *fTrackerIconLoading;
     NSString *host;
     if ((host = [address host]))
     {
-        //don't try to parse ip address
+        // don't try to parse ip address
         BOOL const separable = !tr_addressIsIP([host UTF8String]);
 
         NSArray *hostComponents = separable ? [host componentsSeparatedByString:@"."] : nil;
 
-        //let's try getting the tracker address without using any subdomains
+        // let's try getting the tracker address without using any subdomains
         NSString *baseAddress;
         if (separable && [hostComponents count] > 1)
             baseAddress = [NSString stringWithFormat:@"http://%@.%@", hostComponents[[hostComponents count] - 2], [hostComponents lastObject]];

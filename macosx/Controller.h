@@ -217,7 +217,7 @@ typedef enum
 
 - (IBAction)showGlobalPopover:(id)sender;
 
-- (void)setGroup:(id)sender; //used by delegate-generated menu items
+- (void)setGroup:(id)sender; // used by delegate-generated menu items
 
 - (void)toggleSpeedLimit:(id)sender;
 - (void)speedLimitChanged:(id)sender;

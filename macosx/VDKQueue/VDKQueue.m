@@ -183,7 +183,8 @@ NSString *VDKQueueAccessRevocationNotification = @"VDKQueueAccessWasRevokedNotif
 {
     int n;
     struct kevent ev;
-    struct timespec timeout = { 1, 0 }; // 1 second timeout. Should be longer, but we need this thread to exit when a kqueue is dealloced, so 1 second timeout is quite a while to wait.
+    struct timespec timeout = { 1, 0 }; // 1 second timeout. Should be longer, but we need this thread to exit when a kqueue is
+                                        // dealloced, so 1 second timeout is quite a while to wait.
     int theFD = _coreQueueFD; // So we don't have to risk accessing iVars when the thread is terminated.
 
     NSMutableArray *notesToPost = [[NSMutableArray alloc] initWithCapacity:5];
@@ -199,21 +200,24 @@ NSString *VDKQueueAccessRevocationNotification = @"VDKQueueAccessWasRevokedNotif
             n = kevent(theFD, NULL, 0, &ev, 1, &timeout);
             if (n > 0)
             {
-                //NSLog( @"KEVENT returned %d", n );
+                // NSLog( @"KEVENT returned %d", n );
                 if (ev.filter == EVFILT_VNODE)
                 {
-                    //NSLog( @"KEVENT filter is EVFILT_VNODE" );
+                    // NSLog( @"KEVENT filter is EVFILT_VNODE" );
                     if (ev.fflags)
                     {
-                        //NSLog( @"KEVENT flags are set" );
+                        // NSLog( @"KEVENT flags are set" );
 
                         //
-                        //  Note: VDKQueue gets tested by thousands of CodeKit users who each watch several thousand files at once.
-                        //        I was receiving about 3 EXC_BAD_ACCESS (SIGSEGV) crash reports a month that listed the 'path' objc_msgSend
-                        //        as the culprit. That suggests the KEVENT is being sent back to us with a udata value that is NOT what we assigned
-                        //        to the queue, though I don't know why and I don't know why it's intermittent. Regardless, I've added an extra
-                        //        check here to try to eliminate this (infrequent) problem. In theory, a KEVENT that does not have a VDKQueuePathEntry
-                        //        object attached as the udata parameter is not an event we registered for, so we should not be "missing" any events. In theory.
+                        //  Note: VDKQueue gets tested by thousands of CodeKit users who each watch several thousand files at
+                        //  once.
+                        //        I was receiving about 3 EXC_BAD_ACCESS (SIGSEGV) crash reports a month that listed the 'path'
+                        //        objc_msgSend as the culprit. That suggests the KEVENT is being sent back to us with a udata
+                        //        value that is NOT what we assigned to the queue, though I don't know why and I don't know why
+                        //        it's intermittent. Regardless, I've added an extra check here to try to eliminate this
+                        //        (infrequent) problem. In theory, a KEVENT that does not have a VDKQueuePathEntry object
+                        //        attached as the udata parameter is not an event we registered for, so we should not be
+                        //        "missing" any events. In theory.
                         //
                         id pe = (__bridge id)(ev.udata);
                         if (pe && [pe respondsToSelector:@selector(path)])
@@ -257,7 +261,10 @@ NSString *VDKQueueAccessRevocationNotification = @"VDKQueueAccessWasRevokedNotif
                                 [notesToPost addObject:VDKQueueAccessRevocationNotification];
                             }
 
-                            NSArray *notes = [[NSArray alloc] initWithArray:notesToPost]; // notesToPost will be changed in the next loop iteration, which will likely occur before the block below runs.
+                            NSArray *notes = [[NSArray alloc] initWithArray:notesToPost]; // notesToPost will be changed in the
+                                                                                          // next loop iteration, which will
+                                                                                          // likely occur before the block below
+                                                                                          // runs.
 
                             // Post the notifications (or call the delegate method) on the main thread.
                             dispatch_async(dispatch_get_main_queue(), ^{

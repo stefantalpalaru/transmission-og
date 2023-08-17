@@ -154,7 +154,7 @@
 
 - (void)windowDidLoad
 {
-    //if there is no destination, prompt for one right away
+    // if there is no destination, prompt for one right away
     if (!fDestination)
         [self setDestination:nil];
 }
@@ -227,13 +227,13 @@
     [[self window] performClose:sender];
 }
 
-//only called on cancel
+// only called on cancel
 - (BOOL)windowShouldClose:(id)window
 {
     [fTimer invalidate];
     fTimer = nil;
 
-    [fFileController setTorrent:nil]; //avoid a crash when window tries to update
+    [fFileController setTorrent:nil]; // avoid a crash when window tries to update
 
     [fController askOpenConfirmed:self add:NO];
     return YES;
@@ -286,14 +286,14 @@
     NSString *statusString = [NSString stringForFileSize:[fTorrent size]];
     if ([fTorrent isFolder])
     {
-        //check buttons
-        //keep synced with identical code in InfoFileViewController.m
+        // check buttons
+        // keep synced with identical code in InfoFileViewController.m
         NSInteger const filesCheckState = [fTorrent
             checkForFiles:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [fTorrent fileCount])]];
-        [fCheckAllButton setEnabled:filesCheckState != NSOnState]; //if anything is unchecked
-        [fUncheckAllButton setEnabled:![fTorrent allDownloaded]]; //if there are any checked files that aren't finished
+        [fCheckAllButton setEnabled:filesCheckState != NSOnState]; // if anything is unchecked
+        [fUncheckAllButton setEnabled:![fTorrent allDownloaded]]; // if there are any checked files that aren't finished
 
-        //status field
+        // status field
         NSString *fileString;
         NSInteger count = [fTorrent fileCount];
         if (count != 1)
@@ -332,7 +332,7 @@
 
     [fFileController refresh];
 
-    [self updateCheckButtons:nil]; //call in case button state changed by checking
+    [self updateCheckButtons:nil]; // call in case button state changed by checking
 
     if ([fTorrent isChecking])
     {
@@ -345,7 +345,7 @@
     }
     else
     {
-        [fVerifyIndicator setIndeterminate:YES]; //we want to hide when stopped, which only applies when indeterminate
+        [fVerifyIndicator setIndeterminate:YES]; // we want to hide when stopped, which only applies when indeterminate
         [fVerifyIndicator stopAnimation:self];
     }
 }
@@ -362,7 +362,7 @@
     if ([fStartCheck state] == NSOnState)
         [fTorrent startTransfer];
 
-    [fFileController setTorrent:nil]; //avoid a crash when window tries to update
+    [fFileController setTorrent:nil]; // avoid a crash when window tries to update
 
     [self close];
     [fController askOpenConfirmed:self add:YES];

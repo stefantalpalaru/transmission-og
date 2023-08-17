@@ -46,8 +46,11 @@
                     showSeconds:(BOOL)showSeconds
                       maxFields:(NSUInteger)max;
 
-- (NSComparisonResult)compareNumeric:(NSString *)string; //simple compare method for strings with numbers (works for IP addresses)
+- (NSComparisonResult)compareNumeric:(NSString *)string; // simple compare method for strings with numbers (works for IP
+                                                         // addresses)
 
-- (NSArray *)betterComponentsSeparatedByCharactersInSet:(NSCharacterSet *)separators; //like componentsSeparatedByCharactersInSet:, but excludes blank values
+- (NSArray *)betterComponentsSeparatedByCharactersInSet:(NSCharacterSet *)separators; // like
+                                                                                      // componentsSeparatedByCharactersInSet:,
+                                                                                      // but excludes blank values
 
 @end

@@ -45,7 +45,7 @@ AboutWindowController *fAboutBoxInstance = nil;
                                                                                                                           ofType:@"rtf"]
                                                                        documentAttributes:nil]];
 
-    //size license button
+    // size license button
     CGFloat const oldButtonWidth = NSWidth([fLicenseButton frame]);
 
     [fLicenseButton setTitle:NSLocalizedString(@"License", "About window -> license button")];

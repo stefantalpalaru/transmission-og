@@ -82,7 +82,7 @@
                 added = YES;
     }
 
-    //none added
+    // none added
     if (!added)
         NSBeep();
 }

@@ -31,9 +31,9 @@ extern "C"
     typedef struct tr_metainfo_builder
     {
         /**
-    ***  These are set by tr_makeMetaInfoBuilderCreate()
-    ***  and cleaned up by tr_metaInfoBuilderFree()
-    **/
+         ***  These are set by tr_makeMetaInfoBuilderCreate()
+         ***  and cleaned up by tr_metaInfoBuilderFree()
+         **/
 
         char *top;
         tr_metainfo_builder_file *files;
@@ -44,10 +44,10 @@ extern "C"
         bool isFolder;
 
         /**
-    ***  These are set inside tr_makeMetaInfo()
-    ***  by copying the arguments passed to it,
-    ***  and cleaned up by tr_metaInfoBuilderFree()
-    **/
+         ***  These are set inside tr_makeMetaInfo()
+         ***  by copying the arguments passed to it,
+         ***  and cleaned up by tr_metaInfoBuilderFree()
+         **/
 
         tr_tracker_info *trackers;
         int trackerCount;
@@ -56,11 +56,11 @@ extern "C"
         bool isPrivate;
 
         /**
-    ***  These are set inside tr_makeMetaInfo() so the client
-    ***  can poll periodically to see what the status is.
-    ***  The client can also set abortFlag to nonzero to
-    ***  tell tr_makeMetaInfo() to abort and clean up after itself.
-    **/
+         ***  These are set inside tr_makeMetaInfo() so the client
+         ***  can poll periodically to see what the status is.
+         ***  The client can also set abortFlag to nonzero to
+         ***  tell tr_makeMetaInfo() to abort and clean up after itself.
+         **/
 
         uint32_t pieceIndex;
         bool abortFlag;
@@ -68,16 +68,16 @@ extern "C"
         tr_metainfo_builder_err result;
 
         /* file in use when result was set to _IO_READ or _IO_WRITE,
-     * or the URL in use when the result was set to _URL */
+         * or the URL in use when the result was set to _URL */
         char errfile[2048];
 
         /* errno encountered when result was set to _IO_READ or _IO_WRITE */
         int my_errno;
 
         /**
-    ***  This is an implementation detail.
-    ***  The client should never use these fields.
-    **/
+         ***  This is an implementation detail.
+         ***  The client should never use these fields.
+         **/
 
         struct tr_metainfo_builder *nextBuilder;
     } tr_metainfo_builder;
@@ -85,11 +85,11 @@ extern "C"
     tr_metainfo_builder *tr_metaInfoBuilderCreate(char const *topFile);
 
     /**
- * Call this before tr_makeMetaInfo() to override the builder.pieceSize
- * and builder.pieceCount values that were set by tr_metainfoBuilderCreate()
- *
- * @return false if the piece size isn't valid; eg, isn't a power of two.
- */
+     * Call this before tr_makeMetaInfo() to override the builder.pieceSize
+     * and builder.pieceCount values that were set by tr_metainfoBuilderCreate()
+     *
+     * @return false if the piece size isn't valid; eg, isn't a power of two.
+     */
     bool tr_metaInfoBuilderSetPieceSize(tr_metainfo_builder *builder, uint32_t bytes);
 
     void tr_metaInfoBuilderFree(tr_metainfo_builder *);

@@ -138,10 +138,10 @@ typedef unsigned char jsonsl_uchar_t;
     } jsonsl_type_t;
 
     /**
- * Subtypes for T_SPECIAL. We define them as flags
- * because more than one type can be applied to a
- * given object.
- */
+     * Subtypes for T_SPECIAL. We define them as flags
+     * because more than one type can be applied to a
+     * given object.
+     */
 
 #define JSONSL_XSPECIAL \
     X(NONE, 0) \
@@ -267,89 +267,89 @@ typedef unsigned char jsonsl_uchar_t;
     } jsonsl_error_t;
 
     /**
- * A state is a single level of the stack.
- * Non-private data (i.e. the 'data' field, see the STATE_GENERIC section)
- * will remain in tact until the item is popped.
- *
- * As a result, it means a parent state object may be accessed from a child
- * object, (the parents fields will all be valid). This allows a user to create
- * an ad-hoc hierarchy on top of the JSON one.
- *
- */
+     * A state is a single level of the stack.
+     * Non-private data (i.e. the 'data' field, see the STATE_GENERIC section)
+     * will remain in tact until the item is popped.
+     *
+     * As a result, it means a parent state object may be accessed from a child
+     * object, (the parents fields will all be valid). This allows a user to create
+     * an ad-hoc hierarchy on top of the JSON one.
+     *
+     */
     struct jsonsl_state_st
     {
         /**
-     * The JSON object type
-     */
+         * The JSON object type
+         */
         unsigned type;
 
         /** If this element is special, then its extended type is here */
         unsigned special_flags;
 
         /**
-     * The position (in terms of number of bytes since the first call to
-     * jsonsl_feed()) at which the state was first pushed. This includes
-     * opening tokens, if applicable.
-     *
-     * @note For strings (i.e. type & JSONSL_Tf_STRINGY is nonzero) this will
-     * be the position of the first quote.
-     *
-     * @see jsonsl_st::pos which contains the _current_ position and can be
-     * used during a POP callback to get the length of the element.
-     */
+         * The position (in terms of number of bytes since the first call to
+         * jsonsl_feed()) at which the state was first pushed. This includes
+         * opening tokens, if applicable.
+         *
+         * @note For strings (i.e. type & JSONSL_Tf_STRINGY is nonzero) this will
+         * be the position of the first quote.
+         *
+         * @see jsonsl_st::pos which contains the _current_ position and can be
+         * used during a POP callback to get the length of the element.
+         */
         size_t pos_begin;
 
         /**FIXME: This is redundant as the same information can be derived from
-     * jsonsl_st::pos at pop-time */
+         * jsonsl_st::pos at pop-time */
         size_t pos_cur;
 
         /**
-     * Level of recursion into nesting. This is mainly a convenience
-     * variable, as this can technically be deduced from the lexer's
-     * level parameter (though the logic is not that simple)
-     */
+         * Level of recursion into nesting. This is mainly a convenience
+         * variable, as this can technically be deduced from the lexer's
+         * level parameter (though the logic is not that simple)
+         */
         unsigned int level;
 
         /**
-     * how many elements in the object/list.
-     * For objects (hashes), an element is either
-     * a key or a value. Thus for one complete pair,
-     * nelem will be 2.
-     *
-     * For special types, this will hold the sum of the digits.
-     * This only holds true for values which are simple signed/unsigned
-     * numbers. Otherwise a special flag is set, and extra handling is not
-     * performed.
-     */
+         * how many elements in the object/list.
+         * For objects (hashes), an element is either
+         * a key or a value. Thus for one complete pair,
+         * nelem will be 2.
+         *
+         * For special types, this will hold the sum of the digits.
+         * This only holds true for values which are simple signed/unsigned
+         * numbers. Otherwise a special flag is set, and extra handling is not
+         * performed.
+         */
         uint64_t nelem;
 
         /*TODO: merge this and special_flags into a union */
 
         /**
-     * Useful for an opening nest, this will prevent a callback from being
-     * invoked on this item or any of its children
-     */
+         * Useful for an opening nest, this will prevent a callback from being
+         * invoked on this item or any of its children
+         */
         int ignore_callback;
 
         /**
-     * Counter which is incremented each time an escape ('\') is encountered.
-     * This is used internally for non-string types and should only be
-     * inspected by the user if the state actually represents a string
-     * type.
-     */
+         * Counter which is incremented each time an escape ('\') is encountered.
+         * This is used internally for non-string types and should only be
+         * inspected by the user if the state actually represents a string
+         * type.
+         */
         unsigned int nescapes;
 
         /**
-     * Put anything you want here. if JSONSL_STATE_USER_FIELDS is here, then
-     * the macro expansion happens here.
-     *
-     * You can use these fields to store hierarchical or 'tagging' information
-     * for specific objects.
-     *
-     * See the documentation above for the lifetime of the state object (i.e.
-     * if the private data points to allocated memory, it should be freed
-     * when the object is popped, as the state object will be re-used)
-     */
+         * Put anything you want here. if JSONSL_STATE_USER_FIELDS is here, then
+         * the macro expansion happens here.
+         *
+         * You can use these fields to store hierarchical or 'tagging' information
+         * for specific objects.
+         *
+         * See the documentation above for the lifetime of the state object (i.e.
+         * if the private data points to allocated memory, it should be freed
+         * when the object is popped, as the state object will be re-used)
+         */
 #ifndef JSONSL_STATE_GENERIC
         JSONSL_STATE_USER_FIELDS
 #else
@@ -382,65 +382,65 @@ typedef unsigned char jsonsl_uchar_t;
 #define JSONSL_NUMERIC_VALUE(st) ((st)->nelem)
 
     /*
- * So now we need some special structure for keeping the
- * JPR info in sync. Preferrably all in a single block
- * of memory (there's no need for separate allocations.
- * So we will define a 'table' with the following layout
- *
- * Level    nPosbl  JPR1_last   JPR2_last   JPR3_last
- *
- * 0        1       NOMATCH     POSSIBLE    POSSIBLE
- * 1        0       NOMATCH     NOMATCH     COMPLETE
- * [ table ends here because no further path is possible]
- *
- * Where the JPR..n corresponds to the number of JPRs
- * requested, and nPosble is a quick flag to determine
- *
- * the number of possibilities. In the future this might
- * be made into a proper 'jump' table,
- *
- * Since we always mark JPRs from the higher levels descending
- * into the lower ones, a prospective child match would first
- * look at the parent table to check the possibilities, and then
- * see which ones were possible..
- *
- * Thus, the size of this blob would be (and these are all ints here)
- * nLevels * nJPR * 2.
- *
- * the 'Width' of the table would be nJPR*2, and the 'height' would be
- * nlevels
- */
+     * So now we need some special structure for keeping the
+     * JPR info in sync. Preferrably all in a single block
+     * of memory (there's no need for separate allocations.
+     * So we will define a 'table' with the following layout
+     *
+     * Level    nPosbl  JPR1_last   JPR2_last   JPR3_last
+     *
+     * 0        1       NOMATCH     POSSIBLE    POSSIBLE
+     * 1        0       NOMATCH     NOMATCH     COMPLETE
+     * [ table ends here because no further path is possible]
+     *
+     * Where the JPR..n corresponds to the number of JPRs
+     * requested, and nPosble is a quick flag to determine
+     *
+     * the number of possibilities. In the future this might
+     * be made into a proper 'jump' table,
+     *
+     * Since we always mark JPRs from the higher levels descending
+     * into the lower ones, a prospective child match would first
+     * look at the parent table to check the possibilities, and then
+     * see which ones were possible..
+     *
+     * Thus, the size of this blob would be (and these are all ints here)
+     * nLevels * nJPR * 2.
+     *
+     * the 'Width' of the table would be nJPR*2, and the 'height' would be
+     * nlevels
+     */
 
     /**
- * This is called when a stack change ocurs.
- *
- * @param jsn The lexer
- * @param action The type of action, this can be PUSH or POP
- * @param state A pointer to the stack currently affected by the action
- * @param at A pointer to the position of the input buffer which triggered
- * this action.
- */
+     * This is called when a stack change ocurs.
+     *
+     * @param jsn The lexer
+     * @param action The type of action, this can be PUSH or POP
+     * @param state A pointer to the stack currently affected by the action
+     * @param at A pointer to the position of the input buffer which triggered
+     * this action.
+     */
     typedef void (
         *jsonsl_stack_callback)(jsonsl_t jsn, jsonsl_action_t action, struct jsonsl_state_st *state, jsonsl_char_t const *at);
 
     /**
- * This is called when an error is encountered.
- * Sometimes it's possible to 'erase' characters (by replacing them
- * with whitespace). If you think you have corrected the error, you
- * can return a true value, in which case the parser will backtrack
- * and try again.
- *
- * @param jsn The lexer
- * @param error The error which was thrown
- * @param state the current state
- * @param a pointer to the position of the input buffer which triggered
- * the error. Note that this is not const, this is because you have the
- * possibility of modifying the character in an attempt to correct the
- * error
- *
- * @return zero to bail, nonzero to try again (this only makes sense if
- * the input buffer has been modified by this callback)
- */
+     * This is called when an error is encountered.
+     * Sometimes it's possible to 'erase' characters (by replacing them
+     * with whitespace). If you think you have corrected the error, you
+     * can return a true value, in which case the parser will backtrack
+     * and try again.
+     *
+     * @param jsn The lexer
+     * @param error The error which was thrown
+     * @param state the current state
+     * @param a pointer to the position of the input buffer which triggered
+     * the error. Note that this is not const, this is because you have the
+     * possibility of modifying the character in an attempt to correct the
+     * error
+     *
+     * @return zero to bail, nonzero to try again (this only makes sense if
+     * the input buffer has been modified by this callback)
+     */
     typedef int (*jsonsl_error_callback)(jsonsl_t jsn, jsonsl_error_t error, struct jsonsl_state_st *state, jsonsl_char_t *at);
 
     struct jsonsl_st
@@ -454,9 +454,9 @@ typedef unsigned char jsonsl_uchar_t;
         unsigned int stopfl;
 
         /**
-     * This is the current position, relative to the beginning
-     * of the stream.
-     */
+         * This is the current position, relative to the beginning
+         * of the stream.
+         */
         size_t pos;
 
         /** This is the 'bytes' variable passed to feed() */
@@ -472,25 +472,25 @@ typedef unsigned char jsonsl_uchar_t;
         jsonsl_stack_callback action_callback;
 
         /**
-     * Do not invoke callbacks for objects deeper than this level.
-     * NOTE: This field establishes the lower bound for ignored callbacks,
-     * and is thus misnamed. `min_ignore_level` would actually make more
-     * sense, but we don't want to break API.
-     */
+         * Do not invoke callbacks for objects deeper than this level.
+         * NOTE: This field establishes the lower bound for ignored callbacks,
+         * and is thus misnamed. `min_ignore_level` would actually make more
+         * sense, but we don't want to break API.
+         */
         unsigned int max_callback_level;
 
         /** The error callback. Invoked when an error happens. Should not be NULL */
         jsonsl_error_callback error_callback;
 
         /* these are boolean flags you can modify. You will be called
-     * about notification for each of these types if the corresponding
-     * variable is true.
-     */
+         * about notification for each of these types if the corresponding
+         * variable is true.
+         */
 
         /**
-     * @name Callback Booleans.
-     * These determine whether a callback is to be invoked for certain types of objects
-     * @{*/
+         * @name Callback Booleans.
+         * These determine whether a callback is to be invoked for certain types of objects
+         * @{*/
 
         /** Boolean flag to enable or disable the invokcation for events on this type*/
         int call_SPECIAL;
@@ -501,13 +501,13 @@ typedef unsigned char jsonsl_uchar_t;
         /*@}*/
 
         /**
-     * @name u-Escape handling
-     * Special handling for the \\u-f00d type sequences. These are meant
-     * to be translated back into the corresponding octet(s).
-     * A special callback (if set) is invoked with *at=='u'. An application
-     * may wish to temporarily suspend parsing and handle the 'u-' sequence
-     * internally (or not).
-     */
+         * @name u-Escape handling
+         * Special handling for the \\u-f00d type sequences. These are meant
+         * to be translated back into the corresponding octet(s).
+         * A special callback (if set) is invoked with *at=='u'. An application
+         * may wish to temporarily suspend parsing and handle the 'u-' sequence
+         * internally (or not).
+         */
 
         /*@{*/
 
@@ -518,8 +518,8 @@ typedef unsigned char jsonsl_uchar_t;
         int call_UESCAPE;
 
         /** Boolean flag, whether we should return after encountering a u-escape:
-     * the callback is invoked and then we return if this is true
-     */
+         * the callback is invoked and then we return if this is true
+         */
         int return_UESCAPE;
         /*@}*/
 
@@ -549,55 +549,55 @@ typedef unsigned char jsonsl_uchar_t;
         /*@}*/
 
         /**
-     * This is the stack. Its upper bound is levels_max, or the
-     * nlevels argument passed to jsonsl_new. If you modify this structure,
-     * make sure that this member is last.
-     */
+         * This is the stack. Its upper bound is levels_max, or the
+         * nlevels argument passed to jsonsl_new. If you modify this structure,
+         * make sure that this member is last.
+         */
         struct jsonsl_state_st stack[1];
     };
 
     /**
- * Creates a new lexer object, with capacity for recursion up to nlevels
- *
- * @param nlevels maximum recursion depth
- */
+     * Creates a new lexer object, with capacity for recursion up to nlevels
+     *
+     * @param nlevels maximum recursion depth
+     */
     JSONSL_API
     jsonsl_t jsonsl_new(int nlevels);
 
     /**
- * Feeds data into the lexer.
- *
- * @param jsn the lexer object
- * @param bytes new data to be fed
- * @param nbytes size of new data
- */
+     * Feeds data into the lexer.
+     *
+     * @param jsn the lexer object
+     * @param bytes new data to be fed
+     * @param nbytes size of new data
+     */
     JSONSL_API
     void jsonsl_feed(jsonsl_t jsn, jsonsl_char_t const *bytes, size_t nbytes);
 
     /**
- * Resets the internal parser state. This does not free the parser
- * but does clean it internally, so that the next time feed() is called,
- * it will be treated as a new stream
- *
- * @param jsn the lexer
- */
+     * Resets the internal parser state. This does not free the parser
+     * but does clean it internally, so that the next time feed() is called,
+     * it will be treated as a new stream
+     *
+     * @param jsn the lexer
+     */
     JSONSL_API
     void jsonsl_reset(jsonsl_t jsn);
 
     /**
- * Frees the lexer, cleaning any allocated memory taken
- *
- * @param jsn the lexer
- */
+     * Frees the lexer, cleaning any allocated memory taken
+     *
+     * @param jsn the lexer
+     */
     JSONSL_API
     void jsonsl_destroy(jsonsl_t jsn);
 
     /**
- * Gets the 'parent' element, given the current one
- *
- * @param jsn the lexer
- * @param cur the current nest, which should be a struct jsonsl_nest_st
- */
+     * Gets the 'parent' element, given the current one
+     *
+     * @param jsn the lexer
+     * @param cur the current nest, which should be a struct jsonsl_nest_st
+     */
     static JSONSL_INLINE struct jsonsl_state_st *jsonsl_last_state(jsonsl_t const jsn, struct jsonsl_state_st const *state)
     {
         /* Don't complain about overriding array bounds */
@@ -612,29 +612,29 @@ typedef unsigned char jsonsl_uchar_t;
     }
 
     /**
- * Gets the state of the last fully consumed child of this parent. This is
- * only valid in the parent's POP callback.
- *
- * @param the lexer
- * @return A pointer to the child.
- */
+     * Gets the state of the last fully consumed child of this parent. This is
+     * only valid in the parent's POP callback.
+     *
+     * @param the lexer
+     * @return A pointer to the child.
+     */
     static JSONSL_INLINE struct jsonsl_state_st *jsonsl_last_child(jsonsl_t const jsn, struct jsonsl_state_st const *parent)
     {
         return jsn->stack + (parent->level + 1);
     }
 
     /**Call to instruct the parser to stop parsing and return. This is valid
- * only from within a callback */
+     * only from within a callback */
     static JSONSL_INLINE void jsonsl_stop(jsonsl_t jsn)
     {
         jsn->stopfl = 1;
     }
 
     /**
- * This enables receiving callbacks on all events. Doesn't do
- * anything special but helps avoid some boilerplate.
- * This does not touch the UESCAPE callbacks or flags.
- */
+     * This enables receiving callbacks on all events. Doesn't do
+     * anything special but helps avoid some boilerplate.
+     * This does not touch the UESCAPE callbacks or flags.
+     */
     static JSONSL_INLINE void jsonsl_enable_all_callbacks(jsonsl_t jsn)
     {
         jsn->call_HKEY = 1;
@@ -651,19 +651,19 @@ typedef unsigned char jsonsl_uchar_t;
 #define JSONSL_STATE_IS_CONTAINER(state) (state->type == JSONSL_T_OBJECT || state->type == JSONSL_T_LIST)
 
     /**
- * These two functions, dump a string representation
- * of the error or type, respectively. They will never
- * return NULL
- */
+     * These two functions, dump a string representation
+     * of the error or type, respectively. They will never
+     * return NULL
+     */
     JSONSL_API
     char const *jsonsl_strerror(jsonsl_error_t err);
     JSONSL_API
     char const *jsonsl_strtype(jsonsl_type_t jt);
 
     /**
- * Dumps global metrics to the screen. This is a noop unless
- * jsonsl was compiled with JSONSL_USE_METRICS
- */
+     * Dumps global metrics to the screen. This is a noop unless
+     * jsonsl was compiled with JSONSL_USE_METRICS
+     */
     JSONSL_API
     void jsonsl_dump_global_metrics(void);
 
@@ -751,8 +751,8 @@ typedef unsigned char jsonsl_uchar_t;
         jsonsl_jpr_type_t ptype;
 
         /** Set this to true to enforce type checking between dict keys and array
-     * indices. jsonsl_jpr_match() will return TYPE_MISMATCH if it detects
-     * that an array index is actually a child of a dictionary. */
+         * indices. jsonsl_jpr_match() will return TYPE_MISMATCH if it detects
+         * that an array index is actually a child of a dictionary. */
         short is_arridx;
 
         /* Extra fields (for more advanced searches. Default is empty) */
@@ -766,7 +766,7 @@ typedef unsigned char jsonsl_uchar_t;
         size_t ncomponents;
 
         /**Type of the match to be expected. If nonzero, will be compared against
-     * the actual type */
+         * the actual type */
         unsigned match_type;
 
         /** Base of allocated string for components */
@@ -778,41 +778,41 @@ typedef unsigned char jsonsl_uchar_t;
     };
 
     /**
- * Create a new JPR object.
- *
- * @param path the JSONPointer path specification.
- * @param errp a pointer to a jsonsl_error_t. If this function returns NULL,
- * then more details will be in this variable.
- *
- * @return a new jsonsl_jpr_t object, or NULL on error.
- */
+     * Create a new JPR object.
+     *
+     * @param path the JSONPointer path specification.
+     * @param errp a pointer to a jsonsl_error_t. If this function returns NULL,
+     * then more details will be in this variable.
+     *
+     * @return a new jsonsl_jpr_t object, or NULL on error.
+     */
     JSONSL_API
     jsonsl_jpr_t jsonsl_jpr_new(char const *path, jsonsl_error_t *errp);
 
     /**
- * Destroy a JPR object
- */
+     * Destroy a JPR object
+     */
     JSONSL_API
     void jsonsl_jpr_destroy(jsonsl_jpr_t jpr);
 
     /**
- * Match a JSON object against a type and specific level
- *
- * @param jpr the JPR object
- * @param parent_type the type of the parent (should be T_LIST or T_OBJECT)
- * @param parent_level the level of the parent
- * @param key the 'key' of the child. If the parent is an array, this should be
- * empty.
- * @param nkey - the length of the key. If the parent is an array (T_LIST), then
- * this should be the current index.
- *
- * NOTE: The key of the child means any kind of associative data related to the
- * element. Thus: <<< { "foo" : [ >>,
- * the opening array's key is "foo".
- *
- * @return a status constant. This indicates whether a match was excluded, possible,
- * or successful.
- */
+     * Match a JSON object against a type and specific level
+     *
+     * @param jpr the JPR object
+     * @param parent_type the type of the parent (should be T_LIST or T_OBJECT)
+     * @param parent_level the level of the parent
+     * @param key the 'key' of the child. If the parent is an array, this should be
+     * empty.
+     * @param nkey - the length of the key. If the parent is an array (T_LIST), then
+     * this should be the current index.
+     *
+     * NOTE: The key of the child means any kind of associative data related to the
+     * element. Thus: <<< { "foo" : [ >>,
+     * the opening array's key is "foo".
+     *
+     * @return a status constant. This indicates whether a match was excluded, possible,
+     * or successful.
+     */
     JSONSL_API
     jsonsl_jpr_match_t jsonsl_jpr_match(
         jsonsl_jpr_t jpr,
@@ -822,30 +822,30 @@ typedef unsigned char jsonsl_uchar_t;
         size_t nkey);
 
     /**
- * Alternate matching algorithm. This matching algorithm does not use
- * JSONPointer but relies on a more structured searching mechanism. It
- * assumes that there is a clear distinction between array indices and
- * object keys. In this case, the jsonsl_path_component_st::ptype should
- * be set to @ref JSONSL_PATH_NUMERIC for an array index (the
- * jsonsl_path_comonent_st::is_arridx field will be removed in a future
- * version).
- *
- * @param jpr The path
- * @param parent The parent structure. Can be NULL if this is the root object
- * @param child The child structure. Should not be NULL
- * @param key Object key, if an object
- * @param nkey Length of object key
- * @return Status constant if successful
- *
- * @note
- * For successful matching, both the key and the path itself should be normalized
- * to contain 'proper' utf8 sequences rather than utf16 '\uXXXX' escapes. This
- * should currently be done in the application. Another version of this function
- * may use a temporary buffer in such circumstances (allocated by the application).
- *
- * Since this function also checks the state of the child, it should only
- * be called on PUSH callbacks, and not POP callbacks
- */
+     * Alternate matching algorithm. This matching algorithm does not use
+     * JSONPointer but relies on a more structured searching mechanism. It
+     * assumes that there is a clear distinction between array indices and
+     * object keys. In this case, the jsonsl_path_component_st::ptype should
+     * be set to @ref JSONSL_PATH_NUMERIC for an array index (the
+     * jsonsl_path_comonent_st::is_arridx field will be removed in a future
+     * version).
+     *
+     * @param jpr The path
+     * @param parent The parent structure. Can be NULL if this is the root object
+     * @param child The child structure. Should not be NULL
+     * @param key Object key, if an object
+     * @param nkey Length of object key
+     * @return Status constant if successful
+     *
+     * @note
+     * For successful matching, both the key and the path itself should be normalized
+     * to contain 'proper' utf8 sequences rather than utf16 '\uXXXX' escapes. This
+     * should currently be done in the application. Another version of this function
+     * may use a temporary buffer in such circumstances (allocated by the application).
+     *
+     * Since this function also checks the state of the child, it should only
+     * be called on PUSH callbacks, and not POP callbacks
+     */
     JSONSL_API
     jsonsl_jpr_match_t jsonsl_path_match(
         jsonsl_jpr_t jpr,
@@ -855,44 +855,44 @@ typedef unsigned char jsonsl_uchar_t;
         size_t nkey);
 
     /**
- * Associate a set of JPR objects with a lexer instance.
- * This should be called before the lexer has been fed any data (and
- * behavior is undefined if you don't adhere to this).
- *
- * After using this function, you may subsequently call match_state() on
- * given states (presumably from within the callbacks).
- *
- * Note that currently the first JPR is the quickest and comes
- * pre-allocated with the state structure. Further JPR objects
- * are chained.
- *
- * @param jsn The lexer
- * @param jprs An array of jsonsl_jpr_t objects
- * @param njprs How many elements in the jprs array.
- */
+     * Associate a set of JPR objects with a lexer instance.
+     * This should be called before the lexer has been fed any data (and
+     * behavior is undefined if you don't adhere to this).
+     *
+     * After using this function, you may subsequently call match_state() on
+     * given states (presumably from within the callbacks).
+     *
+     * Note that currently the first JPR is the quickest and comes
+     * pre-allocated with the state structure. Further JPR objects
+     * are chained.
+     *
+     * @param jsn The lexer
+     * @param jprs An array of jsonsl_jpr_t objects
+     * @param njprs How many elements in the jprs array.
+     */
     JSONSL_API
     void jsonsl_jpr_match_state_init(jsonsl_t jsn, jsonsl_jpr_t *jprs, size_t njprs);
 
     /**
- * This follows the same semantics as the normal match,
- * except we infer parent and type information from the relevant state objects.
- * The match status (for all possible JPR objects) is set in the *out parameter.
- *
- * If a match has succeeded, then its JPR object will be returned. In all other
- * instances, NULL is returned;
- *
- * @param jpr The jsonsl_jpr_t handle
- * @param state The jsonsl_state_st which is a candidate
- * @param key The hash key (if applicable, can be NULL if parent is list)
- * @param nkey Length of hash key (if applicable, can be zero if parent is list)
- * @param out A pointer to a jsonsl_jpr_match_t. This will be populated with
- * the match result
- *
- * @return If a match was completed in full, then the JPR object containing
- * the matching path will be returned. Otherwise, the return is NULL (note, this
- * does not mean matching has failed, it can still be part of the match: check
- * the out parameter).
- */
+     * This follows the same semantics as the normal match,
+     * except we infer parent and type information from the relevant state objects.
+     * The match status (for all possible JPR objects) is set in the *out parameter.
+     *
+     * If a match has succeeded, then its JPR object will be returned. In all other
+     * instances, NULL is returned;
+     *
+     * @param jpr The jsonsl_jpr_t handle
+     * @param state The jsonsl_state_st which is a candidate
+     * @param key The hash key (if applicable, can be NULL if parent is list)
+     * @param nkey Length of hash key (if applicable, can be zero if parent is list)
+     * @param out A pointer to a jsonsl_jpr_match_t. This will be populated with
+     * the match result
+     *
+     * @return If a match was completed in full, then the JPR object containing
+     * the matching path will be returned. Otherwise, the return is NULL (note, this
+     * does not mean matching has failed, it can still be part of the match: check
+     * the out parameter).
+     */
     JSONSL_API
     jsonsl_jpr_t jsonsl_jpr_match_state(
         jsonsl_t jsn,
@@ -902,69 +902,69 @@ typedef unsigned char jsonsl_uchar_t;
         jsonsl_jpr_match_t *out);
 
     /**
- * Cleanup any memory allocated and any states set by
- * match_state_init() and match_state()
- * @param jsn The lexer
- */
+     * Cleanup any memory allocated and any states set by
+     * match_state_init() and match_state()
+     * @param jsn The lexer
+     */
     JSONSL_API
     void jsonsl_jpr_match_state_cleanup(jsonsl_t jsn);
 
     /**
- * Return a string representation of the match result returned by match()
- */
+     * Return a string representation of the match result returned by match()
+     */
     JSONSL_API
     char const *jsonsl_strmatchtype(jsonsl_jpr_match_t match);
 
     /* @}*/
 
     /**
- * Utility function to convert escape sequences into their original form.
- *
- * The decoders I've sampled do not seem to specify a standard behavior of what
- * to escape/unescape.
- *
- * RFC 4627 Mandates only that the quoute, backslash, and ASCII control
- * characters (0x00-0x1f) be escaped. It is often common for applications
- * to escape a '/' - however this may also be desired behavior. the JSON
- * spec is not clear on this, and therefore jsonsl leaves it up to you.
- *
- * Additionally, sometimes you may wish to _normalize_ JSON. This is specifically
- * true when dealing with 'u-escapes' which can be expressed perfectly fine
- * as utf8. One use case for normalization is JPR string comparison, in which
- * case two effectively equivalent strings may not match because one is using
- * u-escapes and the other proper utf8. To normalize u-escapes only, pass in
- * an empty `toEscape` table, enabling only the `u` index.
- *
- * @param in The input string.
- * @param out An allocated output (should be the same size as in)
- * @param len the size of the buffer
- * @param toEscape - A sparse array of characters to unescape. Characters
- * which are not present in this array, e.g. toEscape['c'] == 0 will be
- * ignored and passed to the output in their original form.
- * @param oflags If not null, and a \uXXXX escape expands to a non-ascii byte,
- * then this variable will have the SPECIALf_NONASCII flag on.
- *
- * @param err A pointer to an error variable. If an error ocurrs, it will be
- * set in this variable
- * @param errat If not null and an error occurs, this will be set to point
- * to the position within the string at which the offending character was
- * encountered.
- *
- * @return The effective size of the output buffer.
- *
- * @note
- * This function now encodes the UTF8 equivalents of utf16 escapes (i.e.
- * 'u-escapes'). Previously this would encode the escapes as utf16 literals,
- * which while still correct in some sense was confusing for many (especially
- * considering that the inputs were variations of char).
- *
- * @note
- * The output buffer will never be larger than the input buffer, since
- * standard escape sequences (i.e. '\t') occupy two bytes in the source
- * but only one byte (when unescaped) in the output. Likewise u-escapes
- * (i.e. \uXXXX) will occupy six bytes in the source, but at the most
- * two bytes when escaped.
- */
+     * Utility function to convert escape sequences into their original form.
+     *
+     * The decoders I've sampled do not seem to specify a standard behavior of what
+     * to escape/unescape.
+     *
+     * RFC 4627 Mandates only that the quoute, backslash, and ASCII control
+     * characters (0x00-0x1f) be escaped. It is often common for applications
+     * to escape a '/' - however this may also be desired behavior. the JSON
+     * spec is not clear on this, and therefore jsonsl leaves it up to you.
+     *
+     * Additionally, sometimes you may wish to _normalize_ JSON. This is specifically
+     * true when dealing with 'u-escapes' which can be expressed perfectly fine
+     * as utf8. One use case for normalization is JPR string comparison, in which
+     * case two effectively equivalent strings may not match because one is using
+     * u-escapes and the other proper utf8. To normalize u-escapes only, pass in
+     * an empty `toEscape` table, enabling only the `u` index.
+     *
+     * @param in The input string.
+     * @param out An allocated output (should be the same size as in)
+     * @param len the size of the buffer
+     * @param toEscape - A sparse array of characters to unescape. Characters
+     * which are not present in this array, e.g. toEscape['c'] == 0 will be
+     * ignored and passed to the output in their original form.
+     * @param oflags If not null, and a \uXXXX escape expands to a non-ascii byte,
+     * then this variable will have the SPECIALf_NONASCII flag on.
+     *
+     * @param err A pointer to an error variable. If an error ocurrs, it will be
+     * set in this variable
+     * @param errat If not null and an error occurs, this will be set to point
+     * to the position within the string at which the offending character was
+     * encountered.
+     *
+     * @return The effective size of the output buffer.
+     *
+     * @note
+     * This function now encodes the UTF8 equivalents of utf16 escapes (i.e.
+     * 'u-escapes'). Previously this would encode the escapes as utf16 literals,
+     * which while still correct in some sense was confusing for many (especially
+     * considering that the inputs were variations of char).
+     *
+     * @note
+     * The output buffer will never be larger than the input buffer, since
+     * standard escape sequences (i.e. '\t') occupy two bytes in the source
+     * but only one byte (when unescaped) in the output. Likewise u-escapes
+     * (i.e. \uXXXX) will occupy six bytes in the source, but at the most
+     * two bytes when escaped.
+     */
     JSONSL_API
     size_t jsonsl_util_unescape_ex(
         char const *in,
