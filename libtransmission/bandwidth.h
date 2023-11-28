@@ -229,4 +229,9 @@ static inline bool tr_bandwidthAreParentLimitsHonored(tr_bandwidth const *bandwi
 
 void tr_bandwidthSetPeer(tr_bandwidth *bandwidth, struct tr_peerIo *peerIo);
 
+static inline bool tr_isPriority(tr_priority_t p)
+{
+    return p == TR_PRI_LOW || p == TR_PRI_NORMAL || p == TR_PRI_HIGH;
+}
+
 /* @} */

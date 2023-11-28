@@ -3741,6 +3741,10 @@ static uint64_t getPeerCandidateScore(tr_torrent const *tor, struct peer_atom co
     case TR_PRI_LOW:
         i = 2;
         break;
+
+    default:
+        TR_ASSERT_MSG(false, "invalid priority");
+        break;
     }
 
     score = addValToKey(score, 4, i);
