@@ -95,6 +95,7 @@ void tr_bandwidthConstruct(tr_bandwidth *b, tr_session *session, tr_bandwidth *p
     b->uniqueKey = uniqueKey++;
     b->band[TR_UP].honorParentLimits = true;
     b->band[TR_DOWN].honorParentLimits = true;
+    b->priority = TR_PRI_NORMAL;
     tr_bandwidthSetParent(b, parent);
 }
 
@@ -148,7 +149,7 @@ static void allocateBandwidth(
     TR_ASSERT(tr_isBandwidth(b));
     TR_ASSERT(tr_isDirection(dir));
 
-    tr_priority_t const priority = MAX(parent_priority, b->priority);
+    tr_priority_t const priority = MIN(parent_priority, b->priority);
 
     /* set the available bandwidth */
     if (b->band[dir].isLimited) {
@@ -158,6 +159,7 @@ static void allocateBandwidth(
 
     /* add this bandwidth's peer, if any, to the peer pool */
     if (b->peer != NULL) {
+        TR_ASSERT(tr_isPriority(priority));
         b->peer->priority = priority;
         tr_ptrArrayAppend(peer_pool, b->peer);
     }
@@ -219,7 +221,7 @@ void tr_bandwidthAllocate(tr_bandwidth *b, tr_direction dir, unsigned int period
     /* allocateBandwidth () is a helper function with two purposes:
      * 1. allocate bandwidth to b and its subtree
      * 2. accumulate an array of all the peerIos from b and its subtree. */
-    allocateBandwidth(b, TR_PRI_LOW, dir, period_msec, &tmp);
+    allocateBandwidth(b, TR_PRI_NONE, dir, period_msec, &tmp);
     peers = (struct tr_peerIo **)tr_ptrArrayBase(&tmp);
     peerCount = tr_ptrArraySize(&tmp);
 
@@ -236,8 +238,13 @@ void tr_bandwidthAllocate(tr_bandwidth *b, tr_direction dir, unsigned int period
         case TR_PRI_NORMAL:
             tr_ptrArrayAppend(&normal, io); /* fall through */
 
-        default:
+        case TR_PRI_LOW:
             tr_ptrArrayAppend(&low, io);
+            break;
+
+        default:
+            TR_ASSERT_MSG(false, "invalid priority");
+            break;
         }
     }
 
