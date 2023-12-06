@@ -234,7 +234,7 @@ void tr_bandwidthAllocate(tr_bandwidth* b, tr_direction dir, unsigned int period
     /* allocateBandwidth () is a helper function with two purposes:
      * 1. allocate bandwidth to b and its subtree
      * 2. accumulate an array of all the peerIos from b and its subtree. */
-    allocateBandwidth(b, TR_PRI_NONE, dir, period_msec, &tmp);
+    allocateBandwidth(b, TR_PRI_MAX, dir, period_msec, &tmp);
     peers = (struct tr_peerIo**)tr_ptrArrayBase(&tmp);
     peerCount = tr_ptrArraySize(&tmp);
 
