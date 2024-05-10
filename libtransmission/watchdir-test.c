@@ -26,10 +26,7 @@ typedef struct callback_data {
     tr_watchdir_status result;
 } callback_data;
 
-#define CB_DATA_STATIC_INIT \
-    { \
-        NULL, NULL, 0 \
-    }
+#define CB_DATA_STATIC_INIT { NULL, NULL, 0 }
 
 static struct event_base *ev_base = NULL;
 

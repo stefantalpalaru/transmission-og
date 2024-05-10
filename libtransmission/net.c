@@ -46,7 +46,7 @@
 #include "utils.h" /* tr_time(), tr_logAddDebug() */
 
 #ifndef IN_MULTICAST
-#define IN_MULTICAST(a) (((a)&0xf0000000) == 0xe0000000)
+#define IN_MULTICAST(a) (((a) & 0xf0000000) == 0xe0000000)
 #endif
 
 tr_address const tr_in6addr_any = {

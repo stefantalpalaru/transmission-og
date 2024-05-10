@@ -8,6 +8,7 @@ AlignOperands: false
 AlignTrailingComments: false
 AllowAllArgumentsOnNextLine: false
 AllowAllParametersOfDeclarationOnNextLine: false
+AllowShortCompoundRequirementOnASingleLine: true
 AllowShortFunctionsOnASingleLine: None
 AllowShortIfStatementsOnASingleLine: false
 AllowShortLambdasOnASingleLine: Inline
@@ -37,6 +38,7 @@ PenaltyBreakOpenParenthesis: 1
 PenaltyReturnTypeOnItsOwnLine: 1000
 PointerAlignment: Right
 ReflowComments: true
+SkipMacroDefinitionBody: true
 SortIncludes: false
 SpaceAfterCStyleCast: false
 SpacesBeforeTrailingComments: 1

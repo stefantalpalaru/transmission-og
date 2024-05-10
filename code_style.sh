@@ -40,10 +40,10 @@ find_cfiles() {
        ! \( $(get_find_path_args $(trim_comments .clang-format-ignore)) \) "$@"
 }
 
-# We're targeting clang-format version 16 and other versions give slightly
-# different results, so prefer `clang-format-16` if it's installed.
+# We're targeting clang-format version 18 and other versions give slightly
+# different results, so prefer `clang-format-18` if it's installed.
 clang_format_exe_names=(
-  'clang-format-16'
+  'clang-format-18'
   'clang-format'
 )
 for name in ${clang_format_exe_names[@]}; do
