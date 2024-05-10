@@ -440,15 +440,19 @@ static tr_socket_t tr_netBindTCPImpl(tr_address const *addr, tr_port port, bool 
         tr_logAddDebug("Bound socket %" PRIdMAX " to port %d on %s", (intmax_t)fd, port, tr_address_to_string(addr));
     }
 
-#ifdef TCP_FASTOPEN
-
+// for macOS: https://github.com/unbit/uwsgi/pull/966
 #ifndef SOL_TCP
 #define SOL_TCP IPPROTO_TCP
 #endif
 
+#ifdef TCP_FASTOPEN
     optval = 5;
     setsockopt(fd, SOL_TCP, TCP_FASTOPEN, (void const *)&optval, sizeof(optval));
+#endif
 
+#ifdef TCP_NODELAY
+    optval = 1;
+    setsockopt(fd, SOL_TCP, TCP_NODELAY, (void const *)&optval, sizeof(optval));
 #endif
 
     if (listen(fd, 128) == -1) {
