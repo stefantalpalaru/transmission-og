@@ -17,8 +17,9 @@ jobs:
             cpu: amd64
           - os: linux
             cpu: i386
-          - os: macos
-            cpu: amd64
+          ## non-free runner image:
+          #- os: macos
+            #cpu: amd64
           - os: macos
             cpu: arm64
           - os: windows
@@ -30,11 +31,12 @@ jobs:
               os: linux
             builder: ubuntu-24.04
             shell: bash
-          - target:
-              os: macos
-              cpu: amd64
-            builder: macos-latest-large
-            shell: bash
+          ## non-free runner image:
+          #- target:
+              #os: macos
+              #cpu: amd64
+            #builder: macos-latest-large
+            #shell: bash
           - target:
               os: macos
               cpu: arm64
