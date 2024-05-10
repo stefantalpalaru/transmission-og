@@ -2,8 +2,9 @@
 
 ### All Platforms
 - Set up a Transifex project to manage translations ([#20](https://github.com/stefantalpalaru/transmission-og/pull/20))
-- use clang-format to automate code formatting ([#22](https://github.com/stefantalpalaru/transmission-og/pull/22))
+- Use clang-format to automate code formatting ([#22](https://github.com/stefantalpalaru/transmission-og/pull/22))
 - Windows: remove MSI installer ([#24](https://github.com/stefantalpalaru/transmission-og/pull/24))
+- Use TCP\_NODELAY for TCP connections ([#26](https://github.com/stefantalpalaru/transmission-og/pull/26))
 
 ### Mac Client
 - Update Sparkle to 2.6.2, to allow building on ARM64 macOS ([#25](https://github.com/stefantalpalaru/transmission-og/pull/25))
