@@ -19,6 +19,8 @@ jobs:
             cpu: i386
           - os: macos
             cpu: amd64
+          - os: macos
+            cpu: arm64
           - os: windows
             cpu: amd64
         build-system: [cmake, autotools]
@@ -26,10 +28,16 @@ jobs:
         include:
           - target:
               os: linux
-            builder: ubuntu-22.04
+            builder: ubuntu-24.04
             shell: bash
           - target:
               os: macos
+              cpu: amd64
+            builder: macos-latest-large
+            shell: bash
+          - target:
+              os: macos
+              cpu: arm64
             builder: macos-latest
             shell: bash
           - target:
@@ -45,7 +53,7 @@ jobs:
     runs-on: ${{ matrix.builder }}
     steps:
       - name: Git checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: 'recursive'
 
@@ -76,11 +84,11 @@ jobs:
             ;;
           "macOS")
             NCPU="$(sysctl -n hw.logicalcpu)"
-            CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/gettext/include"
-            LDFLAGS="${LDFLAGS} -L/usr/local/opt/gettext/lib"
-            echo "/usr/local/opt/qt@5/bin" >> ${GITHUB_PATH}
-            echo "/usr/local/opt/gettext/bin" >> ${GITHUB_PATH}
-            echo "PKG_CONFIG_PATH=/usr/local/opt/qt@5/lib/pkgconfig:/usr/local/opt/openssl@1.1/lib/pkgconfig" >> ${GITHUB_ENV}
+            CPPFLAGS="${CPPFLAGS} -I/opt/homebrew/opt/gettext/include"
+            LDFLAGS="${LDFLAGS} -L/opt/homebrew/opt/gettext/lib"
+            echo "/opt/homebrew/opt/qt@5/bin" >> ${GITHUB_PATH}
+            echo "/opt/homebrew/opt/gettext/bin" >> ${GITHUB_PATH}
+            echo "PKG_CONFIG_PATH=/opt/homebrew/opt/qt@5/lib/pkgconfig:/opt/homebrew/opt/openssl@1.1/lib/pkgconfig" >> ${GITHUB_ENV}
             echo "MACOSX_DEPLOYMENT_TARGET=12.0" >> ${GITHUB_ENV}
             ;;
           "Windows")
@@ -149,7 +157,7 @@ jobs:
         if: runner.os == 'macOS'
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '13' # 14 seems buggy: https://github.com/actions/runner-images/issues/6642
+          xcode-version: '15' # 14 seems buggy: https://github.com/actions/runner-images/issues/6642
 
       - name: Install build dependencies (macOS)
         if: runner.os == 'macOS'
@@ -239,7 +247,7 @@ jobs:
             elif [[ "${{ runner.os }}" == "macOS" ]]; then
               CMAKE_ARGS+=(
                 -DENABLE_MAC=ON
-                -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl
+                -DOPENSSL_ROOT_DIR=/opt/homebrew/opt/openssl
               )
             elif [[ "${{ runner.os }}" == "Linux" ]]; then
               if [[ "${{ matrix.libs }}" == "system" ]]; then
@@ -294,8 +302,8 @@ jobs:
               fi
             elif [[ "${{ runner.os }}" == "macOS" ]]; then
               if [[ "${{ matrix.libs }}" == "system" ]]; then
-                CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/miniupnpc/include"
-                LDFLAGS="${LDFLAGS} -L/usr/local/opt/miniupnpc/lib"
+                CPPFLAGS="${CPPFLAGS} -I/opt/homebrew/opt/miniupnpc/include"
+                LDFLAGS="${LDFLAGS} -L/opt/homebrew/opt/miniupnpc/lib"
               fi
             elif [[ "${{ runner.os }}" == "Linux" ]]; then
               if [[ "${{ matrix.libs }}" == "system" ]]; then

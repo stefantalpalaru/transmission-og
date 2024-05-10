@@ -33,10 +33,7 @@ typedef tr_voidptr_compare_func PtrArrayCompareFunc;
 
 typedef void (*PtrArrayForeachFunc)(void *);
 
-#define TR_PTR_ARRAY_INIT_STATIC \
-    { \
-        NULL, 0, 0 \
-    }
+#define TR_PTR_ARRAY_INIT_STATIC { NULL, 0, 0 }
 
 extern tr_ptrArray const TR_PTR_ARRAY_INIT;
 

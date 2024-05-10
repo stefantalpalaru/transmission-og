@@ -20,10 +20,7 @@ struct tr_key_struct {
     size_t len;
 };
 
-#define Q(name) \
-    { \
-        "" name "", sizeof("" name "") - 1 \
-    }
+#define Q(name) { "" name "", sizeof("" name "") - 1 }
 
 static struct tr_key_struct const my_static[] = {
     Q(""),

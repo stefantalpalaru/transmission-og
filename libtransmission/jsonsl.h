@@ -200,56 +200,32 @@ typedef enum {
  */
 #define JSONSL_XERR \
     /* Trailing garbage characters */ \
-    X(GARBAGE_TRAILING) \
-    /* We were expecting a 'special' (numeric, true, false, null) */ \
-    X(SPECIAL_EXPECTED) \
-    /* The 'special' value was incomplete */ \
-    X(SPECIAL_INCOMPLETE) \
-    /* Found a stray token */ \
-    X(STRAY_TOKEN) \
-    /* We were expecting a token before this one */ \
-    X(MISSING_TOKEN) \
-    /* Cannot insert because the container is not ready */ \
-    X(CANT_INSERT) \
-    /* Found a '\' outside a string */ \
-    X(ESCAPE_OUTSIDE_STRING) \
-    /* Found a ':' outside of a hash */ \
-    X(KEY_OUTSIDE_OBJECT) \
-    /* found a string outside of a container */ \
-    X(STRING_OUTSIDE_CONTAINER) \
-    /* Found a null byte in middle of string */ \
-    X(FOUND_NULL_BYTE) \
-    /* Current level exceeds limit specified in constructor */ \
-    X(LEVELS_EXCEEDED) \
-    /* Got a } as a result of an opening [ or vice versa */ \
-    X(BRACKET_MISMATCH) \
-    /* We expected a key, but got something else instead */ \
-    X(HKEY_EXPECTED) \
-    /* We got an illegal control character (bad whitespace or something) */ \
-    X(WEIRD_WHITESPACE) \
-    /* Found a \u-escape, but there were less than 4 following hex digits */ \
-    X(UESCAPE_TOOSHORT) \
-    /* Invalid two-character escape */ \
-    X(ESCAPE_INVALID) \
-    /* Trailing comma */ \
-    X(TRAILING_COMMA) \
-    /* An invalid number was passed in a numeric field */ \
-    X(INVALID_NUMBER) \
-    /* Value is missing for object */ \
-    X(VALUE_EXPECTED) \
-    /* The following are for JPR Stuff */ \
+    X(GARBAGE_TRAILING) /* We were expecting a 'special' (numeric, true, false, null) */ \
+    X(SPECIAL_EXPECTED) /* The 'special' value was incomplete */ \
+    X(SPECIAL_INCOMPLETE) /* Found a stray token */ \
+    X(STRAY_TOKEN) /* We were expecting a token before this one */ \
+    X(MISSING_TOKEN) /* Cannot insert because the container is not ready */ \
+    X(CANT_INSERT) /* Found a '\' outside a string */ \
+    X(ESCAPE_OUTSIDE_STRING) /* Found a ':' outside of a hash */ \
+    X(KEY_OUTSIDE_OBJECT) /* found a string outside of a container */ \
+    X(STRING_OUTSIDE_CONTAINER) /* Found a null byte in middle of string */ \
+    X(FOUND_NULL_BYTE) /* Current level exceeds limit specified in constructor */ \
+    X(LEVELS_EXCEEDED) /* Got a } as a result of an opening [ or vice versa */ \
+    X(BRACKET_MISMATCH) /* We expected a key, but got something else instead */ \
+    X(HKEY_EXPECTED) /* We got an illegal control character (bad whitespace or something) */ \
+    X(WEIRD_WHITESPACE) /* Found a \u-escape, but there were less than 4 following hex digits */ \
+    X(UESCAPE_TOOSHORT) /* Invalid two-character escape */ \
+    X(ESCAPE_INVALID) /* Trailing comma */ \
+    X(TRAILING_COMMA) /* An invalid number was passed in a numeric field */ \
+    X(INVALID_NUMBER) /* Value is missing for object */ \
+    X(VALUE_EXPECTED) /* The following are for JPR Stuff */ \
 \
-    /* Found a literal '%' but it was only followed by a single valid hex digit */ \
-    X(PERCENT_BADHEX) \
-    /* jsonpointer URI is malformed '/' */ \
-    X(JPR_BADPATH) \
-    /* Duplicate slash */ \
-    X(JPR_DUPSLASH) \
-    /* No leading root */ \
-    X(JPR_NOROOT) \
-    /* Allocation failure */ \
-    X(ENOMEM) \
-    /* Invalid unicode codepoint detected (in case of escapes) */ \
+        /* Found a literal '%' but it was only followed by a single valid hex digit */ \
+    X(PERCENT_BADHEX) /* jsonpointer URI is malformed '/' */ \
+    X(JPR_BADPATH) /* Duplicate slash */ \
+    X(JPR_DUPSLASH) /* No leading root */ \
+    X(JPR_NOROOT) /* Allocation failure */ \
+    X(ENOMEM) /* Invalid unicode codepoint detected (in case of escapes) */ \
     X(INVALID_CODEPOINT)
 
 typedef enum {
