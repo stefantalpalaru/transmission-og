@@ -25,7 +25,7 @@
 
 #include "units.h"
 
-#define MY_NAME "transmission-show"
+#define MY_NAME "transmission-og-show"
 #define TIMEOUT_SECS 30
 
 static tr_option options[] = {

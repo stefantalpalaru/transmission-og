@@ -30,7 +30,7 @@
 #include <libtransmission/variant.h>
 #include <libtransmission/version.h>
 
-#define MY_NAME "transmission-remote"
+#define MY_NAME "transmission-og-remote"
 #define DEFAULT_HOST "localhost"
 #define DEFAULT_PORT atoi(TR_DEFAULT_RPC_PORT_STR)
 #define DEFAULT_URL TR_DEFAULT_RPC_URL_STR "rpc/"

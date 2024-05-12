@@ -19,7 +19,7 @@
 #include <libtransmission/variant.h>
 #include <libtransmission/version.h>
 
-#define MY_NAME "transmission-edit"
+#define MY_NAME "transmission-og-edit"
 
 static int fileCount = 0;
 static bool showVersion = false;

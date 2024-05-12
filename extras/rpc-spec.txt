@@ -15,7 +15,7 @@
 
 1.2  Resources
 
-   The command-line utility "transmission-remote" uses this RPC API.
+   The command-line utility "transmission-og-remote" uses this RPC API.
    Several developers have reported using its --debug JSON output as
    a reference when developing/debugging their own code.
 

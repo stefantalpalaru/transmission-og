@@ -48,7 +48,7 @@ static void sd_notifyf(int status UNUSED, char const *fmt UNUSED, ...)
 
 #include "daemon.h"
 
-#define MY_NAME "transmission-daemon"
+#define MY_NAME "transmission-og-daemon"
 
 #define MEM_K 1024
 #define MEM_K_STR "KiB"
@@ -89,7 +89,7 @@ static char const *getUsage(void)
            "A fast and easy BitTorrent client\n"
            "\n" MY_NAME
            " is a headless Transmission OG session\n"
-           "that can be controlled via transmission-remote\n"
+           "that can be controlled via transmission-og-remote\n"
            "or the web interface.\n"
            "\n"
            "Usage: " MY_NAME " [options]";

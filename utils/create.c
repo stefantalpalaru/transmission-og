@@ -19,7 +19,7 @@
 
 #include "units.h"
 
-#define MY_NAME "transmission-create"
+#define MY_NAME "transmission-og-create"
 
 #define MAX_TRACKERS 128
 static uint32_t const KiB = 1024;
