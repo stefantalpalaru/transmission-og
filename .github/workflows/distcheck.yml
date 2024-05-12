@@ -9,6 +9,8 @@ on:
 # It fails on Windows in "Making check in po", after 80+ minutes. Cannot
 # replicate locally.
 
+# It sometimes fails on ARM64 macOS with "make[4]: *** read jobs pipe: Resource temporarily unavailable.  Stop."
+
 jobs:
   distcheck:
     timeout-minutes: 120
@@ -24,10 +26,10 @@ jobs:
               os: linux
             builder: ubuntu-22.04
             shell: bash
-          - target:
-              os: macos
-            builder: macos-latest
-            shell: bash
+          #- target:
+              #os: macos
+            #builder: macos-latest
+            #shell: bash
           #- target:
               #os: windows
             #builder: windows-2019
@@ -126,25 +128,25 @@ jobs:
             pkg-config \
             qt@5
 
-      #- name: MSYS2 (Windows amd64)
-        #if: runner.os == 'Windows'
-        #uses: msys2/setup-msys2@v2
-        #with:
-          #path-type: inherit
-          #install: >-
-            #base-devel
-            #intltool
-            #mingw-w64-x86_64-cmake
-            #mingw-w64-x86_64-curl
-            #mingw-w64-x86_64-gtk3
-            #mingw-w64-x86_64-libnotify
-            #mingw-w64-x86_64-openssl
-            #mingw-w64-x86_64-qt5-base
-            #mingw-w64-x86_64-qt5-tools
-            #mingw-w64-x86_64-qt5-winextras
-            #mingw-w64-x86_64-toolchain
-            #mingw-w64-x86_64-xz
-            #mingw-w64-x86_64-zlib
+      - name: MSYS2 (Windows amd64)
+        if: runner.os == 'Windows'
+        uses: msys2/setup-msys2@v2
+        with:
+          path-type: inherit
+          install: >-
+            base-devel
+            intltool
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-curl
+            mingw-w64-x86_64-gtk3
+            mingw-w64-x86_64-libnotify
+            mingw-w64-x86_64-openssl
+            mingw-w64-x86_64-qt5-base
+            mingw-w64-x86_64-qt5-tools
+            mingw-w64-x86_64-qt5-winextras
+            mingw-w64-x86_64-toolchain
+            mingw-w64-x86_64-xz
+            mingw-w64-x86_64-zlib
 
       - name: make distcheck
         run: |
