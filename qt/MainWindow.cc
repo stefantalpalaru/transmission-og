@@ -1441,7 +1441,7 @@ void MainWindow::onNetworkResponse(QNetworkReply::NetworkError code, QString con
     updateNetworkIcon();
 
     // Refresh our model if we've just gotten a clean connection to the session.
-    // That way we can rebuild after a restart of transmission-daemon
+    // That way we can rebuild after a restart of transmission-og-daemon
     if (hadError && !haveError) {
         myModel.clear();
     }

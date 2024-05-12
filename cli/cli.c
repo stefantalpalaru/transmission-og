@@ -64,7 +64,7 @@
 
 #define LINEWIDTH 80
 #define MY_CONFIG_NAME "transmission"
-#define MY_READABLE_NAME "transmission-cli"
+#define MY_READABLE_NAME "transmission-og-cli"
 
 static bool showVersion = false;
 static bool verify = false;
@@ -287,8 +287,8 @@ int tr_main(int argc, char *argv[])
         }
     } else {
         fprintf(stderr, "ERROR: Unrecognized torrent \"%s\".\n", torrentPath);
-        fprintf(stderr, " * If you're trying to create a torrent, use transmission-create.\n");
-        fprintf(stderr, " * If you're trying to see a torrent's info, use transmission-show.\n");
+        fprintf(stderr, " * If you're trying to create a torrent, use transmission-og-create.\n");
+        fprintf(stderr, " * If you're trying to see a torrent's info, use transmission-og-show.\n");
         tr_sessionClose(h);
         return EXIT_FAILURE;
     }

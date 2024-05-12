@@ -8,7 +8,7 @@ on:
 jobs:
   source-archive:
     name: Source archive asset
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -113,7 +113,7 @@ jobs:
   prepare-release:
     name: Prepare release draft
     needs: [source-archive, build-win64]
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Download artefacts
         uses: actions/download-artifact@v3

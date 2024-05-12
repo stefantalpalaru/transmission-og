@@ -9,14 +9,14 @@ ABOUT TRANSMISSION-OG-QT
 
    This is the only Transmission OG client that can act as its own self-contained
    session (as the GTK+ and Mac clients do), and can also connect to a remote
-   session (as the web client and transmission-remote terminal client do).
+   session (as the web client and transmission-og-remote terminal client do).
 
    Use Case 1: If you like to run BitTorrent for awhile from your desktop,
    then the Mac, GTK+, and Qt clients are a good match.
 
    Use Case 2: If you like to leave BitTorrent running nonstop on your
    computer or router, and want to control it from your desktop or
-   from a remote site, then transmission-remote and the web and Qt clients
+   from a remote site, then transmission-og-remote and the web and Qt clients
    are a good match.
 
    To use the Qt client as a remote, in the menu go to Edit > Change Session
