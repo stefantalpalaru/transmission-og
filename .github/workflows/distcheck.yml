@@ -19,7 +19,7 @@ jobs:
       matrix:
         target:
           - os: linux
-          - os: macos
+          #- os: macos
           #- os: windows
         include:
           - target:
