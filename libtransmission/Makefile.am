@@ -26,7 +26,7 @@ lib_LTLIBRARIES = libtransmission-og.la
 # - Increase the "current" value whenever an interface has been added, removed or changed.
 # - Always increase the "revision" value.
 # - Increase the "age" value only if the changes made to the ABI are backward compatible
-libtransmission_og_la_LDFLAGS = -version-info 3:2:0
+libtransmission_og_la_LDFLAGS = -version-info 3:3:0
 
 libtransmission_og_la_LIBADD = \
   @LIBUPNP_LIBS@ \
