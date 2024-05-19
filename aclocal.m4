@@ -14,8 +14,8 @@
 m4_ifndef([AC_CONFIG_MACRO_DIRS], [m4_defun([_AM_CONFIG_MACRO_DIRS], [])m4_defun([AC_CONFIG_MACRO_DIRS], [_AM_CONFIG_MACRO_DIRS($@)])])
 m4_ifndef([AC_AUTOCONF_VERSION],
   [m4_copy([m4_PACKAGE_VERSION], [AC_AUTOCONF_VERSION])])dnl
-m4_if(m4_defn([AC_AUTOCONF_VERSION]), [2.71],,
-[m4_warning([this file was generated for autoconf 2.71.
+m4_if(m4_defn([AC_AUTOCONF_VERSION]), [2.72],,
+[m4_warning([this file was generated for autoconf 2.72.
 You have another version of autoconf.  It may work, but is not guaranteed to.
 If you have problems, you may need to regenerate the build system entirely.
 To do so, use the procedure documented by the package, typically 'autoreconf'.])])
@@ -508,7 +508,7 @@ fi])
 
 
 # nls.m4 serial 6 (gettext-0.20.2)
-dnl Copyright (C) 1995-2003, 2005-2006, 2008-2014, 2016, 2019-2023 Free
+dnl Copyright (C) 1995-2003, 2005-2006, 2008-2014, 2016, 2019-2024 Free
 dnl Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
