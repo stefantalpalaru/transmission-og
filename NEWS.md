@@ -1,5 +1,8 @@
 ## (next)
 
+### All Platforms
+- Fix XFS quota support with GCC 14 ([#30](https://github.com/stefantalpalaru/transmission-og/pull/30))
+
 ## [Transmission OG 3.02](https://github.com/stefantalpalaru/transmission-og/releases/tag/3.02) (2024-05-19)
 
 ### All Platforms

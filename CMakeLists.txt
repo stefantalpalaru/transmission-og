@@ -399,6 +399,9 @@ else()
     set(CMAKE_CXX_STANDARD_REQUIRED ON)
 endif()
 
+# Needed by XFS quota support:
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_GNU_SOURCE")
+
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
     set(NEEDED_COMPILER_FLAGS
         -Wall
