@@ -5534,8 +5534,9 @@ esac
 
 
 
-CFLAGS="$CFLAGS -std=gnu11"
-CXXFLAGS="$CXXFLAGS -std=gnu++17"
+CFLAGS="${CFLAGS} -std=gnu11"
+CXXFLAGS="${CXXFLAGS} -std=gnu++17"
+CPPFLAGS="${CPPFLAGS} -D_GNU_SOURCE"
 
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
