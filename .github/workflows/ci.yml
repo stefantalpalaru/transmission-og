@@ -84,11 +84,13 @@ jobs:
             ;;
           "macOS")
             NCPU="$(sysctl -n hw.logicalcpu)"
-            CPPFLAGS="${CPPFLAGS} -I/opt/homebrew/opt/gettext/include"
-            LDFLAGS="${LDFLAGS} -L/opt/homebrew/opt/gettext/lib"
+            CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/gettext/include -I/opt/homebrew/opt/gettext/include"
+            LDFLAGS="${LDFLAGS} -L/usr/local/opt/gettext/lib -L/opt/homebrew/opt/gettext/lib"
+            echo "/usr/local/opt/qt@5/bin" >> ${GITHUB_PATH}
             echo "/opt/homebrew/opt/qt@5/bin" >> ${GITHUB_PATH}
+            echo "/usr/local/opt/gettext/bin" >> ${GITHUB_PATH}
             echo "/opt/homebrew/opt/gettext/bin" >> ${GITHUB_PATH}
-            echo "PKG_CONFIG_PATH=/opt/homebrew/opt/qt@5/lib/pkgconfig:/opt/homebrew/opt/openssl@1.1/lib/pkgconfig" >> ${GITHUB_ENV}
+            echo "PKG_CONFIG_PATH=/usr/local/opt/qt@5/lib/pkgconfig:/opt/homebrew/opt/qt@5/lib/pkgconfig:/usr/local/opt/openssl@1.1/lib/pkgconfig:/opt/homebrew/opt/openssl@1.1/lib/pkgconfig" >> ${GITHUB_ENV}
             echo "MACOSX_DEPLOYMENT_TARGET=12.0" >> ${GITHUB_ENV}
             ;;
           "Windows")
@@ -247,8 +249,16 @@ jobs:
             elif [[ "${{ runner.os }}" == "macOS" ]]; then
               CMAKE_ARGS+=(
                 -DENABLE_MAC=ON
-                -DOPENSSL_ROOT_DIR=/opt/homebrew/opt/openssl
               )
+              if [[ "${{ matrix.target.cpu }}" == "amd64" ]]; then
+                CMAKE_ARGS+=(
+                  -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl
+                )
+              elif [[ "${{ matrix.target.cpu }}" == "arm64" ]]; then
+                CMAKE_ARGS+=(
+                  -DOPENSSL_ROOT_DIR=/opt/homebrew/opt/openssl
+                )
+              fi
             elif [[ "${{ runner.os }}" == "Linux" ]]; then
               if [[ "${{ matrix.libs }}" == "system" ]]; then
                 CMAKE_ARGS+=(
@@ -302,8 +312,13 @@ jobs:
               fi
             elif [[ "${{ runner.os }}" == "macOS" ]]; then
               if [[ "${{ matrix.libs }}" == "system" ]]; then
-                CPPFLAGS="${CPPFLAGS} -I/opt/homebrew/opt/miniupnpc/include"
-                LDFLAGS="${LDFLAGS} -L/opt/homebrew/opt/miniupnpc/lib"
+                if [[ "${{ matrix.target.cpu }}" == "amd64" ]]; then
+                  CPPFLAGS="${CPPFLAGS} -I/usr/local/opt/miniupnpc/include"
+                  LDFLAGS="${LDFLAGS} -L/usr/local/opt/miniupnpc/lib"
+                elif [[ "${{ matrix.target.cpu }}" == "arm64" ]]; then
+                  CPPFLAGS="${CPPFLAGS} -I/opt/homebrew/opt/miniupnpc/include"
+                  LDFLAGS="${LDFLAGS} -L/opt/homebrew/opt/miniupnpc/lib"
+                fi
               fi
             elif [[ "${{ runner.os }}" == "Linux" ]]; then
               if [[ "${{ matrix.libs }}" == "system" ]]; then
