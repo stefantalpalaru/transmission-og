@@ -37,6 +37,9 @@ struct tr_upnp {
     struct IGDdatas data;
     int port;
     char lanaddr[16];
+#if MINIUPNPC_API_VERSION >= 18
+    char wanaddr[16];
+#endif
     struct {
         char const *proto;
         char proto_no[8];
@@ -408,8 +411,18 @@ int tr_upnpPulse(tr_upnp *handle, int port, bool isEnabled, bool doPortCheck)
 
         errno = 0;
 
-        if (UPNP_GetValidIGD(devlist, &handle->urls, &handle->data, handle->lanaddr, sizeof(handle->lanaddr)) ==
-            UPNP_IGD_VALID_CONNECTED) {
+        if (UPNP_GetValidIGD(
+                devlist,
+                &handle->urls,
+                &handle->data,
+                handle->lanaddr,
+                sizeof(handle->lanaddr)
+#if MINIUPNPC_API_VERSION >= 18
+                    ,
+                handle->wanaddr,
+                sizeof(handle->wanaddr)
+#endif
+                    ) == UPNP_IGD_VALID_CONNECTED) {
             tr_logAddNamedInfo(getKey(), _("Found Internet Gateway Device \"%s\""), handle->urls.controlURL);
             tr_logAddNamedInfo(getKey(), _("Local Address is \"%s\""), handle->lanaddr);
             handle->state = TR_UPNP_IDLE;
