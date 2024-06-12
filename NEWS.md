@@ -2,6 +2,7 @@
 
 ### All Platforms
 - Fix XFS quota support with GCC 14 ([#30](https://github.com/stefantalpalaru/transmission-og/pull/30))
+- Support miniupnpc-2.2.8 ([#31](https://github.com/stefantalpalaru/transmission-og/pull/31))
 
 ## [Transmission OG 3.02](https://github.com/stefantalpalaru/transmission-og/releases/tag/3.02) (2024-05-19)
 
