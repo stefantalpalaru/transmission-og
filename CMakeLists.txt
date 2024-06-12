@@ -45,8 +45,8 @@ set(TR_NAME ${PROJECT_NAME})
 #         "Z" for unsupported trunk builds,
 #         "0" for stable, supported releases
 # these should be the only two lines you need to change
-set(TR_USER_AGENT_PREFIX "3.03+")
-set(TR_PEER_ID_PREFIX "-TR303Z-")
+set(TR_USER_AGENT_PREFIX "3.03")
+set(TR_PEER_ID_PREFIX "-TR3030-")
 
 string(REGEX MATCH "^([0-9]+)\\.([0-9]+).*" TR_VERSION "${TR_USER_AGENT_PREFIX}")
 set(TR_VERSION_MAJOR "${CMAKE_MATCH_1}")
