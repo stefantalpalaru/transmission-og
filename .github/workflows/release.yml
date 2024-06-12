@@ -52,7 +52,7 @@ jobs:
           make -j${NCPU} XZ_OPT="-e -T0" V=1 distcheck
 
       - name: Upload source archive
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: source_archive
           path: '*.tar.xz'
@@ -97,14 +97,14 @@ jobs:
           sha256sum transmission-og-* > win64.sha256sum
 
       - name: Upload installer artefact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Windows_amd64_installer
           path: ./installers/installer/*.exe
           retention-days: 2
 
       - name: Upload checksum artefact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Windows_amd64_checksum
           path: ./tmp_install/bin/win64.sha256sum
