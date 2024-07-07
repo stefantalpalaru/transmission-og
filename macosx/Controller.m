@@ -396,7 +396,7 @@ static void removeKeRangerRansomware()
 
         tr_formatter_mem_init(1000, [kbString UTF8String], [mbString UTF8String], [gbString UTF8String], [tbString UTF8String]);
 
-        char const *configDir = tr_getDefaultConfigDir("Transmission OG");
+        char const *configDir = tr_getDefaultConfigDir("Transmission");
         fLib = tr_sessionInit(configDir, YES, &settings);
         tr_variantFree(&settings);
 
