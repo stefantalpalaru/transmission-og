@@ -49,6 +49,7 @@ static void sd_notifyf(int status UNUSED, char const *fmt UNUSED, ...)
 #include "daemon.h"
 
 #define MY_NAME "transmission-og-daemon"
+#define MY_CONFIG_NAME "transmission-daemon"
 
 #define MEM_K 1024
 #define MEM_K_STR "KiB"
@@ -191,7 +192,7 @@ static char const *getConfigDir(int argc, char const *const *argv)
     tr_optind = ind;
 
     if (configDir == NULL) {
-        configDir = tr_getDefaultConfigDir(MY_NAME);
+        configDir = tr_getDefaultConfigDir(MY_CONFIG_NAME);
     }
 
     return configDir;
@@ -572,7 +573,7 @@ static void daemon_reconfigure(void *arg UNUSED)
         tr_logAddInfo("Reloading settings from \"%s\"", configDir);
         tr_variantInitDict(&settings, 0);
         tr_variantDictAddBool(&settings, TR_KEY_rpc_enabled, true);
-        tr_sessionLoadSettings(&settings, configDir, MY_NAME);
+        tr_sessionLoadSettings(&settings, configDir, MY_CONFIG_NAME);
         tr_sessionSet(mySession, &settings);
         tr_variantFree(&settings);
         tr_sessionReloadBlocklists(mySession);
@@ -767,7 +768,7 @@ static bool init_daemon_data(int argc, char *argv[], struct daemon_data *data, b
     /* load settings from defaults + config file */
     tr_variantInitDict(&data->settings, 0);
     tr_variantDictAddBool(&data->settings, TR_KEY_rpc_enabled, true);
-    bool const loaded = tr_sessionLoadSettings(&data->settings, data->configDir, MY_NAME);
+    bool const loaded = tr_sessionLoadSettings(&data->settings, data->configDir, MY_CONFIG_NAME);
 
     bool dumpSettings;
 

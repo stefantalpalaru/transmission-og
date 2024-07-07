@@ -1,5 +1,8 @@
 ## (next)
 
+### All Platforms
+- Fix some config paths, so they're compatible with Transmission again ([#33](https://github.com/stefantalpalaru/transmission-og/pull/33))
+
 ## [Transmission OG 3.03](https://github.com/stefantalpalaru/transmission-og/releases/tag/3.03) (2024-06-12)
 
 ### All Platforms

@@ -40,6 +40,7 @@
 
 namespace {
 
+QLatin1String const MY_NAME("transmission-og");
 QLatin1String const MY_CONFIG_NAME("transmission");
 QLatin1String const MY_READABLE_NAME("transmission-og-qt");
 
@@ -57,7 +58,7 @@ tr_option const opts[] = {
 char const *getUsage()
 {
     return "Usage:\n"
-           "  transmission [OPTIONS...] [torrent files]";
+           "  transmission-og-qt [OPTIONS...] [torrent files]";
 }
 
 enum { STATS_REFRESH_INTERVAL_MSEC = 3000, SESSION_REFRESH_INTERVAL_MSEC = 3000, MODEL_REFRESH_INTERVAL_MSEC = 3000 };
@@ -84,7 +85,7 @@ Application::Application(int &argc, char **argv)
     , myWatchDir(nullptr)
     , myLastFullUpdateTime(0)
 {
-    setApplicationName(QLatin1String("transmission-og"));
+    setApplicationName(MY_NAME);
     loadTranslations();
 
     Formatter::initUnits();
@@ -98,7 +99,7 @@ Application::Application(int &argc, char **argv)
 #endif
 
     // set the default icon
-    QIcon icon = QIcon::fromTheme(QLatin1String("transmission"));
+    QIcon icon = QIcon::fromTheme(MY_CONFIG_NAME);
 
     if (icon.isNull()) {
         QList<int> sizes;
@@ -215,7 +216,7 @@ Application::Application(int &argc, char **argv)
 
     // set the fallback config dir
     if (configDir.isNull()) {
-        configDir = QString::fromUtf8(tr_getDefaultConfigDir("transmission"));
+        configDir = QString::fromUtf8(tr_getDefaultConfigDir(MY_CONFIG_NAME.data()));
     }
 
     // ensure our config directory exists
@@ -554,7 +555,7 @@ bool Application::notifyApp(QString const &title, QString const &body) const
         QVariantList args;
         args.append(QLatin1String("Transmission OG")); // app_name
         args.append(0U); // replaces_id
-        args.append(QLatin1String("transmission")); // icon
+        args.append(MY_CONFIG_NAME); // icon
         args.append(title); // summary
         args.append(body); // body
         args.append(QStringList()); // actions - unused for plain passive popups
