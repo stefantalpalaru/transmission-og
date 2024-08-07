@@ -90,19 +90,19 @@ static int compare_wide_strings_ci(wchar_t const *lhs, size_t lhs_len, wchar_t c
     return diff;
 }
 
-static int compare_env_part_names(wchar_t const **lhs, wchar_t const **rhs)
+static int compare_env_part_names(void const *lhs, void const *rhs)
 {
     int ret = 0;
 
     size_t lhs_part_len;
     size_t lhs_name_len;
 
-    if (parse_env_block_part(*lhs, &lhs_part_len, &lhs_name_len)) {
+    if (parse_env_block_part(*(wchar_t const **)lhs, &lhs_part_len, &lhs_name_len)) {
         size_t rhs_part_len;
         size_t rhs_name_len;
 
-        if (parse_env_block_part(*rhs, &rhs_part_len, &rhs_name_len)) {
-            ret = compare_wide_strings_ci(*lhs, lhs_name_len, *rhs, rhs_name_len);
+        if (parse_env_block_part(*(wchar_t const **)rhs, &rhs_part_len, &rhs_name_len)) {
+            ret = compare_wide_strings_ci(*(wchar_t const **)lhs, lhs_name_len, *(wchar_t const **)rhs, rhs_name_len);
         }
     }
 
@@ -339,13 +339,13 @@ bool tr_spawn_async(char *const *cmd, char *const *env, char const *work_dir, tr
 {
     wchar_t *env_block = NULL;
 
-    if (!create_env_block(env, &env_block, error)) {
+    if (!create_env_block((char const *const *)env, &env_block, error)) {
         return false;
     }
 
     wchar_t *cmd_line;
 
-    if (!construct_cmd_line(cmd, &cmd_line)) {
+    if (!construct_cmd_line((char const *const *)cmd, &cmd_line)) {
         set_system_error(error, ERROR_INVALID_PARAMETER, "Constructing command line");
         return false;
     }
