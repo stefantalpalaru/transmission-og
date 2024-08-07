@@ -967,7 +967,7 @@ distcheck-hook:
 		cd "$${TMPDIR}" && \
 		cmake $(CMAKE_ARGS) "../$(distdir)" && \
 		$(MAKE) VERBOSE=$(V) && \
-		$(MAKE) VERBOSE=$(V) ARGS="$(MAKEFLAGS)" test && \
+		$(MAKE) VERBOSE=$(V) test && \
 		rm -rf "$${TMPDIR}"
 @MACOS_FALSE@	@ echo "*** qmake build ***"
 @MACOS_FALSE@	+ TMPDIR="$(abs_top_builddir)/build" && \

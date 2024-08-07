@@ -114,7 +114,7 @@ distcheck-hook:
 		cd "$${TMPDIR}" && \
 		cmake $(CMAKE_ARGS) "../$(distdir)" && \
 		$(MAKE) VERBOSE=$(V) && \
-		$(MAKE) VERBOSE=$(V) ARGS="$(MAKEFLAGS)" test && \
+		$(MAKE) VERBOSE=$(V) test && \
 		rm -rf "$${TMPDIR}"
 if !MACOS
 	@ echo "*** qmake build ***"
