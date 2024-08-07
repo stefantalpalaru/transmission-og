@@ -99,14 +99,14 @@ Application::Application(int &argc, char **argv)
 #endif
 
     // set the default icon
-    QIcon icon = QIcon::fromTheme(MY_CONFIG_NAME);
+    QIcon icon = QIcon::fromTheme(MY_NAME);
 
     if (icon.isNull()) {
         QList<int> sizes;
         sizes << 16 << 22 << 24 << 32 << 48 << 64 << 72 << 96 << 128 << 192 << 256;
 
         for (int const size : sizes) {
-            icon.addPixmap(QPixmap(QString::fromLatin1(":/icons/transmission-%1.png").arg(size)));
+            icon.addPixmap(QPixmap(QString::fromLatin1(":/icons/transmission-og-%1.png").arg(size)));
         }
     }
 
