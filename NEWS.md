@@ -1,5 +1,8 @@
 ## (next)
 
+### GTK+ Client
+- Support and prefer "libayatana-appindicator" to the old "libappindicator"
+
 ## [Transmission OG 3.04](https://github.com/stefantalpalaru/transmission-og/releases/tag/3.04) (2024-07-07)
 
 ### All Platforms

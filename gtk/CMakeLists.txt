@@ -2,6 +2,9 @@ project(trgtk)
 
 if(WITH_LIBAPPINDICATOR)
     add_definitions(-DHAVE_LIBAPPINDICATOR)
+    if(APPINDICATOR_IS_AYATANA)
+        add_definitions(-DAPPINDICATOR_IS_AYATANA)
+    endif()
 endif()
 
 execute_process(

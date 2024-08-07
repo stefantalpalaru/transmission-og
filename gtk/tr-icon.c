@@ -9,7 +9,11 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #ifdef HAVE_LIBAPPINDICATOR
+#ifdef APPINDICATOR_IS_AYATANA
+#include <libayatana-appindicator/app-indicator.h>
+#else
 #include <libappindicator/app-indicator.h>
+#endif
 #endif
 #include "actions.h"
 #include "tr-icon.h"
