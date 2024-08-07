@@ -23,8 +23,8 @@ AM_INIT_AUTOMAKE([tar-pax no-dist-gzip dist-xz foreign subdir-objects])
 
 LT_LIB_M
 
-CFLAGS="${CFLAGS} -std=gnu11"
-CXXFLAGS="${CXXFLAGS} -std=gnu++17"
+CFLAGS="${CFLAGS} -std=gnu11 -fpermissive"
+CXXFLAGS="${CXXFLAGS} -std=gnu++17 -fpermissive"
 dnl Needed by XFS quota support:
 CPPFLAGS="${CPPFLAGS} -D_GNU_SOURCE"
 

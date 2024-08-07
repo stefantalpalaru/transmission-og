@@ -418,7 +418,8 @@ if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
         -Wredundant-decls
         -Wundef
         -Wunused-parameter
-        -Wwrite-strings)
+        -Wwrite-strings
+        -fpermissive)
 
     if(NOT CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_VERSION VERSION_GREATER "3.3")
         list(APPEND NEEDED_COMPILER_FLAGS
