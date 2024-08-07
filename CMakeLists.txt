@@ -107,13 +107,14 @@ set(ZLIB_MINIMUM            1.2.3)
 set(GTK_MINIMUM             3.4.0)
 set(GLIB_MINIMUM            2.32.0)
 set(GIO_MINIMUM             2.26.0)
-set(LIBAPPINDICATOR_MINIMUM 0.4.90)
 set(QT5_MINIMUM             5.2)
 
 if(WIN32)
     foreach(L C CXX)
         # Target version (Vista and up)
         set(CMAKE_${L}_FLAGS "${CMAKE_${L}_FLAGS} -DWINVER=0x0600 -D_WIN32_WINNT=0x0600")
+        # Filter out needless definitions
+        set(CMAKE_${L}_FLAGS "${CMAKE_${L}_FLAGS} -DWIN32_LEAN_AND_MEAN -DNOMINMAX")
         # Use Unicode API (although we always use W or A names explicitly)
         set(CMAKE_${L}_FLAGS "${CMAKE_${L}_FLAGS} -DUNICODE -D_UNICODE")
         # Ignore various deprecation and security warnings (at least for now)
@@ -129,6 +130,64 @@ if(WIN32)
             set(CMAKE_${L}_FLAGS "${CMAKE_${L}_FLAGS} -D__USE_MINGW_ANSI_STDIO=1")
         endif()
     endforeach()
+endif()
+
+if(CMAKE_VERSION VERSION_LESS "3.1")
+    if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++17")
+    endif()
+else()
+    set(CMAKE_C_STANDARD 11)
+    set(CMAKE_C_STANDARD_REQUIRED ON)
+    set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_CXX_STANDARD_REQUIRED ON)
+endif()
+
+# Needed by XFS quota support:
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_GNU_SOURCE")
+
+if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
+    set(NEEDED_COMPILER_FLAGS
+        -Wall
+        -W
+        -Wcast-align
+        -Wfloat-equal
+        -Wmissing-format-attribute
+        -Wpointer-arith
+        -Wredundant-decls
+        -Wundef
+        -Wunused-parameter
+        -Wwrite-strings
+        -fpermissive)
+
+    if(NOT CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_VERSION VERSION_GREATER "3.3")
+        list(APPEND NEEDED_COMPILER_FLAGS
+            -Wextra
+            -Winit-self)
+    endif()
+
+    if(MINGW)
+        # Disable excessive warnings since we're using __USE_MINGW_ANSI_STDIO
+        # Hopefully, any potential issues will be spotted on other platforms
+        list(APPEND NEEDED_COMPILER_FLAGS -Wno-format)
+    else()
+        list(APPEND NEEDED_COMPILER_FLAGS -Wformat-security)
+    endif()
+
+    set(NEEDED_C_COMPILER_FLAGS
+        ${NEEDED_COMPILER_FLAGS}
+        -Winline
+        -Wmissing-declarations
+        -Wnested-externs
+        -Wstrict-prototypes)
+    string(REPLACE ";" " " NEEDED_C_COMPILER_FLAGS_STRING "${NEEDED_C_COMPILER_FLAGS}")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${NEEDED_C_COMPILER_FLAGS_STRING}")
+
+    set(NEEDED_CXX_COMPILER_FLAGS
+        ${NEEDED_COMPILER_FLAGS})
+    string(REPLACE ";" " " NEEDED_CXX_COMPILER_FLAGS_STRING "${NEEDED_CXX_COMPILER_FLAGS}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${NEEDED_CXX_COMPILER_FLAGS_STRING}")
 endif()
 
 find_package(Threads)
@@ -192,7 +251,13 @@ if(ENABLE_GTK)
 
     if(ENABLE_GTK AND WITH_LIBAPPINDICATOR)
         tr_get_required_flag(WITH_LIBAPPINDICATOR LIBAPPINDICATOR_IS_REQUIRED)
-        pkg_check_modules(LIBAPPINDICATOR appindicator3-0.1>=${LIBAPPINDICATOR_MINIMUM})
+        pkg_check_modules(LIBAPPINDICATOR ayatana-appindicator3-0.1)
+        if(LIBAPPINDICATOR_FOUND)
+            set(APPINDICATOR_IS_AYATANA ON)
+        else()
+            set(APPINDICATOR_IS_AYATANA OFF)
+            pkg_check_modules(LIBAPPINDICATOR appindicator3-0.1)
+        endif()
         tr_fixup_auto_option(WITH_LIBAPPINDICATOR LIBAPPINDICATOR_FOUND LIBAPPINDICATOR_IS_REQUIRED)
     endif()
 else()
@@ -379,70 +444,6 @@ if(WITH_SYSTEMD)
 endif()
 
 include_directories(${CMAKE_BINARY_DIR})
-
-if(WIN32)
-    foreach(L C CXX)
-        # Filter out needless definitions
-        set(CMAKE_${L}_FLAGS "${CMAKE_${L}_FLAGS} -DWIN32_LEAN_AND_MEAN -DNOMINMAX")
-    endforeach()
-endif()
-
-if(CMAKE_VERSION VERSION_LESS "3.1")
-    if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++17")
-    endif()
-else()
-    set(CMAKE_C_STANDARD 11)
-    set(CMAKE_C_STANDARD_REQUIRED ON)
-    set(CMAKE_CXX_STANDARD 17)
-    set(CMAKE_CXX_STANDARD_REQUIRED ON)
-endif()
-
-# Needed by XFS quota support:
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_GNU_SOURCE")
-
-if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
-    set(NEEDED_COMPILER_FLAGS
-        -Wall
-        -W
-        -Wcast-align
-        -Wfloat-equal
-        -Wmissing-format-attribute
-        -Wpointer-arith
-        -Wredundant-decls
-        -Wundef
-        -Wunused-parameter
-        -Wwrite-strings)
-
-    if(NOT CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_VERSION VERSION_GREATER "3.3")
-        list(APPEND NEEDED_COMPILER_FLAGS
-            -Wextra
-            -Winit-self)
-    endif()
-
-    if(MINGW)
-        # Disable excessive warnings since we're using __USE_MINGW_ANSI_STDIO
-        # Hopefully, any potential issues will be spotted on other platforms
-        list(APPEND NEEDED_COMPILER_FLAGS -Wno-format)
-    else()
-        list(APPEND NEEDED_COMPILER_FLAGS -Wformat-security)
-    endif()
-
-    set(NEEDED_C_COMPILER_FLAGS
-        ${NEEDED_COMPILER_FLAGS}
-        -Winline
-        -Wmissing-declarations
-        -Wnested-externs
-        -Wstrict-prototypes)
-    string(REPLACE ";" " " NEEDED_C_COMPILER_FLAGS_STRING "${NEEDED_C_COMPILER_FLAGS}")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${NEEDED_C_COMPILER_FLAGS_STRING}")
-
-    set(NEEDED_CXX_COMPILER_FLAGS
-        ${NEEDED_COMPILER_FLAGS})
-    string(REPLACE ";" " " NEEDED_CXX_COMPILER_FLAGS_STRING "${NEEDED_CXX_COMPILER_FLAGS}")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${NEEDED_CXX_COMPILER_FLAGS_STRING}")
-endif()
 
 include(LargeFileSupport)
 

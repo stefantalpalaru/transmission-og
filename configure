@@ -816,10 +816,6 @@ WIN32_FALSE
 WIN32_TRUE
 MACOSX_DEPLOYMENT_TARGET
 WINDRES
-LIBAPPINDICATOR_MINIMUM
-GIO_MINIMUM
-GLIB_MINIMUM
-GTK_MINIMUM
 POLARSSL_MINIMUM
 CYASSL_MINIMUM
 OPENSSL_MINIMUM
@@ -5534,8 +5530,8 @@ esac
 
 
 
-CFLAGS="${CFLAGS} -std=gnu11"
-CXXFLAGS="${CXXFLAGS} -std=gnu++17"
+CFLAGS="${CFLAGS} -std=gnu11 -fpermissive"
+CXXFLAGS="${CXXFLAGS} -std=gnu++17 -fpermissive"
 CPPFLAGS="${CPPFLAGS} -D_GNU_SOURCE"
 
 ac_ext=c
@@ -18683,21 +18679,8 @@ POLARSSL_MINIMUM=0x01020000 # 1.2
 ##
 
 GTK_MINIMUM=3.4.0
-
 GLIB_MINIMUM=2.32.0
-
 GIO_MINIMUM=2.26.0
-
-
-##
-##
-##   OPTIONAL for the GTK+ client
-##
-##
-
-# create the tray icon with AppIndicator
-LIBAPPINDICATOR_MINIMUM=0.4.90
-
 
 
 
@@ -22672,12 +22655,12 @@ if test -n "$PKG_CONFIG"; then
         pkg_cv_LIBAPPINDICATOR_CFLAGS="$LIBAPPINDICATOR_CFLAGS"
     else
         if test -n "$PKG_CONFIG" && \
-    { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"appindicator3-0.1 >= \$LIBAPPINDICATOR_MINIMUM\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "appindicator3-0.1 >= $LIBAPPINDICATOR_MINIMUM") 2>&5
+    { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"ayatana-appindicator3-0.1\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "ayatana-appindicator3-0.1") 2>&5
   ac_status=$?
   printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  pkg_cv_LIBAPPINDICATOR_CFLAGS=`$PKG_CONFIG --cflags "appindicator3-0.1 >= $LIBAPPINDICATOR_MINIMUM" 2>/dev/null`
+  pkg_cv_LIBAPPINDICATOR_CFLAGS=`$PKG_CONFIG --cflags "ayatana-appindicator3-0.1" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -22690,12 +22673,12 @@ if test -n "$PKG_CONFIG"; then
         pkg_cv_LIBAPPINDICATOR_LIBS="$LIBAPPINDICATOR_LIBS"
     else
         if test -n "$PKG_CONFIG" && \
-    { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"appindicator3-0.1 >= \$LIBAPPINDICATOR_MINIMUM\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "appindicator3-0.1 >= $LIBAPPINDICATOR_MINIMUM") 2>&5
+    { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"ayatana-appindicator3-0.1\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "ayatana-appindicator3-0.1") 2>&5
   ac_status=$?
   printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  pkg_cv_LIBAPPINDICATOR_LIBS=`$PKG_CONFIG --libs "appindicator3-0.1 >= $LIBAPPINDICATOR_MINIMUM" 2>/dev/null`
+  pkg_cv_LIBAPPINDICATOR_LIBS=`$PKG_CONFIG --libs "ayatana-appindicator3-0.1" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -22714,9 +22697,91 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        LIBAPPINDICATOR_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "appindicator3-0.1 >= $LIBAPPINDICATOR_MINIMUM"`
+	        LIBAPPINDICATOR_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "ayatana-appindicator3-0.1"`
         else
-	        LIBAPPINDICATOR_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "appindicator3-0.1 >= $LIBAPPINDICATOR_MINIMUM"`
+	        LIBAPPINDICATOR_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "ayatana-appindicator3-0.1"`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$LIBAPPINDICATOR_PKG_ERRORS" >&5
+
+	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+                have_ayatana_libappindicator=no
+elif test $pkg_failed = untried; then
+	have_ayatana_libappindicator=no
+else
+	LIBAPPINDICATOR_CFLAGS=$pkg_cv_LIBAPPINDICATOR_CFLAGS
+	LIBAPPINDICATOR_LIBS=$pkg_cv_LIBAPPINDICATOR_LIBS
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+printf "%s\n" "yes" >&6; }
+	have_ayatana_libappindicator=yes
+fi
+    if test "x${have_ayatana_libappindicator}" = "xyes"
+then :
+
+        use_libappindicator=yes
+        printf "%s\n" "#define HAVE_LIBAPPINDICATOR 1" >>confdefs.h
+
+        printf "%s\n" "#define APPINDICATOR_IS_AYATANA 1" >>confdefs.h
+
+
+else case e in #(
+  e)
+
+pkg_failed=no
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for LIBAPPINDICATOR" >&5
+printf %s "checking for LIBAPPINDICATOR... " >&6; }
+
+if test -n "$PKG_CONFIG"; then
+    if test -n "$LIBAPPINDICATOR_CFLAGS"; then
+        pkg_cv_LIBAPPINDICATOR_CFLAGS="$LIBAPPINDICATOR_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"appindicator3-0.1\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "appindicator3-0.1") 2>&5
+  ac_status=$?
+  printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_LIBAPPINDICATOR_CFLAGS=`$PKG_CONFIG --cflags "appindicator3-0.1" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+if test -n "$PKG_CONFIG"; then
+    if test -n "$LIBAPPINDICATOR_LIBS"; then
+        pkg_cv_LIBAPPINDICATOR_LIBS="$LIBAPPINDICATOR_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"appindicator3-0.1\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "appindicator3-0.1") 2>&5
+  ac_status=$?
+  printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_LIBAPPINDICATOR_LIBS=`$PKG_CONFIG --libs "appindicator3-0.1" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        LIBAPPINDICATOR_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "appindicator3-0.1"`
+        else
+	        LIBAPPINDICATOR_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "appindicator3-0.1"`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$LIBAPPINDICATOR_PKG_ERRORS" >&5
@@ -22733,17 +22798,20 @@ else
 printf "%s\n" "yes" >&6; }
 	have_libappindicator=yes
 fi
-    if test "x${have_libappindicator}" = "xyes"
+	if test "x${have_libappindicator}" = "xyes"
 then :
 
-        use_libappindicator=yes
-        printf "%s\n" "#define HAVE_LIBAPPINDICATOR 1" >>confdefs.h
+	    use_libappindicator=yes
+	    printf "%s\n" "#define HAVE_LIBAPPINDICATOR 1" >>confdefs.h
 
 
 else case e in #(
   e)
-        LIBAPPINDICATOR_CFLAGS=
-        LIBAPPINDICATOR_LIBS=
+	    LIBAPPINDICATOR_CFLAGS=
+	    LIBAPPINDICATOR_LIBS=
+	 ;;
+esac
+fi
      ;;
 esac
 fi

@@ -141,8 +141,8 @@ bool libtest_check_ptr(
     do { \
         ++current_test; \
 \
-        intmax_t const check_lhs = (lhs); \
-        intmax_t const check_rhs = (rhs); \
+        intmax_t const check_lhs = (intmax_t const)(lhs); \
+        intmax_t const check_rhs = (intmax_t const)(rhs); \
 \
         bool const check_result = check_lhs op check_rhs; \
 \

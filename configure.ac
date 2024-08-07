@@ -23,8 +23,8 @@ AM_INIT_AUTOMAKE([tar-pax no-dist-gzip dist-xz foreign subdir-objects])
 
 LT_LIB_M
 
-CFLAGS="${CFLAGS} -std=gnu11"
-CXXFLAGS="${CXXFLAGS} -std=gnu++17"
+CFLAGS="${CFLAGS} -std=gnu11 -fpermissive"
+CXXFLAGS="${CXXFLAGS} -std=gnu++17 -fpermissive"
 dnl Needed by XFS quota support:
 CPPFLAGS="${CPPFLAGS} -D_GNU_SOURCE"
 
@@ -76,21 +76,8 @@ AC_SUBST(POLARSSL_MINIMUM)
 ##
 
 GTK_MINIMUM=3.4.0
-AC_SUBST(GTK_MINIMUM)
 GLIB_MINIMUM=2.32.0
-AC_SUBST(GLIB_MINIMUM)
 GIO_MINIMUM=2.26.0
-AC_SUBST(GIO_MINIMUM)
-
-##
-##
-##   OPTIONAL for the GTK+ client
-##
-##
-
-# create the tray icon with AppIndicator
-LIBAPPINDICATOR_MINIMUM=0.4.90
-AC_SUBST(LIBAPPINDICATOR_MINIMUM)
 
 dnl ----------------------------------------------------------------------------
 dnl
@@ -536,15 +523,25 @@ AS_IF([test "x${with_gtk}" = "xyes"], [
                               gmodule-2.0 >= $GLIB_MINIMUM
                               gthread-2.0 >= $GLIB_MINIMUM])
     PKG_CHECK_MODULES([LIBAPPINDICATOR],
-                      [appindicator3-0.1 >= $LIBAPPINDICATOR_MINIMUM],
-                      [have_libappindicator=yes],
-                      [have_libappindicator=no])
-    AS_IF([test "x${have_libappindicator}" = "xyes"], [
+                      [ayatana-appindicator3-0.1],
+                      [have_ayatana_libappindicator=yes],
+                      [have_ayatana_libappindicator=no])
+    AS_IF([test "x${have_ayatana_libappindicator}" = "xyes"], [
         use_libappindicator=yes
         AC_DEFINE([HAVE_LIBAPPINDICATOR], 1)
+        AC_DEFINE([APPINDICATOR_IS_AYATANA], 1)
     ], [
-        LIBAPPINDICATOR_CFLAGS=
-        LIBAPPINDICATOR_LIBS=
+	PKG_CHECK_MODULES([LIBAPPINDICATOR],
+			  [appindicator3-0.1],
+			  [have_libappindicator=yes],
+			  [have_libappindicator=no])
+	AS_IF([test "x${have_libappindicator}" = "xyes"], [
+	    use_libappindicator=yes
+	    AC_DEFINE([HAVE_LIBAPPINDICATOR], 1)
+	], [
+	    LIBAPPINDICATOR_CFLAGS=
+	    LIBAPPINDICATOR_LIBS=
+	])
     ])
 ])
 
