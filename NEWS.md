@@ -1,5 +1,9 @@
 ## (next)
 
+### GTK+ Client
+### Qt Client
+- Use our own icons for the system tray.
+
 ## [Transmission OG 3.05](https://github.com/stefantalpalaru/transmission-og/releases/tag/3.05) (2024-08-08)
 
 ### GTK+ Client

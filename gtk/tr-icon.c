@@ -24,7 +24,7 @@
 
 static TR_DEFINE_QUARK(tr_core, core)
 
-#define ICON_NAME "transmission"
+#define ICON_NAME "transmission-og"
 
 #ifdef HAVE_LIBAPPINDICATOR
 
