@@ -1,8 +1,11 @@
 ## (next)
 
+### All Platforms
+- Network performance improvements ([#38](https://github.com/stefantalpalaru/transmission-og/pull/38))
+
 ### GTK+ Client
 ### Qt Client
-- Use our own icons for the system tray.
+- Use our own icons for the system tray ([#37](https://github.com/stefantalpalaru/transmission-og/pull/37))
 
 ## [Transmission OG 3.05](https://github.com/stefantalpalaru/transmission-og/releases/tag/3.05) (2024-08-08)
 
