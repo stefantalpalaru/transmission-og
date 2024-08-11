@@ -47,20 +47,18 @@ enum {
        for this many calls to rechokeUploads(). */
     OPTIMISTIC_UNCHOKE_MULTIPLIER = 4,
     /* how frequently to reallocate bandwidth */
-    BANDWIDTH_PERIOD_MSEC = 500,
+    BANDWIDTH_PERIOD_MSEC = 250,
     /* how frequently to age out old piece request lists */
     REFILL_UPKEEP_PERIOD_MSEC = (10 * 1000),
-    /* how frequently to decide which peers live and die */
-    RECONNECT_PERIOD_MSEC = 500,
     /* when many peers are available, keep idle ones this long */
     MIN_UPLOAD_IDLE_SECS = (60),
     /* when few peers are available, keep idle ones this long */
     MAX_UPLOAD_IDLE_SECS = (60 * 5),
     /* max number of peers to ask for per second overall.
      * this throttle is to avoid overloading the router */
-    MAX_CONNECTIONS_PER_SECOND = 12,
+    MAX_CONNECTIONS_PER_SECOND = 32,
     /* */
-    MAX_CONNECTIONS_PER_PULSE = (int)(MAX_CONNECTIONS_PER_SECOND * (RECONNECT_PERIOD_MSEC / 1000.0)),
+    MAX_CONNECTIONS_PER_PULSE = (int)(MAX_CONNECTIONS_PER_SECOND * (BANDWIDTH_PERIOD_MSEC / 1000.0)),
     /* number of bad pieces a peer is allowed to send before we ban them */
     MAX_BAD_PIECES_PER_PEER = 5,
     /* amount of time to keep a list of request pieces lying around
@@ -74,8 +72,12 @@ enum {
     MYFLAG_UNREACHABLE = 2,
     /* the minimum we'll wait before attempting to reconnect to a peer */
     MINIMUM_RECONNECT_INTERVAL_SECS = 5,
+    /* regular wait before attempting to reconnect to a peer (increases with each failure) */
+    RECONNECT_INTERVAL_SECS = 60,
+    /* the maximum we'll wait before attempting to reconnect to a peer */
+    MAXIMUM_RECONNECT_INTERVAL_SECS = 600,
     /** how long we'll let requests we've made linger before we cancel them */
-    REQUEST_TTL_SECS = 90,
+    REQUEST_TTL_SECS = 60,
     /* */
     NO_BLOCKS_CANCEL_HISTORY = 120,
     /* */
@@ -3174,24 +3176,8 @@ static int getReconnectIntervalSecs(struct peer_atom const *atom, time_t const n
             sec = 10;
             break;
 
-        case 2:
-            sec = 60 * 2;
-            break;
-
-        case 3:
-            sec = 60 * 15;
-            break;
-
-        case 4:
-            sec = 60 * 30;
-            break;
-
-        case 5:
-            sec = 60 * 60;
-            break;
-
         default:
-            sec = 60 * 120;
+            sec = MIN(RECONNECT_INTERVAL_SECS * step, MAXIMUM_RECONNECT_INTERVAL_SECS);
             break;
         }
     }

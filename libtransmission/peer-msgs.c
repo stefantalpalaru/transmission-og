@@ -72,8 +72,8 @@ enum {
     KEEPALIVE_INTERVAL_SECS = 100,
     /* */
     PEX_INTERVAL_SECS = 90, /* sec between sendPex() calls */
-    /* */
-    REQQ = 512,
+    /* https://github.com/arvidn/libtorrent/blob/2ab8fedabb7716947edc77958da6d0b5e1040df9/src/settings_pack.cpp#L254 */
+    REQQ = 2000,
     /* */
     METADATA_REQQ = 64,
     /* */
