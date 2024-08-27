@@ -37,6 +37,7 @@ PenaltyBreakComment: 0
 PenaltyBreakOpenParenthesis: 1
 PenaltyReturnTypeOnItsOwnLine: 1000
 PointerAlignment: Right
+QualifierAlignment: Right
 ReflowComments: true
 SkipMacroDefinitionBody: true
 SortIncludes: false
