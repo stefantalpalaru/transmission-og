@@ -286,6 +286,7 @@ jobs:
 
           if [[ "${{ matrix.build-system }}" == "autotools" ]]; then
             CONFIGURE_ARGS=(
+              --disable-dependency-tracking
               --enable-utp
               --enable-cli
               --enable-daemon

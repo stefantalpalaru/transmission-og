@@ -162,6 +162,14 @@ dnl ----------------------------------------------------------------------------
 dnl
 dnl  various checks
 
+AC_PROG_LN_S
+AC_PROG_MKDIR_P
+AC_PROG_FGREP
+AC_PROG_SED
+
+AC_PROG_INSTALL
+AC_PROG_MAKE_SET
+
 AC_CHECK_FUNCS([iconv pread pwrite strlcpy daemon canonicalize_file_name localtime_r fallocate64 posix_fallocate memmem strsep strtold syslog valloc getpagesize posix_memalign statvfs htonll ntohll mkdtemp uselocale _configthreadlocale strcasestr flock posix_fadvise])
 ACX_PTHREAD
 
