@@ -162,23 +162,12 @@ dnl ----------------------------------------------------------------------------
 dnl
 dnl  various checks
 
-AC_PROG_LN_S
-AC_PROG_MKDIR_P
-AC_PROG_FGREP
-AC_PROG_SED
-
-
-AC_CHECK_HEADERS_ONCE([sys/time.h])
-
-AC_CHECK_HEADERS([xlocale.h])
-AC_CHECK_FUNCS([iconv pread pwrite lrintf strlcpy daemon dirname basename canonicalize_file_name strcasecmp localtime_r fallocate64 posix_fallocate memmem strsep strtold syslog valloc getpagesize posix_memalign statvfs htonll ntohll mkdtemp uselocale _configthreadlocale strcasestr flock])
-AC_PROG_INSTALL
-AC_PROG_MAKE_SET
+AC_CHECK_FUNCS([iconv pread pwrite strlcpy daemon canonicalize_file_name localtime_r fallocate64 posix_fallocate memmem strsep strtold syslog valloc getpagesize posix_memalign statvfs htonll ntohll mkdtemp uselocale _configthreadlocale strcasestr flock posix_fadvise])
 ACX_PTHREAD
 
-if test "x$ac_cv_func_strtold" != "xyes" ; then
-    CPPFLAGS="$CPPFLAGS -Dstrtold=strtod"
-fi
+AS_IF([test "x$ac_cv_func_strtold" != "xyes"], [
+       AC_DEFINE([strtold], strtod)
+       ])
 
 AS_IF([test "x${ac_cv_func_flock}" = "xyes"], [
        AC_DEFINE([HAVE_FLOCK], 1)
@@ -196,7 +185,8 @@ AC_SYS_LARGEFILE
 AC_FUNC_GETMNTENT
 
 AC_CHECK_HEADERS([sys/statvfs.h \
-                  xfs/xfs.h])
+		  xfs/xfs.h \
+		  xlocale.h])
 
 
 dnl ----------------------------------------------------------------------------
@@ -266,18 +256,6 @@ AM_CONDITIONAL([POLARSSL_IS_MBEDTLS],[test "x$POLARSSL_IS_MBEDTLS" = "xyes"])
 AC_SUBST(CRYPTO_PKG)
 AC_SUBST(CRYPTO_CFLAGS)
 AC_SUBST(CRYPTO_LIBS)
-
-
-dnl ----------------------------------------------------------------------------
-dnl
-dnl posix_fadvise
-
-dnl can posix_fadvise be used
-AC_CHECK_DECLS(posix_fadvise, [], [], [
-#define _XOPEN_SOURCE 600
-#include <fcntl.h>
-])
-AC_CHECK_FUNCS([posix_fadvise])
 
 
 dnl ----------------------------------------------------------------------------
