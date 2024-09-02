@@ -104,7 +104,7 @@ static int test_strjoin(void)
     check_str(out, ==, "7ate9");
     tr_free(out);
 
-    char const **in5;
+    char const **in5 = NULL;
     out = tr_strjoin(in5, 0, "a");
     check_str(out, ==, "");
     tr_free(out);

@@ -2201,60 +2201,6 @@ fi
   as_fn_set_status $ac_retval
 
 } # ac_fn_c_try_cpp
-
-# ac_fn_check_decl LINENO SYMBOL VAR INCLUDES EXTRA-OPTIONS FLAG-VAR
-# ------------------------------------------------------------------
-# Tests whether SYMBOL is declared in INCLUDES, setting cache variable VAR
-# accordingly. Pass EXTRA-OPTIONS to the compiler, using FLAG-VAR.
-ac_fn_check_decl ()
-{
-  as_lineno=${as_lineno-"$1"} as_lineno_stack=as_lineno_stack=$as_lineno_stack
-  as_decl_name=`echo $2|sed 's/ *(.*//'`
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether $as_decl_name is declared" >&5
-printf %s "checking whether $as_decl_name is declared... " >&6; }
-if eval test \${$3+y}
-then :
-  printf %s "(cached) " >&6
-else case e in #(
-  e) as_decl_use=`echo $2|sed -e 's/(/((/' -e 's/)/) 0&/' -e 's/,/) 0& (/g'`
-  eval ac_save_FLAGS=\$$6
-  as_fn_append $6 " $5"
-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-$4
-int
-main (void)
-{
-#ifndef $as_decl_name
-#ifdef __cplusplus
-  (void) $as_decl_use;
-#else
-  (void) $as_decl_name;
-#endif
-#endif
-
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"
-then :
-  eval "$3=yes"
-else case e in #(
-  e) eval "$3=no" ;;
-esac
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
-  eval $6=\$ac_save_FLAGS
- ;;
-esac
-fi
-eval ac_res=\$$3
-	       { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
-printf "%s\n" "$ac_res" >&6; }
-  eval $as_lineno_stack; ${as_lineno_stack:+:} unset as_lineno
-
-} # ac_fn_check_decl
 ac_configure_args_raw=
 for ac_arg
 do
@@ -3100,7 +3046,6 @@ as_fn_append ac_header_c_list " strings.h strings_h HAVE_STRINGS_H"
 as_fn_append ac_header_c_list " sys/stat.h sys_stat_h HAVE_SYS_STAT_H"
 as_fn_append ac_header_c_list " sys/types.h sys_types_h HAVE_SYS_TYPES_H"
 as_fn_append ac_header_c_list " unistd.h unistd_h HAVE_UNISTD_H"
-as_fn_append ac_header_c_list " sys/time.h sys_time_h HAVE_SYS_TIME_H"
 
 # Auxiliary files required by this configure script.
 ac_aux_files="ltmain.sh compile config.guess config.sub missing install-sh"
@@ -18869,182 +18814,6 @@ printf "%s\n" "${GCC_VERSION}" >&6; }
 fi
 
 
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether ln -s works" >&5
-printf %s "checking whether ln -s works... " >&6; }
-LN_S=$as_ln_s
-if test "$LN_S" = "ln -s"; then
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-printf "%s\n" "yes" >&6; }
-else
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no, using $LN_S" >&5
-printf "%s\n" "no, using $LN_S" >&6; }
-fi
-
-
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for fgrep" >&5
-printf %s "checking for fgrep... " >&6; }
-if test ${ac_cv_path_FGREP+y}
-then :
-  printf %s "(cached) " >&6
-else case e in #(
-  e) if echo 'ab*c' | $GREP -F 'ab*c' >/dev/null 2>&1
-   then ac_cv_path_FGREP="$GREP -F"
-   else
-     if test -z "$FGREP"; then
-  ac_path_FGREP_found=false
-  # Loop through the user's path and test for each of PROGNAME-LIST
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH$PATH_SEPARATOR/usr/xpg4/bin
-do
-  IFS=$as_save_IFS
-  case $as_dir in #(((
-    '') as_dir=./ ;;
-    */) ;;
-    *) as_dir=$as_dir/ ;;
-  esac
-    for ac_prog in fgrep
-   do
-    for ac_exec_ext in '' $ac_executable_extensions; do
-      ac_path_FGREP="$as_dir$ac_prog$ac_exec_ext"
-      as_fn_executable_p "$ac_path_FGREP" || continue
-# Check for GNU ac_path_FGREP and select it if it is found.
-  # Check for GNU $ac_path_FGREP
-case `"$ac_path_FGREP" --version 2>&1` in #(
-*GNU*)
-  ac_cv_path_FGREP="$ac_path_FGREP" ac_path_FGREP_found=:;;
-#(
-*)
-  ac_count=0
-  printf %s 0123456789 >"conftest.in"
-  while :
-  do
-    cat "conftest.in" "conftest.in" >"conftest.tmp"
-    mv "conftest.tmp" "conftest.in"
-    cp "conftest.in" "conftest.nl"
-    printf "%s\n" 'FGREP' >> "conftest.nl"
-    "$ac_path_FGREP" FGREP < "conftest.nl" >"conftest.out" 2>/dev/null || break
-    diff "conftest.out" "conftest.nl" >/dev/null 2>&1 || break
-    as_fn_arith $ac_count + 1 && ac_count=$as_val
-    if test $ac_count -gt ${ac_path_FGREP_max-0}; then
-      # Best one so far, save it but keep looking for a better one
-      ac_cv_path_FGREP="$ac_path_FGREP"
-      ac_path_FGREP_max=$ac_count
-    fi
-    # 10*(2^10) chars as input seems more than enough
-    test $ac_count -gt 10 && break
-  done
-  rm -f conftest.in conftest.tmp conftest.nl conftest.out;;
-esac
-
-      $ac_path_FGREP_found && break 3
-    done
-  done
-  done
-IFS=$as_save_IFS
-  if test -z "$ac_cv_path_FGREP"; then
-    as_fn_error $? "no acceptable fgrep could be found in $PATH$PATH_SEPARATOR/usr/xpg4/bin" "$LINENO" 5
-  fi
-else
-  ac_cv_path_FGREP=$FGREP
-fi
-
-   fi ;;
-esac
-fi
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_path_FGREP" >&5
-printf "%s\n" "$ac_cv_path_FGREP" >&6; }
- FGREP="$ac_cv_path_FGREP"
-
-
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for a sed that does not truncate output" >&5
-printf %s "checking for a sed that does not truncate output... " >&6; }
-if test ${ac_cv_path_SED+y}
-then :
-  printf %s "(cached) " >&6
-else case e in #(
-  e)           ac_script=s/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/
-     for ac_i in 1 2 3 4 5 6 7; do
-       ac_script="$ac_script$as_nl$ac_script"
-     done
-     echo "$ac_script" 2>/dev/null | sed 99q >conftest.sed
-     { ac_script=; unset ac_script;}
-     if test -z "$SED"; then
-  ac_path_SED_found=false
-  # Loop through the user's path and test for each of PROGNAME-LIST
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  case $as_dir in #(((
-    '') as_dir=./ ;;
-    */) ;;
-    *) as_dir=$as_dir/ ;;
-  esac
-    for ac_prog in sed gsed
-   do
-    for ac_exec_ext in '' $ac_executable_extensions; do
-      ac_path_SED="$as_dir$ac_prog$ac_exec_ext"
-      as_fn_executable_p "$ac_path_SED" || continue
-# Check for GNU ac_path_SED and select it if it is found.
-  # Check for GNU $ac_path_SED
-case `"$ac_path_SED" --version 2>&1` in #(
-*GNU*)
-  ac_cv_path_SED="$ac_path_SED" ac_path_SED_found=:;;
-#(
-*)
-  ac_count=0
-  printf %s 0123456789 >"conftest.in"
-  while :
-  do
-    cat "conftest.in" "conftest.in" >"conftest.tmp"
-    mv "conftest.tmp" "conftest.in"
-    cp "conftest.in" "conftest.nl"
-    printf "%s\n" '' >> "conftest.nl"
-    "$ac_path_SED" -f conftest.sed < "conftest.nl" >"conftest.out" 2>/dev/null || break
-    diff "conftest.out" "conftest.nl" >/dev/null 2>&1 || break
-    as_fn_arith $ac_count + 1 && ac_count=$as_val
-    if test $ac_count -gt ${ac_path_SED_max-0}; then
-      # Best one so far, save it but keep looking for a better one
-      ac_cv_path_SED="$ac_path_SED"
-      ac_path_SED_max=$ac_count
-    fi
-    # 10*(2^10) chars as input seems more than enough
-    test $ac_count -gt 10 && break
-  done
-  rm -f conftest.in conftest.tmp conftest.nl conftest.out;;
-esac
-
-      $ac_path_SED_found && break 3
-    done
-  done
-  done
-IFS=$as_save_IFS
-  if test -z "$ac_cv_path_SED"; then
-    as_fn_error $? "no acceptable sed could be found in \$PATH" "$LINENO" 5
-  fi
-else
-  ac_cv_path_SED=$SED
-fi
- ;;
-esac
-fi
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_path_SED" >&5
-printf "%s\n" "$ac_cv_path_SED" >&6; }
- SED="$ac_cv_path_SED"
-  rm -f conftest.sed
-
-
-
-
-
-
-ac_fn_c_check_header_compile "$LINENO" "xlocale.h" "ac_cv_header_xlocale_h" "$ac_includes_default"
-if test "x$ac_cv_header_xlocale_h" = xyes
-then :
-  printf "%s\n" "#define HAVE_XLOCALE_H 1" >>confdefs.h
-
-fi
-
 ac_fn_c_check_func "$LINENO" "iconv" "ac_cv_func_iconv"
 if test "x$ac_cv_func_iconv" = xyes
 then :
@@ -19063,12 +18832,6 @@ then :
   printf "%s\n" "#define HAVE_PWRITE 1" >>confdefs.h
 
 fi
-ac_fn_c_check_func "$LINENO" "lrintf" "ac_cv_func_lrintf"
-if test "x$ac_cv_func_lrintf" = xyes
-then :
-  printf "%s\n" "#define HAVE_LRINTF 1" >>confdefs.h
-
-fi
 ac_fn_c_check_func "$LINENO" "strlcpy" "ac_cv_func_strlcpy"
 if test "x$ac_cv_func_strlcpy" = xyes
 then :
@@ -19081,28 +18844,10 @@ then :
   printf "%s\n" "#define HAVE_DAEMON 1" >>confdefs.h
 
 fi
-ac_fn_c_check_func "$LINENO" "dirname" "ac_cv_func_dirname"
-if test "x$ac_cv_func_dirname" = xyes
-then :
-  printf "%s\n" "#define HAVE_DIRNAME 1" >>confdefs.h
-
-fi
-ac_fn_c_check_func "$LINENO" "basename" "ac_cv_func_basename"
-if test "x$ac_cv_func_basename" = xyes
-then :
-  printf "%s\n" "#define HAVE_BASENAME 1" >>confdefs.h
-
-fi
 ac_fn_c_check_func "$LINENO" "canonicalize_file_name" "ac_cv_func_canonicalize_file_name"
 if test "x$ac_cv_func_canonicalize_file_name" = xyes
 then :
   printf "%s\n" "#define HAVE_CANONICALIZE_FILE_NAME 1" >>confdefs.h
-
-fi
-ac_fn_c_check_func "$LINENO" "strcasecmp" "ac_cv_func_strcasecmp"
-if test "x$ac_cv_func_strcasecmp" = xyes
-then :
-  printf "%s\n" "#define HAVE_STRCASECMP 1" >>confdefs.h
 
 fi
 ac_fn_c_check_func "$LINENO" "localtime_r" "ac_cv_func_localtime_r"
@@ -19213,39 +18958,11 @@ then :
   printf "%s\n" "#define HAVE_FLOCK 1" >>confdefs.h
 
 fi
-
-
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether ${MAKE-make} sets \$(MAKE)" >&5
-printf %s "checking whether ${MAKE-make} sets \$(MAKE)... " >&6; }
-set x ${MAKE-make}
-ac_make=`printf "%s\n" "$2" | sed 's/+/p/g; s/[^a-zA-Z0-9_]/_/g'`
-if eval test \${ac_cv_prog_make_${ac_make}_set+y}
+ac_fn_c_check_func "$LINENO" "posix_fadvise" "ac_cv_func_posix_fadvise"
+if test "x$ac_cv_func_posix_fadvise" = xyes
 then :
-  printf %s "(cached) " >&6
-else case e in #(
-  e) cat >conftest.make <<\_ACEOF
-SHELL = /bin/sh
-all:
-	@echo '@@@%%%=$(MAKE)=@@@%%%'
-_ACEOF
-# GNU make sometimes prints "make[1]: Entering ...", which would confuse us.
-case `${MAKE-make} -f conftest.make 2>/dev/null` in
-  *@@@%%%=?*=@@@%%%*)
-    eval ac_cv_prog_make_${ac_make}_set=yes;;
-  *)
-    eval ac_cv_prog_make_${ac_make}_set=no;;
-esac
-rm -f conftest.make ;;
-esac
-fi
-if eval test \$ac_cv_prog_make_${ac_make}_set = yes; then
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-printf "%s\n" "yes" >&6; }
-  SET_MAKE=
-else
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
-printf "%s\n" "no" >&6; }
-  SET_MAKE="MAKE=${MAKE-make}"
+  printf "%s\n" "#define HAVE_POSIX_FADVISE 1" >>confdefs.h
+
 fi
 
 
@@ -19611,8 +19328,12 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
-if test "x$ac_cv_func_strtold" != "xyes" ; then
-    CPPFLAGS="$CPPFLAGS -Dstrtold=strtod"
+if test "x$ac_cv_func_strtold" != "xyes"
+then :
+
+       printf "%s\n" "#define strtold strtod" >>confdefs.h
+
+
 fi
 
 if test "x${ac_cv_func_flock}" = "xyes"
@@ -20463,6 +20184,12 @@ ac_fn_c_check_header_compile "$LINENO" "xfs/xfs.h" "ac_cv_header_xfs_xfs_h" "$ac
 if test "x$ac_cv_header_xfs_xfs_h" = xyes
 then :
   printf "%s\n" "#define HAVE_XFS_XFS_H 1" >>confdefs.h
+
+fi
+ac_fn_c_check_header_compile "$LINENO" "xlocale.h" "ac_cv_header_xlocale_h" "$ac_includes_default"
+if test "x$ac_cv_header_xlocale_h" = xyes
+then :
+  printf "%s\n" "#define HAVE_XLOCALE_H 1" >>confdefs.h
 
 fi
 
@@ -21389,113 +21116,6 @@ fi
 
 
 
-
-
-
-
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $CC options needed to detect all undeclared functions" >&5
-printf %s "checking for $CC options needed to detect all undeclared functions... " >&6; }
-if test ${ac_cv_c_undeclared_builtin_options+y}
-then :
-  printf %s "(cached) " >&6
-else case e in #(
-  e) ac_save_CFLAGS=$CFLAGS
-   ac_cv_c_undeclared_builtin_options='cannot detect'
-   for ac_arg in '' -fno-builtin; do
-     CFLAGS="$ac_save_CFLAGS $ac_arg"
-     # This test program should *not* compile successfully.
-     cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-int
-main (void)
-{
-(void) strchr;
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"
-then :
-
-else case e in #(
-  e) # This test program should compile successfully.
-        # No library function is consistently available on
-        # freestanding implementations, so test against a dummy
-        # declaration.  Include always-available headers on the
-        # off chance that they somehow elicit warnings.
-        cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-#include <float.h>
-#include <limits.h>
-#include <stdarg.h>
-#include <stddef.h>
-extern void ac_decl (int, char *);
-
-int
-main (void)
-{
-(void) ac_decl (0, (char *) 0);
-  (void) ac_decl;
-
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"
-then :
-  if test x"$ac_arg" = x
-then :
-  ac_cv_c_undeclared_builtin_options='none needed'
-else case e in #(
-  e) ac_cv_c_undeclared_builtin_options=$ac_arg ;;
-esac
-fi
-          break
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext ;;
-esac
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
-    done
-    CFLAGS=$ac_save_CFLAGS
-   ;;
-esac
-fi
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_c_undeclared_builtin_options" >&5
-printf "%s\n" "$ac_cv_c_undeclared_builtin_options" >&6; }
-  case $ac_cv_c_undeclared_builtin_options in #(
-  'cannot detect') :
-    { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: error: in '$ac_pwd':" >&5
-printf "%s\n" "$as_me: error: in '$ac_pwd':" >&2;}
-as_fn_error $? "cannot make $CC report undeclared builtins
-See 'config.log' for more details" "$LINENO" 5; } ;; #(
-  'none needed') :
-    ac_c_undeclared_builtin_options='' ;; #(
-  *) :
-    ac_c_undeclared_builtin_options=$ac_cv_c_undeclared_builtin_options ;;
-esac
-
-ac_fn_check_decl "$LINENO" "posix_fadvise" "ac_cv_have_decl_posix_fadvise" "
-#define _XOPEN_SOURCE 600
-#include <fcntl.h>
-
-" "$ac_c_undeclared_builtin_options" "CFLAGS"
-if test "x$ac_cv_have_decl_posix_fadvise" = xyes
-then :
-  ac_have_decl=1
-else case e in #(
-  e) ac_have_decl=0 ;;
-esac
-fi
-printf "%s\n" "#define HAVE_DECL_POSIX_FADVISE $ac_have_decl" >>confdefs.h
-
-ac_fn_c_check_func "$LINENO" "posix_fadvise" "ac_cv_func_posix_fadvise"
-if test "x$ac_cv_func_posix_fadvise" = xyes
-then :
-  printf "%s\n" "#define HAVE_POSIX_FADVISE 1" >>confdefs.h
-
-fi
 
 
 
