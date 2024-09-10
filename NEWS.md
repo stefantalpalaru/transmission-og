@@ -1,5 +1,8 @@
 ## (next)
 
+### All Platforms
+- Avoid useless disk prefetching ([#42](https://github.com/stefantalpalaru/transmission-og/pull/42))
+
 ## [Transmission OG 3.06](https://github.com/stefantalpalaru/transmission-og/releases/tag/3.06) (2024-08-13)
 
 ### All Platforms
