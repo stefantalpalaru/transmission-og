@@ -199,6 +199,6 @@ cd ../qt
 ### Version bumping
 
 Needs to be done in: "configure.ac", "CMakeLists.txt" and
-"libtransmission/Makefile.am" (for the shared library).
+"libtransmission/{Makefile.am,CMakeLists.txt}" (for the shared library).
 
 "NEWS.md" also needs a new section.

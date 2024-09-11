@@ -24,7 +24,8 @@ tr_auto_option(ENABLE_MAC           "Build Mac client" AUTO)
         option(ENABLE_UTP           "Build µTP support" ON)
         option(ENABLE_NLS           "Enable native language support" ON)
         option(INSTALL_DOC          "Build/install documentation" ON)
-        option(INSTALL_LIB          "Install the library" OFF)
+        option(BUILD_SHARED_LIBS    "Build a shared library" ON)
+        option(INSTALL_LIB          "Install the library" ${BUILD_SHARED_LIBS})
 tr_auto_option(USE_SYSTEM_EVENT2    "Use system event2 library" AUTO)
 tr_auto_option(USE_SYSTEM_DHT       "Use system dht library" AUTO)
 tr_auto_option(USE_SYSTEM_MINIUPNPC "Use system miniupnpc library" AUTO)
@@ -366,6 +367,9 @@ else()
             list(APPEND EVENT2_CONFIGURE_FLAGS "CPPFLAGS=-I${THIRD_PARTY_DIR}/openssl/include")
         endif()
     endif()
+    if(BUILD_SHARED_LIBS)
+        list(APPEND EVENT2_CONFIGURE_FLAGS "--with-pic")
+    endif()
     tr_add_external_auto_library(EVENT2 libevent event
         CONFIGURE_COMMAND "<SOURCE_DIR>/configure" "--prefix=<INSTALL_DIR>"
                   "--disable-shared" "--disable-samples" "--disable-libevent-regress" ${EVENT2_CONFIGURE_FLAGS})
@@ -380,6 +384,7 @@ tr_add_external_auto_library(MINIUPNPC miniupnpc miniupnpc
     CMAKE_ARGS
         -DUPNPC_BUILD_STATIC=ON
         -DUPNPC_BUILD_SHARED=OFF
+        -DCMAKE_POSITION_INDEPENDENT_CODE=${BUILD_SHARED_LIBS}
         -DUPNPC_BUILD_TESTS=OFF)
 if(NOT USE_SYSTEM_MINIUPNPC)
     set(MINIUPNPC_DEFINITIONS -DMINIUPNP_STATICLIB)
@@ -387,11 +392,15 @@ if(NOT USE_SYSTEM_MINIUPNPC)
     set(MINIUPNPC_API_VERSION 12)
 endif()
 
-tr_add_external_auto_library(DHT dht dht)
+tr_add_external_auto_library(DHT dht dht
+    CMAKE_ARGS
+        -DCMAKE_POSITION_INDEPENDENT_CODE=${BUILD_SHARED_LIBS}
+)
 
 if(ENABLE_UTP)
     tr_add_external_auto_library(UTP libutp utp
         CMAKE_ARGS
+            -DCMAKE_POSITION_INDEPENDENT_CODE=${BUILD_SHARED_LIBS}
             -DLIBUTP_BUILD_PROGRAMS=OFF
             -DLIBUTP_ENABLE_WERROR=OFF)
 
