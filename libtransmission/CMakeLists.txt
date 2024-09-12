@@ -244,10 +244,15 @@ if(ICONV_FOUND)
     include_directories(${ICONV_INCLUDE_DIRS})
 endif()
 
-add_library(${TR_NAME} STATIC
+add_library(${TR_NAME}
     ${${PROJECT_NAME}_SOURCES}
     ${${PROJECT_NAME}_PUBLIC_HEADERS}
     ${${PROJECT_NAME}_PRIVATE_HEADERS}
+)
+set_target_properties(${TR_NAME} PROPERTIES
+    POSITION_INDEPENDENT_CODE ${BUILD_SHARED_LIBS}
+    VERSION 3.0.7
+    SOVERSION 3
 )
 
 foreach(UT ${EVENT2_UPSTREAM_TARGET}
