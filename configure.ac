@@ -468,6 +468,7 @@ AS_IF([test "x${enable_external_libevent}" = "xyes"], [
                                     [--with-pic],
                                     [--disable-samples],
                                     [--disable-libevent-regress],
+                                    [--disable-libevent-install],
                                     [CFLAGS=${CFLAGS}],
                                     [CPPFLAGS=${CPPFLAGS}],
                                     [LDFLAGS=${LDFLAGS}]

@@ -124,7 +124,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/acx-pthread.m4 \
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 DIST_COMMON = $(srcdir)/Makefile.am $(noinst_HEADERS) \
-	$(am__DIST_COMMON)
+	$(pkginclude_HEADERS) $(am__DIST_COMMON)
 mkinstalldirs = $(install_sh) -d
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES = subprocess-test.cmd
@@ -165,7 +165,7 @@ am__uninstall_files_from_dir = { \
     || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
-am__installdirs = "$(DESTDIR)$(libdir)"
+am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pkgincludedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libtransmission_og_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
@@ -184,20 +184,21 @@ am__libtransmission_og_la_SOURCES_DIST = announcer.c announcer-http.c \
 	wildmat.c watchdir-inotify.c watchdir-kqueue.c file-win32.c \
 	subprocess-win32.c watchdir-win32.c file-posix.c \
 	subprocess-posix.c crypto-utils-openssl.c \
-	crypto-utils-cyassl.c crypto-utils-polarssl.c announcer.h \
-	announcer-common.h bandwidth.h bitfield.h blocklist.h cache.h \
-	clients.h ConvertUTF.h crypto.h crypto-utils.h completion.h \
-	error.h error-types.h fdlimit.h file.h handshake.h history.h \
-	inout.h jsonsl.h libtransmission-test.h list.h log.h magnet.h \
-	makemeta.h metainfo.h natpmp_local.h net.h peer-common.h \
-	peer-io.h peer-mgr.h peer-msgs.h peer-socket.h platform.h \
-	platform-quota.h port-forwarding.h ptrarray.h quark.h resume.h \
-	rpcimpl.h rpc-server.h session.h session-id.h stats.h \
-	subprocess.h torrent.h torrent-magnet.h tr-getopt.h \
-	transmission.h tr-assert.h tr-dht.h tr-macros.h tr-udp.h \
-	tr-utp.h tr-lpd.h trevent.h upnp.h utils.h variant.h \
-	variant-common.h verify.h version.h watchdir.h \
-	watchdir-common.h web.h webseed.h whereami.h
+	crypto-utils-cyassl.c crypto-utils-polarssl.c error.h \
+	error-types.h file.h log.h makemeta.h quark.h rpcimpl.h \
+	session-id.h tr-assert.h tr-getopt.h tr-macros.h \
+	transmission.h utils.h variant.h watchdir.h web.h version.h \
+	announcer.h announcer-common.h bandwidth.h bitfield.h \
+	blocklist.h cache.h clients.h ConvertUTF.h crypto.h \
+	crypto-utils.h completion.h fdlimit.h handshake.h history.h \
+	inout.h jsonsl.h libtransmission-test.h list.h magnet.h \
+	metainfo.h natpmp_local.h net.h peer-common.h peer-io.h \
+	peer-mgr.h peer-msgs.h peer-socket.h platform.h \
+	platform-quota.h port-forwarding.h ptrarray.h resume.h \
+	rpc-server.h session.h stats.h subprocess.h torrent.h \
+	torrent-magnet.h tr-dht.h tr-udp.h tr-utp.h tr-lpd.h trevent.h \
+	upnp.h variant-common.h verify.h watchdir-common.h webseed.h \
+	whereami.h
 @USE_INOTIFY_TRUE@am__objects_1 = watchdir-inotify.lo
 @USE_KQUEUE_TRUE@am__objects_2 = watchdir-kqueue.lo
 @WIN32_TRUE@am__objects_3 = file-win32.lo subprocess-win32.lo \
@@ -206,6 +207,7 @@ am__libtransmission_og_la_SOURCES_DIST = announcer.c announcer-http.c \
 @CRYPTO_USE_OPENSSL_TRUE@am__objects_5 = crypto-utils-openssl.lo
 @CRYPTO_USE_CYASSL_TRUE@am__objects_6 = crypto-utils-cyassl.lo
 @CRYPTO_USE_POLARSSL_TRUE@am__objects_7 = crypto-utils-polarssl.lo
+am__objects_8 =
 am_libtransmission_og_la_OBJECTS = announcer.lo announcer-http.lo \
 	announcer-udp.lo bandwidth.lo bitfield.lo blocklist.lo \
 	cache.lo clients.lo completion.lo ConvertUTF.lo crypto.lo \
@@ -221,7 +223,7 @@ am_libtransmission_og_la_OBJECTS = announcer.lo announcer-http.lo \
 	watchdir.lo watchdir-generic.lo web.lo webseed.lo whereami.lo \
 	wildmat.lo $(am__objects_1) $(am__objects_2) $(am__objects_3) \
 	$(am__objects_4) $(am__objects_5) $(am__objects_6) \
-	$(am__objects_7)
+	$(am__objects_7) $(am__objects_8)
 libtransmission_og_la_OBJECTS = $(am_libtransmission_og_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -231,8 +233,8 @@ libtransmission_og_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(AM_CFLAGS) $(CFLAGS) $(libtransmission_og_la_LDFLAGS) \
 	$(LDFLAGS) -o $@
-am__objects_8 = libtransmission-test.$(OBJEXT)
-am_bitfield_test_OBJECTS = bitfield-test.$(OBJEXT) $(am__objects_8)
+am__objects_9 = libtransmission-test.$(OBJEXT)
+am_bitfield_test_OBJECTS = bitfield-test.$(OBJEXT) $(am__objects_9)
 bitfield_test_OBJECTS = $(am_bitfield_test_OBJECTS)
 am__DEPENDENCIES_2 = ./libtransmission-og.la
 bitfield_test_DEPENDENCIES = $(am__DEPENDENCIES_2)
@@ -240,143 +242,144 @@ bitfield_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
 	$(AM_CXXFLAGS) $(CXXFLAGS) $(bitfield_test_LDFLAGS) $(LDFLAGS) \
 	-o $@
-am_blocklist_test_OBJECTS = blocklist-test.$(OBJEXT) $(am__objects_8)
+am_blocklist_test_OBJECTS = blocklist-test.$(OBJEXT) $(am__objects_9)
 blocklist_test_OBJECTS = $(am_blocklist_test_OBJECTS)
 blocklist_test_DEPENDENCIES = $(am__DEPENDENCIES_2)
 blocklist_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
 	$(AM_CXXFLAGS) $(CXXFLAGS) $(blocklist_test_LDFLAGS) \
 	$(LDFLAGS) -o $@
-am_clients_test_OBJECTS = clients-test.$(OBJEXT) $(am__objects_8)
+am_clients_test_OBJECTS = clients-test.$(OBJEXT) $(am__objects_9)
 clients_test_OBJECTS = $(am_clients_test_OBJECTS)
 clients_test_DEPENDENCIES = $(am__DEPENDENCIES_2)
 clients_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
 	$(CXXFLAGS) $(clients_test_LDFLAGS) $(LDFLAGS) -o $@
-am_crypto_test_OBJECTS = crypto-test.$(OBJEXT) $(am__objects_8)
+am_crypto_test_OBJECTS = crypto-test.$(OBJEXT) $(am__objects_9)
 crypto_test_OBJECTS = $(am_crypto_test_OBJECTS)
 crypto_test_DEPENDENCIES = $(am__DEPENDENCIES_2)
 crypto_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
 	$(CXXFLAGS) $(crypto_test_LDFLAGS) $(LDFLAGS) -o $@
-am_error_test_OBJECTS = error-test.$(OBJEXT) $(am__objects_8)
+am_error_test_OBJECTS = error-test.$(OBJEXT) $(am__objects_9)
 error_test_OBJECTS = $(am_error_test_OBJECTS)
 error_test_DEPENDENCIES = $(am__DEPENDENCIES_2)
 error_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
 	$(CXXFLAGS) $(error_test_LDFLAGS) $(LDFLAGS) -o $@
-am_file_test_OBJECTS = file-test.$(OBJEXT) $(am__objects_8)
+am_file_test_OBJECTS = file-test.$(OBJEXT) $(am__objects_9)
 file_test_OBJECTS = $(am_file_test_OBJECTS)
 file_test_DEPENDENCIES = $(am__DEPENDENCIES_2)
 file_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
 	$(CXXFLAGS) $(file_test_LDFLAGS) $(LDFLAGS) -o $@
-am_history_test_OBJECTS = history-test.$(OBJEXT) $(am__objects_8)
+am_history_test_OBJECTS = history-test.$(OBJEXT) $(am__objects_9)
 history_test_OBJECTS = $(am_history_test_OBJECTS)
 history_test_DEPENDENCIES = $(am__DEPENDENCIES_2)
 history_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
 	$(CXXFLAGS) $(history_test_LDFLAGS) $(LDFLAGS) -o $@
-am_json_test_OBJECTS = json-test.$(OBJEXT) $(am__objects_8)
+am_json_test_OBJECTS = json-test.$(OBJEXT) $(am__objects_9)
 json_test_OBJECTS = $(am_json_test_OBJECTS)
 json_test_DEPENDENCIES = $(am__DEPENDENCIES_2)
 json_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
 	$(CXXFLAGS) $(json_test_LDFLAGS) $(LDFLAGS) -o $@
-am_magnet_test_OBJECTS = magnet-test.$(OBJEXT) $(am__objects_8)
+am_magnet_test_OBJECTS = magnet-test.$(OBJEXT) $(am__objects_9)
 magnet_test_OBJECTS = $(am_magnet_test_OBJECTS)
 magnet_test_DEPENDENCIES = $(am__DEPENDENCIES_2)
 magnet_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
 	$(CXXFLAGS) $(magnet_test_LDFLAGS) $(LDFLAGS) -o $@
-am_makemeta_test_OBJECTS = makemeta-test.$(OBJEXT) $(am__objects_8)
+am_makemeta_test_OBJECTS = makemeta-test.$(OBJEXT) $(am__objects_9)
 makemeta_test_OBJECTS = $(am_makemeta_test_OBJECTS)
 makemeta_test_DEPENDENCIES = $(am__DEPENDENCIES_2)
 makemeta_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
 	$(AM_CXXFLAGS) $(CXXFLAGS) $(makemeta_test_LDFLAGS) $(LDFLAGS) \
 	-o $@
-am_metainfo_test_OBJECTS = metainfo-test.$(OBJEXT) $(am__objects_8)
+am_metainfo_test_OBJECTS = metainfo-test.$(OBJEXT) $(am__objects_9)
 metainfo_test_OBJECTS = $(am_metainfo_test_OBJECTS)
 metainfo_test_DEPENDENCIES = $(am__DEPENDENCIES_2)
 metainfo_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
 	$(AM_CXXFLAGS) $(CXXFLAGS) $(metainfo_test_LDFLAGS) $(LDFLAGS) \
 	-o $@
-am_move_test_OBJECTS = move-test.$(OBJEXT) $(am__objects_8)
+am_move_test_OBJECTS = move-test.$(OBJEXT) $(am__objects_9)
 move_test_OBJECTS = $(am_move_test_OBJECTS)
 move_test_DEPENDENCIES = $(am__DEPENDENCIES_2)
 move_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
 	$(CXXFLAGS) $(move_test_LDFLAGS) $(LDFLAGS) -o $@
-am_peer_msgs_test_OBJECTS = peer-msgs-test.$(OBJEXT) $(am__objects_8)
+am_peer_msgs_test_OBJECTS = peer-msgs-test.$(OBJEXT) $(am__objects_9)
 peer_msgs_test_OBJECTS = $(am_peer_msgs_test_OBJECTS)
 peer_msgs_test_DEPENDENCIES = $(am__DEPENDENCIES_2)
 peer_msgs_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
 	$(AM_CXXFLAGS) $(CXXFLAGS) $(peer_msgs_test_LDFLAGS) \
 	$(LDFLAGS) -o $@
-am_quark_test_OBJECTS = quark-test.$(OBJEXT) $(am__objects_8)
+am_quark_test_OBJECTS = quark-test.$(OBJEXT) $(am__objects_9)
 quark_test_OBJECTS = $(am_quark_test_OBJECTS)
 quark_test_DEPENDENCIES = $(am__DEPENDENCIES_2)
 quark_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
 	$(CXXFLAGS) $(quark_test_LDFLAGS) $(LDFLAGS) -o $@
-am_rename_test_OBJECTS = rename-test.$(OBJEXT) $(am__objects_8)
+am_rename_test_OBJECTS = rename-test.$(OBJEXT) $(am__objects_9)
 rename_test_OBJECTS = $(am_rename_test_OBJECTS)
 rename_test_DEPENDENCIES = $(am__DEPENDENCIES_2)
 rename_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
 	$(CXXFLAGS) $(rename_test_LDFLAGS) $(LDFLAGS) -o $@
-am_rpc_test_OBJECTS = rpc-test.$(OBJEXT) $(am__objects_8)
+am_rpc_test_OBJECTS = rpc-test.$(OBJEXT) $(am__objects_9)
 rpc_test_OBJECTS = $(am_rpc_test_OBJECTS)
 rpc_test_DEPENDENCIES = $(am__DEPENDENCIES_2)
 rpc_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
 	$(CXXFLAGS) $(rpc_test_LDFLAGS) $(LDFLAGS) -o $@
-am_session_test_OBJECTS = session-test.$(OBJEXT) $(am__objects_8)
+am_session_test_OBJECTS = session-test.$(OBJEXT) $(am__objects_9)
 session_test_OBJECTS = $(am_session_test_OBJECTS)
 session_test_DEPENDENCIES = $(am__DEPENDENCIES_2)
 session_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
 	$(CXXFLAGS) $(session_test_LDFLAGS) $(LDFLAGS) -o $@
 am_subprocess_test_OBJECTS = subprocess-test.$(OBJEXT) \
-	$(am__objects_8)
+	$(am__objects_9)
 subprocess_test_OBJECTS = $(am_subprocess_test_OBJECTS)
 subprocess_test_DEPENDENCIES = $(am__DEPENDENCIES_2)
 subprocess_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
 	$(AM_CXXFLAGS) $(CXXFLAGS) $(subprocess_test_LDFLAGS) \
 	$(LDFLAGS) -o $@
-am_tr_getopt_test_OBJECTS = tr-getopt-test.$(OBJEXT) $(am__objects_8)
+am_tr_getopt_test_OBJECTS = tr-getopt-test.$(OBJEXT) $(am__objects_9)
 tr_getopt_test_OBJECTS = $(am_tr_getopt_test_OBJECTS)
 tr_getopt_test_DEPENDENCIES = $(am__DEPENDENCIES_2)
 tr_getopt_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
 	$(AM_CXXFLAGS) $(CXXFLAGS) $(tr_getopt_test_LDFLAGS) \
 	$(LDFLAGS) -o $@
-am_utils_test_OBJECTS = utils-test.$(OBJEXT) $(am__objects_8)
+am_utils_test_OBJECTS = utils-test.$(OBJEXT) $(am__objects_9)
 utils_test_OBJECTS = $(am_utils_test_OBJECTS)
 utils_test_DEPENDENCIES = $(am__DEPENDENCIES_2)
 utils_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
 	$(CXXFLAGS) $(utils_test_LDFLAGS) $(LDFLAGS) -o $@
-am_variant_test_OBJECTS = variant-test.$(OBJEXT) $(am__objects_8)
+am_variant_test_OBJECTS = variant-test.$(OBJEXT) $(am__objects_9)
 variant_test_OBJECTS = $(am_variant_test_OBJECTS)
 variant_test_DEPENDENCIES = $(am__DEPENDENCIES_2)
 variant_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
 	$(CXXFLAGS) $(variant_test_LDFLAGS) $(LDFLAGS) -o $@
-am__objects_9 = watchdir_generic_test-libtransmission-test.$(OBJEXT)
+am__objects_10 = watchdir_generic_test-libtransmission-test.$(OBJEXT)
 am_watchdir_generic_test_OBJECTS =  \
-	watchdir_generic_test-watchdir-test.$(OBJEXT) $(am__objects_9)
+	watchdir_generic_test-watchdir-test.$(OBJEXT) \
+	$(am__objects_10)
 watchdir_generic_test_OBJECTS = $(am_watchdir_generic_test_OBJECTS)
 watchdir_generic_test_DEPENDENCIES = $(am__DEPENDENCIES_2)
 watchdir_generic_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
 	$(AM_CXXFLAGS) $(CXXFLAGS) $(watchdir_generic_test_LDFLAGS) \
 	$(LDFLAGS) -o $@
-am_watchdir_test_OBJECTS = watchdir-test.$(OBJEXT) $(am__objects_8)
+am_watchdir_test_OBJECTS = watchdir-test.$(OBJEXT) $(am__objects_9)
 watchdir_test_OBJECTS = $(am_watchdir_test_OBJECTS)
 watchdir_test_DEPENDENCIES = $(am__DEPENDENCIES_2)
 watchdir_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
@@ -536,7 +539,7 @@ am__can_run_installinfo = \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
-HEADERS = $(noinst_HEADERS)
+HEADERS = $(noinst_HEADERS) $(pkginclude_HEADERS)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 # Read a list of newline-separated strings from the standard input,
 # and print each of them once, without duplicates.  Input order is
@@ -1023,20 +1026,36 @@ libtransmission_og_la_SOURCES = announcer.c announcer-http.c \
 	watchdir.c watchdir-generic.c web.c webseed.c whereami.c \
 	wildmat.c $(am__append_1) $(am__append_3) $(am__append_5) \
 	$(am__append_6) $(am__append_7) $(am__append_8) \
-	$(am__append_10) announcer.h announcer-common.h bandwidth.h \
-	bitfield.h blocklist.h cache.h clients.h ConvertUTF.h crypto.h \
-	crypto-utils.h completion.h error.h error-types.h fdlimit.h \
-	file.h handshake.h history.h inout.h jsonsl.h \
-	libtransmission-test.h list.h log.h magnet.h makemeta.h \
-	metainfo.h natpmp_local.h net.h peer-common.h peer-io.h \
-	peer-mgr.h peer-msgs.h peer-socket.h platform.h \
-	platform-quota.h port-forwarding.h ptrarray.h quark.h resume.h \
-	rpcimpl.h rpc-server.h session.h session-id.h stats.h \
-	subprocess.h torrent.h torrent-magnet.h tr-getopt.h \
-	transmission.h tr-assert.h tr-dht.h tr-macros.h tr-udp.h \
-	tr-utp.h tr-lpd.h trevent.h upnp.h utils.h variant.h \
-	variant-common.h verify.h version.h watchdir.h \
-	watchdir-common.h web.h webseed.h whereami.h
+	$(am__append_10) $(pkginclude_HEADERS) announcer.h \
+	announcer-common.h bandwidth.h bitfield.h blocklist.h cache.h \
+	clients.h ConvertUTF.h crypto.h crypto-utils.h completion.h \
+	fdlimit.h handshake.h history.h inout.h jsonsl.h \
+	libtransmission-test.h list.h magnet.h metainfo.h \
+	natpmp_local.h net.h peer-common.h peer-io.h peer-mgr.h \
+	peer-msgs.h peer-socket.h platform.h platform-quota.h \
+	port-forwarding.h ptrarray.h resume.h rpc-server.h session.h \
+	stats.h subprocess.h torrent.h torrent-magnet.h tr-dht.h \
+	tr-udp.h tr-utp.h tr-lpd.h trevent.h upnp.h variant-common.h \
+	verify.h watchdir-common.h webseed.h whereami.h
+pkginclude_HEADERS = \
+  error.h \
+  error-types.h \
+  file.h \
+  log.h \
+  makemeta.h \
+  quark.h \
+  rpcimpl.h \
+  session-id.h \
+  tr-assert.h \
+  tr-getopt.h \
+  tr-macros.h \
+  transmission.h \
+  utils.h \
+  variant.h \
+  watchdir.h \
+  web.h \
+  version.h
+
 
 # Weird inclusion of a C file in another one.
 noinst_HEADERS = \
@@ -1521,6 +1540,27 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
+install-pkgincludeHEADERS: $(pkginclude_HEADERS)
+	@$(NORMAL_INSTALL)
+	@list='$(pkginclude_HEADERS)'; test -n "$(pkgincludedir)" || list=; \
+	if test -n "$$list"; then \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(pkgincludedir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(pkgincludedir)" || exit 1; \
+	fi; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_HEADER) $$files '$(DESTDIR)$(pkgincludedir)'"; \
+	  $(INSTALL_HEADER) $$files "$(DESTDIR)$(pkgincludedir)" || exit $$?; \
+	done
+
+uninstall-pkgincludeHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(pkginclude_HEADERS)'; test -n "$(pkgincludedir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	dir='$(DESTDIR)$(pkgincludedir)'; $(am__uninstall_files_from_dir)
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -1932,7 +1972,7 @@ all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 install-checkPROGRAMS: install-libLTLIBRARIES
 
 installdirs:
-	for dir in "$(DESTDIR)$(libdir)"; do \
+	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pkgincludedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: $(BUILT_SOURCES)
@@ -2093,7 +2133,7 @@ info: info-am
 
 info-am:
 
-install-data-am:
+install-data-am: install-pkgincludeHEADERS
 
 install-dvi: install-dvi-am
 
@@ -2237,7 +2277,7 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-libLTLIBRARIES
+uninstall-am: uninstall-libLTLIBRARIES uninstall-pkgincludeHEADERS
 
 .MAKE: all check check-am install install-am install-exec \
 	install-strip
@@ -2251,12 +2291,13 @@ uninstall-am: uninstall-libLTLIBRARIES
 	install-data-am install-dvi install-dvi-am install-exec \
 	install-exec-am install-html install-html-am install-info \
 	install-info-am install-libLTLIBRARIES install-man install-pdf \
-	install-pdf-am install-ps install-ps-am install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	recheck tags tags-am uninstall uninstall-am \
-	uninstall-libLTLIBRARIES
+	install-pdf-am install-pkgincludeHEADERS install-ps \
+	install-ps-am install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am recheck tags tags-am \
+	uninstall uninstall-am uninstall-libLTLIBRARIES \
+	uninstall-pkgincludeHEADERS
 
 .PRECIOUS: Makefile
 
