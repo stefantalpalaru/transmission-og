@@ -640,7 +640,6 @@ check: check-recursive
 all-am: Makefile
 installdirs: installdirs-recursive
 installdirs-am:
-install: install-recursive
 install-exec: install-exec-recursive
 install-data: install-data-recursive
 uninstall: uninstall-recursive
@@ -753,6 +752,11 @@ uninstall-am:
 
 .PRECIOUS: Makefile
 
+
+# We do not want to install anything from our third party subdirs, so we
+# override the "install" target with an empty one.
+# ("libevent" is the only one giving us trouble here)
+install:
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

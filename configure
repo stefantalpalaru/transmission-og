@@ -22241,6 +22241,7 @@ ac_abs_srcdir=$ac_abs_top_srcdir$ac_dir_suffix
       as_fn_append ax_args " '--with-pic'"
       as_fn_append ax_args " '--disable-samples'"
       as_fn_append ax_args " '--disable-libevent-regress'"
+      as_fn_append ax_args " '--disable-libevent-install'"
       as_fn_append ax_args " 'CFLAGS=${CFLAGS}'"
       as_fn_append ax_args " 'CPPFLAGS=${CPPFLAGS}'"
       as_fn_append ax_args " 'LDFLAGS=${LDFLAGS}

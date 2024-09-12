@@ -138,7 +138,27 @@ AM_CPPFLAGS += -DPOLARSSL_IS_MBEDTLS
 endif
 endif
 
+pkginclude_HEADERS = \
+  error.h \
+  error-types.h \
+  file.h \
+  log.h \
+  makemeta.h \
+  quark.h \
+  rpcimpl.h \
+  session-id.h \
+  tr-assert.h \
+  tr-getopt.h \
+  tr-macros.h \
+  transmission.h \
+  utils.h \
+  variant.h \
+  watchdir.h \
+  web.h \
+  version.h
+
 libtransmission_og_la_SOURCES += \
+  $(pkginclude_HEADERS) \
   announcer.h \
   announcer-common.h \
   bandwidth.h \
@@ -150,19 +170,14 @@ libtransmission_og_la_SOURCES += \
   crypto.h \
   crypto-utils.h \
   completion.h \
-  error.h \
-  error-types.h \
   fdlimit.h \
-  file.h \
   handshake.h \
   history.h \
   inout.h \
   jsonsl.h \
   libtransmission-test.h \
   list.h \
-  log.h \
   magnet.h \
-  makemeta.h \
   metainfo.h \
   natpmp_local.h \
   net.h \
@@ -175,34 +190,22 @@ libtransmission_og_la_SOURCES += \
   platform-quota.h \
   port-forwarding.h \
   ptrarray.h \
-  quark.h \
   resume.h \
-  rpcimpl.h \
   rpc-server.h \
   session.h \
-  session-id.h \
   stats.h \
   subprocess.h \
   torrent.h \
   torrent-magnet.h \
-  tr-getopt.h \
-  transmission.h \
-  tr-assert.h \
   tr-dht.h \
-  tr-macros.h \
   tr-udp.h \
   tr-utp.h \
   tr-lpd.h \
   trevent.h \
   upnp.h \
-  utils.h \
-  variant.h \
   variant-common.h \
   verify.h \
-  version.h \
-  watchdir.h \
   watchdir-common.h \
-  web.h \
   webseed.h \
   whereami.h
 

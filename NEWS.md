@@ -3,6 +3,7 @@
 ### All Platforms
 - Avoid useless disk prefetching ([#42](https://github.com/stefantalpalaru/transmission-og/pull/42))
 - CMake: build a shared "libtransmission-og" by default ([#43](https://github.com/stefantalpalaru/transmission-og/pull/43))
+- Autotools: install public headers for "libtransmission-og" ([#44](https://github.com/stefantalpalaru/transmission-og/pull/44))
 
 ## [Transmission OG 3.06](https://github.com/stefantalpalaru/transmission-og/releases/tag/3.06) (2024-08-13)
 

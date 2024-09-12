@@ -36,3 +36,9 @@ DIST_SUBDIRS = \
 EXTRA_DIST = \
   macosx-libevent-config.h \
   macosx-libevent-event-config.h
+
+# We do not want to install anything from our third party subdirs, so we
+# override the "install" target with an empty one.
+# ("libevent" is the only one giving us trouble here)
+install:
+
