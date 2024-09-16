@@ -169,10 +169,15 @@ Please open an issue here after updating a translation on Transifex.
 
 We are using `clang-format` through the wrapper script `code_style.sh` (`make format` also works).
 
-Vim integration, using [vim-clang-format](https://github.com/rhysd/vim-clang-format):
+Vim integration, using [vim-clang-format](https://github.com/rhysd/vim-clang-format) in your ~/.vimrc:
 
 ```vimrc
-" in your ~/.vimrc
+" self-cleaning augroup, to avoid problems when sourcing ~/.vimrc multiple times
+" https://old.reddit.com/r/vim/comments/4p4ogb/augroup_autocmd_need_some_clarification/d4i14it/
+augroup defgroup
+	autocmd!
+augroup END
+
 autocmd defgroup BufNewFile,BufRead /path/to/transmission-og/*.{c,cc,h} setlocal shiftwidth=4 softtabstop=4 expandtab
 autocmd defgroup BufNewFile,BufRead /path/to/transmission-og/*.{c,cc,h} ClangFormatAutoEnable
 ```
