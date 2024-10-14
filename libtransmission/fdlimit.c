@@ -187,7 +187,7 @@ static int cached_file_open(struct tr_cached_file* o, char const* filename, bool
 
     /* open the file */
     flags = writable ? (TR_SYS_FILE_WRITE | TR_SYS_FILE_CREATE) : 0;
-    flags |= TR_SYS_FILE_READ | TR_SYS_FILE_SEQUENTIAL;
+    flags |= TR_SYS_FILE_READ;
     fd = tr_sys_file_open(filename, flags, 0666, &error);
 
     if (fd == TR_BAD_SYS_FILE)
