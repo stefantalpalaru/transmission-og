@@ -2077,6 +2077,9 @@ static void closeTorrent(void* vtor)
 
     tr_logAddTorInfo(tor, "%s", _("Removing torrent"));
 
+    if (!tor->isDeleting)
+        tr_torrentSetDirty(tor);
+
     tor->magnetVerify = false;
     stopTorrent(tor);
 
