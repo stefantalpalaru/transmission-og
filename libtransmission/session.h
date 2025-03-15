@@ -265,11 +265,6 @@ static inline bool tr_isEncryptionMode(tr_encryption_mode m)
     return m == TR_CLEAR_PREFERRED || m == TR_ENCRYPTION_PREFERRED || m == TR_ENCRYPTION_REQUIRED;
 }
 
-static inline bool tr_isPriority(tr_priority_t p)
-{
-    return p == TR_PRI_LOW || p == TR_PRI_NORMAL || p == TR_PRI_HIGH;
-}
-
 /***
 ****
 ***/
