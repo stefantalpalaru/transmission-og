@@ -670,8 +670,9 @@ void MainWindow::openAbout()
 
 void MainWindow::openHelp()
 {
-    QDesktopServices::openUrl(
-        QUrl(QString::fromLatin1("https://transmissionbt.com/help/gtk/%1.%2x").arg(MAJOR_VERSION).arg(MINOR_VERSION / 10)));
+    QDesktopServices::openUrl(QUrl(QString::fromLatin1("https://transmissionbt.com/help/gtk/%1.%2x")
+                                       .arg(QString::fromLatin1(MAJOR_VERSION))
+                                       .arg(std::stoi(MINOR_VERSION) / 10)));
 }
 
 /****
