@@ -15,8 +15,8 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #endif
 
 VS_VERSION_INFO VERSIONINFO
-    FILEVERSION    MAJOR_VERSION, MINOR_VERSION, 0, 0
-    PRODUCTVERSION MAJOR_VERSION, MINOR_VERSION, 0, 0
+    FILEVERSION    MAJOR_VERSION_NUM, MINOR_VERSION_NUM, 0, 0
+    PRODUCTVERSION MAJOR_VERSION_NUM, MINOR_VERSION_NUM, 0, 0
     FILEFLAGSMASK  VS_FF_DEBUG | TR_FF_PRERELEASE
 #ifdef _DEBUG
     FILEFLAGS      VS_FF_DEBUG | TR_FF_PRERELEASE
@@ -35,7 +35,7 @@ BEGIN
             VALUE "FileDescription",  "%TR_FILE_DESCRIPTION%"
             VALUE "FileVersion",      LONG_VERSION_STRING
             VALUE "InternalName",     "%TR_INTERNAL_NAME%"
-            VALUE "LegalCopyright",   "2005-2023 Transmission OG Project"
+            VALUE "LegalCopyright",   "2005-2025 Transmission OG Project"
             VALUE "OriginalFilename", "%TR_ORIGINAL_FILENAME%"
             VALUE "ProductName",      "Transmission OG"
             VALUE "ProductVersion",   LONG_VERSION_STRING
