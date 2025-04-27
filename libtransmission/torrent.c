@@ -1047,6 +1047,7 @@ static void tr_torrentAddDefaultTrackers(tr_torrent *tor)
     int i;
     tr_tracker_info *trackers;
     int numExistingTrackers = tor->info.trackerCount;
+    int numExistingTrackersOld = numExistingTrackers;
     int numNewTrackers = tr_list_size(tor->session->defaultTrackers);
     bool changed = false;
 
@@ -1095,6 +1096,10 @@ static void tr_torrentAddDefaultTrackers(tr_torrent *tor)
     }
 
     tr_free(trackers);
+    int numNewTrackersAdded = numExistingTrackers - numExistingTrackersOld;
+    if (numNewTrackersAdded > 0) {
+        tr_logAddTorDbg(tor, "Added %d default trackers", numNewTrackersAdded);
+    }
 }
 
 tr_parse_result tr_torrentParse(tr_ctor const *ctor, tr_info *setmeInfo)
