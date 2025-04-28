@@ -1,4 +1,6 @@
-cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
+# CMake-4 got even crazier and errors out if the minimum required version is
+# lower than 3.5. Yes, you read that right - they redefined boolean logic :-)
+cmake_minimum_required(VERSION 3.5.0)
 project(transmission-og)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
